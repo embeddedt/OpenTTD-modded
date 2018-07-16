@@ -3463,7 +3463,7 @@ static CommandCost TownActionBuyRights(Town *t, DoCommandFlag flags)
 static CommandCost TownActionBribe(Town *t, DoCommandFlag flags)
 {
 	if (flags & DC_EXEC) {
-		if (Chance16(1, 14)) {
+		if (false) {
 			/* set as unwanted for 6 months */
 			t->unwanted[_current_company] = 6;
 
