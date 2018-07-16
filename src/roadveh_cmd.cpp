@@ -250,7 +250,7 @@ void RoadVehUpdateCache(RoadVehicle *v, bool same_length)
 	SetBit(last_vis_effect->vcache.cached_veh_flags, VCF_LAST_VISUAL_EFFECT);
 
 	uint max_speed = GetVehicleProperty(v, PROP_ROADVEH_SPEED, 0);
-	v->vcache.cached_max_speed = (max_speed != 0) ? max_speed * 4 : RoadVehInfo(v->engine_type)->max_speed;
+	v->vcache.cached_max_speed = (max_speed != 0) ? max_speed * 2 : RoadVehInfo(v->engine_type)->max_speed / 2;
 }
 
 /**
@@ -482,11 +482,11 @@ inline int RoadVehicle::GetCurrentMaxSpeed() const
 
 		/* Vehicle is on the middle part of a bridge. */
 		if (u->state == RVSB_WORMHOLE && !(u->vehstatus & VS_HIDDEN)) {
-			max_speed = min(max_speed, GetBridgeSpec(GetBridgeType(u->tile))->speed * 2);
+			max_speed = min(max_speed, GetBridgeSpec(GetBridgeType(u->tile))->speed);
 		}
 	}
 
-	return min(max_speed, this->current_order.GetMaxSpeed() * 2);
+	return min(max_speed, this->current_order.GetMaxSpeed());
 }
 
 /**
@@ -768,20 +768,20 @@ static void RoadVehArrivesAt(const RoadVehicle *v, Station *st)
 
 /**
  * This function looks at the vehicle and updates its speed (cur_speed
- * and subspeed) variables. Furthermore, it returns the distance that
- * the vehicle can drive this tick. #Vehicle::GetAdvanceDistance() determines
- * the distance to drive before moving a step on the map.
- * @return distance to drive.
+ * and subspeed) variables. Furthermore, it returns the amount of progress that
+ * the vehicle can drive this timestep. #Vehicle::GetAdvanceDistance() determines
+ * the amount of progress needed for moving a step on the map.
+ * @return The maximum progress that the vehicle can drive.
  */
 int RoadVehicle::UpdateSpeed()
 {
 	switch (_settings_game.vehicle.roadveh_acceleration_model) {
 		default: NOT_REACHED();
 		case AM_ORIGINAL:
-			return this->DoUpdateSpeed(this->overtaking != 0 ? 512 : 256, 0, this->GetCurrentMaxSpeed());
+			return this->DoUpdateSpeed(AM_ORIGINAL, this->overtaking != 0 ? 256 : 128, 0, this->GetCurrentMaxSpeed(), 1);
 
 		case AM_REALISTIC:
-			return this->DoUpdateSpeed(this->GetAcceleration() + (this->overtaking != 0 ? 256 : 0), this->GetAccelerationStatus() == AS_BRAKE ? 0 : 4, this->GetCurrentMaxSpeed());
+			return this->DoUpdateSpeed(AM_REALISTIC, this->GetAcceleration() + (this->overtaking != 0 ? 500 : 0), this->GetAccelerationStatus() == AS_BRAKE ? 0 : 8, this->GetCurrentMaxSpeed(), 1);
 	}
 }
 

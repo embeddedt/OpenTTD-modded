@@ -407,17 +407,35 @@ protected:
 	 *
 	 * It updates the cur_speed and subspeed variables depending on the state
 	 * of the vehicle; in this case the current acceleration, minimum and
-	 * maximum speeds of the vehicle. It returns the distance that that the
-	 * vehicle can drive this tick. #Vehicle::GetAdvanceDistance() determines
-	 * the distance to drive before moving a step on the map.
+	 * maximum speeds of the vehicle. It returns the progress that the
+	 * vehicle can make this timestep. #Vehicle::GetAdvanceDistance() determines
+	 * the required amount of progress for moving a step on the map.
+	 * @param acceleration_model The acceleration model to use.
 	 * @param accel     The acceleration we would like to give this vehicle.
-	 * @param min_speed The minimum speed here, in vehicle specific units.
-	 * @param max_speed The maximum speed here, in vehicle specific units.
-	 * @return Distance to drive.
+	 *                  For the original acceleration model, this is the speed increment in 1/256 km/h.
+	 *                  For the realistic acceleration model, this is the acceleration in mm/s^2.
+	 * @param min_speed The minimum speed here, in km/h.
+	 * @param max_speed The maximum speed here, in km/h.
+	 * @param callsPerTick The number of times this function is called per tick (determines timestep).
+	 * @return The amount of progress that the vehicle can drive this timestep.
 	 */
-	inline uint DoUpdateSpeed(uint accel, int min_speed, int max_speed)
+	inline uint DoUpdateSpeed(AccelerationModel acceleration_model, int accel, int min_speed, int max_speed, int callsPerTick)
 	{
-		uint spd = this->subspeed + accel;
+		const int timestep = 150 // duration of a tick for the physics simulation, in ms.
+			/ callsPerTick;
+		const int tilediag = 80; // diagonal of a tile, in m.
+
+		int spd;
+		switch (acceleration_model) {
+			default: NOT_REACHED();
+			case AM_ORIGINAL:
+				spd = this->subspeed + accel;
+				break;
+			case AM_REALISTIC:
+				spd = this->subspeed + 256
+					* accel / 1000 * timestep * 18 / 1000 / 5; // speed increment in km/h
+		}
+
 		this->subspeed = (byte)spd;
 
 		int tempmax = max_speed;
@@ -449,13 +467,22 @@ protected:
 		 * threshold for some reason. That makes acceleration fail and assertions
 		 * happen in Clamp. So make it explicit that min_speed overrules the maximum
 		 * speed by explicit ordering of min and max. */
-		this->cur_speed = spd = max(min(this->cur_speed + ((int)spd >> 8), tempmax), min_speed);
+		this->cur_speed = spd = max(min(this->cur_speed + (spd >> 8), tempmax), min_speed);
 
-		int scaled_spd = this->GetAdvanceSpeed(spd);
-
-		scaled_spd += this->progress;
+		int progress;
+		switch (acceleration_model) {
+			default: NOT_REACHED();
+			case AM_ORIGINAL:
+				progress = this->GetAdvanceSpeed(spd) * 2 / callsPerTick;
+				break;
+			case AM_REALISTIC:
+				progress = 256
+					* 5 * spd * timestep / 18 // distance travelled in mm
+					/ tilediag * TILE_SIZE / 1000;
+		}
+		progress += this->progress;
 		this->progress = 0; // set later in *Handler or *Controller
-		return scaled_spd;
+		return progress;
 	}
 };
 

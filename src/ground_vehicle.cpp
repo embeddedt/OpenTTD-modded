@@ -123,7 +123,7 @@ void GroundVehicle<T, Type>::CargoChanged()
 
 /**
  * Calculates the acceleration of the vehicle under its current conditions.
- * @return Current acceleration of the vehicle.
+ * @return Current acceleration of the vehicle in mm/s^2.
  */
 template <class T, VehicleType Type>
 int GroundVehicle<T, Type>::GetAcceleration()
@@ -153,7 +153,7 @@ int GroundVehicle<T, Type>::GetAcceleration()
 	 *     * 6.2E14 before dividing by 1000
 	 * Sum is 6.3E11, more than 4.3E9 of int32, so int64 is needed.
 	 */
-	int64 resistance = 0;
+	int64 resistance = 0; // in N
 
 	bool maglev = v->GetAccelerationType() == 2;
 
@@ -161,7 +161,7 @@ int GroundVehicle<T, Type>::GetAcceleration()
 	if (!maglev) {
 		/* Static resistance plus rolling friction. */
 		resistance = this->gcache.cached_axle_resistance;
-		resistance += mass * v->GetRollingFriction();
+		resistance += mass * v->GetRollingFriction() /* in e-4 */;
 	}
 	/* Air drag; the air drag coefficient is in an arbitrary NewGRF-unit,
 	 * so we need some magic conversion factor. */
@@ -186,17 +186,12 @@ int GroundVehicle<T, Type>::GetAcceleration()
 	 * low speed, it needs to be a 64 bit integer too. */
 	int64 force;
 	if (speed > 0) {
-		if (!maglev) {
-			/* Conversion factor from km/h to m/s is 5/18 to get [N] in the end. */
-			force = power * 18 / (speed * 5);
-			if (mode == AS_ACCEL && force > (int)max_te) force = max_te;
-		} else {
-			force = power / 25;
-		}
+		/* Conversion factor from km/h to m/s is 5/18 to get [N] in the end. */
+		force = power * 18 / (speed * 5);
+		if (mode == AS_ACCEL && force > max_te) force = max_te;
 	} else {
 		/* "Kickoff" acceleration. */
-		force = (mode == AS_ACCEL && !maglev) ? min(max_te, power) : power;
-		force = max(force, (mass * 8) + resistance);
+		force = max_te;
 	}
 
 	/* If power is 0 because of a breakdown, we make the force 0 if accelerating */
@@ -234,8 +229,10 @@ int GroundVehicle<T, Type>::GetAcceleration()
 		 * down hill will never slow down enough, and a vehicle that came up
 		 * a hill will never speed up enough to (eventually) get back to the
 		 * same (maximum) speed. */
-		int accel = ClampToI32((force - resistance) / (mass * 4));
-		accel = force < resistance ? min(-1, accel) : max(1, accel);
+		// F / weight = F / mass [N/ton = mm/s^2]
+		int accel = ClampToI32((force - resistance) / mass); // [mm/s^2]
+		// clamp to reasonable range
+		accel = min(1500, accel);
 		if (this->type == VEH_TRAIN) {
 			if(_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL &&
 					HasBit(Train::From(this)->flags, VRF_BREAKDOWN_POWER)) {

@@ -3428,20 +3428,20 @@ void Train::MarkDirty()
 
 /**
  * This function looks at the vehicle and updates its speed (cur_speed
- * and subspeed) variables. Furthermore, it returns the distance that
- * the train can drive this tick. #Vehicle::GetAdvanceDistance() determines
- * the distance to drive before moving a step on the map.
- * @return distance to drive.
+ * and subspeed) variables. Furthermore, it returns the amount of progress that
+ * the train can drive this timestep. #Vehicle::GetAdvanceDistance() determines
+ * the amount of progress needed for moving a step on the map.
+ * @return The amount of progress that the vehicle can drive this timestep.
  */
 int Train::UpdateSpeed()
 {
 	switch (_settings_game.vehicle.train_acceleration_model) {
 		default: NOT_REACHED();
 		case AM_ORIGINAL:
-			return this->DoUpdateSpeed(this->acceleration * (this->GetAccelerationStatus() == AS_BRAKE ? -4 : 2), 0, this->GetCurrentMaxSpeed());
+			return this->DoUpdateSpeed(AM_ORIGINAL, this->acceleration * (this->GetAccelerationStatus() == AS_BRAKE ? -4 : 2), 0, this->GetCurrentMaxSpeed(), 2);
 
 		case AM_REALISTIC:
-			return this->DoUpdateSpeed(this->GetAcceleration(), this->GetAccelerationStatus() == AS_BRAKE ? 0 : 2, this->GetCurrentMaxSpeed());
+			return this->DoUpdateSpeed(AM_REALISTIC, this->GetAcceleration(), this->GetAccelerationStatus() == AS_BRAKE ? 0 : 2, this->GetCurrentMaxSpeed(), 2);
 	}
 }
 /**
