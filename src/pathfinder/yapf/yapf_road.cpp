@@ -13,6 +13,7 @@
 #include "../../roadstop_base.h"
 
 #include "../../safeguards.h"
+#include "../../vehicle_func.h"
 
 /**
  * This used to be MAX_MAP_SIZE, but is now its own constant.
@@ -105,6 +106,8 @@ protected:
 			/* non-diagonal trackdir */
 			cost = YAPF_TILE_CORNER_LENGTH + Yapf().PfGetSettings().road_curve_penalty;
 		}
+		/* Check for vehicles on the same path */
+		if (!EnsureNoRoadVehWithTrackdir(tile, trackdir)) cost += 1 * YAPF_TILE_LENGTH;	
 		return cost;
 	}
 

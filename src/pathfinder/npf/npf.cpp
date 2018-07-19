@@ -392,6 +392,8 @@ static int32 NPFRoadPathCost(AyStar *as, AyStarNode *current, OpenListNode *pare
 	if (!IsDiagonalTrackdir(current->direction)) {
 		cost += _settings_game.pf.npf.npf_road_curve_penalty;
 	}
+	/* Check for vehicles on the same path */
+	if (!EnsureNoRoadVehWithTrackdir(tile, current->direction)) cost += 1 * NPF_TILE_LENGTH; /* T: no setting for JGR compat */
 
 	NPFMarkTile(tile);
 	DEBUG(npf, 4, "Calculating G for: (%d, %d). Result: %d", TileX(current->tile), TileY(current->tile), cost);

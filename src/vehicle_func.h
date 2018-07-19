@@ -163,6 +163,7 @@ static inline uint32 GetCmdSendToDepot(const BaseVehicle *v)
 }
 
 CommandCost EnsureNoVehicleOnGround(TileIndex tile);
+bool EnsureNoRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir);
 CommandCost EnsureNoRoadVehicleOnGround(TileIndex tile);
 CommandCost EnsureNoTrainOnTrackBits(TileIndex tile, TrackBits track_bits);
 

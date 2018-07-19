@@ -610,6 +610,50 @@ CommandCost EnsureNoVehicleOnGround(TileIndex tile)
 	return CommandCost();
 }
 
+static Vehicle *EnsureNoRoadVehProc(Vehicle *v, void *data)
+{
+	Trackdir trackdir = *(Trackdir*)data;
+
+	if (v->type != VEH_ROAD) return NULL;
+	if (v->GetVehicleTrackdir() != trackdir) return NULL;
+
+	return v;
+}
+
+Vehicle *FindRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir)
+{
+	return (Vehicle*)HasVehicleOnPos(tile, &trackdir, &EnsureNoRoadVehProc);
+}
+
+bool EnsureNoRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir) {
+	return FindRoadVehWithTrackdir(tile, trackdir) == NULL;
+}
+
+Vehicle *FindVehicleBetween(TileIndex from, TileIndex to, byte z, bool without_crashed)
+{
+	int x1 = TileX(from);
+	int y1 = TileY(from);
+	int x2 = TileX(to);
+	int y2 = TileY(to);
+	Vehicle *veh;
+
+	/* Make sure x1 < x2 or y1 < y2 */
+	if (x1 > x2 || y1 > y2) {
+		Swap(x1, x2);
+		Swap(y1, y2);
+	}
+	FOR_ALL_VEHICLES(veh) {
+		if (without_crashed && (veh->vehstatus & VS_CRASHED) != 0) continue;
+		if ((veh->type == VEH_TRAIN || veh->type == VEH_ROAD) && (z == 0xFF || veh->z_pos == z)) {
+			if ((veh->x_pos >> 4) >= x1 && (veh->x_pos >> 4) <= x2 &&
+					(veh->y_pos >> 4) >= y1 && (veh->y_pos >> 4) <= y2) {
+				return veh;
+			}
+		}
+	}
+	return NULL;
+}
+
 /**
  * Callback that returns 'real' vehicles lower or at height \c *(int*)data, for road vehicles.
  * @param v Vehicle to examine.
