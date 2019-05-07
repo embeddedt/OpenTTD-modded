@@ -324,6 +324,7 @@ enum SaveLoadVersion : uint16 {
 	SLV_GS_INDUSTRY_CONTROL,                ///< 287  PR#7912 and PR#8115 GS industry control.
 	SLV_VEH_MOTION_COUNTER,                 ///< 288  PR#8591 Desync safe motion counter
 	SLV_INDUSTRY_TEXT,                      ///< 289  PR#8576 Additional GS text for industries.
+	SLV_PRODUCTION_HISTORY,                 ///< 290  PR#7575 Industry production histories.
 
 	SL_MAX_VERSION,                         ///< Highest possible saveload version
 };
