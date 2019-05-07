@@ -118,6 +118,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_COMPANY_LEAGUE,                         "WC_COMPANY_LEAGUE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_PAYMENT_RATES,                          "WC_PAYMENT_RATES");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_PERFORMANCE_DETAIL,                     "WC_PERFORMANCE_DETAIL");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_INDUSTRY_PRODUCTION,                    "WC_INDUSTRY_PRODUCTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_COMPANY_INFRASTRUCTURE,                 "WC_COMPANY_INFRASTRUCTURE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_BUY_COMPANY,                            "WC_BUY_COMPANY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_ENGINE_PREVIEW,                         "WC_ENGINE_PREVIEW");
@@ -557,6 +558,14 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_PRD_SCORE_LAST,                        "WID_PRD_SCORE_LAST");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_PRD_COMPANY_FIRST,                     "WID_PRD_COMPANY_FIRST");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_PRD_COMPANY_LAST,                      "WID_PRD_COMPANY_LAST");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_BACKGROUND,                         "WID_IP_BACKGROUND");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_GRAPH,                              "WID_IP_GRAPH");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_RESIZE,                             "WID_IP_RESIZE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_CAPTION,                            "WID_IP_CAPTION");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_ENABLE_CARGOES,                     "WID_IP_ENABLE_CARGOES");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_DISABLE_CARGOES,                    "WID_IP_DISABLE_CARGOES");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_MATRIX,                             "WID_IP_MATRIX");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IP_MATRIX_SCROLLBAR,                   "WID_IP_MATRIX_SCROLLBAR");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GL_CAPTION,                            "WID_GL_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GL_SORT_BY_ORDER,                      "WID_GL_SORT_BY_ORDER");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GL_SORT_BY_DROPDOWN,                   "WID_GL_SORT_BY_DROPDOWN");
@@ -587,6 +596,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IV_INFO,                               "WID_IV_INFO");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IV_GOTO,                               "WID_IV_GOTO");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IV_DISPLAY,                            "WID_IV_DISPLAY");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_IV_GRAPH,                              "WID_IV_GRAPH");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ID_DROPDOWN_ORDER,                     "WID_ID_DROPDOWN_ORDER");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ID_DROPDOWN_CRITERIA,                  "WID_ID_DROPDOWN_CRITERIA");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ID_FILTER_BY_ACC_CARGO,                "WID_ID_FILTER_BY_ACC_CARGO");
