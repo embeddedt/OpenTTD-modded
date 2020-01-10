@@ -635,14 +635,13 @@ Vehicle *FindVehicleBetween(TileIndex from, TileIndex to, byte z, bool without_c
 	int y1 = TileY(from);
 	int x2 = TileX(to);
 	int y2 = TileY(to);
-	Vehicle *veh;
 
 	/* Make sure x1 < x2 or y1 < y2 */
 	if (x1 > x2 || y1 > y2) {
 		Swap(x1, x2);
 		Swap(y1, y2);
 	}
-	FOR_ALL_VEHICLES(veh) {
+	for (Vehicle *veh : Vehicle::Iterate()) {
 		if (without_crashed && (veh->vehstatus & VS_CRASHED) != 0) continue;
 		if ((veh->type == VEH_TRAIN || veh->type == VEH_ROAD) && (z == 0xFF || veh->z_pos == z)) {
 			if ((veh->x_pos >> 4) >= x1 && (veh->x_pos >> 4) <= x2 &&
