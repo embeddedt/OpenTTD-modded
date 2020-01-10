@@ -82,6 +82,7 @@ bool _do_autosave;           ///< are we doing an autosave at the moment?
 
 extern bool _sl_is_ext_version;
 extern bool _sl_maybe_springpp;
+extern bool _sl_maybe_chillpp;
 
 /** What are we currently doing? */
 enum SaveLoadAction {
@@ -728,7 +729,10 @@ int SlIterateArray()
 
 	/* After reading in the whole array inside the loop
 	 * we must have read in all the data, so we must be at end of current block. */
-	if (_next_offs != 0 && _sl.reader->GetSize() != _next_offs) SlErrorCorrupt("Invalid chunk size");
+	if (_next_offs != 0 && _sl.reader->GetSize() != _next_offs) {
+		DEBUG(sl, 1, "Invalid chunk size: " PRINTF_SIZE " != " PRINTF_SIZE, _sl.reader->GetSize(), _next_offs);
+		SlErrorCorrupt("Invalid chunk size");
+	}
 
 	for (;;) {
 		uint length = SlReadArrayLength();
@@ -2062,7 +2066,10 @@ static void SlLoadChunk(const ChunkHandler *ch)
 				_sl.obj_len = len;
 				endoffs = _sl.reader->GetSize() + len;
 				ch->load_proc();
-				if (_sl.reader->GetSize() != endoffs) SlErrorCorrupt("Invalid chunk size");
+				if (_sl.reader->GetSize() != endoffs) {
+					DEBUG(sl, 1, "Invalid chunk size: " PRINTF_SIZE " != " PRINTF_SIZE ", (" PRINTF_SIZE ")", _sl.reader->GetSize(), endoffs, len);
+					SlErrorCorrupt("Invalid chunk size");
+				}
 			} else {
 				SlErrorCorrupt("Invalid chunk type");
 			}
@@ -2145,7 +2152,10 @@ static void SlLoadCheckChunk(const ChunkHandler *ch)
 				} else {
 					SlSkipBytes(len);
 				}
-				if (_sl.reader->GetSize() != endoffs) SlErrorCorrupt("Invalid chunk size");
+				if (_sl.reader->GetSize() != endoffs) {
+					DEBUG(sl, 1, "Invalid chunk size: " PRINTF_SIZE " != " PRINTF_SIZE ", (" PRINTF_SIZE ")", _sl.reader->GetSize(), endoffs, len);
+					SlErrorCorrupt("Invalid chunk size");
+				}
 			} else {
 				SlErrorCorrupt("Invalid chunk type");
 			}
@@ -2220,24 +2230,21 @@ static const ChunkHandler *SlFindChunkHandler(uint32 id)
 /** Load all chunks */
 static void SlLoadChunks()
 {
-	uint32 id;
-	const ChunkHandler *ch;
-
-	for (id = SlReadUint32(); id != 0; id = SlReadUint32()) {
+	for (uint32 id = SlReadUint32(); id != 0; id = SlReadUint32()) {
 		DEBUG(sl, 2, "Loading chunk %c%c%c%c", id >> 24, id >> 16, id >> 8, id);
 		size_t read = 0;
 		if (_debug_sl_level >= 3) read = SlGetBytesRead();
 
-		ch = SlFindChunkHandler(id);
-		if (ch == nullptr) {
-			if (SlXvIsChunkDiscardable(id)) {
-				DEBUG(sl, 1, "Discarding chunk %c%c%c%c", id >> 24, id >> 16, id >> 8, id);
-				SlLoadCheckChunk(nullptr);
-			} else {
-				SlErrorCorrupt("Unknown chunk type");
-			}
+		if (SlXvIsChunkDiscardable(id)) {
+			DEBUG(sl, 1, "Discarding chunk %c%c%c%c", id >> 24, id >> 16, id >> 8, id);
+			SlLoadCheckChunk(nullptr);
 		} else {
-			SlLoadChunk(ch);
+			const ChunkHandler *ch = SlFindChunkHandler(id);
+			if (ch == nullptr) {
+				SlErrorCorrupt("Unknown chunk type");
+			} else {
+				SlLoadChunk(ch);
+			}
 		}
 		DEBUG(sl, 3, "Loaded chunk %c%c%c%c (" PRINTF_SIZE " bytes)", id >> 24, id >> 16, id >> 8, id, SlGetBytesRead() - read);
 	}
@@ -2254,8 +2261,12 @@ static void SlLoadCheckChunks()
 		size_t read = 0;
 		if (_debug_sl_level >= 3) read = SlGetBytesRead();
 
-		ch = SlFindChunkHandler(id);
-		if (ch == nullptr && !SlXvIsChunkDiscardable(id)) SlErrorCorrupt("Unknown chunk type");
+		if (SlXvIsChunkDiscardable(id)) {
+			ch = nullptr;
+		} else {
+			ch = SlFindChunkHandler(id);
+			if (ch == nullptr) SlErrorCorrupt("Unknown chunk type");
+		}
 		SlLoadCheckChunk(ch);
 		DEBUG(sl, 3, "Loaded chunk %c%c%c%c (" PRINTF_SIZE " bytes)", id >> 24, id >> 16, id >> 8, id, SlGetBytesRead() - read);
 	}
@@ -3180,7 +3191,8 @@ static SaveOrLoadResult DoLoad(LoadFilter *reader, bool load_check)
 				special_version = SlXvCheckSpecialSavegameVersions();
 			}
 
-			DEBUG(sl, 1, "Loading savegame version %d%s%s", _sl_version, _sl_is_ext_version ? " (extended)" : "", _sl_maybe_springpp ? " which might be SpringPP" : "");
+			DEBUG(sl, 1, "Loading savegame version %d%s%s%s", _sl_version, _sl_is_ext_version ? " (extended)" : "",
+					_sl_maybe_springpp ? " which might be SpringPP" : "", _sl_maybe_chillpp ? " which might be ChillPP" : "");
 
 			/* Is the version higher than the current? */
 			if (_sl_version > SAVEGAME_VERSION && !special_version) SlError(STR_GAME_SAVELOAD_ERROR_TOO_NEW_SAVEGAME);
@@ -3401,8 +3413,7 @@ void GenerateDefaultSaveName(char *buf, const char *last)
 	 * 'Spectator' as "company" name. */
 	CompanyID cid = _local_company;
 	if (!Company::IsValidID(cid)) {
-		const Company *c;
-		FOR_ALL_COMPANIES(c) {
+		for (const Company *c : Company::Iterate()) {
 			cid = c->index;
 			break;
 		}

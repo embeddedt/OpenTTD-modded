@@ -15,6 +15,7 @@
 #include "flowmapper.h"
 #include "../framerate_type.h"
 #include "../command_func.h"
+#include "../network/network.h"
 #include <algorithm>
 
 #include "../safeguards.h"
@@ -198,10 +199,8 @@ void LinkGraphSchedule::SpawnAll()
  */
 void LinkGraphSchedule::ShiftDates(int interval)
 {
-	LinkGraph *lg;
-	FOR_ALL_LINK_GRAPHS(lg) lg->ShiftDates(interval);
-	LinkGraphJob *lgj;
-	FOR_ALL_LINK_GRAPH_JOBS(lgj) lgj->ShiftJoinDate(interval);
+	for (LinkGraph *lg : LinkGraph::Iterate()) lg->ShiftDates(interval);
+	for (LinkGraphJob *lgj : LinkGraphJob::Iterate()) lgj->ShiftJoinDate(interval);
 }
 
 /**
@@ -361,8 +360,13 @@ void OnTick_LinkGraph()
 	if (offset == 0) {
 		LinkGraphSchedule::instance.SpawnNext();
 	} else if (offset == interval / 2) {
-		PerformanceMeasurer framerate(PFE_GL_LINKGRAPH);
-		LinkGraphSchedule::instance.JoinNext();
+		if (!_networking || _network_server) {
+			PerformanceMeasurer::SetInactive(PFE_GL_LINKGRAPH);
+			LinkGraphSchedule::instance.JoinNext();
+		} else {
+			PerformanceMeasurer framerate(PFE_GL_LINKGRAPH);
+			LinkGraphSchedule::instance.JoinNext();
+		}
 	}
 }
 

@@ -43,6 +43,7 @@ const SaveLoad* GTD() {
 		SLE_CONDNULL_X(1, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TEMPLATE_REPLACEMENT, 0, 3)),
 		SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TEMPLATE_REPLACEMENT, 0, 1)),
 		SLE_CONDNULL_X(36, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TEMPLATE_REPLACEMENT, 2, 3)),
+		SLE_CONDNULL_X(36, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP)),
 		SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TEMPLATE_REPLACEMENT, 0, 3)),
 
 		SLE_END()
@@ -57,9 +58,7 @@ const SaveLoad* GTD() {
 
 static void Save_TMPLS()
 {
-	TemplateVehicle *tv;
-
-	FOR_ALL_TEMPLATES(tv) {
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 		SlSetArrayIndex(tv->index);
 		SlObject(tv, GTD());
 	}
@@ -77,22 +76,19 @@ static void Load_TMPLS()
 
 static void Ptrs_TMPLS()
 {
-	TemplateVehicle *tv;
-	FOR_ALL_TEMPLATES(tv) {
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 		SlObject(tv, GTD());
 	}
 }
 
 void AfterLoadTemplateVehicles()
 {
-	TemplateVehicle *tv;
-
-	FOR_ALL_TEMPLATES(tv) {
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 		/* Reinstate the previous pointer */
 		if (tv->next != nullptr) tv->next->previous = tv;
 		tv->first = nullptr;
 	}
-	FOR_ALL_TEMPLATES(tv) {
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 		/* Fill the first pointers */
 		if (tv->previous == nullptr) {
 			for (TemplateVehicle *u = tv; u != nullptr; u = u->Next()) {
@@ -104,13 +100,11 @@ void AfterLoadTemplateVehicles()
 
 void AfterLoadTemplateVehiclesUpdateImage()
 {
-	TemplateVehicle *tv;
-
 	SavedRandomSeeds saved_seeds;
 	SaveRandomSeeds(&saved_seeds);
 
 	if (!SlXvIsFeaturePresent(XSLFI_TEMPLATE_REPLACEMENT, 3)) {
-		FOR_ALL_TEMPLATES(tv) {
+		for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 			if (tv->Prev() == nullptr && !Company::IsValidID(tv->owner)) {
 				// clean up leftover template vehicles which no longer have a valid owner
 				delete tv;
@@ -118,7 +112,7 @@ void AfterLoadTemplateVehiclesUpdateImage()
 		}
 	}
 
-	FOR_ALL_TEMPLATES(tv) {
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
 		if (tv->Prev() == nullptr) {
 			Backup<CompanyID> cur_company(_current_company, tv->owner, FILE_LINE);
 			StringID err;

@@ -65,6 +65,15 @@ static void Load_TRRP()
 		SlObject(&stub, _trace_restrict_program_stub_desc);
 		prog->items.resize(stub.length);
 		SlArray(&(prog->items[0]), stub.length, SLE_UINT32);
+		if (SlXvIsFeaturePresent(XSLFI_JOKERPP)) {
+			for (size_t i = 0; i < prog->items.size(); i++) {
+				TraceRestrictItem &item = prog->items[i]; // note this is a reference,
+				if (GetTraceRestrictType(item) == 19 || GetTraceRestrictType(item) == 20) {
+					SetTraceRestrictType(item, (TraceRestrictItemType)(GetTraceRestrictType(item) + 2));
+				}
+				if (IsTraceRestrictDoubleItem(item)) i++;
+			}
+		}
 		CommandCost validation_result = prog->Validate();
 		if (validation_result.Failed()) {
 			char str[4096];
@@ -98,9 +107,7 @@ static void RealSave_TRRP(TraceRestrictProgram *prog)
  */
 static void Save_TRRP()
 {
-	TraceRestrictProgram *prog;
-
-	FOR_ALL_TRACE_RESTRICT_PROGRAMS(prog) {
+	for (TraceRestrictProgram *prog : TraceRestrictProgram::Iterate()) {
 		SlSetArrayIndex(prog->index);
 		SlAutolength((AutolengthProc*) RealSave_TRRP, prog);
 	}
@@ -157,9 +164,7 @@ static void RealSave_TRRS(TraceRestrictSlot *slot)
  */
 static void Save_TRRS()
 {
-	TraceRestrictSlot *slot;
-
-	FOR_ALL_TRACE_RESTRICT_SLOTS(slot) {
+	for (TraceRestrictSlot *slot : TraceRestrictSlot::Iterate()) {
 		SlSetArrayIndex(slot->index);
 		SlAutolength((AutolengthProc*) RealSave_TRRS, slot);
 	}

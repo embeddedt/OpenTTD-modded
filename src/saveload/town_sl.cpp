@@ -24,12 +24,11 @@
  */
 void RebuildTownCaches(bool cargo_update_required)
 {
-	Town *town;
 	InitializeBuildingCounts();
 	RebuildTownKdtree();
 
 	/* Reset town population and num_houses */
-	FOR_ALL_TOWNS(town) {
+	for (Town *town : Town::Iterate()) {
 		town->cache.population = 0;
 		town->cache.num_houses = 0;
 	}
@@ -38,7 +37,7 @@ void RebuildTownCaches(bool cargo_update_required)
 		if (!IsTileType(t, MP_HOUSE)) continue;
 
 		HouseID house_id = GetHouseType(t);
-		town = Town::GetByTile(t);
+		Town *town = Town::GetByTile(t);
 		IncreaseBuildingCount(town, house_id);
 		if (IsHouseCompleted(t)) town->cache.population += HouseSpec::Get(house_id)->population;
 
@@ -47,7 +46,7 @@ void RebuildTownCaches(bool cargo_update_required)
 	}
 
 	/* Update the population and num_house dependent values */
-	FOR_ALL_TOWNS(town) {
+	for (Town *town : Town::Iterate()) {
 		UpdateTownRadius(town);
 		if (cargo_update_required) {
 			UpdateTownCargoes(town);
@@ -160,21 +159,32 @@ static const SaveLoad _town_desc[] = {
 	SLE_CONDVAR(Town, supplied[CT_PASSENGERS].new_act, SLE_FILE_U16 | SLE_VAR_U32, SL_MIN_VERSION, SLV_9),
 	SLE_CONDVAR(Town, supplied[CT_MAIL].new_act,       SLE_FILE_U16 | SLE_VAR_U32, SL_MIN_VERSION, SLV_9),
 
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_PASSENGERS].old_max, SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_MAIL].old_max,       SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(8, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_PASSENGERS].new_max, SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_MAIL].new_max,       SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(8, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_PASSENGERS].old_act, SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_MAIL].old_act,       SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_PASSENGERS].new_act, SLE_UINT32,                 SLV_9, SLV_165),
+	SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, supplied[CT_MAIL].new_act,       SLE_UINT32,                 SLV_9, SLV_165),
 
 	SLE_CONDNULL(2, SL_MIN_VERSION, SLV_164),                 ///< pct_pass_transported / pct_mail_transported, now computed on the fly
+	SLE_CONDNULL_X(3, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 
 	SLE_CONDVAR(Town, received[TE_FOOD].old_act,       SLE_UINT16,                 SL_MIN_VERSION, SLV_165),
 	SLE_CONDVAR(Town, received[TE_WATER].old_act,      SLE_UINT16,                 SL_MIN_VERSION, SLV_165),
+	SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, received[TE_FOOD].new_act,       SLE_UINT16,                 SL_MIN_VERSION, SLV_165),
 	SLE_CONDVAR(Town, received[TE_WATER].new_act,      SLE_UINT16,                 SL_MIN_VERSION, SLV_165),
+	SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 
 	SLE_CONDARR(Town, goal, SLE_UINT32, NUM_TE, SLV_165, SL_MAX_VERSION),
 
@@ -184,16 +194,20 @@ static const SaveLoad _town_desc[] = {
 	SLE_CONDVAR(Town, grow_counter,          SLE_FILE_U8 | SLE_VAR_U16,  SL_MIN_VERSION, SLV_54),
 	SLE_CONDVAR(Town, growth_rate,           SLE_FILE_U8 | SLE_VAR_I16,  SL_MIN_VERSION, SLV_54),
 
+	SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP)),
 	SLE_CONDVAR(Town, time_until_rebuild,    SLE_UINT16,                SLV_54, SL_MAX_VERSION),
+	SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP, SL_JOKER_1_26)),
 	SLE_CONDVAR(Town, grow_counter,          SLE_UINT16,                SLV_54, SL_MAX_VERSION),
 
 	SLE_CONDVAR(Town, growth_rate,           SLE_FILE_I16 | SLE_VAR_U16, SLV_54, SLV_165),
+	SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP, SL_JOKER_1_26)),
 	SLE_CONDVAR(Town, growth_rate,           SLE_UINT16,                 SLV_165, SL_MAX_VERSION),
 
 	    SLE_VAR(Town, fund_buildings_months, SLE_UINT8),
 	    SLE_VAR(Town, road_build_months,     SLE_UINT8),
 
 	SLE_CONDVAR(Town, exclusivity,           SLE_UINT8,                  SLV_2, SL_MAX_VERSION),
+	SLE_CONDNULL_X(1, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 	SLE_CONDVAR(Town, exclusive_counter,     SLE_UINT8,                  SLV_2, SL_MAX_VERSION),
 
 	SLE_CONDVAR(Town, larger_town,           SLE_BOOL,                  SLV_56, SL_MAX_VERSION),
@@ -292,8 +306,7 @@ static void RealSave_Town(Town *t)
 static void Save_TOWN()
 {
 	SetupDescs_TOWN();
-	Town *t;
-	FOR_ALL_TOWNS(t) {
+	for (Town *t : Town::Iterate()) {
 		SlSetArrayIndex(t->index);
 		SlAutolength((AutolengthProc*)RealSave_Town, t);
 	}
@@ -354,8 +367,7 @@ static void Ptrs_TOWN()
 	if (IsSavegameVersionBefore(SLV_161)) return;
 
 	SetupDescs_TOWN();
-	Town *t;
-	FOR_ALL_TOWNS(t) {
+	for (Town *t : Town::Iterate()) {
 		SlObjectPtrOrNullFiltered(t, _filtered_town_desc.data());
 	}
 }

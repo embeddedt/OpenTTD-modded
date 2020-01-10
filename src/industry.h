@@ -179,9 +179,6 @@ void ReleaseDisastersTargetingIndustry(IndustryID);
 
 bool IsTileForestIndustry(TileIndex tile);
 
-#define FOR_ALL_INDUSTRIES_FROM(var, start) FOR_ALL_ITEMS_FROM(Industry, industry_index, var, start)
-#define FOR_ALL_INDUSTRIES(var) FOR_ALL_INDUSTRIES_FROM(var, 0)
-
 /** Data for managing the number of industries of a single industry type. */
 struct IndustryTypeBuildData {
 	uint32 probability;  ///< Relative probability of building this industry.
@@ -211,5 +208,13 @@ struct IndustryBuildData {
 };
 
 extern IndustryBuildData _industry_builder;
+
+
+/** Special values for the industry list window for the data parameter of #InvalidateWindowData. */
+enum IndustryDirectoryInvalidateWindowData {
+	IDIWD_FORCE_REBUILD,
+	IDIWD_PRODUCTION_CHANGE,
+	IDIWD_FORCE_RESORT,
+};
 
 #endif /* INDUSTRY_H */

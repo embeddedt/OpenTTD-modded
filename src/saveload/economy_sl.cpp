@@ -46,6 +46,7 @@ static const SaveLoad _economy_desc[] = {
 	    SLE_VAR(Economy, infl_amount,                   SLE_UINT8),
 	    SLE_VAR(Economy, infl_amount_pr,                SLE_UINT8),
 	SLE_CONDVAR(Economy, industry_daily_change_counter, SLE_UINT32,                SLV_102, SL_MAX_VERSION),
+	SLE_CONDNULL_X(8, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP)),
 	    SLE_END()
 };
 
@@ -66,14 +67,13 @@ static const SaveLoad _cargopayment_desc[] = {
 	    SLE_REF(CargoPayment, front,           REF_VEHICLE),
 	    SLE_VAR(CargoPayment, route_profit,    SLE_INT64),
 	    SLE_VAR(CargoPayment, visual_profit,   SLE_INT64),
-	SLE_CONDVAR(CargoPayment, visual_transfer, SLE_INT64, SLV_181, SL_MAX_VERSION),
+	SLE_CONDVAR_X(CargoPayment, visual_transfer, SLE_INT64, SLV_181, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_OR, XSLFI_CHILLPP)),
 	    SLE_END()
 };
 
 static void Save_CAPY()
 {
-	CargoPayment *cp;
-	FOR_ALL_CARGO_PAYMENTS(cp) {
+	for (CargoPayment *cp : CargoPayment::Iterate()) {
 		SlSetArrayIndex(cp->index);
 		SlObject(cp, _cargopayment_desc);
 	}
@@ -91,8 +91,7 @@ static void Load_CAPY()
 
 static void Ptrs_CAPY()
 {
-	CargoPayment *cp;
-	FOR_ALL_CARGO_PAYMENTS(cp) {
+	for (CargoPayment *cp : CargoPayment::Iterate()) {
 		SlObject(cp, _cargopayment_desc);
 	}
 }

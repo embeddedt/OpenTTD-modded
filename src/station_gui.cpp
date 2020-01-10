@@ -210,7 +210,6 @@ protected:
 	static bool include_empty;            // whether we should include stations without waiting cargo
 	static const CargoTypes cargo_filter_max;
 	static CargoTypes cargo_filter;           // bitmap of cargo types to include
-	static const Station *last_station;
 
 	/* Constants for sorting stations */
 	static const StringID sorter_names[];
@@ -232,8 +231,7 @@ protected:
 
 		this->stations.clear();
 
-		const Station *st;
-		FOR_ALL_STATIONS(st) {
+		for (const Station *st : Station::Iterate()) {
 			if (st->owner == owner || (st->owner == OWNER_NONE && HasStationInUse(st->index, true, owner))) {
 				if (this->facilities & st->facilities) { // only stations with selected facilities
 					int num_waiting_cargo = 0;
@@ -334,9 +332,6 @@ protected:
 	void SortStationsList()
 	{
 		if (!this->stations.Sort()) return;
-
-		/* Reset name sorter sort cache */
-		this->last_station = nullptr;
 
 		/* Set the modified widget dirty */
 		this->SetWidgetDirty(WID_STL_LIST);
@@ -695,7 +690,6 @@ byte CompanyStationsWindow::facilities = FACIL_TRAIN | FACIL_TRUCK_STOP | FACIL_
 bool CompanyStationsWindow::include_empty = true;
 const CargoTypes CompanyStationsWindow::cargo_filter_max = ALL_CARGOTYPES;
 CargoTypes CompanyStationsWindow::cargo_filter = ALL_CARGOTYPES;
-const Station *CompanyStationsWindow::last_station = nullptr;
 
 /* Available station sorting functions */
 GUIStationList::SortFunction * const CompanyStationsWindow::sorter_funcs[] = {
@@ -2249,8 +2243,7 @@ static const T *FindStationsNearby(TileArea ta, bool distant_join)
 	}
 
 	/* Look for deleted stations */
-	const BaseStation *st;
-	FOR_ALL_BASE_STATIONS(st) {
+	for (const BaseStation *st : BaseStation::Iterate()) {
 		if (T::IsExpected(st) && !st->IsInUse() && st->owner == _local_company) {
 			/* Include only within station spread (yes, it is strictly less than) */
 			if (max(DistanceMax(ta.tile, st->xy), DistanceMax(TILE_ADDXY(ta.tile, ta.w - 1, ta.h - 1), st->xy)) < _settings_game.station.station_spread) {

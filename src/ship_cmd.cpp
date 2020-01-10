@@ -154,7 +154,6 @@ void Ship::GetImage(Direction direction, EngineImageType image_type, VehicleSpri
 static const Depot *FindClosestShipDepot(const Vehicle *v, uint max_distance)
 {
 	/* Find the closest depot */
-	const Depot *depot;
 	const Depot *best_depot = nullptr;
 	/* If we don't have a maximum distance, i.e. distance = 0,
 	 * we want to find any depot so the best distance of no
@@ -163,7 +162,7 @@ static const Depot *FindClosestShipDepot(const Vehicle *v, uint max_distance)
 	 * further away than max_distance can safely be ignored. */
 	uint best_dist = max_distance == 0 ? UINT_MAX : max_distance + 1;
 
-	FOR_ALL_DEPOTS(depot) {
+	for (const Depot *depot : Depot::Iterate()) {
 		TileIndex tile = depot->xy;
 		if (IsShipDepotTile(tile) && IsInfraTileUsageAllowed(VEH_SHIP, v->owner, tile)) {
 			uint dist = DistanceManhattan(tile, v->tile);
@@ -533,10 +532,9 @@ static Track ChooseShipTrack(Ship *v, TileIndex tile, DiagDirection enterdir, Tr
  * Get the available water tracks on a tile for a ship entering a tile.
  * @param tile The tile about to enter.
  * @param dir The entry direction.
- * @param trackdir The trackdir the ship has on the old tile.
  * @return The available trackbits on the next tile.
  */
-static inline TrackBits GetAvailShipTracks(TileIndex tile, DiagDirection dir, Trackdir trackdir)
+static inline TrackBits GetAvailShipTracks(TileIndex tile, DiagDirection dir)
 {
 	TrackBits tracks = GetTileShipTrackStatus(tile) & DiagdirReachesTracks(dir);
 
@@ -884,7 +882,7 @@ static void ShipController(Ship *v)
 
 			DiagDirection diagdir = DiagdirBetweenTiles(gp.old_tile, gp.new_tile);
 			assert(diagdir != INVALID_DIAGDIR);
-			tracks = GetAvailShipTracks(gp.new_tile, diagdir, v->GetVehicleTrackdir());
+			tracks = GetAvailShipTracks(gp.new_tile, diagdir);
 			if (tracks == TRACK_BIT_NONE) goto reverse_direction;
 
 			/* Choose a direction, and continue if we find one */

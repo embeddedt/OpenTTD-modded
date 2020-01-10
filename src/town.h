@@ -203,7 +203,8 @@ enum TownRatingCheckType {
 /** Special values for town list window for the data parameter of #InvalidateWindowData. */
 enum TownDirectoryInvalidateWindowData {
 	TDIWD_FORCE_REBUILD,
-	TDIWD_FILTER_CHANGES,        ///< The filename filter has changed (via the editbox)
+	TDIWD_POPULATION_CHANGE,
+	TDIWD_FORCE_RESORT,
 };
 
 /**
@@ -226,9 +227,6 @@ CommandCost CheckforTownRating(DoCommandFlag flags, Town *t, TownRatingCheckType
 TileIndexDiff GetHouseNorthPart(HouseID &house);
 
 Town *CalcClosestTownFromTile(TileIndex tile, uint threshold = UINT_MAX);
-
-#define FOR_ALL_TOWNS_FROM(var, start) FOR_ALL_ITEMS_FROM(Town, town_index, var, start)
-#define FOR_ALL_TOWNS(var) FOR_ALL_TOWNS_FROM(var, 0)
 
 void ResetHouses();
 

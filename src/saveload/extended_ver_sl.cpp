@@ -50,6 +50,7 @@ uint16 _sl_xv_feature_versions[XSLFI_SIZE];                 ///< array of all kn
 bool _sl_is_ext_version;                                    ///< is this an extended savegame version, with more info in the SLXI chunk?
 bool _sl_is_faked_ext;                                      ///< is this a faked extended savegame version, with no SLXI chunk? See: SlXvCheckSpecialSavegameVersions.
 bool _sl_maybe_springpp;                                    ///< is this possibly a SpringPP savegame?
+bool _sl_maybe_chillpp;                                     ///< is this possibly a ChillPP v8 savegame?
 std::vector<uint32> _sl_xv_discardable_chunk_ids;           ///< list of chunks IDs which we can discard if no chunk loader exists
 
 static const uint32 _sl_xv_slxi_chunk_version = 0;          ///< current version of SLXI chunk
@@ -176,6 +177,7 @@ void SlXvResetState()
 	_sl_is_ext_version = false;
 	_sl_is_faked_ext = false;
 	_sl_maybe_springpp = false;
+	_sl_maybe_chillpp = false;
 	_sl_xv_discardable_chunk_ids.clear();
 	memset(_sl_xv_feature_versions, 0, sizeof(_sl_xv_feature_versions));
 }
@@ -228,6 +230,53 @@ bool SlXvCheckSpecialSavegameVersions()
 	}
 	if (_sl_version >= SL_SPRING_2013_v2_0_102 && _sl_version <= SL_SPRING_2013_v2_4) { /* 220 - 227 */
 		_sl_maybe_springpp = true;
+		return true;
+	}
+	if (_sl_version >= SL_JOKER_1_19 && _sl_version <= SL_JOKER_1_27) { /* 278 - 286 */
+		DEBUG(sl, 1, "Loading a JokerPP savegame version %d as version 197", _sl_version);
+		_sl_xv_feature_versions[XSLFI_JOKERPP] = _sl_version;
+		_sl_xv_feature_versions[XSLFI_TOWN_CARGO_ADJ] = 1;
+		_sl_xv_feature_versions[XSLFI_TEMPLATE_REPLACEMENT] = 1;
+		_sl_xv_feature_versions[XSLFI_VEH_LIFETIME_PROFIT] = 1;
+		_sl_xv_feature_versions[XSLFI_TRAIN_FLAGS_EXTRA] = 1;
+		_sl_xv_feature_versions[XSLFI_SIG_TUNNEL_BRIDGE] = 5;
+		_sl_xv_feature_versions[XSLFI_REVERSE_AT_WAYPOINT] = 1;
+		_sl_xv_feature_versions[XSLFI_MULTIPLE_DOCKS] = 1;
+		_sl_xv_feature_versions[XSLFI_ST_LAST_VEH_TYPE] = 1;
+		_sl_xv_feature_versions[XSLFI_MORE_RAIL_TYPES] = 1;
+		_sl_xv_feature_versions[XSLFI_CHUNNEL] = 1;
+		_sl_xv_feature_versions[XSLFI_MORE_COND_ORDERS] = 1;
+		_sl_xv_feature_versions[XSLFI_TRACE_RESTRICT] = 1;
+		_sl_xv_feature_versions[XSLFI_CARGO_TYPE_ORDERS] = 1;
+		_sl_xv_feature_versions[XSLFI_RAIL_AGEING] = 1;
+		if (_sl_version >= SL_JOKER_1_21) _sl_xv_feature_versions[XSLFI_LINKGRAPH_DAY_SCALE] = 1;
+		if (_sl_version >= SL_JOKER_1_24) _sl_xv_feature_versions[XSLFI_TIMETABLE_EXTRA] = 1;
+		if (_sl_version >= SL_JOKER_1_24) _sl_xv_feature_versions[XSLFI_ORDER_EXTRA_DATA] = 1;
+		_sl_xv_discardable_chunk_ids.push_back('SPRG');
+		_sl_xv_discardable_chunk_ids.push_back('SLNK');
+		_sl_version = SLV_197;
+		_sl_is_faked_ext = true;
+		return true;
+	}
+	if (_sl_version == SL_CHILLPP_201) { /* 232 - 233 */
+		_sl_maybe_chillpp = true;
+		return true;
+	}
+	if (_sl_version >= SL_CHILLPP_232 && _sl_version <= SL_CHILLPP_233) { /* 232 - 233 */
+		DEBUG(sl, 1, "Loading a ChillPP v14.7 savegame version %d as version 160", _sl_version);
+		_sl_xv_feature_versions[XSLFI_CHILLPP] = _sl_version;
+		_sl_xv_feature_versions[XSLFI_ZPOS_32_BIT] = 1;
+		_sl_xv_feature_versions[XSLFI_TOWN_CARGO_ADJ] = 1;
+		_sl_xv_feature_versions[XSLFI_TRAFFIC_LIGHTS] = 1;
+		_sl_xv_feature_versions[XSLFI_IMPROVED_BREAKDOWNS] = 1;
+		_sl_xv_feature_versions[XSLFI_INFRA_SHARING] = 1;
+		_sl_xv_feature_versions[XSLFI_AUTO_TIMETABLE] = 1;
+		_sl_xv_feature_versions[XSLFI_SIG_TUNNEL_BRIDGE] = 1;
+		_sl_xv_feature_versions[XSLFI_RAIL_AGEING] = 1;
+		_sl_xv_discardable_chunk_ids.push_back('LGRP');
+		_sl_xv_discardable_chunk_ids.push_back('SSIG');
+		_sl_version = SLV_160;
+		_sl_is_faked_ext = true;
 		return true;
 	}
 	return false;
@@ -303,6 +352,24 @@ void SlXvSpringPPSpecialSavegameVersions()
 		_sl_xv_feature_versions[XSLFI_SIG_TUNNEL_BRIDGE] = 1;
 
 		_sl_xv_discardable_chunk_ids.push_back('SNOW');
+	}
+}
+
+void SlXvChillPPSpecialSavegameVersions()
+{
+	extern SaveLoadVersion _sl_version;
+
+	if (_sl_version == SL_CHILLPP_201) { /* 201 */
+		DEBUG(sl, 1, "Loading a ChillPP v8 savegame version %d as version 143", _sl_version);
+		_sl_xv_feature_versions[XSLFI_CHILLPP] = _sl_version;
+		_sl_xv_feature_versions[XSLFI_ZPOS_32_BIT] = 1;
+		_sl_xv_feature_versions[XSLFI_TOWN_CARGO_ADJ] = 1;
+		_sl_xv_feature_versions[XSLFI_AUTO_TIMETABLE] = 1;
+		_sl_xv_feature_versions[XSLFI_SIG_TUNNEL_BRIDGE] = 1;
+		_sl_xv_feature_versions[XSLFI_RAIL_AGEING] = 1;
+		_sl_xv_discardable_chunk_ids.push_back('LGRP');
+		_sl_version = SLV_143;
+		_sl_is_faked_ext = true;
 	}
 }
 

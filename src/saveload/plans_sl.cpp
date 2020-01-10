@@ -20,6 +20,7 @@ static const SaveLoad _plan_desc[] = {
 	SLE_VAR(Plan, visible_by_all, SLE_BOOL),
 	SLE_VAR(Plan, creation_date,  SLE_INT32),
 	SLE_CONDSTDSTR_X(Plan, name, 0, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_ENH_VIEWPORT_PLANS, 3)),
+	SLE_CONDSTDSTR_X(Plan, name, 0, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP, SL_JOKER_1_20)),
 	SLE_END()
 };
 
@@ -37,8 +38,7 @@ static void RealSave_PLAN(Plan *p)
 /** Save all plans. */
 static void Save_PLAN()
 {
-	Plan *p;
-	FOR_ALL_PLANS(p) {
+	for (Plan *p : Plan::Iterate()) {
 		SlSetArrayIndex(p->index);
 		SlAutolength((AutolengthProc*) RealSave_PLAN, p);
 	}
@@ -81,8 +81,7 @@ static void Load_PLANLINE()
 		SlArray(&pl->tiles[0], plsz, SLE_UINT32);
 	}
 
-	Plan *p;
-	FOR_ALL_PLANS(p) {
+	for (Plan *p : Plan::Iterate()) {
 		p->SetVisibility(false);
 	}
 }

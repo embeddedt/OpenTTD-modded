@@ -156,8 +156,7 @@ public:
 		uint exclusive_left = rtl ? right - icon_width - exclusive_width - 2 : left + icon_width + 2;
 
 		/* Draw list of companies */
-		const Company *c;
-		FOR_ALL_COMPANIES(c) {
+		for (const Company *c : Company::Iterate()) {
 			if ((HasBit(this->town->have_ratings, c->index) || this->town->exclusivity == c->index)) {
 				DrawCompanyIcon(c->index, icon_left, y + icon_y_offset);
 
@@ -688,7 +687,6 @@ struct TownDirectoryWindow : public Window {
 private:
 	/* Runtime saved values */
 	static Listing last_sorting;
-	static const Town *last_town;
 
 	/* Constants for sorting towns */
 	static const StringID sorter_names[];
@@ -706,9 +704,15 @@ private:
 		if (this->towns.NeedRebuild()) {
 			this->towns.clear();
 
-			const Town *t;
-			FOR_ALL_TOWNS(t) {
-				this->towns.push_back(t);
+			for (const Town *t : Town::Iterate()) {
+				if (this->string_filter.IsEmpty()) {
+					this->towns.push_back(t);
+					continue;
+				}
+				this->string_filter.ResetState();
+
+				this->string_filter.AddLine(t->GetCachedName());
+				if (this->string_filter.GetState()) this->towns.push_back(t);
 			}
 
 			this->towns.shrink_to_fit();
@@ -716,7 +720,6 @@ private:
 			this->vscroll->SetCount((uint)this->towns.size()); // Update scrollbar as well.
 		}
 		/* Always sort the towns. */
-		this->last_town = nullptr;
 		this->towns.Sort();
 		this->SetWidgetDirty(WID_TD_LIST); // Force repaint of the displayed towns.
 	}
@@ -968,7 +971,7 @@ public:
 	{
 		if (wid == WID_TD_FILTER) {
 			this->string_filter.SetFilterTerm(this->townname_editbox.text.buf);
-			this->InvalidateData(TDIWD_FILTER_CHANGES);
+			this->InvalidateData(TDIWD_FORCE_REBUILD);
 		}
 	}
 
@@ -979,39 +982,16 @@ public:
 	 */
 	void OnInvalidateData(int data = 0, bool gui_scope = true) override
 	{
-		char buf[MAX_LENGTH_TOWN_NAME_CHARS * MAX_CHAR_LENGTH];
-
 		switch (data) {
 			case TDIWD_FORCE_REBUILD:
 				/* This needs to be done in command-scope to enforce rebuilding before resorting invalid data */
 				this->towns.ForceRebuild();
 				break;
 
-			case TDIWD_FILTER_CHANGES:
-				if (this->string_filter.IsEmpty()) {
-					this->towns.ForceRebuild();
-				} else {
-					this->towns.clear();
-
-					const Town *t;
-					FOR_ALL_TOWNS(t) {
-						this->string_filter.ResetState();
-
-						SetDParam(0, t->index);
-						GetString(buf, STR_TOWN_NAME, lastof(buf));
-
-						this->string_filter.AddLine(buf);
-						if (this->string_filter.GetState()) this->towns.push_back(t);
-					}
-
-					this->towns.SetListing(this->last_sorting);
-					this->towns.ForceResort();
-					this->towns.Sort();
-					this->towns.shrink_to_fit();
-					this->towns.RebuildDone();
-					this->vscroll->SetCount((int)this->towns.size()); // Update scrollbar as well.
-				}
+			case TDIWD_POPULATION_CHANGE:
+				if (this->towns.SortType() == 1) this->towns.ForceResort();
 				break;
+
 			default:
 				this->towns.ForceResort();
 		}
@@ -1019,7 +999,6 @@ public:
 };
 
 Listing TownDirectoryWindow::last_sorting = {false, 0};
-const Town *TownDirectoryWindow::last_town = nullptr;
 
 /** Names of the sorting functions. */
 const StringID TownDirectoryWindow::sorter_names[] = {
@@ -1979,8 +1958,7 @@ static void PlaceProc_House(TileIndex tile)
 	HouseZones house_zones = HouseSpec::Get(_cur_house)->building_availability & HZ_ZONALL;
 	uint best_dist = UINT_MAX;
 	int best_zone = (int)HZB_BEGIN - 1;
-	const Town *t;
-	FOR_ALL_TOWNS(t) {
+	for (const Town *t : Town::Iterate()) {
 		HouseZonesBits town_zone = TryGetTownRadiusGroup(t, tile);
 		if (HasBit(house_zones, town_zone)) {
 			/* If CTRL is NOT pressed keep only single town on the list, the best one.

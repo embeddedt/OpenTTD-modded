@@ -118,6 +118,7 @@ int DrawStringMultiLine(int left, int right, int top, int bottom, StringID str, 
 void DrawCharCentered(uint32 c, int x, int y, TextColour colour);
 
 void GfxFillRect(int left, int top, int right, int bottom, int colour, FillRectMode mode = FILLRECT_OPAQUE);
+void GfxFillPolygon(const std::vector<Point> &shape, int colour, FillRectMode mode = FILLRECT_OPAQUE);
 void GfxDrawLine(int left, int top, int right, int bottom, int colour, int width = 1, int dash = 0);
 void DrawBox(int x, int y, int dx1, int dy1, int dx2, int dy2, int dx3, int dy3);
 
@@ -232,6 +233,7 @@ static const uint8 PC_VERY_LIGHT_YELLOW  = 0x45;           ///< Almost-white yel
 
 static const uint8 PC_GREEN              = 0xD0;           ///< Green palette colour.
 
+static const uint8 PC_VERY_DARK_BLUE     = 0x9A;           ///< Almost-black blue palette colour.
 static const uint8 PC_DARK_BLUE          = 0x9D;           ///< Dark blue palette colour.
 static const uint8 PC_LIGHT_BLUE         = 0x98;           ///< Light blue palette colour.
 

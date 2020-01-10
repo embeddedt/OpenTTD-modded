@@ -33,13 +33,11 @@
  */
 void ConnectMultiheadedTrains()
 {
-	Train *v;
-
-	FOR_ALL_TRAINS(v) {
+	for (Train *v : Train::Iterate()) {
 		v->other_multiheaded_part = nullptr;
 	}
 
-	FOR_ALL_TRAINS(v) {
+	for (Train *v : Train::Iterate()) {
 		if (v->IsFrontEngine() || v->IsFreeWagon()) {
 			/* Two ways to associate multiheaded parts to each other:
 			 * sequential-matching: Trains shall be arranged to look like <..>..<..>..<..>..
@@ -113,10 +111,9 @@ void ConnectMultiheadedTrains()
  */
 void ConvertOldMultiheadToNew()
 {
-	Train *t;
-	FOR_ALL_TRAINS(t) SetBit(t->subtype, 7); // indicates that it's the old format and needs to be converted in the next loop
+	for (Train *t : Train::Iterate()) SetBit(t->subtype, 7); // indicates that it's the old format and needs to be converted in the next loop
 
-	FOR_ALL_TRAINS(t) {
+	for (Train *t : Train::Iterate()) {
 		if (HasBit(t->subtype, 7) && ((t->subtype & ~0x80) == 0 || (t->subtype & ~0x80) == 4)) {
 			for (Train *u = t; u != nullptr; u = u->Next()) {
 				const RailVehicleInfo *rvi = RailVehInfo(u->engine_type);
@@ -167,13 +164,11 @@ void ConvertOldMultiheadToNew()
 void UpdateOldAircraft()
 {
 	/* set airport_flags to 0 for all airports just to be sure */
-	Station *st;
-	FOR_ALL_STATIONS(st) {
+	for (Station *st : Station::Iterate()) {
 		st->airport.flags = 0; // reset airport
 	}
 
-	Aircraft *a;
-	FOR_ALL_AIRCRAFT(a) {
+	for (Aircraft *a : Aircraft::Iterate()) {
 		/* airplane has another vehicle with subtype 4 (shadow), helicopter also has 3 (rotor)
 		 * skip those */
 		if (a->IsNormalAircraft()) {
@@ -218,14 +213,12 @@ static void CheckValidVehicles()
 	size_t total_engines = Engine::GetPoolSize();
 	EngineID first_engine[4] = { INVALID_ENGINE, INVALID_ENGINE, INVALID_ENGINE, INVALID_ENGINE };
 
-	Engine *e;
-	FOR_ALL_ENGINES_OF_TYPE(e, VEH_TRAIN) { first_engine[VEH_TRAIN] = e->index; break; }
-	FOR_ALL_ENGINES_OF_TYPE(e, VEH_ROAD) { first_engine[VEH_ROAD] = e->index; break; }
-	FOR_ALL_ENGINES_OF_TYPE(e, VEH_SHIP) { first_engine[VEH_SHIP] = e->index; break; }
-	FOR_ALL_ENGINES_OF_TYPE(e, VEH_AIRCRAFT) { first_engine[VEH_AIRCRAFT] = e->index; break; }
+	for (const Engine *e : Engine::IterateType(VEH_TRAIN)) { first_engine[VEH_TRAIN] = e->index; break; }
+	for (const Engine *e : Engine::IterateType(VEH_ROAD)) { first_engine[VEH_ROAD] = e->index; break; }
+	for (const Engine *e : Engine::IterateType(VEH_SHIP)) { first_engine[VEH_SHIP] = e->index; break; }
+	for (const Engine *e : Engine::IterateType(VEH_AIRCRAFT)) { first_engine[VEH_AIRCRAFT] = e->index; break; }
 
-	Vehicle *v;
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
 		/* Test if engine types match */
 		switch (v->type) {
 			case VEH_TRAIN:
@@ -248,9 +241,10 @@ extern byte _age_cargo_skip_counter; // From misc_sl.cpp
 /** Called after load to update coordinates */
 void AfterLoadVehicles(bool part_of_load)
 {
-	Vehicle *v = nullptr;
-	SCOPE_INFO_FMT([&v], "AfterLoadVehicles: %s", scope_dumper().VehicleInfo(v));
-	FOR_ALL_VEHICLES(v) {
+	const Vehicle *si_v = nullptr;
+	SCOPE_INFO_FMT([&si_v], "AfterLoadVehicles: %s", scope_dumper().VehicleInfo(si_v));
+	for (Vehicle *v : Vehicle::Iterate()) {
+		si_v = v;
 		/* Reinstate the previous pointer */
 		if (v->Next() != nullptr) {
 			v->Next()->previous = v;
@@ -276,7 +270,8 @@ void AfterLoadVehicles(bool part_of_load)
 		 */
 		std::map<Order*, OrderList*> mapping;
 
-		FOR_ALL_VEHICLES(v) {
+		for (Vehicle *v : Vehicle::Iterate()) {
+			si_v = v;
 			if (v->orders.old != nullptr) {
 				if (IsSavegameVersionBefore(SLV_105)) { // Pre-105 didn't save an OrderList
 					if (mapping[v->orders.old] == nullptr) {
@@ -303,7 +298,8 @@ void AfterLoadVehicles(bool part_of_load)
 		}
 	}
 
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
+		si_v = v;
 		/* Fill the first pointers */
 		if (v->Previous() == nullptr) {
 			for (Vehicle *u = v; u != nullptr; u = u->Next()) {
@@ -315,7 +311,8 @@ void AfterLoadVehicles(bool part_of_load)
 	if (part_of_load) {
 		if (IsSavegameVersionBefore(SLV_105)) {
 			/* Before 105 there was no order for shared orders, thus it messed up horribly */
-			FOR_ALL_VEHICLES(v) {
+			for (Vehicle *v : Vehicle::Iterate()) {
+				si_v = v;
 				if (v->First() != v || v->orders.list != nullptr || v->previous_shared != nullptr || v->next_shared == nullptr) continue;
 
 				/* As above, allocating OrderList here is safe. */
@@ -329,9 +326,8 @@ void AfterLoadVehicles(bool part_of_load)
 
 		if (IsSavegameVersionBefore(SLV_157)) {
 			/* The road vehicle subtype was converted to a flag. */
-			RoadVehicle *rv;
-			FOR_ALL_ROADVEHICLES(rv) {
-				v = rv;
+			for (RoadVehicle *rv : RoadVehicle::Iterate()) {
+				si_v = rv;
 				if (rv->subtype == 0) {
 					/* The road vehicle is at the front. */
 					rv->SetFrontEngine();
@@ -347,7 +343,8 @@ void AfterLoadVehicles(bool part_of_load)
 
 		if (IsSavegameVersionBefore(SLV_160)) {
 			/* In some old savegames there might be some "crap" stored. */
-			FOR_ALL_VEHICLES(v) {
+			for (Vehicle *v : Vehicle::Iterate()) {
+				si_v = v;
 				if (!v->IsPrimaryVehicle() && v->type != VEH_DISASTER) {
 					v->current_order.Free();
 					v->unitnumber = 0;
@@ -357,14 +354,16 @@ void AfterLoadVehicles(bool part_of_load)
 
 		if (IsSavegameVersionBefore(SLV_162)) {
 			/* Set the vehicle-local cargo age counter from the old global counter. */
-			FOR_ALL_VEHICLES(v) {
+			for (Vehicle *v : Vehicle::Iterate()) {
+				si_v = v;
 				v->cargo_age_counter = _age_cargo_skip_counter;
 			}
 		}
 
 		if (IsSavegameVersionBefore(SLV_180)) {
 			/* Set service interval flags */
-			FOR_ALL_VEHICLES(v) {
+			for (Vehicle *v : Vehicle::Iterate()) {
+				si_v = v;
 				if (!v->IsPrimaryVehicle()) continue;
 
 				const Company *c = Company::Get(v->owner);
@@ -377,13 +376,11 @@ void AfterLoadVehicles(bool part_of_load)
 
 		if (IsSavegameVersionBefore(SLV_SHIP_ROTATION)) {
 			/* Ship rotation added */
-			Ship *s;
-			FOR_ALL_SHIPS(s) {
+			for (Ship *s : Ship::Iterate()) {
 				s->rotation = s->direction;
 			}
 		} else {
-			Ship *s;
-			FOR_ALL_SHIPS(s) {
+			for (Ship *s : Ship::Iterate()) {
 				if (s->rotation == s->direction) continue;
 				/* In case we are rotating on gameload, set the rotation position to
 				 * the current position, otherwise the applied workaround offset would
@@ -395,19 +392,20 @@ void AfterLoadVehicles(bool part_of_load)
 		}
 
 		if (SlXvIsFeaturePresent(XSLFI_TEMPLATE_REPLACEMENT) && (_network_server || !_networking)) {
-			Train *t;
-			FOR_ALL_TRAINS(t) {
+			for (Train *t : Train::Iterate()) {
+				si_v = t;
 				if (t->IsVirtual() && t->First() == t) {
 					delete t;
 				}
 			}
 		}
 	}
-	v = nullptr;
+	si_v = nullptr;
 
 	CheckValidVehicles();
 
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
+		si_v = v;
 		assert(v->first != nullptr);
 
 		v->trip_occupancy = CalcPercentVehicleFilled(v, nullptr);
@@ -452,7 +450,8 @@ void AfterLoadVehicles(bool part_of_load)
 
 	/* Stop non-front engines */
 	if (part_of_load && IsSavegameVersionBefore(SLV_112)) {
-		FOR_ALL_VEHICLES(v) {
+		for (Vehicle *v : Vehicle::Iterate()) {
+			si_v = v;
 			if (v->type == VEH_TRAIN) {
 				Train *t = Train::From(v);
 				if (!t->IsFrontEngine()) {
@@ -470,7 +469,8 @@ void AfterLoadVehicles(bool part_of_load)
 		}
 	}
 
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
+		si_v = v;
 		switch (v->type) {
 			case VEH_ROAD:
 			case VEH_TRAIN:
@@ -519,8 +519,7 @@ void FixupTrainLengths()
 {
 	/* Vehicle center was moved from 4 units behind the front to half the length
 	 * behind the front. Move vehicles so they end up on the same spot. */
-	Vehicle *v;
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
 		if (v->type == VEH_TRAIN && v->IsPrimaryVehicle()) {
 			/* The vehicle center is now more to the front depending on vehicle length,
 			 * so we need to move all vehicles forward to cover the difference to the
@@ -607,6 +606,8 @@ static uint16 _cargo_count;
 static uint16 _cargo_paid_for;
 static Money  _cargo_feeder_share;
 static uint32 _cargo_loaded_at_xy;
+CargoPacketList _cpp_packets;
+std::map<VehicleID, CargoPacketList> _veh_cpp_packets;
 
 /**
  * Make it possible to make the saveload tables "friends" of other classes.
@@ -634,8 +635,8 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(Vehicle, x_pos,                 SLE_UINT32,                   SLV_6, SL_MAX_VERSION),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_FILE_U16 | SLE_VAR_U32,   SL_MIN_VERSION,   SLV_6),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_UINT32,                   SLV_6, SL_MAX_VERSION),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_INT32,                  SLV_164, SL_MAX_VERSION),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164, SlXvFeatureTest(XSLFTO_AND, XSLFI_ZPOS_32_BIT, 0, 0)),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_INT32,                    SLV_164, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_OR, XSLFI_ZPOS_32_BIT)),
 		     SLE_VAR(Vehicle, direction,             SLE_UINT8),
 
 		SLE_CONDNULL(2,                                                            SL_MIN_VERSION,  SLV_58),
@@ -652,7 +653,7 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		     SLE_VAR(Vehicle, vehstatus,             SLE_UINT8),
 		 SLE_CONDVAR(Vehicle, last_station_visited,  SLE_FILE_U8  | SLE_VAR_U16,   SL_MIN_VERSION,   SLV_5),
 		 SLE_CONDVAR(Vehicle, last_station_visited,  SLE_UINT16,                   SLV_5, SL_MAX_VERSION),
-		 SLE_CONDVAR(Vehicle, last_loading_station,  SLE_UINT16,                 SLV_182, SL_MAX_VERSION),
+		SLE_CONDVAR_X(Vehicle, last_loading_station, SLE_UINT16,                 SLV_182, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_OR, XSLFI_CHILLPP, SL_CHILLPP_232)),
 
 		     SLE_VAR(Vehicle, cargo_type,            SLE_UINT8),
 		 SLE_CONDVAR(Vehicle, cargo_subtype,         SLE_UINT8,                   SLV_35, SL_MAX_VERSION),
@@ -664,16 +665,17 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(Vehicle, refit_cap,             SLE_UINT16,                 SLV_182, SL_MAX_VERSION),
 		SLEG_CONDVAR(         _cargo_count,          SLE_UINT16,                   SL_MIN_VERSION,  SLV_68),
 		SLE_CONDPTRDEQ(Vehicle, cargo.packets,         REF_CARGO_PACKET,            SLV_68, SL_MAX_VERSION),
+		SLEG_CONDPTRDEQ_X(    _cpp_packets,            REF_CARGO_PACKET,           SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP)),
 		 SLE_CONDARR(Vehicle, cargo.action_counts,   SLE_UINT, VehicleCargoList::NUM_MOVE_TO_ACTION, SLV_181, SL_MAX_VERSION),
 		 SLE_CONDVAR(Vehicle, cargo_age_counter,     SLE_UINT16,                 SLV_162, SL_MAX_VERSION),
 
 		     SLE_VAR(Vehicle, day_counter,           SLE_UINT8),
 		     SLE_VAR(Vehicle, tick_counter,          SLE_UINT8),
 		SLE_CONDVAR_X(Vehicle, running_ticks,        SLE_FILE_U8  | SLE_VAR_U16,  SLV_88, SL_MAX_VERSION, SlXvFeatureTest([](uint16 version, bool version_in_range) -> bool {
-			return version_in_range && !(SlXvIsFeaturePresent(XSLFI_SPRINGPP, 3) || SlXvIsFeaturePresent(XSLFI_VARIABLE_DAY_LENGTH, 2));
+			return version_in_range && !(SlXvIsFeaturePresent(XSLFI_SPRINGPP, 3) || SlXvIsFeaturePresent(XSLFI_JOKERPP) || SlXvIsFeaturePresent(XSLFI_CHILLPP) || SlXvIsFeaturePresent(XSLFI_VARIABLE_DAY_LENGTH, 2));
 		})),
 		SLE_CONDVAR_X(Vehicle, running_ticks,        SLE_UINT16,                  SLV_88, SL_MAX_VERSION, SlXvFeatureTest([](uint16 version, bool version_in_range) -> bool {
-			return version_in_range && (SlXvIsFeaturePresent(XSLFI_SPRINGPP, 2) || SlXvIsFeaturePresent(XSLFI_VARIABLE_DAY_LENGTH, 2));
+			return version_in_range && (SlXvIsFeaturePresent(XSLFI_SPRINGPP, 2) || SlXvIsFeaturePresent(XSLFI_JOKERPP) || SlXvIsFeaturePresent(XSLFI_CHILLPP) || SlXvIsFeaturePresent(XSLFI_VARIABLE_DAY_LENGTH, 2));
 		})),
 
 		     SLE_VAR(Vehicle, cur_implicit_order_index,  SLE_UINT8),
@@ -761,6 +763,7 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 
 		 SLE_CONDVAR(Vehicle, current_order_time,    SLE_UINT32,                  SLV_67, SL_MAX_VERSION),
 		SLE_CONDVAR_X(Vehicle, current_loading_time, SLE_UINT32,                   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_AUTO_TIMETABLE)),
+		SLE_CONDVAR_X(Vehicle, current_loading_time, SLE_UINT32,                   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP, SL_JOKER_1_23)),
 		SLE_CONDNULL_X(4, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
 		 SLE_CONDVAR(Vehicle, lateness_counter,      SLE_INT32,                   SLV_67, SL_MAX_VERSION),
 
@@ -771,6 +774,8 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		SLE_CONDNULL_X(1, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
 		SLE_CONDNULL_X(1, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
 		SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
+
+		SLE_CONDNULL_X(160, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP)),
 
 		     SLE_END()
 	};
@@ -794,6 +799,7 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 
 		SLE_CONDNULL(2, SLV_2, SLV_20),
 		 SLE_CONDVAR(Train, gv_flags,            SLE_UINT16,                 SLV_139, SL_MAX_VERSION),
+		 SLE_CONDNULL_X(2                                           , SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 		SLE_CONDNULL(11, SLV_2, SLV_144), // old reserved space
 		SLE_CONDVAR_X(Train, reverse_distance,    SLE_UINT16,         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REVERSE_AT_WAYPOINT)),
 		SLE_CONDVAR_X(Train, speed_restriction,   SLE_UINT16,         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPEED_RESTRICTION)),
@@ -853,6 +859,7 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(Aircraft, last_direction,        SLE_UINT8,                    SLV_2, SL_MAX_VERSION),
 		 SLE_CONDVAR(Aircraft, number_consecutive_turns, SLE_UINT8,                 SLV_2, SL_MAX_VERSION),
 		 SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
+		 SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP)),
 
 		 SLE_CONDVAR(Aircraft, turn_counter,          SLE_UINT8,                  SLV_136, SL_MAX_VERSION),
 		 SLE_CONDVAR(Aircraft, flags,                 SLE_UINT8,                  SLV_167, SL_MAX_VERSION),
@@ -876,8 +883,8 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(Vehicle, x_pos,                 SLE_INT32,                    SLV_6, SL_MAX_VERSION),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_FILE_I16 | SLE_VAR_I32,   SL_MIN_VERSION,   SLV_6),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_INT32,                    SLV_6, SL_MAX_VERSION),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_INT32,                  SLV_164, SL_MAX_VERSION),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164, SlXvFeatureTest(XSLFTO_AND, XSLFI_ZPOS_32_BIT, 0, 0)),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_INT32,                    SLV_164, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_OR, XSLFI_ZPOS_32_BIT)),
 
 		     SLE_VAR(Vehicle, sprite_seq.seq[0].sprite, SLE_FILE_U16 | SLE_VAR_U32),
 		SLE_CONDNULL(5,                                                            SL_MIN_VERSION,  SLV_59),
@@ -909,8 +916,8 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(Vehicle, x_pos,                 SLE_INT32,                    SLV_6, SL_MAX_VERSION),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_FILE_I16 | SLE_VAR_I32,   SL_MIN_VERSION,   SLV_6),
 		 SLE_CONDVAR(Vehicle, y_pos,                 SLE_INT32,                    SLV_6, SL_MAX_VERSION),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164),
-		 SLE_CONDVAR(Vehicle, z_pos,                 SLE_INT32,                  SLV_164, SL_MAX_VERSION),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_FILE_U8  | SLE_VAR_I32,   SL_MIN_VERSION, SLV_164, SlXvFeatureTest(XSLFTO_AND, XSLFI_ZPOS_32_BIT, 0, 0)),
+		SLE_CONDVAR_X(Vehicle, z_pos,                SLE_INT32,                    SLV_164, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_OR, XSLFI_ZPOS_32_BIT)),
 		     SLE_VAR(Vehicle, direction,             SLE_UINT8),
 
 		SLE_CONDNULL(5,                                                            SL_MIN_VERSION,  SLV_58),
@@ -929,6 +936,7 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		 SLE_CONDVAR(DisasterVehicle, big_ufo_destroyer_target,  SLE_FILE_U16 | SLE_VAR_U32,   SL_MIN_VERSION, SLV_191),
 		 SLE_CONDVAR(DisasterVehicle, big_ufo_destroyer_target,  SLE_UINT32,                 SLV_191, SL_MAX_VERSION),
 		 SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
+		 SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP)),
 		 SLE_CONDVAR(DisasterVehicle, flags,                     SLE_UINT8,                  SLV_194, SL_MAX_VERSION),
 
 		SLE_CONDNULL(16,                                                           SLV_2, SLV_144), // old reserved space
@@ -982,9 +990,8 @@ static void SetupDescs_VEHS()
 static void Save_VEHS()
 {
 	SetupDescs_VEHS();
-	Vehicle *v;
 	/* Write the vehicles */
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
 		SlSetArrayIndex(v->index);
 		SlObjectSaveFiltered(v, GetVehicleDescriptionFiltered(v->type));
 	}
@@ -998,6 +1005,9 @@ void Load_VEHS()
 	int index;
 
 	_cargo_count = 0;
+
+	_cpp_packets.clear();
+	_veh_cpp_packets.clear();
 
 	while ((index = SlIterateArray()) != -1) {
 		Vehicle *v;
@@ -1027,7 +1037,7 @@ void Load_VEHS()
 			v->last_station_visited = INVALID_STATION;
 		}
 
-		if (IsSavegameVersionBefore(SLV_182)) v->last_loading_station = INVALID_STATION;
+		if (IsSavegameVersionBefore(SLV_182) && !SlXvIsFeaturePresent(XSLFI_CHILLPP)) v->last_loading_station = INVALID_STATION;
 
 		if (IsSavegameVersionBefore(SLV_5)) {
 			/* Convert the current_order.type (which is a mix of type and flags, because
@@ -1038,6 +1048,11 @@ void Load_VEHS()
 
 		/* Advanced vehicle lists got added */
 		if (IsSavegameVersionBefore(SLV_60)) v->group_id = DEFAULT_GROUP;
+
+		if (SlXvIsFeaturePresent(XSLFI_CHILLPP)) {
+			_veh_cpp_packets[index] = std::move(_cpp_packets);
+			_cpp_packets.clear();
+		}
 	}
 }
 
@@ -1045,9 +1060,10 @@ static void Ptrs_VEHS()
 {
 	SetupDescs_VEHS();
 
-	Vehicle *v;
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
+		if (SlXvIsFeaturePresent(XSLFI_CHILLPP)) _cpp_packets = std::move(_veh_cpp_packets[v->index]);
 		SlObjectPtrOrNullFiltered(v, GetVehicleDescriptionFiltered(v->type));
+		if (SlXvIsFeaturePresent(XSLFI_CHILLPP)) _veh_cpp_packets[v->index] = std::move(_cpp_packets);
 	}
 }
 
@@ -1056,8 +1072,7 @@ const SaveLoad *GetOrderExtraInfoDescription();
 void Save_VEOX()
 {
 	/* save extended order info for vehicle current order */
-	Vehicle *v;
-	FOR_ALL_VEHICLES(v) {
+	for (Vehicle *v : Vehicle::Iterate()) {
 		if (v->current_order.extra) {
 			SlSetArrayIndex(v->index);
 			SlObject(v->current_order.extra.get(), GetOrderExtraInfoDescription());
@@ -1092,8 +1107,7 @@ const SaveLoad *GetVehicleSpeedRestrictionDescription()
 
 void Save_VESR()
 {
-	Train *t;
-	FOR_ALL_TRAINS(t) {
+	for (Train *t : Train::Iterate()) {
 		if (HasBit(t->flags, VRF_PENDING_SPEED_RESTRICTION)) {
 			auto range = pending_speed_restriction_change_map.equal_range(t->index);
 			for (auto it = range.first; it != range.second; ++it) {
