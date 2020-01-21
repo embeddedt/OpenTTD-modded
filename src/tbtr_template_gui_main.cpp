@@ -258,10 +258,13 @@ public:
 				resize->height = WD_MATRIX_TOP + FONT_HEIGHT_NORMAL + WD_MATRIX_BOTTOM;
 				size->height = 8 * resize->height;
 				break;
-			case TRW_WIDGET_BOTTOM_MATRIX:
-				this->bottom_matrix_item_size = resize->height = WD_MATRIX_TOP + FONT_HEIGHT_NORMAL + ScaleGUITrad(GetVehicleHeight(VEH_TRAIN));
+			case TRW_WIDGET_BOTTOM_MATRIX: {
+				int base_resize = WD_MATRIX_TOP + FONT_HEIGHT_NORMAL + WD_MATRIX_BOTTOM;
+				int target_resize = WD_MATRIX_TOP + FONT_HEIGHT_NORMAL + ScaleGUITrad(GetVehicleHeight(VEH_TRAIN));
+				this->bottom_matrix_item_size = resize->height = CeilT<int>(target_resize, base_resize);
 				size->height = 4 * resize->height;
 				break;
+			}
 			case TRW_WIDGET_TRAIN_RAILTYPE_DROPDOWN: {
 				Dimension d = GetStringBoundingBox(STR_REPLACE_ALL_RAILTYPE);
 				for (RailType rt = RAILTYPE_BEGIN; rt != RAILTYPE_END; rt++) {
@@ -530,13 +533,12 @@ public:
 
 	/** For a given group (id) find the template that is issued for template replacement for this group and return this template's index
 	 *  from the gui list */
-	short FindTemplateIndexForGroup(short gid) const
+	short FindTemplateIndex(TemplateID tid) const
 	{
-		TemplateReplacement *tr = GetTemplateReplacementByGroupID(gid);
-		if (!tr) return -1;
+		if (tid == INVALID_TEMPLATE) return -1;
 
 		for (uint32 i = 0; i < this->templates.size(); ++i) {
-			if (templates[i]->index == tr->sel_template) {
+			if (templates[i]->index == tid) {
 				return i;
 			}
 		}
@@ -603,19 +605,23 @@ public:
 			StringID str = STR_GROUP_NAME;
 			DrawString(left + ScaleGUITrad(30 + this->indents[i] * 10), right, text_y, str, TC_BLACK);
 
+			const TemplateID tid = GetTemplateIDByGroupIDRecursive(g_id);
+			const TemplateID tid_self = GetTemplateIDByGroupID(g_id);
+
 			/* Draw the template in use for this group, if there is one */
-			short template_in_use = FindTemplateIndexForGroup(g_id);
-			if (template_in_use >= 0) {
+			short template_in_use = FindTemplateIndex(tid);
+			if (tid != INVALID_TEMPLATE && tid_self == INVALID_TEMPLATE) {
+				DrawString (left, right, text_y, STR_TMP_TEMPLATE_FROM_PARENT_GROUP, TC_SILVER, SA_HOR_CENTER);
+			} else if (template_in_use >= 0) {
 				SetDParam(0, template_in_use);
 				DrawString (left, right, text_y, STR_TMPL_GROUP_USES_TEMPLATE, TC_BLACK, SA_HOR_CENTER);
-			} else if (GetTemplateReplacementByGroupID(g_id)) { /* If there isn't a template applied from the current group, check if there is one for another rail type */
+			} else if (tid != INVALID_TEMPLATE) { /* If there isn't a template applied from the current group, check if there is one for another rail type */
 				DrawString (left, right, text_y, STR_TMPL_TMPLRPL_EX_DIFF_RAILTYPE, TC_SILVER, SA_HOR_CENTER);
 			}
 
 			/* Draw the number of trains that still need to be treated by the currently selected template replacement */
-			const TemplateReplacement *tr = GetTemplateReplacementByGroupID(g_id);
-			if (tr) {
-				const TemplateVehicle *tv = TemplateVehicle::Get(tr->sel_template);
+			if (tid != INVALID_TEMPLATE) {
+				const TemplateVehicle *tv = TemplateVehicle::Get(tid);
 				const int num_trains = NumTrainsNeedTemplateReplacement(g_id, tv);
 				// Draw number
 				SetDParam(0, num_trains);
@@ -770,6 +776,8 @@ public:
 			g_id = g->index;
 		}
 
+		const TemplateID tid = GetTemplateIDByGroupID(g_id);
+
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_EDIT, this->editInProgress || !selected_ok);
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_DELETE, this->editInProgress || !selected_ok);
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_CONFIGTMPL_REUSE, this->editInProgress || !selected_ok);
@@ -777,8 +785,8 @@ public:
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_CONFIGTMPL_REFIT, this->editInProgress ||!selected_ok);
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_CONFIGTMPL_OLD_ONLY, this->editInProgress ||!selected_ok);
 
-		this->SetWidgetDisabledState(TRW_WIDGET_START, this->editInProgress || !(selected_ok && group_ok && FindTemplateIndexForGroup(g_id) != this->selected_template_index));
-		this->SetWidgetDisabledState(TRW_WIDGET_STOP, this->editInProgress || !(group_ok && GetTemplateReplacementByGroupID(g_id) != nullptr));
+		this->SetWidgetDisabledState(TRW_WIDGET_START, this->editInProgress || !(selected_ok && group_ok && FindTemplateIndex(tid) != this->selected_template_index));
+		this->SetWidgetDisabledState(TRW_WIDGET_STOP, this->editInProgress || !(group_ok && tid != INVALID_TEMPLATE));
 
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_DEFINE, this->editInProgress);
 		this->SetWidgetDisabledState(TRW_WIDGET_TMPL_BUTTONS_CLONE, this->editInProgress);

@@ -247,6 +247,29 @@ bool Vehicle::NeedsServicing() const
 		return true;
 	}
 
+	if (this->type == VEH_TRAIN) {
+		TemplateVehicle *tv = GetTemplateVehicleByGroupIDRecursive(this->group_id);
+		if (tv != nullptr) {
+			if (tv->IsReplaceOldOnly() && !this->NeedsAutorenewing(c, false)) return false;
+			Money needed_money = c->settings.engine_renew_money;
+			if (needed_money > c->money) return false;
+			bool need_replacement = !TrainMatchesTemplate(Train::From(this), tv);
+			if (need_replacement) {
+				/* Check money.
+				 * We want 2*(the price of the whole template) without looking at the value of the vehicle(s) we are going to sell, or not need to buy. */
+				for (const TemplateVehicle *tv_unit = tv; tv_unit != nullptr; tv_unit = tv_unit->GetNextUnit()) {
+					if (!HasBit(Engine::Get(tv->engine_type)->company_avail, this->owner)) return false;
+					needed_money += 2 * Engine::Get(tv->engine_type)->GetCost();
+				}
+				return needed_money <= c->money;
+			} else if (!TrainMatchesTemplateRefit(Train::From(this), tv) && tv->refit_as_template) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+
 	/* Test whether there is some pending autoreplace.
 	 * Note: We do this after the service-interval test.
 	 * There are a lot more reasons for autoreplace to fail than we can test here reasonably. */
@@ -1112,8 +1135,7 @@ void Vehicle::PreCleanPool()
 void VehicleEnteredDepotThisTick(Vehicle *v)
 {
 	/* Template Replacement Setup stuff */
-	TemplateReplacement *tr = GetTemplateReplacementByGroupID(v->group_id);
-	if (tr != nullptr) {
+	if (GetTemplateIDByGroupIDRecursive(v->group_id) != INVALID_TEMPLATE) {
 		/* Vehicle should stop in the depot if it was in 'stopping' state */
 		_vehicles_to_templatereplace.insert(v->index);
 	}
@@ -2168,6 +2190,31 @@ uint8 CalcPercentVehicleFilled(const Vehicle *front, StringID *colour)
 
 	/* Train without capacity */
 	if (max == 0) return 100;
+
+	/* Return the percentage */
+	if (count * 2 < max) {
+		/* Less than 50%; round up, so that 0% means really empty. */
+		return CeilDiv(count * 100, max);
+	} else {
+		/* More than 50%; round down, so that 100% means really full. */
+		return (count * 100) / max;
+	}
+}
+
+uint8 CalcPercentVehicleFilledOfCargo(const Vehicle *front, CargoID cargo)
+{
+	int count = 0;
+	int max = 0;
+
+	/* Count up max and used */
+	for (const Vehicle *v = front; v != nullptr; v = v->Next()) {
+		if (v->cargo_type != cargo) continue;
+		count += v->cargo.StoredCount();
+		max += v->cargo_cap;
+	}
+
+	/* Train without capacity */
+	if (max == 0) return 0;
 
 	/* Return the percentage */
 	if (count * 2 < max) {
