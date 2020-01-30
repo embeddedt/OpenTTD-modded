@@ -1340,7 +1340,7 @@ STR_CONFIG_SETTING_POPULATION_IN_LABEL                          :도시 이름 �
 STR_CONFIG_SETTING_POPULATION_IN_LABEL_HELPTEXT                 :도시 이름 옆에 도시의 인구 수를 표시합니다.
 STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS                         :그래프 선의 두께: {STRING}
 STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS_HELPTEXT                :그래프의 선 두께를 설정합니다. 얇으면 자세히 볼 수 있고, 두꺼우면 눈에 확 들어오며 색상을 분간하기가 편해집니다.
-STR_CONFIG_SETTING_SHOW_NEWGRF_NAME                             :차량 구입 창에서 NewGRF의 이름을 보여주기: {STRING}
+STR_CONFIG_SETTING_SHOW_NEWGRF_NAME                             :차량 구입 창에 NewGRF 이름 표시: {STRING}
 STR_CONFIG_SETTING_SHOW_NEWGRF_NAME_HELPTEXT                    :차량 구입 창 맨 아래 줄에, 이 차량이 어떤 NewGRF에서 추가되는 지 해당 NewGRF의 이름을 표시해줍니다.
 STR_CONFIG_SETTING_SHOW_TRAIN_LENGTH_IN_DETAILS                 :상세정보 화면에서 열차 길이 보이기: {STRING}
 STR_CONFIG_SETTING_SHOW_TRAIN_LENGTH_IN_DETAILS_HELPTEXT        :열차의 길이를 상세정보 화면에 표시할지 설정합니다.
@@ -1708,8 +1708,6 @@ STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :지분 거래�
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :지분을 사고 팔기 위해 필요한 회사의 최소 나이를 설정합니다.
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :환승시 벌어들이는 중간 수익의 비율: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :더 많은 수익을 내기 위해, 수송 관계상 중간 구간에게 주어진 수익의 비율을 설정합니다.
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION                   :환승시 출발 역에 대한 중간 수익을 계산: {STRING}
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION_HELPTEXT          :이 설정을 켜면, 현재의 환승시 중간 수익 계산을 각 여정 별로 계산하지 않고, 이전 환승 비용을 제외하고 출발역으로부터 현 지점까지 기준으로 계산합니다.
 STR_CONFIG_SETTING_SIMULATE_SIGNALS                             :다리와 터널에서 {STRING}마다 신호기를 설치한 것으로 계산
 STR_CONFIG_SETTING_SIMULATE_SIGNALS_VALUE                       :{COMMA} 칸
 STR_CONFIG_SETTING_DAY_LENGTH_FACTOR                            :1일의 길이 조절: {STRING}

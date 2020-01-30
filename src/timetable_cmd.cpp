@@ -722,23 +722,12 @@ void UpdateSeparationOrder(Vehicle *v_start)
 	}
 }
 
-static bool IsVehicleAtFirstWaitingLocation(Vehicle *v)
+static bool IsVehicleAtFirstWaitingLocation(const Vehicle *v)
 {
-	/* Check if we arrive at first station */
-	int first_wait_index = -1;
-	for (int i = 0; i < v->orders.list->GetNumOrders(); ++i) {
-		Order* order = v->orders.list->GetOrderAt(i);
-
-		if (order->IsWaitTimetabled() && !order->IsType(OT_IMPLICIT)) {
-			first_wait_index = i;
-			break;
-		}
-	}
-
-	return v->orders.list->IsCompleteTimetable() && (v->cur_implicit_order_index == first_wait_index);
+	return (v->cur_implicit_order_index == v->GetFirstWaitingLocation(true));
 }
 
-static DateTicksScaled GetScheduledDispatchTime(Vehicle *v)
+static DateTicksScaled GetScheduledDispatchTime(Vehicle *v, int wait_offset)
 {
 	DateTicksScaled first_slot          = -1;
 	const DateTicksScaled begin_time    = v->orders.list->GetScheduledDispatchStartTick();
@@ -748,13 +737,14 @@ static DateTicksScaled GetScheduledDispatchTime(Vehicle *v)
 
 	/* Find next available slots */
 	for (auto current_offset : v->orders.list->GetScheduledDispatch()) {
-		while (int32(current_offset) <= last_dispatched_offset) {
-			current_offset += dispatch_duration;
+		if (int32(current_offset) <= last_dispatched_offset) {
+			current_offset += dispatch_duration * ((last_dispatched_offset + dispatch_duration - current_offset) / dispatch_duration);
 		}
 
 		DateTicksScaled current_departure = begin_time + current_offset;
-		while (current_departure + max_delay < _scaled_date_ticks) {
-			current_departure += dispatch_duration;
+		int32 minimum = _scaled_date_ticks + wait_offset - max_delay;
+		if (current_departure < minimum) {
+			current_departure += dispatch_duration * ((minimum + dispatch_duration - current_departure - 1) / dispatch_duration);
 		}
 
 		if (first_slot == -1 || first_slot > current_departure) {
@@ -803,9 +793,11 @@ void UpdateVehicleTimetable(Vehicle *v, bool travelling)
 			/* Update scheduled information */
 			v->orders.list->UpdateScheduledDispatch();
 
-			DateTicksScaled slot = GetScheduledDispatchTime(v);
+			const int wait_offset = (real_timetable_order == nullptr) ? 0 : real_timetable_order->GetTimetabledWait();
+			DateTicksScaled slot = GetScheduledDispatchTime(v, wait_offset);
 			if (slot > -1) {
-				v->lateness_counter = _scaled_date_ticks - slot;
+				SetBit(v->vehicle_flags, VF_TIMETABLE_STARTED);
+				v->lateness_counter = _scaled_date_ticks - slot + wait_offset;
 				v->orders.list->SetScheduledDispatchLastDispatch(slot - v->orders.list->GetScheduledDispatchStartTick());
 			}
 		}
@@ -970,14 +962,13 @@ void UpdateVehicleTimetable(Vehicle *v, bool travelling)
 		v->current_loading_time = 0;
 	} else if (HasBit(v->vehicle_flags, VF_SCHEDULED_DISPATCH) && HasBit(v->vehicle_flags, VF_TIMETABLE_STARTED)) {
 		const bool is_first_waiting = IsVehicleAtFirstWaitingLocation(v);
-		if (is_first_waiting) {
+		if (is_first_waiting && travelling) {
 			/* Update scheduled information */
 			v->orders.list->UpdateScheduledDispatch();
-		}
-		if (is_first_waiting && travelling) {
-			DateTicksScaled slot = GetScheduledDispatchTime(v);
+			const int wait_offset = real_timetable_order->GetTimetabledWait();
+			DateTicksScaled slot = GetScheduledDispatchTime(v, wait_offset);
 			if (slot > -1) {
-				v->lateness_counter = _scaled_date_ticks - slot;
+				v->lateness_counter = _scaled_date_ticks - slot + wait_offset;
 				v->orders.list->SetScheduledDispatchLastDispatch(slot - v->orders.list->GetScheduledDispatchStartTick());
 			} else {
 				v->lateness_counter -= (timetabled - time_taken);

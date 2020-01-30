@@ -1646,8 +1646,6 @@ STR_CONFIG_SETTING_ALLOW_SHARES                                 :Handel mit Firm
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Erlaube das Kaufen und Verkaufen von Firmenanteilen. Firmenanteile sind nur verfügbar für Firmen, die hinreichend lange existieren
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Prozentsatz des Profits für Teilstrecken: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Um das Einkommen der einzelnen Fahrzeuge einer Lieferkette ungefähr abschätzen zu können, wird vom Transporterlös bei Ablieferung einer Fracht der gewählte Prozentsatz den Zulieferfahrzeugen zugeschlagen
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION                   :Kalkuliere Profit für Teilstrecken relativ zur Ursprungsstation: {STRING}
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION_HELPTEXT          :Wenn aktiviert, wird der Profit für Teilstrecken von der Ursprungsstation bis zum aktuellen Punkt, abzüglich der zuvor gezahlten Transfer-Einnahmen, berechnet, anstatt Teilstrecken als eigenständige Fahrten zu berechnen.
 STR_CONFIG_SETTING_SIMULATE_SIGNALS                             :Simuliere Signale in Tunneln und Brücken aller: {STRING}
 STR_CONFIG_SETTING_SIMULATE_SIGNALS_VALUE                       :{COMMA} Kachel{P 0 "" n}
 STR_CONFIG_SETTING_DAY_LENGTH_FACTOR                            :Faktor für Tageslänge: {STRING}
@@ -5924,6 +5922,6 @@ STR_SCHDISPATCH_DELAY_CAPTION_DAY                               :{BLACK}Verspät
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_PAST                     :{BLACK}Letzte Abfahrt am {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_FUTURE                   :{BLACK}Letzte Abfahrt hat den Bahnhof noch nicht verlassen; Abfahrt am {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_L1                                      :{BLACK}Dieser Fahrplan erfordert {COMMA} Fahrzeug{P "" e}.
-STR_SCHDISPATCH_SUMMARY_L2                                      :{BLACK}Dieser Fahrplan wiederholt sich alle {STRING} und begann am {DATE_WALLCLOCK_TINY}.
+STR_SCHDISPATCH_SUMMARY_L2                                      :{BLACK}Dieser Fahrplan wiederholt sich alle {STRING} und begann am {DATE_WALLCLOCK_TINY} und endet am {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_L3                                      :{BLACK}Es ist eine maximale Verspätung von {STRING} erlaubt, ehe der Slot übersprungen wird.
 STR_SCHDISPATCH_SUMMARY_NOT_ENABLED                             :{BLACK}Dieser Fahrplan ist nicht aktiv.

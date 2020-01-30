@@ -111,6 +111,9 @@ static void FillTimetableArrivalDepartureTable(const Vehicle *v, VehicleOrderID 
 		table[i].arrival = table[i].departure = INVALID_TICKS;
 	}
 
+	VehicleOrderID scheduled_dispatch_order = INVALID_VEH_ORDER_ID;
+	if (HasBit(v->vehicle_flags, VF_SCHEDULED_DISPATCH)) scheduled_dispatch_order = v->GetFirstWaitingLocation(true);
+
 	/* Cyclically loop over all orders until we reach the current one again.
 	 * As we may start at the current order, do a post-checking loop */
 	do {
@@ -124,6 +127,7 @@ static void FillTimetableArrivalDepartureTable(const Vehicle *v, VehicleOrderID 
 				table[i].arrival = sum;
 			}
 
+			if (i == scheduled_dispatch_order && !(i == start && !travelling)) return;
 			if (!CanDetermineTimeTaken(order, false)) return;
 			sum += order->GetTimetabledWait();
 			table[i].departure = sum;
@@ -679,6 +683,14 @@ struct TimetableWindow : Window {
 					if (have_bad_full_load) draw_info(STR_TIMETABLE_WARNING_FULL_LOAD, true);
 					if (have_conditional && HasBit(v->vehicle_flags, VF_AUTOFILL_TIMETABLE)) draw_info(STR_TIMETABLE_WARNING_AUTOFILL_CONDITIONAL, true);
 					if (total_time && have_non_timetabled_conditional_branch) draw_info(STR_TIMETABLE_NON_TIMETABLED_BRANCH, false);
+					if (HasBit(v->vehicle_flags, VF_SCHEDULED_DISPATCH)) {
+						VehicleOrderID n = v->GetFirstWaitingLocation(false);
+						if (n == INVALID_VEH_ORDER_ID) {
+							draw_info(STR_TIMETABLE_WARNING_NO_SCHEDULED_DISPATCH_ORDER, true);
+						} else if (!v->GetOrder(n)->IsWaitTimetabled()) {
+							draw_info(STR_TIMETABLE_WARNING_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME, true);
+						}
+					}
 
 					if (warning_count != this->summary_warnings) {
 						TimetableWindow *mutable_this = const_cast<TimetableWindow *>(this);

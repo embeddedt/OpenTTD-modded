@@ -1708,8 +1708,6 @@ STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Minimum company
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Set the minimum age of a company for others to be able to buy and sell shares from them.
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Percentage of leg profit to pay in feeder systems: {STRING2}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Percentage of income given to the intermediate legs in feeder systems, giving more control over the income
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION                   :Calculate leg profit relative to source station in feeder systems: {STRING2}
-STR_CONFIG_SETTING_FEEDER_PAYMENT_SRC_STATION_HELPTEXT          :When enabled, the calculation of leg profit in feeder systems is from the source station to the current point, minus any previous transfer payments, instead of calculating the current leg profit as an independent journey
 STR_CONFIG_SETTING_SIMULATE_SIGNALS                             :Simulate signals in tunnels, bridges every: {STRING2}
 STR_CONFIG_SETTING_SIMULATE_SIGNALS_VALUE                       :{COMMA} tile{P 0 "" s}
 STR_CONFIG_SETTING_DAY_LENGTH_FACTOR                            :Day length factor: {STRING2}
@@ -4932,6 +4930,8 @@ STR_TIMETABLE_AUTO_SEPARATION_TOOLTIP                           :{BLACK}Automati
 
 STR_TIMETABLE_SCHEDULED_DISPATCH                                :{BLACK}Scheduled Dispatch
 STR_TIMETABLE_SCHEDULED_DISPATCH_TOOLTIP                        :{BLACK}Open scheduled dispatch windows for automatic setting of timetable start time
+STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER                          :[scheduled dispatch]
+STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME             :{PUSH_COLOUR}{RED}[scheduled dispatch - no wait time timetabled]{POP_COLOUR}
 
 STR_TIMETABLE_EXPECTED                                          :{BLACK}Expected
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}Scheduled
@@ -4957,7 +4957,8 @@ STR_TIMETABLE_WARNING_AUTOSEP_MISSING_TIMINGS                   :{BLACK}Cannot a
 STR_TIMETABLE_WARNING_FULL_LOAD                                 :{BLACK}Timetabling full-load orders is not recommended
 STR_TIMETABLE_WARNING_AUTOFILL_CONDITIONAL                      :{BLACK}Autofill will only update taken branch of conditional orders.
 STR_TIMETABLE_NON_TIMETABLED_BRANCH                             :{BLACK}Not all conditional order branch-taken travel times are timetabled.
-
+STR_TIMETABLE_WARNING_NO_SCHEDULED_DISPATCH_ORDER               :{BLACK}No order is suitable for use with scheduled dispatch.
+STR_TIMETABLE_WARNING_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME     :{BLACK}The scheduled dispatch order should have a timetabled wait time.
 
 # Date window (for timetable)
 STR_DATE_CAPTION                                                :{WHITE}Set date
@@ -6217,7 +6218,7 @@ STR_SCHDISPATCH_RESET_LAST_DISPATCH_TOOLTIP                     :{BLACK}Reset th
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_PAST                     :{BLACK}Last departure at {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_FUTURE                   :{BLACK}Last departure has not left yet, it will depart at {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_L1                                      :{BLACK}This schedule requires {COMMA} vehicle{P "" s}.
-STR_SCHDISPATCH_SUMMARY_L2                                      :{BLACK}This schedule repeats every {STRING3} and began on {DATE_WALLCLOCK_TINY}.
+STR_SCHDISPATCH_SUMMARY_L2                                      :{BLACK}This schedule repeats every {STRING3}, began at {DATE_WALLCLOCK_TINY}, and ends at {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_L3                                      :{BLACK}Maximum delay of {STRING3} is allowed before the slot is skipped.
 STR_SCHDISPATCH_SUMMARY_NOT_ENABLED                             :{BLACK}This schedule is not active.
 
