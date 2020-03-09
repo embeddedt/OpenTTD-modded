@@ -206,6 +206,19 @@ public:
 		return nullptr;
 	}
 
+	void FillDirtyWidgets(std::vector<NWidgetBase *> &dirty_widgets) override
+	{
+		if (this->base_flags & WBF_DIRTY) {
+			dirty_widgets.push_back(this);
+		} else {
+			int i = 0;
+			for (NWidgetBase *child_wid = this->head; child_wid != nullptr; child_wid = child_wid->next) {
+				if (!this->visible[i++]) continue;
+				child_wid->FillDirtyWidgets(dirty_widgets);
+			}
+		}
+	}
+
 	/**
 	 * Checks whether the given widget is actually visible.
 	 * @param widget the widget to check for visibility
@@ -1688,12 +1701,12 @@ static WindowDesc _client_list_popup_desc(
 /* Here we start to define the options out of the menu */
 static void ClientList_Kick(const NetworkClientInfo *ci)
 {
-	NetworkServerKickClient(ci->client_id);
+	NetworkServerKickClient(ci->client_id, nullptr);
 }
 
 static void ClientList_Ban(const NetworkClientInfo *ci)
 {
-	NetworkServerKickOrBanIP(ci->client_id, true);
+	NetworkServerKickOrBanIP(ci->client_id, true, nullptr);
 }
 
 static void ClientList_SpeakToClient(const NetworkClientInfo *ci)

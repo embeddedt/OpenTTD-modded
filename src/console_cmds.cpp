@@ -526,7 +526,7 @@ DEF_CONSOLE_CMD(ConClearBuffer)
  * Network Core Console Commands
  **********************************/
 
-static bool ConKickOrBan(const char *argv, bool ban)
+static bool ConKickOrBan(const char *argv, bool ban, const char *reason)
 {
 	uint n;
 
@@ -550,14 +550,14 @@ static bool ConKickOrBan(const char *argv, bool ban)
 
 		if (!ban) {
 			/* Kick only this client, not all clients with that IP */
-			NetworkServerKickClient(client_id);
+			NetworkServerKickClient(client_id, reason);
 			return true;
 		}
 
 		/* When banning, kick+ban all clients with that IP */
-		n = NetworkServerKickOrBanIP(client_id, ban);
+		n = NetworkServerKickOrBanIP(client_id, ban, reason);
 	} else {
-		n = NetworkServerKickOrBanIP(argv, ban);
+		n = NetworkServerKickOrBanIP(argv, ban, reason);
 	}
 
 	if (n == 0) {
@@ -572,28 +572,48 @@ static bool ConKickOrBan(const char *argv, bool ban)
 DEF_CONSOLE_CMD(ConKick)
 {
 	if (argc == 0) {
-		IConsoleHelp("Kick a client from a network game. Usage: 'kick <ip | client-id>'");
+		IConsoleHelp("Kick a client from a network game. Usage: 'kick <ip | client-id> [<kick-reason>]'");
 		IConsoleHelp("For client-id's, see the command 'clients'");
 		return true;
 	}
 
-	if (argc != 2) return false;
+	if (argc != 2 && argc != 3) return false;
 
-	return ConKickOrBan(argv[1], false);
+	/* No reason supplied for kicking */
+	if (argc == 2) return ConKickOrBan(argv[1], false, nullptr);
+
+	/* Reason for kicking supplied */
+	size_t kick_message_length = strlen(argv[2]);
+	if (kick_message_length >= 255) {
+		IConsolePrintF(CC_ERROR, "ERROR: Maximum kick message length is 254 characters. You entered " PRINTF_SIZE " characters.", kick_message_length);
+		return false;
+	} else {
+		return ConKickOrBan(argv[1], false, argv[2]);
+	}
 }
 
 DEF_CONSOLE_CMD(ConBan)
 {
 	if (argc == 0) {
-		IConsoleHelp("Ban a client from a network game. Usage: 'ban <ip | client-id>'");
+		IConsoleHelp("Ban a client from a network game. Usage: 'ban <ip | client-id> [<ban-reason>]'");
 		IConsoleHelp("For client-id's, see the command 'clients'");
 		IConsoleHelp("If the client is no longer online, you can still ban his/her IP");
 		return true;
 	}
 
-	if (argc != 2) return false;
+	if (argc != 2 && argc != 3) return false;
 
-	return ConKickOrBan(argv[1], true);
+	/* No reason supplied for kicking */
+	if (argc == 2) return ConKickOrBan(argv[1], true, nullptr);
+
+	/* Reason for kicking supplied */
+	size_t kick_message_length = strlen(argv[2]);
+	if (kick_message_length >= 255) {
+		IConsolePrintF(CC_ERROR, "ERROR: Maximum kick message length is 254 characters. You entered " PRINTF_SIZE " characters.", kick_message_length);
+		return false;
+	} else {
+		return ConKickOrBan(argv[1], true, argv[2]);
+	}
 }
 
 DEF_CONSOLE_CMD(ConUnBan)
@@ -2198,6 +2218,45 @@ DEF_CONSOLE_CMD(ConShowIndustryWindow)
 	return true;
 }
 
+DEF_CONSOLE_CMD(ConViewportDebug)
+{
+	if (argc < 1 || argc > 2) {
+		IConsoleHelp("Debug: viewports flags.  Usage: 'viewport_debug [<flags>]'");
+		return true;
+	}
+
+	extern uint32 _viewport_debug_flags;
+	if (argc == 1) {
+		IConsolePrintF(CC_DEFAULT, "Viewport debug flags: %X", _viewport_debug_flags);
+	} else {
+		_viewport_debug_flags = strtoul(argv[1], nullptr, 16);
+	}
+
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConViewportMarkDirty)
+{
+	if (argc < 3 || argc > 5) {
+		IConsoleHelp("Debug: Mark main viewport dirty.  Usage: 'viewport_mark_dirty <x> <y> [<w> <h>]'");
+		return true;
+	}
+
+	ViewPort *vp = FindWindowByClass(WC_MAIN_WINDOW)->viewport;
+	uint l = strtoul(argv[1], nullptr, 0);
+	uint t = strtoul(argv[2], nullptr, 0);
+	uint r = min<uint>(l + ((argc > 3) ? strtoul(argv[3], nullptr, 0) : 1), vp->dirty_blocks_per_row);
+	uint b = min<uint>(t + ((argc > 4) ? strtoul(argv[4], nullptr, 0) : 1), vp->dirty_blocks_per_column);
+	for (uint x = l; x < r; x++) {
+		for (uint y = t; y < b; y++) {
+			vp->dirty_blocks[(x * vp->dirty_blocks_per_column) + y] = true;
+		}
+	}
+	vp->is_dirty = true;
+
+	return true;
+}
+
 DEF_CONSOLE_CMD(ConDoDisaster)
 {
 	if (argc == 0) {
@@ -2592,6 +2651,8 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("show_town_window", ConShowTownWindow, nullptr, true);
 	IConsoleCmdRegister("show_station_window", ConShowStationWindow, nullptr, true);
 	IConsoleCmdRegister("show_industry_window", ConShowIndustryWindow, nullptr, true);
+	IConsoleCmdRegister("viewport_debug", ConViewportDebug, nullptr, true);
+	IConsoleCmdRegister("viewport_mark_dirty", ConViewportMarkDirty, nullptr, true);
 
 	/* NewGRF development stuff */
 	IConsoleCmdRegister("reload_newgrfs",  ConNewGRFReload, ConHookNewGRFDeveloperTool);

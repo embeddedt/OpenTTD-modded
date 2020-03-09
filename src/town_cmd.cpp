@@ -284,7 +284,7 @@ static inline DiagDirection RandomDiagDir()
  * Part of the tile loop process
  * @param ti TileInfo of the tile to draw
  */
-static void DrawTile_Town(TileInfo *ti)
+static void DrawTile_Town(TileInfo *ti, DrawTileProcParams params)
 {
 	HouseID house_id = GetHouseType(ti->tile);
 
@@ -513,7 +513,7 @@ void Town::UpdateVirtCoord()
 
 	SetDParam(0, this->index);
 	SetDParam(1, this->cache.population);
-	this->cache.sign.UpdatePosition(pt.x, pt.y - 24 * ZOOM_LVL_BASE, this->Label(), STR_VIEWPORT_TOWN);
+	this->cache.sign.UpdatePosition(HasBit(_display_opt, DO_SHOW_TOWN_NAMES) ? ZOOM_LVL_OUT_128X : ZOOM_LVL_END, pt.x, pt.y - 24 * ZOOM_LVL_BASE, this->Label(), STR_VIEWPORT_TOWN);
 
 	if (_viewport_sign_kdtree_valid) _viewport_sign_kdtree.Insert(ViewportSignKdtreeItem::MakeTown(this->index));
 

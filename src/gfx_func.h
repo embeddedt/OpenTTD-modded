@@ -21,7 +21,7 @@
  * (this is btw. also possible if needed). This is used to avoid a
  * flickering of the screen by the video driver constantly repainting it.
  *
- * This whole mechanism is controlled by an rectangle defined in #_invalid_rect. This
+ * This whole mechanism was controlled by an rectangle defined in #_invalid_rect. This
  * rectangle defines the area on the screen which must be repaint. If a new object
  * needs to be repainted this rectangle is extended to 'catch' the object on the
  * screen. At some point (which is normally uninteresting for patch writers) this
@@ -32,7 +32,6 @@
  * rectangle information. Then a new round begins by marking objects "dirty".
  *
  * @see VideoDriver::MakeDirty
- * @see _invalid_rect
  * @see _screen
  */
 
@@ -86,7 +85,6 @@ void UndrawMouseCursor();
 static const int DRAW_STRING_BUFFER = 2048;
 
 void RedrawScreenRect(int left, int top, int right, int bottom);
-void GfxScroll(int left, int top, int width, int height, int xo, int yo);
 
 Dimension GetSpriteSize(SpriteID sprid, Point *offset = nullptr, ZoomLevel zoom = ZOOM_LVL_GUI);
 void DrawSpriteViewport(SpriteID img, PaletteID pal, int x, int y, const SubSprite *sub = nullptr);
@@ -135,6 +133,7 @@ const char *GetCharAtPosition(const char *str, int x, FontSize start_fontsize = 
 
 void DrawDirtyBlocks();
 void SetDirtyBlocks(int left, int top, int right, int bottom);
+void UnsetDirtyBlocks(int left, int top, int right, int bottom);
 void MarkWholeScreenDirty();
 
 void GfxInitPalettes();

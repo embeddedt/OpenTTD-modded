@@ -2402,6 +2402,7 @@ STR_NETWORK_ERROR_WRONG_PASSWORD                                :{WHITE}Wrong pa
 STR_NETWORK_ERROR_SERVER_FULL                                   :{WHITE}The server is full
 STR_NETWORK_ERROR_SERVER_BANNED                                 :{WHITE}You are banned from this server
 STR_NETWORK_ERROR_KICKED                                        :{WHITE}You were kicked out of the game
+STR_NETWORK_ERROR_KICK_MESSAGE                                  :{WHITE}Reason: {RAW_STRING}
 STR_NETWORK_ERROR_CHEATER                                       :{WHITE}Cheating is not allowed on this server
 STR_NETWORK_ERROR_TOO_MANY_COMMANDS                             :{WHITE}You were sending too many commands to the server
 STR_NETWORK_ERROR_TIMEOUT_PASSWORD                              :{WHITE}You took too long to enter the password
@@ -2465,6 +2466,7 @@ STR_NETWORK_MESSAGE_MONEY_GIVEN                                 :*** {RAW_STRING
 STR_NETWORK_MESSAGE_MONEY_GIVE_SRC_DESCRIPTION                  :{RAW_STRING} ({COMPANY})
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}The server closed the session
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}The server is restarting...{}Please wait...
+STR_NETWORK_MESSAGE_KICKED                                      :*** {RAW_STRING} was kicked. Reason: ({RAW_STRING})
 
 # Content downloading window
 STR_CONTENT_TITLE                                               :{WHITE}Content downloading
@@ -6221,6 +6223,8 @@ STR_SCHDISPATCH_SUMMARY_L1                                      :{BLACK}This sch
 STR_SCHDISPATCH_SUMMARY_L2                                      :{BLACK}This schedule repeats every {STRING3}, began at {DATE_WALLCLOCK_TINY}, and ends at {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_L3                                      :{BLACK}Maximum delay of {STRING3} is allowed before the slot is skipped.
 STR_SCHDISPATCH_SUMMARY_NOT_ENABLED                             :{BLACK}This schedule is not active.
+
+STR_SCHDISPATCH_SLOT_OUTSIDE_SCHEDULE                           :{BLACK}One or more departure slots are outside the schedule duration.
 
 # Modifier key toggle window
 STR_MODIFIER_KEY_TOGGLE_CAPTION                                 :{WHITE}Modifier keys

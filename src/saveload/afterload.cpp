@@ -3774,6 +3774,7 @@ bool AfterLoadGame()
 
 	/* This needs to be done after conversion. */
 	RebuildViewportKdtree();
+	ViewportMapBuildTunnelCache();
 
 	/* Road stops is 'only' updating some caches */
 	AfterLoadRoadStops();
@@ -3794,6 +3795,8 @@ bool AfterLoadGame()
 
 	InvalidateVehicleTickCaches();
 	ClearVehicleTickCaches();
+
+	UpdateAllVehiclesIsDrawn();
 
 	extern void YapfCheckRailSignalPenalties();
 	YapfCheckRailSignalPenalties();

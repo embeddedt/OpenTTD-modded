@@ -14,6 +14,8 @@
 #include "strings_type.h"
 #include "table/strings.h"
 
+#include <vector>
+
 class LinkGraphOverlay;
 
 enum ViewportMapType {
@@ -25,6 +27,11 @@ enum ViewportMapType {
 
 	VPMT_MIN = VPMT_VEGETATION,
 	VPMT_MAX = VPMT_INDUSTRY,
+};
+
+struct ViewPortMapDrawVehiclesCache {
+	uint64 done_hash_bits[64];
+	std::vector<bool> vehicle_pixels;
 };
 
 /**
@@ -45,6 +52,36 @@ struct ViewPort {
 	ViewportMapType map_type;  ///< Rendering type
 
 	LinkGraphOverlay *overlay;
+
+	std::vector<bool> dirty_blocks;
+	uint dirty_blocks_per_column;
+	uint dirty_blocks_per_row;
+	uint8 dirty_block_left_margin;
+	bool is_dirty = false;
+	bool is_drawn = false;
+	ViewPortMapDrawVehiclesCache map_draw_vehicles_cache;
+
+	uint GetDirtyBlockWidthShift() const { return this->GetDirtyBlockShift(); }
+	uint GetDirtyBlockHeightShift() const { return this->GetDirtyBlockShift(); }
+	uint GetDirtyBlockWidth() const { return 1 << this->GetDirtyBlockWidthShift(); }
+	uint GetDirtyBlockHeight() const { return 1 << this->GetDirtyBlockHeightShift(); }
+
+	void ClearDirty()
+	{
+		if (this->is_dirty) {
+			this->dirty_blocks.assign(this->dirty_blocks.size(), false);
+			this->is_dirty = false;
+		}
+		this->is_drawn = false;
+	}
+
+private:
+	uint GetDirtyBlockShift() const
+	{
+		if (this->zoom >= ZOOM_LVL_DRAW_MAP) return 3;
+		if (this->zoom >= ZOOM_LVL_OUT_8X) return 4;
+		return 7 - this->zoom;
+	}
 };
 
 /** Margins for the viewport sign */
@@ -62,8 +99,8 @@ struct ViewportSign {
 	uint16 width_normal; ///< The width when not zoomed out (normal font)
 	uint16 width_small;  ///< The width when zoomed out (small font)
 
-	void UpdatePosition(int center, int top, StringID str, StringID str_small = STR_NULL);
-	void MarkDirty(ZoomLevel maxzoom = ZOOM_LVL_MAX) const;
+	void UpdatePosition(ZoomLevel maxzoom, int center, int top, StringID str, StringID str_small = STR_NULL);
+	void MarkDirty(ZoomLevel maxzoom) const;
 };
 
 /** Specialised ViewportSign that tracks whether it is valid for entering into a Kdtree */
@@ -74,10 +111,10 @@ struct TrackedViewportSign : ViewportSign {
 	 * Update the position of the viewport sign.
 	 * Note that this function hides the base class function.
 	 */
-	void UpdatePosition(int center, int top, StringID str, StringID str_small = STR_NULL)
+	void UpdatePosition(ZoomLevel maxzoom, int center, int top, StringID str, StringID str_small = STR_NULL)
 	{
 		this->kdtree_valid = true;
-		this->ViewportSign::UpdatePosition(center, top, str, str_small);
+		this->ViewportSign::UpdatePosition(maxzoom, center, top, str, str_small);
 	}
 
 

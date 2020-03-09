@@ -417,7 +417,8 @@ void Station::UpdateVirtCoord()
 
 	SetDParam(0, this->index);
 	SetDParam(1, this->facilities);
-	this->sign.UpdatePosition(pt.x, pt.y, STR_VIEWPORT_STATION);
+	bool shown = HasBit(_display_opt, DO_SHOW_STATION_NAMES) && !(_local_company != this->owner && this->owner != OWNER_NONE && !HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS));
+	this->sign.UpdatePosition(shown ? ZOOM_LVL_DRAW_SPR : ZOOM_LVL_END, pt.x, pt.y, STR_VIEWPORT_STATION);
 
 	if (_viewport_sign_kdtree_valid) _viewport_sign_kdtree.Insert(ViewportSignKdtreeItem::MakeStation(this->index));
 
@@ -2091,16 +2092,14 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 
 static Vehicle *ClearRoadStopStatusEnum(Vehicle *v, void *)
 {
-	if (v->type == VEH_ROAD) {
-		/* Okay... we are a road vehicle on a drive through road stop.
-		 * But that road stop has just been removed, so we need to make
-		 * sure we are in a valid state... however, vehicles can also
-		 * turn on road stop tiles, so only clear the 'road stop' state
-		 * bits and only when the state was 'in road stop', otherwise
-		 * we'll end up clearing the turn around bits. */
-		RoadVehicle *rv = RoadVehicle::From(v);
-		if (HasBit(rv->state, RVS_IN_DT_ROAD_STOP)) rv->state &= RVSB_ROAD_STOP_TRACKDIR_MASK;
-	}
+	/* Okay... we are a road vehicle on a drive through road stop.
+	 * But that road stop has just been removed, so we need to make
+	 * sure we are in a valid state... however, vehicles can also
+	 * turn on road stop tiles, so only clear the 'road stop' state
+	 * bits and only when the state was 'in road stop', otherwise
+	 * we'll end up clearing the turn around bits. */
+	RoadVehicle *rv = RoadVehicle::From(v);
+	if (HasBit(rv->state, RVS_IN_DT_ROAD_STOP)) rv->state &= RVSB_ROAD_STOP_TRACKDIR_MASK;
 
 	return nullptr;
 }
@@ -2138,7 +2137,7 @@ static CommandCost RemoveRoadStop(TileIndex tile, DoCommandFlag flags)
 	/* don't do the check for drive-through road stops when company bankrupts */
 	if (IsDriveThroughStopTile(tile) && (flags & DC_BANKRUPT)) {
 		/* remove the 'going through road stop' status from all vehicles on that tile */
-		if (flags & DC_EXEC) FindVehicleOnPos(tile, nullptr, &ClearRoadStopStatusEnum);
+		if (flags & DC_EXEC) FindVehicleOnPos(tile, VEH_ROAD, nullptr, &ClearRoadStopStatusEnum);
 	} else {
 		CommandCost ret = EnsureNoVehicleOnGround(tile);
 		if (ret.Failed()) return ret;
@@ -2467,7 +2466,7 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 	/* The noise level is the noise from the airport and reduce it to account for the distance to the town center. */
 	uint dist;
 	Town *nearest = AirportGetNearestTown(as, iter, dist);
-	uint newnoise_level = GetAirportNoiseLevelForDistance(as, dist);
+	uint newnoise_level = nearest->noise_reached + GetAirportNoiseLevelForDistance(as, dist);
 
 	if (action == AIRPORT_UPGRADE) {
 		const AirportSpec *old_as = st->airport.GetSpec();
@@ -3026,7 +3025,7 @@ bool SplitGroundSpriteForOverlay(const TileInfo *ti, SpriteID *ground, RailTrack
 	return true;
 }
 
-static void DrawTile_Station(TileInfo *ti)
+static void DrawTile_Station(TileInfo *ti, DrawTileProcParams params)
 {
 	const NewGRFSpriteLayout *layout = nullptr;
 	DrawTileSprites tmp_rail_layout;
@@ -4081,7 +4080,7 @@ void StationMonthlyLoop()
 void ModifyStationRatingAround(TileIndex tile, Owner owner, int amount, uint radius)
 {
 	ForAllStationsRadius(tile, radius, [&](Station *st) {
-		if (st->owner == owner) {
+		if (st->owner == owner && DistanceManhattan(tile, st->xy) <= radius) {
 			for (CargoID i = 0; i < NUM_CARGO; i++) {
 				GoodsEntry *ge = &st->goods[i];
 
@@ -4338,7 +4337,7 @@ uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, Sourc
 		uint owner = p.first->owner;
 		/* Multiply the amount by (company best / sum of best for each company) to get cargo allocated to a company
 		 * and by (station rating / sum of ratings in a company) to get the result for a single station. */
-		p.second = amount * company_best[owner] * p.first->goods[type].rating / best_sum / company_sum[owner];
+		p.second = ((uint64) amount) * ((uint64) company_best[owner]) * ((uint64) p.first->goods[type].rating) / (best_sum * company_sum[owner]);
 		moving += p.second;
 	}
 
@@ -4348,9 +4347,12 @@ uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, Sourc
 			return b.first->goods[type].rating < a.first->goods[type].rating;
 		});
 
-		assert(amount - moving <= used_stations.size());
-		for (uint i = 0; i < amount - moving; i++) {
-			used_stations[i].second++;
+		uint to_deliver = amount - moving;
+		uint step_size = CeilDivT<uint>(to_deliver, used_stations.size());
+		for (uint i = 0; i < used_stations.size() && to_deliver > 0; i++) {
+			uint delivery = min<uint>(to_deliver, step_size);
+			used_stations[i].second += delivery;
+			to_deliver -= delivery;
 		}
 	}
 

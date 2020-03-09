@@ -1835,6 +1835,8 @@ static void UpdateStatusAfterSwap(Train *v)
 	/* Reverse the direction. */
 	if (v->track != TRACK_BIT_DEPOT) v->direction = ReverseDir(v->direction);
 
+	v->UpdateIsDrawn();
+
 	/* Call the proper EnterTile function unless we are in a wormhole. */
 	if (!(v->track & TRACK_BIT_WORMHOLE)) {
 		VehicleEnterTile(v, v->tile, v->x_pos, v->y_pos);
@@ -1912,7 +1914,7 @@ void ReverseTrainSwapVeh(Train *v, int l, int r)
  */
 static Vehicle *TrainOnTileEnum(Vehicle *v, void *)
 {
-	return (v->type == VEH_TRAIN) ? v : nullptr;
+	return v;
 }
 
 
@@ -1924,12 +1926,12 @@ static Vehicle *TrainOnTileEnum(Vehicle *v, void *)
  */
 static Vehicle *TrainApproachingCrossingEnum(Vehicle *v, void *data)
 {
-	if (v->type != VEH_TRAIN || (v->vehstatus & VS_CRASHED)) return nullptr;
+	if ((v->vehstatus & VS_CRASHED)) return nullptr;
 
 	Train *t = Train::From(v);
 	if (!t->IsFrontEngine()) return nullptr;
 
-	TileIndex tile = *(TileIndex *)data;
+	TileIndex tile = (TileIndex) reinterpret_cast<uintptr_t>(data);
 
 	if (TrainApproachingCrossingTile(t) != tile) return nullptr;
 
@@ -1950,12 +1952,12 @@ static bool TrainApproachingCrossing(TileIndex tile)
 	DiagDirection dir = AxisToDiagDir(GetCrossingRailAxis(tile));
 	TileIndex tile_from = tile + TileOffsByDiagDir(dir);
 
-	if (HasVehicleOnPos(tile_from, &tile, &TrainApproachingCrossingEnum)) return true;
+	if (HasVehicleOnPos(tile_from, VEH_TRAIN, reinterpret_cast<void *>(tile), &TrainApproachingCrossingEnum)) return true;
 
 	dir = ReverseDiagDir(dir);
 	tile_from = tile + TileOffsByDiagDir(dir);
 
-	return HasVehicleOnPos(tile_from, &tile, &TrainApproachingCrossingEnum);
+	return HasVehicleOnPos(tile_from, VEH_TRAIN, reinterpret_cast<void *>(tile), &TrainApproachingCrossingEnum);
 }
 
 /** Check if the crossing should be closed
@@ -1964,7 +1966,7 @@ static bool TrainApproachingCrossing(TileIndex tile)
 static inline bool CheckLevelCrossing(TileIndex tile)
 {
 	/* reserved || train on crossing || train approaching crossing */
-	return HasCrossingReservation(tile) || HasVehicleOnPos(tile, nullptr, &TrainOnTileEnum) || TrainApproachingCrossing(tile);
+	return HasCrossingReservation(tile) || HasVehicleOnPos(tile, VEH_TRAIN, nullptr, &TrainOnTileEnum) || TrainApproachingCrossing(tile);
 }
 
 /**
@@ -2642,6 +2644,7 @@ static bool CheckTrainStayInDepot(Train *v)
 	if (v->direction & 2) v->track = TRACK_BIT_Y;
 
 	v->vehstatus &= ~VS_HIDDEN;
+	v->UpdateIsDrawn();
 	v->cur_speed = 0;
 
 	v->UpdateViewport(true, true);
@@ -2819,7 +2822,7 @@ void FreeTrainTrackReservation(const Train *v, TileIndex origin, Trackdir orig_t
 				} else {
 					/* Turn the signal back to red. */
 					SetSignalStateByTrackdir(tile, td, SIGNAL_STATE_RED);
-					MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+					MarkSingleSignalDirty(tile, td);
 				}
 			} else if (HasSignalOnTrackdir(tile, ReverseTrackdir(td)) && IsOnewaySignal(tile, TrackdirToTrack(td))) {
 				break;
@@ -3102,7 +3105,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 {
 	Track best_track = INVALID_TRACK;
 	bool do_track_reservation = _settings_game.pf.reserve_paths || force_res;
-	bool changed_signal = false;
+	Trackdir changed_signal = INVALID_TRACKDIR;
 
 	assert((tracks & ~TRACK_BIT_MASK) == 0);
 
@@ -3135,8 +3138,8 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 			ClrBit(v->flags, VRF_WAITING_RESTRICTION);
 
 			do_track_reservation = true;
-			changed_signal = true;
-			SetSignalStateByTrackdir(tile, TrackEnterdirToTrackdir(track, enterdir), SIGNAL_STATE_GREEN);
+			changed_signal = TrackEnterdirToTrackdir(track, enterdir);
+			SetSignalStateByTrackdir(tile, changed_signal, SIGNAL_STATE_GREEN);
 		} else if (!do_track_reservation) {
 			return track;
 		}
@@ -3151,7 +3154,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 		if (res_dest.tile == INVALID_TILE) {
 			/* Reservation failed? */
 			if (mark_stuck) MarkTrainAsStuck(v);
-			if (changed_signal) SetSignalStateByTrackdir(tile, TrackEnterdirToTrackdir(best_track, enterdir), SIGNAL_STATE_RED);
+			if (changed_signal != INVALID_TRACKDIR) SetSignalStateByTrackdir(tile, changed_signal, SIGNAL_STATE_RED);
 			return FindFirstTrack(tracks);
 		}
 		if (res_dest.okay) {
@@ -3162,7 +3165,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 				if (!HasLongReservePbsSignalOnTrackdir(v, ft.m_new_tile, new_td)) {
 					/* Got a valid reservation that ends at a safe target, quick exit. */
 					if (p_got_reservation != nullptr) *p_got_reservation = true;
-					if (changed_signal) MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+					if (changed_signal != INVALID_TRACKDIR) MarkSingleSignalDirty(tile, changed_signal);
 					TryReserveRailTrack(v->tile, TrackdirToTrack(v->GetVehicleTrackdir()));
 					return best_track;
 				}
@@ -3224,7 +3227,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 			best_track = FindFirstTrack(res);
 			TryReserveRailTrack(v->tile, TrackdirToTrack(v->GetVehicleTrackdir()));
 			if (p_got_reservation != nullptr) *p_got_reservation = true;
-			if (changed_signal) MarkTileDirtyByTile(tile);
+			if (changed_signal != INVALID_TRACKDIR) MarkSingleSignalDirty(tile, changed_signal);
 		} else {
 			FreeTrainTrackReservation(v, origin.tile, origin.trackdir);
 			if (mark_stuck) MarkTrainAsStuck(v);
@@ -3256,7 +3259,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 				FreeTrainTrackReservation(v, origin.tile, origin.trackdir);
 				if (mark_stuck) MarkTrainAsStuck(v);
 				got_reservation = false;
-				changed_signal = false;
+				changed_signal = INVALID_TRACKDIR;
 				break;
 			}
 		}
@@ -3265,7 +3268,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 			FreeTrainTrackReservation(v, origin.tile, origin.trackdir);
 			if (mark_stuck) MarkTrainAsStuck(v);
 			got_reservation = false;
-			changed_signal = false;
+			changed_signal = INVALID_TRACKDIR;
 		}
 		break;
 	}
@@ -3284,7 +3287,7 @@ static Track ChooseTrainTrack(Train *v, TileIndex tile, DiagDirection enterdir, 
 
 	TryReserveRailTrack(v->tile, TrackdirToTrack(v->GetVehicleTrackdir()));
 
-	if (changed_signal) MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+	if (changed_signal != INVALID_TRACKDIR) MarkSingleSignalDirty(tile, changed_signal);
 	if (p_got_reservation != nullptr) *p_got_reservation = got_reservation;
 
 	return best_track;
@@ -3673,8 +3676,8 @@ static Vehicle *FindTrainCollideEnum(Vehicle *v, void *data)
 {
 	TrainCollideChecker *tcc = (TrainCollideChecker*)data;
 
-	/* not a train or in depot */
-	if (v->type != VEH_TRAIN || Train::From(v)->track == TRACK_BIT_DEPOT) return nullptr;
+	/* not in depot */
+	if (Train::From(v)->track == TRACK_BIT_DEPOT) return nullptr;
 
 	if (_settings_game.vehicle.no_train_crash_other_company) {
 		/* do not crash into trains of another company. */
@@ -3731,10 +3734,10 @@ static bool CheckTrainCollision(Train *v)
 
 	/* find colliding vehicles */
 	if (v->track & TRACK_BIT_WORMHOLE) {
-		FindVehicleOnPos(v->tile, &tcc, FindTrainCollideEnum);
-		FindVehicleOnPos(GetOtherTunnelBridgeEnd(v->tile), &tcc, FindTrainCollideEnum);
+		FindVehicleOnPos(v->tile, VEH_TRAIN, &tcc, FindTrainCollideEnum);
+		FindVehicleOnPos(GetOtherTunnelBridgeEnd(v->tile), VEH_TRAIN, &tcc, FindTrainCollideEnum);
 	} else {
-		FindVehicleOnPosXY(v->x_pos, v->y_pos, &tcc, FindTrainCollideEnum);
+		FindVehicleOnPosXY(v->x_pos, v->y_pos, VEH_TRAIN, &tcc, FindTrainCollideEnum);
 	}
 
 	/* any dead -> no crash */
@@ -3750,7 +3753,7 @@ static bool CheckTrainCollision(Train *v)
 
 static Vehicle *CheckTrainAtSignal(Vehicle *v, void *data)
 {
-	if (v->type != VEH_TRAIN || (v->vehstatus & VS_CRASHED)) return nullptr;
+	if ((v->vehstatus & VS_CRASHED)) return nullptr;
 
 	Train *t = Train::From(v);
 	DiagDirection exitdir = *(DiagDirection *)data;
@@ -3773,7 +3776,7 @@ struct FindSpaceBetweenTrainsChecker {
 static Vehicle *FindSpaceBetweenTrainsEnum(Vehicle *v, void *data)
 {
 	/* Don't look at wagons between front and back of train. */
-	if (v->type != VEH_TRAIN || (v->Previous() != nullptr && v->Next() != nullptr)) return nullptr;
+	if ((v->Previous() != nullptr && v->Next() != nullptr)) return nullptr;
 
 	if (!IsDiagonalDirection(v->direction)) {
 		/* Check for vehicles on non-across track pieces of custom bridge head */
@@ -3812,7 +3815,7 @@ static bool IsTooCloseBehindTrain(Vehicle *v, TileIndex tile, uint16 distance, b
 		case DIAGDIR_NW: checker.pos = (TileY(tile) * TILE_SIZE) + TILE_UNIT_MASK; break;
 	}
 
-	if (HasVehicleOnPos(t->tile, &checker, &FindSpaceBetweenTrainsEnum)) {
+	if (HasVehicleOnPos(t->tile, VEH_TRAIN, &checker, &FindSpaceBetweenTrainsEnum)) {
 		/* Revert train if not going with tunnel direction. */
 		if (checker.direction != GetTunnelBridgeDirection(t->tile)) {
 			SetBit(t->flags, VRF_REVERSING);
@@ -3821,7 +3824,7 @@ static bool IsTooCloseBehindTrain(Vehicle *v, TileIndex tile, uint16 distance, b
 	}
     /* Cover blind spot at end of tunnel bridge. */
 	if (check_endtile){
-		if (HasVehicleOnPos(GetOtherTunnelBridgeEnd(t->tile), &checker, &FindSpaceBetweenTrainsEnum)) {
+		if (HasVehicleOnPos(GetOtherTunnelBridgeEnd(t->tile), VEH_TRAIN, &checker, &FindSpaceBetweenTrainsEnum)) {
 			/* Revert train if not going with tunnel direction. */
 			if (checker.direction != GetTunnelBridgeDirection(t->tile)) {
 				SetBit(t->flags, VRF_REVERSING);
@@ -4094,7 +4097,7 @@ bool TrainController(Train *v, Vehicle *nomove, bool reverse)
 								exitdir = ReverseDiagDir(exitdir);
 
 								/* check if a train is waiting on the other side */
-								if (!HasVehicleOnPos(o_tile, &exitdir, &CheckTrainAtSignal)) return false;
+								if (!HasVehicleOnPos(o_tile, VEH_TRAIN, &exitdir, &CheckTrainAtSignal)) return false;
 							}
 						}
 
@@ -4221,7 +4224,7 @@ bool TrainController(Train *v, Vehicle *nomove, bool reverse)
 					Trackdir tdir = TrackDirectionToTrackdir(track, chosen_dir);
 					if (v->IsFrontEngine() && HasPbsSignalOnTrackdir(gp.new_tile, tdir)) {
 						SetSignalStateByTrackdir(gp.new_tile, tdir, SIGNAL_STATE_RED);
-						MarkTileDirtyByTile(gp.new_tile);
+						MarkSingleSignalDirty(gp.new_tile, tdir);
 					}
 
 					/* Clear any track reservation when the last vehicle leaves the tile */
@@ -4543,7 +4546,7 @@ static Vehicle *CollectTrackbitsFromCrashedVehiclesEnum(Vehicle *v, void *data)
 {
 	TrackBits *trackbits = (TrackBits *)data;
 
-	if (v->type == VEH_TRAIN && (v->vehstatus & VS_CRASHED) != 0) {
+	if ((v->vehstatus & VS_CRASHED) != 0) {
 		if (Train::From(v)->track != TRACK_BIT_DEPOT) {
 			*trackbits |= GetTrackbitsFromCrashedVehicle(Train::From(v));
 		}
@@ -4616,7 +4619,7 @@ static void DeleteLastWagon(Train *v)
 
 		/* If there are still crashed vehicles on the tile, give the track reservation to them */
 		TrackBits remaining_trackbits = TRACK_BIT_NONE;
-		FindVehicleOnPos(tile, &remaining_trackbits, CollectTrackbitsFromCrashedVehiclesEnum);
+		FindVehicleOnPos(tile, VEH_TRAIN, &remaining_trackbits, CollectTrackbitsFromCrashedVehiclesEnum);
 
 		/* It is important that these two are the first in the loop, as reservation cannot deal with every trackbit combination */
 		assert(TRACK_BEGIN == TRACK_X && TRACK_Y == TRACK_BEGIN + 1);

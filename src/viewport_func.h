@@ -23,12 +23,15 @@ static const int TILE_HEIGHT_STEP = 50; ///< One Z unit tile height difference i
 
 void SetSelectionRed(bool);
 
+void ClearViewPortCache(ViewPort *vp);
+void ClearViewPortCaches();
 void DeleteWindowViewport(Window *w);
 void InitializeWindowViewport(Window *w, int x, int y, int width, int height, uint32 follow_flags, ZoomLevel zoom);
 ViewPort *IsPtInWindowViewport(const Window *w, int x, int y);
 Point TranslateXYToTileCoord(const ViewPort *vp, int x, int y, bool clamp_to_map = true);
 Point GetTileBelowCursor();
 void UpdateViewportPosition(Window *w);
+void UpdateViewportSizeZoom(ViewPort *vp);
 
 void MarkAllViewportsDirty(int left, int top, int right, int bottom, const ZoomLevel mark_dirty_if_zoomlevel_is_below = ZOOM_LVL_END);
 void MarkAllViewportMapsDirty(int left, int top, int right, int bottom);
@@ -59,7 +62,7 @@ void OffsetGroundSprite(int x, int y);
 void DrawGroundSprite(SpriteID image, PaletteID pal, const SubSprite *sub = nullptr, int extra_offs_x = 0, int extra_offs_y = 0);
 void DrawGroundSpriteAt(SpriteID image, PaletteID pal, int32 x, int32 y, int z, const SubSprite *sub = nullptr, int extra_offs_x = 0, int extra_offs_y = 0);
 void AddSortableSpriteToDraw(SpriteID image, PaletteID pal, int x, int y, int w, int h, int dz, int z, bool transparent = false, int bb_offset_x = 0, int bb_offset_y = 0, int bb_offset_z = 0, const SubSprite *sub = nullptr);
-void AddChildSpriteScreen(SpriteID image, PaletteID pal, int x, int y, bool transparent = false, const SubSprite *sub = nullptr, bool scale = true);
+void AddChildSpriteScreen(SpriteID image, PaletteID pal, int x, int y, bool transparent = false, const SubSprite *sub = nullptr, bool scale = true, bool relative = true);
 void ViewportAddString(const DrawPixelInfo *dpi, ZoomLevel small_from, const ViewportSign *sign, StringID string_normal, StringID string_small, StringID string_small_shadow, uint64 params_1, uint64 params_2 = 0, Colours colour = INVALID_COLOUR);
 
 
@@ -72,7 +75,7 @@ void SetRedErrorSquare(TileIndex tile);
 void SetTileSelectSize(int w, int h);
 void SetTileSelectBigSize(int ox, int oy, int sx, int sy);
 
-void ViewportDoDraw(const ViewPort *vp, int left, int top, int right, int bottom);
+void ViewportDoDraw(ViewPort *vp, int left, int top, int right, int bottom);
 
 bool ScrollWindowToTile(TileIndex tile, Window *w, bool instant = false);
 bool ScrollWindowTo(int x, int y, int z, Window *w, bool instant = false);
@@ -104,14 +107,18 @@ static inline void MarkTileDirtyByTile(TileIndex tile, const ZoomLevel mark_dirt
 	MarkTileDirtyByTile(tile, mark_dirty_if_zoomlevel_is_below, bridge_level_offset, TileHeight(tile));
 }
 
+void MarkTileGroundDirtyByTile(TileIndex tile, const ZoomLevel mark_dirty_if_zoomlevel_is_below);
+
 ViewportMapType ChangeRenderMode(const ViewPort *vp, bool down);
 
 Point GetViewportStationMiddle(const ViewPort *vp, const Station *st);
 
 void ShowTooltipForTile(Window *w, const TileIndex tile);
 
+void ViewportMapStoreTunnel(const TileIndex tile, const TileIndex tile_south, const int tunnel_z, const bool insert_sorted);
 void ViewportMapClearTunnelCache();
-void ViewportMapInvalidateTunnelCacheByTile(const TileIndex tile);
+void ViewportMapInvalidateTunnelCacheByTile(const TileIndex tile, const Axis axis);
+void ViewportMapBuildTunnelCache();
 
 void DrawTileSelectionRect(const TileInfo *ti, PaletteID pal);
 void DrawSelectionSprite(SpriteID image, PaletteID pal, const TileInfo *ti, int z_offset, FoundationPart foundation_part, const SubSprite *sub = nullptr);
