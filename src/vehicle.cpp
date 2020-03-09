@@ -609,7 +609,7 @@ static Vehicle *EnsureNoRoadVehProc(Vehicle *v, void *data)
 
 Vehicle *FindRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir)
 {
-	return (Vehicle*)HasVehicleOnPos(tile, &trackdir, &EnsureNoRoadVehProc);
+	return (Vehicle*)HasVehicleOnPos(tile, VEH_ROAD, &trackdir, &EnsureNoRoadVehProc);
 }
 
 bool EnsureNoRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir) {
