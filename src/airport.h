@@ -135,6 +135,19 @@ struct AirportMovingData {
 	Direction direction; ///< Direction to turn the aircraft after reaching the destination.
 };
 
+/**
+ * Combination of aircraft state for going to a certain terminal and the
+ * airport flag for that terminal block.
+ */
+struct AirportMovementTerminalMapping {
+	AirportMovementStates state; ///< Aircraft movement state when going to this terminal.
+	uint64 airport_flag;         ///< Bitmask in the airport flags that need to be free for this terminal.
+};
+
+
+#define AIRPORT_TERMINAL_MAPPING_LENGTH 11
+extern const AirportMovementTerminalMapping _airport_terminal_mapping[];
+
 AirportMovingData RotateAirportMovingData(const AirportMovingData *orig, Direction rotation, uint num_tiles_x, uint num_tiles_y);
 
 struct AirportFTAbuildup;

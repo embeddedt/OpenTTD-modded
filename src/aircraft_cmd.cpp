@@ -1949,28 +1949,19 @@ static bool AirportSetBlocks(Aircraft *v, const AirportFTA *current_pos, const A
 	return true;
 }
 
-/**
- * Combination of aircraft state for going to a certain terminal and the
- * airport flag for that terminal block.
- */
-struct MovementTerminalMapping {
-	AirportMovementStates state; ///< Aircraft movement state when going to this terminal.
-	uint64 airport_flag;         ///< Bitmask in the airport flags that need to be free for this terminal.
-};
-
 /** A list of all valid terminals and their associated blocks. */
-static const MovementTerminalMapping _airport_terminal_mapping[] = {
+const AirportMovementTerminalMapping _airport_terminal_mapping[] = {
 	{TERM1, TERM1_block},
 	{TERM2, TERM2_block},
-	{TERM3, TERM3_block},
+	{TERM3, TERM3_block}, // 3
 	{TERM4, TERM4_block},
 	{TERM5, TERM5_block},
-	{TERM6, TERM6_block},
+	{TERM6, TERM6_block}, // 6
 	{TERM7, TERM7_block},
 	{TERM8, TERM8_block},
-	{HELIPAD1, HELIPAD1_block},
+	{HELIPAD1, HELIPAD1_block}, // 9
 	{HELIPAD2, HELIPAD2_block},
-	{HELIPAD3, HELIPAD3_block},
+	{HELIPAD3, HELIPAD3_block}, // 11
 };
 
 /**
@@ -1982,7 +1973,7 @@ static const MovementTerminalMapping _airport_terminal_mapping[] = {
  */
 static bool FreeTerminal(Aircraft *v, byte i, byte last_terminal)
 {
-	assert(last_terminal <= lengthof(_airport_terminal_mapping));
+	assert(last_terminal <= AIRPORT_TERMINAL_MAPPING_LENGTH);
 	Station *st = Station::Get(v->targetairport);
 	for (; i < last_terminal; i++) {
 		if ((st->airport.flags & _airport_terminal_mapping[i].airport_flag) == 0) {

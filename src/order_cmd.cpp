@@ -1140,7 +1140,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 					break;
 
 				case OCV_FREE_PLATFORMS:
-					if (v->type != VEH_TRAIN) return CMD_ERROR;
+					if (v->type != VEH_TRAIN && v->type != VEH_AIRCRAFT) return CMD_ERROR;
 					if (occ == OCC_IS_TRUE || occ == OCC_IS_FALSE) return CMD_ERROR;
 					break;
 
@@ -1660,7 +1660,7 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			break;
 
 		case MOF_COND_VARIABLE:
-			if (data == OCV_FREE_PLATFORMS && v->type != VEH_TRAIN) return CMD_ERROR;
+			if (data == OCV_FREE_PLATFORMS && v->type != VEH_TRAIN && v->type != VEH_AIRCRAFT) return CMD_ERROR;
 			if (data == OCV_SLOT_OCCUPANCY && v->type != VEH_TRAIN) return CMD_ERROR;
 			if (data == OCV_TRAIN_IN_SLOT && v->type != VEH_TRAIN) return CMD_ERROR;
 			if (data >= OCV_END) return CMD_ERROR;
@@ -2513,34 +2513,92 @@ static bool OrderConditionCompare(OrderConditionComparator occ, int variable, in
 	}
 }
 
+/**
+ * Get the number of terminals at the airport.
+ * @param apc Airport description.
+ * @return Number of terminals.
+ */
+static uint GetNumAirportTerminals(const AirportFTAClass *apc)
+{
+	uint num = 0;
+
+	for (uint i = apc->terminals[0]; i > 0; i--) num += apc->terminals[i];
+
+	return num;
+}
+
+static uint16 AirportSingleGroupFreeTerminal(const Station *st, byte i, byte last_terminal)
+{
+    uint16 counter = 0;
+	assert(last_terminal <= AIRPORT_TERMINAL_MAPPING_LENGTH);
+	for (; i < last_terminal; i++) {
+		if ((st->airport.flags & _airport_terminal_mapping[i].airport_flag) == 0) {
+			counter++;
+		}
+	}
+	return counter;
+}
+
 /* Get the number of free (train) platforms in a station.
  * @param st_id The StationID of the station.
  * @return The number of free train platforms.
  */
-static uint16 GetFreeStationPlatforms(StationID st_id)
+static uint16 GetFreeStationPlatforms(StationID st_id, VehicleType type)
 {
 	assert(Station::IsValidID(st_id));
+    assert(type == VEH_TRAIN || type == VEH_AIRCRAFT);
 	const Station *st = Station::Get(st_id);
-	if (!(st->facilities & FACIL_TRAIN)) return 0;
+	if (type == VEH_TRAIN && !(st->facilities & FACIL_TRAIN)) return 0;
+    if (type == VEH_AIRCRAFT && !(st->facilities & FACIL_AIRPORT)) return 0;
 	bool is_free;
 	TileIndex t2;
 	uint16 counter = 0;
-	TILE_AREA_LOOP(t1, st->train_station) {
-		if (st->TileBelongsToRailStation(t1)) {
-			/* We only proceed if this tile is a track tile and the north(-east/-west) end of the platform */
-			if (IsCompatibleTrainStationTile(t1 + TileOffsByDiagDir(GetRailStationAxis(t1) == AXIS_X ? DIAGDIR_NE : DIAGDIR_NW), t1) || IsStationTileBlocked(t1)) continue;
-			is_free = true;
-			t2 = t1;
-			do {
-				if (GetStationReservationTrackBits(t2)) {
-					is_free = false;
-					break;
-				}
-				t2 += TileOffsByDiagDir(GetRailStationAxis(t1) == AXIS_X ? DIAGDIR_SW : DIAGDIR_SE);
-			} while (IsCompatibleTrainStationTile(t2, t1));
-			if (is_free) counter++;
-		}
-	}
+    
+    if(type == VEH_TRAIN) {
+	    TILE_AREA_LOOP(t1, st->train_station) {
+		    if (st->TileBelongsToRailStation(t1)) {
+			    /* We only proceed if this tile is a track tile and the north(-east/-west) end of the platform */
+			    if (IsCompatibleTrainStationTile(t1 + TileOffsByDiagDir(GetRailStationAxis(t1) == AXIS_X ? DIAGDIR_NE : DIAGDIR_NW), t1) || IsStationTileBlocked(t1)) continue;
+			    is_free = true;
+			    t2 = t1;
+			    do {
+				    if (GetStationReservationTrackBits(t2)) {
+					    is_free = false;
+					    break;
+				    }
+				    t2 += TileOffsByDiagDir(GetRailStationAxis(t1) == AXIS_X ? DIAGDIR_SW : DIAGDIR_SE);
+			    } while (IsCompatibleTrainStationTile(t2, t1));
+			    if (is_free) counter++;
+		    }
+	    }
+    } else if(type == VEH_AIRCRAFT) {
+        const AirportFTAClass *apc = st->airport.GetFTA();
+        if(apc->terminals[0] > 1) {
+            /* Check all terminals */
+            for(uint32 i = 0; i < apc->nofelements; i++) {
+                const AirportFTA *temp = &apc->layout[i];
+                if (temp->heading == TERMGROUP) {
+				    if (!(st->airport.flags & temp->block)) {
+					    /* read which group do we want to go to?
+					     * (the first free group) */
+					    uint target_group = temp->next_position + 1;
+
+					    /* at what terminal does the group start?
+					     * that means, sum up all terminals of
+					     * groups with lower number */
+					    uint group_start = 0;
+					    for (uint i = 1; i < target_group; i++) {
+						    group_start += apc->terminals[i];
+					    }
+
+					    uint group_end = group_start + apc->terminals[target_group];
+					    if (AirportSingleGroupFreeTerminal(st, group_start, group_end)) counter++;
+				    }
+			    }
+            }
+        } else
+            counter = AirportSingleGroupFreeTerminal(st, 0, GetNumAirportTerminals(apc));
+    }
 	return counter;
 }
 
@@ -2610,7 +2668,7 @@ VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v)
 		}
 		case OCV_FREE_PLATFORMS: {
 			StationID next_station = GetNextRealStation(v, order);
-			if (Station::IsValidID(next_station)) skip_order = OrderConditionCompare(occ, GetFreeStationPlatforms(next_station), value);
+			if (Station::IsValidID(next_station)) skip_order = OrderConditionCompare(occ, GetFreeStationPlatforms(next_station, v->type), value);
 			break;
 		}
 		case OCV_PERCENT: {
