@@ -1228,6 +1228,7 @@ static bool HandleCrashedAircraft(Aircraft *v)
 				EV_EXPLOSION_SMALL);
 		}
 	} else if (v->crashed_counter >= 10000) {
+#if 0 /* blocks are cleared in vehicle.cpp, so this makes only bug on airports with 2+ landing runways */
 		/*  remove rubble of crashed airplane */
 
 		/* clear runway-in on all airports, set by crashing plane
@@ -1238,6 +1239,7 @@ static bool HandleCrashedAircraft(Aircraft *v)
 			CLRBITS(st->airport.flags, RUNWAY_IN_OUT_block); // commuter airport
 			CLRBITS(st->airport.flags, RUNWAY_IN2_block);    // intercontinental
 		}
+#endif
 
 		delete v;
 
@@ -1713,6 +1715,7 @@ static void AircraftEventHandler_Flying(Aircraft *v, const AirportFTAClass *apc)
 					 * they all have heading LANDING). And also occupy that block! */
 					v->pos = current->next_position;
 					SETBITS(st->airport.flags, apc->layout[v->pos].block);
+					SETBITS(st->airport.flags2, apc->layout[v->pos].block2);
 					return;
 				}
 				v->cur_speed = tcur_speed;
@@ -1808,15 +1811,33 @@ static AircraftStateHandler * const _aircraft_state_handlers[] = {
 	AircraftEventHandler_AtTerminal,     // TERM7          = 19
 	AircraftEventHandler_AtTerminal,     // TERM8          = 20
 	AircraftEventHandler_AtTerminal,     // HELIPAD3       = 21
+	AircraftEventHandler_AtTerminal,     // TERM9          = 22
+	AircraftEventHandler_AtTerminal,     // TERM10         = 23
+	AircraftEventHandler_AtTerminal,     // TERM11         = 24
+	AircraftEventHandler_AtTerminal,     // TERM12         = 25
+	AircraftEventHandler_AtTerminal,     // TERM13         = 26
+	AircraftEventHandler_AtTerminal,     // TERM14         = 27
+	AircraftEventHandler_AtTerminal,     // TERM15         = 28
+	AircraftEventHandler_AtTerminal,     // TERM16         = 29
+	AircraftEventHandler_AtTerminal,     // TERM17         = 30
+	AircraftEventHandler_AtTerminal,     // TERM18         = 31
+	AircraftEventHandler_AtTerminal,     // TERM19         = 32
+	AircraftEventHandler_AtTerminal,     // TERM20         = 33
 };
 
 static void AirportClearBlock(const Aircraft *v, const AirportFTAClass *apc)
 {
 	/* we have left the previous block, and entered the new one. Free the previous block */
-	if (apc->layout[v->previous_pos].block != apc->layout[v->pos].block) {
+	if ((apc->layout[v->previous_pos].block != apc->layout[v->pos].block)||(apc->layout[v->previous_pos].block2 != apc->layout[v->pos].block2)) {
 		Station *st = Station::Get(v->targetairport);
 
-		CLRBITS(st->airport.flags, apc->layout[v->previous_pos].block);
+		/* if we have left circle block, then make space for another aircrafts in circle area of airport */
+		if ((apc->layout[v->previous_pos].block2 & (apc->layout[v->previous_pos].block2 ^ apc->layout[v->pos].block2)) & CIRCLE_block) {
+			st->airport.num_circle--;
+		}
+		
+		CLRBITS(st->airport.flags, apc->layout[v->previous_pos].block & (apc->layout[v->previous_pos].block ^ apc->layout[v->pos].block));
+		CLRBITS(st->airport.flags2, apc->layout[v->previous_pos].block2 & (apc->layout[v->previous_pos].block2 ^ apc->layout[v->pos].block2));
 	}
 }
 
@@ -1870,6 +1891,17 @@ static bool AirportMove(Aircraft *v, const AirportFTAClass *apc)
 				v->pos = current->next_position;
 				UpdateAircraftCache(v);
 			} // move to next position
+			else {  
+				if (current->next != NULL) {
+					if (current->heading == current->next->heading){
+						current = current->next;
+						if (AirportSetBlocks(v, current, apc)) {
+								v->pos = current->next_position;
+								UpdateAircraftCache(v);
+						} // move to next position
+					}
+				}  
+			}
 			return false;
 		}
 		current = current->next;
@@ -1886,16 +1918,18 @@ static bool AirportHasBlock(Aircraft *v, const AirportFTA *current_pos, const Ai
 	const AirportFTA *next = &apc->layout[current_pos->next_position];
 
 	/* same block, then of course we can move */
-	if (apc->layout[current_pos->position].block != next->block) {
+	if ((apc->layout[current_pos->position].block != next->block)||(apc->layout[current_pos->position].block != next->block)){
 		const Station *st = Station::Get(v->targetairport);
 		uint64 airport_flags = next->block;
+		uint64 airport_flags2 = next->block2;
 
 		/* check additional possible extra blocks */
 		if (current_pos != reference && current_pos->block != NOTHING_block) {
 			airport_flags |= current_pos->block;
+			airport_flags2 |= current_pos->block2;
 		}
 
-		if (st->airport.flags & airport_flags) {
+		if ((st->airport.flags & airport_flags) || (st->airport.flags2 & airport_flags2)) {
 			v->cur_speed = 0;
 			v->subspeed = 0;
 			return true;
@@ -1917,15 +1951,19 @@ static bool AirportSetBlocks(Aircraft *v, const AirportFTA *current_pos, const A
 	const AirportFTA *reference = &apc->layout[v->pos];
 
 	/* if the next position is in another block, check it and wait until it is free */
-	if ((apc->layout[current_pos->position].block & next->block) != next->block) {
+	if ((apc->layout[current_pos->position].block != next->block) || (apc->layout[current_pos->position].block2 != next->block2)) {
 		uint64 airport_flags = next->block;
+		uint64 airport_flags2 = next->block2;
 		/* search for all all elements in the list with the same state, and blocks != N
 		 * this means more blocks should be checked/set */
 		const AirportFTA *current = current_pos;
 		if (current == reference) current = current->next;
 		while (current != nullptr) {
-			if (current->heading == current_pos->heading && current->block != 0) {
-				airport_flags |= current->block;
+			if (current->heading == current_pos->heading ) {
+				if (( current->block != 0) || ( current->block2 != 0)) {
+					airport_flags |= current->block;
+					airport_flags2 |= current->block2;
+				}
 				break;
 			}
 			current = current->next;
@@ -1933,17 +1971,25 @@ static bool AirportSetBlocks(Aircraft *v, const AirportFTA *current_pos, const A
 
 		/* if the block to be checked is in the next position, then exclude that from
 		 * checking, because it has been set by the airplane before */
-		if (current_pos->block == next->block) airport_flags ^= next->block;
+		if ((current_pos->block & next->block) || (current_pos->block2 & next->block2)) { 
+			airport_flags ^= (current_pos->block & next->block);
+			airport_flags2 ^= (current_pos->block2 & next->block2);
+		}
 
 		Station *st = Station::Get(v->targetairport);
-		if (st->airport.flags & airport_flags) {
+		if (((st->airport.flags & airport_flags) || (st->airport.flags2 & airport_flags2)) || ((airport_flags2 & CIRCLE_block) && (st->airport.num_circle == st->airport.GetMaxCircle(v->tile)))){
 			v->cur_speed = 0;
 			v->subspeed = 0;
 			return false;
 		}
+    	if (airport_flags2 & CIRCLE_block) {
+			st->airport.num_circle++;
+			airport_flags2 ^= CIRCLE_block;
+		}
 
 		if (next->block != NOTHING_block) {
 			SETBITS(st->airport.flags, airport_flags); // occupy next block
+			SETBITS(st->airport.flags2, airport_flags2); // occupy next block2
 		}
 	}
 	return true;
@@ -1953,15 +1999,27 @@ static bool AirportSetBlocks(Aircraft *v, const AirportFTA *current_pos, const A
 const AirportMovementTerminalMapping _airport_terminal_mapping[] = {
 	{TERM1, TERM1_block},
 	{TERM2, TERM2_block},
-	{TERM3, TERM3_block}, // 3
+	{TERM3, TERM3_block},
 	{TERM4, TERM4_block},
 	{TERM5, TERM5_block},
-	{TERM6, TERM6_block}, // 6
+	{TERM6, TERM6_block},
 	{TERM7, TERM7_block},
 	{TERM8, TERM8_block},
-	{HELIPAD1, HELIPAD1_block}, // 9
+	{TERM9, TERM9_block},
+	{TERM10, TERM10_block},
+	{TERM11, TERM11_block},
+	{TERM12, TERM12_block},
+	{TERM13, TERM13_block},
+	{TERM14, TERM14_block},
+	{TERM15, TERM15_block},
+	{TERM16, TERM16_block},
+	{TERM17, TERM17_block},
+	{TERM18, TERM18_block},
+	{TERM19, TERM19_block},
+	{TERM20, TERM20_block}, // 20
+	{HELIPAD1, HELIPAD1_block},
 	{HELIPAD2, HELIPAD2_block},
-	{HELIPAD3, HELIPAD3_block}, // 11
+	{HELIPAD3, HELIPAD3_block}, // 23
 };
 
 /**
@@ -2024,7 +2082,7 @@ static bool AirportFindFreeTerminal(Aircraft *v, const AirportFTAClass *apc)
 
 		while (temp != nullptr) {
 			if (temp->heading == TERMGROUP) {
-				if (!(st->airport.flags & temp->block)) {
+				if ((!(st->airport.flags & temp->block)) && (!(st->airport.flags2 & temp->block2))){
 					/* read which group do we want to go to?
 					 * (the first free group) */
 					uint target_group = temp->next_position + 1;

@@ -33,6 +33,8 @@ public:
 		AT_HELIPORT      = ::AT_HELIPORT,      ///< The heliport.
 		AT_HELISTATION   = ::AT_HELISTATION,   ///< The helistation.
 		AT_HELIDEPOT     = ::AT_HELIDEPOT,     ///< The helidepot.
+		AT_INTERCONTINENTAL2   = ::AT_INTERCONTINENTAL2, ///< The intercontinental 2 airport.
+		AT_CIRCLE        = ::AT_CIRCLE,        ///< The circle airport.
 		AT_INVALID       = ::AT_INVALID,       ///< Invalid airport.
 	};
 

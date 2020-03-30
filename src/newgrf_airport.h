@@ -70,6 +70,7 @@ enum AirportClassID {
 	APC_SMALL     = 0,  ///< id for small airports class
 	APC_LARGE,          ///< id for large airports class
 	APC_HUB,            ///< id for hub airports class
+	APC_HUGE,           ///< id for huge airports class
 	APC_HELIPORT,       ///< id for heliports
 	APC_MAX       = 16, ///< maximum number of airport classes
 };
@@ -113,6 +114,7 @@ struct AirportSpec {
 	AirportClassID cls_id;                 ///< the class to which this airport type belongs
 	SpriteID preview_sprite;               ///< preview sprite for this airport
 	uint16 maintenance_cost;               ///< maintenance cost multiplier
+	byte max_circle;                       ///< maximum amout of aircrafts in circle area of airport
 	/* Newgrf data */
 	bool enabled;                          ///< Entity still available (by default true). Newgrf can disable it, though.
 	struct GRFFileProps grf_prop;          ///< Properties related to the grf file.

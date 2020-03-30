@@ -631,6 +631,8 @@ struct Airport : public TileArea {
 	Airport() : TileArea(INVALID_TILE, 0, 0) {}
 
 	uint64 flags;       ///< stores which blocks on the airport are taken. was 16 bit earlier on, then 32
+	uint64 flags2;      ///< additional stores which blocks on the airport are taken.
+	byte num_circle;    ///< stores how many aircrafts are in circle area of airport
 	byte type;          ///< Type of this airport, @see AirportTypes
 	byte layout;        ///< Airport layout number.
 	Direction rotation; ///< How this airport is rotated.
@@ -744,6 +746,12 @@ struct Airport : public TileArea {
 			}
 		}
 		return num;
+	}
+
+	/** Get the number of hangars on this airport. */
+	inline byte GetMaxCircle(TileIndex tile) const
+	{
+		return this->GetSpec()->max_circle;
 	}
 
 private:

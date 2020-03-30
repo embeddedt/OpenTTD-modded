@@ -2579,7 +2579,7 @@ static uint16 GetFreeStationPlatforms(StationID st_id, VehicleType type)
             for(uint32 i = 0; i < apc->nofelements; i++) {
                 const AirportFTA *temp = &apc->layout[i];
                 if (temp->heading == TERMGROUP) {
-				    if (!(st->airport.flags & temp->block)) {
+				    if ((!(st->airport.flags & temp->block)) && (!(st->airport.flags2 & temp->block2))){
 					    /* read which group do we want to go to?
 					     * (the first free group) */
 					    uint target_group = temp->next_position + 1;

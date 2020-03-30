@@ -55,6 +55,8 @@ AIRPORT(commuter, 2, true)
 HELIPORT(helidepot, 1, 0)
 AIRPORT(intercontinental, 2, false)
 HELIPORT(helistation, 3, 0)
+AIRPORT(intercontinental2, 2, false)
+AIRPORT(circle, 0, false)
 HELIPORT(oilrig, 1, 54)
 AIRPORT_GENERIC(dummy, nullptr, 0, AirportFTAClass::ALL, 0)
 
@@ -178,6 +180,7 @@ static AirportFTA *AirportBuildAutomata(uint nofelements, const AirportFTAbuildu
 		current->position      = apFA[internalcounter].position;
 		current->heading       = apFA[internalcounter].heading;
 		current->block         = apFA[internalcounter].block;
+		current->block2        = apFA[internalcounter].block2;
 		current->next_position = apFA[internalcounter].next;
 
 		/* outgoing nodes from the same position, create linked list */
@@ -187,6 +190,7 @@ static AirportFTA *AirportBuildAutomata(uint nofelements, const AirportFTAbuildu
 			newNode->position      = apFA[internalcounter + 1].position;
 			newNode->heading       = apFA[internalcounter + 1].heading;
 			newNode->block         = apFA[internalcounter + 1].block;
+			newNode->block2         = apFA[internalcounter + 1].block2;
 			newNode->next_position = apFA[internalcounter + 1].next;
 			/* create link */
 			current->next = newNode;

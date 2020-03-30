@@ -505,6 +505,46 @@ static const DrawTileSeqStruct _station_display_fence_ne_sw[] = {
 	TILE_SEQ_END()
 };
 
+/* asphalt tile with fences in north and south and west*/
+static const DrawTileSeqStruct _station_display_fence_ne_nw_sw[] = {
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_Y | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND(15,  0,  0,  SPR_AIRPORT_FENCE_Y | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_END()
+};
+
+/* asphalt tile with fences in north and south and east */
+static const DrawTileSeqStruct _station_display_fence_ne_se_sw[] = {
+	TILE_SEQ_GROUND( 0,  15,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_Y | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND(15,  0,  0,  SPR_AIRPORT_FENCE_Y | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_END()
+};
+
+/* asphalt tile with fences in east and west */
+static const DrawTileSeqStruct _station_display_fence_nw_se[] = {
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0, 15,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_END()
+};
+
+/* asphalt tile with fences in east and west and south*/
+static const DrawTileSeqStruct _station_display_fence_nw_se_sw[] = {
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0, 15,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND(15,  0,  0, SPR_AIRPORT_FENCE_Y  | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_END()
+};
+
+/* asphalt tile with fences in east and west and north*/
+static const DrawTileSeqStruct _station_display_fence_ne_nw_se[] = {
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0, 15,  0,  SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_GROUND( 0,  0,  0,  SPR_AIRPORT_FENCE_Y | (1U << PALETTE_MODIFIER_COLOUR))
+	TILE_SEQ_END()
+};
+
+
 /* runway tiles with 2 corner fences */
 static const DrawTileSeqStruct _station_display_fence_nw_sw[] = {
 	TILE_SEQ_GROUND( 0,  0,  0, SPR_AIRPORT_FENCE_X | (1U << PALETTE_MODIFIER_COLOUR)) // fences north
@@ -874,7 +914,29 @@ static const DrawTileSprites _station_display_datas_airport[] = {
 	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,              _station_display_fence_ne_se) // APT_APRON_FENCE_NE_SE
 	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,              _station_display_grass_west) // APT_APRON_HALF_EAST
 	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,              _station_display_grass_east) // APT_APRON_HALF_WEST
-	TILE_SPRITE_NULL() // APT_GRASS_FENCE_NE_FLAG_2
+	TILE_SPRITE_NULL() // APT_GRASS_FENCE_NE_FLAG_2,
+	TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_nothing) // APT_NSRUNWAY_4
+	TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_sw) // APT_NSRUNWAY_4_SW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_ne) // APT_NSRUNWAY_4_NE 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_sw) // APT_NSRUNWAY_END_FENCE_SW  
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_ne) // APT_NSRUNWAY_END_FENCE_NE 
+	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,               _station_display_hangar_sw) // APT_DEPOT_SW
+	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,               _station_display_hangar_nw) // APT_DEPOT_NW
+	TILE_SPRITE_LINE(SPR_AIRPORT_APRON,               _station_display_hangar_ne) // APT_DEPOT_NE 
+	TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_se_sw) // APT_NSRUNWAY_4_SE_SW
+	TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_nw_sw) // APT_NSRUNWAY_4_NW_SW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_ne_se) // APT_NSRUNWAY_4_NE_SE  
+  TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_ne_nw) // APT_NSRUNWAY_4_NE_NW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY4,                   _station_display_fence_ne_sw) // APT_NSRUNWAY_4_NE_SW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_ne_se_sw) // APT_NSRUNWAY_END_NE_SE_SW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_ne_nw_sw) // APT_NSRUNWAY_END_NE_NW_SW 
+	TILE_SPRITE_LINE(SPR_AIRPORT_RUNWAY_EXIT_B,       _station_display_fence_nw_se) // APT_RUNWAY_2_NW_SE   
+	TILE_SPRITE_LINE(SPR_AIRPORT_RUNWAY_END,          _station_display_fence_nw_se_sw) // APT_RUNWAY_END_NW_SE_SW    
+	TILE_SPRITE_LINE(SPR_AIRPORT_RUNWAY_END,          _station_display_fence_ne_nw_se) // APT_RUNWAY_END_NE_NW_SE 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_ne_se) // APT_NSRUNWAY_END_NE_SE
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_ne_nw) // APT_NSRUNWAY_END_NE_NW
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_se_sw) // APT_NSRUNWAY_END_SE_SW 
+  TILE_SPRITE_LINE(SPR_NSRUNWAY_END,                _station_display_fence_nw_sw) // APT_NSRUNWAY_END_NW_SW   
 };
 
 static const DrawTileSprites _station_display_datas_airport_radar_grass_fence_sw[] = {
