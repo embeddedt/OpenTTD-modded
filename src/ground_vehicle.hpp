@@ -421,68 +421,95 @@ protected:
 	 */
 	inline uint DoUpdateSpeed(AccelerationModel acceleration_model, int accel, int min_speed, int max_speed, int callsPerTick)
 	{
-		const int timestep = 150 // duration of a tick for the physics simulation, in ms.
-			/ callsPerTick;
-		const int tilediag = 80; // diagonal of a tile, in m.
+		const T *v = T::From(this);
+		bool maglev = v->GetAccelerationType() == 2;
+		if(maglev) {
+			uint spd = this->subspeed + accel;
+			this->subspeed = (byte)spd;
 
-		int spd;
-		switch (acceleration_model) {
-			default: NOT_REACHED();
-			case AM_ORIGINAL:
-				spd = this->subspeed + accel;
-				break;
-			case AM_REALISTIC:
-				spd = this->subspeed + 256
-					* accel / 1000 * timestep * 18 / 1000 / 5; // speed increment in km/h
-		}
-
-		this->subspeed = (byte)spd;
-
-		int tempmax = max_speed;
-
-		/* When we are going faster than the maximum speed, reduce the speed
-		 * somewhat gradually. But never lower than the maximum speed. */
-		if (this->breakdown_ctr == 1) {
-			if (this->breakdown_type == BREAKDOWN_LOW_POWER) {
-				if ((this->tick_counter & 0x7) == 0 && _settings_game.vehicle.train_acceleration_model == AM_ORIGINAL) {
-					if (this->cur_speed > (this->breakdown_severity * max_speed) >> 8) {
-						tempmax = this->cur_speed - (this->cur_speed / 10) - 1;
-					} else {
-						tempmax = (this->breakdown_severity * max_speed) >> 8;
-					}
-				}
-			} else if (this->breakdown_type == BREAKDOWN_LOW_SPEED) {
-				tempmax = min(max_speed, this->breakdown_severity);
-			} else {
-				tempmax = this->cur_speed;
+			/* When we are going faster than the maximum speed, reduce the speed
+			* somewhat gradually. But never lower than the maximum speed. */
+			int tempmax = max_speed;
+			if (this->cur_speed > max_speed) {
+				tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
 			}
-		}
 
-		if (this->cur_speed > max_speed) {
-			tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
-		}
+			/* Enforce a maximum and minimum speed. Normally we would use something like
+			* Clamp for this, but in this case min_speed might be below the maximum speed
+			* threshold for some reason. That makes acceleration fail and assertions
+			* happen in Clamp. So make it explicit that min_speed overrules the maximum
+			* speed by explicit ordering of min and max. */
+			this->cur_speed = spd = max(min(this->cur_speed + ((int)spd >> 8), tempmax), min_speed);
 
-		/* Enforce a maximum and minimum speed. Normally we would use something like
-		 * Clamp for this, but in this case min_speed might be below the maximum speed
-		 * threshold for some reason. That makes acceleration fail and assertions
-		 * happen in Clamp. So make it explicit that min_speed overrules the maximum
-		 * speed by explicit ordering of min and max. */
-		this->cur_speed = spd = max(min(this->cur_speed + (spd >> 8), tempmax), min_speed);
+			int scaled_spd = this->GetAdvanceSpeed(spd);
 
-		int progress;
-		switch (acceleration_model) {
-			default: NOT_REACHED();
-			case AM_ORIGINAL:
-				progress = this->GetAdvanceSpeed(spd) * 2 / callsPerTick;
-				break;
-			case AM_REALISTIC:
-				progress = 256
-					* 5 * spd * timestep / 18 // distance travelled in mm
-					/ tilediag * TILE_SIZE / 1000;
+			scaled_spd += this->progress;
+			this->progress = 0; // set later in *Handler or *Controller
+			return scaled_spd;
+		} else {
+			const int timestep = 150 // duration of a tick for the physics simulation, in ms.
+				/ callsPerTick;
+			const int tilediag = 80; // diagonal of a tile, in m.
+
+			int spd;
+			switch (acceleration_model) {
+				default: NOT_REACHED();
+				case AM_ORIGINAL:
+					spd = this->subspeed + accel;
+					break;
+				case AM_REALISTIC:
+					spd = this->subspeed + 256
+						* accel / 1000 * timestep * 18 / 1000 / 5; // speed increment in km/h
+			}
+
+			this->subspeed = (byte)spd;
+
+			int tempmax = max_speed;
+
+			/* When we are going faster than the maximum speed, reduce the speed
+			* somewhat gradually. But never lower than the maximum speed. */
+			if (this->breakdown_ctr == 1) {
+				if (this->breakdown_type == BREAKDOWN_LOW_POWER) {
+					if ((this->tick_counter & 0x7) == 0 && _settings_game.vehicle.train_acceleration_model == AM_ORIGINAL) {
+						if (this->cur_speed > (this->breakdown_severity * max_speed) >> 8) {
+							tempmax = this->cur_speed - (this->cur_speed / 10) - 1;
+						} else {
+							tempmax = (this->breakdown_severity * max_speed) >> 8;
+						}
+					}
+				} else if (this->breakdown_type == BREAKDOWN_LOW_SPEED) {
+					tempmax = min(max_speed, this->breakdown_severity);
+				} else {
+					tempmax = this->cur_speed;
+				}
+			}
+
+			if (this->cur_speed > max_speed) {
+				tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
+			}
+
+			/* Enforce a maximum and minimum speed. Normally we would use something like
+			* Clamp for this, but in this case min_speed might be below the maximum speed
+			* threshold for some reason. That makes acceleration fail and assertions
+			* happen in Clamp. So make it explicit that min_speed overrules the maximum
+			* speed by explicit ordering of min and max. */
+			this->cur_speed = spd = max(min(this->cur_speed + (spd >> 8), tempmax), min_speed);
+
+			int progress;
+			switch (acceleration_model) {
+				default: NOT_REACHED();
+				case AM_ORIGINAL:
+					progress = this->GetAdvanceSpeed(spd) * 2 / callsPerTick;
+					break;
+				case AM_REALISTIC:
+					progress = 256
+						* 5 * spd * timestep / 18 // distance travelled in mm
+						/ tilediag * TILE_SIZE / 1000;
+			}
+			progress += this->progress;
+			this->progress = 0; // set later in *Handler or *Controller
+			return progress;
 		}
-		progress += this->progress;
-		this->progress = 0; // set later in *Handler or *Controller
-		return progress;
 	}
 };
 

@@ -186,12 +186,18 @@ int GroundVehicle<T, Type>::GetAcceleration()
 	 * low speed, it needs to be a 64 bit integer too. */
 	int64 force;
 	if (speed > 0) {
-		/* Conversion factor from km/h to m/s is 5/18 to get [N] in the end. */
-		force = power * 18 / (speed * 5);
-		if (mode == AS_ACCEL && force > max_te) force = max_te;
+		if(!maglev) {
+			/* Conversion factor from km/h to m/s is 5/18 to get [N] in the end. */
+			force = power * 18 / (speed * 5);
+			if (mode == AS_ACCEL && force > max_te) force = max_te;
+		} else
+			force = power / 25;
 	} else {
 		/* "Kickoff" acceleration. */
-		force = max_te;
+		if(!maglev)
+			force = max_te;
+		else
+			force = max(power, (mass * 8) + resistance);
 	}
 
 	/* If power is 0 because of a breakdown, we make the force 0 if accelerating */
@@ -230,9 +236,10 @@ int GroundVehicle<T, Type>::GetAcceleration()
 		 * a hill will never speed up enough to (eventually) get back to the
 		 * same (maximum) speed. */
 		// F / weight = F / mass [N/ton = mm/s^2]
-		int accel = ClampToI32((force - resistance) / mass); // [mm/s^2]
+		int accel = ClampToI32((force - resistance) / (mass * (maglev ? 4 : 1))); // [mm/s^2]
 		// clamp to reasonable range
-		accel = min(1500, accel);
+		if(!maglev)
+			accel = min(1500, accel);
 		if (this->type == VEH_TRAIN) {
 			if(_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL &&
 					HasBit(Train::From(this)->flags, VRF_BREAKDOWN_POWER)) {
