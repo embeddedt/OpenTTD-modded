@@ -887,6 +887,30 @@ public:
 			y += FONT_HEIGHT_NORMAL;
 		}
 
+		first = true;
+		for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
+			if (i->produced_cargo[j] == CT_INVALID) continue;
+			if (first) {
+				if (has_accept) y += WD_PAR_VSEP_WIDE;
+				DrawString(left + WD_FRAMERECT_LEFT, right - WD_FRAMERECT_RIGHT, y, STR_INDUSTRY_VIEW_PRODUCTION_THIS_MONTH_TITLE);
+				y += FONT_HEIGHT_NORMAL;
+				if (this->editable == EA_RATE) this->production_offset_y = y;
+				first = false;
+			}
+
+			SetDParam(0, i->produced_cargo[j]);
+			SetDParam(1, i->this_month_production[j]);
+			SetDParamStr(2, cargo_suffix[j].text);
+			uint x = left + WD_FRAMETEXT_LEFT + (this->editable == EA_RATE ? SETTING_BUTTON_WIDTH + 10 : 0);
+			DrawString(x, right - WD_FRAMERECT_RIGHT, y, STR_INDUSTRY_VIEW_THIS_MONTH_TRANSPORTED);
+			/* Let's put out those buttons.. */
+			if (this->editable == EA_RATE) {
+				DrawArrowButtons(left + WD_FRAMETEXT_LEFT, y, COLOUR_YELLOW, (this->clicked_line == IL_RATE1 + j) ? this->clicked_button : 0,
+						i->production_rate[j] > 0, i->production_rate[j] < 255);
+			}
+			y += FONT_HEIGHT_NORMAL;
+		}
+
 		/* Display production multiplier if editable */
 		if (this->editable == EA_MULTIPLIER) {
 			y += WD_PAR_VSEP_WIDE;

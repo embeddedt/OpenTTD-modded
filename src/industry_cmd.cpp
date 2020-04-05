@@ -546,6 +546,7 @@ static bool TransportIndustryGoods(TileIndex tile)
 			i->this_month_transported[j] += am;
 
 			moved_cargo |= (am != 0);
+			SetWindowDirty(WC_INDUSTRY_VIEW, i->index);
 		}
 	}
 

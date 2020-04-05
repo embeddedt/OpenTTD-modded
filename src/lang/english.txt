@@ -4083,7 +4083,9 @@ STR_INDUSTRY_DIRECTORY_FILTER_NONE                              :None
 # Industry view
 STR_INDUSTRY_VIEW_CAPTION                                       :{WHITE}{INDUSTRY}
 STR_INDUSTRY_VIEW_PRODUCTION_LAST_MONTH_TITLE                   :{BLACK}Production last month:
+STR_INDUSTRY_VIEW_PRODUCTION_THIS_MONTH_TITLE                   :{BLACK}Production this month:
 STR_INDUSTRY_VIEW_TRANSPORTED                                   :{YELLOW}{CARGO_LONG}{RAW_STRING}{BLACK} ({COMMA}% transported)
+STR_INDUSTRY_VIEW_THIS_MONTH_TRANSPORTED                        :{YELLOW}{CARGO_LONG}{RAW_STRING}{BLACK}
 STR_INDUSTRY_VIEW_LOCATION_TOOLTIP                              :{BLACK}Centre the main view on industry location. Ctrl+Click opens a new viewport on industry location
 STR_INDUSTRY_VIEW_PRODUCTION_LEVEL                              :{BLACK}Production level: {YELLOW}{COMMA}%
 STR_INDUSTRY_VIEW_INDUSTRY_ANNOUNCED_CLOSURE                    :{YELLOW}The industry has announced imminent closure!
