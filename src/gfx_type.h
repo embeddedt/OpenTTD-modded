@@ -164,6 +164,8 @@ union Colour {
 	struct {
 #if TTD_ENDIAN == TTD_BIG_ENDIAN
 		uint8 a, r, g, b; ///< colour channels in BE order
+#elif defined(__EMSCRIPTEN__)
+		uint8 r, g, b, a;
 #else
 		uint8 b, g, r, a; ///< colour channels in LE order
 #endif /* TTD_ENDIAN == TTD_BIG_ENDIAN */
@@ -179,6 +181,8 @@ union Colour {
 	Colour(uint8 r, uint8 g, uint8 b, uint8 a = 0xFF) :
 #if TTD_ENDIAN == TTD_BIG_ENDIAN
 		a(a), r(r), g(g), b(b)
+#elif defined(__EMSCRIPTEN__)
+		r(r), g(g), b(b), a(a)
 #else
 		b(b), g(g), r(r), a(a)
 #endif /* TTD_ENDIAN == TTD_BIG_ENDIAN */

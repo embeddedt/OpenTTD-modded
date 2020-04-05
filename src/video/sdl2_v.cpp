@@ -992,19 +992,23 @@ void VideoDriver_SDL::Stop()
 	}
 }
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+void em_loop(void *arg)
+{
+	VideoDriver_SDL *drv = (VideoDriver_SDL*)arg;
+	drv->LoopOnce();
+}
+#endif
+
 void VideoDriver_SDL::MainLoop()
 {
-	uint32 cur_ticks = SDL_GetTicks();
-	uint32 last_cur_ticks = cur_ticks;
-	uint32 next_tick = cur_ticks + MILLISECONDS_PER_TICK;
-	uint32 mod;
-	int numkeys;
-	const Uint8 *keys;
+	cur_ticks = SDL_GetTicks();
+	last_cur_ticks = cur_ticks;
+	next_tick = cur_ticks + MILLISECONDS_PER_TICK;
 
 	CheckPaletteAnim();
 
-	std::thread draw_thread;
-	std::unique_lock<std::recursive_mutex> draw_lock;
 	if (_draw_threaded) {
 		/* Initialise the mutex first, because that's the thing we *need*
 		 * directly in the newly created thread. */
@@ -1034,79 +1038,89 @@ void VideoDriver_SDL::MainLoop()
 	}
 
 	DEBUG(driver, 1, "SDL2: using %sthreads", _draw_threaded ? "" : "no ");
+#ifndef __EMSCRIPTEN__
+	while (!_exit_game) {
+		LoopOnce();
+ 	}
+#else
+	emscripten_set_main_loop_arg(em_loop, this, 0, 0);
+	return;
+#endif
+}
+void VideoDriver_SDL::LoopOnce() {
+	uint32 mod;
+	int numkeys;
+	const Uint8 *keys;
+	uint32 prev_cur_ticks = cur_ticks; // to check for wrapping
+	InteractiveRandom(); // randomness
 
-	for (;;) {
-		uint32 prev_cur_ticks = cur_ticks; // to check for wrapping
-		InteractiveRandom(); // randomness
+	while (PollEvent() == -1) {}
+	if (_exit_game) return;
 
-		while (PollEvent() == -1) {}
-		if (_exit_game) break;
-
-		mod = SDL_GetModState();
-		keys = SDL_GetKeyboardState(&numkeys);
+	mod = SDL_GetModState();
+	keys = SDL_GetKeyboardState(&numkeys);
 
 #if defined(_DEBUG)
-		if (_shift_pressed)
+	if (_shift_pressed)
 #else
-		/* Speedup when pressing tab, except when using ALT+TAB
-		 * to switch to another application */
-		if (keys[SDL_SCANCODE_TAB] && (mod & KMOD_ALT) == 0)
+	/* Speedup when pressing tab, except when using ALT+TAB
+		* to switch to another application */
+	if (keys[SDL_SCANCODE_TAB] && (mod & KMOD_ALT) == 0)
 #endif /* defined(_DEBUG) */
-		{
-			if (!_networking && _game_mode != GM_MENU) _fast_forward |= 2;
-		} else if (_fast_forward & 2) {
-			_fast_forward = 0;
-		}
+	{
+		if (!_networking && _game_mode != GM_MENU) _fast_forward |= 2;
+	} else if (_fast_forward & 2) {
+		_fast_forward = 0;
+	}
 
-		cur_ticks = SDL_GetTicks();
-		if (SDL_TICKS_PASSED(cur_ticks, next_tick) || (_fast_forward && !_pause_mode) || cur_ticks < prev_cur_ticks) {
-			_realtime_tick += cur_ticks - last_cur_ticks;
-			last_cur_ticks = cur_ticks;
-			next_tick = cur_ticks + MILLISECONDS_PER_TICK;
+	cur_ticks = SDL_GetTicks();
+	if (SDL_TICKS_PASSED(cur_ticks, next_tick) || (_fast_forward && !_pause_mode) || cur_ticks < prev_cur_ticks) {
+		_realtime_tick += cur_ticks - last_cur_ticks;
+		last_cur_ticks = cur_ticks;
+		next_tick = cur_ticks + MILLISECONDS_PER_TICK;
 
-			bool old_ctrl_pressed = _ctrl_pressed;
-			bool old_shift_pressed = _shift_pressed;
+		bool old_ctrl_pressed = _ctrl_pressed;
+		bool old_shift_pressed = _shift_pressed;
 
-			_ctrl_pressed  = !!(mod & KMOD_CTRL) != _invert_ctrl;
-			_shift_pressed = !!(mod & KMOD_SHIFT) != _invert_shift;
+		_ctrl_pressed  = !!(mod & KMOD_CTRL) != _invert_ctrl;
+		_shift_pressed = !!(mod & KMOD_SHIFT) != _invert_shift;
 
-			/* determine which directional keys are down */
-			_dirkeys =
-				(keys[SDL_SCANCODE_LEFT]  ? 1 : 0) |
-				(keys[SDL_SCANCODE_UP]    ? 2 : 0) |
-				(keys[SDL_SCANCODE_RIGHT] ? 4 : 0) |
-				(keys[SDL_SCANCODE_DOWN]  ? 8 : 0);
-			if (old_ctrl_pressed != _ctrl_pressed) HandleCtrlChanged();
-			if (old_shift_pressed != _shift_pressed) HandleShiftChanged();
+		/* determine which directional keys are down */
+		_dirkeys =
+			(keys[SDL_SCANCODE_LEFT]  ? 1 : 0) |
+			(keys[SDL_SCANCODE_UP]    ? 2 : 0) |
+			(keys[SDL_SCANCODE_RIGHT] ? 4 : 0) |
+			(keys[SDL_SCANCODE_DOWN]  ? 8 : 0);
+		if (old_ctrl_pressed != _ctrl_pressed) HandleCtrlChanged();
+		if (old_shift_pressed != _shift_pressed) HandleShiftChanged();
 
-			/* The gameloop is the part that can run asynchronously. The rest
-			 * except sleeping can't. */
-			if (_draw_mutex != nullptr) draw_lock.unlock();
+		/* The gameloop is the part that can run asynchronously. The rest
+			* except sleeping can't. */
+		if (_draw_mutex != nullptr) draw_lock.unlock();
 
-			GameLoop();
+		GameLoop();
 
-			if (_draw_mutex != nullptr) draw_lock.lock();
+		if (_draw_mutex != nullptr) draw_lock.lock();
 
-			UpdateWindows();
-			_local_palette = _cur_palette;
-		} else {
-			/* Release the thread while sleeping */
-			if (_draw_mutex != nullptr) draw_lock.unlock();
-			CSleep(1);
-			if (_draw_mutex != nullptr) draw_lock.lock();
+		UpdateWindows();
+		_local_palette = _cur_palette;
+	} else {
+		/* Release the thread while sleeping */
+		if (_draw_mutex != nullptr) draw_lock.unlock();
+		CSleep(1);
+		if (_draw_mutex != nullptr) draw_lock.lock();
 
-			NetworkDrawChatMessage();
-			DrawMouseCursor();
-		}
+		NetworkDrawChatMessage();
+		DrawMouseCursor();
+	}
 
-		/* End of the critical part. */
-		if (_draw_mutex != nullptr && !HasModalProgress()) {
-			_draw_signal->notify_one();
-		} else {
-			/* Oh, we didn't have threads, then just draw unthreaded */
-			CheckPaletteAnim();
-			DrawSurfaceToScreen();
-		}
+	/* End of the critical part. */
+	if (_draw_mutex != nullptr && !HasModalProgress()) {
+		_draw_signal->notify_one();
+	} else {
+		/* Oh, we didn't have threads, then just draw unthreaded */
+		CheckPaletteAnim();
+		DrawSurfaceToScreen();
 	}
 
 	if (_draw_mutex != nullptr) {

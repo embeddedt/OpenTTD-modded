@@ -1,0 +1,10 @@
+prefix=emscripten_out/fakeprefix
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: zlib
+Description: zlib
+Version: 1.2.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lz

@@ -998,6 +998,10 @@ int openttd_main(int argc, char *argv[])
 
 	VideoDriver::GetInstance()->MainLoop();
 
+#ifdef __EMSCRIPTEN__
+	return 0;
+#endif
+
 	CrashLog::MainThreadExitCheckPendingCrashlog();
 
 	WaitTillSaved();

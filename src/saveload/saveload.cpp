@@ -403,6 +403,12 @@ void NORETURN SlError(StringID string, const char *extra_msg, bool already_mallo
 	 * when we access them during cleaning the pool dereferences of
 	 * those indices will be made with segmentation faults as result. */
 	if (_sl.action == SLA_LOAD || _sl.action == SLA_PTRS) SlNullPointers();
+#ifdef __EMSCRIPTEN__
+	char buffer[512];
+
+        GetString(buffer, _sl.error_str, lastof(buffer));
+        DEBUG(sl, 0, "%s %s", buffer, _sl.extra_msg ? _sl.extra_msg : "");
+#endif
 	throw std::exception();
 }
 
@@ -2892,6 +2898,10 @@ static void SaveFileStart()
 	_sl.saveinprogress = true;
 }
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 /** Update the gui accordingly when saving is done and release locks on saveload. */
 static void SaveFileDone()
 {
@@ -2900,6 +2910,9 @@ static void SaveFileDone()
 
 	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_SAVELOAD_FINISH);
 	_sl.saveinprogress = false;
+#ifdef __EMSCRIPTEN__
+	EM_ASM(save_data());
+#endif
 }
 
 /** Set the error message from outside of the actual loading/saving of the game (AfterLoadGame and friends) */

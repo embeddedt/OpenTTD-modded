@@ -1,0 +1,12 @@
+prefix=emscripten_out/fakeprefix
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: sdl2
+Description: SDL2
+URL: http://libsdl.org/
+Version: 2.0.0
+Cflags: -I${includedir}
+Libs: -L${libdir} -lSDL2
+Libs.private:  

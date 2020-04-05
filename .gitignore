@@ -53,3 +53,4 @@ src/os/windows/ottdres.rc
 !/config.lib
 !*.in
 *.tmp
+emscripten_out/final_html

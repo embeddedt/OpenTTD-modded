@@ -23,6 +23,8 @@ public:
 
 	void MainLoop() override;
 
+	void LoopOnce();
+
 	bool ChangeResolution(int w, int h) override;
 
 	bool ToggleFullscreen(bool fullscreen) override;
@@ -48,6 +50,11 @@ private:
 	 * This is true to indicate that keyboard input is in text input mode, and SDL_TEXTINPUT events are enabled.
 	 */
 	bool edit_box_focused;
+	uint32 cur_ticks;
+	uint32 last_cur_ticks;
+	uint32 next_tick;
+	std::unique_lock<std::recursive_mutex> draw_lock;
+	std::thread draw_thread;
 };
 
 /** Factory for the SDL video driver. */
