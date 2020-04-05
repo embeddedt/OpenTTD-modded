@@ -128,6 +128,7 @@ struct GUISettings {
 	uint32 show_scrolling_viewport_on_map;   ///< when a no map viewport is scrolled, its location is marked on the other map viewports
 	bool   show_bridges_on_map;              ///< bridges are rendered on a viewport in map mode
 	bool   show_tunnels_on_map;              ///< tunnels are rendered on a viewport in map mode
+	bool   hide_industry_labels;			 ///< hide industry labels on a viewport
 	uint32 show_vehicle_route;               ///< show a vehicle's route when its orders/timetable window is focused
 	uint32 dash_level_of_route_lines;        ///< the dash level passed to GfxDrawLine() (plain if 0)
 	bool   use_owner_colour_for_tunnelbridge;///< bridges and tunnels are rendered with their owner's colour

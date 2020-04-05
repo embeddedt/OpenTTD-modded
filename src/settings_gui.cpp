@@ -1620,6 +1620,7 @@ static SettingsContainer &GetSettingsTree()
 					viewport_map->Add(new SettingEntry("gui.show_bridges_on_map"));
 					viewport_map->Add(new SettingEntry("gui.show_tunnels_on_map"));
 					viewport_map->Add(new SettingEntry("gui.use_owner_colour_for_tunnelbridge"));
+					viewport_map->Add(new SettingEntry("gui.hide_industry_labels"));
 				}
 
 				viewports->Add(new SettingEntry("gui.auto_scrolling"));

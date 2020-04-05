@@ -13,6 +13,7 @@
 #include "station_base.h"
 #include "landscape.h"
 #include "viewport_func.h"
+#include "viewport_kdtree.h"
 #include "command_func.h"
 #include "town.h"
 #include "news_func.h"
@@ -1784,6 +1785,8 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 
 	i->prod_level = PRODLEVEL_DEFAULT;
 
+	i->UpdateVirtCoord();
+
 	/* Call callbacks after the regular fields got initialised. */
 
 	if (HasBit(indspec->callback_mask, CBM_IND_PROD_CHANGE_BUILD)) {
@@ -2328,6 +2331,33 @@ void Industry::RecomputeProductionMultipliers()
 	/* Rates are rounded up, so e.g. oilrig always produces some passengers */
 	for (size_t i = 0; i < lengthof(this->production_rate); i++) {
 		this->production_rate[i] = min(CeilDiv(indspec->production_rate[i] * this->prod_level, PRODLEVEL_DEFAULT), 0xFF);
+	}
+}
+
+/**
+ * Update the virtual coords needed to draw the industry sign.
+ */
+void Industry::UpdateVirtCoord()
+{
+	const TileIndex xy = this->location.GetCenterTile();
+	Point pt = RemapCoords2(TileX(xy) * TILE_SIZE, TileY(xy) * TILE_SIZE);
+
+	pt.y -= 32 * ZOOM_LVL_BASE;
+
+	if (_viewport_sign_kdtree_valid && this->sign.kdtree_valid) _viewport_sign_kdtree.Remove(ViewportSignKdtreeItem::MakeIndustry(this->index));
+
+	SetDParam(0, this->index);
+	bool shown = !_settings_client.gui.hide_industry_labels;
+	this->sign.UpdatePosition(shown ? ZOOM_LVL_DRAW_SPR : ZOOM_LVL_END, pt.x, pt.y, STR_VIEWPORT_INDUSTRY);
+
+	if (_viewport_sign_kdtree_valid) _viewport_sign_kdtree.Insert(ViewportSignKdtreeItem::MakeIndustry(this->index));
+
+	SetWindowDirty(WC_INDUSTRY_VIEW, this->index);
+}
+
+void UpdateAllIndustryVirtCoords() {
+	for (Industry *ind : Industry::Iterate()) {
+		ind->UpdateVirtCoord();
 	}
 }
 

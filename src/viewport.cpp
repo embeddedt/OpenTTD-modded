@@ -1683,14 +1683,17 @@ static void ViewportAddKdtreeSigns(DrawPixelInfo *dpi, bool towns_only)
 	bool show_towns = HasBit(_display_opt, DO_SHOW_TOWN_NAMES) && _game_mode != GM_MENU;
 	bool show_signs = HasBit(_display_opt, DO_SHOW_SIGNS) && !IsInvisibilitySet(TO_SIGNS) && !towns_only;
 	bool show_competitors = HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS) && !towns_only;
+	bool show_industries = !_settings_client.gui.hide_industry_labels && _game_mode != GM_MENU && !towns_only;
 
 	const BaseStation *st;
 	const Sign *si;
+	const Industry *ind;
 
 	/* Collect all the items first and draw afterwards, to ensure layering */
 	std::vector<const BaseStation *> stations;
 	std::vector<const Town *> towns;
 	std::vector<const Sign *> signs;
+	std::vector<const Industry *> industries;
 
 	_viewport_sign_kdtree.FindContained(search_rect.left, search_rect.top, search_rect.right, search_rect.bottom, [&](const ViewportSignKdtreeItem & item) {
 		switch (item.type) {
@@ -1731,6 +1734,12 @@ static void ViewportAddKdtreeSigns(DrawPixelInfo *dpi, bool towns_only)
 				signs.push_back(si);
 				break;
 
+			case ViewportSignKdtreeItem::VKI_INDUSTRY:
+				if(!show_industries) break;
+				ind = Industry::Get(item.id.industry);
+
+				industries.push_back(ind);
+				break;
 			default:
 				NOT_REACHED();
 		}
@@ -1742,6 +1751,11 @@ static void ViewportAddKdtreeSigns(DrawPixelInfo *dpi, bool towns_only)
 		ViewportAddString(dpi, ZOOM_LVL_OUT_16X, &t->cache.sign,
 			t->Label(), t->SmallLabel(), STR_VIEWPORT_TOWN_TINY_BLACK,
 			t->index, t->cache.population);
+	}
+
+	for (const auto *ind : industries) {
+		ViewportAddString(dpi, ZOOM_LVL_OUT_16X, &ind->sign, STR_VIEWPORT_INDUSTRY,
+			STR_VIEWPORT_INDUSTRY + 1, STR_VIEWPORT_INDUSTRY_TINY_BLACK, ind->index);
 	}
 
 	for (const auto *si : signs) {
@@ -3726,6 +3740,8 @@ static bool CheckClickOnViewportSign(const ViewPort *vp, int x, int y, const Vie
 }
 
 
+extern void ShowIndustryViewWindow(int industry);
+
 /**
  * Check whether any viewport sign was clicked, and dispatch the click.
  * @param vp the clicked viewport
@@ -3748,11 +3764,13 @@ static bool CheckClickOnViewportSign(const ViewPort *vp, int x, int y)
 	bool show_towns = HasBit(_display_opt, DO_SHOW_TOWN_NAMES);
 	bool show_signs = HasBit(_display_opt, DO_SHOW_SIGNS) && !IsInvisibilitySet(TO_SIGNS);
 	bool show_competitors = HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS);
+	bool show_industries = !_settings_client.gui.hide_industry_labels && !IsInvisibilitySet(TO_SIGNS);
 
 	/* Topmost of each type that was hit */
 	BaseStation *st = nullptr, *last_st = nullptr;
 	Town *t = nullptr, *last_t = nullptr;
 	Sign *si = nullptr, *last_si = nullptr;
+	Industry *ind = nullptr, *last_ind = nullptr;
 
 	/* See ViewportAddKdtreeSigns() for details on the search logic */
 	_viewport_sign_kdtree.FindContained(search_rect.left, search_rect.top, search_rect.right, search_rect.bottom, [&](const ViewportSignKdtreeItem & item) {
@@ -3784,6 +3802,12 @@ static bool CheckClickOnViewportSign(const ViewPort *vp, int x, int y)
 				if (CheckClickOnViewportSign(vp, x, y, &si->sign)) last_si = si;
 				break;
 
+			case ViewportSignKdtreeItem::VKI_INDUSTRY:
+				if(!show_industries) break;
+
+				ind = Industry::Get(item.id.industry);
+				if (CheckClickOnViewportSign(vp, x, y, &ind->sign)) last_ind = ind;
+				break;
 			default:
 				NOT_REACHED();
 		}
@@ -3802,6 +3826,9 @@ static bool CheckClickOnViewportSign(const ViewPort *vp, int x, int y)
 		return true;
 	} else if (last_si != nullptr) {
 		HandleClickOnSign(last_si);
+		return true;
+	} else if(last_ind != nullptr) {
+		ShowIndustryViewWindow(last_ind->index);
 		return true;
 	} else {
 		return false;
@@ -3822,6 +3849,23 @@ ViewportSignKdtreeItem ViewportSignKdtreeItem::MakeStation(StationID id)
 
 	/* Assume the sign can be a candidate for drawing, so measure its width */
 	_viewport_sign_maxwidth = max<int>(_viewport_sign_maxwidth, st->sign.width_normal);
+
+	return item;
+}
+
+ViewportSignKdtreeItem ViewportSignKdtreeItem::MakeIndustry(IndustryID id)
+{
+	ViewportSignKdtreeItem item;
+	item.type = VKI_INDUSTRY;
+	item.id.industry = id;
+
+	const Industry *i = Industry::Get(id);
+	assert(i->sign.kdtree_valid);
+	item.center = i->sign.center;
+	item.top = i->sign.top;
+
+	/* Assume the sign can be a candidate for drawing, so measure its width */
+	_viewport_sign_maxwidth = max<int>(_viewport_sign_maxwidth, i->sign.width_normal);
 
 	return item;
 }
@@ -3907,6 +3951,10 @@ void RebuildViewportKdtree()
 
 	for (const Sign *sign : Sign::Iterate()) {
 		if (sign->sign.kdtree_valid) items.push_back(ViewportSignKdtreeItem::MakeSign(sign->index));
+	}
+
+	for (const Industry *industry : Industry::Iterate()) {
+		if (industry->sign.kdtree_valid) items.push_back(ViewportSignKdtreeItem::MakeIndustry(industry->index));
 	}
 
 	_viewport_sign_kdtree.Build(items.begin(), items.end());

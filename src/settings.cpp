@@ -70,6 +70,7 @@
 #include "void_map.h"
 #include "station_base.h"
 #include "infrastructure_func.h"
+#include "industry_type.h"
 
 #if defined(WITH_FREETYPE) || defined(_WIN32)
 #define HAS_TRUETYPE_FONT
@@ -1433,6 +1434,13 @@ static bool CheckSharingWater(int32 p1)
 static bool CheckSharingAir(int32 p1)
 {
 	return CheckSharingChangePossible(VEH_AIRCRAFT);
+}
+
+static bool IndustryLabelsHideChange(int32 i)
+{
+	UpdateAllIndustryVirtCoords();
+	MarkWholeScreenDirty();
+	return true;
 }
 
 static bool MaxVehiclesChanged(int32 p1)

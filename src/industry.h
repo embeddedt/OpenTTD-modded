@@ -59,6 +59,7 @@ struct Industry : IndustryPool::PoolItem<&_industry_pool> {
 	byte random_colour;                 ///< randomized colour of the industry, for display purpose
 	Year last_prod_year;                ///< last year of production
 	byte was_cargo_delivered;           ///< flag that indicate this has been the closest industry chosen for cargo delivery by a station. see DeliverGoodsToIndustry
+	TrackedViewportSign sign;           ///< Location of name sign, UpdateVirtCoord updates this
 
 	PartOfSubsidy part_of_subsidy;      ///< NOSAVE: is this industry a source/destination of a subsidy?
 	StationList stations_near;          ///< NOSAVE: List of nearby stations.
@@ -164,6 +165,7 @@ struct Industry : IndustryPool::PoolItem<&_industry_pool> {
 		return this->cached_name.c_str();
 	}
 
+	void UpdateVirtCoord();
 private:
 	void FillCachedName() const;
 

@@ -15,6 +15,7 @@
 #include "station_base.h"
 #include "town_type.h"
 #include "signs_base.h"
+#include "industry_type.h"
 
 struct ViewportSignKdtreeItem {
 	enum ItemType : uint16 {
@@ -22,12 +23,14 @@ struct ViewportSignKdtreeItem {
 		VKI_WAYPOINT,
 		VKI_TOWN,
 		VKI_SIGN,
+		VKI_INDUSTRY
 	};
 	ItemType type;
 	union {
 		StationID station;
 		TownID town;
 		SignID sign;
+		IndustryID industry;
 	} id;
 	int32 center;
 	int32 top;
@@ -43,6 +46,8 @@ struct ViewportSignKdtreeItem {
 				return this->id.town == other.id.town;
 			case VKI_SIGN:
 				return this->id.sign == other.id.sign;
+			case VKI_INDUSTRY:
+				return this->id.industry == other.id.industry;
 			default:
 				NOT_REACHED();
 		}
@@ -59,6 +64,8 @@ struct ViewportSignKdtreeItem {
 				return this->id.town < other.id.town;
 			case VKI_SIGN:
 				return this->id.sign < other.id.sign;
+			case VKI_INDUSTRY:
+				return this->id.industry < other.id.industry;
 			default:
 				NOT_REACHED();
 		}
@@ -68,6 +75,7 @@ struct ViewportSignKdtreeItem {
 	static ViewportSignKdtreeItem MakeWaypoint(StationID id);
 	static ViewportSignKdtreeItem MakeTown(TownID id);
 	static ViewportSignKdtreeItem MakeSign(SignID id);
+	static ViewportSignKdtreeItem MakeIndustry(IndustryID id);
 };
 
 inline int32 Kdtree_ViewportSignXYFunc(const ViewportSignKdtreeItem &item, int dim)

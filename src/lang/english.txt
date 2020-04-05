@@ -1626,6 +1626,8 @@ STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY                            :Max memory usag
 STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_HELPTEXT                   :How much memory a single script may consume before it's forcibly terminated. This may need to be increased for large maps.
 STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_VALUE                      :{COMMA} MiB
 
+STR_CONFIG_SETTING_GUI_HIDE_INDUSTRY_LABELS                     :Hide industry labels on map
+
 STR_CONFIG_SETTING_SHARING_RAIL                                 :Enable sharing of railways: {STRING2}
 STR_CONFIG_SETTING_SHARING_ROAD                                 :Enable sharing of road stops and depots: {STRING2}
 STR_CONFIG_SETTING_SHARING_WATER                                :Enable sharing of docks and ship depots: {STRING2}
@@ -6054,6 +6056,10 @@ STR_VIEWPORT_SIGN_SMALL_WHITE                                   :{TINY_FONT}{WHI
 
 STR_VIEWPORT_STATION                                            :{STATION} {STATION_FEATURES}
 STR_VIEWPORT_STATION_TINY                                       :{TINY_FONT}{STATION}
+
+STR_VIEWPORT_INDUSTRY                                           :{WHITE}{INDUSTRY}
+STR_VIEWPORT_INDUSTRY_TINY                                      :{TINY_FONT}{WHITE}{INDUSTRY}
+STR_VIEWPORT_INDUSTRY_TINY_BLACK                                :{TINY_FONT}{BLACK}{INDUSTRY}
 
 STR_VIEWPORT_WAYPOINT                                           :{WAYPOINT}
 STR_VIEWPORT_WAYPOINT_TINY                                      :{TINY_FONT}{WAYPOINT}

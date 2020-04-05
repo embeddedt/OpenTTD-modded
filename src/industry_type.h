@@ -41,4 +41,6 @@ static const int INDUSTRY_NUM_OUTPUTS = 16; ///< Number of cargo types an indust
 
 void CheckIndustries();
 
+void UpdateAllIndustryVirtCoords();
+
 #endif /* INDUSTRY_TYPE_H */
