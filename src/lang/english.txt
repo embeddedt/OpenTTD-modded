@@ -1275,6 +1275,9 @@ STR_CONFIG_SETTING_FREIGHT_TRAINS_HELPTEXT                      :Set the impact 
 STR_CONFIG_SETTING_PLANE_SPEED                                  :Plane speed factor: {STRING2}
 STR_CONFIG_SETTING_PLANE_SPEED_HELPTEXT                         :Set the relative speed of planes compared to other vehicle types, to reduce the amount of income of transport by aircraft
 STR_CONFIG_SETTING_PLANE_SPEED_VALUE                            :1 / {COMMA}
+STR_CONFIG_SETTING_PLANE_TAXI_SPEED                                  :Plane taxiing speed factor: {STRING2}
+STR_CONFIG_SETTING_PLANE_TAXI_SPEED_HELPTEXT                         :Control how fast the plane taxies on the runway
+STR_CONFIG_SETTING_PLANE_TAXI_SPEED_VALUE                            :{COMMA} / 4
 STR_CONFIG_SETTING_PLANE_CRASHES                                :Number of plane crashes: {STRING2}
 STR_CONFIG_SETTING_PLANE_CRASHES_HELPTEXT                       :Set the chance of a random aircraft crash happening.{}* Large airplanes always have a risk of crashing when landing on small airports
 STR_CONFIG_SETTING_PLANE_CRASHES_NONE                           :None*

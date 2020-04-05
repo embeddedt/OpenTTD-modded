@@ -531,6 +531,7 @@ struct VehicleSettings {
 	UnitID max_aircraft;                     ///< max planes in game per company
 	UnitID max_ships;                        ///< max ships in game per company
 	uint8  plane_speed;                      ///< divisor for speed of aircraft
+	uint8  plane_taxi_speed;				 ///< relative taxiing speed of plane (divide by 4)
 	uint8  freight_trains;                   ///< value to multiply the weight of cargo by
 	bool   dynamic_engines;                  ///< enable dynamic allocation of engine data
 	bool   never_expire_vehicles;            ///< never expire vehicles

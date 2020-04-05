@@ -640,6 +640,10 @@ enum AircraftSpeedLimits {
 	SPEED_LIMIT_NONE     = 0xFFFF,  ///< No environmental speed limit. Speed limit is type dependent
 };
 
+static uint GetSpeedLimitWhileTaxiing(Aircraft *v) {
+	return (SPEED_LIMIT_TAXI / 4) * _settings_game.vehicle.plane_taxi_speed;
+}
+
 /**
  * Sets the new speed for an aircraft
  * @param v The vehicle for which the speed should be obtained
@@ -995,6 +999,8 @@ static bool AircraftController(Aircraft *v)
 	/* Need exact position? */
 	if (!(amd.flag & AMED_EXACTPOS) && dist <= (amd.flag & AMED_SLOWTURN ? 8U : 4U)) return true;
 
+	uint taxispeed = GetSpeedLimitWhileTaxiing(v);
+
 	/* At final pos? */
 	if (dist == 0) {
 		/* Change direction smoothly to final direction. */
@@ -1006,7 +1012,7 @@ static bool AircraftController(Aircraft *v)
 			return true;
 		}
 
-		if (!UpdateAircraftSpeed(v, SPEED_LIMIT_TAXI)) return false;
+		if (!UpdateAircraftSpeed(v, taxispeed)) return false;
 
 		v->direction = ChangeDir(v->direction, dirdiff > DIRDIFF_REVERSE ? DIRDIFF_45LEFT : DIRDIFF_45RIGHT);
 		v->cur_speed >>= 1;
@@ -1015,18 +1021,18 @@ static bool AircraftController(Aircraft *v)
 		return false;
 	}
 
-	if (amd.flag & AMED_BRAKE && v->cur_speed > SPEED_LIMIT_TAXI * _settings_game.vehicle.plane_speed) {
+	if (amd.flag & AMED_BRAKE && v->cur_speed > taxispeed * _settings_game.vehicle.plane_speed) {
 		MaybeCrashAirplane(v);
 		if ((v->vehstatus & VS_CRASHED) != 0) return false;
 	}
 
-	uint speed_limit = SPEED_LIMIT_TAXI;
+	uint speed_limit = taxispeed;
 	bool hard_limit = true;
 
 	if (amd.flag & AMED_NOSPDCLAMP)   speed_limit = SPEED_LIMIT_NONE;
 	if (amd.flag & AMED_HOLD)       { speed_limit = SPEED_LIMIT_HOLD;     hard_limit = false; }
 	if (amd.flag & AMED_LAND)       { speed_limit = SPEED_LIMIT_APPROACH; hard_limit = false; }
-	if (amd.flag & AMED_BRAKE)      { speed_limit = SPEED_LIMIT_TAXI;     hard_limit = false; }
+	if (amd.flag & AMED_BRAKE)      { speed_limit = taxispeed;     hard_limit = false; }
 
 	count = UpdateAircraftSpeed(v, speed_limit, hard_limit);
 	if (count == 0) return false;
