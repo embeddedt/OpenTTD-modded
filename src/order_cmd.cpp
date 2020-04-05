@@ -333,11 +333,13 @@ void InvalidateVehicleOrder(const Vehicle *v, int data)
 		/* Calls SetDirty() too */
 		InvalidateWindowData(WC_VEHICLE_ORDERS,    v->index, data);
 		InvalidateWindowData(WC_VEHICLE_TIMETABLE, v->index, data);
+		InvalidateWindowData(WC_VEHICLE_TRIP_HISTORY, v->index, data);
 		return;
 	}
 
 	SetWindowDirty(WC_VEHICLE_ORDERS,    v->index);
 	SetWindowDirty(WC_VEHICLE_TIMETABLE, v->index);
+	SetWindowDirty(WC_VEHICLE_TRIP_HISTORY, v->index);
 }
 
 /**

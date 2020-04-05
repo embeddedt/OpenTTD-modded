@@ -824,6 +824,7 @@ void UpdateVehicleTimetable(Vehicle *v, bool travelling)
 		 * current time. Otherwise set the late counter appropriately to when
 		 * the vehicle should have arrived. */
 		just_started = !HasBit(v->vehicle_flags, VF_TIMETABLE_STARTED);
+		v->trip_history.NewRound();
 
 		if (v->timetable_start != 0) {
 			v->lateness_counter = _scaled_date_ticks - ((_settings_game.economy.day_length_factor * ((DateTicksScaled) v->timetable_start)) + v->timetable_start_subticks);

@@ -413,6 +413,7 @@ train.h
 transparency.h
 transparency_gui.h
 transport_type.h
+triphistory.h
 tunnelbridge.h
 tunnel_base.h
 vehicle_base.h
@@ -550,6 +551,7 @@ town_gui.cpp
 train_gui.cpp
 transparency_gui.cpp
 tree_gui.cpp
+triphistory_gui.cpp
 vehicle_gui.cpp
 viewport_gui.cpp
 waypoint_gui.cpp
@@ -642,6 +644,7 @@ timetable_cmd.cpp
 town_cmd.cpp
 train_cmd.cpp
 tree_cmd.cpp
+triphistory_cmd.cpp
 tunnelbridge_cmd.cpp
 vehicle_cmd.cpp
 void_cmd.cpp

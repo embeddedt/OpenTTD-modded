@@ -38,6 +38,7 @@
 #include "subsidy_func.h"
 #include "station_base.h"
 #include "waypoint_base.h"
+#include "triphistory.h"
 #include "economy_base.h"
 #include "core/pool_func.hpp"
 #include "core/backup_type.hpp"
@@ -1208,6 +1209,11 @@ CargoPayment::~CargoPayment()
 	if (this->CleaningPool()) return;
 
 	this->front->cargo_payment = nullptr;
+
+	Station *st_last = Station::GetIfValid(this->front->last_loading_station);
+	Station *st_curr = Station::GetIfValid(this->current_station);
+	this->front->trip_history.AddValue(this->route_profit, _date, this->front->trip_occupancy, st_last != NULL && st_curr != NULL ? DistanceManhattan(st_last->xy, st_curr->xy) : 0);
+	InvalidateWindowData(WC_VEHICLE_TRIP_HISTORY, this->front->index);
 
 	if (this->visual_profit == 0 && this->visual_transfer == 0) return;
 

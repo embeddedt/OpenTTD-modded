@@ -5047,6 +5047,35 @@ STR_AI_LIST_AUTHOR                                              :{LTBLUE}Author:
 STR_AI_LIST_VERSION                                             :{LTBLUE}Version: {ORANGE}{NUM}
 STR_AI_LIST_URL                                                 :{LTBLUE}URL: {ORANGE}{RAW_STRING}
 
+######## Trip History
+STR_TRIP_HISTORY                                                :{BLACK}History
+STR_TRIP_HISTORY_TOOLTIP                                        :{BLACK}Shows the history of the last 10 trips
+STR_TRIP_HISTORY_RECEIVED_LABEL                                 :{BLACK}Received
+STR_TRIP_HISTORY_RECEIVED_LABEL_TIP                             :{BLACK}The date when the cargo was received
+STR_TRIP_HISTORY_PROFIT_LABEL                                   :{BLACK}Profit
+STR_TRIP_HISTORY_PROFIT_LABEL_TIP                               :{BLACK}The profit received from each trip
+STR_TRIP_HISTORY_PERCHANGE_LABEL                                :{BLACK}% Change
+STR_TRIP_HISTORY_PERCHANGE_LABEL_TIP                            :{BLACK}Percentage change between the current and last trips profit
+STR_TRIP_HISTORY_TBT_LABEL                                      :{BLACK}TBT
+STR_TRIP_HISTORY_TBT_LABEL_TIP                                  :{BLACK}Time taken between the current and last trip
+STR_TRIP_HISTORY_DAYCHANGE_LABEL                                :{BLACK}Change
+STR_TRIP_HISTORY_DAYCHANGE_LABEL_TIP                            :{BLACK}Change (in days) between the current and last trips length
+STR_TRIP_HISTORY_OCCUPANCY_LABEL                                :{BLACK}Occupancy
+STR_TRIP_HISTORY_OCCUPANCY_LABEL_TIP                            :{BLACK}Average occupancy (in percent) during the trip
+STR_TRIP_HISTORY_TOTALINCOME                                    :{BLACK}Total income for the last {NUM} trip{P "" s}:{LTBLUE} {CURRENCY_SHORT} {BLACK}({LTBLUE}{CURRENCY_SHORT} {BLACK} per day)
+STR_TRIP_HISTORY_DAYAVERAGE                                     :{BLACK}Average trip length:{LTBLUE} {NUM} day{P "" s}
+STR_TRIP_HISTORY_DAYAVERAGE_IMPROVEMENT                         :{BLACK}Improvement over last {NUM} trip{P "" s}:{LTBLUE} {NUM}%
+STR_TRIP_HISTORY_CAPTION                                        :{WHITE}{VEHICLE} Trip History
+STR_TRIP_HISTORY_DATE                                           :{BLACK}{DATE_LONG}
+STR_TRIP_HISTORY_PROFIT                                         :{BLACK}{CURRENCY_SHORT}
+STR_TRIP_HISTORY_VIRTUAL_PROFIT                                 :{YELLOW}{CURRENCY_SHORT}
+STR_TRIP_HISTORY_PROFITCHANGEPOS                                :{GREEN}+{NUM}%
+STR_TRIP_HISTORY_PROFITCHANGENEG                                :{RED}{NUM}%
+STR_TRIP_HISTORY_TBT                                            :{BLACK}{NUM} day{P "" s}
+STR_TRIP_HISTORY_TBTCHANGEPOS                                   :{RED}+{NUM}
+STR_TRIP_HISTORY_TBTCHANGENEG                                   :{GREEN}{NUM}
+STR_TRIP_HISTORY_OCCUPANCY                                      :{BLACK}{NUM}%
+
 STR_AI_LIST_ACCEPT                                              :{BLACK}Accept
 STR_AI_LIST_ACCEPT_TOOLTIP                                      :{BLACK}Select highlighted script
 STR_AI_LIST_CANCEL                                              :{BLACK}Cancel

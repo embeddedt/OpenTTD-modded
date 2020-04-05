@@ -79,6 +79,7 @@ enum SlXvFeatureIndex {
 	XSLFI_SPEED_RESTRICTION,                      ///< Train speed restrictions
 	XSLFI_STATION_GOODS_EXTRA,                    ///< Extra station goods entry statuses,
 	XSLFI_HUGE_AIRPORTS,						  ///< Huge airports
+	XSLFI_TRIP_HISTORY,							  ///< Trip history
 
 	XSLFI_RIFF_HEADER_60_BIT,                     ///< Size field in RIFF chunk header is 60 bit
 	XSLFI_HEIGHT_8_BIT,                           ///< Map tile height is 8 bit instead of 4 bit, but savegame version may be before this became true in trunk

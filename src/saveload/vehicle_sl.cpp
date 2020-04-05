@@ -776,7 +776,37 @@ const SaveLoad *GetVehicleDescription(VehicleType vt)
 		SLE_CONDNULL_X(2, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP)),
 
 		SLE_CONDNULL_X(160, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP)),
-
+		// Trip History Arrays
+		SLE_CONDVAR_X(Vehicle, trip_history.t[0].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[1].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[2].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[3].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[4].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[5].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[6].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[7].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[8].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[9].profit,     SLE_INT64,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[0].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[1].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[2].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[3].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[4].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[5].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[6].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[7].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[8].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[9].date,       SLE_INT32,     SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[0].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[1].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[2].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[3].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[4].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[5].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[6].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[7].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[8].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
+		SLE_CONDVAR_X(Vehicle, trip_history.t[9].occupancy,  SLE_INT8,      SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TRIP_HISTORY)),
 		     SLE_END()
 	};
 
