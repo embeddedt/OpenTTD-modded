@@ -113,7 +113,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_FLOW_STAT_FLAGS,        XSCF_NULL,                1,   1, "flow_stat_flags",           nullptr, nullptr, nullptr        },
 	{ XSLFI_SPEED_RESTRICTION,      XSCF_NULL,                1,   1, "speed_restriction",         nullptr, nullptr, "VESR"         },
 	{ XSLFI_STATION_GOODS_EXTRA,    XSCF_NULL,                1,   1, "station_goods_extra",       nullptr, nullptr, nullptr        },
-	{ XSLFI_HUGE_AIRPORTS,   	    XSCF_NULL,                1,   1, "huge_airports",             nullptr, nullptr, nullptr        },
+	{ XSLFI_HUGE_AIRPORTS,   	    XSCF_NULL,                2,   2, "huge_airports",             nullptr, nullptr, nullptr        },
 	{ XSLFI_TRIP_HISTORY,   	    XSCF_NULL,                1,   1, "trip_history",              nullptr, nullptr, nullptr        },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };

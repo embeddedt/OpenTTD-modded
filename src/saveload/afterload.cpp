@@ -880,7 +880,18 @@ bool AfterLoadGame()
 			}
 		}
 	}
-
+	if(SlXvIsFeaturePresent(XSLFI_HUGE_AIRPORTS, 1, 1)) {
+		/* This version of the JGR huge airports patch shifted the IDs of the airports, which caused other problems. */
+		for (Station *st : Station::Iterate()) {
+			if (st->airport.tile == INVALID_TILE) continue;
+			if (st->airport.type == 11) { /* oil rig */
+				st->airport.type = AT_OILRIG; /* Shift ID */
+			} else if(st->airport.type == 9) /* intercontinental 2 */
+				st->airport.type = AT_INTERCONTINENTAL2;
+			else if(st->airport.type == 10) /* circle */
+				st->airport.type = AT_CIRCLE;
+		}
+	}
 	if (SlXvIsFeaturePresent(XSLFI_SPRINGPP)) {
 		/*
 		 * Reject huge airports
@@ -909,10 +920,12 @@ bool AfterLoadGame()
 		}
 	}
 
-	if (SlXvIsFeaturePresent(XSLFI_SPRINGPP, 1, 1)) {
+	if (SlXvIsFeaturePresent(XSLFI_HUGE_AIRPORTS, 1, 1) || SlXvIsFeaturePresent(XSLFI_SPRINGPP, 1, 1)) {
 		/*
 		 * Reject helicopters aproaching oil rigs using the wrong aircraft movement data
-		 * Annoyingly SpringPP v2.0.102 has a bug where it uses the same ID for AT_INTERCONTINENTAL2 and AT_OILRIG
+		 * Annoyingly SpringPP v2.0.102 has a bug where it uses the same ID for AT_INTERCONTINENTAL2 and AT_OILRIG.
+		 * The initial commit of the huge airports patch also had a bug where IDs had been swapped,
+		 * which caused issues with old savegames loaded in that version.
 		 * Do this here as AfterLoadVehicles can also check it indirectly via the newgrf code.
 		 */
 		for (Aircraft *v : Aircraft::Iterate()) {

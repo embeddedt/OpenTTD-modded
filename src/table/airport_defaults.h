@@ -773,9 +773,9 @@ extern const AirportSpec _origin_airport_specs[] = {
 	AS(helidepot,        2, 2,  1976, MAX_YEAR,  4,  2,  7, ATP_TTDP_SMALL,    APC_HELIPORT, STR_AIRPORT_HELIDEPOT,        SPR_AIRPORT_PREVIEW_HELIDEPOT),
 	AS(intercontinental, 9, 11, 2002, MAX_YEAR, 10, 25, 72, ATP_TTDP_LARGE,    APC_HUB,      STR_AIRPORT_INTERCONTINENTAL, SPR_AIRPORT_PREVIEW_INTERCONTINENTAL),
 	AS(helistation,      4, 2,  1980, MAX_YEAR,  4,  3, 14, ATP_TTDP_SMALL,    APC_HELIPORT, STR_AIRPORT_HELISTATION,      SPR_AIRPORT_PREVIEW_HELISTATION),
-	AS(intercontinental2,12,10, 2005, MAX_YEAR, 11, 30, 80, ATP_TTDP_LARGE,    APC_HUGE,     STR_AIRPORT_INTERCONTINENTAL2, 0),
-	AS_C(circle,         15,15, 2015, MAX_YEAR, 15, 50,150, 30, ATP_TTDP_LARGE,APC_HUGE,     STR_AIRPORT_CIRCLE,            0),
 	AS_GENERIC(&_airportfta_oilrig, nullptr, _default_airports_rotation, 0, nullptr, 0, 1, 1, 0, 4, 0, 0, 0, 0, ATP_TTDP_OILRIG, APC_HELIPORT, STR_NULL, 0, false),
+	AS(intercontinental2,12,10, 2005, MAX_YEAR, 11, 30, 80, ATP_TTDP_LARGE,    APC_HUGE,     STR_AIRPORT_INTERCONTINENTAL2, 0),
+	AS_C(circle,         15,15, 2015, MAX_YEAR, 15, 50,150, 30, ATP_TTDP_LARGE,APC_HUGE,     STR_AIRPORT_CIRCLE,            0)
 };
 
 assert_compile(NEW_AIRPORT_OFFSET == lengthof(_origin_airport_specs));

@@ -35,9 +35,9 @@ enum AirportTypes {
 	AT_HELIDEPOT          =   6, ///< Heli depot.
 	AT_INTERCON           =   7, ///< Intercontinental airport.
 	AT_HELISTATION        =   8, ///< Heli station airport.
-    AT_INTERCONTINENTAL2  =   9, ///< Intercontinental airport 2.
-    AT_CIRCLE             =  10, ///< Circle airport.
-	AT_OILRIG             =  11, ///< Oilrig airport.
+	AT_OILRIG             =   9, ///< Oilrig airport.
+	AT_INTERCONTINENTAL2  =  10, ///< Intercontinental airport 2.
+    AT_CIRCLE             =  11, ///< Circle airport.
 	NEW_AIRPORT_OFFSET    =  12, ///< Number of the first newgrf airport.  
 	NUM_AIRPORTS          = 128, ///< Maximal number of airports.
 	NUM_AIRPORTS_PER_GRF  = 128,
