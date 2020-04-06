@@ -1291,7 +1291,7 @@ struct StationViewWindow : public Window {
 	/** Height of the #WID_SV_ACCEPT_RATING_LIST widget for different views. */
 	enum AcceptListHeight {
 		ALH_RATING  = 13, ///< Height of the cargo ratings view.
-		ALH_ACCEPTS = 3,  ///< Height of the accepted cargo view.
+		ALH_ACCEPTS = 4,  ///< Height of the accepted cargo view.
 	};
 
 	static const StringID _sort_names[];  ///< Names of the sorting options in the dropdown.
@@ -1845,6 +1845,16 @@ struct StationViewWindow : public Window {
 		}
 		SetDParam(0, cargo_mask);
 		int bottom = DrawStringMultiLine(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, r.top + WD_FRAMERECT_TOP, INT32_MAX, STR_STATION_VIEW_ACCEPTS_CARGO);
+
+		cargo_mask = 0;
+		CargoArray cargoes = GetProductionAroundRect(st->GetCatchmentRect());
+
+		/* Convert cargo counts to a set of cargo bits, and draw the result. */
+		for (CargoID i = 0; i < NUM_CARGO; i++) {
+			if (cargoes[i] >= 1U) SetBit(cargo_mask, i);
+		}
+		SetDParam(0, cargo_mask);
+		bottom = DrawStringMultiLine(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, bottom + WD_PAR_VSEP_WIDE, INT32_MAX, STR_STATION_VIEW_SUPPLIES_CARGO);
 		return CeilDiv(bottom - r.top - WD_FRAMERECT_TOP, FONT_HEIGHT_NORMAL);
 	}
 

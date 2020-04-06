@@ -528,6 +528,38 @@ CargoArray GetProductionAroundTiles(TileIndex tile, int w, int h, int rad)
 	return produced;
 }
 
+CargoArray GetProductionAroundRect(Rect rect) {
+	CargoArray produced;
+
+	btree::btree_set<IndustryID> industries;
+
+	/* Loop over all tiles to get the produced cargo of
+	 * everything except industries */
+	for (int y = rect.top; y <= rect.bottom; y++) {
+		for (int x = rect.left; x <= rect.right; x++) {
+			TileIndex tile = TileXY(x, y);
+			if (IsTileType(tile, MP_INDUSTRY)) industries.insert(GetIndustryIndex(tile));
+			AddProducedCargo(tile, produced);
+		}
+	}
+
+	/* Loop over the seen industries. They produce cargo for
+	 * anything that is within 'rad' of any one of their tiles.
+	 */
+	for (IndustryID industry : industries) {
+		const Industry *i = Industry::Get(industry);
+		/* Skip industry with neutral station */
+		if (i->neutral_station != nullptr && !_settings_game.station.serve_neutral_industries) continue;
+
+		for (uint j = 0; j < lengthof(i->produced_cargo); j++) {
+			CargoID cargo = i->produced_cargo[j];
+			if (cargo != CT_INVALID) produced[cargo]++;
+		}
+	}
+
+	return produced;
+}
+
 /**
  * Get the acceptance of cargoes around the tile in 1/8.
  * @param tile Center of the search area
