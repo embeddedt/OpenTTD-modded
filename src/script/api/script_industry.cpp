@@ -84,7 +84,7 @@
 	const Industry *i = ::Industry::Get(industry_id);
 
 	for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
-		if (i->produced_cargo[j] == cargo_id) return i->last_month_production[j];
+		if (i->produced_cargo[j] == cargo_id) return i->past_production[0][j];
 	}
 
 	return -1;
@@ -98,7 +98,7 @@
 	const Industry *i = ::Industry::Get(industry_id);
 
 	for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
-		if (i->produced_cargo[j] == cargo_id) return i->last_month_transported[j];
+		if (i->produced_cargo[j] == cargo_id) return i->past_transported[0][j];
 	}
 
 	return -1;
@@ -112,7 +112,7 @@
 	const Industry *i = ::Industry::Get(industry_id);
 
 	for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
-		if (i->produced_cargo[j] == cargo_id) return ::ToPercent8(i->last_month_pct_transported[j]);
+		if (i->produced_cargo[j] == cargo_id) return ::ToPercent8(i->past_pct_transported[0][j]);
 	}
 
 	return -1;

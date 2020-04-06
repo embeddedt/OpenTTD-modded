@@ -237,8 +237,8 @@ void ShowTooltipForTile(Window *w, const TileIndex tile)
 			for (byte i = 0; i < lengthof(ind->produced_cargo); i++) {
 				if (ind->produced_cargo[i] != CT_INVALID) {
 					SetDParam(0, ind->produced_cargo[i]);
-					SetDParam(1, ind->last_month_production[i]);
-					SetDParam(2, ToPercent8(ind->last_month_pct_transported[i]));
+					SetDParam(1, ind->past_production[0][i]);
+					SetDParam(2, ToPercent8(ind->past_pct_transported[0][i]));
 					buf_pos = GetString(buf_pos, STR_INDUSTRY_VIEW_TRANSPORTED_TOOLTIP_EXTENSION, lastof(buffer));
 				}
 			}

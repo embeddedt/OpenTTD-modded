@@ -673,6 +673,12 @@ public:
 		WC_PERFORMANCE_DETAIL                        = ::WC_PERFORMANCE_DETAIL,
 
 		/**
+		 * Industry production history graph; %Window numbers:
+		 *   - #IndustryID = #IndustryProductionGraphWidgets
+		 */
+		WC_INDUSTRY_PRODUCTION                       = ::WC_INDUSTRY_PRODUCTION,
+
+		/**
 		 * Company infrastructure overview; %Window numbers:
 		 *   - #CompanyID = #CompanyInfrastructureWidgets
 		 */
@@ -1493,6 +1499,18 @@ public:
 		WID_PRD_COMPANY_LAST                         = ::WID_PRD_COMPANY_LAST,                         ///< Last company.
 	};
 
+	/** Widget of the #IndustryProductionGraphWindow class. */
+	enum IndustryProductionGraphWidgets {
+		WID_IP_BACKGROUND                            = ::WID_IP_BACKGROUND,                            ///< Background of the window.
+		WID_IP_GRAPH                                 = ::WID_IP_GRAPH,                                 ///< Graph itself.
+		WID_IP_RESIZE                                = ::WID_IP_RESIZE,                                ///< Resize button.
+		WID_IP_CAPTION                               = ::WID_IP_CAPTION,                               ///< Caption.
+		WID_IP_ENABLE_CARGOES                        = ::WID_IP_ENABLE_CARGOES,                        ///< Enable cargoes button.
+		WID_IP_DISABLE_CARGOES                       = ::WID_IP_DISABLE_CARGOES,                       ///< Disable cargoes button.
+		WID_IP_MATRIX                                = ::WID_IP_MATRIX,                                ///< Cargo list.
+		WID_IP_MATRIX_SCROLLBAR                      = ::WID_IP_MATRIX_SCROLLBAR,                      ///< Cargo list scrollbar.
+	};
+
 	/* automatically generated from ../../widgets/group_widget.h */
 	/** Widgets of the #VehicleGroupWindow class. */
 	enum GroupListWidgets {
@@ -1541,6 +1559,7 @@ public:
 		WID_IV_INFO                                  = ::WID_IV_INFO,                                  ///< Info of the industry.
 		WID_IV_GOTO                                  = ::WID_IV_GOTO,                                  ///< Goto button.
 		WID_IV_DISPLAY                               = ::WID_IV_DISPLAY,                               ///< Display chain button.
+		WID_IV_GRAPH                                 = ::WID_IV_GRAPH,                                 ///< Production history button.
 	};
 
 	/** Widgets of the #IndustryDirectoryWindow class. */

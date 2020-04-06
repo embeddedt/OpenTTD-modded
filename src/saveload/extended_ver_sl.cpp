@@ -116,6 +116,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_HUGE_AIRPORTS,   	    XSCF_NULL,                2,   2, "huge_airports",             nullptr, nullptr, nullptr        },
 	{ XSLFI_TRIP_HISTORY,   	    XSCF_NULL,                1,   1, "trip_history",              nullptr, nullptr, nullptr        },
 	{ XSLFI_PLANE_TAXI_SPEED,   	XSCF_NULL,                1,   1, "plane_taxi_speed",          nullptr, nullptr, nullptr        },
+	{ XSLFI_INDUSTRY_PRODUCTION_HISTORY, XSCF_NULL,           1,   1, "ind_prod_history",          nullptr, nullptr, nullptr        },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };
 
@@ -143,6 +144,8 @@ bool SlXvFeatureTest::IsFeaturePresent(SaveLoadVersion savegame_version, SaveLoa
 
 		case XSLFTO_AND:
 			return savegame_version_ok && feature_ok;
+		case XSLFTO_ANDNOT:
+			return savegame_version_ok && !feature_ok;
 
 		default:
 			NOT_REACHED();

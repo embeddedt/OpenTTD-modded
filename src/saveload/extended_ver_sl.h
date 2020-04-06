@@ -81,6 +81,7 @@ enum SlXvFeatureIndex {
 	XSLFI_HUGE_AIRPORTS,						  ///< Huge airports
 	XSLFI_TRIP_HISTORY,							  ///< Trip history
 	XSLFI_PLANE_TAXI_SPEED,						  ///< Configurable plane taxiing speed
+	XSLFI_INDUSTRY_PRODUCTION_HISTORY,            ///< Industry production history
 
 	XSLFI_RIFF_HEADER_60_BIT,                     ///< Size field in RIFF chunk header is 60 bit
 	XSLFI_HEIGHT_8_BIT,                           ///< Map tile height is 8 bit instead of 4 bit, but savegame version may be before this became true in trunk
@@ -102,7 +103,8 @@ extern uint16 _sl_xv_feature_versions[XSLFI_SIZE];
  */
 enum SlXvFeatureTestOperator {
 	XSLFTO_OR                           = 0,      ///< Test if traditional savegame version is in bounds OR extended feature is in version bounds
-	XSLFTO_AND                                    ///< Test if traditional savegame version is in bounds AND extended feature is in version bounds
+	XSLFTO_AND,                                   ///< Test if traditional savegame version is in bounds AND extended feature is in version bounds
+	XSLFTO_ANDNOT                                 ///< Test if traditional savegame version is in bounds AND extended feature is NOT present
 };
 
 /**

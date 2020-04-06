@@ -21,6 +21,7 @@
 #include "sortlist_type.h"
 #include "core/geometry_func.hpp"
 #include "currency.h"
+#include "industry.h"
 
 #include "widgets/graph_widget.h"
 
@@ -180,6 +181,7 @@ protected:
 	/* The starting month and year that values are plotted against. If month is
 	 * 0xFF, use x_values_start and x_values_increment below instead. */
 	byte month;
+	byte month_increment; ///< month increment between vertical lines. must be divisor of 12.
 	Year year;
 
 	/* These values are used if the graph is being plotted against values
@@ -297,7 +299,10 @@ protected:
 		/* Rect r will be adjusted to contain just the graph, with labels being
 		 * placed outside the area. */
 		r.top    += 5 + GetCharacterHeight(FS_SMALL) / 2;
-		r.bottom -= (this->month == 0xFF ? 1 : 3) * GetCharacterHeight(FS_SMALL) + 4;
+
+		if (this->month != 0xFF) r.bottom -= (this->month_increment == 1 ? 1 : 2) * GetCharacterHeight(FS_SMALL);
+		r.bottom -= GetCharacterHeight(FS_SMALL) + 4;
+
 		r.left   += 9;
 		r.right  -= 5;
 
@@ -379,12 +384,18 @@ protected:
 			byte month = this->month;
 			Year year  = this->year;
 			for (int i = 0; i < this->num_on_x_axis; i++) {
-				SetDParam(0, month + STR_MONTH_ABBREV_JAN);
-				SetDParam(1, month + STR_MONTH_ABBREV_JAN + 2);
-				SetDParam(2, year);
-				DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH, graph_axis_label_colour);
+				if (this->month_increment > 1) {
+					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
+					SetDParam(1, STR_MONTH_ABBREV_JAN + (month + this->month_increment - 1) % 12);
+					SetDParam(2, year);
+					DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH, graph_axis_label_colour);
+				} else {
+					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
+					SetDParam(1, year);
+					DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH, graph_axis_label_colour);
+				}
 
-				month += 3;
+				month += this->month_increment;
 				if (month >= 12) {
 					month = 0;
 					year++;
@@ -470,7 +481,8 @@ protected:
 			format_str_y_axis(format_str_y_axis)
 	{
 		SetWindowDirty(WC_GRAPH_LEGEND, 0);
-		this->num_vert_lines = 24;
+		this->num_vert_lines = GRAPH_NUM_MONTHS;
+		this->month_increment = 3;
 		this->graph_widget = widget;
 	}
 
@@ -493,12 +505,18 @@ public:
 			byte month = this->month;
 			Year year  = this->year;
 			for (int i = 0; i < this->num_on_x_axis; i++) {
-				SetDParam(0, month + STR_MONTH_ABBREV_JAN);
-				SetDParam(1, month + STR_MONTH_ABBREV_JAN + 2);
-				SetDParam(2, year);
-				x_label_width = max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
+				if (this->month_increment > 1) {
+					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
+					SetDParam(1, STR_MONTH_ABBREV_JAN + (month + this->month_increment - 1) % 12);
+					SetDParam(2, year);
+					x_label_width = max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
+				} else {
+					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
+					SetDParam(1, year);
+					x_label_width = max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH).width);
+				}
 
-				month += 3;
+				month += this->month_increment;
 				if (month >= 12) {
 					month = 0;
 					year++;
@@ -515,7 +533,7 @@ public:
 		uint y_label_width = GetStringBoundingBox(STR_GRAPH_Y_LABEL).width;
 
 		size->width  = max<uint>(size->width,  5 + y_label_width + this->num_on_x_axis * (x_label_width + 5) + 9);
-		size->height = max<uint>(size->height, 5 + (1 + MIN_GRAPH_NUM_LINES_Y * 2 + (this->month != 0xFF ? 3 : 1)) * FONT_HEIGHT_SMALL + 4);
+		size->height = max<uint>(size->height, 5 + (1 + MIN_GRAPH_NUM_LINES_Y * 2 + (this->month == 0xFF ? 1 : (this->month_increment == 1 ? 2 : 3))) * FONT_HEIGHT_SMALL + 4);
 		size->height = max<uint>(size->height, size->width / 3);
 	}
 
@@ -557,7 +575,7 @@ public:
 	 * Update the statistics.
 	 * @param initialize Initialize the data structure.
 	 */
-	void UpdateStatistics(bool initialize)
+	virtual void UpdateStatistics(bool initialize)
 	{
 		CompanyMask excluded_companies = _legend_excluded_companies;
 
@@ -571,7 +589,7 @@ public:
 			nums = min(this->num_vert_lines, max(nums, c->num_valid_stat_ent));
 		}
 
-		int mo = (_cur_month / 3 - nums) * 3;
+		int mo = (_cur_month / this->month_increment - nums) * this->month_increment;
 		int yr = _cur_year;
 		while (mo < 0) {
 			yr--;
@@ -1505,6 +1523,267 @@ struct PerformanceRatingDetailWindow : Window {
 };
 
 CompanyID PerformanceRatingDetailWindow::company = INVALID_COMPANY;
+
+/*******************************/
+/* INDUSTRY PRODUCTION HISTORY */
+/*******************************/
+
+struct IndustryProductionGraphWindow : BaseGraphWindow {
+	uint line_height;   ///< Pixel height of each cargo type row.
+	Scrollbar *vscroll; ///< Cargo list scrollbar.
+
+	IndustryProductionGraphWindow(WindowDesc *desc, WindowNumber window_number) :
+			BaseGraphWindow(desc, WID_IP_GRAPH, STR_JUST_COMMA)
+	{
+		this->num_on_x_axis = GRAPH_NUM_MONTHS;
+		this->num_vert_lines = GRAPH_NUM_MONTHS;
+		this->month_increment = 1;
+
+		this->CreateNestedTree();
+		this->vscroll = this->GetScrollbar(WID_IP_MATRIX_SCROLLBAR);
+
+		int count = 0;
+		const Industry *i = Industry::Get(window_number);
+		for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+			if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+			count++;
+		}
+		this->vscroll->SetCount(count);
+
+		this->FinishInitNested(window_number);
+
+		/* Initialise the dataset */
+		this->UpdateStatistics(true);
+	}
+
+	void UpdateExcludedData()
+	{
+		this->excluded_data = 0;
+
+		int index = 0;
+		const Industry *i = Industry::Get(this->window_number);
+		const CargoSpec *cs;
+		for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+			if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+
+			cs = CargoSpec::Get(i->produced_cargo[j]);
+			if (HasBit(_legend_excluded_cargo, cs->Index())) SetBit(this->excluded_data, index);
+			index++;
+		}
+	}
+
+	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	{
+		if (widget != WID_IP_MATRIX) {
+			BaseGraphWindow::UpdateWidgetSize(widget, size, padding, fill, resize);
+			return;
+		}
+
+		const Industry *i = Industry::Get(this->window_number);
+		const CargoSpec *cs;
+		for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+			if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+
+			cs = CargoSpec::Get(i->produced_cargo[j]);
+			SetDParam(0, cs->name);
+			Dimension d = GetStringBoundingBox(STR_GRAPH_CARGO_PAYMENT_CARGO);
+			d.width += 14; // colour field
+			d.width += WD_FRAMERECT_LEFT + WD_FRAMERECT_RIGHT;
+			d.height += WD_FRAMERECT_TOP + WD_FRAMERECT_BOTTOM;
+			*size = maxdim(d, *size);
+		}
+
+		this->line_height = size->height;
+		size->height = this->line_height * 11; /* Default number of cargo types in most climates. */
+		resize->width = 0;
+		resize->height = this->line_height;
+	}
+
+	void DrawWidget(const Rect &r, int widget) const override
+	{
+		if (widget != WID_IP_MATRIX) {
+			BaseGraphWindow::DrawWidget(r, widget);
+			return;
+		}
+
+		bool rtl = _current_text_dir == TD_RTL;
+
+		int x = r.left + WD_FRAMERECT_LEFT;
+		int y = r.top;
+
+		int pos = this->vscroll->GetPosition();
+		int max = pos + this->vscroll->GetCapacity();
+
+		const Industry *i = Industry::Get(this->window_number);
+		const CargoSpec *cs;
+		for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+			if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+
+			if (pos-- > 0) continue;
+			if (--max < 0) break;
+
+			cs = CargoSpec::Get(i->produced_cargo[j]);
+
+			bool lowered = !HasBit(_legend_excluded_cargo, cs->Index());
+
+			/* Redraw box if lowered */
+			if (lowered) DrawFrameRect(r.left, y, r.right, y + this->line_height - 1, COLOUR_ORANGE, lowered ? FR_LOWERED : FR_NONE);
+
+			byte clk_dif = lowered ? 1 : 0;
+			int rect_x = clk_dif + (rtl ? r.right - 12 : r.left + WD_FRAMERECT_LEFT);
+
+			GfxFillRect(rect_x, y + clk_dif, rect_x + 8, y + 5 + clk_dif, PC_BLACK);
+			GfxFillRect(rect_x + 1, y + 1 + clk_dif, rect_x + 7, y + 4 + clk_dif, cs->legend_colour);
+			SetDParam(0, cs->name);
+			DrawString(rtl ? r.left : x + 14 + clk_dif, (rtl ? r.right - 14 + clk_dif : r.right), y + clk_dif, STR_GRAPH_CARGO_PAYMENT_CARGO);
+
+			y += this->line_height;
+		}
+	}
+
+	void OnClick(Point pt, int widget, int click_count) override
+	{
+		switch (widget) {
+			case WID_IP_ENABLE_CARGOES:
+				/* Remove all cargoes from the excluded lists. */
+				_legend_excluded_cargo = 0;
+				this->excluded_data = 0;
+				this->SetDirty();
+				break;
+
+			case WID_IP_DISABLE_CARGOES: {
+				/* Add all cargoes to the excluded lists. */
+				int index = 0;
+				const Industry *i = Industry::Get(this->window_number);
+				const CargoSpec *cs;
+				for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+					if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+
+					cs = CargoSpec::Get(i->produced_cargo[j]);
+
+					SetBit(_legend_excluded_cargo, cs->Index());
+					SetBit(this->excluded_data, index);
+					index++;
+				}
+				this->SetDirty();
+				break;
+			}
+
+			case WID_IP_MATRIX: {
+				uint row = this->vscroll->GetScrolledRowFromWidget(pt.y, this, WID_IP_MATRIX, 0, this->line_height);
+				if (row >= this->vscroll->GetCount()) return;
+
+				const Industry *i = Industry::Get(this->window_number);
+				const CargoSpec *cs;
+				for (size_t j = 0; j < INDUSTRY_NUM_OUTPUTS; j++) {
+					if (!IsCargoIDValid(i->produced_cargo[j])) continue;
+					if (row-- > 0) continue;
+
+					cs = CargoSpec::Get(i->produced_cargo[j]);
+
+					ToggleBit(_legend_excluded_cargo, cs->Index());
+					this->UpdateExcludedData();
+					this->SetDirty();
+					break;
+				}
+				break;
+			}
+		}
+	}
+
+	void SetStringParameters(int widget) const override
+	{
+		if (widget == WID_IP_CAPTION) SetDParam(0, this->window_number);
+	}
+
+	void OnResize() override
+	{
+		this->vscroll->SetCapacityFromWidget(this, WID_IP_MATRIX);
+	}
+
+	void UpdateStatistics(bool initialize) override
+	{
+		CargoTypes excluded_cargo = this->excluded_data;
+		this->UpdateExcludedData();
+
+		int mo = _cur_month - this->num_vert_lines;
+		int yr = _cur_year;
+		while (mo < 0) {
+			yr--;
+			mo += 12;
+		}
+
+		if (!initialize && this->excluded_data == excluded_cargo && this->num_on_x_axis == this->num_vert_lines && this->year == yr && this->month == mo) {
+			/* There's no reason to get new stats */
+			return;
+		}
+
+		this->year = yr;
+		this->month = mo;
+
+		int index = 0;
+		const Industry *i = Industry::Get(this->window_number);
+		for (size_t k = 0; k < INDUSTRY_NUM_OUTPUTS; k++) {
+			if (!IsCargoIDValid(i->produced_cargo[k])) continue;
+
+			const CargoSpec *cs = CargoSpec::Get(i->produced_cargo[k]);
+
+			this->colours[index] = cs->legend_colour;
+			for (uint j = 0; j < GRAPH_NUM_MONTHS; j++) {
+				this->cost[index][j] = Industry::Get(this->window_number)->past_production[GRAPH_NUM_MONTHS-j-1][k];
+			}
+			index++;
+		}
+		this->num_dataset = index;
+		this->vscroll->SetCount(index);
+
+		this->SetDirty();
+	}
+};
+
+static const NWidgetPart _nested_industry_production_widgets[] = {
+	NWidget(NWID_HORIZONTAL),
+		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
+		NWidget(WWT_CAPTION, COLOUR_GREY, WID_IP_CAPTION), SetDataTip(STR_GRAPH_INDUSTRY_PRODUCTION_CAPTION, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
+		NWidget(WWT_SHADEBOX, COLOUR_GREY),
+		NWidget(WWT_DEFSIZEBOX, COLOUR_GREY),
+		NWidget(WWT_STICKYBOX, COLOUR_GREY),
+	EndContainer(),
+	NWidget(WWT_PANEL, COLOUR_GREY, WID_IP_BACKGROUND), SetMinimalSize(568, 128),
+		NWidget(NWID_HORIZONTAL),
+			NWidget(WWT_EMPTY, COLOUR_GREY, WID_IP_GRAPH), SetMinimalSize(495, 0), SetFill(1, 1), SetResize(1, 1),
+			NWidget(NWID_VERTICAL),
+				NWidget(NWID_SPACER), SetMinimalSize(0, 24), SetFill(0, 1),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_ORANGE, WID_IP_ENABLE_CARGOES), SetDataTip(STR_GRAPH_CARGO_ENABLE_ALL, STR_GRAPH_CARGO_TOOLTIP_ENABLE_ALL), SetFill(1, 0),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_ORANGE, WID_IP_DISABLE_CARGOES), SetDataTip(STR_GRAPH_CARGO_DISABLE_ALL, STR_GRAPH_CARGO_TOOLTIP_DISABLE_ALL), SetFill(1, 0),
+				NWidget(NWID_SPACER), SetMinimalSize(0, 4),
+				NWidget(NWID_HORIZONTAL),
+					NWidget(WWT_MATRIX, COLOUR_ORANGE, WID_IP_MATRIX), SetResize(0, 2), SetMatrixDataTip(1, 0, STR_GRAPH_CARGO_PAYMENT_TOGGLE_CARGO), SetScrollbar(WID_IP_MATRIX_SCROLLBAR),
+					NWidget(NWID_VSCROLLBAR, COLOUR_ORANGE, WID_IP_MATRIX_SCROLLBAR),
+				EndContainer(),
+				NWidget(NWID_SPACER), SetMinimalSize(0, 24), SetFill(0, 1),
+			EndContainer(),
+			NWidget(NWID_SPACER), SetMinimalSize(5, 0), SetFill(0, 1), SetResize(0, 1),
+		EndContainer(),
+		NWidget(NWID_HORIZONTAL),
+			NWidget(NWID_SPACER), SetFill(1, 0), SetResize(1, 0),
+			NWidget(WWT_RESIZEBOX, COLOUR_GREY, WID_IP_RESIZE),
+		EndContainer(),
+	EndContainer(),
+};
+
+static WindowDesc _industry_production_desc(
+	WDP_AUTO, "graph_industry_production", 0, 0,
+	WC_INDUSTRY_PRODUCTION, WC_INDUSTRY_VIEW,
+	0,
+	_nested_industry_production_widgets, lengthof(_nested_industry_production_widgets)
+);
+
+
+void ShowIndustryProductionGraph(WindowNumber window_number)
+{
+	AllocateWindowDescFront<IndustryProductionGraphWindow>(&_industry_production_desc, window_number);
+}
 
 /**
  * Make a vertical list of panels for outputting score details.
