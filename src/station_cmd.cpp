@@ -2988,6 +2988,8 @@ static CommandCost RemoveDock(TileIndex tile, DoCommandFlag flags)
 
 const DrawTileSprites *GetStationTileLayout(StationType st, byte gfx)
 {
+	if(st == STATION_AIRPORT && gfx >= HUGE_AIRPORTTILE_OFFSET)
+		return &_station_display_datas_huge_airport[gfx-HUGE_AIRPORTTILE_OFFSET];
 	return &_station_display_datas[st][gfx];
 }
 
@@ -3103,7 +3105,7 @@ static void DrawTile_Station(TileInfo *ti, DrawTileProcParams params)
 	StationGfx gfx = GetStationGfx(ti->tile);
 	if (IsAirport(ti->tile)) {
 		gfx = GetAirportGfx(ti->tile);
-		if (gfx >= NEW_AIRPORTTILE_OFFSET) {
+		if (gfx >= NEW_AIRPORTTILE_OFFSET && gfx < HUGE_AIRPORTTILE_OFFSET) {
 			const AirportTileSpec *ats = AirportTileSpec::Get(gfx);
 			if (ats->grf_prop.spritegroup[0] != nullptr && DrawNewAirportTile(ti, Station::GetByTile(ti->tile), gfx, ats)) {
 				return;

@@ -893,6 +893,21 @@ bool AfterLoadGame()
 				st->airport.type = AT_CIRCLE;
 		}
 	}
+	if(SlXvIsFeaturePresent(XSLFI_HUGE_AIRPORTS, 1, 2)) {
+		for (Station *st : Station::Iterate()) {
+			if (st->airport.tile == INVALID_TILE) continue;
+			if (st->airport.type != AT_INTERCONTINENTAL2 && st->airport.type != AT_CIRCLE) continue;
+			const AirportSpec *as = AirportSpec::Get(st->airport.type);
+			/* Move airport sprites */
+			for (AirportTileTableIterator iter(as->table[st->airport.layout], st->airport.tile); iter != INVALID_TILE; ++iter) {
+				StationGfx gfx = GetStationGfx(iter);
+				if(gfx >= 74 && gfx < 96) {
+					SetStationGfx(iter, iter.GetStationGfx());
+				}
+			}
+		}
+	}
+	
 	if (SlXvIsFeaturePresent(XSLFI_SPRINGPP)) {
 		/*
 		 * Reject huge airports

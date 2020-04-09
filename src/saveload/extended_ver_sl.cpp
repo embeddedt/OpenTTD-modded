@@ -113,7 +113,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_FLOW_STAT_FLAGS,        XSCF_NULL,                1,   1, "flow_stat_flags",           nullptr, nullptr, nullptr        },
 	{ XSLFI_SPEED_RESTRICTION,      XSCF_NULL,                1,   1, "speed_restriction",         nullptr, nullptr, "VESR"         },
 	{ XSLFI_STATION_GOODS_EXTRA,    XSCF_NULL,                1,   1, "station_goods_extra",       nullptr, nullptr, nullptr        },
-	{ XSLFI_HUGE_AIRPORTS,   	    XSCF_NULL,                2,   2, "huge_airports",             nullptr, nullptr, nullptr        },
+	{ XSLFI_HUGE_AIRPORTS,   	    XSCF_NULL,                3,   3, "huge_airports",             nullptr, nullptr, nullptr        },
 	{ XSLFI_TRIP_HISTORY,   	    XSCF_NULL,                1,   1, "trip_history",              nullptr, nullptr, nullptr        },
 	{ XSLFI_PLANE_TAXI_SPEED,   	XSCF_NULL,                1,   1, "plane_taxi_speed",          nullptr, nullptr, nullptr        },
 	{ XSLFI_INDUSTRY_PRODUCTION_HISTORY, XSCF_NULL,           1,   1, "ind_prod_history",          nullptr, nullptr, nullptr        },

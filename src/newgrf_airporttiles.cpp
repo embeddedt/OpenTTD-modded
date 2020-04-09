@@ -58,6 +58,7 @@ void AirportTileSpec::ResetAirportTiles()
 {
 	memset(&AirportTileSpec::tiles, 0, sizeof(AirportTileSpec::tiles));
 	memcpy(&AirportTileSpec::tiles, &_origin_airporttile_specs, sizeof(_origin_airporttile_specs));
+	memcpy(&AirportTileSpec::tiles[HUGE_AIRPORTTILE_OFFSET], &_huge_airporttile_specs, sizeof(_huge_airporttile_specs));
 
 	/* Reset any overrides that have been set. */
 	_airporttile_mngr.ResetOverride();
@@ -132,7 +133,7 @@ static uint32 GetAirportTileIDAtOffset(TileIndex tile, const Station *st, uint32
 	StationGfx gfx = GetAirportGfx(tile);
 	const AirportTileSpec *ats = AirportTileSpec::Get(gfx);
 
-	if (gfx < NEW_AIRPORTTILE_OFFSET) { // Does it belongs to an old type?
+	if (gfx < NEW_AIRPORTTILE_OFFSET || gfx >= HUGE_AIRPORTTILE_OFFSET) { // Does it belongs to an old type?
 		/* It is an old tile.  We have to see if it's been overridden */
 		if (ats->grf_prop.override == INVALID_AIRPORTTILE) { // has it been overridden?
 			return 0xFF << 8 | gfx; // no. Tag FF + the gfx id of that tile

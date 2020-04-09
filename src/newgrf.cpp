@@ -4687,7 +4687,7 @@ static ChangeInfoResult AirportTilesChangeInfo(uint airtid, int numinfo, int pro
 				AirportTileSpec **tilespec = &_cur.grffile->airtspec[airtid + i];
 				byte subs_id = buf->ReadByte();
 
-				if (subs_id >= NEW_AIRPORTTILE_OFFSET) {
+				if (subs_id >= NEW_AIRPORTTILE_OFFSET && subs_id < HUGE_AIRPORTTILE_OFFSET) {
 					/* The substitute id must be one of the original airport tiles. */
 					grfmsg(2, "AirportTileChangeInfo: Attempt to use new airport tile %u as substitute airport tile for %u. Ignoring.", subs_id, airtid + i);
 					continue;
@@ -4715,7 +4715,7 @@ static ChangeInfoResult AirportTilesChangeInfo(uint airtid, int numinfo, int pro
 				byte override = buf->ReadByte();
 
 				/* The airport tile being overridden must be an original airport tile. */
-				if (override >= NEW_AIRPORTTILE_OFFSET) {
+				if (override >= NEW_AIRPORTTILE_OFFSET && override < HUGE_AIRPORTTILE_OFFSET) {
 					grfmsg(2, "AirportTileChangeInfo: Attempt to override new airport tile %u with airport tile id %u. Ignoring.", override, airtid + i);
 					continue;
 				}

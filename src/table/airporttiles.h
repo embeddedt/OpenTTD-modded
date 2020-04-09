@@ -102,6 +102,9 @@ static const AirportTileSpec _origin_airporttile_specs[] = {
 	AT_NOANIM,
 	AT_NOANIM,
 	AT(3, 1), // APT_GRASS_FENCE_NE_FLAG_2
+};
+
+static const AirportTileSpec _huge_airporttile_specs[] = {
 	AT_NOANIM,
 	AT_NOANIM,
 	AT_NOANIM,
