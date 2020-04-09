@@ -37,6 +37,7 @@
 #include "spritecache.h"
 #include "core/container_func.hpp"
 #include "news_func.h"
+#include "infrastructure_func.h"
 
 #include "table/strings.h"
 #include "table/railtypes.h"
@@ -561,7 +562,10 @@ CommandCost CmdBuildSingleRail(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 	switch (GetTileType(tile)) {
 		case MP_RAILWAY: {
 			CommandCost ret = CheckTileOwnership(tile);
-			if (ret.Failed()) return ret;
+			if (ret.Failed()) {
+				if(!IsInfraTileUsageAllowed(VEH_TRAIN, _current_company, tile))
+					return ret;
+			}
 
 			if (!IsPlainRail(tile)) return DoCommand(tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR); // just get appropriate error message
 
