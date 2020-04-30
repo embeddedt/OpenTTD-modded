@@ -106,6 +106,7 @@
 #include "core/container_func.hpp"
 #include "tunnelbridge_map.h"
 #include "video/video_driver.hpp"
+#include "scope_info.h"
 
 #include <map>
 #include <vector>
@@ -323,6 +324,8 @@ static void SetRailSnapTile(TileIndex tile);
 enum ViewportDebugFlags {
 	VDF_DIRTY_BLOCK_PER_DRAW,
 	VDF_DIRTY_WHOLE_VIEWPORT,
+	VDF_DIRTY_BLOCK_PER_SPLIT,
+	VDF_DISABLE_DRAW_SPLIT,
 };
 uint32 _viewport_debug_flags;
 
@@ -388,8 +391,8 @@ void InitializeWindowViewport(Window *w, int x, int y,
 
 	vp->virtual_left = 0;
 	vp->virtual_top = 0;
-	vp->virtual_width = ScaleByZoom(width, zoom);
-	vp->virtual_height = ScaleByZoom(height, zoom);
+	vp->virtual_width = ScaleByZoom(width, vp->zoom);
+	vp->virtual_height = ScaleByZoom(height, vp->zoom);
 
 	vp->map_type = VPMT_BEGIN;
 
@@ -552,13 +555,26 @@ static void DoSetViewportPosition(Window *w, const int left, const int top, cons
 
 	if (_networking) NetworkUndrawChatMessage();
 
-	std::sort(_vp_redraw_regions.begin(), _vp_redraw_regions.end(), [&](const ViewportRedrawRegion &a, const ViewportRedrawRegion &b) {
-		if (a.coords.right <= b.coords.left) return xo > 0;
-		if (a.coords.left >= b.coords.right) return xo < 0;
-		if (a.coords.bottom <= b.coords.top) return yo > 0;
-		if (a.coords.top >= b.coords.bottom) return yo < 0;
-		NOT_REACHED();
-	});
+	if (xo != 0) {
+		std::sort(_vp_redraw_regions.begin(), _vp_redraw_regions.end(), [&](const ViewportRedrawRegion &a, const ViewportRedrawRegion &b) {
+			if (a.coords.right <= b.coords.left && xo > 0) return true;
+			if (a.coords.left >= b.coords.right && xo < 0) return true;
+			return false;
+		});
+		if (yo != 0) {
+			std::stable_sort(_vp_redraw_regions.begin(), _vp_redraw_regions.end(), [&](const ViewportRedrawRegion &a, const ViewportRedrawRegion &b) {
+				if (a.coords.bottom <= b.coords.top && yo > 0) return true;
+				if (a.coords.top >= b.coords.bottom && yo < 0) return true;
+				return false;
+			});
+		}
+	} else {
+		std::sort(_vp_redraw_regions.begin(), _vp_redraw_regions.end(), [&](const ViewportRedrawRegion &a, const ViewportRedrawRegion &b) {
+			if (a.coords.bottom <= b.coords.top && yo > 0) return true;
+			if (a.coords.top >= b.coords.bottom && yo < 0) return true;
+			return false;
+		});
+	}
 
 	while (!_vp_redraw_regions.empty()) {
 		const Rect &rect = _vp_redraw_regions.back().coords;
@@ -663,6 +679,7 @@ static void SetViewportPosition(Window *w, int x, int y, bool force_update_overl
 		if (i >= 0) height -= i;
 
 		if (height > 0 && (_vp_move_offs.x != 0 || _vp_move_offs.y != 0)) {
+			SCOPE_INFO_FMT([&], "DoSetViewportPosition: %d, %d, %d, %d, %d, %d, %s", left, top, width, height, _vp_move_offs.x, _vp_move_offs.y, scope_dumper().WindowInfo(w));
 			DoSetViewportPosition((Window *) w->z_front, left, top, width, height);
 			ClearViewPortCache(w->viewport);
 		}
@@ -979,7 +996,8 @@ void AddSortableSpriteToDraw(SpriteID image, PaletteID pal, int x, int y, int w,
 		right           = RemapCoords(x + bb_offset_x, y + h          , z + bb_offset_z).x + 1;
 		top  = tmp_top  = RemapCoords(x + bb_offset_x, y + bb_offset_y, z + dz         ).y;
 		bottom          = RemapCoords(x + w          , y + h          , z + bb_offset_z).y + 1;
-		tmp_width = tmp_height = 0;
+		tmp_width = right - left;
+		tmp_height = bottom - top;
 	} else {
 		const Sprite *spr = GetSprite(image & SPRITE_MASK, ST_NORMAL);
 		left = tmp_left = (pt.x += spr->x_offs);
@@ -1604,7 +1622,7 @@ static void ViewportAddLandscape()
 				_vd.last_foundation_child[0] = nullptr;
 				_vd.last_foundation_child[1] = nullptr;
 
-				bool no_ground_tiles = (column == left_column || column == right_column) || min_visible_height > 0;
+				bool no_ground_tiles = min_visible_height > 0;
 				_tile_type_procs[tile_type]->draw_tile_proc(&tile_info, { min_visible_height, no_ground_tiles });
 				if (tile_info.tile != INVALID_TILE && min_visible_height <= 0) {
 					DrawTileSelection(&tile_info);
@@ -2989,7 +3007,7 @@ void ViewportMapDraw(const ViewPort * const vp)
 
 static void ViewportProcessParentSprites()
 {
-	if (_vd.parent_sprites_to_sort.size() > 60 && (_cur_dpi->width >= 256 || _cur_dpi->height >= 256) && !_draw_bounding_boxes) {
+	if (_vd.parent_sprites_to_sort.size() > 60 && (_cur_dpi->width >= 256 || _cur_dpi->height >= 256) && !_draw_bounding_boxes && !HasBit(_viewport_debug_flags, VDF_DISABLE_DRAW_SPLIT)) {
 		/* split drawing region */
 		ParentSpriteToSortVector all_sprites = std::move(_vd.parent_sprites_to_sort);
 		_vd.parent_sprites_to_sort.clear();
@@ -3027,9 +3045,10 @@ static void ViewportProcessParentSprites()
 			const int orig_width = _cur_dpi->width;
 			const int orig_left = _cur_dpi->left;
 			_cur_dpi->width = (orig_width / 2) & ScaleByZoom(-1, _cur_dpi->zoom);
-			int split = _cur_dpi->left + _cur_dpi->width;
+			const int margin = UnScaleByZoom(128, _cur_dpi->zoom); // Half tile (1 column) margin either side of split
+			const int split = _cur_dpi->left + _cur_dpi->width;
 			for (ParentSpriteToDraw *psd : all_sprites) {
-				if (psd->left < split) _vd.parent_sprites_to_sort.push_back(psd);
+				if (psd->left < split + margin) _vd.parent_sprites_to_sort.push_back(psd);
 			}
 			ViewportProcessParentSprites();
 			_vd.parent_sprites_to_sort.clear();
@@ -3041,7 +3060,7 @@ static void ViewportProcessParentSprites()
 
 			for (ParentSpriteToDraw *psd : all_sprites) {
 				psd->SetComparisonDone(false);
-				if (psd->left + psd->width > _cur_dpi->left) {
+				if (psd->left + psd->width > _cur_dpi->left - margin) {
 					_vd.parent_sprites_to_sort.push_back(psd);
 				}
 			}
@@ -3055,6 +3074,11 @@ static void ViewportProcessParentSprites()
 	} else {
 		_vp_sprite_sorter(&_vd.parent_sprites_to_sort);
 		ViewportDrawParentSprites(&_vd.parent_sprites_to_sort, &_vd.child_screen_sprites_to_draw);
+
+		if (_draw_dirty_blocks && HasBit(_viewport_debug_flags, VDF_DIRTY_BLOCK_PER_SPLIT)) {
+			ViewportDrawDirtyBlocks();
+			++_dirty_block_colour;
+		}
 	}
 }
 
@@ -3111,25 +3135,15 @@ void ViewportDoDraw(ViewPort *vp, int left, int top, int right, int bottom)
 
 		if (_vd.tile_sprites_to_draw.size() != 0) ViewportDrawTileSprites(&_vd.tile_sprites_to_draw);
 
-		{
-			const int vd_left = _vd.dpi.left;
-			const int vd_top = _vd.dpi.top;
-			const int vd_right = _vd.dpi.left + _vd.dpi.width;
-			const int vd_bottom = _vd.dpi.top + _vd.dpi.height;
-			for (auto &psd : _vd.parent_sprites_to_draw) {
-				if (psd.left >= vd_right) continue;
-				if (psd.top >= vd_bottom) continue;
-				if (psd.left + psd.width <= vd_left) continue;
-				if (psd.top + psd.height <= vd_top) continue;
-				_vd.parent_sprites_to_sort.push_back(&psd);
-			}
+		for (auto &psd : _vd.parent_sprites_to_draw) {
+			_vd.parent_sprites_to_sort.push_back(&psd);
 		}
 
 		ViewportProcessParentSprites();
 
 		if (_draw_bounding_boxes) ViewportDrawBoundingBoxes(&_vd.parent_sprites_to_sort);
 	}
-	if (_draw_dirty_blocks) {
+	if (_draw_dirty_blocks && !(HasBit(_viewport_debug_flags, VDF_DIRTY_BLOCK_PER_SPLIT) && vp->zoom < ZOOM_LVL_DRAW_MAP)) {
 		ViewportDrawDirtyBlocks();
 		if (HasBit(_viewport_debug_flags, VDF_DIRTY_BLOCK_PER_DRAW)) ++_dirty_block_colour;
 	}

@@ -20,6 +20,7 @@
 #include "company_gui.h"
 #include "company_base.h"
 #include "core/backup_type.hpp"
+#include "cheat_type.h"
 
 #include "table/strings.h"
 
@@ -197,7 +198,92 @@ CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, 
  */
 CommandCost CmdMoneyCheat(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
+	if (_networking && !_settings_game.difficulty.money_cheat_in_multiplayer) return CMD_ERROR;
+	if (flags & DC_EXEC) {
+		_cheats.money.been_used = true;
+		SetWindowDirty(WC_CHEATS, 0);
+	}
 	return CommandCost(EXPENSES_OTHER, -(int32)p1);
+}
+
+/**
+ * Change the financial flow of your company (admin).
+ * @param tile unused
+ * @param flags operation to perform
+ * @param p1 the amount of money to receive (if positive), or spend (if negative)
+ * @param p2 unused
+ * @param text unused
+ * @return the cost of this operation or an error
+ */
+CommandCost CmdMoneyCheatAdmin(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	if (flags & DC_EXEC) {
+		_cheats.money.been_used = true;
+		SetWindowDirty(WC_CHEATS, 0);
+	}
+	return CommandCost(EXPENSES_OTHER, -(int32)p1);
+}
+
+/**
+ * Change the value of a cheat setting.
+ * @param tile unused
+ * @param flags operation to perform
+ * @param p1 the cheat number
+ * @param p2 the cheat value
+ * @param text unused
+ * @return the cost of this operation or an error
+ */
+CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	Cheat *cht = nullptr;
+	switch ((CheatNumbers) p1) {
+		case CHT_EXTRA_DYNAMITE:
+			cht = &_cheats.magic_bulldozer;
+			break;
+
+		case CHT_CROSSINGTUNNELS:
+			cht = &_cheats.crossing_tunnels;
+			break;
+
+		case CHT_NO_JETCRASH:
+			cht = &_cheats.no_jetcrash;
+			break;
+
+		case CHT_INFLATION_INCOME:
+			if (flags & DC_EXEC) {
+				_extra_cheats.inflation_income.been_used = true;
+				_economy.inflation_payment = Clamp<uint64>(p2, 1 << 16, MAX_INFLATION);
+				if (_economy.inflation_payment > _economy.inflation_prices) {
+					_economy.inflation_prices = _economy.inflation_payment;
+					_extra_cheats.inflation_cost.been_used = true;
+				}
+				RecomputePrices();
+				SetWindowDirty(WC_CHEATS, 0);
+			}
+			return CommandCost();
+
+		case CHT_INFLATION_COST:
+			if (flags & DC_EXEC) {
+				_extra_cheats.inflation_cost.been_used = true;
+				_economy.inflation_prices = Clamp<uint64>(p2, 1 << 16, MAX_INFLATION);
+				if (_economy.inflation_payment > _economy.inflation_prices) {
+					_economy.inflation_payment = _economy.inflation_prices;
+					_extra_cheats.inflation_income.been_used = true;
+				}
+				RecomputePrices();
+				SetWindowDirty(WC_CHEATS, 0);
+			}
+			return CommandCost();
+
+		default:
+			return CMD_ERROR;
+	}
+	if (flags & DC_EXEC) {
+		cht->value  = p2;
+		cht->been_used = true;
+		SetWindowDirty(WC_CHEATS, 0);
+	}
+	return CommandCost();
 }
 
 /**

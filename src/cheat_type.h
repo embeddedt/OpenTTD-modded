@@ -37,6 +37,28 @@ struct Cheats {
 	Cheat edit_max_hl;      ///< edit the maximum heightlevel; this is a cheat because of the fact that it needs to reset NewGRF game state and doing so as a simple configuration breaks the expectation of many
 };
 
+struct ExtraCheats {
+	Cheat inflation_cost;   ///< inflation cost factor
+	Cheat inflation_income; ///< inflation income factor
+};
+
+/** Available cheats. */
+enum CheatNumbers {
+	CHT_MONEY,           ///< Change amount of money.
+	CHT_CHANGE_COMPANY,  ///< Switch company.
+	CHT_EXTRA_DYNAMITE,  ///< Dynamite anything.
+	CHT_CROSSINGTUNNELS, ///< Allow tunnels to cross each other.
+	CHT_NO_JETCRASH,     ///< Disable jet-airplane crashes.
+	CHT_SETUP_PROD,      ///< Allow manually editing of industry production.
+	CHT_EDIT_MAX_HL,     ///< Edit maximum allowed heightlevel
+	CHT_CHANGE_DATE,     ///< Do time traveling.
+	CHT_INFLATION_COST,  ///< Change inflation cost factor
+	CHT_INFLATION_INCOME,///< Change inflation income factor
+
+	CHT_NUM_CHEATS,      ///< Number of cheats.
+};
+
 extern Cheats _cheats;
+extern ExtraCheats _extra_cheats;
 
 #endif /* CHEAT_TYPE_H */

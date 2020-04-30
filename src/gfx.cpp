@@ -1238,6 +1238,11 @@ void DoPaletteAnimations()
 	}
 }
 
+void GameLoopPaletteAnimations()
+{
+	if (!_pause_mode && HasBit(_display_opt, DO_FULL_ANIMATION)) DoPaletteAnimations();
+}
+
 /**
  * Determine a contrasty text colour for a coloured background.
  * @param background Background colour.
@@ -1490,12 +1495,17 @@ void DrawDirtyBlocks()
 	if (HasModalProgress()) {
 		/* We are generating the world, so release our rights to the map and
 		 * painting while we are waiting a bit. */
+		bool is_first_modal_progress_loop = IsFirstModalProgressLoop();
 		_modal_progress_paint_mutex.unlock();
 		_modal_progress_work_mutex.unlock();
 
 		/* Wait a while and update _realtime_tick so we are given the rights */
-		if (!IsFirstModalProgressLoop()) CSleep(MODAL_PROGRESS_REDRAW_TIMEOUT);
+		if (!is_first_modal_progress_loop) SleepWhileModalProgress(MODAL_PROGRESS_REDRAW_TIMEOUT);
+#if defined(__GNUC__) || defined(__clang__)
+		__atomic_add_fetch(&_realtime_tick, MODAL_PROGRESS_REDRAW_TIMEOUT, __ATOMIC_RELAXED);
+#else
 		_realtime_tick += MODAL_PROGRESS_REDRAW_TIMEOUT;
+#endif
 
 		/* Modal progress thread may need blitter access while we are waiting for it. */
 		VideoDriver::GetInstance()->ReleaseBlitterLock();
@@ -1559,7 +1569,7 @@ void DrawDirtyBlocks()
 				w->flags &= ~WF_WIDGETS_DIRTY;
 			}
 
-			if (w->viewport != nullptr) {
+			if (w->viewport != nullptr && !w->IsShaded()) {
 				ViewPort *vp = w->viewport;
 				if (vp->is_drawn) {
 					vp->ClearDirty();

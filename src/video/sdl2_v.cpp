@@ -1102,6 +1102,8 @@ void VideoDriver_SDL::LoopOnce() {
 
 		if (_draw_mutex != nullptr) draw_lock.lock();
 
+		GameLoopPaletteAnimations();
+
 		UpdateWindows();
 		_local_palette = _cur_palette;
 	} else {

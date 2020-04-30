@@ -109,7 +109,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_ROAD_LAYOUT_CHANGE_CTR, XSCF_NULL,                1,   1, "road_layout_change_ctr",    nullptr, nullptr, nullptr        },
 	{ XSLFI_TOWN_CARGO_MATRIX,      XSCF_NULL,                1,   1, "town_cargo_matrix",         nullptr, nullptr, nullptr        },
 	{ XSLFI_STATE_CHECKSUM,         XSCF_NULL,                1,   1, "state_checksum",            nullptr, nullptr, nullptr        },
-	{ XSLFI_DEBUG,                  XSCF_IGNORABLE_ALL,       1,   1, "debug",                     nullptr, nullptr, "DBGL"      },
+	{ XSLFI_DEBUG,                  XSCF_IGNORABLE_ALL,       1,   1, "debug",                     nullptr, nullptr, "DBGL,DBGC"    },
 	{ XSLFI_FLOW_STAT_FLAGS,        XSCF_NULL,                1,   1, "flow_stat_flags",           nullptr, nullptr, nullptr        },
 	{ XSLFI_SPEED_RESTRICTION,      XSCF_NULL,                1,   1, "speed_restriction",         nullptr, nullptr, "VESR"         },
 	{ XSLFI_STATION_GOODS_EXTRA,    XSCF_NULL,                1,   1, "station_goods_extra",       nullptr, nullptr, nullptr        },
@@ -117,6 +117,8 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_TRIP_HISTORY,   	    XSCF_NULL,                1,   1, "trip_history",              nullptr, nullptr, nullptr        },
 	{ XSLFI_PLANE_TAXI_SPEED,   	XSCF_NULL,                1,   1, "plane_taxi_speed",          nullptr, nullptr, nullptr        },
 	{ XSLFI_INDUSTRY_PRODUCTION_HISTORY, XSCF_NULL,           1,   1, "ind_prod_history",          nullptr, nullptr, nullptr        },
+	{ XSLFI_DOCKING_CACHE_VER,      XSCF_IGNORABLE_ALL,       1,   1, "docking_cache_ver",         nullptr, nullptr, nullptr        },
+	{ XSLFI_EXTRA_CHEATS,           XSCF_NULL,                1,   1, "extra_cheats",              nullptr, nullptr, "CHTX"         },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };
 
