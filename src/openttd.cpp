@@ -1489,7 +1489,11 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 				CCLOG("industry neutral station stations_near mismatch: ind %i, (recalc size: %u, neutral size: %u)", (int)ind->index, (uint)ind->stations_near.size(), (uint)stlist.size());
 			}
 		} else {
-			FindStationsAroundTiles(ind->location, &stlist, false, ind->index);
+			ForAllStationsAroundTiles(ind->location, [ind, &stlist](Station *st, TileIndex tile) {
+				if (!IsTileType(tile, MP_INDUSTRY) || GetIndustryIndex(tile) != ind->index) return false;
+				stlist.insert(st);
+				return true;
+			});
 			if (ind->stations_near != stlist) {
 				CCLOG("industry FindStationsAroundTiles mismatch: ind %i, (recalc size: %u, find size: %u)", (int)ind->index, (uint)ind->stations_near.size(), (uint)stlist.size());
 			}
@@ -1698,6 +1702,23 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 			memcpy(buff, &st->goods[c].cargo, sizeof(StationCargoList));
 			st->goods[c].cargo.InvalidateCache();
 			assert(memcmp(&st->goods[c].cargo, buff, sizeof(StationCargoList)) == 0);
+		}
+
+		/* Check docking tiles */
+		TileArea ta;
+		std::map<TileIndex, bool> docking_tiles;
+		TILE_AREA_LOOP(tile, st->docking_station) {
+			ta.Add(tile);
+			docking_tiles[tile] = IsDockingTile(tile);
+		}
+		UpdateStationDockingTiles(st);
+		if (ta.tile != st->docking_station.tile || ta.w != st->docking_station.w || ta.h != st->docking_station.h) {
+			CCLOG("station docking mismatch: station %i, company %i", st->index, (int)st->owner);
+		}
+		TILE_AREA_LOOP(tile, ta) {
+			if (docking_tiles[tile] != IsDockingTile(tile)) {
+				CCLOG("docking tile mismatch: tile %i", (int)tile);
+			}
 		}
 	}
 

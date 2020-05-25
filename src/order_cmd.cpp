@@ -1112,7 +1112,19 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 					if (v->type != VEH_TRAIN) return CMD_ERROR;
 					TraceRestrictSlotID slot = new_order.GetXData();
 					if (slot != INVALID_TRACE_RESTRICT_SLOT_ID && !TraceRestrictSlot::IsValidID(slot)) return CMD_ERROR;
-					if (occ != OCC_IS_TRUE && occ != OCC_IS_FALSE) return CMD_ERROR;
+					switch (occ) {
+						case OCC_IS_TRUE:
+						case OCC_IS_FALSE:
+							break;
+
+						case OCC_EQUALS:
+						case OCC_NOT_EQUALS:
+							if (new_order.GetConditionVariable() != OCV_TRAIN_IN_SLOT) return CMD_ERROR;
+							break;
+
+						default:
+							return CMD_ERROR;
+					}
 					break;
 				}
 
@@ -1611,7 +1623,7 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			break;
 
 		case OT_CONDITIONAL:
-			if (mof != MOF_COND_VARIABLE && mof != MOF_COND_COMPARATOR && mof != MOF_COND_VALUE && mof != MOF_COND_VALUE_2 && mof != MOF_COND_DESTINATION) return CMD_ERROR;
+			if (mof != MOF_COND_VARIABLE && mof != MOF_COND_COMPARATOR && mof != MOF_COND_VALUE && mof != MOF_COND_VALUE_2 && mof != MOF_COND_VALUE_3 && mof != MOF_COND_DESTINATION) return CMD_ERROR;
 			break;
 
 		default:
@@ -1679,8 +1691,11 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 				case OCV_CARGO_ACCEPTANCE:
 				case OCV_CARGO_WAITING:
 				case OCV_SLOT_OCCUPANCY:
-				case OCV_TRAIN_IN_SLOT:
 					if (data != OCC_IS_TRUE && data != OCC_IS_FALSE) return CMD_ERROR;
+					break;
+
+				case OCV_TRAIN_IN_SLOT:
+					if (data != OCC_IS_TRUE && data != OCC_IS_FALSE && data != OCC_EQUALS && data != OCC_NOT_EQUALS) return CMD_ERROR;
 					break;
 
 				default:
@@ -1713,6 +1728,7 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					break;
 
 				case OCV_CARGO_WAITING_AMOUNT:
+					if (data >= (1 << 16)) return CMD_ERROR;
 					break;
 
 				default:
@@ -1726,6 +1742,17 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 				case OCV_CARGO_LOAD_PERCENTAGE:
 				case OCV_CARGO_WAITING_AMOUNT:
 					if (!(data < NUM_CARGO && CargoSpec::Get(data)->IsValid())) return CMD_ERROR;
+					break;
+
+				default:
+					return CMD_ERROR;
+			}
+			break;
+
+		case MOF_COND_VALUE_3:
+			switch (order->GetConditionVariable()) {
+				case OCV_CARGO_WAITING_AMOUNT:
+					if (!(data == NEW_STATION || Station::GetIfValid(data) != nullptr)) return CMD_ERROR;
 					break;
 
 				default:
@@ -1835,6 +1862,7 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					case OCV_CARGO_WAITING_AMOUNT:
 						if (!old_var_was_cargo) order->SetConditionValue((uint16) GetFirstValidCargo());
 						order->GetXDataRef() = 0;
+						order->SetConditionComparator(OCC_EQUALS);
 						break;
 					case OCV_REQUIRES_SERVICE:
 						if (old_var_was_cargo || old_var_was_slot) order->SetConditionValue(0);
@@ -1867,8 +1895,11 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					case OCV_SLOT_OCCUPANCY:
 					case OCV_TRAIN_IN_SLOT:
 					case OCV_CARGO_LOAD_PERCENTAGE:
-					case OCV_CARGO_WAITING_AMOUNT:
 						order->GetXDataRef() = data;
+						break;
+
+					case OCV_CARGO_WAITING_AMOUNT:
+						SB(order->GetXDataRef(), 0, 16, data);
 						break;
 
 					default:
@@ -1879,6 +1910,10 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 			case MOF_COND_VALUE_2:
 				order->SetConditionValue(data);
+				break;
+
+			case MOF_COND_VALUE_3:
+				SB(order->GetXDataRef(), 16, 16, data + 2);
 				break;
 
 			case MOF_COND_DESTINATION:
@@ -2624,9 +2659,10 @@ static StationID GetNextRealStation(const Vehicle *v, const Order *order, int co
  * Process a conditional order and determine the next order.
  * @param order the order the vehicle currently has
  * @param v the vehicle to update
+ * @param dry_run whether this is a dry-run, so do not execute side-effects
  * @return index of next order to jump to, or INVALID_VEH_ORDER_ID to use the next order
  */
-VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v)
+VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v, bool dry_run)
 {
 	if (order->GetType() != OT_CONDITIONAL) return INVALID_VEH_ORDER_ID;
 
@@ -2651,7 +2687,13 @@ VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v)
 		}
 		case OCV_CARGO_WAITING_AMOUNT: {
 			StationID next_station = GetNextRealStation(v, order);
-			if (Station::IsValidID(next_station)) skip_order = OrderConditionCompare(occ, Station::Get(next_station)->goods[value].cargo.AvailableCount(), order->GetXData());
+			if (Station::IsValidID(next_station)) {
+				if (GB(order->GetXData(), 16, 16) == 0) {
+					skip_order = OrderConditionCompare(occ, Station::Get(next_station)->goods[value].cargo.AvailableCount(), GB(order->GetXData(), 0, 16));
+				} else {
+					skip_order = OrderConditionCompare(occ, Station::Get(next_station)->goods[value].cargo.AvailableViaCount(GB(order->GetXData(), 16, 16) - 2), GB(order->GetXData(), 0, 16));
+				}
+			}
 			break;
 		}
 		case OCV_CARGO_ACCEPTANCE: {
@@ -2665,8 +2707,15 @@ VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v)
 			break;
 		}
 		case OCV_TRAIN_IN_SLOT: {
-			const TraceRestrictSlot* slot = TraceRestrictSlot::GetIfValid(order->GetXData());
-			if (slot != nullptr) skip_order = OrderConditionCompare(occ, slot->IsOccupant(v->index), value);
+			TraceRestrictSlot* slot = TraceRestrictSlot::GetIfValid(order->GetXData());
+			bool occupant = slot->IsOccupant(v->index);
+			if (occ == OCC_EQUALS || occ == OCC_NOT_EQUALS) {
+				if (!occupant && !dry_run) {
+					occupant = slot->Occupy(v->index);
+				}
+				occ = (occ == OCC_EQUALS) ? OCC_IS_TRUE : OCC_IS_FALSE;
+			}
+			if (slot != nullptr) skip_order = OrderConditionCompare(occ, occupant, value);
 			break;
 		}
 		case OCV_FREE_PLATFORMS: {

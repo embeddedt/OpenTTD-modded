@@ -3051,7 +3051,7 @@ public:
 					this->v->current_order = *order;
 					return UpdateOrderDest(this->v, order, 0, true);
 				case OT_CONDITIONAL: {
-					VehicleOrderID next = ProcessConditionalOrder(order, this->v);
+					VehicleOrderID next = ProcessConditionalOrder(order, this->v, true);
 					if (next != INVALID_VEH_ORDER_ID) {
 						depth++;
 						this->index = next;
@@ -4952,6 +4952,18 @@ static bool TrainLocoHandler(Train *v, bool mode)
 	if (v->current_order.IsType(OT_WAITING) && v->reverse_distance == 0) {
 		v->HandleWaiting(false);
 		if (v->current_order.IsType(OT_WAITING)) return true;
+		ProcessOrders(v);
+		if (IsRailWaypointTile(v->tile)) {
+			StationID station_id = GetStationIndex(v->tile);
+			if (v->current_order.ShouldStopAtStation(v, station_id, true)) {
+				UpdateVehicleTimetable(v, true);
+				v->last_station_visited = station_id;
+				SetWindowDirty(WC_VEHICLE_VIEW, v->index);
+				v->current_order.MakeWaiting();
+				v->current_order.SetNonStopType(ONSF_NO_STOP_AT_ANY_STATION);
+				return true;
+			}
+		}
 	}
 
 	if (!mode) v->ShowVisualEffect();

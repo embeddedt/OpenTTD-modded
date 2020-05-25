@@ -2,6 +2,39 @@
 
 * * *
 
+### v0.34.3 (2020-05-14)
+* Fix crash which could occur when using the reverse behind signal feature.
+* Fix text entry using modifier keys when using Fcitx on Linux/SDL2.
+* Continue waiting at rail waypoint if the next order is a wait order for the same waypoint.
+* Conditional orders:
+  * Fix comparison operator not being reset when switching variable to load percentage or waiting cargo amount.
+  * Add mode to waiting cargo amount variable to check waiting station cargo via next node.
+  * Add slot acquire modes to train in slot conditional.
+  * Improve cargo dist link refresher handling of complex conditional orders.
+* Fix compilation on MSVC.
+* Various changes to improve thread safety/data races.
+* Bump trunk base from commit 1f1345de098294a4744981d0043512569a35102a to commit 83cd040c61cf6ce966e78cc496c058d42977b387.
+
+### v0.34.2 (2020-05-01)
+* Fix crash which could occur when scrolling the viewport.
+* Fix crash which could occur when using the reverse behind signal feature.
+* Fix a source of multiplayer desyncs caused by the build and refit vehicle feature.
+* Fix removing a track piece from a rail custom bridge head to create two parallel tracks assigning the wrong track type to the non-bridge track.
+* Fix cargo type load orders which contain both load if available and full load loading types.
+* Fix timetable handling of wait at depot or waypoint orders in the departures window.
+* Fix graphical rendering issues (clipping/flickering) in some circumstances.
+* Fix too short length limit of waiting cargo amount conditional order text input.
+* Fix `screenshot minimap <name>` console command ignoring the name parameter.
+* Fix GameScripts being able to consume all available CPU time by repeatedly attempting to found a town.
+* Cheats:
+  * Add support for server admin use of money, magic bulldozer, tunnels and jet crashes cheats in multiplayer.
+  * Add setting to allow non server admins to use the money cheat in multiplayer.
+  * Add cheats to set inflation income and cost factors.
+* Ctrl-click up/down in NewGRF window to move to top or bottom.
+* Minor performance improvements.
+* Add Korean translations by TELK.
+* Bump trunk base from commit 9339e4dcad8aa74ff1b2723ea63a2e31c23f5d44 to commit 1f1345de098294a4744981d0043512569a35102a.
+
 ### v0.34.1 (2020-04-13)
 * Fix crash which could occur at startup for some combinations of resolution and zoom settings.
 * Fix crash which could occur on WINE on systems with more than two network interfaces.

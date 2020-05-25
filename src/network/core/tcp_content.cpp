@@ -171,9 +171,9 @@ bool NetworkContentSocketHandler::HandlePacket(Packet *p)
 
 		default:
 			if (this->HasClientQuit()) {
-				DEBUG(net, 0, "[tcp/content] received invalid packet type %d from %s", type, this->client_addr.GetAddressAsString());
+				DEBUG(net, 0, "[tcp/content] received invalid packet type %d from %s", type, NetworkAddressDumper().GetAddressAsString(&(this->client_addr)));
 			} else {
-				DEBUG(net, 0, "[tcp/content] received illegal packet from %s", this->client_addr.GetAddressAsString());
+				DEBUG(net, 0, "[tcp/content] received illegal packet from %s", NetworkAddressDumper().GetAddressAsString(&(this->client_addr)));
 			}
 			return false;
 	}
@@ -204,12 +204,11 @@ bool NetworkContentSocketHandler::ReceivePackets()
 	 *
 	 * What arbitrary number to choose is the ultimate question though.
 	 */
-	Packet *p;
+	std::unique_ptr<Packet> p;
 	static const int MAX_PACKETS_TO_RECEIVE = 42;
 	int i = MAX_PACKETS_TO_RECEIVE;
 	while (--i != 0 && (p = this->ReceivePacket()) != nullptr) {
-		bool cont = this->HandlePacket(p);
-		delete p;
+		bool cont = this->HandlePacket(p.get());
 		if (!cont) return true;
 	}
 
@@ -224,7 +223,7 @@ bool NetworkContentSocketHandler::ReceivePackets()
  */
 bool NetworkContentSocketHandler::ReceiveInvalidPacket(PacketContentType type)
 {
-	DEBUG(net, 0, "[tcp/content] received illegal packet type %d from %s", type, this->client_addr.GetAddressAsString());
+	DEBUG(net, 0, "[tcp/content] received illegal packet type %d from %s", type, NetworkAddressDumper().GetAddressAsString(&(this->client_addr)));
 	return false;
 }
 

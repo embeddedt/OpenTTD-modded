@@ -15,6 +15,10 @@
 #include "address.h"
 #include "packet.h"
 
+#include <deque>
+#include <memory>
+#include <atomic>
+
 /** The states of sending the packets. */
 enum SendPacketsState {
 	SPS_CLOSED,      ///< The connection got closed.
@@ -26,8 +30,8 @@ enum SendPacketsState {
 /** Base socket handler for all TCP sockets */
 class NetworkTCPSocketHandler : public NetworkSocketHandler {
 private:
-	Packet *packet_queue;     ///< Packets that are awaiting delivery
-	Packet *packet_recv;      ///< Partially received packet
+	std::deque<std::unique_ptr<Packet>> packet_queue; ///< Packets that are awaiting delivery
+	std::unique_ptr<Packet> packet_recv;              ///< Partially received packet
 public:
 	SOCKET sock;              ///< The socket currently connected to
 	bool writable;            ///< Can we write to this socket?
@@ -39,10 +43,16 @@ public:
 	bool IsConnected() const { return this->sock != INVALID_SOCKET; }
 
 	NetworkRecvStatus CloseConnection(bool error = true) override;
-	virtual void SendPacket(Packet *packet);
+	virtual void SendPacket(std::unique_ptr<Packet> packet);
+
+	void SendPacket(Packet *packet)
+	{
+		this->SendPacket(std::unique_ptr<Packet>(packet));
+	}
+
 	SendPacketsState SendPackets(bool closing_down = false);
 
-	virtual Packet *ReceivePacket();
+	virtual std::unique_ptr<Packet> ReceivePacket();
 
 	bool CanSendReceive();
 
@@ -50,7 +60,7 @@ public:
 	 * Whether there is something pending in the send queue.
 	 * @return true when something is pending in the send queue.
 	 */
-	bool HasSendQueue() { return this->packet_queue != nullptr; }
+	bool HasSendQueue() { return !this->packet_queue.empty(); }
 
 	NetworkTCPSocketHandler(SOCKET s = INVALID_SOCKET);
 	~NetworkTCPSocketHandler();
@@ -61,8 +71,8 @@ public:
  */
 class TCPConnecter {
 private:
-	bool connected;             ///< Whether we succeeded in making the connection
-	bool aborted;               ///< Whether we bailed out (i.e. connection making failed)
+	std::atomic<bool> connected;///< Whether we succeeded in making the connection
+	std::atomic<bool> aborted;  ///< Whether we bailed out (i.e. connection making failed)
 	bool killed;                ///< Whether we got killed
 	SOCKET sock;                ///< The socket we're connecting with
 
