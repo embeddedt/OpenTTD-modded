@@ -465,8 +465,9 @@ enum VarTypes {
 	SLE_VAR_STRBQ = 11 << 4, ///< string enclosed in quotes (with pre-allocated buffer)
 	SLE_VAR_STR   = 12 << 4, ///< string pointer
 	SLE_VAR_STRQ  = 13 << 4, ///< string pointer enclosed in quotes
-	SLE_VAR_NAME  = 14 << 4, ///< old custom name to be converted to a char pointer
-	/* 1 more possible memory-primitives */
+	SLE_VAR_NAME  = 14 << 4, ///< old custom name to be converted to a std::string
+	SLE_VAR_CNAME = 15 << 4, ///< old custom name to be converted to a char pointer
+	/* 0 more possible memory-primitives */
 
 	/* Shortcut values */
 	SLE_VAR_CHAR = SLE_VAR_I8,
@@ -490,6 +491,7 @@ enum VarTypes {
 	SLE_STRING       = SLE_FILE_STRING   | SLE_VAR_STR,
 	SLE_STRINGQUOTE  = SLE_FILE_STRING   | SLE_VAR_STRQ,
 	SLE_NAME         = SLE_FILE_STRINGID | SLE_VAR_NAME,
+	SLE_CNAME        = SLE_FILE_STRINGID | SLE_VAR_CNAME,
 
 	/* Shortcut values */
 	SLE_UINT  = SLE_UINT32,
@@ -620,7 +622,7 @@ typedef SaveLoad SaveLoadGlobVarList;
 #define SLE_CONDSTR(base, variable, type, length, from, to) SLE_CONDSTR_X(base, variable, type, length, from, to, SlXvFeatureTest())
 
 /**
- * Storage of a std::string in some savegame versions.
+ * Storage of a \c std::string in some savegame versions.
  * @param base     Name of the class or struct containing the string.
  * @param variable Name of the variable in the class or struct referenced by \a base.
  * @param type     Storage of the data in memory and in the savegame.
@@ -628,8 +630,8 @@ typedef SaveLoad SaveLoadGlobVarList;
  * @param to       Last savegame version that has the string.
  * @param extver   SlXvFeatureTest to test (along with from and to) which savegames have the field
  */
-#define SLE_CONDSTDSTR_X(base, variable, type, from, to, extver) SLE_GENERAL_X(SL_STDSTR, base, variable, type, 0, from, to, extver)
-#define SLE_CONDSTDSTR(base, variable, type, from, to) SLE_CONDSTDSTR_X(base, variable, type, from, to, SlXvFeatureTest())
+#define SLE_CONDSSSTR_X(base, variable, type, from, to, extver) SLE_GENERAL_X(SL_STDSTR, base, variable, type, 0, from, to, extver)
+#define SLE_CONDSSTR(base, variable, type, from, to) SLE_GENERAL(SL_STDSTR, base, variable, type, 0, from, to)
 
 /**
  * Storage of a list in some savegame versions.
@@ -726,12 +728,12 @@ typedef SaveLoad SaveLoadGlobVarList;
 #define SLE_STR(base, variable, type, length) SLE_CONDSTR(base, variable, type, length, SL_MIN_VERSION, SL_MAX_VERSION)
 
 /**
- * Storage of a std::string in every savegame version.
+ * Storage of a \c std::string in every savegame version.
  * @param base     Name of the class or struct containing the string.
  * @param variable Name of the variable in the class or struct referenced by \a base.
  * @param type     Storage of the data in memory and in the savegame.
  */
-#define SLE_STDSTR(base, variable, type) SLE_CONDSTDSTR(base, variable, type, SL_MIN_VERSION, SL_MAX_VERSION)
+#define SLE_SSTR(base, variable, type) SLE_CONDSSTR(base, variable, type, SL_MIN_VERSION, SL_MAX_VERSION)
 
 /**
  * Storage of a list in every savegame version.
@@ -842,6 +844,15 @@ typedef SaveLoad SaveLoadGlobVarList;
 #define SLEG_CONDSTR(variable, type, length, from, to) SLEG_CONDSTR_X(variable, type, length, from, to, SlXvFeatureTest())
 
 /**
+ * Storage of a global \c std::string in some savegame versions.
+ * @param variable Name of the global variable.
+ * @param type     Storage of the data in memory and in the savegame.
+ * @param from     First savegame version that has the string.
+ * @param to       Last savegame version that has the string.
+ */
+#define SLEG_CONDSSTR(variable, type, from, to) SLEG_GENERAL(SL_STDSTR, variable, type, 0, from, to)
+
+/**
  * Storage of a global list in some savegame versions.
  * @param variable Name of the global variable.
  * @param type     Storage of the data in memory and in the savegame.
@@ -901,6 +912,13 @@ typedef SaveLoad SaveLoadGlobVarList;
  * @param type     Storage of the data in memory and in the savegame.
  */
 #define SLEG_STR(variable, type) SLEG_CONDSTR(variable, type, sizeof(variable), SL_MIN_VERSION, SL_MAX_VERSION)
+
+/**
+ * Storage of a global \c std::string in every savegame version.
+ * @param variable Name of the global variable.
+ * @param type     Storage of the data in memory and in the savegame.
+ */
+#define SLEG_SSTR(variable, type) SLEG_CONDSSTR(variable, type, SL_MIN_VERSION, SL_MAX_VERSION)
 
 /**
  * Storage of a global list in every savegame version.

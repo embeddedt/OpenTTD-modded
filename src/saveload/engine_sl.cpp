@@ -137,7 +137,7 @@ void CopyTempEngineData()
 		e->preview_wait        = se->preview_wait;
 		e->company_avail       = se->company_avail;
 		e->company_hidden      = se->company_hidden;
-		if (se->name != nullptr) e->name = stredup(se->name);
+		e->name                = se->name;
 	}
 
 	ResetTempEngineData();

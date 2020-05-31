@@ -15,6 +15,7 @@
 #include "viewport_type.h"
 #include "station_map.h"
 #include "core/geometry_type.hpp"
+#include "core/tinystring_type.hpp"
 #include <memory>
 
 typedef Pool<BaseStation, StationID, 32, 64000> StationPool;
@@ -56,7 +57,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 	TrackedViewportSign sign;       ///< NOSAVE: Dimensions of sign
 	byte delete_ctr;                ///< Delete counter. If greater than 0 then it is decremented until it reaches 0; the waypoint is then is deleted.
 
-	char *name;                     ///< Custom name
+	TinyString name;                ///< Custom name
 	StringID string_id;             ///< Default name (town area) of station
 	mutable std::string cached_name; ///< NOSAVE: Cache of the resolved name of the station, if not using a custom name
 
@@ -113,7 +114,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 
 	inline const char *GetCachedName() const
 	{
-		if (this->name != nullptr) return this->name;
+		if (!this->name.empty()) return this->name.c_str();
 		if (this->cached_name.empty()) this->FillCachedName();
 		return this->cached_name.c_str();
 	}

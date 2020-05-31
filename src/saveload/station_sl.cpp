@@ -65,8 +65,7 @@ void MoveBuoysToWaypoints()
 		TileIndex xy       = st->xy;
 		Town *town         = st->town;
 		StringID string_id = st->string_id;
-		char *name         = st->name;
-		st->name           = nullptr;
+		TinyString name    = std::move(st->name);
 		Date build_date    = st->build_date;
 		/* TTDPatch could use "buoys with rail station" for rail waypoints */
 		bool train         = st->train_station.tile != INVALID_TILE;
@@ -81,7 +80,7 @@ void MoveBuoysToWaypoints()
 		Waypoint *wp   = new (index) Waypoint(xy);
 		wp->town       = town;
 		wp->string_id  = train ? STR_SV_STNAME_WAYPOINT : STR_SV_STNAME_BUOY;
-		wp->name       = name;
+		wp->name       = std::move(name);
 		wp->delete_ctr = 0; // Just reset delete counter for once.
 		wp->build_date = build_date;
 		wp->owner      = train ? GetTileOwner(xy) : OWNER_NONE;
@@ -401,6 +400,7 @@ static const SaveLoad _base_station_desc[] = {
 	      SLE_REF(BaseStation, town,                   REF_TOWN),
 	      SLE_VAR(BaseStation, string_id,              SLE_STRINGID),
 	      SLE_STR(BaseStation, name,                   SLE_STR | SLF_ALLOW_CONTROL, 0),
+
 	SLE_CONDVAR_X(Station,     delete_ctr,             SLE_UINT8,                   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP, 0, 3)),
 	SLE_CONDVAR_X(Station,     delete_ctr,             SLE_FILE_U16  | SLE_VAR_U8,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SPRINGPP, 4)),
 	      SLE_VAR(BaseStation, owner,                  SLE_UINT8),

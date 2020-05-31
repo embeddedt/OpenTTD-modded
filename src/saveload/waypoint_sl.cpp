@@ -29,7 +29,7 @@ struct OldWaypoint {
 	Town *town;
 	uint16 town_cn;
 	StringID string_id;
-	char *name;
+	TinyString name;
 	uint8 delete_ctr;
 	Date build_date;
 	uint8 localidx;
@@ -118,7 +118,7 @@ void MoveWaypointsToBaseStations()
 		Waypoint *new_wp = new Waypoint(t);
 		new_wp->town       = wp.town;
 		new_wp->town_cn    = wp.town_cn;
-		new_wp->name       = wp.name;
+		new_wp->name       = std::move(wp.name);
 		new_wp->delete_ctr = 0; // Just reset delete counter for once.
 		new_wp->build_date = wp.build_date;
 		new_wp->owner      = wp.owner;
@@ -194,7 +194,6 @@ static void Load_WAYP()
 	while ((index = SlIterateArray()) != -1) {
 		/*C++17: OldWaypoint *wp = &*/ _old_waypoints.emplace_back();
 		OldWaypoint *wp = &_old_waypoints.back();
-		memset(wp, 0, sizeof(*wp));
 
 		wp->index = index;
 		SlObject(wp, _old_waypoint_desc);
