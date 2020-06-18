@@ -1,4 +1,5 @@
 #!/bin/bash
+cd "${0%/*}"
 emmake make -C .. -j4 &&
 cp ../bin/openttd openttd.bc &&
 rm -f ../bin/openttd ../bin/openttd.exe &&
