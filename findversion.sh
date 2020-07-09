@@ -69,7 +69,7 @@ if [ -d "$ROOT_DIR/.git" ] || [ -f "$ROOT_DIR/.git" ]; then
 	ISODATE=`LC_ALL=C git show -s --pretty='format:%ci' HEAD | "$AWK" '{ gsub("-", "", $1); print $1 }'`
 	YEAR=`echo ${ISODATE} | cut -c1-4`
 	BRANCH="`git symbolic-ref -q HEAD 2>/dev/null | sed 's@.*/@@'`"
-	TAG="`git describe --tags 2>/dev/null`"
+	TAG="" # `git describe --tags 2>/dev/null`"
 
 	if [ "$MODIFIED" -eq "0" ]; then
 		hashprefix="-g"
