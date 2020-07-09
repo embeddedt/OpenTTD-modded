@@ -1529,7 +1529,7 @@ void DrawDirtyBlocks()
 		RedrawScreenRect(0, 0, _screen.width, _screen.height);
 		Window *w;
 		FOR_ALL_WINDOWS_FROM_BACK(w) {
-			w->flags &= ~(WF_DIRTY | WF_WIDGETS_DIRTY);
+			w->flags &= ~(WF_DIRTY | WF_WIDGETS_DIRTY | WF_DRAG_DIRTIED);
 		}
 		_whole_screen_dirty = false;
 	} else {
@@ -1549,6 +1549,7 @@ void DrawDirtyBlocks()
 
 		Window *w;
 		FOR_ALL_WINDOWS_FROM_BACK(w) {
+			w->flags &= ~WF_DRAG_DIRTIED;
 			if (!MayBeShown(w)) continue;
 
 			if (w->viewport != nullptr) w->viewport->is_drawn = false;
