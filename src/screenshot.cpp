@@ -20,12 +20,14 @@
 #include "company_func.h"
 #include "strings_func.h"
 #include "error.h"
+#include "textbuf_gui.h"
 #include "window_gui.h"
 #include "window_func.h"
 #include "tile_map.h"
 #include "landscape.h"
 #include "smallmap_colours.h"
 #include "smallmap_gui.h"
+#include "screenshot_gui.h"
 
 #include "table/strings.h"
 
@@ -628,7 +630,7 @@ static void CurrentScreenCallback(void *userdata, void *buf, uint y, uint pitch,
  */
 static void LargeWorldCallback(void *userdata, void *buf, uint y, uint pitch, uint n)
 {
-	ViewPort *vp = (ViewPort *)userdata;
+	Viewport *vp = (Viewport *)userdata;
 	DrawPixelInfo dpi, *old_dpi;
 	int wx, left;
 
@@ -673,7 +675,7 @@ static void LargeWorldCallback(void *userdata, void *buf, uint y, uint pitch, ui
 	_screen = old_screen;
 	_screen_disable_anim = old_disable_anim;
 
-	ClearViewPortCache(vp);
+	ClearViewportCache(vp);
 }
 
 /**
@@ -725,11 +727,11 @@ static bool MakeSmallScreenshot(bool crashlog)
 }
 
 /**
- * Configure a ViewPort for rendering (a part of) the map into a screenshot.
+ * Configure a Viewport for rendering (a part of) the map into a screenshot.
  * @param t Screenshot type
  * @param[out] vp Result viewport
  */
-void SetupScreenshotViewport(ScreenshotType t, ViewPort *vp)
+void SetupScreenshotViewport(ScreenshotType t, Viewport *vp)
 {
 	switch(t) {
 		case SC_VIEWPORT:
@@ -801,7 +803,7 @@ void SetupScreenshotViewport(ScreenshotType t, ViewPort *vp)
  */
 static bool MakeLargeWorldScreenshot(ScreenshotType t)
 {
-	ViewPort vp;
+	Viewport vp;
 	SetupScreenshotViewport(t, &vp);
 
 	const ScreenshotFormat *sf = _screenshot_formats + _cur_screenshot_format;
@@ -851,6 +853,45 @@ bool MakeHeightmapScreenshot(const char *filename)
 	return sf->proc(filename, HeightmapCallback, nullptr, MapSizeX(), MapSizeY(), 8, palette);
 }
 
+static ScreenshotType _confirmed_screenshot_type; ///< Screenshot type the current query is about to confirm.
+
+/**
+ * Callback on the confirmation window for huge screenshots.
+ * @param w Window with viewport
+ * @param confirmed true on confirmation
+ */
+static void ScreenshotConfirmationCallback(Window *w, bool confirmed)
+{
+	if (confirmed) MakeScreenshot(_confirmed_screenshot_type, nullptr);
+}
+
+/**
+ * Make a screenshot.
+ * Ask for confirmation first if the screenshot will be huge.
+ * @param t Screenshot type: World, defaultzoom, heightmap or viewport screenshot
+ * @see MakeScreenshot
+ */
+void MakeScreenshotWithConfirm(ScreenshotType t)
+{
+	Viewport vp;
+	SetupScreenshotViewport(t, &vp);
+
+	bool heightmap_or_minimap = t == SC_HEIGHTMAP || t == SC_MINIMAP;
+	uint64_t width = (heightmap_or_minimap ? MapSizeX() : vp.width);
+	uint64_t height = (heightmap_or_minimap ? MapSizeY() : vp.height);
+
+	if (width * height > 8192 * 8192) {
+		/* Ask for confirmation */
+		_confirmed_screenshot_type = t;
+		SetDParam(0, width);
+		SetDParam(1, height);
+		ShowQuery(STR_WARNING_SCREENSHOT_SIZE_CAPTION, STR_WARNING_SCREENSHOT_SIZE_MESSAGE, nullptr, ScreenshotConfirmationCallback);
+	} else {
+		/* Less than 64M pixels, just do it */
+		MakeScreenshot(t, nullptr);
+	}
+}
+
 /**
  * Show a a success or failure message indicating the result of a screenshot action
  * @param ret  whether the screenshot action was successful
@@ -866,10 +907,12 @@ static void ShowScreenshotResultMessage(bool ret)
 }
 
 /**
- * Make an actual screenshot.
+ * Make a screenshot.
+ * Unconditionally take a screenshot of the requested type.
  * @param t    the type of screenshot to make.
  * @param name the name to give to the screenshot.
  * @return true iff the screenshot was made successfully
+ * @see MakeScreenshotWithConfirm
  */
 bool MakeScreenshot(ScreenshotType t, const char *name)
 {
@@ -878,8 +921,10 @@ bool MakeScreenshot(ScreenshotType t, const char *name)
 		 * of the screenshot. This way the screenshot will always show the name
 		 * of the previous screenshot in the 'successful' message instead of the
 		 * name of the new screenshot (or an empty name). */
+		SetScreenshotWindowHidden(true);
 		UndrawMouseCursor();
 		DrawDirtyBlocks();
+		SetScreenshotWindowHidden(false);
 	}
 
 	_screenshot_name[0] = '\0';

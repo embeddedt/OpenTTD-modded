@@ -80,35 +80,35 @@ extern CommandCost IsRoadStopBridgeAboveOK(TileIndex tile, bool drive_through, D
  * @param direction Direction from \a begin to \a end.
  * @param bridge_height Bridge height level.
  */
-void MarkBridgeDirty(TileIndex begin, TileIndex end, DiagDirection direction, uint bridge_height, const ZoomLevel mark_dirty_if_zoomlevel_is_below)
+void MarkBridgeDirty(TileIndex begin, TileIndex end, DiagDirection direction, uint bridge_height, ViewportMarkDirtyFlags flags)
 {
 	TileIndexDiff delta = TileOffsByDiagDir(direction);
 	for (TileIndex t = begin; t != end; t += delta) {
-		MarkTileDirtyByTile(t, mark_dirty_if_zoomlevel_is_below, bridge_height - TileHeight(t));
+		MarkTileDirtyByTile(t, flags, bridge_height - TileHeight(t));
 	}
-	MarkTileDirtyByTile(end, mark_dirty_if_zoomlevel_is_below);
+	MarkTileDirtyByTile(end, flags);
 }
 
 /**
  * Mark bridge tiles dirty.
  * @param tile Bridge head.
  */
-void MarkBridgeDirty(TileIndex tile, const ZoomLevel mark_dirty_if_zoomlevel_is_below)
+void MarkBridgeDirty(TileIndex tile, ViewportMarkDirtyFlags flags)
 {
-	MarkBridgeDirty(tile, GetOtherTunnelBridgeEnd(tile), GetTunnelBridgeDirection(tile), GetBridgeHeight(tile), mark_dirty_if_zoomlevel_is_below);
+	MarkBridgeDirty(tile, GetOtherTunnelBridgeEnd(tile), GetTunnelBridgeDirection(tile), GetBridgeHeight(tile), flags);
 }
 
 /**
  * Mark bridge or tunnel tiles dirty.
  * @param tile Bridge head or tunnel entrance.
  */
-void MarkBridgeOrTunnelDirty(TileIndex tile, const ZoomLevel mark_dirty_if_zoomlevel_is_below)
+void MarkBridgeOrTunnelDirty(TileIndex tile, ViewportMarkDirtyFlags flags)
 {
 	if (IsBridge(tile)) {
-		MarkBridgeDirty(tile, mark_dirty_if_zoomlevel_is_below);
+		MarkBridgeDirty(tile, flags);
 	} else {
-		MarkTileDirtyByTile(tile, mark_dirty_if_zoomlevel_is_below);
-		MarkTileDirtyByTile(GetOtherTunnelBridgeEnd(tile), mark_dirty_if_zoomlevel_is_below);
+		MarkTileDirtyByTile(tile, flags);
+		MarkTileDirtyByTile(GetOtherTunnelBridgeEnd(tile), flags);
 	}
 }
 
@@ -116,14 +116,14 @@ void MarkBridgeOrTunnelDirty(TileIndex tile, const ZoomLevel mark_dirty_if_zooml
  * Mark bridge or tunnel tiles dirty on tunnel/bridge head reservation change
  * @param tile Bridge head or tunnel entrance.
  */
-void MarkBridgeOrTunnelDirtyOnReservationChange(TileIndex tile, const ZoomLevel mark_dirty_if_zoomlevel_is_below)
+void MarkBridgeOrTunnelDirtyOnReservationChange(TileIndex tile, ViewportMarkDirtyFlags flags)
 {
 	if (IsTunnelBridgeWithSignalSimulation(tile)) {
-		MarkTileDirtyByTile(tile, mark_dirty_if_zoomlevel_is_below);
+		MarkTileDirtyByTile(tile, flags);
 	} else if (IsBridge(tile)) {
-		MarkBridgeDirty(tile, mark_dirty_if_zoomlevel_is_below);
+		MarkBridgeDirty(tile, flags);
 	} else {
-		MarkTileDirtyByTile(tile, mark_dirty_if_zoomlevel_is_below);
+		MarkTileDirtyByTile(tile, flags);
 	}
 }
 
@@ -274,6 +274,14 @@ CommandCost CheckBridgeAvailability(BridgeType bridge_type, uint bridge_len, DoC
 	return_cmd_error(STR_ERROR_BRIDGE_TOO_LONG);
 }
 
+bool MayTownBuildBridgeType(BridgeType bridge_type)
+{
+	if (bridge_type >= MAX_BRIDGES) return false;
+
+	const BridgeSpec *b = GetBridgeSpec(bridge_type);
+	return !HasBit(b->ctrl_flags, BSCF_NOT_AVAILABLE_TOWN);
+}
+
 /**
  * Build a Bridge
  * @param end_tile end tile
@@ -283,6 +291,7 @@ CommandCost CheckBridgeAvailability(BridgeType bridge_type, uint bridge_len, DoC
  * - p2 = (bit  0- 7) - bridge type (hi bh)
  * - p2 = (bit  8-13) - rail type or road types.
  * - p2 = (bit 15-16) - transport type.
+ * - p2 = (bit 17)    - script command
  * @param text unused
  * @return the cost of this operation or an error
  */
@@ -299,6 +308,8 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 	if (!IsValidTile(p1)) return_cmd_error(STR_ERROR_BRIDGE_THROUGH_MAP_BORDER);
 
 	TransportType transport_type = Extract<TransportType, 15, 2>(p2);
+
+	bool script_cmd = HasBit(p2, 17);
 
 	/* type of bridge */
 	switch (transport_type) {
@@ -321,6 +332,8 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 	}
 	TileIndex tile_start = p1;
 	TileIndex tile_end = end_tile;
+
+	if ((flags & DC_TOWN) && !(MayTownModifyRoad(tile_start) && MayTownModifyRoad(tile_end))) return CMD_ERROR;
 
 	if (company == OWNER_DEITY) {
 		if (transport_type != TRANSPORT_ROAD) return CMD_ERROR;
@@ -354,6 +367,7 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 		/* set and test bridge length, availability */
 		CommandCost ret = CheckBridgeAvailability(bridge_type, bridge_len, flags);
 		if (ret.Failed()) return ret;
+		if (script_cmd && HasBit(GetBridgeSpec(bridge_type)->ctrl_flags, BSCF_NOT_AVAILABLE_AI_GS)) return CMD_ERROR;
 	} else {
 		if (bridge_len > _settings_game.construction.max_bridge_length) return_cmd_error(STR_ERROR_BRIDGE_TOO_LONG);
 	}
@@ -639,20 +653,31 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 
 					Owner owner_road = hasroad ? GetRoadOwner(t, RTT_ROAD) : company;
 					Owner owner_tram = hastram ? GetRoadOwner(t, RTT_TRAM) : company;
-					MakeRoadBridgeRamp(t, owner, owner_road, owner_tram, bridge_type, d, road_rt, tram_rt, is_upgrade);
+
 					if (is_upgrade) {
-						if (road_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_ROAD, GetCustomBridgeHeadRoadBits(t, RTT_ROAD) | DiagDirToRoadBits(d));
-						if (tram_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_TRAM, GetCustomBridgeHeadRoadBits(t, RTT_TRAM) | DiagDirToRoadBits(d));
+						RoadBits road_bits = GetCustomBridgeHeadRoadBits(t, RTT_ROAD);
+						RoadBits tram_bits = GetCustomBridgeHeadRoadBits(t, RTT_TRAM);
+						if (RoadTypeIsRoad(roadtype)) road_bits |= DiagDirToRoadBits(d);
+						if (RoadTypeIsTram(roadtype)) tram_bits |= DiagDirToRoadBits(d);
+						MakeRoadBridgeRamp(t, owner, owner_road, owner_tram, bridge_type, d, road_rt, tram_rt);
+						if (road_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_ROAD, road_bits);
+						if (tram_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_TRAM, tram_bits);
+					} else {
+						MakeRoadBridgeRamp(t, owner, owner_road, owner_tram, bridge_type, d, road_rt, tram_rt);
 					}
 				};
 				make_bridge_ramp(tile_start, dir);
 				make_bridge_ramp(tile_end, ReverseDiagDir(dir));
 				AddRoadTunnelBridgeInfrastructure(tile_start, tile_end);
-				if (IsRoadCustomBridgeHead(tile_start) || IsRoadCustomBridgeHead(tile_end)) {
-					NotifyRoadLayoutChanged();
-				} else {
-					NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile_start, tile_end, dir, GetRoadTramType(roadtype));
+				if (RoadLayoutChangeNotificationEnabled(true)) {
+					if (IsRoadCustomBridgeHead(tile_start) || IsRoadCustomBridgeHead(tile_end)) {
+						NotifyRoadLayoutChanged();
+					} else {
+						NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile_start, tile_end, dir, GetRoadTramType(roadtype));
+					}
 				}
+				UpdateRoadCachedOneWayStatesAroundTile(tile_start);
+				UpdateRoadCachedOneWayStatesAroundTile(tile_end);
 				break;
 			}
 
@@ -1011,11 +1036,13 @@ CommandCost CmdBuildTunnel(TileIndex start_tile, DoCommandFlag flags, uint32 p1,
 			YapfNotifyTrackLayoutChange(start_tile, DiagDirToDiagTrack(direction));
 		} else {
 			if (c != nullptr) c->infrastructure.road[roadtype] += num_pieces * 2; // A full diagonal road has two road bits.
-			NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(start_tile, end_tile, direction, GetRoadTramType(roadtype));
+			if (RoadLayoutChangeNotificationEnabled(true)) NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(start_tile, end_tile, direction, GetRoadTramType(roadtype));
 			RoadType road_rt = RoadTypeIsRoad(roadtype) ? roadtype : INVALID_ROADTYPE;
 			RoadType tram_rt = RoadTypeIsTram(roadtype) ? roadtype : INVALID_ROADTYPE;
 			MakeRoadTunnel(start_tile, company, t->index, direction,                 road_rt, tram_rt);
 			MakeRoadTunnel(end_tile,   company, t->index, ReverseDiagDir(direction), road_rt, tram_rt);
+			UpdateRoadCachedOneWayStatesAroundTile(start_tile);
+			UpdateRoadCachedOneWayStatesAroundTile(end_tile);
 		}
 		DirtyCompanyInfrastructureWindows(company);
 	}
@@ -1148,13 +1175,18 @@ static CommandCost DoClearTunnel(TileIndex tile, DoCommandFlag flags)
 			/* A full diagonal road tile has two road bits. */
 			UpdateCompanyRoadInfrastructure(GetRoadTypeRoad(tile), GetRoadOwner(tile, RTT_ROAD), -(int)(len * 2 * TUNNELBRIDGE_TRACKBIT_FACTOR));
 			UpdateCompanyRoadInfrastructure(GetRoadTypeTram(tile), GetRoadOwner(tile, RTT_TRAM), -(int)(len * 2 * TUNNELBRIDGE_TRACKBIT_FACTOR));
-			NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, GetTunnelBridgeDirection(tile), RTT_ROAD);
-			NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, GetTunnelBridgeDirection(tile), RTT_TRAM);
+			if (RoadLayoutChangeNotificationEnabled(false)) {
+				NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, GetTunnelBridgeDirection(tile), RTT_ROAD);
+				NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, GetTunnelBridgeDirection(tile), RTT_TRAM);
+			}
 
 			delete Tunnel::GetByTile(tile);
 
 			DoClearSquare(tile);
 			DoClearSquare(endtile);
+
+			UpdateRoadCachedOneWayStatesAroundTile(tile);
+			UpdateRoadCachedOneWayStatesAroundTile(endtile);
 		}
 		ViewportMapInvalidateTunnelCacheByTile(tile < endtile ? tile : endtile, axis);
 	}
@@ -1240,18 +1272,22 @@ static CommandCost DoClearBridge(TileIndex tile, DoCommandFlag flags)
 
 		bool removetile = false;
 		bool removeendtile = false;
+		bool update_road = false;
 
 		/* Update company infrastructure counts. */
 		if (rail) {
 			SubtractRailTunnelBridgeInfrastructure(tile, endtile);
 		} else if (GetTunnelBridgeTransportType(tile) == TRANSPORT_ROAD) {
 			SubtractRoadTunnelBridgeInfrastructure(tile, endtile);
-			if (IsRoadCustomBridgeHead(tile) || IsRoadCustomBridgeHead(endtile)) {
-				NotifyRoadLayoutChanged();
-			} else {
-				if (HasRoadTypeRoad(tile)) NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, direction, RTT_ROAD);
-				if (HasRoadTypeTram(tile)) NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, direction, RTT_TRAM);
+			if (RoadLayoutChangeNotificationEnabled(false)) {
+				if (IsRoadCustomBridgeHead(tile) || IsRoadCustomBridgeHead(endtile)) {
+					NotifyRoadLayoutChanged();
+				} else {
+					if (HasRoadTypeRoad(tile)) NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, direction, RTT_ROAD);
+					if (HasRoadTypeTram(tile)) NotifyRoadLayoutChangedIfSimpleTunnelBridgeNonLeaf(tile, endtile, direction, RTT_TRAM);
+				}
 			}
+			update_road = true;
 		} else { // Aqueduct
 			if (Company::IsValidID(owner)) Company::Get(owner)->infrastructure.water -= len * TUNNELBRIDGE_TRACKBIT_FACTOR;
 			removetile    = IsDockingTile(tile);
@@ -1274,7 +1310,7 @@ static CommandCost DoClearBridge(TileIndex tile, DoCommandFlag flags)
 				if (height < minz) SetRoadside(c, ROADSIDE_PAVED);
 			}
 			ClearBridgeMiddle(c);
-			MarkTileDirtyByTile(c, ZOOM_LVL_DRAW_MAP, height - TileHeight(c));
+			MarkTileDirtyByTile(c, VMDF_NOT_MAP_MODE, height - TileHeight(c));
 		}
 
 		if (rail) {
@@ -1297,6 +1333,11 @@ static CommandCost DoClearBridge(TileIndex tile, DoCommandFlag flags)
 			for (uint i = 0; i < vehicles_affected.size(); ++i) {
 				TryPathReserve(vehicles_affected[i], true);
 			}
+		}
+
+		if (update_road) {
+			UpdateRoadCachedOneWayStatesAroundTile(tile);
+			UpdateRoadCachedOneWayStatesAroundTile(endtile);
 		}
 	}
 
@@ -2027,6 +2068,21 @@ BridgePiecePillarFlags GetBridgeTilePillarFlags(TileIndex tile, TileIndex northe
 	}
 }
 
+BridgePieceDebugInfo GetBridgePieceDebugInfo(TileIndex tile)
+{
+	TileIndex rampnorth = GetNorthernBridgeEnd(tile);
+	TileIndex rampsouth = GetSouthernBridgeEnd(tile);
+
+	BridgePieces piece = CalcBridgePiece(
+		GetTunnelBridgeLength(tile, rampnorth) + 1,
+		GetTunnelBridgeLength(tile, rampsouth) + 1
+	);
+	BridgePiecePillarFlags pillar_flags = GetBridgeTilePillarFlags(tile, rampnorth, rampsouth, GetBridgeType(rampnorth), GetTunnelBridgeTransportType(rampnorth));
+	const Axis axis = TileX(rampnorth) == TileX(rampsouth) ? AXIS_Y : AXIS_X;
+	uint pillar_index = piece * 2 + (axis == AXIS_Y ? 1 : 0);
+	return { piece, pillar_flags, pillar_index };
+}
+
 /**
  * Draw the middle bits of a bridge.
  * @param ti Tile information of the tile to draw it on.
@@ -2153,22 +2209,7 @@ void DrawBridgeMiddle(const TileInfo *ti)
 	if (IsInvisibilitySet(TO_BRIDGES)) return;
 
 	psid++;
-	if (ti->z + 5 == z) {
-		/* draw poles below for small bridges */
-		if (psid->sprite != 0) {
-			SpriteID image = psid->sprite;
-			SpriteID pal   = psid->pal;
-			if (IsTransparencySet(TO_BRIDGES)) {
-				SetBit(image, PALETTE_MODIFIER_TRANSPARENT);
-				pal = PALETTE_TO_TRANSPARENT;
-			}
-
-			DrawGroundSpriteAt(image, pal, x - ti->x, y - ti->y, z - ti->z);
-		}
-	} else {
-		/* draw pillars below for high bridges */
-		DrawBridgePillars(psid, ti, axis, drawfarpillar, x, y, z);
-	}
+	DrawBridgePillars(psid, ti, axis, drawfarpillar, x, y, z);
 }
 
 
@@ -2704,7 +2745,7 @@ static VehicleEnterTileStatus VehicleEnter_TunnelBridge(Vehicle *v, TileIndex ti
 					assert_msg(frame == rv->frame + 1 || rv->frame == _tunnel_turnaround_pre_visibility_frame[dir],
 							"frame: %u, rv->frame: %u, dir: %u, _tunnel_turnaround_pre_visibility_frame[dir]: %u", frame, rv->frame, dir, _tunnel_turnaround_pre_visibility_frame[dir]);
 					rv->tile = tile;
-					rv->cur_image_valid_dir = INVALID_DIR;
+					rv->InvalidateImageCache();
 					rv->state = RVSB_WORMHOLE;
 					if (Tunnel::GetByTile(tile)->is_chunnel) SetBit(rv->gv_flags, GVF_CHUNNEL_BIT);
 					rv->vehstatus |= VS_HIDDEN;
@@ -2719,7 +2760,7 @@ static VehicleEnterTileStatus VehicleEnter_TunnelBridge(Vehicle *v, TileIndex ti
 			if (dir == ReverseDiagDir(vdir) && frame == (int) (_tunnel_visibility_frame[dir] - 1) && z == 0) {
 				if (rv->tile != tile && GetOtherTunnelEnd(rv->tile) != tile) return VETSB_CONTINUE; // In chunnel
 				rv->tile = tile;
-				rv->cur_image_valid_dir = INVALID_DIR;
+				rv->InvalidateImageCache();
 				rv->state = DiagDirToDiagTrackdir(vdir);
 				rv->frame = TILE_SIZE - (frame + 1);
 				rv->vehstatus &= ~VS_HIDDEN;
@@ -2762,7 +2803,7 @@ static VehicleEnterTileStatus VehicleEnter_TunnelBridge(Vehicle *v, TileIndex ti
 						if (HasRoadTypeTram(tile) && HasBit(rv->compatible_roadtypes, GetRoadTypeTram(tile))) bits |= GetCustomBridgeHeadRoadBits(tile, RTT_TRAM);
 						if (!(bits & DiagDirToRoadBits(GetTunnelBridgeDirection(tile)))) return VETSB_CONTINUE;
 					}
-					rv->cur_image_valid_dir = INVALID_DIR;
+					rv->InvalidateImageCache();
 					rv->state = RVSB_WORMHOLE;
 					/* There are no slopes inside bridges / tunnels. */
 					ClrBit(rv->gv_flags, GVF_GOINGUP_BIT);
@@ -2799,7 +2840,7 @@ static VehicleEnterTileStatus VehicleEnter_TunnelBridge(Vehicle *v, TileIndex ti
 					v->tile = tile;
 					RoadVehicle *rv = RoadVehicle::From(v);
 					if (rv->state == RVSB_WORMHOLE) {
-						rv->cur_image_valid_dir = INVALID_DIR;
+						rv->InvalidateImageCache();
 						rv->state = DiagDirToDiagTrackdir(DirToDiagDir(v->direction));
 						rv->frame = 0;
 						return VETSB_ENTERED_WORMHOLE;

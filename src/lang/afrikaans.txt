@@ -133,7 +133,7 @@ STR_ABBREV_PASSENGERS                                           :{TINY_FONT}PS
 STR_ABBREV_COAL                                                 :{TINY_FONT}SK
 STR_ABBREV_MAIL                                                 :{TINY_FONT}PS
 STR_ABBREV_OIL                                                  :{TINY_FONT}OL
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}LH
+STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}VE
 STR_ABBREV_GOODS                                                :{TINY_FONT}GD
 STR_ABBREV_GRAIN                                                :{TINY_FONT}GR
 STR_ABBREV_WOOD                                                 :{TINY_FONT}HT
@@ -403,7 +403,7 @@ STR_FILE_MENU_EXIT                                              :Verlaat
 
 # map menu
 STR_MAP_MENU_MAP_OF_WORLD                                       :Kaart van wêreld
-STR_MAP_MENU_EXTRA_VIEW_PORT                                    :Ekstra toonvenster
+STR_MAP_MENU_EXTRA_VIEWPORT                                     :Ekstra toonvenster
 STR_MAP_MENU_LINGRAPH_LEGEND                                    :Vragverspreidingsleutel
 STR_MAP_MENU_SIGN_LIST                                          :Teken lys
 
@@ -474,7 +474,7 @@ STR_NEWS_MENU_DELETE_ALL_MESSAGES                               :Vee alle boodsk
 ############ range ends here
 
 ############ range for about menu starts
-STR_ABOUT_MENU_LAND_BLOCK_INFO                                  :Gebied informasie
+STR_ABOUT_MENU_LAND_BLOCK_INFO                                  :Terreininligting
 STR_ABOUT_MENU_SEPARATOR                                        :
 STR_ABOUT_MENU_TOGGLE_CONSOLE                                   :Skakel terminaal
 STR_ABOUT_MENU_AI_DEBUG                                         :AI/Spel skript ontfout
@@ -885,7 +885,7 @@ STR_NEWS_EXCLUSIVE_RIGHTS_TITLE                                 :{BIG_FONT}{BLAC
 STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION                           :{BIG_FONT}{BLACK} die dorpsraad van {TOWN} het 'n kontrak met {STRING} aan gegaan vir een jaaar se eksklusiewe vervoer regte
 
 # Extra view window
-STR_EXTRA_VIEW_PORT_TITLE                                       :{WHITE}Toonvenster {COMMA}
+STR_EXTRA_VIEWPORT_TITLE                                        :{WHITE}Toonvenster {COMMA}
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN                                :{BLACK}Verander toonvenster
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN_TT                             :{BLACK}Dupliseer die ligging van die hooftoonvenster na die toonvenster
 STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW                                :{BLACK}Verander hoofaansig
@@ -2602,7 +2602,7 @@ STR_INDUSTRY_CARGOES_SELECT_INDUSTRY                            :{BLACK}Kies die
 STR_INDUSTRY_CARGOES_SELECT_INDUSTRY_TOOLTIP                    :{BLACK}Kies die nywerheid om te vertoon
 
 # Land area window
-STR_LAND_AREA_INFORMATION_CAPTION                               :{WHITE}Land gebied informasie
+STR_LAND_AREA_INFORMATION_CAPTION                               :{WHITE}Terreininligting
 STR_LAND_AREA_INFORMATION_COST_TO_CLEAR_N_A                     :{BLACK}Koste om skoon te maak: {LTBLUE}N/A
 STR_LAND_AREA_INFORMATION_COST_TO_CLEAR                         :{BLACK}Koste om skoon te maak: {RED}{CURRENCY_LONG}
 STR_LAND_AREA_INFORMATION_REVENUE_WHEN_CLEARED                  :{BLACK}Wins waneer skoon maak: {LTBLUE}{CURRENCY_LONG}
@@ -4450,7 +4450,6 @@ STR_ERROR_CAN_T_CONVERT_ROAD                                    :{WHITE}kan nie 
 STR_ERROR_CAN_T_CONVERT_TRAMWAY                                 :{WHITE}Kan nie tremtipe hier omskakel nie ...
 STR_ERROR_NO_SUITABLE_ROAD                                      :{WHITE}Geen geskikte pad
 STR_ERROR_NO_SUITABLE_TRAMWAY                                   :{WHITE}Geen geskikte tremweg nie
-STR_ERROR_INCOMPATIBLE_ROAD                                     :{WHITE}... onverenigbare pad
 STR_ERROR_INCOMPATIBLE_TRAMWAY                                  :{WHITE}... onversoenbare tremweg
 
 # Waterway construction errors

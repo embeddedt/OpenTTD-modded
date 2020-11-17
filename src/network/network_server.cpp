@@ -148,11 +148,12 @@ struct PacketWriter : SaveFilter {
 		this->packets.push_back(std::move(this->current));
 	}
 
-	void PrependQueue(std::unique_ptr<Packet> p)
+	/** Prepend the current packet to the queue. */
+	void PrependQueue()
 	{
-		if (p == nullptr) return;
+		if (this->current == nullptr) return;
 
-		this->packets.push_front(std::move(p));
+		this->packets.push_front(std::move(this->current));
 	}
 
 	void Write(byte *buf, size_t size) override
@@ -195,9 +196,9 @@ struct PacketWriter : SaveFilter {
 		this->AppendQueue();
 
 		/* Fast-track the size to the client. */
-		std::unique_ptr<Packet> p(new Packet(PACKET_SERVER_MAP_SIZE));
-		p->Send_uint32((uint32)this->total_size);
-		this->PrependQueue(std::move(p));
+		this->current.reset(new Packet(PACKET_SERVER_MAP_SIZE));
+		this->current->Send_uint32((uint32)this->total_size);
+		this->PrependQueue();
 	}
 };
 
@@ -228,6 +229,9 @@ ServerNetworkGameSocketHandler::~ServerNetworkGameSocketHandler()
 {
 	if (_redirect_console_to_client == this->client_id) _redirect_console_to_client = INVALID_CLIENT_ID;
 	OrderBackup::ResetUser(this->client_id);
+
+	extern void RemoveVirtualTrainsOfUser(uint32 user);
+	RemoveVirtualTrainsOfUser(this->client_id);
 
 	if (this->savegame != nullptr) {
 		this->savegame->Destroy();
@@ -635,7 +639,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 				break;
 			}
 		}
-		if (has_packets) has_packets = this->savegame->HasPackets();
 
 		if (last_packet) {
 			/* Done reading, make sure saving is done as well */
@@ -1055,7 +1058,10 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_SETTINGS_PASSWO
 	p->Recv_string(password, sizeof(password));
 
 	/* Check settings password. Deny if no password is set */
-	if (StrEmpty(_settings_client.network.settings_password) ||
+	if (StrEmpty(password)) {
+		if (this->settings_authed) DEBUG(net, 0, "[settings-ctrl] client-id %d deauthed", this->client_id);
+		this->settings_authed = false;
+	} else if (StrEmpty(_settings_client.network.settings_password) ||
 			strcmp(password, GenerateCompanyPasswordHash(_settings_client.network.settings_password, _settings_client.network.network_id, _settings_game.game_creation.generation_seed ^ this->settings_hash_bits)) != 0) {
 		DEBUG(net, 0, "[settings-ctrl] wrong password from client-id %d", this->client_id);
 		this->settings_authed = false;
@@ -1238,7 +1244,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 		_settings_client.network.sync_freq = min<uint16>(_settings_client.network.sync_freq, 16);
 
 		// have the server and all clients run some sanity checks
-		NetworkSendCommand(0, 0, 0, CMD_DESYNC_CHECK, nullptr, nullptr, _local_company, 0);
+		NetworkSendCommand(0, 0, 0, 0, CMD_DESYNC_CHECK, nullptr, nullptr, _local_company, 0);
 
 		SendPacketsState send_state = this->SendPackets(true);
 		if (send_state != SPS_CLOSED) {
@@ -2019,7 +2025,7 @@ void NetworkServerMonthlyLoop()
 {
 	NetworkAutoCleanCompanies();
 	NetworkAdminUpdate(ADMIN_FREQUENCY_MONTHLY);
-	if ((_cur_month % 3) == 0) NetworkAdminUpdate(ADMIN_FREQUENCY_QUARTERLY);
+	if ((_cur_date_ymd.month % 3) == 0) NetworkAdminUpdate(ADMIN_FREQUENCY_QUARTERLY);
 }
 
 /** Daily "callback". Called whenever the date changes. */
@@ -2275,7 +2281,7 @@ void NetworkServerNewCompany(const Company *c, NetworkClientInfo *ci)
 		/* ci is nullptr when replaying, or for AIs. In neither case there is a client. */
 		ci->client_playas = c->index;
 		NetworkUpdateClientInfo(ci->client_id);
-		NetworkSendCommand(0, 0, 0, CMD_RENAME_PRESIDENT, nullptr, ci->client_name, c->index, 0);
+		NetworkSendCommand(0, 0, 0, 0, CMD_RENAME_PRESIDENT, nullptr, ci->client_name, c->index, 0);
 	}
 
 	/* Announce new company on network. */

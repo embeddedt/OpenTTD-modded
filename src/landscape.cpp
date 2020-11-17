@@ -32,6 +32,7 @@
 #include "pathfinder/npf/aystar.h"
 #include "saveload/saveload.h"
 #include "framerate_type.h"
+#include "town.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 #include "scope_info.h"
 #include <list>
@@ -713,6 +714,8 @@ CommandCost CmdLandscapeClear(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 		return_cmd_error(STR_ERROR_CLEARING_LIMIT_REACHED);
 	}
 
+	if ((flags & DC_TOWN) && !MayTownModifyRoad(tile)) return CMD_ERROR;
+
 	const ClearedObjectArea *coa = FindClearedObject(tile);
 
 	/* If this tile was the first tile which caused object destruction, always
@@ -1197,8 +1200,8 @@ static void BuildRiver(TileIndex begin, TileIndex end)
  */
 static bool FlowRiver(TileIndex spring, TileIndex begin)
 {
-	#define SET_MARK(x) marks.insert(x)
-	#define IS_MARKED(x) (marks.find(x) != marks.end())
+#	define SET_MARK(x) marks.insert(x)
+#	define IS_MARKED(x) (marks.find(x) != marks.end())
 
 	uint height = TileHeight(begin);
 	if (IsWaterTile(begin)) return DistanceManhattan(spring, begin) > _settings_game.game_creation.min_river_length;

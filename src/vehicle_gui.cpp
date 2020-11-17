@@ -368,6 +368,7 @@ DropDownList BaseVehicleListWindow::BuildActionDropdownList(bool show_autoreplac
 	}
 	if (this->vli.vtype == VEH_TRAIN && _settings_client.gui.show_adv_tracerestrict_features) {
 		list.emplace_back(new DropDownListStringItem(STR_TRACE_RESTRICT_SLOT_MANAGE, ADI_TRACERESTRICT_SLOT_MGMT, false));
+		list.emplace_back(new DropDownListStringItem(STR_TRACE_RESTRICT_COUNTER_MANAGE, ADI_TRACERESTRICT_COUNTER_MGMT, false));
 	}
 	if (change_order_str != 0) {
 		list.emplace_back(new DropDownListStringItem(change_order_str, ADI_CHANGE_ORDER, disable));
@@ -1213,7 +1214,7 @@ struct RefitWindow : public Window {
 							delete this;
 						}
 					} else {
-						if (DoCommandP(v->tile, v->index, this->cargo->cargo | this->cargo->subtype << 8 | this->order << 16 | this->is_virtual_train << 31, CMD_ORDER_REFIT)) delete this;
+						if (DoCommandP(v->tile, v->index, this->cargo->cargo | this->cargo->subtype << 8 | this->order << 16, CMD_ORDER_REFIT)) delete this;
 					}
 				}
 				break;
@@ -2087,7 +2088,7 @@ public:
 						break;
 					case ADI_TEMPLATE_REPLACE:
 						if (vli.vtype == VEH_TRAIN) {
-							ShowTemplateReplaceWindow(this->unitnumber_digits);
+							ShowTemplateReplaceWindow();
 						}
 						break;
 					case ADI_SERVICE: // Send for servicing
@@ -2113,6 +2114,12 @@ public:
 					case ADI_TRACERESTRICT_SLOT_MGMT: {
 						extern void ShowTraceRestrictSlotWindow(CompanyID company);
 						ShowTraceRestrictSlotWindow(this->owner);
+						break;
+					}
+
+					case ADI_TRACERESTRICT_COUNTER_MGMT: {
+						extern void ShowTraceRestrictCounterWindow(CompanyID company);
+						ShowTraceRestrictCounterWindow(this->owner);
 						break;
 					}
 
@@ -2281,6 +2288,24 @@ void ShowVehicleListWindow(CompanyID company, VehicleType vehicle_type, TileInde
 	ShowVehicleListWindowLocal(company, VL_DEPOT_LIST, vehicle_type, depot_airport_index);
 }
 
+void DirtyVehicleListWindowForVehicle(const Vehicle *v)
+{
+	WindowClass cls = static_cast<WindowClass>(WC_TRAINS_LIST + v->type);
+	WindowClass cls2 = (v->type == VEH_TRAIN) ? WC_TRACE_RESTRICT_SLOTS : cls;
+	Window *w;
+	FOR_ALL_WINDOWS_FROM_BACK(w) {
+		if (w->window_class == cls || w->window_class == cls2) {
+			BaseVehicleListWindow *listwin = static_cast<BaseVehicleListWindow *>(w);
+			uint max = min(listwin->vscroll->GetPosition() + listwin->vscroll->GetCapacity(), (uint)listwin->vehicles.size());
+			for (uint i = listwin->vscroll->GetPosition(); i < max; ++i) {
+				if (v == listwin->vehicles[i]) {
+					listwin->SetWidgetDirty(0);
+					break;
+				}
+			}
+		}
+	}
+}
 
 /* Unified vehicle GUI - Vehicle Details Window */
 
@@ -3068,7 +3093,7 @@ static const uint32 _vehicle_command_translation_table[][4] = {
  * @param p1 vehicle ID
  * @param p2 unused
  */
-void CcStartStopVehicle(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcStartStopVehicle(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -3127,6 +3152,7 @@ private:
 		SEL_DC_BASEPLANE = SEL_DC_GOTO_DEPOT, ///< First plane of the #WID_VV_SELECT_DEPOT_CLONE stacked widget.
 		SEL_RT_BASEPLANE = SEL_RT_REFIT,      ///< First plane of the #WID_VV_SELECT_REFIT_TURN stacked widget.
 	};
+	bool mouse_over_start_stop = false;
 
 	/**
 	 * Display a plane in the window.
@@ -3296,6 +3322,7 @@ public:
 
 		const Vehicle *v = Vehicle::Get(this->window_number);
 		StringID str;
+		TextColour text_colour = TC_FROMSTRING;
 		if (v->vehstatus & VS_CRASHED) {
 			str = STR_VEHICLE_STATUS_CRASHED;
 		} else if (v->breakdown_ctr == 1 || (v->type == VEH_TRAIN && Train::From(v)->flags & VRF_IS_BROKEN)) {
@@ -3331,7 +3358,7 @@ public:
 					SetDParam(1, percent);
 				}
 			}
-		} else if (v->vehstatus & VS_STOPPED) {
+		} else if (v->vehstatus & VS_STOPPED && (!mouse_over_start_stop || v->IsStoppedInDepot())) {
 			if (v->type == VEH_TRAIN) {
 				if (v->cur_speed == 0) {
 					if (Train::From(v)->gcache.cached_power == 0) {
@@ -3353,14 +3380,25 @@ public:
 			} else { // no train/RV
 				str = STR_VEHICLE_STATUS_STOPPED;
 			}
-		} else if (v->type == VEH_TRAIN && HasBit(Train::From(v)->flags, VRF_TRAIN_STUCK) && !v->current_order.IsType(OT_LOADING)) {
+		} else if (v->type == VEH_TRAIN && HasBit(Train::From(v)->flags, VRF_TRAIN_STUCK) && !v->current_order.IsType(OT_LOADING) && !mouse_over_start_stop) {
 			str = HasBit(Train::From(v)->flags, VRF_WAITING_RESTRICTION) ? STR_VEHICLE_STATUS_TRAIN_STUCK_WAIT_RESTRICTION : STR_VEHICLE_STATUS_TRAIN_STUCK;
 		} else if (v->type == VEH_TRAIN && Train::From(v)->reverse_distance > 1) {
-			str = STR_VEHICLE_STATUS_TRAIN_REVERSING;
-			SetDParam(0, v->GetDisplaySpeed());
+			if (Train::From(v)->track == TRACK_BIT_DEPOT) {
+				str = STR_VEHICLE_STATUS_TRAIN_MOVING_DEPOT;
+			} else {
+				str = STR_VEHICLE_STATUS_TRAIN_REVERSING;
+				SetDParam(0, v->GetDisplaySpeed());
+			}
 		} else if (v->type == VEH_AIRCRAFT && HasBit(Aircraft::From(v)->flags, VAF_DEST_TOO_FAR) && !v->current_order.IsType(OT_LOADING)) {
 			str = STR_VEHICLE_STATUS_AIRCRAFT_TOO_FAR;
 		} else { // vehicle is in a "normal" state, show current order
+			if (mouse_over_start_stop) {
+				if (v->vehstatus & VS_STOPPED) {
+					text_colour = TC_RED | TC_FORCED;
+				} else if (v->type == VEH_TRAIN && HasBit(Train::From(v)->flags, VRF_TRAIN_STUCK) && !v->current_order.IsType(OT_LOADING)) {
+					text_colour = TC_ORANGE | TC_FORCED;
+				}
+			}
 			switch (v->current_order.GetType()) {
 				case OT_GOTO_STATION: {
 					SetDParam(0, v->current_order.GetDestination());
@@ -3440,7 +3478,7 @@ public:
 		int image = ((v->vehstatus & VS_STOPPED) != 0) ? SPR_FLAG_VEH_STOPPED : SPR_FLAG_VEH_RUNNING;
 		int lowered = this->IsWidgetLowered(WID_VV_START_STOP) ? 1 : 0;
 		DrawSprite(image, PAL_NONE, image_left + lowered, r.top + WD_IMGBTN_TOP + lowered);
-		DrawString(text_left + lowered, text_right + lowered, r.top + WD_FRAMERECT_TOP + lowered, str, TC_FROMSTRING, SA_HOR_CENTER);
+		DrawString(text_left + lowered, text_right + lowered, r.top + WD_FRAMERECT_TOP + lowered, str, text_colour, SA_HOR_CENTER);
 	}
 
 	void OnClick(Point pt, int widget, int click_count) override
@@ -3594,6 +3632,15 @@ public:
 		}
 	}
 
+	void OnMouseOver(Point pt, int widget) override
+	{
+		bool start_stop = widget == WID_VV_START_STOP;
+		if (start_stop != mouse_over_start_stop) {
+			mouse_over_start_stop = start_stop;
+			this->SetWidgetDirty(WID_VV_START_STOP);
+		}
+	}
+
 	void OnResize() override
 	{
 		if (this->viewport != nullptr) {
@@ -3700,7 +3747,7 @@ void StopGlobalFollowVehicle(const Vehicle *v)
  * @param p2 unused
  * @param cmd unused
  */
-void CcBuildPrimaryVehicle(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcBuildPrimaryVehicle(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 

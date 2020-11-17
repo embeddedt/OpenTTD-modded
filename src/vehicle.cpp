@@ -340,6 +340,7 @@ uint Vehicle::Crash(bool flooded)
 		if (IsCargoInClass(v->cargo_type, CC_PASSENGERS)) pass += v->cargo.TotalCount();
 		v->vehstatus |= VS_CRASHED;
 		v->MarkAllViewportsDirty();
+		v->InvalidateImageCache();
 	}
 
 	this->ClearSeparation();
@@ -927,16 +928,27 @@ void Vehicle::HandlePathfindingResult(bool path_found)
 
 		/* Clear the flag as the PF's problem was solved. */
 		ClrBit(this->vehicle_flags, VF_PATHFINDER_LOST);
+		if (this->type == VEH_SHIP) {
+			Ship::From(this)->lost_count = 0;
+		}
 		/* Delete the news item. */
 		DeleteVehicleNews(this->index, STR_NEWS_VEHICLE_IS_LOST);
 		return;
 	}
 
-	/* Were we already lost? */
-	if (HasBit(this->vehicle_flags, VF_PATHFINDER_LOST)) return;
+	if (this->type == VEH_SHIP) {
+		SetBit(this->vehicle_flags, VF_PATHFINDER_LOST);
+		if (Ship::From(this)->lost_count == 255) return;
+		Ship::From(this)->lost_count++;
+		if (Ship::From(this)->lost_count != 16) return;
+	} else {
+		/* Were we already lost? */
+		if (HasBit(this->vehicle_flags, VF_PATHFINDER_LOST)) return;
 
-	/* It is first time the problem occurred, set the "lost" flag. */
-	SetBit(this->vehicle_flags, VF_PATHFINDER_LOST);
+		/* It is first time the problem occurred, set the "lost" flag. */
+		SetBit(this->vehicle_flags, VF_PATHFINDER_LOST);
+	}
+
 	/* Notify user about the event. */
 	AI::NewEvent(this->owner, new ScriptEventVehicleLost(this->index));
 	if (_settings_client.gui.lost_vehicle_warn && this->owner == _local_company) {
@@ -1327,8 +1339,8 @@ void CallVehicleTicks()
 			if (HasBit(t->flags, VRF_TOO_HEAVY)) {
 				if (t->owner == _local_company) {
 					SetDParam(0, t->index);
-					SetDParam(1, STR_ERROR_TRAIN_TOO_HEAVY);
-					AddVehicleNewsItem(STR_ERROR_TRAIN_TOO_HEAVY, NT_ADVICE, t->index);
+					AddNewsItem(STR_ERROR_TRAIN_TOO_HEAVY, NT_ADVICE, NF_INCOLOUR | NF_SMALL | NF_VEHICLE_PARAM0,
+							NR_VEHICLE, t->index);
 				}
 				ClrBit(t->flags, VRF_TOO_HEAVY);
 			}
@@ -1486,7 +1498,7 @@ void CallVehicleTicks()
 
 		if (!IsLocalCompany()) continue;
 
-		if (res.Succeeded()) {
+		if (res.Succeeded() && res.GetCost() != 0) {
 			ShowCostOrIncomeAnimation(x, y, z, res.GetCost());
 			continue;
 		}
@@ -1539,6 +1551,20 @@ void CallVehicleTicks()
 	_vehicles_to_pay_repair.clear();
 }
 
+void RemoveVirtualTrainsOfUser(uint32 user)
+{
+	if (!_tick_caches_valid || HasChickenBit(DCBF_VEH_TICK_CACHE)) RebuildVehicleTickCaches();
+
+	Backup<CompanyID> cur_company(_current_company, FILE_LINE);
+	for (const Train *front : _tick_train_front_cache) {
+		if (front->IsVirtual() && front->motion_counter == user) {
+			cur_company.Change(front->owner);
+			DoCommandP(0, front->index, 0, CMD_DELETE_VIRTUAL_TRAIN);
+		}
+	}
+	cur_company.Restore();
+}
+
 /**
  * Add vehicle sprite for drawing to the screen.
  * @param v Vehicle to draw.
@@ -1557,6 +1583,17 @@ static void DoDrawVehicle(const Vehicle *v)
 		 * However, transparent smoke and bubbles look weird, so always hide them. */
 		TransparencyOption to = EffectVehicle::From(v)->GetTransparencyOption();
 		if (to != TO_INVALID && (IsTransparencySet(to) || IsInvisibilitySet(to))) return;
+	}
+
+	{
+		Vehicle *v_mutable = const_cast<Vehicle *>(v);
+		if (HasBit(v_mutable->vcache.cached_veh_flags, VCF_IMAGE_REFRESH) && v_mutable->cur_image_valid_dir != INVALID_DIR) {
+			VehicleSpriteSeq seq;
+			v_mutable->GetImage(v_mutable->cur_image_valid_dir, EIT_ON_MAP, &seq);
+			v_mutable->sprite_seq = seq;
+			v_mutable->UpdateSpriteSeqBound();
+			ClrBit(v_mutable->vcache.cached_veh_flags, VCF_IMAGE_REFRESH);
+		}
 	}
 
 	StartSpriteCombine();
@@ -1637,7 +1674,7 @@ void ViewportAddVehicles(DrawPixelInfo *dpi)
 	}
 }
 
-void ViewportMapDrawVehicles(DrawPixelInfo *dpi, ViewPort *vp)
+void ViewportMapDrawVehicles(DrawPixelInfo *dpi, Viewport *vp)
 {
 	/* The save rectangle */
 	const int l = vp->virtual_left;
@@ -1650,25 +1687,27 @@ void ViewportMapDrawVehicles(DrawPixelInfo *dpi, ViewPort *vp)
 
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
 	for (int y = vhb.yl;; y = (y + (1 << 6)) & (0x3F << 6)) {
-		for (int x = vhb.xl;; x = (x + 1) & 0x3F) {
-			if (!HasBit(vp->map_draw_vehicles_cache.done_hash_bits[y >> 6], x)) {
-				SetBit(vp->map_draw_vehicles_cache.done_hash_bits[y >> 6], x);
-				const Vehicle *v = _vehicle_viewport_hash[x + y]; // already masked & 0xFFF
+		if (vp->map_draw_vehicles_cache.done_hash_bits[y >> 6] != UINT64_MAX) {
+			for (int x = vhb.xl;; x = (x + 1) & 0x3F) {
+				if (!HasBit(vp->map_draw_vehicles_cache.done_hash_bits[y >> 6], x)) {
+					SetBit(vp->map_draw_vehicles_cache.done_hash_bits[y >> 6], x);
+					const Vehicle *v = _vehicle_viewport_hash[x + y]; // already masked & 0xFFF
 
-				while (v != nullptr) {
-					if (!(v->vehstatus & (VS_HIDDEN | VS_UNCLICKABLE)) && (v->type != VEH_EFFECT)) {
-						Point pt = RemapCoords(v->x_pos, v->y_pos, v->z_pos);
-						if (pt.x >= l && pt.x < r && pt.y >= t && pt.y < b) {
-							const int pixel_x = UnScaleByZoomLower(pt.x - l, dpi->zoom);
-							const int pixel_y = UnScaleByZoomLower(pt.y - t, dpi->zoom);
-							vp->map_draw_vehicles_cache.vehicle_pixels[pixel_x + (pixel_y) * vp->width] = true;
+					while (v != nullptr) {
+						if (!(v->vehstatus & (VS_HIDDEN | VS_UNCLICKABLE)) && (v->type != VEH_EFFECT)) {
+							Point pt = RemapCoords(v->x_pos, v->y_pos, v->z_pos);
+							if (pt.x >= l && pt.x < r && pt.y >= t && pt.y < b) {
+								const int pixel_x = UnScaleByZoomLower(pt.x - l, dpi->zoom);
+								const int pixel_y = UnScaleByZoomLower(pt.y - t, dpi->zoom);
+								vp->map_draw_vehicles_cache.vehicle_pixels[pixel_x + (pixel_y) * vp->width] = true;
+							}
 						}
+						v = v->hash_viewport_next;
 					}
-					v = v->hash_viewport_next;
 				}
-			}
 
-			if (x == vhb.xu) break;
+				if (x == vhb.xu) break;
+			}
 		}
 
 		if (y == vhb.yu) break;
@@ -1697,7 +1736,7 @@ void ViewportMapDrawVehicles(DrawPixelInfo *dpi, ViewPort *vp)
  * @param y  Y coordinate in the viewport.
  * @return Closest vehicle, or \c nullptr if none found.
  */
-Vehicle *CheckClickOnVehicle(const ViewPort *vp, int x, int y)
+Vehicle *CheckClickOnVehicle(const Viewport *vp, int x, int y)
 {
 	Vehicle *found = nullptr;
 	uint dist, best_dist = UINT_MAX;
@@ -2203,11 +2242,9 @@ void VehicleEnterDepot(Vehicle *v)
 	switch (v->type) {
 		case VEH_TRAIN: {
 			Train *t = Train::From(v);
-			SetWindowClassesDirty(WC_TRAINS_LIST);
-			SetWindowClassesDirty(WC_TRACE_RESTRICT_SLOTS);
 			/* Clear path reservation */
 			SetDepotReservation(t->tile, false);
-			if (_settings_client.gui.show_track_reservation) MarkTileDirtyByTile(t->tile, ZOOM_LVL_DRAW_MAP);
+			if (_settings_client.gui.show_track_reservation) MarkTileDirtyByTile(t->tile, VMDF_NOT_MAP_MODE);
 
 			UpdateSignalsOnSegment(t->tile, INVALID_DIAGDIR, t->owner);
 			t->wait_counter = 0;
@@ -2219,11 +2256,9 @@ void VehicleEnterDepot(Vehicle *v)
 		}
 
 		case VEH_ROAD:
-			SetWindowClassesDirty(WC_ROADVEH_LIST);
 			break;
 
 		case VEH_SHIP: {
-			SetWindowClassesDirty(WC_SHIPS_LIST);
 			Ship *ship = Ship::From(v);
 			ship->state = TRACK_BIT_DEPOT;
 			ship->UpdateCache();
@@ -2233,12 +2268,12 @@ void VehicleEnterDepot(Vehicle *v)
 		}
 
 		case VEH_AIRCRAFT:
-			SetWindowClassesDirty(WC_AIRCRAFT_LIST);
 			HandleAircraftEnterHangar(Aircraft::From(v));
 			break;
 		default: NOT_REACHED();
 	}
 	SetWindowDirty(WC_VEHICLE_VIEW, v->index);
+	DirtyVehicleListWindowForVehicle(v);
 
 	if (v->type != VEH_TRAIN) {
 		/* Trains update the vehicle list when the first unit enters the depot and calls VehicleEnterDepot() when the last unit enters.
@@ -2363,7 +2398,7 @@ void Vehicle::UpdateViewport(bool dirty)
 					min(old_coord.top,    this->coord.top),
 					max(old_coord.right,  this->coord.right),
 					max(old_coord.bottom, this->coord.bottom),
-					this->type != VEH_EFFECT ? ZOOM_LVL_END : ZOOM_LVL_DRAW_MAP
+					VMDF_NOT_LANDSCAPE | (this->type != VEH_EFFECT ? VMDF_NONE : VMDF_NOT_MAP_MODE)
 			);
 		}
 	}
@@ -2383,7 +2418,7 @@ void Vehicle::UpdatePositionAndViewport()
  */
 void Vehicle::MarkAllViewportsDirty() const
 {
-	::MarkAllViewportsDirty(this->coord.left, this->coord.top, this->coord.right, this->coord.bottom);
+	::MarkAllViewportsDirty(this->coord.left, this->coord.top, this->coord.right, this->coord.bottom, VMDF_NOT_LANDSCAPE | (this->type != VEH_EFFECT ? VMDF_NONE : VMDF_NOT_MAP_MODE));
 }
 
 VehicleOrderID Vehicle::GetFirstWaitingLocation(bool require_wait_timetabled) const
@@ -2788,6 +2823,10 @@ void Vehicle::DeleteUnreachedImplicitOrders()
 			/* Do not delete orders, only skip them */
 			ClrBit(gv_flags, GVF_SUPPRESS_IMPLICIT_ORDERS);
 			this->cur_implicit_order_index = this->cur_real_order_index;
+			if (this->cur_timetable_order_index != this->cur_real_order_index) {
+				/* Timetable order ID was not the real order, to avoid updating the wrong timetable, just clear the timetable index */
+				this->cur_timetable_order_index = INVALID_VEH_ORDER_ID;
+			}
 			InvalidateVehicleOrder(this, 0);
 			return;
 		}
@@ -2966,7 +3005,7 @@ void Vehicle::BeginLoading()
 		PrepareUnload(this);
 	}
 
-	SetWindowDirty(GetWindowClassForVehicleType(this->type), this->owner);
+	DirtyVehicleListWindowForVehicle(this);
 	SetWindowWidgetDirty(WC_VEHICLE_VIEW, this->index, WID_VV_START_STOP);
 	SetWindowDirty(WC_VEHICLE_DETAILS, this->index);
 	SetWindowDirty(WC_STATION_VIEW, this->last_station_visited);
@@ -3691,55 +3730,6 @@ void Vehicle::SetNext(Vehicle *next)
 	}
 }
 
-void Vehicle::ClearSeparation()
-{
-	if (this->ahead_separation == nullptr && this->behind_separation == nullptr) return;
-
-	assert(this->ahead_separation != nullptr);
-	assert(this->behind_separation != nullptr);
-
-	this->ahead_separation->behind_separation = this->behind_separation;
-	this->behind_separation->ahead_separation = this->ahead_separation;
-
-	this->ahead_separation = nullptr;
-	this->behind_separation = nullptr;
-
-	SetWindowDirty(WC_VEHICLE_TIMETABLE, this->index);
-}
-
-void Vehicle::InitSeparation()
-{
-	assert(this->ahead_separation == nullptr && this->behind_separation == nullptr);
-	Vehicle *best_match = this;
-	int lowest_separation;
-	for (Vehicle *v_other = this->FirstShared(); v_other != nullptr; v_other = v_other->NextShared()) {
-		if ((HasBit(v_other->vehicle_flags, VF_TIMETABLE_STARTED)) && v_other != this) {
-			if (best_match == this) {
-				best_match = v_other;
-				lowest_separation = 0; // TODO call SeparationBetween() here
-			} else {
-				int temp_sep = 0; // TODO call SeparationBetween() here
-				if (temp_sep < lowest_separation && temp_sep != -1) {
-					best_match = v_other;
-					lowest_separation = temp_sep;
-				}
-			}
-		}
-	}
-	this->AddToSeparationBehind(best_match);
-}
-
-void Vehicle::AddToSeparationBehind(Vehicle *v_other)
-{
-	if (v_other->ahead_separation == nullptr) v_other->ahead_separation = v_other;
-	if (v_other->behind_separation == nullptr) v_other->behind_separation = v_other;
-
-	this->ahead_separation = v_other;
-	v_other->behind_separation->ahead_separation = this;
-	this->behind_separation = v_other->behind_separation;
-	v_other->behind_separation = this;
-}
-
 /**
  * Adds this vehicle to a shared vehicle chain.
  * @param shared_chain a vehicle of the chain with shared vehicles.
@@ -3803,7 +3793,7 @@ void Vehicle::RemoveFromShared()
 	if (HasBit(this->vehicle_flags, VF_TIMETABLE_SEPARATION)) ClrBit(this->vehicle_flags, VF_TIMETABLE_STARTED);
 }
 
-char *Vehicle::DumpVehicleFlags(char *b, const char *last) const
+char *Vehicle::DumpVehicleFlags(char *b, const char *last, bool include_tile) const
 {
 	auto dump = [&](char c, bool flag) {
 		if (flag) b += seprintf(b, last, "%c", c);
@@ -3840,6 +3830,7 @@ char *Vehicle::DumpVehicleFlags(char *b, const char *last) const
 	dump('L', HasBit(this->vehicle_flags, VF_PATHFINDER_LOST));
 	dump('c', HasBit(this->vehicle_flags, VF_SERVINT_IS_CUSTOM));
 	dump('p', HasBit(this->vehicle_flags, VF_SERVINT_IS_PERCENT));
+	dump('z', HasBit(this->vehicle_flags, VF_SEPARATION_ACTIVE));
 	dump('D', HasBit(this->vehicle_flags, VF_SCHEDULED_DISPATCH));
 	dump('x', HasBit(this->vehicle_flags, VF_LAST_LOAD_ST_SEP));
 	dump('s', HasBit(this->vehicle_flags, VF_TIMETABLE_SEPARATION));
@@ -3848,6 +3839,10 @@ char *Vehicle::DumpVehicleFlags(char *b, const char *last) const
 	dump('l', HasBit(this->vcache.cached_veh_flags, VCF_LAST_VISUAL_EFFECT));
 	dump('z', HasBit(this->vcache.cached_veh_flags, VCF_GV_ZERO_SLOPE_RESIST));
 	dump('d', HasBit(this->vcache.cached_veh_flags, VCF_IS_DRAWN));
+	dump('t', HasBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_TRIGGER));
+	dump('s', HasBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE));
+	dump('R', HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH));
+	dump('N', HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH_NEXT));
 	if (this->IsGroundVehicle()) {
 		uint16 gv_flags = this->GetGroundVehicleFlags();
 		b += seprintf(b, last, ", gvf:");
@@ -3884,11 +3879,13 @@ char *Vehicle::DumpVehicleFlags(char *b, const char *last) const
 		const RoadVehicle *r = RoadVehicle::From(this);
 		b += seprintf(b, last, ", rvs:%X, rvf:%X", r->state, r->frame);
 	}
-	b += seprintf(b, last, ", [");
-	b = DumpTileInfo(b, last, this->tile);
-	b += seprintf(b, last, "]");
-	TileIndex vtile = TileVirtXY(this->x_pos, this->y_pos);
-	if (this->tile != vtile) b += seprintf(b, last, ", VirtXYTile: %X (%u x %u)", vtile, TileX(vtile), TileY(vtile));
+	if (include_tile) {
+		b += seprintf(b, last, ", [");
+		b = DumpTileInfo(b, last, this->tile);
+		b += seprintf(b, last, "]");
+		TileIndex vtile = TileVirtXY(this->x_pos, this->y_pos);
+		if (this->tile != vtile) b += seprintf(b, last, ", VirtXYTile: %X (%u x %u)", vtile, TileX(vtile), TileY(vtile));
+	}
 	if (this->cargo_payment) b += seprintf(b, last, ", CP");
 	return b;
 }

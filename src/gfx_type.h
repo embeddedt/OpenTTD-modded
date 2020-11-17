@@ -102,6 +102,7 @@ enum WindowKeyCodes {
 	WKC_COMMA       = 151, ///< , Comma
 	WKC_PERIOD      = 152, ///< . Period
 	WKC_MINUS       = 153, ///< - Minus
+	WKC_HASH        = 154, ///< # Hash
 };
 
 /** A single sprite of a list of animated cursors */
@@ -222,7 +223,7 @@ struct SubSprite {
 	int left, top, right, bottom;
 };
 
-enum Colours {
+enum Colours : uint8 {
 	COLOUR_BEGIN,
 	COLOUR_DARK_BLUE = COLOUR_BEGIN,
 	COLOUR_PALE_GREEN,

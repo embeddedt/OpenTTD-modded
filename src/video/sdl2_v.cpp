@@ -373,7 +373,18 @@ static void DrawSurfaceToScreen()
 
 	_num_dirty_rects = 0;
 
-	if (n > MAX_DIRTY_RECTS) {
+	bool update_whole_screen = n > MAX_DIRTY_RECTS;
+
+	if (!update_whole_screen) {
+		int area = 0;
+		for (int i = 0; i < n; i++) {
+			area += _dirty_rects[i].w * _dirty_rects[i].h;
+		}
+		// Rectangles cover more than 80% of screen area, just do the whole screen
+		if ((area * 5) / 4 >= _sdl_surface->w * _sdl_surface->h) update_whole_screen = true;
+	}
+
+	if (update_whole_screen) {
 		if (_sdl_surface != _sdl_realscreen) {
 			SDL_BlitSurface(_sdl_surface, nullptr, _sdl_realscreen, nullptr);
 		}
@@ -385,8 +396,17 @@ static void DrawSurfaceToScreen()
 				SDL_BlitSurface(_sdl_surface, &_dirty_rects[i], _sdl_realscreen, &_dirty_rects[i]);
 			}
 		}
+		SDL_Rect update_rect = { _sdl_surface->w, _sdl_surface->h, 0, 0 };
+		for (int i = 0; i < n; i++) {
+			if (_dirty_rects[i].x < update_rect.x) update_rect.x = _dirty_rects[i].x;
+			if (_dirty_rects[i].y < update_rect.y) update_rect.y = _dirty_rects[i].y;
+			if (_dirty_rects[i].x + _dirty_rects[i].w > update_rect.w) update_rect.w = _dirty_rects[i].x + _dirty_rects[i].w;
+			if (_dirty_rects[i].y + _dirty_rects[i].h > update_rect.h) update_rect.h = _dirty_rects[i].y + _dirty_rects[i].h;
+		}
+		update_rect.w -= update_rect.x;
+		update_rect.h -= update_rect.y;
 
-		SDL_UpdateWindowSurfaceRects(_sdl_window, _dirty_rects, n);
+		SDL_UpdateWindowSurfaceRects(_sdl_window, &update_rect, 1);
 	}
 }
 
@@ -470,12 +490,10 @@ bool VideoDriver_SDL::CreateMainSurface(uint w, uint h, bool resize)
 	seprintf(caption, lastof(caption), "OpenTTD %s", _openttd_revision);
 
 	if (_sdl_window == nullptr) {
-		Uint32 flags = SDL_WINDOW_SHOWN;
+		Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE;
 
 		if (_fullscreen) {
 			flags |= SDL_WINDOW_FULLSCREEN;
-		} else {
-			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
 		_sdl_window = SDL_CreateWindow(
@@ -703,7 +721,8 @@ static const VkMapping _vk_mapping[] = {
 	AS(SDLK_QUOTE,   WKC_SINGLEQUOTE),
 	AS(SDLK_COMMA,   WKC_COMMA),
 	AS(SDLK_MINUS,   WKC_MINUS),
-	AS(SDLK_PERIOD,  WKC_PERIOD)
+	AS(SDLK_PERIOD,  WKC_PERIOD),
+	AS(SDLK_HASH,    WKC_HASH),
 };
 
 static uint ConvertSdlKeyIntoMy(SDL_Keysym *sym, WChar *character)

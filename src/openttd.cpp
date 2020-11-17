@@ -434,6 +434,7 @@ static void ShutdownGame()
 	ClearCommandLog();
 	ClearDesyncMsgLog();
 
+	_loaded_local_company = COMPANY_SPECTATOR;
 	_game_events_since_load = (GameEventFlags) 0;
 	_game_events_overall = (GameEventFlags) 0;
 	_game_load_cur_date_ymd = { 0, 0, 0 };
@@ -494,6 +495,7 @@ void MakeNewgameSettingsLive()
 	/* Copy newgame settings to active settings.
 	 * Also initialise old settings needed for savegame conversion. */
 	_settings_game = _settings_newgame;
+	_settings_time = _settings_game.game_time = _settings_client.gui;
 	_old_vds = _settings_client.company.vehicle;
 
 	for (CompanyID c = COMPANY_FIRST; c < MAX_COMPANIES; c++) {
@@ -785,6 +787,7 @@ int openttd_main(int argc, char *argv[])
 
 			_load_check_data.Clear();
 			if (i == 'K') _load_check_data.want_debug_data = true;
+			_load_check_data.want_grf_compatibility = false;
 			SaveOrLoadResult res = SaveOrLoad(mgo.opt, SLO_CHECK, DFT_GAME_FILE, SAVE_DIR, false);
 			if (res != SL_OK || _load_check_data.HasErrors()) {
 				fprintf(stderr, "Failed to open savegame\n");
@@ -1214,7 +1217,22 @@ void SwitchToMode(SwitchMode new_mode)
 			MakeNewEditorWorld();
 			break;
 
-		case SM_RESTARTGAME: // Restart --> 'Random game' with current settings
+		case SM_RESTARTGAME: // Restart --> Current settings preserved
+			if (_file_to_saveload.abstract_ftype == FT_SAVEGAME || _file_to_saveload.abstract_ftype == FT_SCENARIO) {
+				/* Restart current savegame/scenario */
+				_switch_mode = _game_mode == GM_EDITOR ? SM_LOAD_SCENARIO : SM_LOAD_GAME;
+				SwitchToMode(_switch_mode);
+				break;
+			} else if (_file_to_saveload.abstract_ftype == FT_HEIGHTMAP) {
+				/* Restart current heightmap */
+				_switch_mode = _game_mode == GM_EDITOR ? SM_LOAD_HEIGHTMAP : SM_RESTART_HEIGHTMAP;
+				SwitchToMode(_switch_mode);
+				break;
+			}
+			/* No break here, to enter the next case:
+			 * Restart --> 'Random game' with current settings */
+			FALLTHROUGH;
+
 		case SM_NEWGAME: // New Game --> 'Random game'
 			if (_network_server) {
 				seprintf(_network_game_info.map_name, lastof(_network_game_info.map_name), "Random Map");
@@ -1235,8 +1253,8 @@ void SwitchToMode(SwitchMode new_mode)
 					EngineOverrideManager::ResetToCurrentNewGRFConfig();
 				}
 				/* Update the local company for a loaded game. It is either always
-				 * company #1 (eg 0) or in the case of a dedicated server a spectator */
-				SetLocalCompany(_network_dedicated ? COMPANY_SPECTATOR : COMPANY_FIRST);
+				 * a company or in the case of a dedicated server a spectator */
+				SetLocalCompany(_network_dedicated ? COMPANY_SPECTATOR : GetDefaultLocalCompany());
 				if (_ctrl_pressed && !_network_dedicated) {
 					DoCommandP(0, PM_PAUSED_NORMAL, 1, CMD_PAUSE);
 				}
@@ -1251,11 +1269,12 @@ void SwitchToMode(SwitchMode new_mode)
 			break;
 		}
 
+		case SM_RESTART_HEIGHTMAP: // Load a heightmap and start a new game from it with current settings
 		case SM_START_HEIGHTMAP: // Load a heightmap and start a new game from it
 			if (_network_server) {
 				seprintf(_network_game_info.map_name, lastof(_network_game_info.map_name), "%s (Heightmap)", _file_to_saveload.title);
 			}
-			MakeNewGame(true, true);
+			MakeNewGame(true, new_mode == SM_START_HEIGHTMAP);
 			break;
 
 		case SM_LOAD_HEIGHTMAP: // Load heightmap from scenario editor
@@ -1371,13 +1390,9 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 
 	/* Check the town caches. */
 	std::vector<TownCache> old_town_caches;
-	std::vector<CargoTypes> old_town_cargo_accepted_totals;
-	std::vector<CargoTypes> old_town_cargo_produced;
 	std::vector<StationList> old_town_stations_nears;
 	for (const Town *t : Town::Iterate()) {
 		old_town_caches.push_back(t->cache);
-		old_town_cargo_accepted_totals.push_back(t->cargo_accepted_total);
-		old_town_cargo_produced.push_back(t->cargo_produced);
 		old_town_stations_nears.push_back(t->stations_near);
 	}
 
@@ -1395,8 +1410,6 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 		old_industry_stations_nears.push_back(ind->stations_near);
 	}
 
-	const CargoTypes old_town_cargoes_accepted = _town_cargoes_accepted;
-
 	extern void RebuildTownCaches(bool cargo_update_required);
 	RebuildTownCaches(false);
 	RebuildSubsidisedSourceAndDestinationCache();
@@ -1408,19 +1421,10 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 		if (MemCmpT(old_town_caches.data() + i, &t->cache) != 0) {
 			CCLOG("town cache mismatch: town %i", (int)t->index);
 		}
-		if (old_town_cargo_accepted_totals[i] != t->cargo_accepted_total) {
-			CCLOG("town cargo_accepted_total mismatch: town %i, old: " OTTD_PRINTFHEX64 ". new: " OTTD_PRINTFHEX64, (int)t->index, old_town_cargo_accepted_totals[i], t->cargo_accepted_total);
-		}
-		if (old_town_cargo_produced[i] != t->cargo_produced) {
-			CCLOG("town cargo_produced mismatch: town %i, old: " OTTD_PRINTFHEX64 ". new: " OTTD_PRINTFHEX64, (int)t->index, old_town_cargo_produced[i], t->cargo_produced);
-		}
 		if (old_town_stations_nears[i] != t->stations_near) {
 			CCLOG("town stations_near mismatch: town %i, (old size: %u, new size: %u)", (int)t->index, (uint)old_town_stations_nears[i].size(), (uint)t->stations_near.size());
 		}
 		i++;
-	}
-	if (old_town_cargoes_accepted != _town_cargoes_accepted) {
-		CCLOG("_town_cargoes_accepted mismatch: old: " OTTD_PRINTFHEX64 ". new: " OTTD_PRINTFHEX64, old_town_cargoes_accepted, _town_cargoes_accepted);
 	}
 	i = 0;
 	for (Station *st : Station::Iterate()) {

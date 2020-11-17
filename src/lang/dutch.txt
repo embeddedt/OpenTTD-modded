@@ -402,7 +402,7 @@ STR_FILE_MENU_EXIT                                              :Afsluiten
 
 # map menu
 STR_MAP_MENU_MAP_OF_WORLD                                       :Wereldkaart
-STR_MAP_MENU_EXTRA_VIEW_PORT                                    :Extra kijkvenster
+STR_MAP_MENU_EXTRA_VIEWPORT                                     :Extra kijkvenster
 STR_MAP_MENU_LINGRAPH_LEGEND                                    :Vrachtstroomlegende
 STR_MAP_MENU_SIGN_LIST                                          :Bordjeslijst
 
@@ -884,7 +884,7 @@ STR_NEWS_EXCLUSIVE_RIGHTS_TITLE                                 :{BIG_FONT}{BLAC
 STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION                           :{BIG_FONT}{BLACK}Gemeentebestuur van {TOWN} tekent contract met {STRING} voor een jaar exclusieve transportrechten!
 
 # Extra view window
-STR_EXTRA_VIEW_PORT_TITLE                                       :{WHITE}Kijkvenster {COMMA}
+STR_EXTRA_VIEWPORT_TITLE                                        :{WHITE}Kijkvenster {COMMA}
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN                                :{BLACK}Verander kijkvenster
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN_TT                             :{BLACK}Kopieer de locatie van het algemene scherm naar dit kijkvenster
 STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW                                :{BLACK}Verander algemeen scherm
@@ -1304,7 +1304,7 @@ STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :Duur voor het w
 STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} seconde{P 0 "" n}
 STR_CONFIG_SETTING_HOVER_DELAY                                  :Knopinfo weergeven: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :Vertraging voordat knopinfo worden weergegeven wanneer je de muis boven een besturingselement houdt. Wanneer de waarde 0 is, wordt knopinfo aan de rechtermuisknop gebonden.
-STR_CONFIG_SETTING_HOVER_DELAY_VALUE                            :Muis stilhouden gedurende {COMMA} seconde{P 0 "" n}
+STR_CONFIG_SETTING_HOVER_DELAY_VALUE                            :Muis stilhouden gedurende {COMMA} milliseconde{P 0 "" n}
 STR_CONFIG_SETTING_HOVER_DELAY_DISABLED                         :Rechtsklik
 STR_CONFIG_SETTING_POPULATION_IN_LABEL                          :Inwoneraantal bij stad weergeven: {STRING}
 STR_CONFIG_SETTING_POPULATION_IN_LABEL_HELPTEXT                 :Aantal inwoners van een stad weergeven bij naam op de kaart
@@ -4485,7 +4485,6 @@ STR_ERROR_CAN_T_CONVERT_ROAD                                    :{WHITE}Kan wegt
 STR_ERROR_CAN_T_CONVERT_TRAMWAY                                 :{WHITE}Kan tramtype hier niet converteren...
 STR_ERROR_NO_SUITABLE_ROAD                                      :{WHITE}Geen geschikte weg
 STR_ERROR_NO_SUITABLE_TRAMWAY                                   :{WHITE}Geen geschikt tramspoor
-STR_ERROR_INCOMPATIBLE_ROAD                                     :{WHITE}... weg niet geschikt
 STR_ERROR_INCOMPATIBLE_TRAMWAY                                  :{WHITE}... treinspoor niet geschikt
 
 # Waterway construction errors

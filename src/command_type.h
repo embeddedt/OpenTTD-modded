@@ -198,6 +198,25 @@ public:
 	 * @return the number of bytes written
 	 */
 	int WriteSummaryMessage(char *buf, char *last, StringID cmd_msg = 0) const;
+
+	bool IsSuccessWithMessage() const
+	{
+		return this->Succeeded() && this->message != INVALID_STRING_ID;
+	}
+
+	void MakeSuccessWithMessage()
+	{
+		assert(this->message != INVALID_STRING_ID);
+		this->success = true;
+	}
+
+	CommandCost UnwrapSuccessWithMessage() const
+	{
+		assert(this->IsSuccessWithMessage());
+		CommandCost res = *this;
+		res.success = false;
+		return res;
+	}
 };
 
 /**
@@ -224,6 +243,7 @@ enum Commands {
 	CMD_TERRAFORM_LAND,               ///< terraform a tile
 	CMD_BUILD_OBJECT,                 ///< build an object
 	CMD_PURCHASE_LAND_AREA,           ///< purchase an area of landscape
+	CMD_BUILD_OBJECT_AREA,            ///< build an area of objects
 	CMD_BUILD_HOUSE,                  ///< build a house
 	CMD_BUILD_TUNNEL,                 ///< build a tunnel
 
@@ -392,6 +412,7 @@ enum Commands {
 	CMD_SET_GROUP_LIVERY,             ///< set the livery for a group
 
 	CMD_MOVE_ORDER,                   ///< move an order
+	CMD_REVERSE_ORDER_LIST,           ///< reverse order list
 	CMD_CHANGE_TIMETABLE,             ///< change the timetable for a vehicle
 	CMD_BULK_CHANGE_TIMETABLE,        ///< change the timetable for all orders of a vehicle
 	CMD_SET_VEHICLE_ON_TIME,          ///< set the vehicle on time feature (timetable)
@@ -408,6 +429,9 @@ enum Commands {
 	CMD_DELETE_TRACERESTRICT_SLOT,    ///< delete a tracerestrict slot
 	CMD_ADD_VEHICLE_TRACERESTRICT_SLOT,    ///< add a vehicle to a tracerestrict slot
 	CMD_REMOVE_VEHICLE_TRACERESTRICT_SLOT, ///< remove a vehicle from a tracerestrict slot
+	CMD_CREATE_TRACERESTRICT_COUNTER, ///< create a tracerestrict counter
+	CMD_ALTER_TRACERESTRICT_COUNTER,  ///< alter a tracerestrict counter
+	CMD_DELETE_TRACERESTRICT_COUNTER, ///< delete a tracerestrict counter
 
 	CMD_INSERT_SIGNAL_INSTRUCTION,    ///< insert a signal instruction
 	CMD_MODIFY_SIGNAL_INSTRUCTION,    ///< modifies a signal instruction
@@ -427,6 +451,7 @@ enum Commands {
 	CMD_REMOVE_PLAN,
 	CMD_REMOVE_PLAN_LINE,
 	CMD_CHANGE_PLAN_VISIBILITY,
+	CMD_CHANGE_PLAN_COLOUR,
 	CMD_RENAME_PLAN,
 
 	CMD_DESYNC_CHECK,                 ///< Force desync checks to be run
@@ -454,6 +479,7 @@ enum DoCommandFlag {
 	DC_NO_MODIFY_TOWN_RATING = 0x400, ///< do not change town rating
 	DC_FORCE_CLEAR_TILE      = 0x800, ///< do not only remove the object on the tile, but also clear any water left on it
 	DC_ALLOW_REMOVE_WATER    = 0x1000,///< always allow removing water
+	DC_TOWN                  = 0x2000,///< town operation
 };
 DECLARE_ENUM_AS_BIT_SET(DoCommandFlag)
 
@@ -498,6 +524,7 @@ enum CommandFlags {
 	CMD_NO_EST    =  0x400, ///< the command is never estimated.
 	CMD_PROCEX    =  0x800, ///< the command proc function has extended parameters
 	CMD_SERVER_NS = 0x1000, ///< the command can only be initiated by the server (this is not executed in spectator mode)
+	CMD_LOG_AUX   = 0x2000, ///< the command should be logged in the auxiliary log instead of the main log
 };
 DECLARE_ENUM_AS_BIT_SET(CommandFlags)
 
@@ -543,7 +570,7 @@ enum CommandPauseLevel {
  * @return The CommandCost of the command, which can be succeeded or failed.
  */
 typedef CommandCost CommandProc(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text);
-typedef CommandCost CommandProcEx(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text, uint32 binary_length);
+typedef CommandCost CommandProcEx(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, uint32 binary_length);
 
 /**
  * Define a command with the flags which belongs to it.
@@ -565,9 +592,9 @@ struct Command {
 	Command(CommandProcEx *procex, const char *name, CommandFlags flags, CommandType type)
 			: procex(procex), name(name), flags(flags | CMD_PROCEX), type(type) {}
 
-	inline CommandCost Execute(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text, uint32 binary_length) const {
+	inline CommandCost Execute(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, uint32 binary_length) const {
 		if (this->flags & CMD_PROCEX) {
-			return this->procex(tile, flags, p1, p2, text, binary_length);
+			return this->procex(tile, flags, p1, p2, p3, text, binary_length);
 		} else {
 			return this->proc(tile, flags, p1, p2, text);
 		}
@@ -584,10 +611,11 @@ struct Command {
  * @param result The result of the executed command
  * @param tile The tile of the command action
  * @param p1 Additional data of the command
- * @param p1 Additional data of the command
+ * @param p2 Additional data of the command
+ * @param p3 Additional data of the command
  * @see CommandProc
  */
-typedef void CommandCallback(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd);
+typedef void CommandCallback(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd);
 
 #define MAX_CMD_TEXT_LENGTH 32000
 
@@ -599,9 +627,15 @@ struct CommandContainer {
 	uint32 p1;                       ///< parameter p1.
 	uint32 p2;                       ///< parameter p2.
 	uint32 cmd;                      ///< command being executed.
+	uint64 p3;                       ///< parameter p3. (here for alignment)
 	CommandCallback *callback;       ///< any callback function executed upon successful completion of the command.
 	uint32 binary_length;            ///< in case text contains binary data, this describes its length.
 	std::string text;                ///< possible text sent for name changes etc.
 };
+
+inline CommandContainer NewCommandContainerBasic(TileIndex tile, uint32 p1, uint32 p2, uint32 cmd, CommandCallback *callback = nullptr)
+{
+	return { tile, p1, p2, cmd, 0, callback, 0, {} };
+}
 
 #endif /* COMMAND_TYPE_H */

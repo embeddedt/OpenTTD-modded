@@ -190,7 +190,6 @@ class TemplateReplaceWindow : public Window {
 private:
 
 	GUIGroupList groups;          ///< List of groups
-	uint unitnumber_digits;
 
 	std::vector<int> indents; ///< Indentation levels
 
@@ -210,13 +209,10 @@ private:
 	bool editInProgress;
 
 public:
-	TemplateReplaceWindow(WindowDesc *wdesc, uint unitnumber_digits) : Window(wdesc)
+	TemplateReplaceWindow(WindowDesc *wdesc) : Window(wdesc)
 	{
 		// listing/sorting
 		templates.SetSortFuncs(this->template_sorter_funcs);
-
-		// From BaseVehicleListWindow
-		this->unitnumber_digits = unitnumber_digits;
 
 		this->sel_railtype = INVALID_RAILTYPE;
 
@@ -232,7 +228,7 @@ public:
 
 		this->groups.ForceRebuild();
 		this->groups.NeedResort();
-		this->BuildGroupList(_local_company);
+		this->BuildGroupList();
 
 		this->matrixContentLeftMargin = 40;
 		this->selected_template_index = -1;
@@ -244,7 +240,8 @@ public:
 
 		this->templates.ForceRebuild();
 
-		BuildTemplateGuiList(&this->templates, this->vscroll[1], this->owner, this->sel_railtype);
+		this->templates.ForceRebuild();
+		this->BuildTemplateGuiList();
 	}
 
 	~TemplateReplaceWindow() {
@@ -310,9 +307,8 @@ public:
 
 	virtual void OnPaint()
 	{
-		BuildTemplateGuiList(&this->templates, this->vscroll[1], this->owner, this->sel_railtype);
-
-		this->BuildGroupList(_local_company);
+		this->BuildGroupList();
+		this->BuildTemplateGuiList();
 
 		/* sets the colour of that art thing */
 		this->GetWidget<NWidgetCore>(TRW_WIDGET_TRAIN_FLUFF_LEFT)->colour  = _company_colours[_local_company];
@@ -355,6 +351,9 @@ public:
 	virtual void OnClick(Point pt, int widget, int click_count)
 	{
 		if (this->editInProgress) return;
+
+		this->BuildGroupList();
+		this->BuildTemplateGuiList();
 
 		switch (widget) {
 			case TRW_WIDGET_TMPL_BUTTONS_CONFIGTMPL_REUSE: {
@@ -424,7 +423,7 @@ public:
 					bool succeeded = DoCommandP(0, template_index, 0, CMD_DELETE_TEMPLATE_VEHICLE, nullptr);
 
 					if (succeeded) {
-						BuildTemplateGuiList(&this->templates, this->vscroll[1], this->owner, this->sel_railtype);
+						this->templates.ForceRebuild();
 						selected_template_index = -1;
 					}
 				}
@@ -483,7 +482,7 @@ public:
 
 		if (!succeeded)	return false;
 
-		BuildTemplateGuiList(&this->templates, vscroll[1], _local_company, this->sel_railtype);
+		this->templates.ForceRebuild();
 		this->ToggleWidgetLoweredState(TRW_WIDGET_TMPL_BUTTONS_CLONE);
 		ResetObjectToPlace();
 		this->SetDirty();
@@ -504,7 +503,7 @@ public:
 		/* Reset scrollbar positions */
 		this->vscroll[0]->SetPosition(0);
 		this->vscroll[1]->SetPosition(0);
-		BuildTemplateGuiList(&this->templates, this->vscroll[1], this->owner, this->sel_railtype);
+		this->templates.ForceRebuild();
 		this->SetDirty();
 	}
 
@@ -556,7 +555,7 @@ public:
 		}
 	}
 
-	void BuildGroupList(Owner owner)
+	void BuildGroupList()
 	{
 		if (!this->groups.NeedRebuild()) return;
 
@@ -566,7 +565,7 @@ public:
 		GUIGroupList list;
 
 		for (const Group *g : Group::Iterate()) {
-			if (g->owner == owner && g->vehicle_type == VEH_TRAIN) {
+			if (g->owner == this->owner && g->vehicle_type == VEH_TRAIN) {
 				list.push_back(g);
 			}
 		}
@@ -580,6 +579,13 @@ public:
 		this->groups.shrink_to_fit();
 		this->groups.RebuildDone();
 		this->vscroll[0]->SetCount(groups.size());
+	}
+
+	void BuildTemplateGuiList()
+	{
+		if (!this->templates.NeedRebuild()) return;
+
+		::BuildTemplateGuiList(&this->templates, this->vscroll[1], this->owner, this->sel_railtype);
 	}
 
 	void DrawAllGroupsFunction(const Rect &r) const
@@ -636,6 +642,8 @@ public:
 
 	void DrawTemplateList(const Rect &r) const
 	{
+		const_cast<TemplateReplaceWindow *>(this)->BuildTemplateGuiList();
+
 		int left = r.left;
 		int right = r.right;
 		int y = r.top;
@@ -729,16 +737,33 @@ public:
 
 		const TemplateVehicle *tmp = this->templates[this->selected_template_index];
 
+		short top = ScaleGUITrad(4) - this->vscroll[2]->GetPosition();
+		short left = ScaleGUITrad(8);
+
 		/* Draw vehicle performance info */
+		const bool original_acceleration = (_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL ||
+				GetRailTypeInfo(tmp->railtype)->acceleration_type == 2);
 		SetDParam(2, tmp->max_speed);
 		SetDParam(1, tmp->power);
-		SetDParam(0, tmp->weight);
-		SetDParam(3, tmp->max_te);
-		DrawString(8, r.right, ScaleGUITrad(4) - this->vscroll[2]->GetPosition(), STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
+		SetDParam(0, tmp->empty_weight);
+		SetDParam(3, tmp->max_te / 1000);
+		DrawString(left, r.right, top, original_acceleration ? STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED : STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
+
+		if (tmp->full_weight > tmp->empty_weight || _settings_client.gui.show_train_weight_ratios_in_details) {
+			top += FONT_HEIGHT_NORMAL;
+			SetDParam(0, tmp->full_weight);
+			if (_settings_client.gui.show_train_weight_ratios_in_details) {
+				SetDParam(1, STR_VEHICLE_INFO_WEIGHT_RATIOS);
+				SetDParam(2, (100 * tmp->power) / max<uint>(1, tmp->full_weight));
+				SetDParam(3, (tmp->max_te / 10) / max<uint>(1, tmp->full_weight));
+			} else {
+				SetDParam(1, STR_EMPTY);
+			}
+			DrawString(8, r.right, top, STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS);
+		}
 
 		/* Draw cargo summary */
-		short top = ScaleGUITrad(30) - this->vscroll[2]->GetPosition();
-		short left = ScaleGUITrad(8);
+		top += ScaleGUITrad(26);
 		short count_columns = 0;
 		short max_columns = 2;
 
@@ -767,6 +792,9 @@ public:
 
 	void UpdateButtonState()
 	{
+		this->BuildGroupList();
+		this->BuildTemplateGuiList();
+
 		bool selected_ok = (this->selected_template_index >= 0) && (this->selected_template_index < (short)this->templates.size());
 		bool group_ok = (this->selected_group_index >= 0) && (this->selected_group_index < (short)this->groups.size());
 
@@ -794,7 +822,9 @@ public:
 	}
 };
 
-void ShowTemplateReplaceWindow(uint unitnumber_digits)
+void ShowTemplateReplaceWindow()
 {
-	new TemplateReplaceWindow(&_replace_rail_vehicle_desc, unitnumber_digits);
+	if (BringWindowToFrontById(WC_TEMPLATEGUI_MAIN, 0) == nullptr) {
+		new TemplateReplaceWindow(&_replace_rail_vehicle_desc);
+	}
 }

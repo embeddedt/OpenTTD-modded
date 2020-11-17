@@ -31,10 +31,11 @@
 #include "strings_func.h"
 #include "core/geometry_func.hpp"
 #include "date_func.h"
-
+#include "station_map.h"
 #include "widgets/road_widget.h"
-
 #include "table/strings.h"
+
+#include <array>
 
 #include "safeguards.h"
 
@@ -66,7 +67,7 @@ static RoadType _cur_roadtype;
 static DiagDirection _road_depot_orientation;
 static DiagDirection _road_station_picker_orientation;
 
-void CcPlaySound_SPLAT_OTHER(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcPlaySound_SPLAT_OTHER(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Succeeded() && _settings_client.sound.confirm) SndPlayTileFx(SND_1F_SPLAT_OTHER, tile);
 }
@@ -96,7 +97,7 @@ static void PlaceRoad_Bridge(TileIndex tile, Window *w)
  * @param p2 unused
  * @param cmd unused
  */
-void CcBuildRoadTunnel(const CommandCost &result, TileIndex start_tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcBuildRoadTunnel(const CommandCost &result, TileIndex start_tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Succeeded()) {
 		if (_settings_client.sound.confirm) SndPlayTileFx(SND_1F_SPLAT_OTHER, start_tile);
@@ -129,7 +130,7 @@ void ConnectRoadToStructure(TileIndex tile, DiagDirection direction)
 	}
 }
 
-void CcRoadDepot(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcRoadDepot(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -155,7 +156,7 @@ void CcRoadDepot(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2
  * @param cmd Unused.
  * @see CmdBuildRoadStop
  */
-void CcRoadStop(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcRoadStop(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -192,7 +193,7 @@ static void PlaceRoadStop(TileIndex start_tile, TileIndex end_tile, uint32 p2, u
 	p2 |= ddir << 3; // Set the DiagDirecion into p2 bits 3 and 4.
 
 	TileArea ta(start_tile, end_tile);
-	CommandContainer cmdcont = { ta.tile, (uint32)(ta.w | ta.h << 8), p2, cmd, CcRoadStop, 0, "" };
+	CommandContainer cmdcont = NewCommandContainerBasic(ta.tile, (uint32)(ta.w | ta.h << 8), p2, cmd, CcRoadStop);
 	ShowSelectStationIfNeeded(cmdcont, ta);
 }
 
@@ -1148,6 +1149,7 @@ struct BuildRoadStationWindow : public PickerWindowBase {
 				this->LowerWidget(_settings_client.gui.station_show_coverage + WID_BROS_LT_OFF);
 				if (_settings_client.sound.click_beep) SndPlayFx(SND_15_BEEP);
 				this->SetDirty();
+				SetViewportCatchmentStation(nullptr, true);
 				break;
 
 			default:
@@ -1257,11 +1259,87 @@ void InitializeRoadGui()
 	_road_station_picker_orientation = DIAGDIR_NW;
 }
 
+
+/** Set the initial (default) road and tram types to use */
+static void SetDefaultRoadGui()
+{
+	extern RoadType _last_built_roadtype;
+	extern RoadType _last_built_tramtype;
+
+	/* Clean old GUI values; railtype is (re)set by rail_gui.cpp */
+	_last_built_roadtype = ROADTYPE_ROAD;
+	_last_built_tramtype = ROADTYPE_TRAM;
+
+	if (_local_company == COMPANY_SPECTATOR || !Company::IsValidID(_local_company)) return;
+
+	auto get_first_road_type = [](RoadTramType rtt, RoadType &out) {
+		auto it = std::find_if(_sorted_roadtypes.begin(), _sorted_roadtypes.end(),
+				[&](RoadType r){ return GetRoadTramType(r) == rtt && HasRoadTypeAvail(_local_company, r); });
+		if (it != _sorted_roadtypes.end()) out = *it;
+	};
+	auto get_last_road_type = [](RoadTramType rtt, RoadType &out) {
+		auto it = std::find_if(_sorted_roadtypes.rbegin(), _sorted_roadtypes.rend(),
+				[&](RoadType r){ return GetRoadTramType(r) == rtt && HasRoadTypeAvail(_local_company, r); });
+		if (it != _sorted_roadtypes.rend()) out = *it;
+	};
+
+	switch (_settings_client.gui.default_road_type) {
+		case 3: {
+			/* Use defaults above */
+			break;
+		}
+		case 2: {
+			/* Find the most used types */
+			std::array<uint, ROADTYPE_END> road_count = {};
+			std::array<uint, ROADTYPE_END> tram_count = {};
+			for (TileIndex t = 0; t < MapSize(); t++) {
+				if (MayHaveRoad(t)) {
+					if (IsTileType(t, MP_STATION) && !IsRoadStop(t)) continue;
+					RoadType road_type = GetRoadTypeRoad(t);
+					if (road_type != INVALID_ROADTYPE) road_count[road_type]++;
+					RoadType tram_type = GetRoadTypeTram(t);
+					if (tram_type != INVALID_ROADTYPE) tram_count[tram_type]++;
+				}
+			}
+
+			auto get_best_road_type = [&](RoadTramType rtt, RoadType &out, const std::array<uint, ROADTYPE_END> &count) {
+				uint highest = 0;
+				for (RoadType rt = ROADTYPE_BEGIN; rt != ROADTYPE_END; rt++) {
+					if (count[rt] > highest && HasRoadTypeAvail(_local_company, rt)) {
+						out = rt;
+						highest = count[rt];
+					}
+				}
+				if (highest == 0) get_first_road_type(rtt, out);
+			};
+			get_best_road_type(RTT_ROAD, _last_built_roadtype, road_count);
+			get_best_road_type(RTT_TRAM, _last_built_tramtype, tram_count);
+			break;
+		}
+		case 0: {
+			/* Use first available types */
+			get_first_road_type(RTT_ROAD, _last_built_roadtype);
+			get_first_road_type(RTT_TRAM, _last_built_tramtype);
+			break;
+		}
+		case 1: {
+			/* Use last available type */
+			get_last_road_type(RTT_ROAD, _last_built_roadtype);
+			get_last_road_type(RTT_TRAM, _last_built_tramtype);
+			break;
+		}
+		default:
+			NOT_REACHED();
+	}
+}
+
 /**
  * I really don't know why rail_gui.cpp has this too, shouldn't be included in the other one?
  */
 void InitializeRoadGUI()
 {
+	SetDefaultRoadGui();
+
 	BuildRoadToolbarWindow *w = dynamic_cast<BuildRoadToolbarWindow *>(FindWindowById(WC_BUILD_TOOLBAR, TRANSPORT_ROAD));
 	if (w != nullptr) w->ModifyRoadType(_cur_roadtype);
 }

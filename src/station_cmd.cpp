@@ -60,6 +60,8 @@
 
 #include "table/strings.h"
 
+#include "3rdparty/cpp-btree/btree_set.h"
+
 #include "safeguards.h"
 
 /**
@@ -431,11 +433,15 @@ void Station::MoveSign(TileIndex new_xy)
 {
 	if (this->xy == new_xy) return;
 
+	MarkAllViewportOverlayStationLinksDirty(this);
+
 	_station_kdtree.Remove(this->index);
 
 	this->BaseStation::MoveSign(new_xy);
 
 	_station_kdtree.Insert(this->index);
+
+	MarkAllViewportOverlayStationLinksDirty(this);
 }
 
 /** Update the virtual coords needed to draw the station sign for all stations. */
@@ -1105,11 +1111,6 @@ static CommandCost CheckFlatLandRoadStop(TileArea tile_area, DoCommandFlag flags
 					uint num_pieces = CountBits(GetRoadBits(cur_tile, RTT_ROAD));
 
 					if (RoadTypeIsRoad(rt) && !HasPowerOnRoad(rt, road_rt)) return_cmd_error(STR_ERROR_NO_SUITABLE_ROAD);
-
-					if (GetDisallowedRoadDirections(cur_tile) != DRD_NONE && road_owner != OWNER_TOWN) {
-						CommandCost ret = CheckOwnership(road_owner);
-						if (ret.Failed()) return ret;
-					}
 
 					cost.AddCost(RoadBuildCost(road_rt) * (2 - num_pieces));
 				} else if (RoadTypeIsRoad(rt)) {
@@ -2060,6 +2061,7 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 			RoadType tram_rt = MayHaveRoad(cur_tile) ? GetRoadType(cur_tile, RTT_TRAM) : INVALID_ROADTYPE;
 			Owner road_owner = road_rt != INVALID_ROADTYPE ? GetRoadOwner(cur_tile, RTT_ROAD) : _current_company;
 			Owner tram_owner = tram_rt != INVALID_ROADTYPE ? GetRoadOwner(cur_tile, RTT_TRAM) : _current_company;
+			DisallowedRoadDirections drd = IsNormalRoadTile(cur_tile) ? GetDisallowedRoadDirections(cur_tile) : DRD_NONE;
 
 			if (IsTileType(cur_tile, MP_STATION) && IsRoadStop(cur_tile)) {
 				RemoveRoadStop(cur_tile, flags);
@@ -2097,6 +2099,7 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 				UpdateCompanyRoadInfrastructure(tram_rt, tram_owner, 2);
 
 				MakeDriveThroughRoadStop(cur_tile, st->owner, road_owner, tram_owner, st->index, rs_type, road_rt, tram_rt, axis);
+				SetDriveThroughStopDisallowedRoadDirections(cur_tile, drd);
 				road_stop->MakeDriveThrough();
 			} else {
 				if (road_rt == INVALID_ROADTYPE && RoadTypeIsRoad(rt)) road_rt = rt;
@@ -2110,7 +2113,8 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 			MarkTileDirtyByTile(cur_tile);
 		}
 		ZoningMarkDirtyStationCoverageArea(st);
-		NotifyRoadLayoutChanged();
+		NotifyRoadLayoutChanged(true);
+		UpdateRoadCachedOneWayStatesAroundTile(tile);
 	}
 
 	if (st != nullptr) {
@@ -2228,7 +2232,7 @@ static CommandCost RemoveRoadStop(TileIndex tile, DoCommandFlag flags)
 			for (const RoadStop *rs = st->bus_stops; rs != nullptr; rs = rs->next) st->bus_station.Add(rs->xy);
 		}
 
-		NotifyRoadLayoutChanged();
+		NotifyRoadLayoutChanged(false);
 	}
 
 	return CommandCost(EXPENSES_CONSTRUCTION, _price[is_truck ? PR_CLEAR_STATION_TRUCK : PR_CLEAR_STATION_BUS]);
@@ -2272,6 +2276,7 @@ CommandCost CmdRemoveRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 		RoadBits road_bits = ROAD_NONE;
 		RoadType road_type[] = { INVALID_ROADTYPE, INVALID_ROADTYPE };
 		Owner road_owner[] = { OWNER_NONE, OWNER_NONE };
+		DisallowedRoadDirections drd = DRD_NONE;
 		if (IsDriveThroughStopTile(cur_tile)) {
 			FOR_ALL_ROADTRAMTYPES(rtt) {
 				road_type[rtt] = GetRoadType(cur_tile, rtt);
@@ -2281,6 +2286,7 @@ CommandCost CmdRemoveRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 				if (!keep_drive_through_roads && road_owner[rtt] == _current_company) road_type[rtt] = INVALID_ROADTYPE;
 			}
 			road_bits = AxisToRoadBits(DiagDirToAxis(GetRoadStopDir(cur_tile)));
+			drd = GetDriveThroughStopDisallowedRoadDirections(cur_tile);
 		}
 
 		CommandCost ret = RemoveRoadStop(cur_tile, flags);
@@ -2295,12 +2301,14 @@ CommandCost CmdRemoveRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 		if ((flags & DC_EXEC) && (road_type[RTT_ROAD] != INVALID_ROADTYPE || road_type[RTT_TRAM] != INVALID_ROADTYPE)) {
 			MakeRoadNormal(cur_tile, road_bits, road_type[RTT_ROAD], road_type[RTT_TRAM], ClosestTownFromTile(cur_tile, UINT_MAX)->index,
 					road_owner[RTT_ROAD], road_owner[RTT_TRAM]);
+			if (drd != DRD_NONE) SetDisallowedRoadDirections(cur_tile, drd);
 
 			/* Update company infrastructure counts. */
 			int count = CountBits(road_bits);
 			UpdateCompanyRoadInfrastructure(road_type[RTT_ROAD], road_owner[RTT_ROAD], count);
 			UpdateCompanyRoadInfrastructure(road_type[RTT_TRAM], road_owner[RTT_TRAM], count);
 		}
+		if (flags & DC_EXEC) UpdateRoadCachedOneWayStatesAroundTile(cur_tile);
 	}
 
 	return had_success ? cost : last_error;
@@ -2491,6 +2499,10 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 
 	if (action == AIRPORT_ADD && st->airport.tile != INVALID_TILE) {
 		return_cmd_error(STR_ERROR_TOO_CLOSE_TO_ANOTHER_AIRPORT);
+	}
+
+	if (action == AIRPORT_UPGRADE && airport_type == st->airport.type && layout == st->airport.layout && st->airport.tile == tile) {
+		return_cmd_error(STR_ERROR_ALREADY_BUILT);
 	}
 
 	/* The noise level is the noise from the airport and reduce it to account for the distance to the town center. */
@@ -3296,6 +3308,11 @@ draw_default_foundation:
 			uint sprite_offset = axis == AXIS_X ? 1 : 0;
 
 			DrawRoadOverlays(ti, PAL_NONE, road_rti, tram_rti, sprite_offset, sprite_offset);
+
+			DisallowedRoadDirections drd = GetDriveThroughStopDisallowedRoadDirections(ti->tile);
+			if (drd != DRD_NONE) {
+				DrawGroundSpriteAt(SPR_ONEWAY_BASE + drd - 1 + ((axis == AXIS_X) ? 0 : 3), PAL_NONE, 8, 8, 0);
+			}
 		} else {
 			/* Non-drivethrough road stops are only valid for roads. */
 			assert_tile(road_rt != INVALID_ROADTYPE && tram_rt == INVALID_ROADTYPE, ti->tile);
@@ -3486,23 +3503,24 @@ static void GetTileDesc_Station(TileIndex tile, TileDesc *td)
 
 static TrackStatus GetTileTrackStatus_Station(TileIndex tile, TransportType mode, uint sub_mode, DiagDirection side)
 {
-	TrackBits trackbits = TRACK_BIT_NONE;
+	TrackdirBits trackdirbits = TRACKDIR_BIT_NONE;
 
 	switch (mode) {
 		case TRANSPORT_RAIL:
 			if (HasStationRail(tile) && !IsStationTileBlocked(tile)) {
-				trackbits = TrackToTrackBits(GetRailStationTrack(tile));
+				trackdirbits = TrackToTrackdirBits(GetRailStationTrack(tile));
 			}
 			break;
 
 		case TRANSPORT_WATER:
 			/* buoy is coded as a station, it is always on open water */
 			if (IsBuoy(tile)) {
-				trackbits = TRACK_BIT_ALL;
+				TrackBits trackbits = TRACK_BIT_ALL;
 				/* remove tracks that connect NE map edge */
 				if (TileX(tile) == 0) trackbits &= ~(TRACK_BIT_X | TRACK_BIT_UPPER | TRACK_BIT_RIGHT);
 				/* remove tracks that connect NW map edge */
 				if (TileY(tile) == 0) trackbits &= ~(TRACK_BIT_Y | TRACK_BIT_LEFT | TRACK_BIT_UPPER);
+				trackdirbits = TrackBitsToTrackdirBits(trackbits);
 			}
 			break;
 
@@ -3518,7 +3536,13 @@ static TrackStatus GetTileTrackStatus_Station(TileIndex tile, TransportType mode
 					if (axis != DiagDirToAxis(side) || (IsStandardRoadStopTile(tile) && dir != side)) break;
 				}
 
-				trackbits = AxisToTrackBits(axis);
+				TrackBits trackbits = AxisToTrackBits(axis);
+				if (IsDriveThroughStopTile(tile)) {
+					const uint drd_to_multiplier[DRD_END] = { 0x101, 0x100, 0x1, 0x0 };
+					trackdirbits = (TrackdirBits)(trackbits * drd_to_multiplier[GetDriveThroughStopDisallowedRoadDirections(tile)]);
+				} else {
+					trackdirbits = TrackBitsToTrackdirBits(trackbits);
+				}
 			}
 			break;
 
@@ -3526,7 +3550,7 @@ static TrackStatus GetTileTrackStatus_Station(TileIndex tile, TransportType mode
 			break;
 	}
 
-	return CombineTrackStatus(TrackBitsToTrackdirBits(trackbits), TRACKDIR_BIT_NONE);
+	return CombineTrackStatus(trackdirbits, TRACKDIR_BIT_NONE);
 }
 
 
@@ -3929,6 +3953,13 @@ void RerouteCargo(Station *st, CargoID c, StationID avoid, StationID avoid2)
 	}
 }
 
+btree::btree_set<VehicleID> _delete_stale_links_vehicle_cache;
+
+void ClearDeleteStaleLinksVehicleCache()
+{
+	_delete_stale_links_vehicle_cache.clear();
+}
+
 /**
  * Check all next hops of cargo packets in this station for existence of a
  * a valid link they may use to travel on. Reroute any cargo not having a valid
@@ -3980,7 +4011,11 @@ void DeleteStaleLinks(Station *from)
 					while (iter != vehicles.end()) {
 						Vehicle *v = *iter;
 
-						LinkRefresher::Run(v, false); // Don't allow merging. Otherwise lg might get deleted.
+						auto res = _delete_stale_links_vehicle_cache.insert(v->index);
+						// Only run LinkRefresher if vehicle was not already in the cache
+						if (res.second) {
+							LinkRefresher::Run(v, false); // Don't allow merging. Otherwise lg might get deleted.
+						}
 						if (edge.LastUpdate() == _date) {
 							updated = true;
 							break;
@@ -4089,6 +4124,8 @@ static void StationHandleSmallTick(BaseStation *st)
 void OnTick_Station()
 {
 	if (_game_mode == GM_EDITOR) return;
+
+	ClearDeleteStaleLinksVehicleCache();
 
 	for (BaseStation *st : BaseStation::Iterate()) {
 		StationHandleSmallTick(st);
@@ -4589,6 +4626,13 @@ static bool CanRemoveRoadWithStop(TileIndex tile, DoCommandFlag flags)
 	return true;
 }
 
+static CommandCost RemoveRoadStopAndUpdateRoadCachedOneWayState(TileIndex tile, DoCommandFlag flags)
+{
+	CommandCost cost = RemoveRoadStop(tile, flags);
+	if ((flags & DC_EXEC) && cost.Succeeded()) UpdateRoadCachedOneWayStatesAroundTile(tile);
+	return cost;
+}
+
 /**
  * Clear a single tile of a station.
  * @param tile The tile to clear.
@@ -4621,12 +4665,12 @@ CommandCost ClearTile_Station(TileIndex tile, DoCommandFlag flags)
 			if (IsDriveThroughStopTile(tile) && !CanRemoveRoadWithStop(tile, flags)) {
 				return_cmd_error(STR_ERROR_MUST_DEMOLISH_TRUCK_STATION_FIRST);
 			}
-			return RemoveRoadStop(tile, flags);
+			return RemoveRoadStopAndUpdateRoadCachedOneWayState(tile, flags);
 		case STATION_BUS:
 			if (IsDriveThroughStopTile(tile) && !CanRemoveRoadWithStop(tile, flags)) {
 				return_cmd_error(STR_ERROR_MUST_DEMOLISH_BUS_STATION_FIRST);
 			}
-			return RemoveRoadStop(tile, flags);
+			return RemoveRoadStopAndUpdateRoadCachedOneWayState(tile, flags);
 		case STATION_BUOY:     return RemoveBuoy(tile, flags);
 		case STATION_DOCK:     return RemoveDock(tile, flags);
 		default: break;

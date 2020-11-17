@@ -57,6 +57,25 @@ static byte _stringwidth_table[FS_END][224]; ///< Cache containing width of ofte
 DrawPixelInfo *_cur_dpi;
 byte _colour_gradient[COLOUR_END][8];
 
+byte _colour_value[COLOUR_END] = {
+	133, // COLOUR_DARK_BLUE
+	 99, // COLOUR_PALE_GREEN,
+	 48, // COLOUR_PINK,
+	 68, // COLOUR_YELLOW,
+	184, // COLOUR_RED,
+	152, // COLOUR_LIGHT_BLUE,
+	209, // COLOUR_GREEN,
+	 95, // COLOUR_DARK_GREEN,
+	150, // COLOUR_BLUE,
+	 79, // COLOUR_CREAM,
+	134, // COLOUR_MAUVE,
+	174, // COLOUR_PURPLE,
+	195, // COLOUR_ORANGE,
+	116, // COLOUR_BROWN,
+	  6, // COLOUR_GREY,
+	 15, // COLOUR_WHITE,
+};
+
 static void GfxMainBlitterViewport(const Sprite *sprite, int x, int y, BlitterMode mode, const SubSprite *sub = nullptr, SpriteID sprite_id = SPR_CURSOR_MOUSE);
 static void GfxMainBlitter(const Sprite *sprite, int x, int y, BlitterMode mode, const SubSprite *sub = nullptr, SpriteID sprite_id = SPR_CURSOR_MOUSE, ZoomLevel zoom = ZOOM_LVL_NORMAL);
 
@@ -84,6 +103,13 @@ bool _gfx_draw_active = false;
 
 static std::vector<Rect> _dirty_blocks;
 static std::vector<Rect> _pending_dirty_blocks;
+
+enum GfxDebugFlags {
+	GDF_SHOW_WINDOW_DIRTY,
+	GDF_SHOW_WIDGET_DIRTY,
+	GDF_SHOW_RECT_DIRTY,
+};
+uint32 _gfx_debug_flags;
 
 /**
  * Applies a certain FillRectMode-operation to a rectangle [left, right] x [top, bottom] on the screen.
@@ -894,6 +920,7 @@ void DrawCharCentered(WChar c, int x, int y, TextColour colour)
  * Get the size of a sprite.
  * @param sprid Sprite to examine.
  * @param[out] offset Optionally returns the sprite position offset.
+ * @param zoom The zoom level applicable to the sprite.
  * @return Sprite size in pixels.
  * @note The size assumes (0, 0) as top-left coordinate and ignores any part of the sprite drawn at the left or above that position.
  */
@@ -1327,9 +1354,6 @@ void ScreenSizeChanged()
 {
 	MarkWholeScreenDirty();
 
-	extern uint32 *_vp_map_line;
-	_vp_map_line = ReallocT<uint32>(_vp_map_line, _screen.width);
-
 	/* screen size changed and the old bitmap is invalid now, so we don't want to undraw it */
 	_cursor.visible = false;
 }
@@ -1408,6 +1432,16 @@ void DrawMouseCursor()
 	_cursor.dirty = false;
 }
 
+/**
+ * Repaints a specific rectangle of the screen.
+ *
+ * @param left,top,right,bottom The area of the screen that needs repainting
+ * @pre The rectangle is assumed to have been previously marked dirty with \c SetDirtyBlocks.
+ * @see SetDirtyBlocks
+ * @see DrawDirtyBlocks
+ * @ingroup dirty
+ *
+ */
 void RedrawScreenRect(int left, int top, int right, int bottom)
 {
 	assert(right <= _screen.width && bottom <= _screen.height);
@@ -1428,7 +1462,7 @@ void RedrawScreenRect(int left, int top, int right, int bottom)
 }
 
 static std::vector<Rect> _dirty_viewport_occlusions;
-static ViewPort *_dirty_viewport;
+static Viewport *_dirty_viewport;
 static NWidgetDisplay _dirty_viewport_disp_flags;
 
 static void DrawDirtyViewport(uint occlusion, int left, int top, int right, int bottom)
@@ -1473,7 +1507,7 @@ static void DrawDirtyViewport(uint occlusion, int left, int top, int right, int 
 	if (_game_mode == GM_MENU) {
 		RedrawScreenRect(left, top, right, bottom);
 	} else {
-		extern void ViewportDrawChk(ViewPort *vp, int left, int top, int right, int bottom);
+		extern void ViewportDrawChk(Viewport *vp, int left, int top, int right, int bottom);
 		ViewportDrawChk(_dirty_viewport, left, top, right, bottom);
 		if (_dirty_viewport_disp_flags & (ND_SHADE_GREY | ND_SHADE_DIMMED)) {
 			GfxFillRect(left, top, right, bottom,
@@ -1483,10 +1517,21 @@ static void DrawDirtyViewport(uint occlusion, int left, int top, int right, int 
 	}
 }
 
+static void DrawOverlappedWindowWithClipping(Window *w, int left, int top, int right, int bottom, DrawOverlappedWindowFlags flags)
+{
+	extern void DrawOverlappedWindow(Window *w, int left, int top, int right, int bottom, DrawOverlappedWindowFlags flags);
+
+	if (right < 0 || bottom < 0 || left >= _screen.width || top >= _screen.height) return;
+
+	DrawOverlappedWindow(w, max(0, left), max(0, top), min(_screen.width, right), min(_screen.height, bottom), flags);
+}
+
 /**
  * Repaints the rectangle blocks which are marked as 'dirty'.
  *
  * @see SetDirtyBlocks
+ *
+ * @ingroup dirty
  */
 void DrawDirtyBlocks()
 {
@@ -1545,8 +1590,6 @@ void DrawDirtyBlocks()
 		DrawPixelInfo bk;
 		_cur_dpi = &bk;
 
-		extern void DrawOverlappedWindow(Window *w, int left, int top, int right, int bottom, bool gfx_dirty);
-
 		Window *w;
 		FOR_ALL_WINDOWS_FROM_BACK(w) {
 			w->flags &= ~WF_DRAG_DIRTIED;
@@ -1556,14 +1599,24 @@ void DrawDirtyBlocks()
 
 			if (w->flags & WF_DIRTY) {
 				clear_overlays();
-				DrawOverlappedWindow(w, max(0, w->left), max(0, w->top), min(_screen.width, w->left + w->width), min(_screen.height, w->top + w->height), true);
+				DrawOverlappedWindowFlags flags = DOWF_MARK_DIRTY;
+				if (unlikely(HasBit(_gfx_debug_flags, GDF_SHOW_WINDOW_DIRTY))) {
+					flags |= DOWF_SHOW_DEBUG;
+					_dirty_block_colour++;
+				}
+				DrawOverlappedWindowWithClipping(w, w->left, w->top, w->left + w->width, w->top + w->height, flags);
 				w->flags &= ~(WF_DIRTY | WF_WIDGETS_DIRTY);
 			} else if (w->flags & WF_WIDGETS_DIRTY) {
 				if (w->nested_root != nullptr) {
 					clear_overlays();
 					w->nested_root->FillDirtyWidgets(dirty_widgets);
 					for (NWidgetBase *widget : dirty_widgets) {
-						DrawOverlappedWindow(w, max(0, w->left + widget->pos_x), max(0, w->top + widget->pos_y), min(_screen.width, w->left + widget->pos_x + widget->current_x), min(_screen.height, w->top + widget->pos_y + widget->current_y), true);
+						DrawOverlappedWindowFlags flags = DOWF_MARK_DIRTY;
+						if (unlikely(HasBit(_gfx_debug_flags, GDF_SHOW_WIDGET_DIRTY))) {
+							flags |= DOWF_SHOW_DEBUG;
+							_dirty_block_colour++;
+						}
+						DrawOverlappedWindowWithClipping(w, w->left + widget->pos_x, w->top + widget->pos_y, w->left + widget->pos_x + widget->current_x, w->top + widget->pos_y + widget->current_y, flags);
 					}
 					dirty_widgets.clear();
 				}
@@ -1571,7 +1624,7 @@ void DrawDirtyBlocks()
 			}
 
 			if (w->viewport != nullptr && !w->IsShaded()) {
-				ViewPort *vp = w->viewport;
+				Viewport *vp = w->viewport;
 				if (vp->is_drawn) {
 					vp->ClearDirty();
 				} else if (vp->is_dirty) {
@@ -1689,6 +1742,11 @@ void DrawDirtyBlocks()
 		for (const Rect &r : _dirty_blocks) {
 			RedrawScreenRect(r.left, r.top, r.right, r.bottom);
 		}
+		if (unlikely(HasBit(_gfx_debug_flags, GDF_SHOW_RECT_DIRTY))) {
+			for (const Rect &r : _dirty_blocks) {
+				GfxFillRect(r.left, r.top, r.right, r.bottom, _string_colourmap[++_dirty_block_colour & 0xF], FILLRECT_CHECKER);
+			}
+		}
 	}
 
 	_dirty_blocks.clear();
@@ -1705,8 +1763,8 @@ void DrawDirtyBlocks()
 	_gfx_draw_active = false;
 	++_dirty_block_colour;
 
-	extern void ClearViewPortCaches();
-	ClearViewPortCaches();
+	extern void ClearViewportCaches();
+	ClearViewportCaches();
 }
 
 void UnsetDirtyBlocks(int left, int top, int right, int bottom)
@@ -1818,6 +1876,8 @@ static void AddDirtyBlocks(uint start, int left, int top, int right, int bottom)
 }
 
 /**
+ * Add the specified rectangle to the collection of screen areas to be
+ * invalidated and redrawn.
  * Note the point (0,0) is top left.
  *
  * @param left The left edge of the rectangle
@@ -1826,9 +1886,7 @@ static void AddDirtyBlocks(uint start, int left, int top, int right, int bottom)
  * @param bottom The bottom edge of the rectangle
  * @see DrawDirtyBlocks
  *
- * @todo The name of the function should be called like @c AddDirtyBlock as
- *       it neither set a dirty rect nor add several dirty rects although
- *       the function name is in plural. (Progman)
+ * @ingroup dirty
  */
 void SetDirtyBlocks(int left, int top, int right, int bottom)
 {

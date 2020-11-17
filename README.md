@@ -1,4 +1,4 @@
-## JGR's Patchpack version 0.34.4
+## JGR's Patchpack version 0.39.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -19,6 +19,8 @@ See [below](#openttd) for the original OpenTTD readme.
 The thread for this patchpack can be found [here](http://www.tt-forums.net/viewtopic.php?f=33&t=73469).
 
 See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
+
+See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on how to use some of the included features.
 
 
 #### This patchpack contains the following
@@ -71,9 +73,9 @@ See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
   This is modified to use an extra button in the smallmap window, instead of a console command, and use the current zoom level and display mode of the smallmap window.
 
 * Automated timetables and separation: [imported](http://www.tt-forums.net/viewtopic.php?f=33&t=46391)  
-  * Auto timetabling: Bias timetable adjustment to favour negative adjustments; this is to avoid positive feedback between congestion delays and increased timetable length. Reduce jam detection threshold.  
-  * Auto separation: Fix handling of non-station orders (e.g. waypoints and depots). Change to a per-vehicle setting. Add a company setting to scale vehicle lateness adjustments. No longer set vehicle lateness to 0 if separation fails, instead leave it as it was.  
-  * Timetable GUI: Allow clearing of timetable time fields which are at 0. Allow explicitly setting timetable time fields to 0 without clearing them.
+  * Auto timetabling: Bias timetable adjustment to favour negative adjustments; this is to avoid positive feedback between congestion delays and increased timetable length. Change jam detection threshold.  
+  * Auto separation: A large number of improvements have been made to the separation algorithm.  
+  * Timetable GUI: Allow clearing of timetable time fields which are at 0. Allow explicitly setting timetable time fields to 0 without clearing them.  
   * Add company settings to enable automatic timetabling or separation for new vehicles.  
   * Allow changing/clearing the timetabled waiting time and max speed of all of a vehicle's orders at once.  
   * Add client setting to show the remainder ticks in timetable, after dividing to days or minutes.  
@@ -206,6 +208,16 @@ See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
   * Add support for server admin use of money, magic bulldozer, tunnels and jet crashes cheats in multiplayer.  
   * Add setting to allow non server admins to use the money cheat in multiplayer.  
   * Add cheats to set inflation income and cost factors.
+  
+* Drive-through train depot emulation (added in v0.38.0)
+
+* One-way road and road vehicle overtaking enhancements (added in v0.39.0)  
+  * Road between one-way road tiles is also one-way.  
+  * One way roads may have T-junctions on the drive side.  
+  * Drive-through road stops may be made one way.  
+  * Road vehicles have fewer constraints on overtaking on one-way road, and may be remain in the overtaking lane indefinitely.  
+  * Road vehicles may now start and finish overtaking on bridges and in tunnels.  
+  See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/One-way-roads) for full details.
 
 * Save/load and savegame format changes  
   * Various changes to improve handling of savegames which use features not in trunk.  
@@ -234,7 +246,7 @@ See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
   * Go to depot and sell vehicle orders. (added in v0.26.0).  
   * Order mode to lock timetable wait and travel times against autofill/automate changes. (added in v0.26.0 and v0.27.0 respectively).  
   * Settings to allow placing stations and all NewGRF objects under bridges. (added in v0.26.0).  
-  * Leave early order timetable flag. (added in v0.27.0).  
+  * Leave early and leave early if any/all cargoes fully loaded order timetable flags. (added in v0.27.0 and v0.36.0 respectively).  
   * Timetabled wait times at waypoints. (added in v0.27.0).  
   * Add setting to enable flipping direction of all train types in depot. (added in v0.27.1).  
   * Allow purchasing a region of tiles at once, by dragging, and add a company rate limit for land purchasing (added in v0.29.0).  
@@ -257,9 +269,23 @@ See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
   * Add support for allowing/disallowing supply to a station, per cargo, by ctrl-clicking the station cargo rating. (added in v0.34.0).  
   * Open train vehicle details window on total cargo tab if shift pressed. (added in v0.34.0).  
   * Ctrl-click up/down in NewGRF window to move to top or bottom. (added in v0.34.2).  
-  * Additional conditional order types/modes. (added in v0.24.0, v0.33.1, v0.34.3).  
+  * Additional conditional order types/modes. (added in v0.24.0, v0.33.1, v0.34.3, v0.37.0).  
+  * Improve road vehicle pathfinding when multiple vehicles are simultaneously heading to a station with multiple bay/stop entrances. (added in v0.35.0).  
+  * Add setting to scale station cargo capacity and rating tolerance by size. (added in v0.35.0).  
+  * Add setting to disable vehicle expiry after a given year. (added in v0.35.0).  
+  * Add setting to control road vehicle re-routing on road layout changes. (added in v0.35.0).  
+  * Add news setting for trains waiting due to routing restrictions. (added in v0.36.0).  
+  * Add setting for alternative linkgraph overlay colour schemes. (added in v0.36.0).  
+  * Add basic tab-completion to the console window. (added in v0.36.0).  
+  * Add settings to enable multiple churches/stadiums and to ignore date/zone/GRF when placing houses in the scenario editor. (added in v0.36.0).  
+  * Add setting for default road/tram types. (added in v0.37.0).  
+  * Allow building objects by area (1x1 objects only). (added in v0.37.0).  
+  * Increase per-vehicle order limit from 254 to 64k. (added in v0.38.0).  
+  * Add features to reverse the order of an order list, and to append the reverse of an order list. (added in v0.39.0).  
   * Various minor fixes, see changelog.  
   * [NewGRF specification additions](docs/newgrf-additions.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions.html)).
+  * [NML specification additions](docs/newgrf-additions-nml.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions-nml.html)).
+  * [AI/GS script additions](docs/script-additions.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/script-additions.html)).
   * [Low-level code/performance changes](docs/jgrpp-low-level-changes.md).
 
 * Translations  

@@ -455,7 +455,9 @@ CommandCost CmdBuildCanal(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 	if (_game_mode != GM_EDITOR) {
 		if (HasBit(p2, 2)) return CMD_ERROR;
 		if (wc == WATER_CLASS_RIVER) {
-			if (!_settings_game.construction.enable_build_river) return CMD_ERROR;
+			if (!_settings_game.construction.enable_build_river && _current_company != OWNER_DEITY) {
+				return CMD_ERROR;
+			}
 		} else if (wc != WATER_CLASS_CANAL) {
 			return CMD_ERROR;
 		}
@@ -1218,7 +1220,7 @@ static void DoDryUp(TileIndex tile)
 
 		case MP_TREES:
 			SetTreeGroundDensity(tile, TREE_GROUND_GRASS, 3);
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			break;
 
 		case MP_WATER:

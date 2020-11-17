@@ -38,6 +38,7 @@
 #include "zoom_func.h"
 
 #include <vector>
+#include <functional>
 
 #include "safeguards.h"
 
@@ -847,6 +848,7 @@ struct SettingsContainer {
 struct SettingsPage : BaseSettingEntry, SettingsContainer {
 	StringID title;     ///< Title of the sub-page
 	bool folded;        ///< Sub-page is folded (not visible except for its title)
+	std::function<bool()> hide_callback; ///< optional callback, returns true if this shouldbe hidden
 
 	SettingsPage(StringID title);
 
@@ -1454,6 +1456,7 @@ bool SettingsPage::UpdateFilterState(SettingFilter &filter, bool force_visible)
 	}
 
 	bool visible = SettingsContainer::UpdateFilterState(filter, force_visible);
+	if (this->hide_callback && this->hide_callback()) visible = false;
 	if (visible) {
 		CLRBITS(this->flags, SEF_FILTERED);
 	} else {
@@ -1576,11 +1579,13 @@ static SettingsContainer &GetSettingsTree()
 			graphics->Add(new SettingEntry("gui.zoom_min"));
 			graphics->Add(new SettingEntry("gui.zoom_max"));
 			graphics->Add(new SettingEntry("gui.smallmap_land_colour"));
+			graphics->Add(new SettingEntry("gui.linkgraph_colours"));
 			graphics->Add(new SettingEntry("gui.graph_line_thickness"));
 			graphics->Add(new SettingEntry("gui.show_vehicle_route_steps"));
 			graphics->Add(new SettingEntry("gui.show_vehicle_route"));
 			graphics->Add(new SettingEntry("gui.dash_level_of_route_lines"));
 			graphics->Add(new SettingEntry("gui.show_restricted_signal_default"));
+			graphics->Add(new SettingEntry("gui.disable_vehicle_image_update"));
 		}
 
 		SettingsPage *sound = main->Add(new SettingsPage(STR_CONFIG_SETTING_SOUND));
@@ -1650,6 +1655,7 @@ static SettingsContainer &GetSettingsTree()
 				construction->Add(new SettingEntry("gui.persistent_buildingtools"));
 				construction->Add(new SettingEntry("gui.quick_goto"));
 				construction->Add(new SettingEntry("gui.default_rail_type"));
+				construction->Add(new SettingEntry("gui.default_road_type"));
 				construction->Add(new SettingEntry("gui.disable_unsuitable_building"));
 			}
 
@@ -1675,11 +1681,27 @@ static SettingsContainer &GetSettingsTree()
 
 			SettingsPage *wallclock = interface->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_WALLCLOCK));
 			{
-				wallclock->Add(new SettingEntry("gui.time_in_minutes"));
-				wallclock->Add(new SettingEntry("gui.timetable_start_text_entry"));
-				wallclock->Add(new SettingEntry("gui.ticks_per_minute"));
+				wallclock->Add(new SettingEntry("gui.override_time_settings"));
+				SettingsPage *game = wallclock->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_TIME_SAVEGAME));
+				{
+					game->hide_callback = []() -> bool {
+						return _game_mode == GM_MENU;
+					};
+					game->Add(new SettingEntry("game_time.time_in_minutes"));
+					game->Add(new SettingEntry("game_time.ticks_per_minute"));
+					game->Add(new SettingEntry("game_time.clock_offset"));
+				}
+				SettingsPage *client = wallclock->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_TIME_CLIENT));
+				{
+					client->hide_callback = []() -> bool {
+						return _game_mode != GM_MENU && !_settings_client.gui.override_time_settings;
+					};
+					client->Add(new SettingEntry("gui.time_in_minutes"));
+					client->Add(new SettingEntry("gui.ticks_per_minute"));
+					client->Add(new SettingEntry("gui.clock_offset"));
+				}
+
 				wallclock->Add(new SettingEntry("gui.date_with_time"));
-				wallclock->Add(new SettingEntry("gui.clock_offset"));
 			}
 
 			SettingsPage *timetable = interface->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_TIMETABLE));
@@ -1687,6 +1709,7 @@ static SettingsContainer &GetSettingsTree()
 				timetable->Add(new SettingEntry("gui.timetable_in_ticks"));
 				timetable->Add(new SettingEntry("gui.timetable_leftover_ticks"));
 				timetable->Add(new SettingEntry("gui.timetable_arrival_departure"));
+				timetable->Add(new SettingEntry("gui.timetable_start_text_entry"));
 			}
 
 			SettingsPage *advsig = interface->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_ADV_SIGNALS));
@@ -1731,6 +1754,7 @@ static SettingsContainer &GetSettingsTree()
 			advisors->Add(new SettingEntry("gui.no_depot_order_warn"));
 			advisors->Add(new SettingEntry("gui.vehicle_income_warn"));
 			advisors->Add(new SettingEntry("gui.lost_vehicle_warn"));
+			advisors->Add(new SettingEntry("gui.restriction_wait_vehicle_warn"));
 			advisors->Add(new SettingEntry("gui.show_finances"));
 			advisors->Add(new SettingEntry("news_display.economy"));
 			advisors->Add(new SettingEntry("news_display.subsidies"));
@@ -1768,6 +1792,7 @@ static SettingsContainer &GetSettingsTree()
 			company->Add(new SettingEntry("company.infra_others_buy_in_depot[2]"));
 			company->Add(new SettingEntry("company.infra_others_buy_in_depot[3]"));
 			company->Add(new SettingEntry("company.advance_order_on_clone"));
+			company->Add(new SettingEntry("company.copy_clone_add_to_group"));
 		}
 
 		SettingsPage *accounting = main->Add(new SettingsPage(STR_CONFIG_SETTING_ACCOUNTING));
@@ -1808,6 +1833,8 @@ static SettingsContainer &GetSettingsTree()
 				routing->Add(new SettingEntry("pf.forbid_90_deg"));
 				routing->Add(new SettingEntry("pf.pathfinder_for_roadvehs"));
 				routing->Add(new SettingEntry("pf.pathfinder_for_ships"));
+				routing->Add(new SettingEntry("pf.reroute_rv_on_layout_change"));
+				routing->Add(new SettingEntry("vehicle.drive_through_train_depot"));
 			}
 
 			vehicles->Add(new SettingEntry("order.no_servicing_if_no_breakdowns"));
@@ -1830,6 +1857,7 @@ static SettingsContainer &GetSettingsTree()
 			limitations->Add(new SettingEntry("construction.chunnel"));
 			limitations->Add(new SettingEntry("station.never_expire_airports"));
 			limitations->Add(new SettingEntry("vehicle.never_expire_vehicles"));
+			limitations->Add(new SettingEntry("vehicle.no_expire_vehicles_after"));
 			limitations->Add(new SettingEntry("vehicle.max_trains"));
 			limitations->Add(new SettingEntry("vehicle.max_roadveh"));
 			limitations->Add(new SettingEntry("vehicle.max_aircraft"));
@@ -1850,6 +1878,7 @@ static SettingsContainer &GetSettingsTree()
 			limitations->Add(new SettingEntry("construction.allow_road_stops_under_bridges"));
 			limitations->Add(new SettingEntry("construction.allow_docks_under_bridges"));
 			limitations->Add(new SettingEntry("construction.purchase_land_permitted"));
+			limitations->Add(new SettingEntry("construction.build_object_area_permitted"));
 		}
 
 		SettingsPage *disasters = main->Add(new SettingsPage(STR_CONFIG_SETTING_ACCIDENTS));
@@ -1986,6 +2015,17 @@ static SettingsContainer &GetSettingsTree()
 			ai->Add(new SettingEntry("economy.allow_shares"));
 			ai->Add(new SettingEntry("economy.min_years_for_shares"));
 			ai->Add(new SettingEntry("difficulty.money_cheat_in_multiplayer"));
+		}
+
+		SettingsPage *scenario = main->Add(new SettingsPage(STR_CONFIG_SETTING_SCENARIO_EDITOR));
+		scenario->hide_callback = []() -> bool {
+			return _game_mode == GM_NORMAL;
+		};
+		{
+			scenario->Add(new SettingEntry("scenario.multiple_buildings"));
+			scenario->Add(new SettingEntry("scenario.house_ignore_dates"));
+			scenario->Add(new SettingEntry("scenario.house_ignore_zones"));
+			scenario->Add(new SettingEntry("scenario.house_ignore_grf"));
 		}
 
 		main->Init();

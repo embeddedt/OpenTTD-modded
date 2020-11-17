@@ -153,7 +153,7 @@ void MemoryDumper::AllocateBuffer()
 		return;
 	}
 	this->FinaliseBlock();
-	this->buf = CallocT<byte>(MEMORY_CHUNK_SIZE);
+	this->buf = MallocT<byte>(MEMORY_CHUNK_SIZE);
 	this->blocks.emplace_back(this->buf);
 	this->bufe = this->buf + MEMORY_CHUNK_SIZE;
 }
@@ -711,8 +711,9 @@ static inline uint SlCalcConvMemLen(VarType conv)
  */
 static inline byte SlCalcConvFileLen(VarType conv)
 {
-	static const byte conv_file_size[] = {1, 1, 2, 2, 4, 4, 8, 8, 2};
 	byte length = GB(conv, 0, 4);
+	if (length == SLE_FILE_VEHORDERID) return SlXvIsFeaturePresent(XSLFI_MORE_VEHICLE_ORDERS) ? 2 : 1;
+	static const byte conv_file_size[] = {1, 1, 2, 2, 4, 4, 8, 8, 2};
 	assert(length < lengthof(conv_file_size));
 	return conv_file_size[length];
 }
@@ -927,6 +928,7 @@ static void SlSaveLoadConvGeneric(void *ptr, VarType conv)
 				case SLE_FILE_U8: assert(x >= 0 && x <= 255);        SlWriteByte(x);break;
 				case SLE_FILE_I16:assert(x >= -32768 && x <= 32767); SlWriteUint16(x);break;
 				case SLE_FILE_STRINGID:
+				case SLE_FILE_VEHORDERID:
 				case SLE_FILE_U16:assert(x >= 0 && x <= 65535);      SlWriteUint16(x);break;
 				case SLE_FILE_I32:
 				case SLE_FILE_U32:                                   SlWriteUint32((uint32)x);break;
@@ -950,6 +952,14 @@ static void SlSaveLoadConvGeneric(void *ptr, VarType conv)
 				case SLE_FILE_I64: x = (int64 )SlReadUint64(); break;
 				case SLE_FILE_U64: x = (uint64)SlReadUint64(); break;
 				case SLE_FILE_STRINGID: x = RemapOldStringID((uint16)SlReadUint16()); break;
+				case SLE_FILE_VEHORDERID:
+					if (SlXvIsFeaturePresent(XSLFI_MORE_VEHICLE_ORDERS)) {
+						x = (uint16)SlReadUint16();
+					} else {
+						VehicleOrderID id = (byte)SlReadByte();
+						x = (id == 0xFF) ? INVALID_VEH_ORDER_ID : id;
+					}
+					break;
 				default: NOT_REACHED();
 			}
 
@@ -3304,7 +3314,7 @@ static SaveOrLoadResult DoLoad(LoadFilter *reader, bool load_check)
 
 	if (load_check) {
 		/* The only part from AfterLoadGame() we need */
-		_load_check_data.grf_compatibility = IsGoodGRFConfigList(_load_check_data.grfconfig);
+		if (_load_check_data.want_grf_compatibility) _load_check_data.grf_compatibility = IsGoodGRFConfigList(_load_check_data.grfconfig);
 	} else {
 		GamelogStartAction(GLAT_LOAD);
 

@@ -23,6 +23,7 @@
 #include "group_type.h"
 #include "timetable.h"
 #include "base_consist.h"
+#include "newgrf_cache_check.h"
 #include "network/network.h"
 #include <list>
 #include <map>
@@ -58,9 +59,10 @@ enum VehicleFlags {
 	// Additional flags not in trunk are added at the end to avoid clashing with any new
 	// flags which get added in future trunk, and to avoid re-ordering flags which are in trunk already,
 	// as this breaks savegame compatibility.
+	VF_SEPARATION_ACTIVE = 11, ///< Whether timetable auto-separation is currently active
 	VF_SCHEDULED_DISPATCH = 12, ///< Whether the vehicle should follow a timetabled dispatching schedule
 	VF_LAST_LOAD_ST_SEP = 13,   ///< Each vehicle of this chain has its last_loading_station field set separately
-	VF_TIMETABLE_SEPARATION = 14,///< Whether the vehicle should manage the timetable automatically.
+	VF_TIMETABLE_SEPARATION = 14,///< Whether timetable auto-separation is enabled
 	VF_AUTOMATE_TIMETABLE = 15, ///< Whether the vehicle should manage the timetable automatically.
 };
 
@@ -137,6 +139,10 @@ enum VehicleCacheFlags {
 	VCF_LAST_VISUAL_EFFECT      = 0, ///< Last vehicle in the consist with a visual effect.
 	VCF_GV_ZERO_SLOPE_RESIST    = 1, ///< GroundVehicle: Consist has zero slope resistance (valid only for the first engine), may be false negative.
 	VCF_IS_DRAWN                = 2, ///< Vehicle is currently drawn
+	VCF_REDRAW_ON_TRIGGER       = 3, ///< Clear cur_image_valid_dir on changes to waiting_triggers (valid only for the first engine)
+	VCF_REDRAW_ON_SPEED_CHANGE  = 4, ///< Clear cur_image_valid_dir on changes to cur_speed (ground vehicles) or aircraft movement state (aircraft) (valid only for the first engine)
+	VCF_IMAGE_REFRESH           = 5, ///< Image should be refreshed before drawing
+	VCF_IMAGE_REFRESH_NEXT      = 6, ///< Set VCF_IMAGE_REFRESH in next UpdateViewport call, if the image is not updated there
 };
 
 /** Cached often queried values common to all vehicles. */
@@ -243,9 +249,6 @@ private:
 	Vehicle *next_shared;               ///< pointer to the next vehicle that shares the order
 	Vehicle *previous_shared;           ///< NOSAVE: pointer to the previous vehicle in the shared order chain
 
-	Vehicle *ahead_separation;
-	Vehicle *behind_separation;
-
 public:
 	friend const SaveLoad *GetVehicleDescription(VehicleType vt); ///< So we can use private/protected variables in the saveload code
 	friend void FixOldVehicles();
@@ -330,7 +333,7 @@ public:
 	uint16 cur_speed;                   ///< current speed
 	byte subspeed;                      ///< fractional speed
 	byte acceleration;                  ///< used by train & aircraft
-	uint32 motion_counter;              ///< counter to occasionally play a vehicle sound.
+	uint32 motion_counter;              ///< counter to occasionally play a vehicle sound. (Also used as virtual train client ID).
 	byte progress;                      ///< The percentage (if divided by 256) this vehicle already crossed the tile unit.
 
 	byte random_bits;                   ///< Bits used for determining which randomized variational spritegroups to use when drawing.
@@ -508,6 +511,28 @@ public:
 	}
 
 	/**
+	 * Invalidates cached image
+	 * @see InvalidateNewGRFCacheOfChain
+	 */
+	inline void InvalidateImageCache()
+	{
+		this->cur_image_valid_dir = INVALID_DIR;
+	}
+
+	/**
+	 * Invalidates cached image of all vehicles in the chain (after the current vehicle)
+	 * @see InvalidateImageCache
+	 */
+	inline void InvalidateImageCacheOfChain()
+	{
+		ClrBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE);
+		ClrBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_TRIGGER);
+		for (Vehicle *u = this; u != nullptr; u = u->Next()) {
+			u->InvalidateImageCache();
+		}
+	}
+
+	/**
 	 * Check if the vehicle is a ground vehicle.
 	 * @return True iff the vehicle is a train or a road vehicle.
 	 */
@@ -562,6 +587,11 @@ public:
 		/* Free wagons have no VS_STOPPED state */
 		if (this->IsPrimaryVehicle() && !(this->vehstatus & VS_STOPPED)) return false;
 		return this->IsChainInDepot();
+	}
+
+	bool IsWaitingInDepot() const {
+		assert(this == this->First());
+		return this->current_order.IsType(OT_WAITING) && this->IsChainInDepot();
 	}
 
 	/**
@@ -704,35 +734,9 @@ public:
 	inline Order *GetFirstOrder() const { return (this->orders.list == nullptr) ? nullptr : this->orders.list->GetFirstOrder(); }
 
 	/**
-	 * Get the vehicle ahead on track.
-	 * @return the vehicle ahead on track or nullptr when there isn't one.
+	 * Clears this vehicle's separation status
 	 */
-	inline Vehicle *AheadSeparation() const { return this->ahead_separation; }
-
-	/**
-	 * Get the vehicle behind on track.
-	 * @return the vehicle behind on track or nullptr when there isn't one.
-	 */
-	inline Vehicle *BehindSeparation() const { return this->behind_separation; }
-
-	/**
-	 * Clears a vehicle's separation status, removing it from any chain.
-	 */
-	void ClearSeparation();
-
-	/**
-	 * Adds this vehicle to a shared vehicle separation chain.
-	 * @param v_other a vehicle of the separation chain
-	 * @pre !this->IsOrderListShared()
-	 */
-	void InitSeparation();
-
-	/**
-	 * Adds this vehicle behind another in a separation chain.
-	 * @param v_other a vehicle of the separation chain.
-	 * @pre !this->IsOrderListShared()
-	 */
-	void AddToSeparationBehind(Vehicle *v_other);
+	inline void ClearSeparation() { ClrBit(this->vehicle_flags, VF_SEPARATION_ACTIVE); }
 
 	void AddToShared(Vehicle *shared_chain);
 	void RemoveFromShared();
@@ -1118,7 +1122,7 @@ public:
 		this->sprite_seq_bounds = this->sprite_seq.GetBounds();
 	}
 
-	char *DumpVehicleFlags(char *b, const char *last) const;
+	char *DumpVehicleFlags(char *b, const char *last, bool include_tile) const;
 };
 
 /**
@@ -1273,27 +1277,34 @@ struct SpecializedVehicle : public Vehicle {
 		/* Skip updating sprites on dedicated servers without screen */
 		if (_network_dedicated) return;
 
-		extern bool _sprite_group_resolve_check_veh_check;
-		extern VehicleType _sprite_group_resolve_check_veh_type;
-
 		/* Explicitly choose method to call to prevent vtable dereference -
 		 * it gives ~3% runtime improvements in games with many vehicles */
 		if (update_delta) ((T *)this)->T::UpdateDeltaXY();
 		const Direction current_direction = ((T *)this)->GetMapImageDirection();
 		if (this->cur_image_valid_dir != current_direction) {
 			_sprite_group_resolve_check_veh_check = true;
-			_sprite_group_resolve_check_veh_type = EXPECTED_TYPE;
 			VehicleSpriteSeq seq;
 			((T *)this)->T::GetImage(current_direction, EIT_ON_MAP, &seq);
-			this->cur_image_valid_dir = _sprite_group_resolve_check_veh_check ? current_direction : INVALID_DIR;
+			if (EXPECTED_TYPE == VEH_TRAIN || EXPECTED_TYPE == VEH_ROAD) {
+				ClrBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH);
+				SB(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH_NEXT, 1, (_sprite_group_resolve_check_veh_check || _settings_client.gui.disable_vehicle_image_update) ? 0 : 1);
+				this->cur_image_valid_dir = current_direction;
+			} else {
+				this->cur_image_valid_dir = (_sprite_group_resolve_check_veh_check || _settings_client.gui.disable_vehicle_image_update) ? current_direction : INVALID_DIR;
+			}
 			_sprite_group_resolve_check_veh_check = false;
 			if (force_update || this->sprite_seq != seq) {
 				this->sprite_seq = seq;
 				this->UpdateSpriteSeqBound();
 				this->Vehicle::UpdateViewport(true);
 			}
-		} else if (force_update) {
-			this->Vehicle::UpdateViewport(true);
+		} else {
+			if ((EXPECTED_TYPE == VEH_TRAIN || EXPECTED_TYPE == VEH_ROAD) && HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH_NEXT)) {
+				SetBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH);
+			}
+			if (force_update) {
+				this->Vehicle::UpdateViewport(true);
+			}
 		}
 	}
 

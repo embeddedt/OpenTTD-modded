@@ -281,7 +281,7 @@ struct CompanyFinancesWindow : Window {
 	CompanyFinancesWindow(WindowDesc *desc, CompanyID company) : Window(desc)
 	{
 		const Company *c = Company::Get(company);
-		this->max_money = max<Money>(c->money * 2, INT32_MAX);
+		this->max_money = max<Money>(abs(c->money) * 2, INT32_MAX);
 		this->small = false;
 		this->CreateNestedTree();
 		this->SetupWidgets();
@@ -460,8 +460,8 @@ struct CompanyFinancesWindow : Window {
 	void OnHundredthTick() override
 	{
 		const Company *c = Company::Get((CompanyID)this->window_number);
-		if (c->money > this->max_money) {
-			this->max_money = max(c->money * 2, this->max_money * 4);
+		if (abs(c->money) > this->max_money) {
+			this->max_money = max<Money>(abs(c->money) * 2, this->max_money * 4);
 			this->SetupWidgets();
 			this->ReInit();
 		}
@@ -1894,7 +1894,7 @@ struct CompanyInfrastructureWindow : Window
 
 		switch (widget) {
 			case WID_CI_RAIL_DESC: {
-				uint lines = 1;
+				uint lines = 1; // Starts at 1 because a line is also required for the section title
 
 				size->width = max(size->width, GetStringBoundingBox(STR_COMPANY_INFRASTRUCTURE_VIEW_RAIL_SECT).width);
 
@@ -1917,7 +1917,7 @@ struct CompanyInfrastructureWindow : Window
 
 			case WID_CI_ROAD_DESC:
 			case WID_CI_TRAM_DESC: {
-				uint lines = 0;
+				uint lines = 1; // Starts at 1 because a line is also required for the section title
 
 				size->width = max(size->width, GetStringBoundingBox(widget == WID_CI_ROAD_DESC ? STR_COMPANY_INFRASTRUCTURE_VIEW_ROAD_SECT : STR_COMPANY_INFRASTRUCTURE_VIEW_TRAM_SECT).width);
 
@@ -2589,7 +2589,7 @@ struct CompanyWindow : Window
 			case WID_C_VIEW_HQ: {
 				TileIndex tile = Company::Get((CompanyID)this->window_number)->location_of_HQ;
 				if (_ctrl_pressed) {
-					ShowExtraViewPortWindow(tile);
+					ShowExtraViewportWindow(tile);
 				} else {
 					ScrollMainWindowToTile(tile);
 				}

@@ -53,7 +53,7 @@ public:
 	typedef std::vector<StationSupplyInfo> StationSupplyList;
 	typedef std::vector<LinkInfo> LinkList;
 
-	static const uint8 LINK_COLOURS[];
+	static const uint8 LINK_COLOURS[][12];
 
 	/**
 	 * Create a link graph overlay for the specified window.
@@ -69,6 +69,7 @@ public:
 
 	void RebuildCache(bool incremental = false);
 	bool CacheStillValid() const;
+	void MarkStationViewportLinksDirty(const Station *st);
 	void Draw(const DrawPixelInfo *dpi);
 	void SetCargoMask(CargoTypes cargo_mask);
 	void SetCompanyMask(uint32 company_mask);

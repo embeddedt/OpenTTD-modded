@@ -68,8 +68,6 @@ RailType _last_built_railtype;
 RoadType _last_built_roadtype;
 RoadType _last_built_tramtype;
 
-static ScreenshotType _confirmed_screenshot_type; ///< Screenshot type the current query is about to confirm.
-
 /** Toobar modes */
 enum ToolbarMode {
 	TB_NORMAL,
@@ -316,6 +314,7 @@ enum OptionMenuEntries {
 	OME_FULL_DETAILS,
 	OME_TRANSPARENTBUILDINGS,
 	OME_SHOW_STATIONSIGNS,
+	OME_SHOW_MONEYTEXT,
 };
 
 /**
@@ -346,6 +345,7 @@ static CallBackFunction ToolbarOptionsClick(Window *w)
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_FULL_DETAIL,             OME_FULL_DETAILS, false, HasBit(_display_opt, DO_FULL_DETAIL)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_TRANSPARENT_BUILDINGS,   OME_TRANSPARENTBUILDINGS, false, IsTransparencySet(TO_HOUSES)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_TRANSPARENT_SIGNS,       OME_SHOW_STATIONSIGNS, false, IsTransparencySet(TO_SIGNS)));
+	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_MONEY_TEXT_EFFECTS,      OME_SHOW_MONEYTEXT, false, HasBit(_extra_display_opt, XDO_SHOW_MONEY_TEXT_EFFECTS)));
 
 	ShowDropDownList(w, std::move(list), 0, WID_TN_SETTINGS, 140, true, true);
 	if (_settings_client.sound.click_beep) SndPlayFx(SND_15_BEEP);
@@ -380,6 +380,7 @@ static CallBackFunction MenuClickSettings(int index)
 		case OME_FULL_DETAILS:         ToggleBit(_display_opt, DO_FULL_DETAIL);         break;
 		case OME_TRANSPARENTBUILDINGS: ToggleTransparency(TO_HOUSES);                   break;
 		case OME_SHOW_STATIONSIGNS:    ToggleTransparency(TO_SIGNS);                    break;
+		case OME_SHOW_MONEYTEXT:       ToggleBit(_extra_display_opt, XDO_SHOW_MONEY_TEXT_EFFECTS); break;
 	}
 	MarkWholeScreenDirty();
 	return CBF_NONE;
@@ -477,7 +478,7 @@ static CallBackFunction ToolbarMapClick(Window *w)
 {
 	DropDownList list;
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_MAP_OF_WORLD,            MME_SHOW_SMALLMAP,          false));
-	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_EXTRA_VIEW_PORT,         MME_SHOW_EXTRAVIEWPORTS,    false));
+	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_EXTRA_VIEWPORT,          MME_SHOW_EXTRAVIEWPORTS,    false));
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_LINGRAPH_LEGEND,         MME_SHOW_LINKGRAPH,         false));
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_SIGN_LIST,               MME_SHOW_SIGNLISTS,         false));
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_PLAN_LIST,               MME_SHOW_PLANS,             false));
@@ -489,7 +490,7 @@ static CallBackFunction ToolbarScenMapTownDir(Window *w)
 {
 	DropDownList list;
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_MAP_OF_WORLD,            MME_SHOW_SMALLMAP,          false));
-	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_EXTRA_VIEW_PORT,         MME_SHOW_EXTRAVIEWPORTS,    false));
+	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_EXTRA_VIEWPORT,          MME_SHOW_EXTRAVIEWPORTS,    false));
 	list.emplace_back(new DropDownListStringItem(STR_MAP_MENU_SIGN_LIST,               MME_SHOW_SIGNLISTS,         false));
 	list.emplace_back(new DropDownListStringItem(STR_TOWN_MENU_TOWN_DIRECTORY,         MME_SHOW_TOWNDIRECTORY,     false));
 	list.emplace_back(new DropDownListStringItem(STR_INDUSTRY_MENU_INDUSTRY_DIRECTORY, MME_SHOW_INDUSTRYDIRECTORY, false));
@@ -506,13 +507,13 @@ static CallBackFunction ToolbarScenMapTownDir(Window *w)
 static CallBackFunction MenuClickMap(int index)
 {
 	switch (index) {
-		case MME_SHOW_SMALLMAP:       ShowSmallMap();            break;
-		case MME_SHOW_EXTRAVIEWPORTS: ShowExtraViewPortWindow(); break;
-		case MME_SHOW_LINKGRAPH:      ShowLinkGraphLegend();     break;
-		case MME_SHOW_SIGNLISTS:      ShowSignList();            break;
-		case MME_SHOW_TOWNDIRECTORY:  ShowTownDirectory();       break;
-		case MME_SHOW_INDUSTRYDIRECTORY: ShowIndustryDirectory(); break;
-		case MME_SHOW_PLANS:          ShowPlansWindow();         break;
+		case MME_SHOW_SMALLMAP:          ShowSmallMap();            break;
+		case MME_SHOW_EXTRAVIEWPORTS:    ShowExtraViewportWindow(); break;
+		case MME_SHOW_LINKGRAPH:         ShowLinkGraphLegend();     break;
+		case MME_SHOW_SIGNLISTS:         ShowSignList();            break;
+		case MME_SHOW_TOWNDIRECTORY:     ShowTownDirectory();       break;
+		case MME_SHOW_INDUSTRYDIRECTORY: ShowIndustryDirectory();   break;
+		case MME_SHOW_PLANS:             ShowPlansWindow();         break;
 	}
 	return CBF_NONE;
 }
@@ -630,7 +631,7 @@ static CallBackFunction MenuClickCompany(int index)
 				if (_network_server) {
 					DoCommandP(0, CCA_NEW, _network_own_client_id, CMD_COMPANY_CTRL);
 				} else {
-					NetworkSendCommand(0, CCA_NEW, 0, CMD_COMPANY_CTRL, nullptr, nullptr, _local_company, 0);
+					NetworkSendCommand(0, CCA_NEW, 0, 0, CMD_COMPANY_CTRL, nullptr, nullptr, _local_company, 0);
 				}
 				return CBF_NONE;
 
@@ -1085,37 +1086,6 @@ static CallBackFunction ToolbarHelpClick(Window *w)
 }
 
 /**
- * Callback on the confirmation window for huge screenshots.
- * @param w Window with viewport
- * @param confirmed true on confirmation
- */
-static void ScreenshotConfirmCallback(Window *w, bool confirmed)
-{
-	if (confirmed) MakeScreenshot(_confirmed_screenshot_type, nullptr);
-}
-
-/**
- * Make a screenshot of the world.
- * Ask for confirmation if the screenshot will be huge.
- * @param t Screenshot type: World or viewport screenshot
- */
-static void MenuClickScreenshot(ScreenshotType t)
-{
-	ViewPort vp;
-	SetupScreenshotViewport(t, &vp);
-	if ((uint64)vp.width * (uint64)vp.height > 8192 * 8192) {
-		/* Ask for confirmation */
-		SetDParam(0, vp.width);
-		SetDParam(1, vp.height);
-		_confirmed_screenshot_type = t;
-		ShowQuery(STR_WARNING_SCREENSHOT_SIZE_CAPTION, STR_WARNING_SCREENSHOT_SIZE_MESSAGE, nullptr, ScreenshotConfirmCallback);
-	} else {
-		/* Less than 64M pixels, just do it */
-		MakeScreenshot(t, nullptr);
-	}
-}
-
-/**
  * Toggle drawing of sprites' bounding boxes.
  * @note has only an effect when newgrf_developer_tools are active.
  *
@@ -1159,6 +1129,7 @@ void SetStartingYear(Year year)
 	Date new_date = ConvertYMDToDate(_settings_game.game_creation.starting_year, 0, 1);
 	/* If you open a savegame as scenario there may already be link graphs.*/
 	LinkGraphSchedule::instance.ShiftDates(new_date - _date);
+	ShiftOrderDates(new_date - _date);
 	SetDate(new_date, 0);
 }
 
@@ -2059,6 +2030,11 @@ enum MainToolbarHotkeys {
 	MTHK_CLIENT_LIST,
 	MTHK_SIGN_LIST,
 	MTHK_PLAN_LIST,
+	MTHK_LINK_GRAPH_LEGEND,
+	MTHK_MESSAGE_HISTORY,
+	MTHK_TEMPLATE_REPLACEMENT,
+	MTHK_TRAIN_SLOTS,
+	MTHK_TRAIN_COUNTERS,
 };
 
 /** Main toolbar. */
@@ -2118,6 +2094,10 @@ struct MainToolbarWindow : Window {
 
 	EventState OnHotkey(int hotkey) override
 	{
+		extern void ShowTemplateReplaceWindow();
+		extern void ShowTraceRestrictSlotWindow(CompanyID company);
+		extern void ShowTraceRestrictCounterWindow(CompanyID company);
+
 		CallBackFunction cbf = CBF_NONE;
 		switch (hotkey) {
 			case MTHK_PAUSE: ToolbarPauseClick(this); break;
@@ -2150,17 +2130,22 @@ struct MainToolbarWindow : Window {
 			case MTHK_BUILD_TREES: ShowBuildTreesToolbar(); break;
 			case MTHK_MUSIC: ShowMusicWindow(); break;
 			case MTHK_AI_DEBUG: ShowAIDebugWindow(); break;
-			case MTHK_SMALL_SCREENSHOT: MenuClickScreenshot(SC_VIEWPORT); break;
-			case MTHK_ZOOMEDIN_SCREENSHOT: MenuClickScreenshot(SC_ZOOMEDIN); break;
-			case MTHK_DEFAULTZOOM_SCREENSHOT: MenuClickScreenshot(SC_DEFAULTZOOM); break;
-			case MTHK_GIANT_SCREENSHOT: MenuClickScreenshot(SC_WORLD); break;
+			case MTHK_SMALL_SCREENSHOT: MakeScreenshotWithConfirm(SC_VIEWPORT); break;
+			case MTHK_ZOOMEDIN_SCREENSHOT: MakeScreenshotWithConfirm(SC_ZOOMEDIN); break;
+			case MTHK_DEFAULTZOOM_SCREENSHOT: MakeScreenshotWithConfirm(SC_DEFAULTZOOM); break;
+			case MTHK_GIANT_SCREENSHOT: MakeScreenshotWithConfirm(SC_WORLD); break;
 			case MTHK_CHEATS: ShowCheatWindow(); break;
 			case MTHK_TERRAFORM: ShowTerraformToolbar(); break;
-			case MTHK_EXTRA_VIEWPORT: ShowExtraViewPortWindowForTileUnderCursor(); break;
+			case MTHK_EXTRA_VIEWPORT: ShowExtraViewportWindowForTileUnderCursor(); break;
 			case MTHK_CLIENT_LIST: if (_networking) ShowClientList(); break;
 			case MTHK_SIGN_LIST: ShowSignList(); break;
 			case MTHK_LANDINFO: cbf = PlaceLandBlockInfo(); break;
 			case MTHK_PLAN_LIST: ShowPlansWindow(); break;
+			case MTHK_LINK_GRAPH_LEGEND: ShowLinkGraphLegend(); break;
+			case MTHK_MESSAGE_HISTORY: ShowMessageHistory(); break;
+			case MTHK_TEMPLATE_REPLACEMENT: ShowTemplateReplaceWindow(); break;
+			case MTHK_TRAIN_SLOTS: ShowTraceRestrictSlotWindow(_local_company); break;
+			case MTHK_TRAIN_COUNTERS: ShowTraceRestrictCounterWindow(_local_company); break;
 			default: return ES_NOT_HANDLED;
 		}
 		if (cbf != CBF_NONE) _last_started_action = cbf;
@@ -2276,6 +2261,11 @@ static Hotkey maintoolbar_hotkeys[] = {
 	Hotkey((uint16)0, "sign_list", MTHK_SIGN_LIST),
 	Hotkey((uint16)0, "land_info", MTHK_LANDINFO),
 	Hotkey('P', "plan_list", MTHK_PLAN_LIST),
+	Hotkey('Y', "link_graph_legend", MTHK_LINK_GRAPH_LEGEND),
+	Hotkey((uint16)0, "message_history", MTHK_MESSAGE_HISTORY),
+	Hotkey((uint16)0, "template_replacement", MTHK_TEMPLATE_REPLACEMENT),
+	Hotkey((uint16)0, "train_slots", MTHK_TRAIN_SLOTS),
+	Hotkey((uint16)0, "train_counters", MTHK_TRAIN_COUNTERS),
 	HOTKEY_LIST_END
 };
 HotkeyList MainToolbarWindow::hotkeys("maintoolbar", maintoolbar_hotkeys);
@@ -2527,15 +2517,15 @@ struct ScenarioEditorToolbarWindow : Window {
 			case MTEHK_SIGN:                   cbf = ToolbarScenPlaceSign(this); break;
 			case MTEHK_MUSIC:                  ShowMusicWindow(); break;
 			case MTEHK_LANDINFO:               cbf = PlaceLandBlockInfo(); break;
-			case MTEHK_SMALL_SCREENSHOT:       MenuClickScreenshot(SC_VIEWPORT); break;
-			case MTEHK_ZOOMEDIN_SCREENSHOT:    MenuClickScreenshot(SC_ZOOMEDIN); break;
-			case MTEHK_DEFAULTZOOM_SCREENSHOT: MenuClickScreenshot(SC_DEFAULTZOOM); break;
-			case MTEHK_GIANT_SCREENSHOT:       MenuClickScreenshot(SC_WORLD); break;
+			case MTEHK_SMALL_SCREENSHOT:       MakeScreenshotWithConfirm(SC_VIEWPORT); break;
+			case MTEHK_ZOOMEDIN_SCREENSHOT:    MakeScreenshotWithConfirm(SC_ZOOMEDIN); break;
+			case MTEHK_DEFAULTZOOM_SCREENSHOT: MakeScreenshotWithConfirm(SC_DEFAULTZOOM); break;
+			case MTEHK_GIANT_SCREENSHOT:       MakeScreenshotWithConfirm(SC_WORLD); break;
 			case MTEHK_ZOOM_IN:                ToolbarZoomInClick(this); break;
 			case MTEHK_ZOOM_OUT:               ToolbarZoomOutClick(this); break;
 			case MTEHK_TERRAFORM:              ShowEditorTerraformToolbar(); break;
 			case MTEHK_SMALLMAP:               ShowSmallMap(); break;
-			case MTEHK_EXTRA_VIEWPORT:         ShowExtraViewPortWindowForTileUnderCursor(); break;
+			case MTEHK_EXTRA_VIEWPORT:         ShowExtraViewportWindowForTileUnderCursor(); break;
 			default: return ES_NOT_HANDLED;
 		}
 		if (cbf != CBF_NONE) _last_started_action = cbf;
@@ -2699,10 +2689,6 @@ static WindowDesc _toolb_scen_desc(
 /** Allocate the toolbar. */
 void AllocateToolbar()
 {
-	/* Clean old GUI values; railtype is (re)set by rail_gui.cpp */
-	_last_built_roadtype = ROADTYPE_ROAD;
-	_last_built_tramtype = ROADTYPE_TRAM;
-
 	if (_game_mode == GM_EDITOR) {
 		new ScenarioEditorToolbarWindow(&_toolb_scen_desc);
 	} else {

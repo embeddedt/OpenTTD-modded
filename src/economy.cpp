@@ -467,6 +467,7 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 				/* Owner changes, clear cache */
 				v->colourmap = PAL_NONE;
 				v->InvalidateNewGRFCache();
+				v->InvalidateImageCache();
 
 				if (v->IsEngineCountable()) {
 					GroupStatistics::CountEngine(v, 1);
@@ -721,7 +722,7 @@ static void CompaniesGenStatistics()
 	cur_company.Restore();
 
 	/* Only run the economic statics and update company stats every 3rd month (1st of quarter). */
-	if (!HasBit(1 << 0 | 1 << 3 | 1 << 6 | 1 << 9, _cur_month)) return;
+	if (!HasBit(1 << 0 | 1 << 3 | 1 << 6 | 1 << 9, _cur_date_ymd.month)) return;
 
 	for (Company *c : Company::Iterate()) {
 		/* Drop the oldest history off the end */
@@ -875,8 +876,8 @@ static void CompaniesPayInterest()
 		if (c->money < 0) {
 			yearly_fee += -c->money *_economy.interest_rate / 100;
 		}
-		Money up_to_previous_month = yearly_fee * _cur_month / 12;
-		Money up_to_this_month = yearly_fee * (_cur_month + 1) / 12;
+		Money up_to_previous_month = yearly_fee * _cur_date_ymd.month / 12;
+		Money up_to_this_month = yearly_fee * (_cur_date_ymd.month + 1) / 12;
 
 		SubtractMoneyFromCompany(CommandCost(EXPENSES_LOAN_INT, up_to_this_month - up_to_previous_month));
 
@@ -1226,12 +1227,14 @@ CargoPayment::~CargoPayment()
 		SndPlayVehicleFx(SND_14_CASHTILL, this->front);
 	}
 
-	if (this->visual_transfer != 0) {
-		ShowFeederIncomeAnimation(this->front->x_pos, this->front->y_pos,
-				this->front->z_pos, this->visual_transfer, -this->visual_profit);
-	} else if (this->visual_profit != 0) {
-		ShowCostOrIncomeAnimation(this->front->x_pos, this->front->y_pos,
-				this->front->z_pos, -this->visual_profit);
+	if (HasBit(_extra_display_opt, XDO_SHOW_MONEY_TEXT_EFFECTS)) {
+		if (this->visual_transfer != 0) {
+			ShowFeederIncomeAnimation(this->front->x_pos, this->front->y_pos,
+					this->front->z_pos, this->visual_transfer, -this->visual_profit);
+		} else if (this->visual_profit != 0) {
+			ShowCostOrIncomeAnimation(this->front->x_pos, this->front->y_pos,
+					this->front->z_pos, -this->visual_profit);
+		}
 	}
 
 	cur_company.Restore();
@@ -2051,6 +2054,25 @@ static void LoadUnloadVehicle(Vehicle *front)
 			}
 		}
 	}
+	auto may_leave_early = [&]() -> bool {
+		switch (front->current_order.GetLeaveType()) {
+			case OLT_NORMAL:
+				return false;
+
+			case OLT_LEAVE_EARLY:
+				return true;
+
+			case OLT_LEAVE_EARLY_FULL_ANY:
+				return !((front->type == VEH_AIRCRAFT && IsCargoInClass(front->cargo_type, CC_PASSENGERS) && front->cargo_cap > front->cargo.StoredCount()) ||
+					((cargo_not_full | not_yet_in_station_cargo_not_full) != 0 && ((cargo_full | beyond_platform_end_cargo_full) & ~(cargo_not_full | not_yet_in_station_cargo_not_full)) == 0));
+
+			case OLT_LEAVE_EARLY_FULL_ALL:
+				return (cargo_not_full | not_yet_in_station_cargo_not_full) == 0;
+
+			default:
+				NOT_REACHED();
+		}
+	};
 	if (anything_loaded || anything_unloaded) {
 		if (_settings_game.order.gradual_loading) {
 			/* The time it takes to load one 'slice' of cargo or passengers depends
@@ -2063,8 +2085,11 @@ static void LoadUnloadVehicle(Vehicle *front)
 		 * load and we're not supposed to wait any longer: stop loading. */
 		if (!anything_unloaded && full_load_amount == 0 && reservation_left == 0 && full_load_cargo_mask == 0 &&
 				(front->current_order_time >= (uint)max<int>(front->current_order.GetTimetabledWait() - front->lateness_counter, 0) ||
-				front->current_order.GetLeaveType() == OLT_LEAVE_EARLY)) {
+				may_leave_early())) {
 			SetBit(front->vehicle_flags, VF_STOP_LOADING);
+			if (may_leave_early()) {
+				front->current_order.SetLeaveType(OLT_LEAVE_EARLY);
+			}
 		}
 
 		UpdateLoadUnloadTicks(front, st, new_load_unload_ticks, platform_length_left);
@@ -2110,6 +2135,10 @@ static void LoadUnloadVehicle(Vehicle *front)
 		if (!finished_loading) LinkRefresher::Run(front, true, true);
 
 		SB(front->vehicle_flags, VF_LOADING_FINISHED, 1, finished_loading);
+
+		if (finished_loading && may_leave_early()) {
+			front->current_order.SetLeaveType(OLT_LEAVE_EARLY);
+		}
 	}
 
 	/* Calculate the loading indicator fill percent and display
@@ -2137,7 +2166,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 	}
 
 	if (dirty_vehicle) {
-		SetWindowDirty(GetWindowClassForVehicleType(front->type), front->owner);
+		DirtyVehicleListWindowForVehicle(front);
 		SetWindowDirty(WC_VEHICLE_DETAILS, front->index);
 		front->MarkDirty();
 	}

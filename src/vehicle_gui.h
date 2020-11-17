@@ -61,6 +61,8 @@ void ShowVehicleListWindow(CompanyID company, VehicleType vehicle_type);
 void ShowVehicleListWindow(CompanyID company, VehicleType vehicle_type, StationID station);
 void ShowVehicleListWindow(CompanyID company, VehicleType vehicle_type, TileIndex depot_tile);
 
+void DirtyVehicleListWindowForVehicle(const Vehicle *v);
+
 /**
  * Get the height of a single vehicle in the GUIs.
  * @param type the vehicle type to look at
@@ -105,7 +107,7 @@ void ShowVehicleViewWindow(const Vehicle *v);
 bool VehicleClicked(const Vehicle *v);
 void StartStopVehicle(const Vehicle *v, bool texteffect);
 
-Vehicle *CheckClickOnVehicle(const struct ViewPort *vp, int x, int y);
+Vehicle *CheckClickOnVehicle(const struct Viewport *vp, int x, int y);
 
 void DrawVehicleImage(const Vehicle *v, int left, int right, int y, VehicleID selection, EngineImageType image_type, int skip);
 void SetMouseCursorVehicle(const Vehicle *v, EngineImageType image_type);

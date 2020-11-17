@@ -589,7 +589,7 @@ public:
 			nums = min(this->num_vert_lines, max(nums, c->num_valid_stat_ent));
 		}
 
-		int mo = (_cur_month / this->month_increment - nums) * this->month_increment;
+		int mo = (_cur_date_ymd.month / this->month_increment - nums) * this->month_increment;
 		int yr = _cur_year;
 		while (mo < 0) {
 			yr--;

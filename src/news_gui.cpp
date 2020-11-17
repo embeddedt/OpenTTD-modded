@@ -507,8 +507,8 @@ struct NewsWindow : Window {
 					TileIndex tile1 = GetReferenceTile(this->ni->reftype1, this->ni->ref1);
 					TileIndex tile2 = GetReferenceTile(this->ni->reftype2, this->ni->ref2);
 					if (_ctrl_pressed) {
-						if (tile1 != INVALID_TILE) ShowExtraViewPortWindow(tile1);
-						if (tile2 != INVALID_TILE) ShowExtraViewPortWindow(tile2);
+						if (tile1 != INVALID_TILE) ShowExtraViewportWindow(tile1);
+						if (tile2 != INVALID_TILE) ShowExtraViewportWindow(tile2);
 					} else {
 						if ((tile1 == INVALID_TILE || !ScrollMainWindowToTile(tile1)) && tile2 != INVALID_TILE) {
 							ScrollMainWindowToTile(tile2);
@@ -517,16 +517,6 @@ struct NewsWindow : Window {
 				}
 				break;
 		}
-	}
-
-	EventState OnKeyPress(WChar key, uint16 keycode) override
-	{
-		if (keycode == WKC_SPACE) {
-			/* Don't continue. */
-			delete this;
-			return ES_HANDLED;
-		}
-		return ES_NOT_HANDLED;
 	}
 
 	/**
@@ -603,7 +593,6 @@ private:
 
 /* static */ int NewsWindow::duration = 0; // Instance creation.
 
-
 /** Open up an own newspaper window for the news item */
 static void ShowNewspaper(const NewsItem *ni)
 {
@@ -671,7 +660,10 @@ static bool ReadyForNextNewsItem()
 /** Move to the next ticker item */
 static void MoveToNextTickerItem()
 {
-	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_NEWS_DELETED); // invalidate the statusbar
+	/* There is no status bar, so no reason to show news;
+	 * especially important with the end game screen when
+	 * there is no status bar but possible news. */
+	if (FindWindowById(WC_STATUS_BAR, 0) == nullptr) return;
 
 	/* if we're not at the last item, then move on */
 	while (_statusbar_news_item != _latest_news) {
@@ -702,6 +694,11 @@ static void MoveToNextTickerItem()
 /** Move to the next news item */
 static void MoveToNextNewsItem()
 {
+	/* There is no status bar, so no reason to show news;
+	 * especially important with the end game screen when
+	 * there is no status bar but possible news. */
+	if (FindWindowById(WC_STATUS_BAR, 0) == nullptr) return;
+
 	DeleteWindowById(WC_NEWS_WINDOW, 0); // close the newspapers window if shown
 	_forced_news = nullptr;
 
@@ -766,6 +763,7 @@ static void DeleteNewsItem(NewsItem *ni)
 		_statusbar_news_item = ni->prev;
 
 		/* About to remove the currently displayed item (ticker, or just a reminder) */
+		InvalidateWindowData(WC_STATUS_BAR, 0, SBI_NEWS_DELETED); // invalidate the statusbar
 		MoveToNextTickerItem();
 	}
 
@@ -995,16 +993,11 @@ void NewsLoop()
 	/* no news item yet */
 	if (_total_news == 0) return;
 
-	/* There is no status bar, so no reason to show news;
-	 * especially important with the end game screen when
-	 * there is no status bar but possible news. */
-	if (FindWindowById(WC_STATUS_BAR, 0) == nullptr) return;
-
 	static byte _last_clean_month = 0;
 
-	if (_last_clean_month != _cur_month) {
+	if (_last_clean_month != _cur_date_ymd.month) {
 		RemoveOldNewsItems();
-		_last_clean_month = _cur_month;
+		_last_clean_month = _cur_date_ymd.month;
 	}
 
 	if (ReadyForNextTickerItem()) MoveToNextTickerItem();
@@ -1026,6 +1019,17 @@ static void ShowNewsMessage(const NewsItem *ni)
 		DeleteWindowById(WC_NEWS_WINDOW, 0);
 		ShowNewspaper(ni);
 	}
+}
+
+/**
+ * Close active news message window
+ * @return true if a window was closed.
+ */
+bool HideActiveNewsMessage() {
+	NewsWindow *w = (NewsWindow*)FindWindowById(WC_NEWS_WINDOW, 0);
+	if (w == nullptr) return false;
+	delete w;
+	return true;
 }
 
 /** Show previous news item */

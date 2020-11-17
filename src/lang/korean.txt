@@ -163,7 +163,7 @@ STR_ABBREV_NONE                                                 :{TINY_FONT}X
 STR_ABBREV_ALL                                                  :{TINY_FONT}모두
 
 # 'Mode' of transport for cargoes
-STR_PASSENGERS                                                  :{G=m}승객 {COMMA}{NBSP}명
+STR_PASSENGERS                                                  :{G=m}{COMMA}{NBSP}명
 STR_BAGS                                                        :{G=f}{COMMA}{NBSP}자루
 STR_TONS                                                        :{G=m}{COMMA}{NBSP}톤
 STR_LITERS                                                      :{G=f}{COMMA}{NBSP}리터
@@ -314,6 +314,7 @@ STR_SORT_BY_INTRO_DATE                                          :도입 날짜
 STR_SORT_BY_RUNNING_COST                                        :유지비
 STR_SORT_BY_POWER_VS_RUNNING_COST                               :유지비 분의 힘
 STR_SORT_BY_CARGO_CAPACITY                                      :화물 수송량
+STR_SORT_BY_VEHICLE_COUNT                                       :차량 수
 STR_SORT_BY_RANGE                                               :항속거리
 STR_SORT_BY_POPULATION                                          :인구
 STR_SORT_BY_RATING                                              :등급
@@ -395,6 +396,7 @@ STR_SETTINGS_MENU_FULL_ANIMATION                                :완전한 애�
 STR_SETTINGS_MENU_FULL_DETAIL                                   :그래픽을 아주 상세하게
 STR_SETTINGS_MENU_TRANSPARENT_BUILDINGS                         :건물 숨기기
 STR_SETTINGS_MENU_TRANSPARENT_SIGNS                             :역명판 감추기
+STR_SETTINGS_MENU_MONEY_TEXT_EFFECTS                            :수입/지출 표시
 ############ range ends here
 
 ############ range for file menu starts
@@ -407,7 +409,7 @@ STR_FILE_MENU_EXIT                                              :종료
 
 # map menu
 STR_MAP_MENU_MAP_OF_WORLD                                       :전체 지도 보기
-STR_MAP_MENU_EXTRA_VIEW_PORT                                    :외부 화면
+STR_MAP_MENU_EXTRA_VIEWPORT                                     :외부 화면
 STR_MAP_MENU_LINGRAPH_LEGEND                                    :화물 흐름 범례
 STR_MAP_MENU_SIGN_LIST                                          :팻말 목록
 STR_MAP_MENU_PLAN_LIST                                          :계획 목록
@@ -894,7 +896,7 @@ STR_NEWS_EXCLUSIVE_RIGHTS_TITLE                                 :{BIG_FONT}{BLAC
 STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION                           :{BIG_FONT}{BLACK}{0:TOWN} 지역 당국이 {1:STRING}과 1년 간의 수송 독점권 계약을 체결하였습니다!
 
 # Extra view window
-STR_EXTRA_VIEW_PORT_TITLE                                       :{WHITE}외부 화면 {COMMA}
+STR_EXTRA_VIEWPORT_TITLE                                        :{WHITE}외부 화면 {COMMA}
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN                                :{BLACK}외부 화면으로 복사
 STR_EXTRA_VIEW_MOVE_VIEW_TO_MAIN_TT                             :{BLACK}현재 장소를 외부 화면에 복사합니다.
 STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW                                :{BLACK}이 장소로 이동
@@ -1205,6 +1207,8 @@ STR_CONFIG_SETTING_CATCHMENT_INCREASE                           :역세권 크�
 STR_CONFIG_SETTING_CATCHMENT_INCREASE_HELPTEXT                  :정한 칸 만큼 역세권을 증가시킵니다.
 STR_CONFIG_SETTING_STATION_RATING_CARGO_CLASS_WAIT_TIME         :화물 종류에 따라 대기 시간이 역 등급에 미치는 영향 조정: {STRING}
 STR_CONFIG_SETTING_STATION_RATING_CARGO_CLASS_WAIT_TIME_HELPTEXT:화물이 역에서 대기하는 시간이 역 등급에 미치는 영향이 화물 종류에 따라 달라집니다. 승객, 우편, 장갑 화물, 냉장 화물, 고속 화물은 대기 시간이 역 등급에 영향을 크게 미칠 것입니다. 그에 반해, 대량 화물 및 액체 화물은 역 등급에 영향을 적게 미칩니다.
+STR_CONFIG_SETTING_STATION_RATING_SIZE_CARGO_AMOUNT             :역 화물 수용량과 등급 변화가 역 크기에 따라 달라지게: {STRING}
+STR_CONFIG_SETTING_STATION_RATING_SIZE_CARGO_AMOUNT_HELPTEXT    :이 설정을 켜면, 화물이 역에 쌓이기 전에 역의 화물 수용량이 제한되고 해당 화물의 역 등급에 의한 대기 화물량이 역의 크기에 따라 영향을 받게 됩니다. 역이 클 수록 더 많은 화물을 쌓아둘 수 있고 대기하는 화물이 많이 있어도 역의 화물 등급이 잘 떨어지지 않습니다.
 STR_CONFIG_SETTING_EXTRADYNAMITE                                :도시 소유의 도로, 다리 등의 제거 허용: {STRING}
 STR_CONFIG_SETTING_EXTRADYNAMITE_HELPTEXT                       :도시 소유의 기반시설이나 건물을 제거할 수 있게 합니다.
 STR_CONFIG_SETTING_TRAIN_LENGTH                                 :열차의 최대 길이: {STRING}
@@ -1305,6 +1309,9 @@ STR_CONFIG_SETTING_FLIP_DIRECTION_ALL_TRAINS_HELPTEXT           :NewGRF에서 �
 STR_CONFIG_SETTING_ROADVEH_ARTICULATED_OVERTAKING               :굴절 차량의 추월을 허용: {STRING}
 STR_CONFIG_SETTING_ROADVEH_ARTICULATED_OVERTAKING_HELPTEXT      :굴절 차량이 다른 차량을 추월할 수 있도록 허용합니다.
 
+STR_CONFIG_SETTING_DRIVE_THROUGH_TRAIN_DEPOT                    :드라이브스루 차량기지: {STRING}
+STR_CONFIG_SETTING_DRIVE_THROUGH_TRAIN_DEPOT_HELPTEXT           :드라이브스루 차량기지를 사용합니다. 열차는 연속적으로 배치된 차량기지 사이를 이동할 수 있으며, 중간에 차량기지가 있어도 됩니다. YAPF 경로 탐색을 사용해야 합니다.
+
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :시작시 회사 색상: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :새 회사에서 사용할 색상을 선택하세요.
 
@@ -1313,6 +1320,8 @@ STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :이 설정을 �
 
 STR_CONFIG_SETTING_WARN_LOST_VEHICLE                            :차량이 길을 잃으면 경고: {STRING}
 STR_CONFIG_SETTING_WARN_LOST_VEHICLE_HELPTEXT                   :다음 목적지로 가기 위한 경로를 찾을 수 없는 차량이 있으면 뉴스 메시지로 알려줍니다.
+STR_CONFIG_SETTING_WARN_RESTRICTION_WAIT_VEHICLE                :열차가 경로 제한 때문에 멈춘 경우 경고: {STRING}
+STR_CONFIG_SETTING_WARN_RESTRICTION_WAIT_VEHICLE_HELPTEXT       :경로 제한 기능때문에 열차가 경로 신호기에서 오랫동안 멈춰있는 경우 뉴스 메시지로 알려줍니다.
 STR_CONFIG_SETTING_ORDER_REVIEW                                 :차량의 경로를 검사: {STRING}
 STR_CONFIG_SETTING_ORDER_REVIEW_HELPTEXT                        :이 설정을 켜면, 차량의 경로를 주기적으로 검사하여 문제가 발견되면 뉴스 메시지로 알려줍니다.
 STR_CONFIG_SETTING_ORDER_REVIEW_OFF                             :검사하지 않음
@@ -1324,6 +1333,10 @@ STR_CONFIG_SETTING_WARN_INCOME_LESS                             :차량의 수�
 STR_CONFIG_SETTING_WARN_INCOME_LESS_HELPTEXT                    :이 설정을 켜면, 지난 해에 수익이 없는 차량이 있으면 뉴스 메시지로 알려줍니다.
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES                        :옛날 차량을 사라지지 않고 계속 만들 수 있게 함: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES_HELPTEXT               :이 설정을 켜면, 오래된 차량 모델을 포함하여 모든 차량 모델을 도입 이후에 계속 사용할 수 있게 됩니다.
+STR_CONFIG_SETTING_NO_EXPIRE_VEHICLES_AFTER                     :이 연도 이후 옛날 차량이 사라지지 않음: {STRING}
+STR_CONFIG_SETTING_NO_EXPIRE_VEHICLES_AFTER_HELPTEXT            :이 연도 이후에 퇴역하는 차량은 계속 사용할 수 있게 됩니다.
+STR_CONFIG_SETTING_NO_EXPIRE_VEHICLES_AFTER_VALUE               :{NUM}
+STR_CONFIG_SETTING_NO_EXPIRE_VEHICLES_AFTER_ZERO                :끄기
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE                            :차량이 낡으면 차량을 자동으로 교체: {STRING}
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE_HELPTEXT                   :이 설정을 켜면, 제한 수명에 다다른 차량이 교체 조건을 만족할 경우 자동으로 차량을 교체할 수 있게 됩니다.
 STR_CONFIG_SETTING_AUTORENEW_MONTHS                             :차량이 최대 수명의 {STRING}이면 자동 교체
@@ -1367,6 +1380,16 @@ STR_CONFIG_SETTING_SHOW_DEPOT_SELL_GUI                          :기지로 보�
 STR_CONFIG_SETTING_SHOW_DEPOT_SELL_GUI_HELPTEXT                 :기지로 보내고 차량을 판매하는 기능을 표시합니다. 활성화되면 차량을 기지로 보내는 버튼의 작동이 바뀝니다.
 STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE                 :경로를 공유하여 복제할 때 새 차량 정보 창을 띄움: {STRING}
 STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE_HELPTEXT        :이 설정을 켜면, 차량기지/차고지/정박소/격납고 창에서 차량의 경로를 공유하여 복제할 때 복제한 차량의 정보 창을 새로 띄워줍니다.
+
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS                            :화물 흐름 오버레이 색상: {STRING}
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS_HELPTEXT                   :화물 흐름 오버레이에 사용할 색상을 설정합니다.
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREEN_TO_RED               :초록색 / 빨간색 (오리지널)
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREEN_TO_BLUE              :초록색 / 파란색
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREY_TO_RED                :회색 / 빨간색
+STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREYSCALE                  :흑백
+
+STR_CONFIG_SETTING_DISABLE_VEHICLE_IMAGE_UPDATE                 :차량 이미지 업데이트 비활성화: {STRING}
+STR_CONFIG_SETTING_DISABLE_VEHICLE_IMAGE_UPDATE_HELPTEXT        :이 설정을 켜면, NewGRF 차량이 움직임에 따라 그래픽을 지속적으로 업데이트하는 것을 방지합니다. 이 설정을 통해 계산에 부하가 많이 걸리는 NewGRF를 많이 사용했을 때 성능 문제가 발생하는 것을 방지할 수 있습니다.
 
 STR_CONFIG_SETTING_ADV_SIG_BRIDGE_TUN_MODES                     :고급 다리/터널 신호기 활성화: {STRING}
 STR_CONFIG_SETTING_ADV_SIG_BRIDGE_TUN_MODES_HELPTEXT            :다리와 터널 위 신호기 시뮬레이션 고급 모드를 활성화합니다. 이 설정을 끄면, 고급 모드에 있지 않은 다리와 터널을 고급 모드로 변경할 수 없지만 다른 플레이어는 이 설정을 켜서 고급 모드를 사용할 수 있습니다.
@@ -1533,6 +1556,8 @@ STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :열차 시간�
 STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :열차 시간표에서 열차의 운행 시간을 '일'보다 자세한 '틱'으로 표시합니다. 1일은 74틱과 같습니다.
 STR_CONFIG_SETTING_TIMETABLE_LEFTOVER_TICKS                     :시간표에 남은 틱 표시하기: {STRING}
 STR_CONFIG_SETTING_TIMETABLE_LEFTOVER_TICKS_HELPTEXT            :시간표에서 틱을 날짜/시간으로 변환할 때, 남은 틱을 표시합니다.
+STR_CONFIG_SETTING_OVERRIDE_TIME_SETTINGS                       :세이브 파일 시간 설정 대신 클라이언트의 시간 설정을 사용: {STRING}
+STR_CONFIG_SETTING_OVERRIDE_TIME_SETTINGS_HELPTEXT              :시간을 표시할 때 세이브 파일의 시간 설정 대신, 로컬 클라이언트 설정을 사용할 지 선택합니다.
 STR_CONFIG_SETTING_TIME_IN_MINUTES                              :'일' 대신 '분'으로 시간 표시하기: {STRING}
 STR_CONFIG_SETTING_TIME_IN_MINUTES_HELPTEXT                     :'일' 대신 '시'와 '분'으로 시간을 표시할시 선택합니다.
 STR_CONFIG_SETTING_TICKS_PER_MINUTE                             :1분을 {STRING}틱으로 설정
@@ -1558,10 +1583,13 @@ STR_CONFIG_SETTING_TIMETABLE_AUTOFILL_ROUNDING_TICKS_HELPTEXT   :자동 시간�
 STR_CONFIG_SETTING_QUICKGOTO                                    :빠른 행선지 설정: {STRING}
 STR_CONFIG_SETTING_QUICKGOTO_HELPTEXT                           :경로 창을 열면 자동으로 '행선지' 버튼을 선택하여 곧바로 행선지를 지정할 수 있도록 합니다.
 STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE                            :철도 형식 기본값 설정 (게임 시작/불러온 후): {STRING}
-STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE_HELPTEXT                   :게임을 새로 시작하거나 불러온 뒤에 사용할 철도의 종류를 선택합니다. '처음 사용 가능한 것'은 가장 오래된 철도 종류를 선택하고, '최신 기술의 철도'는 가장 최신에 나온 철도 종류를 선택하며 '가장 많이 사용한 것'은 플레이어가 가장 많이 사용한 철도 타입을 선택합니다.
+STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE_HELPTEXT                   :게임을 새로 시작하거나 불러온 뒤에 사용할 철도의 종류를 선택합니다. '처음 사용 가능한 것'은 가장 오래된 철도 종류를 선택하고, '최신 기술의 철도'는 가장 최신에 나온 철도 종류를 선택하며 '가장 많이 사용한 것'은 현재 가장 많이 사용한 철도 종류를 선택합니다.
+STR_CONFIG_SETTING_DEFAULT_ROAD_TYPE                            :도로/전차 형식 기본값 설정 (게임 시작/불러온 후): {STRING}
+STR_CONFIG_SETTING_DEFAULT_ROAD_TYPE_HELPTEXT                   :게임을 새로 시작하거나 불러온 뒤에 사용할 도로/전차의 종류를 선택합니다. '처음 사용 가능한 것'은 가장 오래된 도로/전차 종류를 선택하고, '최신 기술의 철도'는 가장 최신에 나온 도로/전차 종류를 선택하며 '가장 많이 사용한 것'은 현재 가장 많이 사용한 철도 종류를 선택하며, '기본값'은 기본 종류를 선택합니다.
 STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE_FIRST                      :처음 사용 가능한 것
 STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE_LAST                       :가장 최근에 개발된 철도
 STR_CONFIG_SETTING_DEFAULT_RAIL_TYPE_MOST_USED                  :가장 많이 사용한 것
+STR_CONFIG_SETTING_DEFAULT_ROAD_TYPE_DEFAULT                    :기본값
 
 STR_CONFIG_SETTING_SHOW_TRACK_RESERVATION                       :차량의 다음 진행 경로 보여주기: {STRING}
 STR_CONFIG_SETTING_SHOW_TRACK_RESERVATION_HELPTEXT              :열차가 경로 탐색 기능 때문에 폐색으로 진입할 수 없는 문제를 해결하기 위해, 열차가 진행할 경로를 별도의 어두운 색으로 표시합니다.
@@ -1776,7 +1804,8 @@ STR_CONFIG_SETTING_TREE_GROWTH_HELPTEXT                         :게임 중에�
 STR_CONFIG_SETTING_TREE_GROWTH_NORMAL                           :보통
 STR_CONFIG_SETTING_TREE_GROWTH_SLOW                             :느림
 STR_CONFIG_SETTING_TREE_GROWTH_VERY_SLOW                        :다소 느림
-STR_CONFIG_SETTING_TREE_GROWTH_EXTREMLY_SLOW                    :매우 느림
+STR_CONFIG_SETTING_TREE_GROWTH_EXTREMELY_SLOW                   :매우 느림
+STR_CONFIG_SETTING_TREE_GROWTH_STATIC                           :없음
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :주메뉴의 위치: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :주 메뉴가 화면 상단의 어느 위치에 표시될지를 선택합니다.
@@ -1833,28 +1862,28 @@ STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :각 연결 상�
 STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED               :연결 상태를 계산할 때 사용되는 1일을 조정 변수로 조정하지 않기: {STRING}
 STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED_HELPTEXT      :활성화되면 조정된 달력 날짜 대신 기본 날짜 길이를 연결 상태 계산에 사용할 것입니다.
 STR_CONFIG_SETTING_DISTRIBUTION_MANUAL                          :수동
-STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC                      :불균형
-STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC_EQ                   :불균형 (동일 분포)
-STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC_NEAREST              :불균형 (최근접)
-STR_CONFIG_SETTING_DISTRIBUTION_SYMMETRIC                       :균형
+STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC                      :비대칭
+STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC_EQ                   :비대칭 (동일 분포)
+STR_CONFIG_SETTING_DISTRIBUTION_ASYMMETRIC_NEAREST              :비대칭 (최근접)
+STR_CONFIG_SETTING_DISTRIBUTION_SYMMETRIC                       :대칭
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :승객에 대한 분배 형식: {STRING}
-STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :"균형"은 A역에서 B역으로 가려는 승객의 수가 B에서 A로 가려는 승객의 수와 비슷하다는 뜻입니다. "불균형"은 승객이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 승객 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
+STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :"대칭"은 A역에서 B역으로 가려는 승객의 수가 B에서 A로 가려는 승객의 수와 비슷하다는 뜻입니다. "비대칭"은 승객이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 승객 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
 STR_CONFIG_SETTING_DISTRIBUTION_MAIL                            :우편에 대한 분배 형식: {STRING}
-STR_CONFIG_SETTING_DISTRIBUTION_MAIL_HELPTEXT                   :"균형"은 A역에서 B역으로 가려는 우편물의 수가 B에서 A로 가려는 우편물의 수와 비슷하다는 뜻입니다. "불균형"은 우편물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 우편물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
+STR_CONFIG_SETTING_DISTRIBUTION_MAIL_HELPTEXT                   :"대칭"은 A역에서 B역으로 가려는 우편물의 수가 B에서 A로 가려는 우편물의 수와 비슷하다는 뜻입니다. "비대칭"은 우편물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 우편물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
 STR_CONFIG_SETTING_DISTRIBUTION_ARMOURED                        :장갑 화물에 대한 분배 형식: {STRING}
-STR_CONFIG_SETTING_DISTRIBUTION_ARMOURED_HELPTEXT               :장갑 화물은 온대 기후의 귀금속, 아열대 기후의 다이아몬드 또는 아한대 기후의 금을 말합니다. NewGRF을 사용하면 달라질 수 있습니다. "균형"은 A역에서 B역으로 가려는 화물의 수가 B에서 A로 가려는 화물의 수와 비슷하다는 뜻입니다. "불균형"은 화물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다. 아한대 기후에서는 균형으로 설정하면 은행이 금광으로 금을 보내지 않으려 하기 때문에 불균형이나 수동으로 설정하는 것을 추천합니다. 온대 기후나 아열대 기후에서는 은행이 일부 적재한 귀금속을 원래 은행으로 보내려고 하기 때문에 균형을 선택해도 됩니다.
+STR_CONFIG_SETTING_DISTRIBUTION_ARMOURED_HELPTEXT               :장갑 화물은 온대 기후의 귀금속, 아열대 기후의 다이아몬드 또는 아한대 기후의 금을 말합니다. NewGRF을 사용하면 달라질 수 있습니다. "대칭"은 A역에서 B역으로 가려는 화물의 수가 B에서 A로 가려는 화물의 수와 비슷하다는 뜻입니다. "비대칭"은 화물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다. 아한대 기후에서는 대칭으로 설정하면 은행이 금광으로 금을 보내지 않으려 하기 때문에 비대칭이나 수동으로 설정하는 것을 추천합니다. 온대 기후나 아열대 기후에서는 은행이 일부 적재한 귀금속을 원래 은행으로 보내려고 하기 때문에 대칭을 선택해도 됩니다.
 STR_CONFIG_SETTING_DISTRIBUTION_DEFAULT                         :다른 화물에 대한 분배 형식: {STRING}
-STR_CONFIG_SETTING_DISTRIBUTION_DEFAULT_HELPTEXT                :"불균형"은 화물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다. 특별한 이유가 없는 한, "불균형"이나 "수동"으로 설정하십시오.
+STR_CONFIG_SETTING_DISTRIBUTION_DEFAULT_HELPTEXT                :"비대칭"은 화물이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다. 특별한 이유가 없는 한, "비대칭"이나 "수동"으로 설정하십시오.
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO                       :이 화물에 대한 화물 분배 형식 덮어쓰기: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_PARAM                 :{STRING}에 대한 화물 분배 형식 덮어쓰기: {STRING}
-STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_HELPTEXT              :"(기본)"은 이 화물 종류에 대한 기본 화물 분배 형식을 따른다는 뜻입니다. "균형"은 대체로 A역에서 B역으로 가려는 화물의 수가 B에서 A로 가려는 화물의 수와 대체로 같다는 뜻입니다. "불균형"은 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
+STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_HELPTEXT              :"(기본)"은 이 화물 종류에 대한 기본 화물 분배 형식을 따른다는 뜻입니다. "대칭"은 대체로 A역에서 B역으로 가려는 화물의 수가 B에서 A로 가려는 화물의 수와 대체로 같다는 뜻입니다. "비대칭"은 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 화물 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_DEFAULT               :(기본)
 STR_CONFIG_SETTING_LINKGRAPH_ACCURACY                           :분배 정확도: {STRING}
-STR_CONFIG_SETTING_LINKGRAPH_ACCURACY_HELPTEXT                  :값이 높으면 높을수록 CPU가 연결 상태를 계산하는 시간이 더 오래 걸립니다. 만약 이 시간이 너무 오래 걸리면 랙 현상이 나타날 것입니다. 하지만, 낮은 값으로 설정하면 분배가 부정확하게 일어나서, 화물이 원하는 곳으로 분배되지 않을 수 있습니다.
+STR_CONFIG_SETTING_LINKGRAPH_ACCURACY_HELPTEXT                  :값이 높으면 높을수록 CPU가 연결 상태를 계산하는 시간이 더 오래 걸립니다. 만약 이 시간이 너무 오래 걸리면 게임이 버벅일 것입니다. 하지만, 낮은 값으로 설정하면 분배가 부정확하게 일어나서, 화물이 원하는 곳으로 분배되지 않을 수 있습니다.
 STR_CONFIG_SETTING_DEMAND_DISTANCE                              :거리에 따른 수요 효과: {STRING}
 STR_CONFIG_SETTING_DEMAND_DISTANCE_HELPTEXT                     :이 값을 0보다 크게 설정하면, 어떤 화물이 있는 A역과 목적지가 될 수 있는 역 B 사이의 거리는 A에서 B로 가는 화물의 양에 영향을 미치게 됩니다. A역에서 B역이 더 멀리 떨어질 수록 이동하는 화물의 양은 적어질 것입니다. 값이 크면 클 수록 화물은 멀리 이동하지 않고 가까운 역으로 가게 됩니다.
-STR_CONFIG_SETTING_DEMAND_SIZE                                  :균형 모드에서 되돌아오는 화물의 양: {STRING}
-STR_CONFIG_SETTING_DEMAND_SIZE_HELPTEXT                         :이 값을 100%보다 작게 설정할 수록 균형 분배는 불균형 분배와 비슷해집니다. 특정 양의 화물을 역으로 보내면 그보다 더 적은 화물이 강제로 되돌아오게 됩니다. 이 값을 0%로 설정하면 균형 분배는 불균형 분배와 똑같습니다.
+STR_CONFIG_SETTING_DEMAND_SIZE                                  :대칭 모드에서 되돌아오는 화물의 양: {STRING}
+STR_CONFIG_SETTING_DEMAND_SIZE_HELPTEXT                         :이 값을 100%보다 작게 설정할 수록 대칭 분배는 비대칭 분배와 비슷해집니다. 특정 양의 화물을 역으로 보내면 그보다 더 적은 화물이 강제로 되돌아오게 됩니다. 이 값을 0%로 설정하면 대칭 분배는 비대칭 분배와 똑같습니다.
 STR_CONFIG_SETTING_SHORT_PATH_SATURATION                        :다음으로 짧은 경로를 사용하기 위한 경로의 포화도: {STRING}
 STR_CONFIG_SETTING_SHORT_PATH_SATURATION_HELPTEXT               :종종 두 역 사이에는 여러 가지 경로가 존재할 수 있습니다. 이 경우, 화물 분배 기능은 먼저 가장 짧은 경로로 화물을 보내고, 그 경로가 포화 상태에 이르면 그 다음으로 짧은 경로를 사용하는 식으로 화물을 분배합니다. 포화도는 경로의 수송 능력과 예정 사용량을 추정하여 계산됩니다. 일단 모든 경로가 포화 상태가 되었는데 아직 수요가 남아있다면, 수송 능력이 높은 경로를 사용하면서 모든 경로를 과부하 상태로 만들게 됩니다. 하지만, 이 알고리즘은 수송량을 대부분 정확히 추정하지는 않습니다. 이 설정을 이용해서, 화물 분배 기능이 짧은 경로의 포화 상태가 몇 퍼센트가 되어야 다음으로 짧은 경로에 화물을 분배할 것인지를 지정할 수 있습니다. 과대평가된 수송량의 경우 너무 붐비는 역이 생기지 않도록 하기 위해서는 이 값을 100%보다 작게 설정하십시오.
 
@@ -1903,6 +1932,8 @@ STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}게임 
 STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}건설
 STR_CONFIG_SETTING_INTERFACE_DEPARTUREBOARDS                    :{ORANGE}출발/도착 안내
 STR_CONFIG_SETTING_INTERFACE_WALLCLOCK                          :{ORANGE}시계
+STR_CONFIG_SETTING_INTERFACE_TIME_CLIENT                        :{ORANGE}클라이언트 설정
+STR_CONFIG_SETTING_INTERFACE_TIME_SAVEGAME                      :{ORANGE}세이브파일 설정
 STR_CONFIG_SETTING_INTERFACE_TIMETABLE                          :{ORANGE}시간표
 STR_CONFIG_SETTING_INTERFACE_ADV_SIGNALS                        :{ORANGE}신호기 (고급)
 STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}뉴스 / 정보
@@ -1925,9 +1956,16 @@ STR_CONFIG_SETTING_AI                                           :{ORANGE}경쟁�
 STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}컴퓨터 플레이어
 STR_CONFIG_SETTING_VIEWPORT_MAP_OPTIONS                         :{ORANGE}지도 모드
 STR_CONFIG_SETTING_SHARING                                      :{ORANGE}시설 공유
+STR_CONFIG_SETTING_SCENARIO_EDITOR                              :{ORANGE}시나리오 에디터
 
 STR_CONFIG_SETTING_PATHFINDER_NPF                               :NPF
 STR_CONFIG_SETTING_PATHFINDER_YAPF_RECOMMENDED                  :YAPF {BLUE}(권장)
+
+STR_CONFIG_SETTING_REROUTE_RV_ON_LAYOUT_CHANGE                  :도시 도로 구조가 변경될 때 자동차의 경로 재계산: {STRING}
+STR_CONFIG_SETTING_REROUTE_RV_ON_LAYOUT_CHANGE_HELPTEXT         :도시 도로 구조가 변경될 때 지도 상의 모든 자동차의 경로를 다시 계산할 지 선택합니다.{}이 설정을 통해 성능을 희생하여 변화하는 도로 구조에 대한 자동차의 응답성을 향상시킬 수 있습니다.{}"예"로 설정했을 경우, 대형 맵에서는 도시 성장이 자동차의 경로 재계산에 의해 느려질 수 있음을 명심하십시오.
+STR_CONFIG_SETTING_REROUTE_RV_ON_LAYOUT_CHANGE_NO               :아니요
+STR_CONFIG_SETTING_REROUTE_RV_ON_LAYOUT_CHANGE_REMOVE_ONLY      :도로가 제거될 때만
+STR_CONFIG_SETTING_REROUTE_RV_ON_LAYOUT_CHANGE_YES              :예
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :열차에 사용할 경로 탐색법: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :열차에 사용할 경로 탐색 방법을 선택합니다.
@@ -1958,12 +1996,17 @@ STR_CONFIG_SETTING_ALLOW_DOCKS_UNDER_BRIDGES_HELPTEXT           :다리 밑에 �
 STR_CONFIG_SETTING_PURCHASE_LAND_PERMITTED                      :토지 소유권 구매 허용: {STRING}
 STR_CONFIG_SETTING_PURCHASE_LAND_PERMITTED_HELPTEXT             :회사가 토지 소유권을 구매할 수 있을지와 어떤 방식으로 구매할지를 설정합니다.
 
+STR_CONFIG_SETTING_BUILD_OBJECT_PERMITTED                       :오브젝트 드래그 설치 허용: {STRING}
+STR_CONFIG_SETTING_BUILD_OBJECT_PERMITTED_HELPTEXT              :회사가 오브젝트를 설치할 때, 한 번에 하나씩 짓는 대신 드래그를 이용해 넓은 영역에 설치할 수 있도록 허용할지를 설정합니다.
+
 STR_PURCHASE_LAND_PERMITTED_NO                                  :허용하지 않음
 STR_PURCHASE_LAND_PERMITTED_SINGLE                              :허용, 한 타일씩
 STR_PURCHASE_LAND_PERMITTED_AREA                                :허용, 여러 타일씩
 
 STR_PURCHASE_LAND_NOT_PERMITTED                                 :토지 소유권 구매가 금지되어 있습니다
 STR_PURCHASE_LAND_NOT_PERMITTED_BULK                            :여러 타일의 토지 소유권 구매가 금지되어 있습니다
+
+STR_BUILD_OBJECT_NOT_PERMITTED_BULK                             :넓은 영역에 오브젝트를 건설하는 것은 금지되어 있습니다
 
 STR_CONFIG_SETTING_QUERY_CAPTION                                :{WHITE}설정값 변경
 
@@ -1982,6 +2025,22 @@ STR_CONFIG_OCCUPANCY_SMOOTHNESS_HELPTEXT                        :0%는 가장 �
 
 STR_CONFIG_SETTING_ADVANCE_ORDER_ON_CLONE                       :복제/복사/공유 이후 고급 경로 사용: {STRING}
 STR_CONFIG_SETTING_ADVANCE_ORDER_ON_CLONE_HELPTEXT              :기존에 존재하는 차량을 복사/경로 공유하여 새 차량을 복제한 후의 행동입니다.{}열차나 차량, 선박의 경우: 차량이 경로 목록 상의 차고 안에 있는 경우, 그 차고에 해당하는 경로의 다음으로 경로를 건너뜁니다.{}항공기의 경우: 항공기가 경로 목록 상에 있는 공항에 딸린 격납고 안에 있는 경우, 그 공항에 해당하는 경로를 건너뜁니다.
+
+STR_CONFIG_SETTING_COPY_CLONE_ADD_TO_GROUP                      :복사한 차량을 기존 그룹에 추가: {STRING}
+STR_CONFIG_SETTING_COPY_CLONE_ADD_TO_GROUP_HELPTEXT             :경로를 공유하지 않은 채로 복사한 차량을 기존 차량의 그룹에 추가할지 설정합니다.
+
+STR_CONFIG_SETTING_SCENARIO_MULTIPLE_BUILDINGS                  :여러 개의 교회/경기장 허용: {STRING}
+STR_CONFIG_SETTING_SCENARIO_MULTIPLE_BUILDINGS_HELPTEXT         :도시에 이미 교회나 경기장 건물이 있어도 수동으로 이를 추가하는 것을 허용합니다.
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_DATES                  :건물 연도 제한 무시: {STRING}
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_DATES_HELPTEXT         :현재 날짜에 건설할 수 없는 건물을 수동으로 추가할 수 있게 허용합니다.
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_ZONES                  :건물 영역 제한 무시: {STRING}
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_ZONES_HELPTEXT         :해당 도시 영역에 적합하지 않은 건물을 수동으로 추가할 수 있게 허용합니다.
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_GRF                    :건물 GRF 제한 무시: {STRING}
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_GRF_HELPTEXT           :건물 GRF에 의해 건설이 허용되지 않는 건물을 수동으로 추가할 수 있게 허용합니다.
+
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_ZONES_OFF              :끄기
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_ZONES_WITHIN_TOWN      :도시 안에만
+STR_CONFIG_SETTING_SCENARIO_HOUSE_IGNORE_ZONES_ANYWHERE         :어디에나
 
 # Config errors
 STR_CONFIG_ERROR                                                :{WHITE}설정 파일에서 오류 발생
@@ -2691,6 +2750,7 @@ STR_TRACE_RESTRICT_VARIABLE_SLOT_OCCUPANCY                      :슬롯 사용�
 STR_TRACE_RESTRICT_VARIABLE_SLOT_OCCUPANCY_REMAINING            :남은 슬롯 수용량
 STR_TRACE_RESTRICT_VARIABLE_SLOT_OCCUPANCY_SHORT                :사용량
 STR_TRACE_RESTRICT_VARIABLE_SLOT_OCCUPANCY_REMAINING_SHORT      :남은 수용량
+STR_TRACE_RESTRICT_VARIABLE_COUNTER_VALUE                       :카운터 값
 STR_TRACE_RESTRICT_VARIABLE_TRAIN_WEIGHT                        :무게
 STR_TRACE_RESTRICT_VARIABLE_TRAIN_POWER                         :힘
 STR_TRACE_RESTRICT_VARIABLE_TRAIN_MAX_TE                        :최고 견인력
@@ -2722,8 +2782,10 @@ STR_TRACE_RESTRICT_CONDITIONAL_SLOT_STR                         :{STRING} 열차
 STR_TRACE_RESTRICT_CONDITIONAL_SLOT_OCCUPANCY                   :{STRING} 슬롯 {2:TRSLOT}의 {1:STRING} {3:STRING} {COMMA} (이)라면
 STR_TRACE_RESTRICT_CONDITIONAL_SLOT_OCCUPANCY_STR               :{STRING} {2:STRING}의 {1:STRING} {BLACK}{3:STRING}{STRING} {COMMA} (이)라면
 STR_TRACE_RESTRICT_CONDITIONAL_TRAIN_STATUS                     :{STRING} 열차가 {2:STRING}{1:STRING}
-STR_TRACE_RESTRICT_CONDITIONAL_UNDEFINED                        :{STRING} {STRING} {STRING} {RED}정의되지 않음 {BLACK}{STRING}(이)라면
-STR_TRACE_RESTRICT_CONDITIONAL_COMPARE_UNDEFINED                :{STRING} {RED}정의되지 않음 {BLACK}{STRING}(이)라면
+STR_TRACE_RESTRICT_CONDITIONAL_COUNTER                          :{STRING} 열차의 카운터 값: {TRCOUNTER} {STRING} {COMMA} (이)라면
+STR_TRACE_RESTRICT_CONDITIONAL_COUNTER_STR                      :{STRING} 열차의 카운터 값: {STRING} {BLACK}{STRING} {STRING} {COMMA} (이)라면
+STR_TRACE_RESTRICT_CONDITIONAL_UNDEFINED                        :{STRING} {STRING} {STRING} {RED}정의되지 않음 {BLACK}{STRING} (이)라면
+STR_TRACE_RESTRICT_CONDITIONAL_COMPARE_UNDEFINED                :{STRING} {RED}정의되지 않음 {BLACK}{STRING} (이)라면
 STR_TRACE_RESTRICT_PF_PENALTY_ITEM                              :경로 탐색에서 우선순위를 {COMMA} 만큼 뒤로
 STR_TRACE_RESTRICT_PF_PENALTY_ITEM_PRESET                       :경로 탐색에서 우선순위를 {STRING} 낮추기
 STR_TRACE_RESTRICT_WHITE                                        :{WHITE}
@@ -2758,6 +2820,8 @@ STR_TRACE_RESTRICT_UNDEFINED_COMPANY                            :정의되지 �
 STR_TRACE_RESTRICT_SLOT_OP                                      :슬롯 연산
 STR_TRACE_RESTRICT_REVERSE                                      :회차
 STR_TRACE_RESTRICT_SPEED_RESTRICTION                            :속력 제한
+STR_TRACE_RESTRICT_NEWS_CONTROL                                 :뉴스 제어
+STR_TRACE_RESTRICT_COUNTER_OP                                   :카운터 연산
 STR_TRACE_RESTRICT_SLOT_ACQUIRE_WAIT                            :획득 또는 대기
 STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE                             :획득 시도
 STR_TRACE_RESTRICT_SLOT_RELEASE_FRONT                           :해제 (앞)
@@ -2775,6 +2839,13 @@ STR_TRACE_RESTRICT_SLOT_PBS_RES_END_RELEASE_ITEM                :경로 예약 �
 STR_TRACE_RESTRICT_SLOT_NAME                                    :{TRSLOT}
 STR_TRACE_RESTRICT_SLOT_LIST_HEADER                             :{BLACK}슬롯{CONSUME_ARG}: {LTBLUE}
 STR_TRACE_RESTRICT_SLOT_LIST_SEPARATOR                          :{BLACK}, {LTBLUE}
+STR_TRACE_RESTRICT_COUNTER_NAME                                 :{TRCOUNTER}
+STR_TRACE_RESTRICT_COUNTER_INCREASE                             :증가
+STR_TRACE_RESTRICT_COUNTER_DECREASE                             :감소
+STR_TRACE_RESTRICT_COUNTER_SET                                  :설정
+STR_TRACE_RESTRICT_COUNTER_INCREASE_ITEM                        :카운터: {0:STRING}{BLACK}{1:STRING}의 값을 {2:COMMA}만큼 증가
+STR_TRACE_RESTRICT_COUNTER_DECREASE_ITEM                        :카운터: {0:STRING}{BLACK}{1:STRING}의 값을 {2:COMMA}만큼 감소
+STR_TRACE_RESTRICT_COUNTER_SET_ITEM                             :카운터: {0:STRING}{BLACK}{1:STRING}의 값을 {2:COMMA}(으)로 설정
 STR_TRACE_RESTRICT_TRAIN_STATUS_EMPTY                           :{G=f}빈 상태
 STR_TRACE_RESTRICT_TRAIN_STATUS_FULL                            :{G=f}가득 찬 상태
 STR_TRACE_RESTRICT_TRAIN_STATUS_BROKEN_DOWN                     :{G=f}고장난 상태
@@ -2790,6 +2861,10 @@ STR_TRACE_RESTRICT_REVERSE_SIG                                  :신호기 뒤�
 STR_TRACE_RESTRICT_REVERSE_SIG_CANCEL                           :신호기 뒤에서 회차 취소
 STR_TRACE_RESTRICT_SET_SPEED_RESTRICTION                        :열차 속력 제한: {VELOCITY}
 STR_TRACE_RESTRICT_REMOVE_SPEED_RESTRICTION                     :열차 속력 제한 해제
+STR_TRACE_RESTRICT_TRAIN_NOT_STUCK                              :이 열차는 멈춘 게 아니므로, 이 경로 신호기에서 기다리는 것에 대한 뉴스 메시지를 표시하지 않음
+STR_TRACE_RESTRICT_TRAIN_NOT_STUCK_CANCEL                       :(취소) 이 열차는 멈춘 게 아니므로, 이 경로 신호기에서 기다리는 것에 대한 뉴스 메시지를 표시하지 않음
+STR_TRACE_RESTRICT_TRAIN_NOT_STUCK_SHORT                        :열차가 멈춘 게 아님...
+STR_TRACE_RESTRICT_TRAIN_NOT_STUCK_CANCEL_SHORT                 :(취소) 열차가 멈춘 게 아님...
 STR_TRACE_RESTRICT_VALUE_CAPTION                                :{WHITE}값
 STR_TRACE_RESTRICT_CAPTION                                      :{WHITE}경로 탐색 제한
 STR_TRACE_RESTRICT_CAPTION_SHARED                               :{WHITE}경로 탐색 제한 - {COMMA}개의 신호기와 공유
@@ -2814,6 +2889,23 @@ STR_TRACE_RESTRICT_SLOT_CREATE_CAPTION                          :{BLACK}슬롯 �
 STR_TRACE_RESTRICT_SLOT_SET_MAX_OCCUPANCY_CAPTION               :{BLACK}슬롯의 최대 수용량을 설정하세요
 STR_TRACE_RESTRICT_SLOT_QUERY_DELETE_CAPTION                    :{WHITE}슬롯 삭제
 STR_TRACE_RESTRICT_SLOT_DELETE_QUERY_TEXT                       :{WHITE}이 슬롯을 정말로 삭제하시겠습니까?
+STR_TRACE_RESTRICT_COUNTER_OP_TOOLTIP                           :{BLACK}카운터 연산 종류
+STR_TRACE_RESTRICT_COUNTER_GUI_LIST_TOOLTIP                     :{BLACK}카운터 - 수정하려는 카운터를 클릭하세요.
+STR_TRACE_RESTRICT_COUNTER_CREATE                               :{BLACK}생성
+STR_TRACE_RESTRICT_COUNTER_DELETE                               :{BLACK}삭제
+STR_TRACE_RESTRICT_COUNTER_RENAME                               :{BLACK}이름 바꾸기
+STR_TRACE_RESTRICT_COUNTER_SET_VALUE                            :{BLACK}값 설정
+STR_TRACE_RESTRICT_COUNTER_CREATE_TOOLTIP                       :{BLACK}카운터를 생성하려면 클릭하세요
+STR_TRACE_RESTRICT_COUNTER_DELETE_TOOLTIP                       :{BLACK}선택한 카운터를 삭제합니다
+STR_TRACE_RESTRICT_COUNTER_RENAME_TOOLTIP                       :{BLACK}선택한 카운터의 이름을 바꿉니다
+STR_TRACE_RESTRICT_COUNTER_SET_VALUE_TOOLTIP                    :{BLACK}선택한 카운터의 값을 바꿉니다
+STR_TRACE_RESTRICT_COUNTER_CAPTION                              :{WHITE}경로 제한 - 카운터 관리
+STR_TRACE_RESTRICT_COUNTER_MANAGE                               :카운터 관리
+STR_TRACE_RESTRICT_COUNTER_RENAME_CAPTION                       :{BLACK}카운터 이름 변경
+STR_TRACE_RESTRICT_COUNTER_CREATE_CAPTION                       :{BLACK}카운터 생성
+STR_TRACE_RESTRICT_COUNTER_SET_VALUE_CAPTION                    :{BLACK}카운터 값 설정
+STR_TRACE_RESTRICT_COUNTER_QUERY_DELETE_CAPTION                 :{WHITE}카운터 삭제
+STR_TRACE_RESTRICT_COUNTER_DELETE_QUERY_TEXT                    :{WHITE}정말 이 카운터를 삭제하시겠습니까?
 STR_TRACE_RESTRICT_INSERT                                       :{BLACK}삽입
 STR_TRACE_RESTRICT_REMOVE                                       :{BLACK}제거
 STR_TRACE_RESTRICT_RESET                                        :{BLACK}비우기
@@ -2858,6 +2950,10 @@ STR_TRACE_RESTRICT_ERROR_SLOT_CAN_T_RENAME                      :{WHITE}이 슬�
 STR_TRACE_RESTRICT_ERROR_SLOT_CAN_T_ADD_VEHICLE                 :{WHITE}차량을 이 슬롯에 추가할 수 없습니다...
 STR_TRACE_RESTRICT_ERROR_SLOT_CAN_T_REMOVE_VEHICLE              :{WHITE}차량을 이 슬롯에서 제거할 수 없습니다...
 STR_TRACE_RESTRICT_ERROR_SLOT_CAN_T_SET_MAX_OCCUPANCY           :{WHITE}이 슬롯의 최대 수용량을 설정할 수 없습니다...
+STR_TRACE_RESTRICT_ERROR_COUNTER_CAN_T_CREATE                   :{WHITE}카운터를 생성할 수 없습니다...
+STR_TRACE_RESTRICT_ERROR_COUNTER_CAN_T_DELETE                   :{WHITE}이 카운터를 삭제할 수 없습니다...
+STR_TRACE_RESTRICT_ERROR_COUNTER_CAN_T_RENAME                   :{WHITE}카운터 이름을 바꿀 수 없습니다...
+STR_TRACE_RESTRICT_ERROR_COUNTER_CAN_T_MODIFY                   :{WHITE}이 카운터의 값을 수정할 수 없습니다...
 
 # Programmable Pre-Signals
 STR_PROGRAM_SIGNAL_TOOLTIP                                      :{BLACK}프로그램 신호기 설정
@@ -2884,9 +2980,11 @@ STR_PROGSIG_INSERT_TOOLTIP                                      :{BLACK}구문�
 STR_PROGSIG_REMOVE_TOOLTIP                                      :{BLACK}선택된 구문을 제거합니다.
 STR_PROGSIG_REMOVE_PROGRAM_TOOLTIP                              :{BLACK}전체 프로그램을 제거합니다.
 STR_PROGSIG_COPY_PROGRAM_TOOLTIP                                :{BLACK}존재하는 신호기로부터 프로그램을 복사합니다.
+STR_PROGSIG_COND_SLOT_TOOLTIP                                   :{BLACK}사용량을 비교하려는 슬롯
+STR_PROGSIG_COND_COUNTER_TOOLTIP                                :{BLACK}값을 비교하려는 카운터
 
-STR_PROGSIG_REMOVE_PROGRAM                                      :{RED}프로그램 제거
-STR_PROGSIG_COPY_PROGRAM                                        :{BLUE}프로그램 복제
+STR_PROGSIG_REMOVE_PROGRAM                                      :{BLACK}프로그램 제거
+STR_PROGSIG_COPY_PROGRAM                                        :{BLACK}프로그램 복제
 STR_PROGSIG_REMOVE                                              :{BLACK}제거
 STR_PROGSIG_INSERT                                              :삽입
 STR_PROGSIG_INSERT_IF                                           :조건문
@@ -2904,7 +3002,16 @@ STR_PROGSIG_SET_SIGNAL                                          :신호기에 {S
 STR_PROGSIG_COND_ALWAYS                                         :항상 맞음
 STR_PROGSIG_COND_NEVER                                          :항상 아님
 STR_PROGSIG_COND_COMPARE                                        :{STRING} {STRING} {NUM}
+STR_PROGSIG_COND_SLOT_COMPARE                                   :{TRSLOT}의 사용량 {STRING} {NUM}
+STR_PROGSIG_COND_SLOT_COMPARE_INVALID                           :{PUSH_COLOUR}{RED}{STRING}{POP_COLOUR}의 사용량 {STRING} {NUM}
+STR_PROGSIG_COND_SLOT_REMAINING_COMPARE                         :{TRSLOT}의 남은 사용량 {STRING} {NUM}
+STR_PROGSIG_COND_SLOT_REMAINING_COMPARE_INVALID                 :{PUSH_COLOUR}{RED}{STRING}{POP_COLOUR}의 남은 사용량 {STRING} {NUM}
+STR_PROGSIG_COND_COUNTER_COMPARE                                :{TRCOUNTER}의 값 {STRING} {NUM}
+STR_PROGSIG_COND_COUNTER_COMPARE_INVALID                        :{PUSH_COLOUR}{RED}{STRING}{POP_COLOUR}의 값 {STRING} {NUM}
 STR_PROGSIG_COND_SIGNAL_STATE                                   :신호기 상태
+STR_PROGSIG_COND_SLOT                                           :슬롯 사용량
+STR_PROGSIG_COND_SLOT_REMAINING                                 :남은 슬롯 사용량
+STR_PROGSIG_COND_COUNTER                                        :카운터 값
 STR_PROGSIG_CONDVAR_SIGNAL_STATE_SPECIFIED                      :{NUM} x {NUM} 에 위치한 신호기가 초록색
 STR_PROGSIG_CONDVAR_SIGNAL_STATE_UNSPECIFIED                    :{RED}정해지지 않은 신호기{STRING} 가 초록색
 STR_PROGSIG_CONDVAR_NUM_RED                                     :빨간 신호
@@ -3543,6 +3650,7 @@ STR_NEWGRF_INSPECT_PARENT_TOOLTIP                               :{BLACK}상위 �
 STR_NEWGRF_INSPECT_CAPTION_OBJECT_AT                            :{STRING}, {HEX}에서
 STR_NEWGRF_INSPECT_CAPTION_OBJECT_AT_OBJECT                     :오브젝트
 STR_NEWGRF_INSPECT_CAPTION_OBJECT_AT_RAIL_TYPE                  :철도 종류
+STR_NEWGRF_INSPECT_CAPTION_OBJECT_AT_ROAD_TYPE                  :도로/전차 종류
 
 STR_NEWGRF_INSPECT_QUERY_CAPTION                                :{WHITE}NewGRF 변수 60+x 매개 변수 (16진법)
 
@@ -4514,6 +4622,7 @@ STR_VEHICLE_STATUS_TRAIN_STUCK_WAIT_RESTRICTION                 :{ORANGE}경로 
 STR_VEHICLE_STATUS_AIRCRAFT_TOO_FAR                             :{ORANGE}다음 목적지가 너무 멀리 있습니다
 STR_VEHICLE_STATUS_TRAIN_WAITING_TIMETABLE                      :{ORANGE}시간표에 따라 대기 중
 STR_VEHICLE_STATUS_TRAIN_REVERSING                              :{ORANGE}회차 중, {VELOCITY}
+STR_VEHICLE_STATUS_TRAIN_MOVING_DEPOT                           :{ORANGE}차량기지 이동 중
 
 STR_BREAKDOWN_TYPE_CRITICAL                                     :기계적 고장
 STR_BREAKDOWN_TYPE_EM_STOP                                      :비상 정지
@@ -4567,6 +4676,7 @@ STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE                  :{BLACK}무게: 
 
 STR_VEHICLE_INFO_TRAIN_LENGTH                                   :{BLACK}열차 길이: {LTBLUE}{DECIMAL} 칸 {STRING}
 STR_VEHICLE_INFO_WEIGHT_RATIOS                                  :{BLACK}힘 / 무게: {LTBLUE}{POWER_WEIGHT_RATIO} {BLACK} 최고 견인력 / 무게: {LTBLUE}{FORCE_WEIGHT_RATIO}
+STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS                        :{BLACK}전체 중량: {LTBLUE}{WEIGHT_SHORT} {STRING}
 
 STR_VEHICLE_INFO_PROFIT_THIS_YEAR_LAST_YEAR                     :{BLACK}올해 이익: {LTBLUE}{CURRENCY_LONG} (작년: {CURRENCY_LONG})
 STR_VEHICLE_INFO_PROFIT_THIS_YEAR_LAST_YEAR_LIFETIME            :{STRING} (평생: {CURRENCY_LONG})
@@ -4704,45 +4814,50 @@ STR_ORDER_SERVICE_TOOLTIP                                       :{BLACK}정비�
 STR_ORDER_CONDITIONAL_VARIABLE_TOOLTIP                          :{BLACK}경로를 건너뛰기 위한 비교 조건을 선택합니다
 
 # Conditional order variables, must follow order of OrderConditionVariable enum
-STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE                           :적재율
-STR_ORDER_CONDITIONAL_RELIABILITY                               :신뢰도
-STR_ORDER_CONDITIONAL_MAX_SPEED                                 :최고 속력
-STR_ORDER_CONDITIONAL_AGE                                       :연령 (년)
-STR_ORDER_CONDITIONAL_REQUIRES_SERVICE                          :정비 필요성
-STR_ORDER_CONDITIONAL_UNCONDITIONALLY                           :항상
-STR_ORDER_CONDITIONAL_REMAINING_LIFETIME                        :남은 수명 (년)
-STR_ORDER_CONDITIONAL_MAX_RELIABILITY                           :최대 신뢰도
-STR_ORDER_CONDITIONAL_CARGO_WAITING                             :대기 화물
-STR_ORDER_CONDITIONAL_ACCEPTANCE_DROPDOWN                       :받는 화물
-STR_ORDER_CONDITIONAL_FREE_PLATFORMS                            :빈 승강장
-STR_ORDER_CONDITIONAL_PERCENT                                   :확률
-STR_ORDER_CONDITIONAL_SLOT_OCCUPANCY                            :슬롯 점유
-STR_ORDER_CONDITIONAL_TRAIN_IN_SLOT                             :열차 슬롯
-STR_ORDER_CONDITIONAL_CARGO_LOAD_PERCENTAGE                     :화물 적재율
-STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT                      :화물 대기량
+STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE                           :{G=m}적재율
+STR_ORDER_CONDITIONAL_RELIABILITY                               :{G=f}신뢰도
+STR_ORDER_CONDITIONAL_MAX_SPEED                                 :{G=m}최고 속력
+STR_ORDER_CONDITIONAL_AGE                                       :{G=m}연령 (년)
+STR_ORDER_CONDITIONAL_REQUIRES_SERVICE                          :{G=m}정비 필요성
+STR_ORDER_CONDITIONAL_UNCONDITIONALLY                           :{G=m}항상
+STR_ORDER_CONDITIONAL_REMAINING_LIFETIME                        :{G=m}남은 수명 (년)
+STR_ORDER_CONDITIONAL_MAX_RELIABILITY                           :{G=f}최대 신뢰도
+STR_ORDER_CONDITIONAL_CARGO_WAITING                             :{G=m}대기하는 화물
+STR_ORDER_CONDITIONAL_ACCEPTANCE_DROPDOWN                       :{G=m}받는 화물
+STR_ORDER_CONDITIONAL_FREE_PLATFORMS                            :{G=m}빈 승강장
+STR_ORDER_CONDITIONAL_PERCENT                                   :{G=m}확률
+STR_ORDER_CONDITIONAL_SLOT_OCCUPANCY                            :{G=f}슬롯 점유
+STR_ORDER_CONDITIONAL_TRAIN_IN_SLOT                             :{G=m}열차 슬롯
+STR_ORDER_CONDITIONAL_CARGO_LOAD_PERCENTAGE                     :{G=m}화물 적재율
+STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT                      :{G=m}화물 대기량
+STR_ORDER_CONDITIONAL_COUNTER_VALUE                             :{G=m}카운터 값
 
 STR_ORDER_CONDITIONAL_REQUIRES_SERVICE_ORDER                    :서비스 {STRING}가 필요함
 STR_ORDER_CONDITIONAL_CARGO_WAITING_ORDER                       :다음 역 {STRING} {STRING} 대기 중
 STR_ORDER_CONDITIONAL_ACCEPTANCE                                :다음 역 {STRING} {STRING}
-STR_CONDITIONAL_FREE_PLATFORMS                                  :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역에 빈 승강장이 {2:COMMA} 개{1:STRING})
+STR_CONDITIONAL_FREE_PLATFORMS                                  :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역에 빈 승강장이 {2:COMMA}개 {1:STRING})
 STR_CONDITIONAL_PERCENT                                         :[조건 경로] {COMMA}번 경로로 건너뛰기 ({COMMA}%의 확률로)
 
-STR_ORDER_CONDITIONAL_NEXT_STATION                              :다음 역이
+STR_ORDER_CONDITIONAL_NEXT_STATION                              :다음 역:
 
 STR_ORDER_CONDITIONAL_COMPARATOR_TOOLTIP                        :{BLACK}왼쪽의 비교조건과 오른쪽의 입력값을 비교할 연산자를 선택합니다
 STR_ORDER_CONDITIONAL_COMPARATOR_EQUALS                         :=
 STR_ORDER_CONDITIONAL_COMPARATOR_NOT_EQUALS                     :≠
 STR_ORDER_CONDITIONAL_COMPARATOR_LESS_THAN                      :＜
-STR_ORDER_CONDITIONAL_COMPARATOR_LESS_EQUALS                    :≤
+STR_ORDER_CONDITIONAL_COMPARATOR_LESS_EQUALS                    :<=
 STR_ORDER_CONDITIONAL_COMPARATOR_MORE_THAN                      :＞
-STR_ORDER_CONDITIONAL_COMPARATOR_MORE_EQUALS                    :≥
+STR_ORDER_CONDITIONAL_COMPARATOR_MORE_EQUALS                    :>=
 STR_ORDER_CONDITIONAL_COMPARATOR_IS_TRUE                        :있을 때
 STR_ORDER_CONDITIONAL_COMPARATOR_IS_FALSE                       :없을 때
 
 STR_ORDER_CONDITIONAL_VALUE_TOOLTIP                             :{BLACK}비교 조건에 대한 입력값입니다
 STR_ORDER_CONDITIONAL_CARGO_TOOLTIP                             :{BLACK}화물에 대한 입력값입니다.
 STR_ORDER_CONDITIONAL_SLOT_TOOLTIP                              :{BLACK}점유되었는지 확인할 슬롯입니다.
+STR_ORDER_CONDITIONAL_COUNTER_TOOLTIP                           :{BLACK}비교하려는 카운터입니다
 STR_ORDER_CONDITIONAL_VALUE_CAPT                                :{WHITE}비교할 값을 입력하세요
+
+STR_ORDER_CONDITIONAL_VIA                                       :{BLACK}경유
+STR_ORDER_CONDITIONAL_VIA_TOOLTIP                               :{BLACK}대기 화물량을 확인할 경유 역을 선택하세요
 
 STR_ORDER_CONDITIONAL_COMPARATOR_ACCEPTS                        :받을 때
 STR_ORDER_CONDITIONAL_COMPARATOR_DOES_NOT_ACCEPT                :받지 않을 때
@@ -4754,11 +4869,18 @@ STR_ORDER_CONDITIONAL_COMPARATOR_HAS_MORE_THAN                  :보다 많을 �
 STR_ORDER_CONDITIONAL_COMPARATOR_HAS_MORE_EQUALS                :보다 많거나 같을 때
 STR_ORDER_CONDITIONAL_COMPARATOR_FULLY_OCCUPIED                 :모두 점유되었을 때
 STR_ORDER_CONDITIONAL_COMPARATOR_NOT_YET_FULLY_OCCUPIED         :모두 점유되지 않았을 때
-STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_IN_SLOT                  :에 속할 때
-STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_NOT_IN_SLOT              :에 속하지 않을 때
+STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_IN_SLOT                  :있을 때
+STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_NOT_IN_SLOT              :없을 때
+STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_IN_ACQUIRE_SLOT          :있거나 그 슬롯을 획득했을 때
+STR_ORDER_CONDITIONAL_COMPARATOR_TRAIN_NOT_IN_ACQUIRE_SLOT      :없거나 그 슬롯을 획득 못 했을 때
 
 STR_ORDERS_SKIP_BUTTON                                          :{BLACK}건너뛰기
 STR_ORDERS_SKIP_TOOLTIP                                         :{BLACK}현재 경로를 건너뛰고, 다음 경로를 시작합니다. CTRL+클릭하면 현재 선택된 경로로 건너뜁니다
+
+STR_ORDERS_MANAGE_LIST                                          :{BLACK}목록 관리
+STR_ORDERS_MANAGE_LIST_TOOLTIP                                  :{BLACK}이 경로 목록 관리
+STR_ORDER_REVERSE_ORDER_LIST                                    :경로 목록 반전
+STR_ORDER_APPEND_REVERSED_ORDER_LIST                            :반전된 경로 추가
 
 STR_ORDERS_DELETE_BUTTON                                        :{BLACK}삭제
 STR_ORDERS_DELETE_TOOLTIP                                       :{BLACK}선택된 경로를 삭제합니다
@@ -4865,14 +4987,18 @@ STR_ORDER_OUT_OF_RANGE                                          :{RED} (다음 �
 
 STR_ORDER_CONDITIONAL_UNCONDITIONAL                             :[조건 경로] {COMMA}번 경로로 건너뛰기
 STR_ORDER_CONDITIONAL_NUM                                       :[조건 경로] {COMMA}번 경로로 건너뛰기 ({STRING} {STRING} {COMMA} 일 때)
-STR_ORDER_CONDITIONAL_CARGO                                     :[조건 경로] {COMMA}번 경로로 건너뛰기 ({STRING} {3:STRING}{2:STRING})
-STR_ORDER_CONDITIONAL_SLOT                                      :[조건 경로] {COMMA}번 경로로 건너뛰기 ({TRSLOT}{STRING})
-STR_ORDER_CONDITIONAL_INVALID_SLOT                              :[조건 경로] {COMMA}번 경로로 건너뛰기 ({PUSH_COLOUR}{RED}{STRING}{POP_COLOUR}{STRING})
-STR_ORDER_CONDITIONAL_IN_SLOT                                   :[조건 경로] {COMMA}번 경로로 건너뛰기 (열차가 슬롯 {2:TRSLOT}{1:STRING})
+STR_ORDER_CONDITIONAL_CARGO_ACCEPTANCE                          :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역이 {2:STRING}{G 2 "을" "를"} {1:STRING})
+STR_ORDER_CONDITIONAL_CARGO_WAITING_DISPLAY                     :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역에 {2:STRING}{G 2 "이" "가"} {1:STRING})
+STR_ORDER_CONDITIONAL_SLOT                                      :[조건 경로] {COMMA}번 경로로 건너뛰기 ({TRSLOT} 슬롯이 {STRING})
+STR_ORDER_CONDITIONAL_INVALID_SLOT                              :[조건 경로] {COMMA}번 경로로 건너뛰기 ({PUSH_COLOUR}{RED}{STRING}{POP_COLOUR} 슬롯이 {STRING})
+STR_ORDER_CONDITIONAL_IN_SLOT                                   :[조건 경로] {COMMA}번 경로로 건너뛰기 (열차가 {2:TRSLOT} 슬롯에 {1:STRING})
 STR_ORDER_CONDITIONAL_IN_INVALID_SLOT                           :[조건 경로] {COMMA}번 경로로 건너뛰기 (열차가 {PUSH_COLOUR}{RED}{2:STRING}{POP_COLOUR}{1:STRING})
-STR_ORDER_CONDITIONAL_TRUE_FALSE                                :[조건 경로] {COMMA}번 경로로 건너뛰기 ({STRING}{STRING})
-STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE_DISPLAY                   :[조건 경로] {COMMA}번 경로로 건너뛰기 ({STRING}의 적재율 {STRING} {COMMA})
-STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_DISPLAY              :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역의 {STRING} 대기량 {STRING} {CARGO_SHORT})
+STR_ORDER_CONDITIONAL_TRUE_FALSE                                :[조건 경로] {COMMA}번 경로로 건너뛰기 ({1:STRING}{G 1 "이" "가"} {2:STRING})
+STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE_DISPLAY                   :[조건 경로] {COMMA}번 경로로 건너뛰기 ({STRING}의 적재율 {STRING} {COMMA}일 때)
+STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_DISPLAY              :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역의 {STRING} 대기량 {STRING} {CARGO_SHORT}일 때)
+STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_VIA_DISPLAY          :[조건 경로] {COMMA}번 경로로 건너뛰기 (다음 역에 있는 {2:STATION} 경유 {1:STRING} {3:STRING} {4:CARGO_SHORT}일 때)
+STR_ORDER_CONDITIONAL_COUNTER                                   :[조건 경로] {COMMA}번 경로로 건너뛰기 ({TRCOUNTER}의 값 {STRING} {COMMA}일 때)
+STR_ORDER_CONDITIONAL_INVALID_COUNTER                           :[조건 경로] {COMMA}번 경로로 건너뛰기 ({PUSH_COLOUR}{RED}{STRING}{POP_COLOUR}의 값 {STRING} {COMMA}일 때)
 
 STR_INVALID_ORDER                                               :{RED} (잘못된 행선지)
 
@@ -4949,8 +5075,12 @@ STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}시간�
 STR_TIMETABLE_LOCK_ORDER_TIME_TOOLTIP                           :{BLACK}선택된 경로의 시간 값을 고정하거나 고정 해제합니다.(Ctrl+클릭하면 모두 고정하거나 고정 해제).{}고정된 시간 값은 자동 시간 설정이나 자동 시간표가 변경하지 않습니다.
 
 STR_TIMETABLE_LEAVE_EARLY_ORDER                                 :[시간표 대기 무시]
+STR_TIMETABLE_LEAVE_EARLY_ORDER_FULL_ANY                        :[아무 화물이나 가득 실으면 시간표 대기 무시]
+STR_TIMETABLE_LEAVE_EARLY_ORDER_FULL_ALL                        :[모든 화물을 가득 실으면 시간표 대기 무시]
 STR_TIMETABLE_LEAVE_NORMAL                                      :출발 시각까지 대기
 STR_TIMETABLE_LEAVE_EARLY                                       :출발 시각 무시
+STR_TIMETABLE_LEAVE_EARLY_FULL_ANY                              :아무 화물이나 가득 실으면 출발 시각 무시
+STR_TIMETABLE_LEAVE_EARLY_FULL_ALL                              :모든 화물을 가득 실으면 출발 시각 무시
 
 STR_TIMETABLE_EXTRA_DROP_DOWN                                   :{BLACK}추가 옵션
 STR_TIMETABLE_EXTRA_DROP_DOWN_TOOLTIP                           :{BLACK}추가 옵션{}{}시간표의 출발 시각까지 대기: 차량이 시간표에 지정된 출발 시각까지 역에서 대기한 후 출발합니다. (기본값){}시간표의 출발 시각 무시: 열차가 역에서 승하차를 마치면, 즉시 설정된 출발 시간을 무시하고 역에서 출발하니다.
@@ -5096,9 +5226,12 @@ STR_PLANS_SHOW_ALL                                              :{BLACK}모두 �
 STR_PLANS_SHOW_ALL_TOOLTIP                                      :{BLACK}모든 계획을 보이게 합니다.
 STR_PLANS_VISIBILITY_PRIVATE                                    :{BLACK}개인적으로
 STR_PLANS_VISIBILITY_PUBLIC                                     :{BLACK}공용으로
-STR_PLANS_VISIBILITY_TOOLTIP                                    :{BLACK}계획의 보기 권한을 수정합니다. (개인적은 노랑, 공용은 파랑). 공용 계획은 타사가 계획 창에서 계획을 열람하거나 선을 추가할 수 있습니다.
+STR_PLANS_VISIBILITY_TOOLTIP                                    :{BLACK}계획의 보기 권한을 수정합니다. 공용 계획은 타사가 계획 창에서 계획을 열람하거나 선을 추가할 수 있습니다.
+STR_PLANS_COLOUR                                                :{BLACK}색
+STR_PLANS_COLOUR_TOOLTIP                                        :{BLACK}계획의 색을 설정합니다.
 STR_PLANS_DELETE                                                :{BLACK}삭제
 STR_PLANS_DELETE_TOOLTIP                                        :{BLACK}목록에서 선택된 계획을 삭제합니다.
+STR_PLANS_LIST_ITEM_PLAN_PRIVATE                                :[개인]: {STRING}
 STR_PLANS_LIST_ITEM_PLAN                                        :계획 #{NUM}: 선 {NUM}개 ({DATE_SHORT})
 STR_PLANS_LIST_ITEM_NAMED_PLAN                                  :{STRING}: 선 {NUM}개 ({DATE_SHORT})
 STR_PLANS_LIST_ITEM_LINE                                        : -- 선 #{NUM}: {NUM} 선분
@@ -5144,6 +5277,10 @@ STR_GAME_SAVELOAD_ERROR_FILE_NOT_WRITEABLE                      :파일을 쓸 �
 STR_GAME_SAVELOAD_ERROR_DATA_INTEGRITY_CHECK_FAILED             :데이터 무결성 검사에 실패하였습니다
 STR_GAME_SAVELOAD_NOT_AVAILABLE                                 :<사용 불가능>
 STR_WARNING_LOADGAME_REMOVED_TRAMS                              :{WHITE}전차를 지원하지 않는 버전으로 게임이 저장되었습니다. 모든 전차는 제거되었습니다.
+
+STR_GAME_SAVELOAD_FROM_VERSION                                  : ({PUSH_COLOUR}{ORANGE}{STRING}{POP_COLOUR} 버전){}
+STR_GAME_SAVELOAD_ERROR_TOO_NEW_FEATURE_VERSION                 :세이브파일 {0:STRING}의 버전은 '{PUSH_COLOUR}{ORANGE}{1:STRING}{POP_COLOUR}' 기능의 {PUSH_COLOUR}{ORANGE}{2:NUM}{POP_COLOUR}입니다만, 최대로 지원하는 버전은 {PUSH_COLOUR}{ORANGE}{3:NUM}{POP_COLOUR}입니다.
+STR_GAME_SAVELOAD_ERROR_UNKNOWN_FEATURE                         :세이브파일 {0:STRING}에는 지원하지 않는 알 수 없는 기능 '{PUSH_COLOUR}{ORANGE}{1:STRING}{POP_COLOUR}' (버전: {PUSH_COLOUR}{ORANGE}{2:NUM}{POP_COLOUR})이 있습니다.
 
 STR_GAME_SAVELOAD_ERROR_HUGE_AIRPORTS_PRESENT                   :저장 파일이 큰 공항을 사용합니다.
 STR_GAME_SAVELOAD_ERROR_HELI_OILRIG_BUG                         :저장 파일이 유전을 경로로 가진 헬리콥터를 포함합니다.
@@ -5253,6 +5390,7 @@ STR_ERROR_TOO_MANY_HOUSE_TYPES                                  :{WHITE}... 건�
 STR_ERROR_BUILDING_IS_TOO_OLD                                   :{WHITE}... 건물이 낡았습니다.
 STR_ERROR_BUILDING_IS_TOO_MODERN                                :{WHITE}... 아직 건물을 지을 수 없습니다.
 STR_ERROR_ONLY_ONE_BUILDING_ALLOWED_PER_TOWN                    :{WHITE}... 이 종류의 건물은 오직 하나만 지을 수 있습니다.
+STR_ERROR_NO_MORE_BUILDINGS_ALLOWED_PER_TOWN                    :{WHITE}... 이 도시에 이 종류의 건물이 너무 많습니다.
 STR_ERROR_BUILDING_NOT_ALLOWED                                  :{WHITE}... 허가되지 않았습니다.
 
 # Industry related errors
@@ -5396,7 +5534,6 @@ STR_ERROR_CAN_T_CONVERT_ROAD                                    :{WHITE}이곳�
 STR_ERROR_CAN_T_CONVERT_TRAMWAY                                 :{WHITE}이곳의 전찻길을 바꿀 수 없습니다...
 STR_ERROR_NO_SUITABLE_ROAD                                      :{WHITE}적합한 도로가 없습니다
 STR_ERROR_NO_SUITABLE_TRAMWAY                                   :{WHITE}적합한 전찻길이 없습니다
-STR_ERROR_INCOMPATIBLE_ROAD                                     :{WHITE}... 적합하지 않은 도로입니다
 STR_ERROR_INCOMPATIBLE_TRAMWAY                                  :{WHITE}... 적합하지 않은 전찻길입니다
 
 # Waterway construction errors
@@ -5452,7 +5589,8 @@ STR_ERROR_OBJECT_IN_THE_WAY                                     :{WHITE}중간�
 STR_ERROR_COMPANY_HEADQUARTERS_IN                               :{WHITE}... 중간에 회사 본사가 있습니다
 STR_ERROR_CAN_T_PURCHASE_THIS_LAND                              :{WHITE}이 지역을 매입할 수 없습니다...
 STR_ERROR_YOU_ALREADY_OWN_IT                                    :{WHITE}... 이미 소유중입니다!
-STR_ERROR_PURCHASE_LAND_LIMIT_REACHED                           :{WHITE}... 이미 가능한 모든 토지 소유권을 구매했습니다!
+STR_ERROR_PURCHASE_LAND_LIMIT_REACHED                           :{WHITE}... 토지 소유권 구매 제한에 도달했습니다
+STR_ERROR_BUILD_OBJECT_LIMIT_REACHED                            :{WHITE}... 오브젝트 건설 제한에 도달했습니다
 
 # Group related errors
 STR_ERROR_GROUP_CAN_T_CREATE                                    :{WHITE}그룹을 만들 수 없습니다...
@@ -6137,6 +6275,7 @@ STR_ZONING_IND_UNSER                                            :역세권 밖�
 STR_ZONING_TRACERESTRICT                                        :경로 탐색 제한 신호기
 STR_ZONING_2x2_GRID                                             :2x2 도시 도로 격자
 STR_ZONING_3x3_GRID                                             :3x3 도시 도로 격자
+STR_ZONING_ONE_WAY_ROAD                                         :일방통행 도로
 
 STR_TMPL_RPL_TITLE                                              :{WHITE}템플릿 교체
 STR_TMPL_TEMPLATE_REPLACEMENT                                   :템플릿 교체

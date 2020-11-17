@@ -22,6 +22,7 @@
 #include "window_func.h"
 #include "date_func.h"
 #include "vehicle_func.h"
+#include "vehicle_gui.h"
 #include "sound_func.h"
 #include "cheat_type.h"
 #include "company_base.h"
@@ -471,7 +472,7 @@ void Aircraft::OnNewDay()
 	SubtractMoneyFromCompanyFract(this->owner, cost);
 
 	SetWindowDirty(WC_VEHICLE_DETAILS, this->index);
-	SetWindowClassesDirty(WC_AIRCRAFT_LIST);
+	DirtyVehicleListWindowForVehicle(this);
 }
 
 static void HelicopterTickHandler(Aircraft *v)
@@ -1284,6 +1285,7 @@ static void HandleAircraftSmoke(Aircraft *v, bool mode)
 	if (v->state != FLYING && v->state != LANDING && v->breakdown_type == BREAKDOWN_AIRCRAFT_SPEED) {
 		v->vehstatus &= ~VS_AIRCRAFT_BROKEN;
 		v->breakdown_ctr = 0;
+		v->InvalidateImageCacheOfChain();
 		return;
 	}
 
@@ -1342,7 +1344,7 @@ TileIndex Aircraft::GetOrderStationLocation(StationID station)
 void Aircraft::MarkDirty()
 {
 	this->colourmap = PAL_NONE;
-	this->cur_image_valid_dir = INVALID_DIR;
+	this->InvalidateImageCache();
 	this->UpdateViewport(true, false);
 	if (this->subtype == AIR_HELICOPTER) {
 		Aircraft *rotor = this->Next()->Next();
@@ -1521,7 +1523,7 @@ void AircraftLeaveHangar(Aircraft *v, Direction exit_dir)
 	VehicleServiceInDepot(v);
 	SetAircraftPosition(v, v->x_pos, v->y_pos, v->z_pos);
 	InvalidateWindowData(WC_VEHICLE_DEPOT, v->tile);
-	SetWindowClassesDirty(WC_AIRCRAFT_LIST);
+	DirtyVehicleListWindowForVehicle(v);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -2205,7 +2207,7 @@ bool Aircraft::Tick()
 
 	this->tick_counter++;
 
-	if (!(this->vehstatus & VS_STOPPED)) this->running_ticks++;
+	if (!((this->vehstatus & VS_STOPPED) || this->IsWaitingInDepot())) this->running_ticks++;
 
 	if (this->subtype == AIR_HELICOPTER) HelicopterTickHandler(this);
 
@@ -2214,6 +2216,15 @@ bool Aircraft::Tick()
 	for (uint i = 0; i != 2; i++) {
 		/* stop if the aircraft was deleted */
 		if (!AircraftEventHandler(this, i)) return false;
+	}
+
+	if (HasBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE)) {
+		extern byte MapAircraftMovementState(const Aircraft *v);
+		byte state = MapAircraftMovementState(this);
+		if (state != this->acache.image_movement_state) {
+			this->InvalidateImageCacheOfChain();
+			this->acache.image_movement_state = state;
+		}
 	}
 
 	return true;

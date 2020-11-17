@@ -38,9 +38,14 @@
 #include "../stdafx.h"
 #include "../debug.h"
 #include "saveload.h"
+#include "saveload_buffer.h"
 #include "extended_ver_sl.h"
 #include "../timetable.h"
 #include "../map_func.h"
+#include "../rev.h"
+#include "../strings_func.h"
+#include "../company_func.h"
+#include "table/strings.h"
 
 #include <vector>
 
@@ -52,16 +57,25 @@ bool _sl_is_faked_ext;                                      ///< is this a faked
 bool _sl_maybe_springpp;                                    ///< is this possibly a SpringPP savegame?
 bool _sl_maybe_chillpp;                                     ///< is this possibly a ChillPP v8 savegame?
 std::vector<uint32> _sl_xv_discardable_chunk_ids;           ///< list of chunks IDs which we can discard if no chunk loader exists
+std::string _sl_xv_version_label;                           ///< optional SLXI version label
 
 static const uint32 _sl_xv_slxi_chunk_version = 0;          ///< current version of SLXI chunk
 
+static void loadVL(const SlxiSubChunkInfo *info, uint32 length);
+static uint32 saveVL(const SlxiSubChunkInfo *info, bool dry_run);
+static void loadLC(const SlxiSubChunkInfo *info, uint32 length);
+static uint32 saveLC(const SlxiSubChunkInfo *info, bool dry_run);
+
 const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
+	{ XSLFI_VERSION_LABEL,          XSCF_IGNORABLE_ALL,       1,   1, "version_label",             saveVL,  loadVL,  nullptr        },
 	{ XSLFI_TRACE_RESTRICT,         XSCF_NULL,               11,  11, "tracerestrict",             nullptr, nullptr, "TRRM,TRRP,TRRS" },
 	{ XSLFI_TRACE_RESTRICT_OWNER,   XSCF_NULL,                1,   1, "tracerestrict_owner",       nullptr, nullptr, nullptr        },
 	{ XSLFI_TRACE_RESTRICT_ORDRCND, XSCF_NULL,                3,   3, "tracerestrict_order_cond",  nullptr, nullptr, nullptr        },
 	{ XSLFI_TRACE_RESTRICT_STATUSCND,XSCF_NULL,               1,   1, "tracerestrict_status_cond", nullptr, nullptr, nullptr        },
 	{ XSLFI_TRACE_RESTRICT_REVERSE, XSCF_NULL,                1,   1, "tracerestrict_reverse",     nullptr, nullptr, nullptr        },
-	{ XSLFI_PROG_SIGS,              XSCF_NULL,                1,   1, "programmable_signals",      nullptr, nullptr, "SPRG"      },
+	{ XSLFI_TRACE_RESTRICT_NEWSCTRL,XSCF_NULL,                1,   1, "tracerestrict_newsctrl",    nullptr, nullptr, nullptr        },
+	{ XSLFI_TRACE_RESTRICT_COUNTER, XSCF_NULL,                1,   1, "tracerestrict_counter",     nullptr, nullptr, "TRRC"         },
+	{ XSLFI_PROG_SIGS,              XSCF_NULL,                2,   2, "programmable_signals",      nullptr, nullptr, "SPRG"      },
 	{ XSLFI_ADJACENT_CROSSINGS,     XSCF_NULL,                1,   1, "adjacent_crossings",        nullptr, nullptr, nullptr        },
 	{ XSLFI_SAFER_CROSSINGS,        XSCF_NULL,                1,   1, "safer_crossings",           nullptr, nullptr, nullptr        },
 	{ XSLFI_DEPARTURE_BOARDS,       XSCF_IGNORABLE_UNKNOWN,   1,   1, "departure_boards",          nullptr, nullptr, nullptr        },
@@ -71,18 +85,18 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_IMPROVED_BREAKDOWNS,    XSCF_NULL,                6,   6, "improved_breakdowns",       nullptr, nullptr, nullptr        },
 	{ XSLFI_CONSIST_BREAKDOWN_FLAG, XSCF_NULL,                1,   1, "consist_breakdown_flag",    nullptr, nullptr, nullptr        },
 	{ XSLFI_TT_WAIT_IN_DEPOT,       XSCF_NULL,                1,   1, "tt_wait_in_depot",          nullptr, nullptr, nullptr        },
-	{ XSLFI_AUTO_TIMETABLE,         XSCF_NULL,                4,   4, "auto_timetables",           nullptr, nullptr, nullptr        },
+	{ XSLFI_AUTO_TIMETABLE,         XSCF_NULL,                5,   5, "auto_timetables",           nullptr, nullptr, nullptr        },
 	{ XSLFI_VEHICLE_REPAIR_COST,    XSCF_NULL,                2,   2, "vehicle_repair_cost",       nullptr, nullptr, nullptr        },
-	{ XSLFI_ENH_VIEWPORT_PLANS,     XSCF_IGNORABLE_ALL,       3,   3, "enh_viewport_plans",        nullptr, nullptr, "PLAN"      },
+	{ XSLFI_ENH_VIEWPORT_PLANS,     XSCF_IGNORABLE_ALL,       4,   4, "enh_viewport_plans",        nullptr, nullptr, "PLAN"      },
 	{ XSLFI_INFRA_SHARING,          XSCF_NULL,                2,   2, "infra_sharing",             nullptr, nullptr, "CPDP"      },
 	{ XSLFI_VARIABLE_DAY_LENGTH,    XSCF_NULL,                2,   2, "variable_day_length",       nullptr, nullptr, nullptr        },
 	{ XSLFI_ORDER_OCCUPANCY,        XSCF_NULL,                2,   2, "order_occupancy",           nullptr, nullptr, nullptr        },
-	{ XSLFI_MORE_COND_ORDERS,       XSCF_NULL,                5,   5, "more_cond_orders",          nullptr, nullptr, nullptr        },
+	{ XSLFI_MORE_COND_ORDERS,       XSCF_NULL,                7,   7, "more_cond_orders",          nullptr, nullptr, nullptr        },
 	{ XSLFI_EXTRA_LARGE_MAP,        XSCF_NULL,                0,   1, "extra_large_map",           nullptr, nullptr, nullptr        },
 	{ XSLFI_REVERSE_AT_WAYPOINT,    XSCF_NULL,                1,   1, "reverse_at_waypoint",       nullptr, nullptr, nullptr        },
 	{ XSLFI_VEH_LIFETIME_PROFIT,    XSCF_NULL,                1,   1, "veh_lifetime_profit",       nullptr, nullptr, nullptr        },
 	{ XSLFI_LINKGRAPH_DAY_SCALE,    XSCF_NULL,                1,   1, "linkgraph_day_scale",       nullptr, nullptr, nullptr        },
-	{ XSLFI_TEMPLATE_REPLACEMENT,   XSCF_NULL,                5,   5, "template_replacement",      nullptr, nullptr, "TRPL,TMPL" },
+	{ XSLFI_TEMPLATE_REPLACEMENT,   XSCF_NULL,                6,   6, "template_replacement",      nullptr, nullptr, "TRPL,TMPL" },
 	{ XSLFI_MORE_RAIL_TYPES,        XSCF_NULL,                0,   1, "more_rail_types",           nullptr, nullptr, nullptr        },
 	{ XSLFI_CARGO_TYPE_ORDERS,      XSCF_NULL,                3,   3, "cargo_type_orders",         nullptr, nullptr, "ORDX,VEOX" },
 	{ XSLFI_EXTENDED_GAMELOG,       XSCF_NULL,                1,   1, "extended_gamelog",          nullptr, nullptr, nullptr        },
@@ -92,7 +106,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_SCHEDULED_DISPATCH,     XSCF_NULL,                2,   2, "scheduled_dispatch",        nullptr, nullptr, nullptr        },
 	{ XSLFI_MORE_TOWN_GROWTH_RATES, XSCF_NULL,                1,   1, "more_town_growth_rates",    nullptr, nullptr, nullptr        },
 	{ XSLFI_MULTIPLE_DOCKS,         XSCF_NULL,                2,   2, "multiple_docks",            nullptr, nullptr, nullptr        },
-	{ XSLFI_TIMETABLE_EXTRA,        XSCF_NULL,                6,   6, "timetable_extra",           nullptr, nullptr, "ORDX"      },
+	{ XSLFI_TIMETABLE_EXTRA,        XSCF_NULL,                7,   7, "timetable_extra",           nullptr, nullptr, "ORDX"      },
 	{ XSLFI_TRAIN_FLAGS_EXTRA,      XSCF_NULL,                1,   1, "train_flags_extra",         nullptr, nullptr, nullptr        },
 	{ XSLFI_TRAIN_THROUGH_LOAD,     XSCF_NULL,                2,   2, "train_through_load",        nullptr, nullptr, nullptr        },
 	{ XSLFI_ORDER_EXTRA_DATA,       XSCF_NULL,                1,   1, "order_extra_data",          nullptr, nullptr, nullptr        },
@@ -103,11 +117,11 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_DUAL_RAIL_TYPES,        XSCF_NULL,                1,   1, "dual_rail_types",           nullptr, nullptr, nullptr        },
 	{ XSLFI_CONSIST_SPEED_RD_FLAG,  XSCF_NULL,                1,   1, "consist_speed_rd_flag",     nullptr, nullptr, nullptr        },
 	{ XSLFI_SAVEGAME_UNIQUE_ID,     XSCF_IGNORABLE_ALL,       1,   1, "savegame_unique_id",        nullptr, nullptr, nullptr        },
-	{ XSLFI_RV_OVERTAKING,          XSCF_NULL,                1,   1, "roadveh_overtaking",        nullptr, nullptr, nullptr        },
+	{ XSLFI_RV_OVERTAKING,          XSCF_NULL,                2,   2, "roadveh_overtaking",        nullptr, nullptr, nullptr        },
 	{ XSLFI_LINKGRAPH_MODES,        XSCF_NULL,                1,   1, "linkgraph_modes",           nullptr, nullptr, nullptr        },
 	{ XSLFI_GAME_EVENTS,            XSCF_NULL,                1,   1, "game_events",               nullptr, nullptr, nullptr        },
 	{ XSLFI_ROAD_LAYOUT_CHANGE_CTR, XSCF_NULL,                1,   1, "road_layout_change_ctr",    nullptr, nullptr, nullptr        },
-	{ XSLFI_TOWN_CARGO_MATRIX,      XSCF_NULL,                1,   1, "town_cargo_matrix",         nullptr, nullptr, nullptr        },
+	{ XSLFI_TOWN_CARGO_MATRIX,      XSCF_NULL,                0,   1, "town_cargo_matrix",         nullptr, nullptr, nullptr        },
 	{ XSLFI_STATE_CHECKSUM,         XSCF_NULL,                1,   1, "state_checksum",            nullptr, nullptr, nullptr        },
 	{ XSLFI_DEBUG,                  XSCF_IGNORABLE_ALL,       1,   1, "debug",                     nullptr, nullptr, "DBGL,DBGC"    },
 	{ XSLFI_FLOW_STAT_FLAGS,        XSCF_NULL,                1,   1, "flow_stat_flags",           nullptr, nullptr, nullptr        },
@@ -119,6 +133,15 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_INDUSTRY_PRODUCTION_HISTORY, XSCF_NULL,           1,   1, "ind_prod_history",          nullptr, nullptr, nullptr        },
 	{ XSLFI_DOCKING_CACHE_VER,      XSCF_IGNORABLE_ALL,       1,   1, "docking_cache_ver",         nullptr, nullptr, nullptr        },
 	{ XSLFI_EXTRA_CHEATS,           XSCF_NULL,                1,   1, "extra_cheats",              nullptr, nullptr, "CHTX"         },
+	{ XSLFI_TOWN_MULTI_BUILDING,    XSCF_NULL,                1,   1, "town_multi_building",       nullptr, nullptr, nullptr        },
+	{ XSLFI_SHIP_LOST_COUNTER,      XSCF_NULL,                1,   1, "ship_lost_counter",         nullptr, nullptr, nullptr        },
+	{ XSLFI_BUILD_OBJECT_RATE_LIMIT,XSCF_NULL,                1,   1, "build_object_rate_limit",   nullptr, nullptr, nullptr        },
+	{ XSLFI_LOCAL_COMPANY,          XSCF_IGNORABLE_ALL,       1,   1, "local_company",             saveLC,  loadLC,  nullptr        },
+	{ XSLFI_THROUGH_TRAIN_DEPOT,    XSCF_NULL,                1,   1, "drive_through_train_depot", nullptr, nullptr, nullptr        },
+	{ XSLFI_MORE_VEHICLE_ORDERS,    XSCF_NULL,                1,   1, "more_veh_orders",           nullptr, nullptr, nullptr        },
+	{ XSLFI_ORDER_FLAGS_EXTRA,      XSCF_NULL,                1,   1, "order_flags_extra",         nullptr, nullptr, nullptr        },
+	{ XSLFI_ONE_WAY_DT_ROAD_STOP,   XSCF_NULL,                1,   1, "one_way_dt_road_stop",      nullptr, nullptr, nullptr        },
+	{ XSLFI_ONE_WAY_ROAD_STATE,     XSCF_NULL,                1,   1, "one_way_road_state",        nullptr, nullptr, nullptr        },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };
 
@@ -189,6 +212,7 @@ void SlXvResetState()
 	_sl_maybe_chillpp = false;
 	_sl_xv_discardable_chunk_ids.clear();
 	memset(_sl_xv_feature_versions, 0, sizeof(_sl_xv_feature_versions));
+	_sl_xv_version_label.clear();
 }
 
 /**
@@ -519,6 +543,14 @@ static void Load_SLXI()
 		SLEG_END()
 	};
 
+	auto version_error = [](StringID str, const char *feature, int64 p1, int64 p2) {
+		char buf[256];
+		int64 args_array[] = { _sl_xv_version_label.empty() ? STR_EMPTY : STR_GAME_SAVELOAD_FROM_VERSION, (int64)(size_t)_sl_xv_version_label.c_str(), (int64)(size_t)feature, p1, p2 };
+		StringParameters tmp_params(args_array);
+		GetStringWithArgs(buf, str, &tmp_params, lastof(buf));
+		SlError(STR_JUST_RAW_STRING, buf, false);
+	};
+
 	uint32 item_count = SlReadUint32();
 	for (uint32 i = 0; i < item_count; i++) {
 		SlxiSubChunkFlags flags = static_cast<SlxiSubChunkFlags>(SlReadUint32());
@@ -546,7 +578,7 @@ static void Load_SLXI()
 					}
 					DEBUG(sl, 1, "SLXI chunk: too large version for feature: '%s', version: %d, max version: %d, ignoring", name_buffer, version, info->max_version);
 				} else {
-					SlErrorCorruptFmt("SLXI chunk: too large version for feature: '%s', version: %d, max version: %d", name_buffer, version, info->max_version);
+					version_error(STR_GAME_SAVELOAD_ERROR_TOO_NEW_FEATURE_VERSION, name_buffer, version, info->max_version);
 				}
 			} else {
 				// success path :)
@@ -578,7 +610,7 @@ static void Load_SLXI()
 				}
 				DEBUG(sl, 1, "SLXI chunk: unknown feature: '%s', version: %d, ignoring", name_buffer, version);
 			} else {
-				SlErrorCorruptFmt("SLXI chunk: unknown feature: %s, version: %d", name_buffer, version);
+				version_error(STR_GAME_SAVELOAD_ERROR_UNKNOWN_FEATURE, name_buffer, version, 0);
 			}
 		}
 
@@ -595,6 +627,35 @@ static void Load_SLXI()
 			}
 		}
 	}
+}
+
+static void loadVL(const SlxiSubChunkInfo *info, uint32 length)
+{
+	_sl_xv_version_label.resize(length);
+	ReadBuffer::GetCurrent()->CopyBytes(reinterpret_cast<byte *>(const_cast<char *>(_sl_xv_version_label.c_str())), length);
+}
+
+static uint32 saveVL(const SlxiSubChunkInfo *info, bool dry_run)
+{
+	uint32 length = strlen(_openttd_revision);
+	if (!dry_run) MemoryDumper::GetCurrent()->CopyBytes(reinterpret_cast<const byte *>(_openttd_revision), length);
+	return length;
+}
+
+static void loadLC(const SlxiSubChunkInfo *info, uint32 length)
+{
+	if (length == 1) {
+		_loaded_local_company = (CompanyID) ReadBuffer::GetCurrent()->ReadByte();
+	} else {
+		DEBUG(sl, 1, "SLXI chunk: feature: '%s', version: %d, has data of wrong length: %u", info->name, _sl_xv_feature_versions[info->index], length);
+		ReadBuffer::GetCurrent()->SkipBytes(length);
+	}
+}
+
+static uint32 saveLC(const SlxiSubChunkInfo *info, bool dry_run)
+{
+	if (!dry_run) MemoryDumper::GetCurrent()->WriteByte(_local_company);
+	return 1;
 }
 
 extern const ChunkHandler _version_ext_chunk_handlers[] = {

@@ -16,6 +16,7 @@
 #include "../viewport_func.h"
 #include "../smallmap_gui.h"
 #include "../zoom_func.h"
+#include "../landscape.h"
 #include "../core/geometry_func.hpp"
 #include "../widgets/link_graph_legend_widget.h"
 
@@ -31,10 +32,27 @@
  * Colours for the various "load" states of links. Ordered from "unused" to
  * "overloaded".
  */
-const uint8 LinkGraphOverlay::LINK_COLOURS[] = {
+const uint8 LinkGraphOverlay::LINK_COLOURS[][12] = {
+{
 	0x0f, 0xd1, 0xd0, 0x57,
 	0x55, 0x53, 0xbf, 0xbd,
 	0xba, 0xb9, 0xb7, 0xb5
+},
+{
+	0x0f, 0xd1, 0xd0, 0x57,
+	0x55, 0x53, 0x96, 0x95,
+	0x94, 0x93, 0x92, 0x91
+},
+{
+	0x0f, 0x0b, 0x09, 0x07,
+	0x05, 0x03, 0xbf, 0xbd,
+	0xba, 0xb9, 0xb7, 0xb5
+},
+{
+	0x0f, 0x0b, 0x0a, 0x09,
+	0x08, 0x07, 0x06, 0x05,
+	0x04, 0x03, 0x02, 0x01
+}
 };
 
 /**
@@ -52,7 +70,7 @@ void LinkGraphOverlay::GetWidgetDpi(DrawPixelInfo *dpi, uint margin) const
 bool LinkGraphOverlay::CacheStillValid() const
 {
 	if (this->window->viewport) {
-		const ViewPort *vp = this->window->viewport;
+		const Viewport *vp = this->window->viewport;
 		Rect region { vp->virtual_left, vp->virtual_top,
 				vp->virtual_left + vp->virtual_width, vp->virtual_top + vp->virtual_height };
 		return (region.left >= this->cached_region.left &&
@@ -61,6 +79,29 @@ bool LinkGraphOverlay::CacheStillValid() const
 				region.bottom <= this->cached_region.bottom);
 	} else {
 		return true;
+	}
+}
+
+void LinkGraphOverlay::MarkStationViewportLinksDirty(const Station *st)
+{
+	if (this->window->viewport) {
+		Viewport *vp = this->window->viewport;
+		const Point pt = RemapCoords2(TileX(st->xy) * TILE_SIZE, TileY(st->xy) * TILE_SIZE);
+		const int padding = ScaleByZoom(3 * this->scale, vp->zoom);
+		MarkViewportDirty(vp, pt.x - padding, pt.y - padding, pt.x + padding, pt.y - padding, VMDF_NOT_LANDSCAPE);
+
+		const int block_radius = ScaleByZoom(10, vp->zoom);
+		for (LinkList::iterator i(this->cached_links.begin()); i != this->cached_links.end(); ++i) {
+			if (i->from_id == st->index) {
+				const Station *stb = Station::GetIfValid(i->to_id);
+				if (stb == nullptr) continue;
+				MarkViewportLineDirty(vp, pt, RemapCoords2(TileX(stb->xy) * TILE_SIZE, TileY(stb->xy) * TILE_SIZE), block_radius, VMDF_NOT_LANDSCAPE);
+			} else if (i->to_id == st->index) {
+			const Station *sta = Station::GetIfValid(i->from_id);
+			if (sta == nullptr) continue;
+				MarkViewportLineDirty(vp, RemapCoords2(TileX(sta->xy) * TILE_SIZE, TileY(sta->xy) * TILE_SIZE), pt, block_radius, VMDF_NOT_LANDSCAPE);
+			}
+		}
 	}
 }
 
@@ -79,7 +120,7 @@ void LinkGraphOverlay::RebuildCache(bool incremental)
 	DrawPixelInfo dpi;
 	bool cache_all = false;
 	if (this->window->viewport) {
-		const ViewPort *vp = this->window->viewport;
+		const Viewport *vp = this->window->viewport;
 		const int pixel_margin = 256;
 		const int vp_margin = ScaleByZoom(pixel_margin, vp->zoom);
 		this->GetWidgetDpi(&dpi, pixel_margin);
@@ -377,7 +418,7 @@ void LinkGraphOverlay::DrawLinks(const DrawPixelInfo *dpi) const
 void LinkGraphOverlay::DrawContent(Point pta, Point ptb, const LinkProperties &cargo) const
 {
 	uint usage_or_plan = min(cargo.capacity * 2 + 1, max(cargo.usage, cargo.planned));
-	int colour = LinkGraphOverlay::LINK_COLOURS[usage_or_plan * lengthof(LinkGraphOverlay::LINK_COLOURS) / (cargo.capacity * 2 + 2)];
+	int colour = LinkGraphOverlay::LINK_COLOURS[_settings_client.gui.linkgraph_colours][usage_or_plan * lengthof(LinkGraphOverlay::LINK_COLOURS[0]) / (cargo.capacity * 2 + 2)];
 	int dash = cargo.shared ? this->scale * 4 : 0;
 
 	/* Move line a bit 90° against its dominant direction to prevent it from
@@ -486,7 +527,7 @@ NWidgetBase *MakeCompanyButtonRowsLinkGraphGUI(int *biggest_index)
 NWidgetBase *MakeSaturationLegendLinkGraphGUI(int *biggest_index)
 {
 	NWidgetVertical *panel = new NWidgetVertical(NC_EQUALSIZE);
-	for (uint i = 0; i < lengthof(LinkGraphOverlay::LINK_COLOURS); ++i) {
+	for (uint i = 0; i < lengthof(LinkGraphOverlay::LINK_COLOURS[0]); ++i) {
 		NWidgetBackground * wid = new NWidgetBackground(WWT_PANEL, COLOUR_DARK_GREEN, i + WID_LGL_SATURATION_FIRST);
 		wid->SetMinimalSize(50, FONT_HEIGHT_SMALL);
 		wid->SetFill(1, 1);
@@ -560,7 +601,7 @@ static const NWidgetPart _nested_linkgraph_legend_widgets[] = {
 };
 
 assert_compile(WID_LGL_SATURATION_LAST - WID_LGL_SATURATION_FIRST ==
-		lengthof(LinkGraphOverlay::LINK_COLOURS) - 1);
+		lengthof(LinkGraphOverlay::LINK_COLOURS[0]) - 1);
 
 static WindowDesc _linkgraph_legend_desc(
 	WDP_AUTO, "toolbar_linkgraph", 0, 0,
@@ -642,7 +683,8 @@ void LinkGraphLegendWindow::DrawWidget(const Rect &r, int widget) const
 		DrawCompanyIcon(cid, (r.left + r.right + 1 - sprite_size.width) / 2, (r.top + r.bottom + 1 - sprite_size.height) / 2);
 	}
 	if (IsInsideMM(widget, WID_LGL_SATURATION_FIRST, WID_LGL_SATURATION_LAST + 1)) {
-		GfxFillRect(r.left + 1, r.top + 1, r.right - 1, r.bottom - 1, LinkGraphOverlay::LINK_COLOURS[widget - WID_LGL_SATURATION_FIRST]);
+		uint8 colour = LinkGraphOverlay::LINK_COLOURS[_settings_client.gui.linkgraph_colours][widget - WID_LGL_SATURATION_FIRST];
+		GfxFillRect(r.left + 1, r.top + 1, r.right - 1, r.bottom - 1, colour);
 		StringID str = STR_NULL;
 		if (widget == WID_LGL_SATURATION_FIRST) {
 			str = STR_LINKGRAPH_LEGEND_UNUSED;
@@ -651,7 +693,9 @@ void LinkGraphLegendWindow::DrawWidget(const Rect &r, int widget) const
 		} else if (widget == (WID_LGL_SATURATION_LAST + WID_LGL_SATURATION_FIRST) / 2) {
 			str = STR_LINKGRAPH_LEGEND_SATURATED;
 		}
-		if (str != STR_NULL) DrawString(r.left, r.right, (r.top + r.bottom + 1 - FONT_HEIGHT_SMALL) / 2, str, TC_FROMSTRING, SA_HOR_CENTER);
+		if (str != STR_NULL) {
+			DrawString(r.left, r.right, (r.top + r.bottom + 1 - FONT_HEIGHT_SMALL) / 2, str, GetContrastColour(colour) | TC_FORCED, SA_HOR_CENTER);
+		}
 	}
 	if (IsInsideMM(widget, WID_LGL_CARGO_FIRST, WID_LGL_CARGO_LAST + 1)) {
 		if (this->IsWidgetDisabled(widget)) return;

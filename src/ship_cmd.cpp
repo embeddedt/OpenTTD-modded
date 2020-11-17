@@ -24,6 +24,7 @@
 #include "window_func.h"
 #include "date_func.h"
 #include "vehicle_func.h"
+#include "vehicle_gui.h"
 #include "sound_func.h"
 #include "ai/ai.hpp"
 #include "game/game.hpp"
@@ -254,7 +255,7 @@ void Ship::OnNewDay()
 
 	SetWindowDirty(WC_VEHICLE_DETAILS, this->index);
 	/* we need this for the profit */
-	SetWindowClassesDirty(WC_SHIPS_LIST);
+	DirtyVehicleListWindowForVehicle(this);
 }
 
 Trackdir Ship::GetVehicleTrackdir() const
@@ -277,7 +278,7 @@ Trackdir Ship::GetVehicleTrackdir() const
 void Ship::MarkDirty()
 {
 	this->colourmap = PAL_NONE;
-	this->cur_image_valid_dir = INVALID_DIR;
+	this->InvalidateImageCache();
 	this->UpdateViewport(true, false);
 	this->UpdateCache();
 }
@@ -414,7 +415,7 @@ static bool CheckShipLeaveDepot(Ship *v)
 	PlayShipSound(v);
 	VehicleServiceInDepot(v);
 	InvalidateWindowData(WC_VEHICLE_DEPOT, v->tile);
-	SetWindowClassesDirty(WC_SHIPS_LIST);
+	DirtyVehicleListWindowForVehicle(v);
 
 	return false;
 }
@@ -971,7 +972,7 @@ reverse_direction:
 bool Ship::Tick()
 {
 	UpdateStateChecksum((((uint64) this->x_pos) << 32) | this->y_pos);
-	if (!(this->vehstatus & VS_STOPPED)) this->running_ticks++;
+	if (!((this->vehstatus & VS_STOPPED) || this->IsWaitingInDepot())) this->running_ticks++;
 
 	ShipController(this);
 

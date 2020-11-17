@@ -58,6 +58,8 @@
 #include "ai/ai.hpp"
 #include "game/game_config.hpp"
 #include "game/game.hpp"
+#include "ai/ai_instance.hpp"
+#include "game/game_instance.hpp"
 #include "ship.h"
 #include "smallmap_gui.h"
 #include "roadveh.h"
@@ -87,6 +89,7 @@
 ClientSettings _settings_client;
 GameSettings _settings_game;     ///< Game settings of a running game or the scenario editor.
 GameSettings _settings_newgame;  ///< Game settings for new games (updated from the intro screen).
+TimeSettings _settings_time; ///< The effective settings that are used for time display.
 VehicleDefaultSettings _old_vds; ///< Used for loading default vehicles settings from old savegames
 char *_config_file; ///< Configuration file of OpenTTD
 std::string _config_file_text;
@@ -1165,6 +1168,21 @@ static bool InvalidateVehTimetableWindow(int32 p1)
 	return true;
 }
 
+static bool UpdateTimeSettings(int32 p1)
+{
+	SetupTimeSettings();
+	InvalidateVehTimetableWindow(p1);
+	MarkWholeScreenDirty();
+	return true;
+}
+
+static bool ChangeTimeOverrideMode(int32 p1)
+{
+	InvalidateWindowClassesData(WC_GAME_OPTIONS);
+	UpdateTimeSettings(p1);
+	return true;
+}
+
 static bool ZoomMinMaxChanged(int32 p1)
 {
 	extern void ConstrainAllViewportsZoom();
@@ -1211,6 +1229,54 @@ static bool InvalidateIndustryViewWindow(int32 p1)
 static bool InvalidateAISettingsWindow(int32 p1)
 {
 	InvalidateWindowClassesData(WC_AI_SETTINGS);
+	return true;
+}
+
+static bool ScriptMaxOpsChange(int32 p1)
+{
+	if (_networking && !_network_server) return true;
+
+	GameInstance *g = Game::GetGameInstance();
+	if (g != nullptr && !g->IsDead()) {
+		g->LimitOpsTillSuspend(p1);
+	}
+
+	for (const Company *c : Company::Iterate()) {
+		if (c->is_ai && c->ai_instance != nullptr && !c->ai_instance->IsDead()) {
+			c->ai_instance->LimitOpsTillSuspend(p1);
+		}
+	}
+
+	return true;
+}
+
+static bool ScriptMaxMemoryChange(int32 p1)
+{
+	if (_networking && !_network_server) return true;
+
+	size_t limit = static_cast<size_t>(p1) << 20;
+
+	GameInstance *g = Game::GetGameInstance();
+	if (g != nullptr && !g->IsDead()) {
+		if (g->GetAllocatedMemory() > limit) return false;
+	}
+
+	for (const Company *c : Company::Iterate()) {
+		if (c->is_ai && c->ai_instance != nullptr && !c->ai_instance->IsDead()) {
+			if (c->ai_instance->GetAllocatedMemory() > limit) return false;
+		}
+	}
+
+	if (g != nullptr && !g->IsDead()) {
+		g->SetMemoryAllocationLimit(limit);
+	}
+
+	for (const Company *c : Company::Iterate()) {
+		if (c->is_ai && c->ai_instance != nullptr && !c->ai_instance->IsDead()) {
+			c->ai_instance->SetMemoryAllocationLimit(limit);
+		}
+	}
+
 	return true;
 }
 
@@ -1278,7 +1344,33 @@ static bool ViewportMapShowTunnelModeChanged(int32 p1)
 {
 	extern void ViewportMapBuildTunnelCache();
 	ViewportMapBuildTunnelCache();
+
+	extern void MarkAllViewportMapLandscapesDirty();
+	MarkAllViewportMapLandscapesDirty();
+
+	return true;
+}
+
+static bool ViewportMapLandscapeModeChanged(int32 p1)
+{
+	extern void MarkAllViewportMapLandscapesDirty();
+	MarkAllViewportMapLandscapesDirty();
+
+	return true;
+}
+
+static bool UpdateLinkgraphColours(int32 p1)
+{
+	BuildLinkStatsLegend();
 	return RedrawScreen(p1);
+}
+
+static bool InvalidateAllVehicleImageCaches(int32 p1)
+{
+	for (Vehicle *v : Vehicle::Iterate()) {
+		v->InvalidateImageCache();
+	}
+	return true;
 }
 
 /** Checks if any settings are set to incorrect values, and sets them to correct values in that case. */
@@ -1329,7 +1421,11 @@ static bool MaxNoAIsChange(int32 i)
 static bool CheckRoadSide(int p1)
 {
 	extern bool RoadVehiclesAreBuilt();
-	return _game_mode == GM_MENU || !RoadVehiclesAreBuilt();
+	if (_game_mode != GM_MENU && RoadVehiclesAreBuilt()) return false;
+
+	extern void RecalculateRoadCachedOneWayStates();
+	RecalculateRoadCachedOneWayStates();
+	return true;
 }
 
 /**
@@ -1956,6 +2052,8 @@ void LoadFromConfig(bool minimal)
 
 		ValidateSettings();
 
+		PostZoningModeChange();
+
 		/* Display scheduled errors */
 		extern void ScheduleErrorMessage(ErrorList &datas);
 		ScheduleErrorMessage(_settings_error_list);
@@ -2234,7 +2332,7 @@ void SyncCompanySettings()
 		const void *new_var = GetVariableAddress(&_settings_client.company, &sd->save);
 		uint32 old_value = (uint32)ReadValue(old_var, sd->save.conv);
 		uint32 new_value = (uint32)ReadValue(new_var, sd->save.conv);
-		if (old_value != new_value) NetworkSendCommand(0, i, new_value, CMD_CHANGE_COMPANY_SETTING, nullptr, nullptr, _local_company, 0);
+		if (old_value != new_value) NetworkSendCommand(0, i, new_value, 0, CMD_CHANGE_COMPANY_SETTING, nullptr, nullptr, _local_company, 0);
 	}
 }
 
@@ -2889,4 +2987,9 @@ static bool IsSignedVarMemType(VarType vt)
 			return true;
 	}
 	return false;
+}
+
+void SetupTimeSettings()
+{
+	_settings_time = (_game_mode == GM_MENU || _settings_client.gui.override_time_settings) ? _settings_client.gui : _settings_game.game_time;
 }

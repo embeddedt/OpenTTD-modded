@@ -70,7 +70,7 @@ void ResetRailTypes()
 		{0,0,0,0,0,0,0,0,{}},
 		{0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0},
-		0, RAILTYPES_NONE, RAILTYPES_NONE, 0, 0, 0, RTFB_NONE, 0, 0, 0, 0, 0,
+		0, RAILTYPES_NONE, RAILTYPES_NONE, RAILTYPES_NONE, 0, 0, 0, RTFB_NONE, 0, 0, 0, 0, 0, 0,
 		RailTypeLabelList(), 0, 0, RAILTYPES_NONE, RAILTYPES_NONE, 0,
 		{}, {} };
 	for (; i < lengthof(_railtypes);          i++) _railtypes[i] = empty_railtype;
@@ -150,6 +150,27 @@ void InitRailTypes()
 		}
 	}
 	std::sort(_sorted_railtypes.begin(), _sorted_railtypes.end(), CompareRailTypes);
+
+	for (RailType rt = RAILTYPE_BEGIN; rt != RAILTYPE_END; rt++) {
+		_railtypes[rt].all_compatible_railtypes = _railtypes[rt].compatible_railtypes;
+	}
+	for (RailType rt = RAILTYPE_BEGIN; rt != RAILTYPE_END; rt++) {
+		RailTypes compatible = _railtypes[rt].all_compatible_railtypes;
+		RailTypes to_check = compatible;
+		while (to_check) {
+			RailType i = (RailType)FindFirstBit64(to_check);
+			to_check = KillFirstBit(to_check);
+			RailTypes new_types = _railtypes[i].compatible_railtypes & (~compatible);
+			to_check |= new_types;
+			compatible |= new_types;
+		}
+		RailTypes to_update = compatible;
+		while (to_update) {
+			RailType i = (RailType)FindFirstBit64(to_update);
+			to_update = KillFirstBit(to_update);
+			_railtypes[i].all_compatible_railtypes = compatible;
+		}
+	}
 }
 
 /**
@@ -722,6 +743,7 @@ CommandCost CmdBuildSingleRail(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 							Company::Get(tram_owner)->infrastructure.road[roadtype_tram] += num_new_tram_pieces;
 							DirtyCompanyInfrastructureWindows(tram_owner);
 						}
+						UpdateRoadCachedOneWayStatesAroundTile(tile);
 					}
 					break;
 				}
@@ -830,6 +852,7 @@ CommandCost CmdRemoveSingleRail(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 				DirtyCompanyInfrastructureWindows(owner);
 				MakeRoadNormal(tile, GetCrossingRoadBits(tile), GetRoadTypeRoad(tile), GetRoadTypeTram(tile), GetTownIndex(tile), GetRoadOwner(tile, RTT_ROAD), GetRoadOwner(tile, RTT_TRAM));
 				DeleteNewGRFInspectWindow(GSF_RAILTYPES, tile);
+				UpdateRoadCachedOneWayStatesAroundTile(tile);
 			}
 			break;
 		}
@@ -1027,7 +1050,7 @@ bool FloodHalftile(TileIndex t)
 			if (IsSteepSlope(tileh) || IsSlopeWithThreeCornersRaised(tileh)) {
 				flooded = true;
 				SetRailGroundType(t, RAIL_GROUND_WATER);
-				MarkTileDirtyByTile(t, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(t, VMDF_NOT_MAP_MODE);
 			}
 		}
 	}
@@ -1587,7 +1610,7 @@ CommandCost CmdBuildSingleSignal(TileIndex tile, DoCommandFlag flags, uint32 p1,
 			uint mask = GetPresentSignals(tile) & SignalOnTrack(track);
 			SetSignalStates(tile, (GetSignalStates(tile) & ~mask) | ((HasBit(GetRailReservationTrackBits(tile), track) && EnsureNoVehicleOnGround(tile).Succeeded() ? UINT_MAX : 0) & mask));
 		}
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		AddTrackToSignalBuffer(tile, track, _current_company);
 		YapfNotifyTrackLayoutChange(tile, track);
 		if (v != nullptr) {
@@ -1993,7 +2016,7 @@ CommandCost CmdRemoveSingleSignal(TileIndex tile, DoCommandFlag flags, uint32 p1
 			TryPathReserve(v, false);
 		}
 
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 	}
 
 	return CommandCost(EXPENSES_CONSTRUCTION, cost);
@@ -2029,6 +2052,70 @@ static Vehicle *UpdateTrainPowerProc(Vehicle *v, void *data)
 	include(*affected_trains, Train::From(v)->First());
 
 	return nullptr;
+}
+
+struct EnsureNoIncompatibleRailtypeTrainOnGroundData {
+	int z;
+	RailType type;
+};
+
+static Vehicle *EnsureNoIncompatibleRailtypeTrainProc(Vehicle *v, void *data)
+{
+	const EnsureNoIncompatibleRailtypeTrainOnGroundData *procdata = (EnsureNoIncompatibleRailtypeTrainOnGroundData *)data;
+
+	if (v->z_pos > procdata->z) return nullptr;
+	if (HasBit(Train::From(v)->First()->compatible_railtypes, procdata->type)) return nullptr;
+
+	return v;
+}
+
+CommandCost EnsureNoIncompatibleRailtypeTrainOnGround(TileIndex tile, RailType type)
+{
+	EnsureNoIncompatibleRailtypeTrainOnGroundData data = {
+		GetTileMaxPixelZ(tile),
+		type
+	};
+
+	if (HasVehicleOnPos(tile, VEH_TRAIN, &data, &EnsureNoIncompatibleRailtypeTrainProc)) {
+		return_cmd_error(STR_ERROR_TRAIN_IN_THE_WAY);
+	}
+	return CommandCost();
+}
+
+struct EnsureNoIncompatibleRailtypeTrainOnTrackBitsData {
+	TrackBits track_bits;
+	RailType type;
+};
+
+static Vehicle *EnsureNoIncompatibleRailtypeTrainOnTrackProc(Vehicle *v, void *data)
+{
+	const EnsureNoIncompatibleRailtypeTrainOnTrackBitsData *procdata = (EnsureNoIncompatibleRailtypeTrainOnTrackBitsData *)data;
+	TrackBits rail_bits = procdata->track_bits;
+
+	Train *t = Train::From(v);
+	if (HasBit(t->First()->compatible_railtypes, procdata->type)) return nullptr;
+	if (rail_bits & TRACK_BIT_WORMHOLE) {
+		if (t->track & TRACK_BIT_WORMHOLE) return v;
+		rail_bits &= ~TRACK_BIT_WORMHOLE;
+	} else if (t->track & TRACK_BIT_WORMHOLE) {
+		return nullptr;
+	}
+	if ((t->track != rail_bits) && !TracksOverlap(t->track | rail_bits)) return nullptr;
+
+	return v;
+}
+
+CommandCost EnsureNoIncompatibleRailtypeTrainOnTrackBits(TileIndex tile, TrackBits track_bits, RailType type)
+{
+	EnsureNoIncompatibleRailtypeTrainOnTrackBitsData data = {
+		track_bits,
+		type
+	};
+
+	if (HasVehicleOnPos(tile, VEH_TRAIN, &data, &EnsureNoIncompatibleRailtypeTrainOnTrackProc)) {
+		return_cmd_error(STR_ERROR_TRAIN_IN_THE_WAY);
+	}
+	return CommandCost();
 }
 
 /**
@@ -2123,7 +2210,7 @@ CommandCost CmdConvertRail(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 		 * Tunnels and bridges have special check later */
 		if (tt != MP_TUNNELBRIDGE) {
 			if (!IsCompatibleRail(type, totype) || !IsCompatibleRail(secondary_type, totype)) {
-				CommandCost ret = IsPlainRailTile(tile) ? EnsureNoTrainOnTrackBits(tile, GetTrackBits(tile)) : EnsureNoVehicleOnGround(tile);
+				CommandCost ret = IsPlainRailTile(tile) ? EnsureNoIncompatibleRailtypeTrainOnTrackBits(tile, GetTrackBits(tile), totype) : EnsureNoIncompatibleRailtypeTrainOnGround(tile, totype);
 				if (ret.Failed()) {
 					error = ret;
 					continue;
@@ -2154,7 +2241,7 @@ CommandCost CmdConvertRail(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 				SetRailType(tile, totype);
 				if (IsPlainRailTile(tile)) SetSecondaryRailType(tile, totype);
 
-				MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 				/* update power of train on this tile */
 				FindVehicleOnPos(tile, VEH_TRAIN, &affected_trains, &UpdateTrainPowerProc);
 			}
@@ -2240,10 +2327,10 @@ CommandCost CmdConvertRail(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					yapf_notify_track_change(endtile, GetTunnelBridgeTrackBits(endtile));
 
 					if (IsBridge(tile)) {
-						MarkBridgeDirty(tile, ZOOM_LVL_DRAW_MAP);
+						MarkBridgeDirty(tile, VMDF_NOT_MAP_MODE);
 					} else {
-						MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
-						MarkTileDirtyByTile(endtile, ZOOM_LVL_DRAW_MAP);
+						MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
+						MarkTileDirtyByTile(endtile, VMDF_NOT_MAP_MODE);
 					}
 
 					AddRailTunnelBridgeInfrastructure(tile, endtile);
@@ -2429,39 +2516,38 @@ void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, Sign
 	uint x, y;
 	GetSignalXY(tile, pos, x, y);
 
-	SpriteID sprite;
-	bool is_custom_sprite;
-	if (type == SIGTYPE_PROG) {
+	SpriteID sprite = GetCustomSignalSprite(rti, tile, type, variant, condition, false, show_restricted);
+	bool is_custom_sprite = (sprite != 0);
+	if (sprite != 0) {
+		sprite += image;
+	} else if (type == SIGTYPE_PROG) {
 		if (variant == SIG_SEMAPHORE) {
 			sprite = SPR_PROGSIGNAL_BASE + image * 2 + condition;
 		} else {
 			sprite = SPR_PROGSIGNAL_BASE + 16 + image * 2 + condition;
 		}
+
 		extern int _progsig_grf_file_index;
 		is_custom_sprite = (int) GetOriginFileSlot(sprite) != _progsig_grf_file_index;
 	} else {
-		sprite = GetCustomSignalSprite(rti, tile, type, variant, condition);
-		is_custom_sprite = (sprite != 0);
-		if (sprite != 0) {
-			sprite += image;
-		} else {
-			/* Normal electric signals are stored in a different sprite block than all other signals. */
-			sprite = (type == SIGTYPE_NORMAL && variant == SIG_ELECTRIC) ? SPR_ORIGINAL_SIGNALS_BASE : SPR_SIGNALS_BASE - 16;
-			sprite += type * 16 + variant * 64 + image * 2 + condition + (IsSignalSpritePBS(type) ? 64 : 0);
-		}
+		/* Normal electric signals are stored in a different sprite block than all other signals. */
+		sprite = (type == SIGTYPE_NORMAL && variant == SIG_ELECTRIC) ? SPR_ORIGINAL_SIGNALS_BASE : SPR_SIGNALS_BASE - 16;
+		sprite += type * 16 + variant * 64 + image * 2 + condition + (IsSignalSpritePBS(type) ? 64 : 0);
 
-		if (!is_custom_sprite) {
-			int origin_slot = GetOriginFileSlot(sprite);
-			extern int _first_user_grf_file_index;
-			extern int _opengfx_grf_file_index;
-			is_custom_sprite = origin_slot != _opengfx_grf_file_index && (origin_slot >= _first_user_grf_file_index);
-		}
+		int origin_slot = GetOriginFileSlot(sprite);
+		extern int _first_user_grf_file_index;
+		extern int _opengfx_grf_file_index;
+		is_custom_sprite = origin_slot != _opengfx_grf_file_index && (origin_slot >= _first_user_grf_file_index);
 	}
 
-	if (is_custom_sprite && show_restricted && _settings_client.gui.show_restricted_signal_default) {
+	if (is_custom_sprite && show_restricted && _settings_client.gui.show_restricted_signal_default && !HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG)) {
 		/* Use duplicate sprite block, instead of GRF-specified signals */
 		if (type == SIGTYPE_PROG) {
-			sprite += SPR_DUP_PROGSIGNAL_BASE - SPR_PROGSIGNAL_BASE;
+			if (variant == SIG_SEMAPHORE) {
+				sprite = SPR_DUP_PROGSIGNAL_BASE + image * 2 + condition;
+			} else {
+				sprite = SPR_DUP_PROGSIGNAL_BASE + 16 + image * 2 + condition;
+			}
 		} else {
 			sprite = (type == SIGTYPE_NORMAL && variant == SIG_ELECTRIC) ? SPR_DUP_ORIGINAL_SIGNALS_BASE : SPR_DUP_SIGNALS_BASE - 16;
 			sprite += type * 16 + variant * 64 + image * 2 + condition + (IsSignalSpritePBS(type) ? 64 : 0);
@@ -2500,7 +2586,7 @@ static void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track trac
 void MarkSingleSignalDirty(TileIndex tile, Trackdir td)
 {
 	if (_signal_sprite_oversized || td >= TRACKDIR_END) {
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		return;
 	}
 
@@ -2531,7 +2617,7 @@ void MarkSingleSignalDirty(TileIndex tile, Trackdir td)
 			pt.y - SIGNAL_DIRTY_TOP,
 			pt.x + SIGNAL_DIRTY_RIGHT,
 			pt.y + SIGNAL_DIRTY_BOTTOM,
-			ZOOM_LVL_DRAW_MAP
+			VMDF_NOT_MAP_MODE
 	);
 }
 
@@ -3402,7 +3488,7 @@ static void TileLoop_Track(TileIndex tile)
 set_ground:
 	if (old_ground != new_ground) {
 		SetRailGroundType(tile, new_ground);
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 	}
 }
 

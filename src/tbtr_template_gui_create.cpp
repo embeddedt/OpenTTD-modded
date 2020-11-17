@@ -133,6 +133,7 @@ private:
 	VehicleID vehicle_over;
 	bool sell_hovered;                ///< A vehicle is being dragged/hovered over the sell button.
 	uint32 template_index;
+	btree::btree_set<VehicleID> pending_deletions; ///< Vehicle IDs where deletion is in progress
 
 public:
 	TemplateCreateWindow(WindowDesc* _wdesc, TemplateVehicle *to_edit, bool *window_open) : Window(_wdesc)
@@ -168,8 +169,6 @@ public:
 			DoCommandP(0, virtual_train->index, 0, CMD_DELETE_VIRTUAL_TRAIN);
 			virtual_train = nullptr;
 		}
-
-		SetWindowClassesDirty(WC_TRAINS_LIST);
 
 		/* more cleanup */
 		*create_window_open = false;
@@ -314,12 +313,31 @@ public:
 						y += FONT_HEIGHT_NORMAL;
 					}
 					/* Draw vehicle performance info */
+					const bool original_acceleration = (_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL ||
+							GetRailTypeInfo(this->virtual_train->railtype)->acceleration_type == 2);
 					const GroundVehicleCache *gcache = this->virtual_train->GetGroundVehicleCache();
 					SetDParam(2, this->virtual_train->GetDisplayMaxSpeed());
 					SetDParam(1, gcache->cached_power);
 					SetDParam(0, gcache->cached_weight);
 					SetDParam(3, gcache->cached_max_te / 1000);
-					DrawString(8, r.right, y, STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
+					DrawString(8, r.right, y, original_acceleration ? STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED : STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
+					uint32 full_cargo_weight = 0;
+					for (Train *train = this->virtual_train; train != nullptr; train = train->Next()) {
+						full_cargo_weight += train->GetCargoWeight(train->cargo_cap);
+					}
+					if (full_cargo_weight > 0 || _settings_client.gui.show_train_weight_ratios_in_details) {
+						y += FONT_HEIGHT_NORMAL;
+						uint full_weight = gcache->cached_weight + full_cargo_weight;
+						SetDParam(0, full_weight);
+						if (_settings_client.gui.show_train_weight_ratios_in_details) {
+							SetDParam(1, STR_VEHICLE_INFO_WEIGHT_RATIOS);
+							SetDParam(2, (100 * this->virtual_train->gcache.cached_power) / max<uint>(1, full_weight));
+							SetDParam(3, (this->virtual_train->gcache.cached_max_te / 10) / max<uint>(1, full_weight));
+						} else {
+							SetDParam(1, STR_EMPTY);
+						}
+						DrawString(8, r.right, y, STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS);
+					}
 					/* Draw cargo summary */
 					CargoArray cargo_caps;
 					for (const Train *tmp = this->virtual_train; tmp != nullptr; tmp = tmp->Next()) {
@@ -373,8 +391,14 @@ public:
 
 				Train* train_to_delete = Train::Get(this->sel);
 
+				this->pending_deletions.insert(this->sel);
+
 				if (virtual_train == train_to_delete) {
-					virtual_train = (_ctrl_pressed) ? nullptr : virtual_train->GetNextUnit();
+					if (_ctrl_pressed) {
+						virtual_train = nullptr;
+					} else {
+						this->RearrangeVirtualTrain();
+					}
 				}
 
 				DoCommandP(0, this->sel | (sell_cmd << 20) | (1 << 21), 0, GetCmdSellVeh(VEH_TRAIN), CcDeleteVirtualTrain);
@@ -549,11 +573,20 @@ public:
 		}
 	}
 
+	void VirtualVehicleDeleted(VehicleID id)
+	{
+		this->pending_deletions.erase(id);
+		this->RearrangeVirtualTrain();
+	}
+
 	void RearrangeVirtualTrain()
 	{
-		if (!virtual_train) return;
-		virtual_train = virtual_train->First();
-		assert(HasBit(virtual_train->subtype, GVSF_VIRTUAL));
+		if (!this->virtual_train) return;
+		this->virtual_train = this->virtual_train->First();
+		assert(HasBit(this->virtual_train->subtype, GVSF_VIRTUAL));
+		for (; this->virtual_train != nullptr; this->virtual_train = this->virtual_train->GetNextUnit()) {
+			if (this->pending_deletions.count(this->virtual_train->index) == 0) break;
+		}
 	}
 
 
@@ -569,7 +602,7 @@ void ShowTemplateCreateWindow(TemplateVehicle *to_edit, bool *create_window_open
 	new TemplateCreateWindow(&_template_create_window_desc, to_edit, create_window_open);
 }
 
-void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -581,7 +614,7 @@ void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uin
 	}
 }
 
-void CcVirtualTrainWagonsMoved(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcVirtualTrainWagonsMoved(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -592,13 +625,13 @@ void CcVirtualTrainWagonsMoved(const CommandCost &result, TileIndex tile, uint32
 	}
 }
 
-void CcDeleteVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcDeleteVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
 	Window* window = FindWindowById(WC_CREATE_TEMPLATE, 0);
 	if (window) {
-		((TemplateCreateWindow*)window)->RearrangeVirtualTrain();
+		((TemplateCreateWindow*)window)->VirtualVehicleDeleted(GB(p1, 0, 20));
 		window->InvalidateData();
 	}
 }

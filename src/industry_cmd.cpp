@@ -582,7 +582,7 @@ void AnimateTile_Industry(TileIndex tile)
 			}
 			SetAnimationFrame(tile, m);
 
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 		break;
 
@@ -600,7 +600,7 @@ void AnimateTile_Industry(TileIndex tile)
 			}
 			SetAnimationFrame(tile, m);
 
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 		break;
 
@@ -614,7 +614,7 @@ void AnimateTile_Industry(TileIndex tile)
 			}
 			SetAnimationFrame(tile, m);
 
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 		break;
 
@@ -627,7 +627,7 @@ void AnimateTile_Industry(TileIndex tile)
 				DeleteAnimatedTile(tile);
 			} else {
 				SetAnimationFrame(tile, m + 1);
-				MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			}
 		}
 		break;
@@ -653,7 +653,7 @@ void AnimateTile_Industry(TileIndex tile)
 			}
 
 			SetAnimationFrame(tile, m);
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 		break;
 
@@ -666,7 +666,7 @@ void AnimateTile_Industry(TileIndex tile)
 
 			gfx = (gfx < 155) ? gfx + 1 : 148;
 			SetIndustryGfx(tile, gfx);
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 		break;
 
@@ -685,7 +685,7 @@ void AnimateTile_Industry(TileIndex tile)
 			} else {
 				SetAnimationFrame(tile, m);
 				SetIndustryGfx(tile, gfx);
-				MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			}
 		}
 		break;
@@ -711,7 +711,7 @@ void AnimateTile_Industry(TileIndex tile)
 				byte m = (GetAnimationFrame(tile) + 1) | 0x40;
 				if (m > 0xC2) m = 0xC0;
 				SetAnimationFrame(tile, m);
-				MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			} else if (state >= 0x200 && state < 0x3A0) {
 				int i = (state < 0x220 || state >= 0x380) ? 7 : 3;
 				if (state & i) return;
@@ -719,7 +719,7 @@ void AnimateTile_Industry(TileIndex tile)
 				byte m = (GetAnimationFrame(tile) & 0xBF) - 1;
 				if (m < 0x80) m = 0x82;
 				SetAnimationFrame(tile, m);
-				MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			}
 			break;
 		}
@@ -749,7 +749,7 @@ static void MakeIndustryTileBigger(TileIndex tile)
 	StartStopIndustryTileAnimation(tile, IAT_CONSTRUCTION_STATE_CHANGE);
 	if (stage == INDUSTRY_COMPLETED) SetIndustryCompleted(tile);
 
-	MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+	MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 
 	if (!IsIndustryCompleted(tile)) return;
 
@@ -843,7 +843,7 @@ static void TileLoop_Industry(TileIndex tile)
 			ResetIndustryConstructionStage(tile);
 			SetIndustryCompleted(tile);
 			SetIndustryGfx(tile, newgfx);
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 			return;
 		}
 	}
@@ -854,7 +854,7 @@ static void TileLoop_Industry(TileIndex tile)
 	if (newgfx != INDUSTRYTILE_NOANIM) {
 		ResetIndustryConstructionStage(tile);
 		SetIndustryGfx(tile, newgfx);
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		return;
 	}
 
@@ -1057,7 +1057,7 @@ static void PlantFarmField(TileIndex tile, IndustryID industry)
 		if (IsSuitableForFarmField(cur_tile, true)) {
 			MakeField(cur_tile, field_type, industry);
 			SetClearCounter(cur_tile, counter);
-			MarkTileDirtyByTile(cur_tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(cur_tile, VMDF_NOT_MAP_MODE);
 		}
 	}
 
@@ -2095,13 +2095,14 @@ static Industry *CreateNewIndustry(TileIndex tile, IndustryType type, IndustryAv
 static uint32 GetScaledIndustryGenerationProbability(IndustryType it, bool *force_at_least_one)
 {
 	const IndustrySpec *ind_spc = GetIndustrySpec(it);
-	uint32 chance = ind_spc->appear_creation[_settings_game.game_creation.landscape] * 16; // * 16 to increase precision
+	uint32 chance = ind_spc->appear_creation[_settings_game.game_creation.landscape];
 	if (!ind_spc->enabled || ind_spc->layouts.empty() ||
 			(_game_mode != GM_EDITOR && _settings_game.difficulty.industry_density == ID_FUND_ONLY) ||
 			(chance = GetIndustryProbabilityCallback(it, IACT_MAPGENERATION, chance)) == 0) {
 		*force_at_least_one = false;
 		return 0;
 	} else {
+		chance *= 16; // to increase precision
 		/* We want industries appearing at coast to appear less often on bigger maps, as length of coast increases slower than map area.
 		 * For simplicity we scale in both cases, though scaling the probabilities of all industries has no effect. */
 		chance = (ind_spc->check_proc == CHECK_REFINERY || ind_spc->check_proc == CHECK_OIL_RIG) ? ScaleByMapSize1D(chance) : ScaleByMapSize(chance);
@@ -2729,7 +2730,7 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 				/* Prevent production to overflow or Oil Rig passengers to be over-"produced" */
 				new_prod = Clamp(new_prod, 1, 255);
 
-				if (((indspec->behaviour & INDUSTRYBEH_BUILT_ONWATER) != 0) && j == 1) {
+				if (((indspec->behaviour & INDUSTRYBEH_BUILT_ONWATER) != 0) && j == 1 && !(indspec->behaviour & INDUSTRYBEH_WATER_NO_CLAMP_PROD)) {
 					new_prod = Clamp(new_prod, 0, 16);
 				}
 

@@ -773,7 +773,7 @@ NWidgetBase::NWidgetBase(WidgetType tp) : ZeroedMemoryAllocator()
 void NWidgetBase::SetDirty(Window *w)
 {
 	this->base_flags |= WBF_DIRTY;
-	w->flags |= WF_DIRTY;
+	w->flags |= WF_WIDGETS_DIRTY;
 }
 
 /**
@@ -1998,7 +1998,7 @@ void NWidgetViewport::InitializeViewport(Window *w, uint32 follow_flags, ZoomLev
  */
 void NWidgetViewport::UpdateViewportCoordinates(Window *w)
 {
-	ViewPort *vp = w->viewport;
+	Viewport *vp = w->viewport;
 	if (vp != nullptr) {
 		vp->left = w->left + this->pos_x;
 		vp->top  = w->top + this->pos_y;

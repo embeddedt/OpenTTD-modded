@@ -50,7 +50,7 @@ void SetTimetableParams(int first_param, Ticks ticks)
 		SetDParam(first_param, STR_TIMETABLE_TICKS);
 		SetDParam(first_param + 1, ticks);
 	} else {
-		StringID str = _settings_client.gui.time_in_minutes ? STR_TIMETABLE_MINUTES : STR_TIMETABLE_DAYS;
+		StringID str = _settings_time.time_in_minutes ? STR_TIMETABLE_MINUTES : STR_TIMETABLE_DAYS;
 		size_t ratio = DATE_UNIT_SIZE;
 		size_t units = ticks / ratio;
 		size_t leftover = ticks % ratio;
@@ -238,7 +238,7 @@ struct TimetableWindow : Window {
 			case WID_VT_ARRIVAL_DEPARTURE_PANEL:
 				SetDParamMaxValue(0, MAX_YEAR * DAYS_IN_YEAR, 0, FS_SMALL);
 				this->deparr_time_width = GetStringBoundingBox(STR_JUST_DATE_TINY).width;
-				SetDParamMaxValue(0, _settings_client.gui.time_in_minutes ? 0 : MAX_YEAR * DAYS_IN_YEAR);
+				SetDParamMaxValue(0, _settings_time.time_in_minutes ? 0 : MAX_YEAR * DAYS_IN_YEAR);
 				this->deparr_time_width = GetStringBoundingBox(STR_JUST_DATE_WALLCLOCK_TINY).width + 4;
 				this->deparr_abbr_width = max(GetStringBoundingBox(STR_TIMETABLE_ARRIVAL_ABBREVIATION).width, GetStringBoundingBox(STR_TIMETABLE_DEPARTURE_ABBREVIATION).width);
 				size->width = WD_FRAMERECT_LEFT + this->deparr_abbr_width + 10 + this->deparr_time_width + WD_FRAMERECT_RIGHT;
@@ -303,8 +303,8 @@ struct TimetableWindow : Window {
 				 * the order is being created / removed */
 				if (this->sel_index == -1) break;
 
-				VehicleOrderID from = GB(data, 0, 8);
-				VehicleOrderID to   = GB(data, 8, 8);
+				VehicleOrderID from = GB(data, 0, 16);
+				VehicleOrderID to   = GB(data, 16, 16);
 
 				if (from == to) break; // no need to change anything
 
@@ -704,14 +704,17 @@ struct TimetableWindow : Window {
 		}
 	}
 
-	static inline uint32 PackTimetableArgs(const Vehicle *v, uint selected, bool speed, bool clear = false)
+	static inline void ExecuteTimetableCommand(const Vehicle *v, bool bulk, uint selected, ModifyTimetableFlags mtf, uint p2, bool clear)
 	{
 		uint order_number = (selected + 1) / 2;
-		ModifyTimetableFlags mtf = (selected % 2 == 1) ? (speed ? MTF_TRAVEL_SPEED : MTF_TRAVEL_TIME) : MTF_WAIT_TIME;
-
 		if (order_number >= v->GetNumOrders()) order_number = 0;
 
-		return v->index | (order_number << 20) | (mtf << 28) | (clear ? 1 << 31 : 0);
+		uint p1 = v->index | (mtf << 28) | (clear ? 1 << 31 : 0);
+		if (bulk) {
+			DoCommandP(0, p1, p2, CMD_BULK_CHANGE_TIMETABLE | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+		} else {
+			DoCommandPEx(0, p1, p2, order_number, CMD_CHANGE_TIMETABLE | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE), nullptr, nullptr, 0);
+		}
 	}
 
 	void OnClick(Point pt, int widget, int click_count) override
@@ -743,12 +746,12 @@ struct TimetableWindow : Window {
 			}
 
 			case WID_VT_START_DATE: // Change the date that the timetable starts.
-				if (_settings_client.gui.time_in_minutes && _settings_client.gui.timetable_start_text_entry) {
+				if (_settings_time.time_in_minutes && _settings_client.gui.timetable_start_text_entry) {
 					this->set_start_date_all = v->orders.list->IsCompleteTimetable() && _ctrl_pressed;
 					StringID str = STR_JUST_INT;
 					uint64 time = _scaled_date_ticks;
-					time /= _settings_client.gui.ticks_per_minute;
-					time += _settings_client.gui.clock_offset;
+					time /= _settings_time.ticks_per_minute;
+					time += _settings_time.clock_offset;
 					time %= (24 * 60);
 					time = (time % 60) + (((time / 60) % 24) * 100);
 					SetDParam(0, time);
@@ -805,15 +808,13 @@ struct TimetableWindow : Window {
 				break;
 			}
 
-			case WID_VT_CLEAR_TIME: { // Clear waiting time.
-				uint32 p1 = PackTimetableArgs(v, this->sel_index, false, true);
-				DoCommandP(0, p1, 0, (_ctrl_pressed ? CMD_BULK_CHANGE_TIMETABLE : CMD_CHANGE_TIMETABLE) | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+			case WID_VT_CLEAR_TIME: { // Clear travel/waiting time.
+				ExecuteTimetableCommand(v, _ctrl_pressed, this->sel_index, (this->sel_index % 2 == 1) ? MTF_TRAVEL_TIME : MTF_WAIT_TIME, 0, true);
 				break;
 			}
 
 			case WID_VT_CLEAR_SPEED: { // Clear max speed button.
-				uint32 p1 = PackTimetableArgs(v, this->sel_index, true);
-				DoCommandP(0, p1, UINT16_MAX, (_ctrl_pressed ? CMD_BULK_CHANGE_TIMETABLE : CMD_CHANGE_TIMETABLE) | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+				ExecuteTimetableCommand(v, _ctrl_pressed, this->sel_index, MTF_TRAVEL_SPEED, UINT16_MAX, false);
 				break;
 			}
 
@@ -829,8 +830,7 @@ struct TimetableWindow : Window {
 					locked = (selected % 2 == 1) ? order->IsTravelFixed() : order->IsWaitFixed();
 				}
 
-				uint32 p1 = v->index | (order_number << 20) | (((selected % 2 == 1) ? MTF_SET_TRAVEL_FIXED : MTF_SET_WAIT_FIXED) << 28);
-				DoCommandP(0, p1, locked ? 0 : 1, (_ctrl_pressed ? CMD_BULK_CHANGE_TIMETABLE : CMD_CHANGE_TIMETABLE) | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+				ExecuteTimetableCommand(v, _ctrl_pressed, this->sel_index, ((selected % 2 == 1) ? MTF_SET_TRAVEL_FIXED : MTF_SET_WAIT_FIXED), locked ? 0 : 1, false);
 				break;
 			}
 
@@ -889,6 +889,8 @@ struct TimetableWindow : Window {
 				DropDownList list;
 				list.emplace_back(new DropDownListStringItem(STR_TIMETABLE_LEAVE_NORMAL, OLT_NORMAL, leave_type_disabled));
 				list.emplace_back(new DropDownListStringItem(STR_TIMETABLE_LEAVE_EARLY, OLT_LEAVE_EARLY, leave_type_disabled));
+				list.emplace_back(new DropDownListStringItem(STR_TIMETABLE_LEAVE_EARLY_FULL_ANY, OLT_LEAVE_EARLY_FULL_ANY, leave_type_disabled || !order->IsType(OT_GOTO_STATION)));
+				list.emplace_back(new DropDownListStringItem(STR_TIMETABLE_LEAVE_EARLY_FULL_ALL, OLT_LEAVE_EARLY_FULL_ALL, leave_type_disabled || !order->IsType(OT_GOTO_STATION)));
 				ShowDropDownList(this, std::move(list), order != nullptr ? order->GetLeaveType() : -1, WID_VT_EXTRA);
 				break;
 			}
@@ -901,11 +903,7 @@ struct TimetableWindow : Window {
 	{
 		switch (widget) {
 			case WID_VT_EXTRA: {
-				VehicleOrderID order_number = (this->sel_index + 1) / 2;
-				if (order_number >= this->vehicle->GetNumOrders()) order_number = 0;
-
-				uint32 p1 = this->vehicle->index | (order_number << 20) | (MTF_SET_LEAVE_TYPE << 28);
-				DoCommandP(0, p1, index, CMD_CHANGE_TIMETABLE | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+				ExecuteTimetableCommand(this->vehicle, false, this->sel_index, MTF_SET_LEAVE_TYPE, index, false);
 			}
 
 			default:
@@ -924,8 +922,6 @@ struct TimetableWindow : Window {
 
 			case WID_VT_CHANGE_SPEED:
 			case WID_VT_CHANGE_TIME: {
-				uint32 p1 = PackTimetableArgs(v, this->sel_index, this->query_is_speed_query);
-
 				uint64 val = StrEmpty(str) ? 0 : strtoul(str, nullptr, 10);
 				uint32 p2;
 				if (this->query_is_speed_query) {
@@ -936,7 +932,7 @@ struct TimetableWindow : Window {
 					p2 = val;
 				}
 
-				DoCommandP(0, p1, p2, (this->change_timetable_all ? CMD_BULK_CHANGE_TIMETABLE : CMD_CHANGE_TIMETABLE) | CMD_MSG(STR_ERROR_CAN_T_TIMETABLE_VEHICLE));
+				ExecuteTimetableCommand(v, this->change_timetable_all, this->sel_index, (this->sel_index % 2 == 1) ? (this->query_is_speed_query ? MTF_TRAVEL_SPEED : MTF_TRAVEL_TIME) : MTF_WAIT_TIME, p2, false);
 				break;
 			}
 
@@ -948,10 +944,10 @@ struct TimetableWindow : Window {
 					uint minutes = (val % 100) % 60;
 					uint hours = (val / 100) % 24;
 					DateTicksScaled time = MINUTES_DATE(MINUTES_DAY(CURRENT_MINUTE), hours, minutes);
-					time -= _settings_client.gui.clock_offset;
+					time -= _settings_time.clock_offset;
 
 					if (time < (CURRENT_MINUTE - 60)) time += 60 * 24;
-					time *= _settings_client.gui.ticks_per_minute;
+					time *= _settings_time.ticks_per_minute;
 					ChangeTimetableStartIntl(v->index | (this->set_start_date_all ? 1 << 20 : 0), time);
 				}
 				break;

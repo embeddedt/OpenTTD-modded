@@ -156,6 +156,12 @@ static inline int CenterBounds(int min, int max, int size)
 }
 
 /* window.cpp */
+enum DrawOverlappedWindowFlags {
+	DOWF_NONE         =      0,
+	DOWF_MARK_DIRTY   = 1 << 0,
+	DOWF_SHOW_DEBUG   = 1 << 1,
+};
+DECLARE_ENUM_AS_BIT_SET(DrawOverlappedWindowFlags)
 void DrawOverlappedWindowForAll(int left, int top, int right, int bottom);
 
 void SetMouseCursorBusy(bool busy);
@@ -205,6 +211,7 @@ TextColour GetContrastColour(uint8 background, uint8 threshold = 128);
  * 8 colours per gradient from darkest (0) to lightest (7)
  */
 extern byte _colour_gradient[COLOUR_END][8];
+extern byte _colour_value[COLOUR_END];
 
 extern bool _palette_remap_grf[];
 

@@ -37,6 +37,8 @@
 #include "genworld.h"
 #include "company_gui.h"
 #include "road_func.h"
+#include "roadstop_base.h"
+#include "scope.h"
 
 #include "table/strings.h"
 #include "table/roadtypes.h"
@@ -70,7 +72,7 @@ void ResetRoadTypes()
 		{ 0, 0, 0, 0, 0, 0 },
 		{ 0, 0, 0, 0, 0, 0 },
 		{ 0, 0, 0, 0, 0, 0, 0, 0, 0, {}, {}, 0, {}, {} },
-		ROADTYPES_NONE, ROTFB_NONE, 0, 0, 0, 0,
+		ROADTYPES_NONE, ROTFB_NONE, RXTFB_NONE, 0, 0, 0, 0,
 		RoadTypeLabelList(), 0, 0, ROADTYPES_NONE, ROADTYPES_NONE, 0,
 		{}, {} };
 	for (; i < lengthof(_roadtypes);          i++) _roadtypes[i] = empty_roadtype;
@@ -146,6 +148,7 @@ RoadType AllocateRoadType(RoadTypeLabel label, RoadTramType rtt)
 			rti->label = label;
 			rti->alternate_labels.clear();
 			rti->flags = ROTFB_NONE;
+			rti->extra_flags = RXTFB_NONE;
 			rti->introduction_date = INVALID_DATE;
 
 			/* Make us compatible with ourself. */
@@ -183,6 +186,229 @@ RoadType AllocateRoadType(RoadTypeLabel label, RoadTramType rtt)
 bool RoadVehiclesAreBuilt()
 {
 	return !RoadVehicle::Iterate().empty();
+}
+
+static DisallowedRoadDirections GetOneWayRoadTileDisallowedRoadDirections(TileIndex tile)
+{
+	if (IsNormalRoadTile(tile)) return GetDisallowedRoadDirections(tile);
+	if (IsDriveThroughStopTile(tile)) return GetDriveThroughStopDisallowedRoadDirections(tile);
+	return DRD_NONE;
+}
+
+static DiagDirection OneWaySideJunctionRoadRoadBitsToDiagDir(RoadBits bits)
+{
+	/*
+	 * Drive on left missing bit:
+	 * ROAD_SE (bit 2) -> DIAGDIR_NE (0)
+	 * ROAD_SW (bit 1) -> DIAGDIR_SE (1)
+	 * ROAD_NW (bit 0) -> DIAGDIR_SW (2)
+	 * ROAD_NE (bit 3) -> DIAGDIR_NW (3)
+	 */
+	uint8 bit = FIND_FIRST_BIT(bits ^ ROAD_ALL);
+	bit ^= 3;
+	return (DiagDirection)((bit + 3 + (_settings_game.vehicle.road_side * 2)) % 4);
+}
+
+inline bool IsOneWaySideJunctionRoadDRDsPresent(TileIndex tile, DiagDirection dir)
+{
+	const DisallowedRoadDirections diagdir_to_drd[DIAGDIR_END] = { DRD_NORTHBOUND, DRD_NORTHBOUND, DRD_SOUTHBOUND, DRD_SOUTHBOUND };
+
+	TileIndexDiffC ti = TileIndexDiffCByDiagDir(dir);
+	TileIndex ahead = AddTileIndexDiffCWrap(tile, ti);
+	if (ahead == INVALID_TILE || GetOneWayRoadTileDisallowedRoadDirections(ahead) != diagdir_to_drd[dir]) return false;
+	TileIndex behind = AddTileIndexDiffCWrap(tile, { (int16)(-ti.x), (int16)(-ti.y) });
+	if (behind == INVALID_TILE || GetOneWayRoadTileDisallowedRoadDirections(behind) != diagdir_to_drd[dir]) return false;
+	return true;
+}
+
+static btree::btree_set<TileIndex> _road_cache_one_way_state_pending_tiles;
+static btree::btree_set<TileIndex> _road_cache_one_way_state_pending_interpolate_tiles;
+static bool _defer_update_road_cache_one_way_state = false;
+bool _mark_tile_dirty_on_road_cache_one_way_state_update = false;
+
+static void UpdateTileRoadCachedOneWayState(TileIndex tile)
+{
+	if (unlikely(_mark_tile_dirty_on_road_cache_one_way_state_update)) MarkTileGroundDirtyByTile(tile, VMDF_NOT_MAP_MODE);
+
+	DisallowedRoadDirections drd = GetOneWayRoadTileDisallowedRoadDirections(tile);
+	if (drd != DRD_NONE) {
+		SetRoadCachedOneWayState(tile, (RoadCachedOneWayState)drd);
+		return;
+	}
+	if (IsNormalRoadTile(tile)) {
+		RoadBits bits = GetRoadBits(tile, RTT_ROAD);
+		if (HasExactlyOneBit(bits ^ ROAD_ALL)) {
+			DiagDirection dir = OneWaySideJunctionRoadRoadBitsToDiagDir(bits);
+			if (IsOneWaySideJunctionRoadDRDsPresent(tile, dir)) {
+				DiagDirection side_dir = (DiagDirection)((dir + 3 + (_settings_game.vehicle.road_side * 2)) % 4);
+				TileIndexDiffC ti = TileIndexDiffCByDiagDir(side_dir);
+				TileIndex side = AddTileIndexDiffCWrap(tile, ti);
+
+				const DisallowedRoadDirections diagdir_to_drd[DIAGDIR_END] = { DRD_SOUTHBOUND, DRD_SOUTHBOUND, DRD_NORTHBOUND, DRD_NORTHBOUND };
+				SetRoadCachedOneWayState(tile, (GetOneWayRoadTileDisallowedRoadDirections(side) & diagdir_to_drd[side_dir]) ? RCOWS_SIDE_JUNCTION_NO_EXIT : RCOWS_SIDE_JUNCTION);
+				return;
+			}
+		}
+	}
+	if (!IsTileType(tile, MP_STATION)) _road_cache_one_way_state_pending_interpolate_tiles.insert(tile);
+	SetRoadCachedOneWayState(tile, RCOWS_NORMAL);
+}
+
+/* Do not re-order, see: RoadCachedOneWayState */
+enum InterpolateRoadResult {
+	IRR_NONE,
+	IRR_OUT,
+	IRR_IN
+};
+
+static TileIndex InterpolateRoadFollowTileStep(TileIndex tile, uint8 bit)
+{
+	DiagDirection outgoing = (DiagDirection)(bit ^ 3);
+	if (IsTileType(tile, MP_TUNNELBRIDGE) && GetTunnelBridgeDirection(tile) == outgoing) {
+		return GetOtherTunnelBridgeEnd(tile);
+	}
+	TileIndexDiffC ti = TileIndexDiffCByDiagDir(outgoing);
+	TileIndex next = AddTileIndexDiffCWrap(tile, ti);
+	if (next == INVALID_TILE) return INVALID_TILE;
+	if (IsTileType(next, MP_TUNNELBRIDGE) && GetTunnelBridgeDirection(next) == ReverseDiagDir(outgoing)) {
+		return INVALID_TILE;
+	}
+	return next;
+}
+
+static InterpolateRoadResult InterpolateRoadFollowRoadBit(TileIndex tile, uint8 bit)
+{
+	const TileIndex start = tile;
+	do {
+		TileIndex next = InterpolateRoadFollowTileStep(tile, bit);
+		if (next == INVALID_TILE) return IRR_NONE;
+		DisallowedRoadDirections drd = GetOneWayRoadTileDisallowedRoadDirections(next);
+		if (drd == DRD_BOTH) return IRR_NONE;
+		if (drd != DRD_NONE) {
+			const DisallowedRoadDirections outgoing_drd_by_exit_bit[4] = { DRD_SOUTHBOUND, DRD_SOUTHBOUND, DRD_NORTHBOUND, DRD_NORTHBOUND };
+			return outgoing_drd_by_exit_bit[bit] == drd ? IRR_OUT : IRR_IN;
+		}
+		if (IsTileType(next, MP_STATION)) return IRR_NONE;
+		RoadBits incoming = (RoadBits)(1 << (bit ^ 2));
+		RoadBits rb = GetAnyRoadBits(next, RTT_ROAD, true);
+		if ((incoming & rb) == 0) return IRR_NONE;
+		RoadBits remaining = rb & ~incoming;
+		if (!HasExactlyOneBit(remaining)) return IRR_NONE;
+		tile = next;
+		bit = FIND_FIRST_BIT(remaining);
+	} while (tile != start);
+	return IRR_NONE;
+}
+
+static void InterpolateRoadFollowRoadBitSetState(TileIndex tile, uint8 bit, InterpolateRoadResult irr)
+{
+	const TileIndex start = tile;
+	do {
+		if (irr == IRR_NONE) {
+			SetRoadCachedOneWayState(tile, RCOWS_NORMAL);
+		} else {
+			uint8 inbit = FIND_FIRST_BIT(GetAnyRoadBits(tile, RTT_ROAD, true) & ~(1 << bit));
+			/*   inbit    bit      piece    Outgoing Trackdir       IRR_IN case
+			 *
+			 *    0        1       ROAD_W   TRACKDIR_LEFT_S         RCOWS_NON_JUNCTION_A
+			 *    0        2       ROAD_Y   TRACKDIR_Y_SE           RCOWS_NON_JUNCTION_A
+			 *    0        3       ROAD_N   TRACKDIR_UPPER_E        RCOWS_NON_JUNCTION_A
+			 *
+			 *    1        0       ROAD_W   TRACKDIR_LEFT_N         RCOWS_NON_JUNCTION_B
+			 *    1        2       ROAD_S   TRACKDIR_LOWER_E        RCOWS_NON_JUNCTION_A
+			 *    1        3       ROAD_X   TRACKDIR_X_NE           RCOWS_NON_JUNCTION_A
+			 *
+			 *    2        0       ROAD_Y   TRACKDIR_Y_NW           RCOWS_NON_JUNCTION_B
+			 *    2        1       ROAD_S   TRACKDIR_LOWER_W        RCOWS_NON_JUNCTION_B
+			 *    2        3       ROAD_E   TRACKDIR_RIGHT_N        RCOWS_NON_JUNCTION_B
+			 *
+			 *    3        0       ROAD_N   TRACKDIR_UPPER_W        RCOWS_NON_JUNCTION_B
+			 *    3        1       ROAD_X   TRACKDIR_X_SW           RCOWS_NON_JUNCTION_B
+			 *    3        2       ROAD_E   TRACKDIR_RIGHT_S        RCOWS_NON_JUNCTION_A
+			 */
+
+			const uint16 bits_to_rcows = 0x3B10;
+			SetRoadCachedOneWayState(tile, (RoadCachedOneWayState)(irr ^ (HasBit(bits_to_rcows, (inbit << 2) | bit) ? 0 : 3)));
+		}
+		_road_cache_one_way_state_pending_interpolate_tiles.erase(tile);
+		if (unlikely(_mark_tile_dirty_on_road_cache_one_way_state_update)) MarkTileGroundDirtyByTile(tile, VMDF_NOT_MAP_MODE);
+		TileIndex next = InterpolateRoadFollowTileStep(tile, bit);
+		if (next == INVALID_TILE) return;
+		DisallowedRoadDirections drd = GetOneWayRoadTileDisallowedRoadDirections(next);
+		if (drd != DRD_NONE) {
+			return;
+		}
+		if (IsTileType(next, MP_STATION)) return;
+		RoadBits incoming = (RoadBits)(1 << (bit ^ 2));
+		RoadBits rb = GetAnyRoadBits(next, RTT_ROAD, true);
+		if ((incoming & rb) == 0) return;
+		RoadBits remaining = rb & ~incoming;
+		if (!HasExactlyOneBit(remaining)) return;
+		tile = next;
+		bit = FIND_FIRST_BIT(remaining);
+	} while (tile != start);
+}
+
+static void InterpolateRoadCachedOneWayStates()
+{
+	while (!_road_cache_one_way_state_pending_interpolate_tiles.empty()) {
+		auto iter = _road_cache_one_way_state_pending_interpolate_tiles.begin();
+		TileIndex tile = *iter;
+		_road_cache_one_way_state_pending_interpolate_tiles.erase(iter);
+
+		const RoadBits bits = GetAnyRoadBits(tile, RTT_ROAD, true);
+		if (CountBits(bits) != 2) continue;
+
+		uint8 first_bit = FIND_FIRST_BIT(bits);
+		uint8 second_bit = FIND_FIRST_BIT(KillFirstBit(bits));
+		InterpolateRoadResult first_irr = InterpolateRoadFollowRoadBit(tile, first_bit);
+		InterpolateRoadResult second_irr = first_irr;
+		if (first_irr != IRR_NONE) {
+			second_irr = InterpolateRoadFollowRoadBit(tile, second_bit);
+			if (second_irr == IRR_NONE || second_irr == first_irr) first_irr = second_irr = IRR_NONE;
+		}
+		InterpolateRoadFollowRoadBitSetState(tile, first_bit, first_irr);
+		InterpolateRoadFollowRoadBitSetState(tile, second_bit, second_irr);
+	}
+}
+
+void RecalculateRoadCachedOneWayStates()
+{
+	for (TileIndex tile = 0; tile != MapSize(); tile++) {
+		if (MayHaveRoad(tile)) UpdateTileRoadCachedOneWayState(tile);
+	}
+	InterpolateRoadCachedOneWayStates();
+}
+
+void UpdateRoadCachedOneWayStatesAroundTile(TileIndex tile)
+{
+	if (_generating_world) return;
+
+	auto check_tile = [](TileIndex t) {
+		if (_defer_update_road_cache_one_way_state) {
+			_road_cache_one_way_state_pending_tiles.insert(t);
+		} else if (MayHaveRoad(t)) {
+			UpdateTileRoadCachedOneWayState(t);
+		}
+	};
+	check_tile(tile);
+	uint x_offset = TileXY(1, 0);
+	if (tile >= x_offset) check_tile(tile - x_offset);
+	if (tile + x_offset < MapSize()) check_tile(tile + x_offset);
+	uint y_offset = TileXY(0, 1);
+	if (tile >= y_offset) check_tile(tile - y_offset);
+	if (tile + y_offset < MapSize()) check_tile(tile + y_offset);
+	if (!_defer_update_road_cache_one_way_state) InterpolateRoadCachedOneWayStates();
+}
+
+void FlushDeferredUpdateRoadCachedOneWayStates()
+{
+	_defer_update_road_cache_one_way_state = false;
+	for (TileIndex t : _road_cache_one_way_state_pending_tiles) {
+		if (MayHaveRoad(t)) UpdateTileRoadCachedOneWayState(t);
+	}
+	_road_cache_one_way_state_pending_tiles.clear();
+	InterpolateRoadCachedOneWayStates();
 }
 
 /**
@@ -467,7 +693,11 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 				DirtyAllCompanyInfrastructureWindows();
 
 				/* Todo: Change this to be more fine-grained if necessary */
-				NotifyRoadLayoutChanged();
+				NotifyRoadLayoutChanged(false);
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(tile);
+					UpdateRoadCachedOneWayStatesAroundTile(other_end);
+				}
 			}
 		} else {
 			assert_tile(IsDriveThroughStopTile(tile), tile);
@@ -477,7 +707,10 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 				UpdateCompanyRoadInfrastructure(existing_rt, GetRoadOwner(tile, rtt), -2);
 				SetRoadType(tile, rtt, INVALID_ROADTYPE);
 				MarkTileDirtyByTile(tile);
-				NotifyRoadLayoutChanged();
+				NotifyRoadLayoutChanged(false);
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(tile);
+				}
 			}
 		}
 		return cost;
@@ -530,7 +763,7 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 					}
 				}
 
-				NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, present | pieces);
+				if (RoadLayoutChangeNotificationEnabled(false)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, present | pieces);
 				UpdateCompanyRoadInfrastructure(existing_rt, GetRoadOwner(tile, rtt), -(int)CountBits(pieces));
 
 				if (present == ROAD_NONE) {
@@ -556,6 +789,9 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 					SetRoadBits(tile, present, rtt);
 					MarkTileDirtyByTile(tile);
 				}
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(tile);
+				}
 			}
 
 			CommandCost cost(EXPENSES_CONSTRUCTION, CountBits(pieces) * RoadClearCost(existing_rt));
@@ -575,7 +811,7 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 				UpdateCompanyRoadInfrastructure(existing_rt, GetRoadOwner(tile, rtt), -2);
 
 				Track railtrack = GetCrossingRailTrack(tile);
-				NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, GetCrossingRoadBits(tile));
+				if (RoadLayoutChangeNotificationEnabled(false)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, GetCrossingRoadBits(tile));
 				if (GetRoadType(tile, OtherRoadTramType(rtt)) == INVALID_ROADTYPE) {
 					TrackBits tracks = GetCrossingRailBits(tile);
 					bool reserved = HasCrossingReservation(tile);
@@ -594,6 +830,9 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 				}
 				MarkTileDirtyByTile(tile);
 				YapfNotifyTrackLayoutChange(tile, railtrack);
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(tile);
+				}
 			}
 			return CommandCost(EXPENSES_CONSTRUCTION, RoadClearCost(existing_rt) * 2);
 		}
@@ -720,6 +959,8 @@ CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 
 	bool disable_custom_bridge_heads = HasBit(p1, 13);
 
+	if ((flags & DC_TOWN) && !MayTownModifyRoad(tile)) return CMD_ERROR;
+
 	Slope tileh = GetTileSlope(tile);
 	RoadTramType rtt = GetRoadTramType(rt);
 
@@ -766,6 +1007,8 @@ CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 							if ((flags & DC_EXEC) && IsStraightRoad(existing)) {
 								SetDisallowedRoadDirections(tile, dis_new);
 								MarkTileDirtyByTile(tile);
+								NotifyRoadLayoutChanged(CountBits(dis_existing) > CountBits(dis_new));
+								UpdateRoadCachedOneWayStatesAroundTile(tile);
 							}
 							return CommandCost();
 						}
@@ -860,14 +1103,49 @@ CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 				MakeRoadCrossing(tile, company, company, GetTileOwner(tile), roaddir, GetRailType(tile), rtt == RTT_ROAD ? rt : INVALID_ROADTYPE, (rtt == RTT_TRAM) ? rt : INVALID_ROADTYPE, p2);
 				SetCrossingReservation(tile, reserved);
 				UpdateLevelCrossing(tile, false);
-				NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, GetCrossingRoadBits(tile));
+				if (RoadLayoutChangeNotificationEnabled(true)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, GetCrossingRoadBits(tile));
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(tile);
+				}
 				MarkTileDirtyByTile(tile);
 			}
 			return CommandCost(EXPENSES_CONSTRUCTION, 2 * RoadBuildCost(rt));
 		}
 
 		case MP_STATION: {
-			if ((GetAnyRoadBits(tile, rtt) & pieces) == pieces) return_cmd_error(STR_ERROR_ALREADY_BUILT);
+			if ((GetAnyRoadBits(tile, rtt) & pieces) == pieces) {
+				if (toggle_drd != DRD_NONE && rtt == RTT_ROAD && IsDriveThroughStopTile(tile)) {
+					Owner owner = GetRoadOwner(tile, rtt);
+					if (owner != OWNER_NONE) {
+						CommandCost ret = CheckOwnership(owner, tile);
+						if (ret.Failed()) return ret;
+					}
+
+					DisallowedRoadDirections dis_existing = GetDriveThroughStopDisallowedRoadDirections(tile);
+					DisallowedRoadDirections dis_new      = dis_existing ^ toggle_drd;
+
+					/* We allow removing disallowed directions to break up
+					 * deadlocks, but adding them can break articulated
+					 * vehicles. As such, only when less is disallowed,
+					 * i.e. bits are removed, we skip the vehicle check. */
+					if (CountBits(dis_existing) <= CountBits(dis_new)) {
+						CommandCost ret = EnsureNoVehicleOnGround(tile);
+						if (ret.Failed()) return ret;
+					}
+
+					if (flags & DC_EXEC) {
+						RoadStop *rs = RoadStop::GetByTile(tile, GetRoadStopType(tile));
+						rs->ChangeDriveThroughDisallowedRoadDirections(dis_new);
+						MarkTileDirtyByTile(tile);
+						NotifyRoadLayoutChanged(CountBits(dis_existing) > CountBits(dis_new));
+						UpdateRoadCachedOneWayStatesAroundTile(tile);
+					}
+					return CommandCost();
+				}
+				return_cmd_error(STR_ERROR_ALREADY_BUILT);
+			} else {
+				toggle_drd = DRD_NONE;
+			}
 			if (!IsDriveThroughStopTile(tile)) goto do_clear;
 
 			RoadBits curbits = AxisToRoadBits(DiagDirToAxis(GetRoadStopDir(tile)));
@@ -991,7 +1269,11 @@ CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 					MarkBridgeDirty(tile);
 
 					AddRoadTunnelBridgeInfrastructure(tile, other_end);
-					NotifyRoadLayoutChanged();
+					NotifyRoadLayoutChanged(true);
+					if (rtt == RTT_ROAD) {
+						UpdateRoadCachedOneWayStatesAroundTile(tile);
+						UpdateRoadCachedOneWayStatesAroundTile(other_end);
+					}
 					DirtyAllCompanyInfrastructureWindows();
 				}
 
@@ -1089,7 +1371,7 @@ do_clear:;
 					if (rtt == RTT_ROAD) SetTownIndex(tile, p2);
 				}
 				if (rttype != ROAD_TILE_CROSSING) SetRoadBits(tile, existing | pieces, rtt);
-				NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, existing | pieces);
+				if (RoadLayoutChangeNotificationEnabled(true)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, existing | pieces);
 				break;
 			}
 
@@ -1108,7 +1390,10 @@ do_clear:;
 					MarkTileDirtyByTile(other_end);
 					MarkTileDirtyByTile(tile);
 				}
-				NotifyRoadLayoutChanged();
+				if (rtt == RTT_ROAD) {
+					UpdateRoadCachedOneWayStatesAroundTile(other_end);
+				}
+				NotifyRoadLayoutChanged(true);
 				break;
 			}
 
@@ -1116,13 +1401,13 @@ do_clear:;
 				assert_tile(IsDriveThroughStopTile(tile), tile);
 				SetRoadType(tile, rtt, rt);
 				SetRoadOwner(tile, rtt, company);
-				NotifyRoadLayoutChanged();
+				NotifyRoadLayoutChanged(true);
 				break;
 			}
 
 			default:
 				MakeRoadNormal(tile, pieces, (rtt == RTT_ROAD) ? rt : INVALID_ROADTYPE, (rtt == RTT_TRAM) ? rt : INVALID_ROADTYPE, p2, company, company);
-				NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, pieces);
+				if (RoadLayoutChangeNotificationEnabled(true)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, pieces);
 				break;
 		}
 
@@ -1134,6 +1419,9 @@ do_clear:;
 			existing |= pieces;
 			SetDisallowedRoadDirections(tile, IsStraightRoad(existing) ?
 					GetDisallowedRoadDirections(tile) ^ toggle_drd : DRD_NONE);
+		}
+		if (rtt == RTT_ROAD) {
+			UpdateRoadCachedOneWayStatesAroundTile(tile);
 		}
 
 		MarkTileDirtyByTile(tile);
@@ -1215,6 +1503,11 @@ CommandCost CmdBuildLongRoad(TileIndex start_tile, DoCommandFlag flags, uint32 p
 	TileIndex tile = start_tile;
 	bool had_success = false;
 	bool is_ai = HasBit(p2, 11);
+
+	_defer_update_road_cache_one_way_state = true;
+	auto guard = scope_guard([]() {
+		FlushDeferredUpdateRoadCachedOneWayStates();
+	});
 
 	/* Start tile is the first tile clicked by the user. */
 	for (;;) {
@@ -1298,6 +1591,11 @@ CommandCost CmdRemoveLongRoad(TileIndex start_tile, DoCommandFlag flags, uint32 
 		end_tile = t;
 		p2 ^= IsInsideMM(p2 & 3, 1, 3) ? 3 : 0;
 	}
+
+	_defer_update_road_cache_one_way_state = true;
+	auto guard = scope_guard([]() {
+		FlushDeferredUpdateRoadCachedOneWayStates();
+	});
 
 	Money money = GetAvailableMoneyForCommand();
 	TileIndex tile = start_tile;
@@ -1387,7 +1685,7 @@ CommandCost CmdBuildRoadDepot(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 		MarkTileDirtyByTile(tile);
 		MakeDefaultName(dep);
 
-		NotifyRoadLayoutChanged();
+		NotifyRoadLayoutChanged(true);
 	}
 	cost.AddCost(_price[PR_BUILD_DEPOT_ROAD]);
 	return cost;
@@ -1416,7 +1714,7 @@ static CommandCost RemoveRoadDepot(TileIndex tile, DoCommandFlag flags)
 		delete Depot::GetByTile(tile);
 		DoClearSquare(tile);
 
-		NotifyRoadLayoutChanged();
+		NotifyRoadLayoutChanged(false);
 	}
 
 	return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_CLEAR_DEPOT_ROAD]);
@@ -1671,14 +1969,15 @@ void DrawRoadCatenary(const TileInfo *ti)
  * @param dx  the offset from the top of the BB of the tile
  * @param dy  the offset from the top of the BB of the tile
  * @param h   the height of the sprite to draw
+ * @param transparent  whether the sprite should be transparent (used for roadside trees)
  */
-static void DrawRoadDetail(SpriteID img, const TileInfo *ti, int dx, int dy, int h)
+static void DrawRoadDetail(SpriteID img, const TileInfo *ti, int dx, int dy, int h, bool transparent)
 {
 	int x = ti->x | dx;
 	int y = ti->y | dy;
 	int z = ti->z;
 	if (ti->tileh != SLOPE_FLAT) z = GetSlopePixelZ(x, y);
-	AddSortableSpriteToDraw(img, PAL_NONE, x, y, 2, 2, h, z);
+	AddSortableSpriteToDraw(img, PAL_NONE, x, y, 2, 2, h, z, transparent);
 }
 
 /**
@@ -1831,9 +2130,12 @@ void DrawRoadBits(TileInfo *ti)
 	/* If there are no road bits, return, as there is nothing left to do */
 	if (HasAtMostOneBit(road)) return;
 
+	if (roadside == ROADSIDE_TREES && IsInvisibilitySet(TO_TREES)) return;
+	bool is_transparent = roadside == ROADSIDE_TREES && IsTransparencySet(TO_TREES);
+
 	/* Draw extra details. */
 	for (const DrawRoadTileStruct *drts = _road_display_table[roadside][road | tram]; drts->image != 0; drts++) {
-		DrawRoadDetail(drts->image, ti, drts->subcoord_x, drts->subcoord_y, 0x10);
+		DrawRoadDetail(drts->image, ti, drts->subcoord_x, drts->subcoord_y, 0x10, is_transparent);
 	}
 }
 
@@ -2117,7 +2419,7 @@ static void TileLoop_Road(TileIndex tile)
 						TileY(tile) * TILE_SIZE + 7,
 						0,
 						EV_BULLDOZER);
-					MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+					MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 					return;
 				}
 			}
@@ -2142,7 +2444,7 @@ static void TileLoop_Road(TileIndex tile)
 				cur_rs = ROADSIDE_BARREN;
 			}
 			SetRoadside(tile, cur_rs);
-			MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 		}
 	} else if (IncreaseRoadWorksCounter(tile)) {
 		TerminateRoadWorks(tile);
@@ -2157,7 +2459,7 @@ static void TileLoop_Road(TileIndex tile)
 
 				/* If new_rb is 0, there are now no road pieces left and the tile is no longer a road tile */
 				if (new_rb == 0) {
-					MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+					MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 					return;
 				}
 			}
@@ -2171,7 +2473,7 @@ static void TileLoop_Road(TileIndex tile)
 			}
 		}
 
-		MarkTileDirtyByTile(tile, ZOOM_LVL_DRAW_MAP);
+		MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 	}
 }
 
@@ -2218,13 +2520,40 @@ static TrackStatus GetTileTrackStatus_Road(TileIndex tile, TransportType mode, u
 			switch (GetRoadTileType(tile)) {
 				case ROAD_TILE_NORMAL: {
 					const uint drd_to_multiplier[DRD_END] = { 0x101, 0x100, 0x1, 0x0 };
+					const TrackdirBits left_turns = TRACKDIR_BIT_LOWER_W | TRACKDIR_BIT_LEFT_N | TRACKDIR_BIT_UPPER_E | TRACKDIR_BIT_RIGHT_S;
+					const TrackdirBits right_turns = TRACKDIR_BIT_LOWER_E | TRACKDIR_BIT_LEFT_S | TRACKDIR_BIT_UPPER_W | TRACKDIR_BIT_RIGHT_N;
+					const TrackdirBits no_exit_turns[4] = {
+						TRACKDIR_BIT_RIGHT_S | TRACKDIR_BIT_LOWER_E, // ROAD_NW
+						TRACKDIR_BIT_RIGHT_N | TRACKDIR_BIT_UPPER_E, // ROAD_SW
+						TRACKDIR_BIT_LEFT_N  | TRACKDIR_BIT_UPPER_W, // ROAD_SE
+						TRACKDIR_BIT_LEFT_S  | TRACKDIR_BIT_LOWER_W  // ROAD_NE
+					};
+
 					RoadBits bits = GetRoadBits(tile, rtt);
 
 					/* no roadbit at this side of tile, return 0 */
 					if (side != INVALID_DIAGDIR && (DiagDirToRoadBits(side) & bits) == 0) break;
 
-					uint multiplier = drd_to_multiplier[(rtt == RTT_TRAM) ? DRD_NONE : GetDisallowedRoadDirections(tile)];
-					if (!HasRoadWorks(tile)) trackdirbits = (TrackdirBits)(_road_trackbits[bits] * multiplier);
+					if (!HasRoadWorks(tile)) {
+						RoadCachedOneWayState rcows = (rtt == RTT_TRAM) ? RCOWS_NORMAL : GetRoadCachedOneWayState(tile);
+						switch (rcows) {
+							case RCOWS_NORMAL:
+							case RCOWS_NON_JUNCTION_A:
+							case RCOWS_NON_JUNCTION_B:
+							case RCOWS_NO_ACCESS:
+								trackdirbits = (TrackdirBits)(_road_trackbits[bits] * drd_to_multiplier[(DisallowedRoadDirections)rcows]);
+								break;
+
+							case RCOWS_SIDE_JUNCTION:
+							case RCOWS_SIDE_JUNCTION_NO_EXIT:
+								trackdirbits = (TrackdirBits)((_road_trackbits[bits] * 0x101) & ~(_settings_game.vehicle.road_side ? left_turns : right_turns));
+								if (rcows == RCOWS_SIDE_JUNCTION_NO_EXIT) trackdirbits &= ~no_exit_turns[FIND_FIRST_BIT(bits ^ ROAD_ALL) & 3];
+								break;
+
+							default:
+								NOT_REACHED();
+						}
+					}
 					break;
 				}
 
@@ -2358,7 +2687,7 @@ static VehicleEnterTileStatus VehicleEnter_Road(Vehicle *v, TileIndex tile, int 
 			RoadVehicle *rv = RoadVehicle::From(v);
 			if (rv->frame == RVC_DEPOT_STOP_FRAME &&
 					_roadveh_enter_depot_dir[GetRoadDepotDirection(tile)] == rv->state) {
-				rv->cur_image_valid_dir = INVALID_DIR;
+				rv->InvalidateImageCache();
 				rv->state = RVSB_IN_DEPOT;
 				rv->vehstatus |= VS_HIDDEN;
 				rv->direction = ReverseDir(rv->direction);
@@ -2608,13 +2937,14 @@ CommandCost CmdConvertRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 				}
 
 				if (rtt == RTT_ROAD && owner == OWNER_TOWN) {
-					error.MakeError(STR_ERROR_INCOMPATIBLE_ROAD);
+					error.MakeError(STR_ERROR_OWNED_BY);
+					GetNameOfOwner(OWNER_TOWN, tile);
 					continue;
 				}
 			}
 
 			uint num_pieces;
-			if (IsRoadDepotTile(tile)) {
+			if (IsRoadDepotTile(tile) || IsRoadStopTile(tile)) {
 				num_pieces = HasTileRoadType(tile, rtt) ? 2 : 0;
 			} else {
 				num_pieces = CountBits(GetAnyRoadBits(tile, rtt));
@@ -2665,7 +2995,8 @@ CommandCost CmdConvertRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 				}
 
 				if (rtt == RTT_ROAD && owner == OWNER_TOWN) {
-					error.MakeError(STR_ERROR_INCOMPATIBLE_ROAD);
+					error.MakeError(STR_ERROR_OWNED_BY);
+					GetNameOfOwner(OWNER_TOWN, tile);
 					continue;
 				}
 			}

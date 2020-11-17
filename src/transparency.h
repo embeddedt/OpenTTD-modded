@@ -39,6 +39,7 @@ extern TransparencyOptionBits _transparency_opt;
 extern TransparencyOptionBits _transparency_lock;
 extern TransparencyOptionBits _invisibility_opt;
 extern byte _display_opt;
+extern byte _extra_display_opt;
 
 /**
  * Check if the transparency option bit is set
@@ -73,6 +74,9 @@ static inline void ToggleTransparency(TransparencyOption to)
 
 	extern void UpdateAllVehiclesIsDrawn();
 	if (to == TO_TUNNELS) UpdateAllVehiclesIsDrawn();
+
+	extern void MarkAllViewportMapLandscapesDirty();
+	if (to == TO_TREES) MarkAllViewportMapLandscapesDirty();
 }
 
 /**
@@ -83,6 +87,9 @@ static inline void ToggleTransparency(TransparencyOption to)
 static inline void ToggleInvisibility(TransparencyOption to)
 {
 	ToggleBit(_invisibility_opt, to);
+
+	extern void MarkAllViewportMapLandscapesDirty();
+	if (to == TO_TREES) MarkAllViewportMapLandscapesDirty();
 }
 
 /**
@@ -116,6 +123,8 @@ static inline void ToggleTransparencyLock(TransparencyOption to)
 /** Set or clear all non-locked transparency options */
 static inline void ResetRestoreAllTransparency()
 {
+	const TransparencyOptionBits old_transparency_opt = _transparency_opt;
+
 	/* if none of the non-locked options are set */
 	if ((_transparency_opt & ~_transparency_lock) == 0) {
 		/* set all non-locked options */
@@ -125,6 +134,14 @@ static inline void ResetRestoreAllTransparency()
 		_transparency_opt &= _transparency_lock;
 	}
 
+	if (HasBit(old_transparency_opt ^ _transparency_opt, TO_TUNNELS)) {
+		extern void UpdateAllVehiclesIsDrawn();
+		UpdateAllVehiclesIsDrawn();
+	}
+	if (HasBit(old_transparency_opt ^ _transparency_opt, TO_TREES)) {
+		extern void MarkAllViewportMapLandscapesDirty();
+		MarkAllViewportMapLandscapesDirty();
+	}
 	MarkWholeScreenDirty();
 }
 

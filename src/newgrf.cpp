@@ -2310,6 +2310,14 @@ static ChangeInfoResult BridgeChangeInfo(uint brid, int numinfo, int prop, const
 				SetBit(bridge->ctrl_flags, BSCF_CUSTOM_PILLAR_FLAGS);
 				break;
 
+			case A0RPI_BRIDGE_AVAILABILITY_FLAGS: {
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				byte flags = buf->ReadByte();
+				SB(bridge->ctrl_flags, BSCF_NOT_AVAILABLE_TOWN, 1, HasBit(flags, 0) ? 1 : 0);
+				SB(bridge->ctrl_flags, BSCF_NOT_AVAILABLE_AI_GS, 1, HasBit(flags, 1) ? 1 : 0);
+				break;
+			}
+
 			default:
 				ret = HandleAction0PropertyDefault(buf, prop);
 				break;
@@ -4349,6 +4357,16 @@ static ChangeInfoResult RailTypeChangeInfo(uint id, int numinfo, int prop, const
 				for (int j = buf->ReadByte(); j != 0; j--) buf->ReadDWord();
 				break;
 
+			case A0RPI_RAILTYPE_ENABLE_PROGRAMMABLE_SIGNALS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(rti->ctrl_flags, RTCF_PROGSIG, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
+			case A0RPI_RAILTYPE_ENABLE_RESTRICTED_SIGNALS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(rti->ctrl_flags, RTCF_RESTRICTEDSIG, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
 			default:
 				ret = HandleAction0PropertyDefault(buf, prop);
 				break;
@@ -4427,6 +4445,11 @@ static ChangeInfoResult RailTypeReserveInfo(uint id, int numinfo, int prop, cons
 
 			case 0x17: // Introduction date
 				buf->ReadDWord();
+				break;
+
+			case A0RPI_RAILTYPE_ENABLE_PROGRAMMABLE_SIGNALS:
+			case A0RPI_RAILTYPE_ENABLE_RESTRICTED_SIGNALS:
+				buf->Skip(buf->ReadExtendedByte());
 				break;
 
 			default:
@@ -4550,6 +4573,11 @@ static ChangeInfoResult RoadTypeChangeInfo(uint id, int numinfo, int prop, const
 				for (int j = buf->ReadByte(); j != 0; j--) buf->ReadDWord();
 				break;
 
+			case A0RPI_ROADTYPE_EXTRA_FLAGS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				rti->extra_flags = (RoadTypeExtraFlags)buf->ReadByte();
+				break;
+
 			default:
 				ret = CIR_UNKNOWN;
 				break;
@@ -4637,6 +4665,10 @@ static ChangeInfoResult RoadTypeReserveInfo(uint id, int numinfo, int prop, cons
 
 			case 0x17: // Introduction date
 				buf->ReadDWord();
+				break;
+
+			case A0RPI_ROADTYPE_EXTRA_FLAGS:
+				buf->Skip(buf->ReadExtendedByte());
 				break;
 
 			default:
@@ -6354,6 +6386,19 @@ static void SkipAct5(ByteReader *buf)
  */
 bool GetGlobalVariable(byte param, uint32 *value, const GRFFile *grffile)
 {
+	if (_sprite_group_resolve_check_veh_check) {
+		switch (param) {
+			case 0x00:
+			case 0x02:
+			case 0x09:
+			case 0x0A:
+			case 0x20:
+			case 0x23:
+				_sprite_group_resolve_check_veh_check = false;
+				break;
+		}
+	}
+
 	switch (param) {
 		case 0x00: // current date
 			*value = max(_date - DAYS_TILL_ORIGINAL_BASE_YEAR, 0);
@@ -8346,7 +8391,11 @@ static const GRFFeatureInfo _grf_feature_list[] = {
 	GRFFeatureInfo("more_bridge_types", 1),
 	GRFFeatureInfo("action0_bridge_prop14", 1),
 	GRFFeatureInfo("action0_bridge_pillar_flags", 1),
+	GRFFeatureInfo("action0_bridge_availability_flags", 1),
 	GRFFeatureInfo("action5_programmable_signals", 1),
+	GRFFeatureInfo("action0_railtype_programmable_signals", 1),
+	GRFFeatureInfo("action0_railtype_restricted_signals", 1),
+	GRFFeatureInfo("action0_roadtype_extra_flags", 1),
 	GRFFeatureInfo(),
 };
 
@@ -8462,6 +8511,11 @@ static const GRFPropertyMapDefinition _grf_action0_remappable_properties[] = {
 	GRFPropertyMapDefinition(GSF_STATIONS, A0RPI_STATION_DISALLOWED_BRIDGE_PILLARS, "station_disallowed_bridge_pillars"),
 	GRFPropertyMapDefinition(GSF_BRIDGES, A0RPI_BRIDGE_MENU_ICON, "bridge_menu_icon"),
 	GRFPropertyMapDefinition(GSF_BRIDGES, A0RPI_BRIDGE_PILLAR_FLAGS, "bridge_pillar_flags"),
+	GRFPropertyMapDefinition(GSF_BRIDGES, A0RPI_BRIDGE_AVAILABILITY_FLAGS, "bridge_availability_flags"),
+	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_ENABLE_PROGRAMMABLE_SIGNALS, "railtype_enable_programmable_signals"),
+	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_ENABLE_RESTRICTED_SIGNALS, "railtype_enable_restricted_signals"),
+	GRFPropertyMapDefinition(GSF_ROADTYPES, A0RPI_ROADTYPE_EXTRA_FLAGS, "roadtype_extra_flags"),
+	GRFPropertyMapDefinition(GSF_TRAMTYPES, A0RPI_ROADTYPE_EXTRA_FLAGS, "roadtype_extra_flags"),
 	GRFPropertyMapDefinition(),
 };
 
@@ -10318,16 +10372,16 @@ void LoadNewGRF(uint load_index, uint file_index, uint num_baseset)
 	 * so all NewGRFs are loaded equally. For this we use the
 	 * start date of the game and we set the counters, etc. to
 	 * 0 so they're the same too. */
+	YearMonthDay date_ymd = _cur_date_ymd;
 	Date date            = _date;
-	Year year            = _cur_year;
 	DateFract date_fract = _date_fract;
 	uint16 tick_counter  = _tick_counter;
 	uint8 tick_skip_counter = _tick_skip_counter;
 	byte display_opt     = _display_opt;
 
 	if (_networking) {
-		_cur_year     = _settings_game.game_creation.starting_year;
-		_date         = ConvertYMDToDate(_cur_year, 0, 1);
+		_cur_date_ymd = { _settings_game.game_creation.starting_year, 0, 1};
+		_date         = ConvertYMDToDate(_cur_date_ymd);
 		_date_fract   = 0;
 		_tick_counter = 0;
 		_tick_skip_counter = 0;
@@ -10422,7 +10476,7 @@ void LoadNewGRF(uint load_index, uint file_index, uint num_baseset)
 	AfterLoadGRFs();
 
 	/* Now revert back to the original situation */
-	_cur_year     = year;
+	_cur_date_ymd = date_ymd;
 	_date         = date;
 	_date_fract   = date_fract;
 	_tick_counter = tick_counter;

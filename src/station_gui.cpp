@@ -540,7 +540,7 @@ public:
 				assert(st->owner == (Owner)this->window_number || st->owner == OWNER_NONE);
 
 				if (_ctrl_pressed) {
-					ShowExtraViewPortWindow(st->xy);
+					ShowExtraViewportWindow(st->xy);
 				} else {
 					ScrollMainWindowToTile(st->xy);
 				}
@@ -1945,7 +1945,7 @@ struct StationViewWindow : public Window {
 
 			case WID_SV_LOCATION:
 				if (_ctrl_pressed) {
-					ShowExtraViewPortWindow(Station::Get(this->window_number)->xy);
+					ShowExtraViewportWindow(Station::Get(this->window_number)->xy);
 				} else {
 					ScrollMainWindowToTile(Station::Get(this->window_number)->xy);
 				}
@@ -2342,7 +2342,7 @@ struct SelectStationWindow : Window {
 
 	~SelectStationWindow()
 	{
-		if (_settings_client.gui.station_show_coverage) SetViewportCatchmentStation(nullptr, true);
+		SetViewportCatchmentStation(nullptr, true);
 
 		_thd.freeze = false;
 	}

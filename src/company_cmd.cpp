@@ -44,6 +44,7 @@ void ClearEnginesHiddenFlagOfCompany(CompanyID cid);
 
 CompanyID _local_company;   ///< Company controlled by the human player at this client. Can also be #COMPANY_SPECTATOR.
 CompanyID _current_company; ///< Company currently doing an action.
+CompanyID _loaded_local_company; ///< Local company in loaded savegame
 Colours _company_colours[MAX_COMPANIES];  ///< NOSAVE: can be determined from company structs.
 CompanyManagerFace _company_manager_face; ///< for company manager face storage in openttd.cfg
 uint _next_competitor_start;              ///< the number of ticks before the next AI is started
@@ -66,6 +67,7 @@ Company::Company(uint16 name_1, bool is_ai)
 	this->clear_limit     = _settings_game.construction.clear_frame_burst << 16;
 	this->tree_limit      = _settings_game.construction.tree_frame_burst << 16;
 	this->purchase_land_limit = _settings_game.construction.purchase_land_frame_burst << 16;
+	this->build_object_limit = _settings_game.construction.build_object_frame_burst << 16;
 
 	for (uint j = 0; j < 4; j++) this->share_owners[j] = COMPANY_SPECTATOR;
 	InvalidateWindowData(WC_PERFORMANCE_DETAIL, 0, INVALID_COMPANY);
@@ -116,6 +118,12 @@ void SetLocalCompany(CompanyID new_company)
 
 	/* Delete any construction windows... */
 	if (switching_company) DeleteConstructionWindows();
+
+	if (switching_company && Company::IsValidID(new_company)) {
+		for (Town *town : Town::Iterate()) {
+			town->UpdateLabel();
+		}
+	}
 
 	/* ... and redraw the whole screen. */
 	MarkWholeScreenDirty();
@@ -273,6 +281,7 @@ void UpdateLandscapingLimits()
 		c->clear_limit     = min(c->clear_limit     + _settings_game.construction.clear_per_64k_frames,     (uint32)_settings_game.construction.clear_frame_burst << 16);
 		c->tree_limit      = min(c->tree_limit      + _settings_game.construction.tree_per_64k_frames,      (uint32)_settings_game.construction.tree_frame_burst << 16);
 		c->purchase_land_limit = min(c->purchase_land_limit + _settings_game.construction.purchase_land_per_64k_frames, (uint32)_settings_game.construction.purchase_land_frame_burst << 16);
+		c->build_object_limit = min(c->build_object_limit + _settings_game.construction.build_object_per_64k_frames, (uint32)_settings_game.construction.build_object_frame_burst << 16);
 	}
 }
 
@@ -1045,7 +1054,10 @@ CommandCost CmdSetCompanyColour(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 
 		/* Company colour data is indirectly cached. */
 		for (Vehicle *v : Vehicle::Iterate()) {
-			if (v->owner == _current_company) v->InvalidateNewGRFCache();
+			if (v->owner == _current_company) {
+				v->InvalidateNewGRFCache();
+				v->InvalidateImageCache();
+			}
 		}
 
 		extern void UpdateObjectColours(const Company *c);
@@ -1171,6 +1183,20 @@ int CompanyServiceInterval(const Company *c, VehicleType type)
 		case VEH_AIRCRAFT: return vds->servint_aircraft;
 		case VEH_SHIP:     return vds->servint_ships;
 	}
+}
+
+/**
+ * Get the default local company after loading a new game
+ */
+CompanyID GetDefaultLocalCompany()
+{
+	if (_loaded_local_company < MAX_COMPANIES && Company::IsValidID(_loaded_local_company)) {
+		return _loaded_local_company;
+	}
+	for (CompanyID i = COMPANY_FIRST; i < MAX_COMPANIES; i++) {
+		if (Company::IsValidID(i)) return i;
+	}
+	return COMPANY_FIRST;
 }
 
 /**

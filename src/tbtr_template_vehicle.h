@@ -101,7 +101,8 @@ public:
 
 	uint16 max_speed;
 	uint32 power;
-	uint32 weight;
+	uint32 empty_weight;
+	uint32 full_weight;
 	uint32 max_te;
 
 	VehicleSpriteSeq sprite_seq;                     ///< NOSAVE: Vehicle appearance.
@@ -117,7 +118,7 @@ public:
 		first = this;
 		engine_type = eid;
 		this->reuse_depot_vehicles = true;
-		this->keep_remaining_vehicles = true;
+		this->keep_remaining_vehicles = false;
 		this->refit_as_template = true;
 		this->replace_old_only = false;
 		this->sprite_seq.count = 1;

@@ -49,6 +49,7 @@
 #include "../newgrf.h"
 #include "../engine_func.h"
 #include "../rail_gui.h"
+#include "../road_gui.h"
 #include "../core/backup_type.hpp"
 #include "../core/mem_func.hpp"
 #include "../smallmap_gui.h"
@@ -61,6 +62,7 @@
 #include "../tunnel_map.h"
 #include "../bridge_signal_map.h"
 #include "../water.h"
+#include "../settings_func.h"
 
 
 #include "saveload_internal.h"
@@ -247,6 +249,8 @@ void ClearAllCachedNames()
  */
 static void InitializeWindowsAndCaches()
 {
+	SetupTimeSettings();
+
 	/* Initialize windows */
 	ResetWindowSystem();
 	SetupColoursAndInitialWindow();
@@ -995,9 +999,8 @@ bool AfterLoadGame()
 	 *  a company does not exist yet. So create one here.
 	 * 1 exception: network-games. Those can have 0 companies
 	 *   But this exception is not true for non-dedicated network servers! */
-	if (!Company::IsValidID(COMPANY_FIRST) && (!_networking || (_networking && _network_server && !_network_dedicated))) {
-		DoStartupNewCompany(false);
-		Company *c = Company::Get(COMPANY_FIRST);
+	if (!Company::IsValidID(GetDefaultLocalCompany()) && (!_networking || (_networking && _network_server && !_network_dedicated))) {
+		Company *c = DoStartupNewCompany(false);
 		c->settings = _settings_client.company;
 	}
 
@@ -1687,7 +1690,8 @@ bool AfterLoadGame()
 	 * Account for this in older games by adding an offset */
 	if (IsSavegameVersionBefore(SLV_31)) {
 		_date += DAYS_TILL_ORIGINAL_BASE_YEAR;
-		_cur_year += ORIGINAL_BASE_YEAR;
+		SetScaledTickVariables();
+		ConvertDateToYMD(_date, &_cur_date_ymd);
 
 		for (Station *st : Station::Iterate())   st->build_date      += DAYS_TILL_ORIGINAL_BASE_YEAR;
 		for (Waypoint *wp : Waypoint::Iterate()) wp->build_date      += DAYS_TILL_ORIGINAL_BASE_YEAR;
@@ -3137,22 +3141,6 @@ bool AfterLoadGame()
 	 * which is done by StartupEngines(). */
 	if (gcf_res != GLC_ALL_GOOD) StartupEngines();
 
-	if (SlXvIsFeatureMissing(XSLFI_TOWN_CARGO_MATRIX)) {
-		/* Update cargo acceptance map of towns. */
-		for (Town *town : Town::Iterate()) {
-			town->cargo_accepted.Clear();
-		}
-		for (TileIndex t = 0; t < map_size; t++) {
-			if (!IsTileType(t, MP_HOUSE)) continue;
-			Town::Get(GetTownIndex(t))->cargo_accepted.Add(t);
-		}
-
-		for (Town *town : Town::Iterate()) {
-			UpdateTownCargoes(town);
-		}
-		UpdateTownCargoBitmap();
-	}
-
 	/* Set some breakdown-related variables to the correct values. */
 	if (SlXvIsFeatureMissing(XSLFI_IMPROVED_BREAKDOWNS)) {
 		for (Train *v : Train::Iterate()) {
@@ -3791,6 +3779,13 @@ bool AfterLoadGame()
 		}
 	}
 
+	if (SlXvIsFeatureMissing(XSLFI_BUILD_OBJECT_RATE_LIMIT)) {
+		/* Introduced build object limit. */
+		for (Company *c : Company::Iterate()) {
+			c->build_object_limit = _settings_game.construction.build_object_frame_burst << 16;
+		}
+	}
+
 	if (SlXvIsFeaturePresent(XSLFI_MORE_COND_ORDERS, 1, 1)) {
 		for (Order *order : Order::Iterate()) {
 			// Insertion of OCV_MAX_RELIABILITY between OCV_REMAINING_LIFETIME and OCV_CARGO_WAITING
@@ -3814,6 +3809,28 @@ bool AfterLoadGame()
 		_settings_game.game_creation.generation_unique_id = _interactive_random.Next(UINT32_MAX-1) + 1; /* Generates between [1;UINT32_MAX] */
 	}
 
+	if (SlXvIsFeatureMissing(XSLFI_TOWN_MULTI_BUILDING)) {
+		for (Town *t : Town::Iterate()) {
+			t->church_count = HasBit(t->flags, 1) ? 1 : 0;
+			t->stadium_count = HasBit(t->flags, 2) ? 1 : 0;
+		}
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_ONE_WAY_DT_ROAD_STOP)) {
+		for (TileIndex t = 0; t < map_size; t++) {
+			if (IsDriveThroughStopTile(t)) {
+				SetDriveThroughStopDisallowedRoadDirections(t, DRD_NONE);
+			}
+		}
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_ONE_WAY_ROAD_STATE)) {
+		extern void RecalculateRoadCachedOneWayStates();
+		RecalculateRoadCachedOneWayStates();
+	}
+
+	InitializeRoadGUI();
+
 	/* This needs to be done after conversion. */
 	RebuildViewportKdtree();
 	ViewportMapBuildTunnelCache();
@@ -3834,6 +3851,9 @@ bool AfterLoadGame()
 
 	AfterLoadTraceRestrict();
 	AfterLoadTemplateVehiclesUpdateImage();
+	if (SlXvIsFeaturePresent(XSLFI_TEMPLATE_REPLACEMENT, 1, 5)) {
+		AfterLoadTemplateVehiclesUpdateProperties();
+	}
 
 	InvalidateVehicleTickCaches();
 	ClearVehicleTickCaches();
@@ -3926,4 +3946,5 @@ void ReloadNewGRFData()
 	MarkWholeScreenDirty();
 	CheckTrainsLengths();
 	AfterLoadTemplateVehiclesUpdateImage();
+	AfterLoadTemplateVehiclesUpdateProperties();
 }

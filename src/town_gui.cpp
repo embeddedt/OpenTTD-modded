@@ -275,7 +275,7 @@ public:
 
 				this->town->show_zone = new_show_state;
 				this->SetWidgetLoweredState(widget, new_show_state);
-				MarkWholeScreenDirty();
+				MarkWholeNonMapViewportsDirty();
 				break;
 			}
 
@@ -450,7 +450,7 @@ public:
 		switch (widget) {
 			case WID_TV_CENTER_VIEW: // scroll to location
 				if (_ctrl_pressed) {
-					ShowExtraViewPortWindow(this->town->xy);
+					ShowExtraViewportWindow(this->town->xy);
 				} else {
 					ScrollMainWindowToTile(this->town->xy);
 				}
@@ -929,7 +929,7 @@ public:
 				const Town *t = this->towns[id_v];
 				assert(t != nullptr);
 				if (_ctrl_pressed) {
-					ShowExtraViewPortWindow(t->xy);
+					ShowExtraViewportWindow(t->xy);
 				} else {
 					ScrollMainWindowToTile(t->xy);
 				}
@@ -1027,7 +1027,7 @@ void ShowTownDirectory()
 	new TownDirectoryWindow(&_town_directory_desc);
 }
 
-void CcFoundTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcFoundTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 
@@ -1035,7 +1035,7 @@ void CcFoundTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2
 	if (!_settings_client.gui.persistent_buildingtools) ResetObjectToPlace();
 }
 
-void CcFoundRandomTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcFoundRandomTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Succeeded()) ScrollMainWindowToTile(Town::Get(_new_town_id)->xy);
 }
@@ -1959,7 +1959,7 @@ static void PlaceProc_House(TileIndex tile)
 	int best_zone = (int)HZB_BEGIN - 1;
 	for (const Town *t : Town::Iterate()) {
 		HouseZonesBits town_zone = TryGetTownRadiusGroup(t, tile);
-		if (HasBit(house_zones, town_zone)) {
+		if (HasBit(house_zones, town_zone) || (_settings_client.scenario.house_ignore_zones == 1 && town_zone != HZB_END) || _settings_client.scenario.house_ignore_zones == 2) {
 			/* If CTRL is NOT pressed keep only single town on the list, the best one.
 			 * Otherwise add all towns to the list so they can be shown to the player. */
 			if (!_ctrl_pressed) {
@@ -1979,15 +1979,20 @@ static void PlaceProc_House(TileIndex tile)
 		return;
 	}
 
-	CommandContainer cmd = {
+	if (towns.size() > 16 && _settings_client.scenario.house_ignore_zones == 2) {
+		std::sort(towns.begin(), towns.end(), [&](const TownID a, const TownID b) {
+			return DistanceSquare(tile, Town::Get(a)->xy) < DistanceSquare(tile, Town::Get(a)->xy);
+		});
+		towns.resize(16);
+	}
+
+	CommandContainer cmd = NewCommandContainerBasic(
 		tile,
 		_cur_house, // p1 - house type and town index (town not yet set)
 		InteractiveRandom(), // p2 - random bits for the house
 		CMD_BUILD_HOUSE | CMD_MSG(STR_ERROR_CAN_T_BUILD_HOUSE_HERE),
-		CcPlaySound_SPLAT_RAIL,
-		0,
-		""
-	};
+		CcPlaySound_SPLAT_RAIL
+	);
 
 	if (!_ctrl_pressed) {
 		SB(cmd.p1, 16, 16, towns[0]); // set the town, it's alone on the list

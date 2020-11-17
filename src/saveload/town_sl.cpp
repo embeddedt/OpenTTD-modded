@@ -48,13 +48,7 @@ void RebuildTownCaches(bool cargo_update_required)
 	/* Update the population and num_house dependent values */
 	for (Town *town : Town::Iterate()) {
 		UpdateTownRadius(town);
-		if (cargo_update_required) {
-			UpdateTownCargoes(town);
-		} else {
-			UpdateTownCargoTotal(town);
-		}
 	}
-	UpdateTownCargoBitmap();
 }
 
 /**
@@ -136,6 +130,8 @@ static const SaveLoad _town_desc[] = {
 	SLE_CONDSTR(Town, name,                  SLE_STR | SLF_ALLOW_CONTROL, 0, SLV_84, SL_MAX_VERSION),
 
 	    SLE_VAR(Town, flags,                 SLE_UINT8),
+	SLE_CONDVAR_X(Town, church_count,        SLE_UINT16, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TOWN_MULTI_BUILDING)),
+	SLE_CONDVAR_X(Town, stadium_count,       SLE_UINT16, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TOWN_MULTI_BUILDING)),
 	SLE_CONDVAR(Town, statues,               SLE_FILE_U8  | SLE_VAR_U16, SL_MIN_VERSION, SLV_104),
 	SLE_CONDVAR(Town, statues,               SLE_UINT16,               SLV_104, SL_MAX_VERSION),
 
@@ -215,11 +211,9 @@ static const SaveLoad _town_desc[] = {
 
 	SLE_CONDLST(Town, psa_list,            REF_STORAGE,                SLV_161, SL_MAX_VERSION),
 
-	SLE_CONDVAR(Town, cargo_produced,        SLE_FILE_U32 | SLE_VAR_U64, SLV_166, SLV_EXTEND_CARGOTYPES),
-	SLE_CONDVAR(Town, cargo_produced,        SLE_UINT64,                 SLV_EXTEND_CARGOTYPES, SL_MAX_VERSION),
-
-	/* reserve extra space in savegame here. (currently 30 bytes) */
-	SLE_CONDNULL(30, SLV_2, SL_MAX_VERSION),
+	SLE_CONDNULL(4, SLV_166, SLV_EXTEND_CARGOTYPES),  ///< cargo_produced, no longer in use
+	SLE_CONDNULL(8, SLV_EXTEND_CARGOTYPES, SLV_REMOVE_TOWN_CARGO_CACHE),  ///< cargo_produced, no longer in use
+	SLE_CONDNULL(30, SLV_2, SLV_REMOVE_TOWN_CARGO_CACHE), ///< old reserved space
 
 	SLE_END()
 };
@@ -272,19 +266,6 @@ static void Load_HIDS()
 	Load_NewGRFMapping(_house_mngr);
 }
 
-const SaveLoad *GetTileMatrixDesc()
-{
-	/* Here due to private member vars. */
-	static const SaveLoad _tilematrix_desc[] = {
-		SLE_VAR(AcceptanceMatrix, area.tile, SLE_UINT32),
-		SLE_VAR(AcceptanceMatrix, area.w,    SLE_UINT16),
-		SLE_VAR(AcceptanceMatrix, area.h,    SLE_UINT16),
-		SLE_END()
-	};
-
-	return _tilematrix_desc;
-}
-
 static void RealSave_Town(Town *t)
 {
 	SlObjectSaveFiltered(t, _filtered_town_desc.data());
@@ -294,12 +275,6 @@ static void RealSave_Town(Town *t)
 	}
 	for (int i = TE_BEGIN; i < NUM_TE; i++) {
 		SlObjectSaveFiltered(&t->received[i], _filtered_town_received_desc.data());
-	}
-
-	SlObjectSaveFiltered(&t->cargo_accepted, GetTileMatrixDesc()); // GetTileMatrixDesc() has no conditionals
-	if (t->cargo_accepted.area.w != 0) {
-		uint arr_len = t->cargo_accepted.area.w / AcceptanceMatrix::GRID * t->cargo_accepted.area.h / AcceptanceMatrix::GRID;
-		SlArray(t->cargo_accepted.data, arr_len, SLE_UINT64);
 	}
 }
 
@@ -339,23 +314,13 @@ static void Load_TOWN()
 			SlErrorCorrupt("Invalid town name generator");
 		}
 
-		if (!IsSavegameVersionBefore(SLV_166) && SlXvIsFeatureMissing(XSLFI_TOWN_CARGO_MATRIX)) {
+		if ((!IsSavegameVersionBefore(SLV_166) && IsSavegameVersionBefore(SLV_REMOVE_TOWN_CARGO_CACHE)) || SlXvIsFeaturePresent(XSLFI_TOWN_CARGO_MATRIX)) {
 			SlSkipBytes(4); // tile
 			uint16 w = SlReadUint16();
 			uint16 h = SlReadUint16();
 			if (w != 0) {
-				SlSkipBytes(4 * (w / 4 * h / 4));
+				SlSkipBytes((SlXvIsFeaturePresent(XSLFI_TOWN_CARGO_MATRIX) ? 8 : 4) * (w / 4 * h / 4));
 			}
-		}
-		if (SlXvIsFeaturePresent(XSLFI_TOWN_CARGO_MATRIX)) {
-			SlObjectLoadFiltered(&t->cargo_accepted, GetTileMatrixDesc()); // GetTileMatrixDesc() has no conditionals
-			if (t->cargo_accepted.area.w != 0) {
-				uint arr_len = t->cargo_accepted.area.w / AcceptanceMatrix::GRID * t->cargo_accepted.area.h / AcceptanceMatrix::GRID;
-				t->cargo_accepted.data = MallocT<CargoTypes>(arr_len);
-				SlArray(t->cargo_accepted.data, arr_len, SLE_UINT64);
-			}
-			/* Rebuild total cargo acceptance. */
-			UpdateTownCargoTotal(t);
 		}
 	}
 }

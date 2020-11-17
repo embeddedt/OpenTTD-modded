@@ -15,7 +15,6 @@
 #include "subsidy_type.h"
 #include "newgrf_storage.h"
 #include "cargotype.h"
-#include "tilematrix_type.hpp"
 #include "openttd.h"
 #include "table/strings.h"
 #include "company_func.h"
@@ -28,8 +27,6 @@ struct BuildingCounts {
 	T id_count[NUM_HOUSES];
 	T class_count[HOUSE_CLASS_MAX];
 };
-
-typedef TileMatrix<CargoTypes, 4> AcceptanceMatrix;
 
 static const uint CUSTOM_TOWN_NUMBER_DIFFICULTY  = 4; ///< value for custom town number in difficulty settings
 static const uint CUSTOM_TOWN_MAX_NUMBER = 5000;  ///< this is the maximum number of towns a user can specify in customisation
@@ -68,6 +65,8 @@ struct Town : TownPool::PoolItem<&_town_pool> {
 	mutable std::string cached_name; ///< NOSAVE: Cache of the resolved name of the town, if not using a custom town name
 
 	byte flags;                    ///< See #TownFlags.
+	uint16 church_count;           ///< Number of church buildings in the town.
+	uint16 stadium_count;          ///< Number of stadium buildings in the town.
 
 	uint16 noise_reached;          ///< level of noise that all the airports are generating
 
@@ -89,10 +88,6 @@ struct Town : TownPool::PoolItem<&_town_pool> {
 
 	inline byte GetPercentTransported(CargoID cid) const { return this->supplied[cid].old_act * 256 / (this->supplied[cid].old_max + 1); }
 
-	/* Cargo production and acceptance stats. */
-	CargoTypes cargo_produced;       ///< Bitmap of all cargoes produced by houses in this town.
-	AcceptanceMatrix cargo_accepted; ///< Bitmap of cargoes accepted by houses for each 4*4 (really 12*12) map square of the town.
-	CargoTypes cargo_accepted_total; ///< NOSAVE: Bitmap of all cargoes accepted by houses in this town.
 	StationList stations_near;       ///< NOSAVE: List of nearby stations.
 
 	uint16 time_until_rebuild;       ///< time until we rebuild a house
@@ -216,8 +211,8 @@ enum TownDirectoryInvalidateWindowData {
  */
 enum TownFlags {
 	TOWN_IS_GROWING     = 0,   ///< Conditions for town growth are met. Grow according to Town::growth_rate.
-	TOWN_HAS_CHURCH     = 1,   ///< There can be only one church by town.
-	TOWN_HAS_STADIUM    = 2,   ///< There can be only one stadium by town.
+//	TOWN_HAS_CHURCH     = 1,   ///< There can be only one church per town. Replaced by church_count.
+//	TOWN_HAS_STADIUM    = 2,   ///< There can be only one stadium per town. Replaced by stadium_count.
 	TOWN_CUSTOM_GROWTH  = 3,   ///< Growth rate is controlled by GS.
 };
 
@@ -233,9 +228,6 @@ void ResetHouses();
 void ClearTownHouse(Town *t, TileIndex tile);
 void UpdateTownMaxPass(Town *t);
 void UpdateTownRadius(Town *t);
-void UpdateTownCargoes(Town *t);
-void UpdateTownCargoTotal(Town *t);
-void UpdateTownCargoBitmap();
 CommandCost CheckIfAuthorityAllowsNewStation(TileIndex tile, DoCommandFlag flags);
 Town *ClosestTownFromTile(TileIndex tile, uint threshold);
 void ChangeTownRating(Town *t, int add, int max, DoCommandFlag flags);
@@ -344,8 +336,7 @@ static inline uint16 TownTicksToGameTicks(uint16 ticks) {
 }
 
 
-extern CargoTypes _town_cargoes_accepted;
-
 RoadType GetTownRoadType(const Town *t);
+bool MayTownModifyRoad(TileIndex tile);
 
 #endif /* TOWN_H */

@@ -214,7 +214,7 @@ void BuildLinkStatsLegend()
 
 	for (; i < _smallmap_cargo_count + lengthof(_linkstat_colours_in_legenda); ++i) {
 		_legend_linkstats[i].legend = STR_EMPTY;
-		_legend_linkstats[i].colour = LinkGraphOverlay::LINK_COLOURS[_linkstat_colours_in_legenda[i - _smallmap_cargo_count]];
+		_legend_linkstats[i].colour = LinkGraphOverlay::LINK_COLOURS[_settings_client.gui.linkgraph_colours][_linkstat_colours_in_legenda[i - _smallmap_cargo_count]];
 		_legend_linkstats[i].show_on_map = true;
 	}
 
@@ -487,8 +487,10 @@ static void NotifyAllViewports(ViewportMapType map_type)
 	Window *w;
 	FOR_ALL_WINDOWS_FROM_BACK(w) {
 		if (w->viewport != nullptr)
-			if (w->viewport->zoom >= ZOOM_LVL_DRAW_MAP && w->viewport->map_type == map_type)
+			if (w->viewport->zoom >= ZOOM_LVL_DRAW_MAP && w->viewport->map_type == map_type) {
+				ClearViewportLandPixelCache(w->viewport);
 				w->InvalidateData();
+			}
 	}
 }
 
@@ -842,7 +844,7 @@ void SmallMapWindow::DrawTowns(const DrawPixelInfo *dpi) const
 void SmallMapWindow::DrawMapIndicators() const
 {
 	/* Find main viewport. */
-	const ViewPort *vp = FindWindowById(WC_MAIN_WINDOW, 0)->viewport;
+	const Viewport *vp = FindWindowById(WC_MAIN_WINDOW, 0)->viewport;
 
 	Point upper_left_smallmap_coord  = InverseRemapCoords2(vp->virtual_left, vp->virtual_top);
 	Point lower_right_smallmap_coord = InverseRemapCoords2(vp->virtual_left + vp->virtual_width - 1, vp->virtual_top + vp->virtual_height - 1);
@@ -977,7 +979,7 @@ void SmallMapWindow::SetupWidgetData()
 	this->GetWidget<NWidgetStacked>(WID_SM_SELECT_BUTTONS)->SetDisplayedPlane(plane);
 }
 
-SmallMapWindow::SmallMapWindow(WindowDesc *desc, int window_number) : Window(desc), refresh(GUITimer(FORCE_REFRESH_PERIOD))
+SmallMapWindow::SmallMapWindow(WindowDesc *desc, int window_number) : Window(desc), refresh(GUITimer())
 {
 	_smallmap_industry_highlight = INVALID_INDUSTRYTYPE;
 	this->overlay = new LinkGraphOverlay(this, WID_SM_MAP, 0, this->GetOverlayCompanyMask(), 1);
@@ -995,6 +997,7 @@ SmallMapWindow::SmallMapWindow(WindowDesc *desc, int window_number) : Window(des
 	this->SetZoomLevel(ZLC_INITIALIZE, nullptr);
 	this->SmallMapCenterOnCurrentPos();
 	this->SetOverlayCargoMask();
+	this->refresh.SetInterval(this->GetRefreshPeriod());
 }
 
 SmallMapWindow::~SmallMapWindow()
@@ -1214,6 +1217,7 @@ void SmallMapWindow::SwitchMapType(SmallMapType map_type)
 	if (map_type == SMT_LINKSTATS) this->overlay->SetDirty();
 	if (map_type != SMT_INDUSTRY) this->BreakIndustryChainLink();
 	this->SetDirty();
+	this->refresh.SetInterval(this->GetRefreshPeriod());
 }
 
 /**
@@ -1312,7 +1316,7 @@ int SmallMapWindow::GetPositionOnLegend(Point pt)
 	}
 	if (new_highlight != _smallmap_industry_highlight) {
 		_smallmap_industry_highlight = new_highlight;
-		this->refresh.SetInterval(_smallmap_industry_highlight != INVALID_INDUSTRYTYPE ? BLINK_PERIOD : FORCE_REFRESH_PERIOD);
+		this->refresh.SetInterval(this->GetRefreshPeriod());
 		_smallmap_industry_highlight_state = true;
 		this->SetDirty();
 	}
@@ -1495,6 +1499,8 @@ int SmallMapWindow::GetPositionOnLegend(Point pt)
 
 /* virtual */ void SmallMapWindow::OnRealtimeTick(uint delta_ms)
 {
+	if (_pause_mode != PM_UNPAUSED) delta_ms = this->PausedAdjustRefreshTimeDelta(delta_ms);
+
 	/* Update the window every now and then */
 	if (!this->refresh.Elapsed(delta_ms)) return;
 
@@ -1508,8 +1514,42 @@ int SmallMapWindow::GetPositionOnLegend(Point pt)
 	}
 	_smallmap_industry_highlight_state = !_smallmap_industry_highlight_state;
 
-	this->refresh.SetInterval(_smallmap_industry_highlight != INVALID_INDUSTRYTYPE ? BLINK_PERIOD : FORCE_REFRESH_PERIOD);
+	this->refresh.SetInterval(this->GetRefreshPeriod());
 	this->SetDirty();
+}
+
+uint SmallMapWindow::GetRefreshPeriod() const
+{
+	if (_smallmap_industry_highlight != INVALID_INDUSTRYTYPE) return BLINK_PERIOD;
+
+	switch (map_type) {
+		case SMT_CONTOUR:
+		case SMT_VEHICLES:
+			return FORCE_REFRESH_PERIOD_VEH * (1 + (this->zoom / 2));
+
+		case SMT_LINKSTATS:
+			return FORCE_REFRESH_PERIOD_LINK_GRAPH * (1 + (this->zoom / 6));
+
+		default:
+			return FORCE_REFRESH_PERIOD * (1 + (this->zoom / 6));
+	}
+}
+
+uint SmallMapWindow::PausedAdjustRefreshTimeDelta(uint delta_ms) const
+{
+	if (_smallmap_industry_highlight != INVALID_INDUSTRYTYPE) return delta_ms;
+
+	switch (map_type) {
+		case SMT_CONTOUR:
+		case SMT_VEHICLES:
+			return CeilDivT<uint>(delta_ms, 4);
+
+		case SMT_LINKSTATS:
+			return delta_ms;
+
+		default:
+			return CeilDivT<uint>(delta_ms, 2);
+	}
 }
 
 /**
@@ -1565,7 +1605,7 @@ void SmallMapWindow::SetNewScroll(int sx, int sy, int sub)
  */
 void SmallMapWindow::SmallMapCenterOnCurrentPos()
 {
-	const ViewPort *vp = FindWindowById(WC_MAIN_WINDOW, 0)->viewport;
+	const Viewport *vp = FindWindowById(WC_MAIN_WINDOW, 0)->viewport;
 	Point viewport_center = InverseRemapCoords2(vp->virtual_left + vp->virtual_width / 2, vp->virtual_top + vp->virtual_height / 2);
 
 	int sub;

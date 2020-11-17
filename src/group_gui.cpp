@@ -157,6 +157,10 @@ private:
 
 	Dimension column_size[VGC_END]; ///< Size of the columns in the group list.
 
+	Money money_this_year;
+	Money money_last_year;
+	uint32 occupancy_ratio;
+
 	/** return true if group has children */
 	void AddChildren(GUIGroupList *source, GroupID parent, int indent)
 	{
@@ -377,6 +381,31 @@ private:
 		this->SetDirty();
 	}
 
+	bool RecalculateInfoTotals()
+	{
+		Money this_year = 0;
+		Money last_year = 0;
+		uint32 occupancy = 0;
+		size_t vehicle_count = this->vehicles.size();
+
+		for (uint i = 0; i < vehicle_count; i++) {
+			const Vehicle *v = this->vehicles[i];
+			assert(v->owner == this->vli.company);
+
+			this_year += v->GetDisplayProfitThisYear();
+			last_year += v->GetDisplayProfitLastYear();
+			occupancy += v->trip_occupancy;
+		}
+
+		uint32 occupancy_ratio = vehicle_count ? occupancy / vehicle_count : 0;
+
+		bool ret = (this->money_this_year != this_year) || (this->money_last_year != last_year) || (occupancy_ratio != this->occupancy_ratio);
+		this->money_this_year = this_year;
+		this->money_last_year = last_year;
+		this->occupancy_ratio = occupancy_ratio;
+		return ret;
+	}
+
 public:
 	VehicleGroupWindow(WindowDesc *desc, WindowNumber window_number) : BaseVehicleListWindow(desc, window_number)
 	{
@@ -411,6 +440,8 @@ public:
 		this->groups.NeedResort();
 		this->BuildGroupList(vli.company);
 		this->group_sb->SetCount((uint)this->groups.size());
+
+		this->RecalculateInfoTotals();
 
 		this->GetWidget<NWidgetCore>(WID_GL_CAPTION)->widget_data = STR_VEHICLE_LIST_TRAIN_CAPTION + this->vli.vtype;
 		this->GetWidget<NWidgetCore>(WID_GL_LIST_VEHICLE)->tool_tip = STR_VEHICLE_LIST_TRAIN_LIST_TOOLTIP + this->vli.vtype;
@@ -556,8 +587,10 @@ public:
 	{
 		/* If we select the all vehicles, this->list will contain all vehicles of the owner
 		 * else this->list will contain all vehicles which belong to the selected group */
+		bool recalculate_totals = this->vehicles.NeedRebuild();
 		this->BuildVehicleList();
 		this->SortVehicleList();
+		if (recalculate_totals) this->RecalculateInfoTotals();
 
 		this->BuildGroupList(this->owner);
 
@@ -621,37 +654,23 @@ public:
 				break;
 
 			case WID_GL_INFO: {
-				Money this_year = 0;
-				Money last_year = 0;
-				uint32 occupancy = 0;
-				size_t vehicle_count = this->vehicles.size();
-
-				for (uint i = 0; i < vehicle_count; i++) {
-					const Vehicle *v = this->vehicles[i];
-					assert(v->owner == this->owner);
-
-					this_year += v->GetDisplayProfitThisYear();
-					last_year += v->GetDisplayProfitLastYear();
-					occupancy += v->trip_occupancy;
-				}
-
 				const int left  = r.left + WD_FRAMERECT_LEFT + 8;
 				const int right = r.right - WD_FRAMERECT_RIGHT - 8;
 
 				int y = r.top + WD_FRAMERECT_TOP;
 				DrawString(left, right, y, STR_GROUP_PROFIT_THIS_YEAR, TC_BLACK);
-				SetDParam(0, this_year);
+				SetDParam(0, this->money_this_year);
 				DrawString(left, right, y, STR_JUST_CURRENCY_LONG, TC_BLACK, SA_RIGHT);
 
 				y += FONT_HEIGHT_NORMAL;
 				DrawString(left, right, y, STR_GROUP_PROFIT_LAST_YEAR, TC_BLACK);
-				SetDParam(0, last_year);
+				SetDParam(0, this->money_last_year);
 				DrawString(left, right, y, STR_JUST_CURRENCY_LONG, TC_BLACK, SA_RIGHT);
 
 				y += FONT_HEIGHT_NORMAL;
 				DrawString(left, right, y, STR_GROUP_OCCUPANCY, TC_BLACK);
-				if (vehicle_count > 0) {
-					SetDParam(0, occupancy / vehicle_count);
+				if (this->vehicles.size() > 0) {
+					SetDParam(0, this->occupancy_ratio);
 					DrawString(left, right, y, STR_GROUP_OCCUPANCY_VALUE, TC_BLACK, SA_RIGHT);
 				}
 
@@ -862,7 +881,13 @@ public:
 
 	void OnDragDrop_Group(Point pt, int widget)
 	{
-		const Group *g = Group::Get(this->group_sel);
+		const Group *g = Group::GetIfValid(this->group_sel);
+		if (g == nullptr) {
+			this->group_sel = INVALID_GROUP;
+			this->group_over = INVALID_GROUP;
+			this->SetDirty();
+			return;
+		}
 
 		switch (widget) {
 			case WID_GL_ALL_VEHICLES: // All vehicles
@@ -946,7 +971,6 @@ public:
 	void OnQueryTextFinished(char *str) override
 	{
 		if (str != nullptr) DoCommandP(0, this->group_rename, 0, CMD_ALTER_GROUP | CMD_MSG(STR_ERROR_GROUP_CAN_T_RENAME), nullptr, str);
-		InvalidateWindowData(WC_TEMPLATEGUI_MAIN, 0, 0, 0);
 		this->group_rename = INVALID_GROUP;
 	}
 
@@ -971,7 +995,7 @@ public:
 				switch (index) {
 					case ADI_TEMPLATE_REPLACE: // TemplateReplace Window
 						if (vli.vtype == VEH_TRAIN) {
-							ShowTemplateReplaceWindow(this->unitnumber_digits);
+							ShowTemplateReplaceWindow();
 						}
 						break;
 					case ADI_REPLACE: // Replace window
@@ -1006,6 +1030,12 @@ public:
 						break;
 					}
 
+					case ADI_TRACERESTRICT_COUNTER_MGMT: {
+						extern void ShowTraceRestrictCounterWindow(CompanyID company);
+						ShowTraceRestrictCounterWindow(this->owner);
+						break;
+					}
+
 					default: NOT_REACHED();
 				}
 				break;
@@ -1019,7 +1049,10 @@ public:
 	void OnGameTick() override
 	{
 		if (this->groups.NeedResort() || this->vehicles.NeedResort()) {
-			this->SetDirty();
+			this->SetWidgetDirty(WID_GL_LIST_VEHICLE);
+		}
+		if (!this->vehicles.NeedRebuild() && this->RecalculateInfoTotals()) {
+			this->SetWidgetDirty(WID_GL_INFO);
 		}
 	}
 
@@ -1028,6 +1061,7 @@ public:
 		/* abort drag & drop */
 		this->vehicle_sel = INVALID_VEHICLE;
 		this->DirtyHighlightedGroupWidget();
+		this->group_sel = INVALID_GROUP;
 		this->group_over = INVALID_GROUP;
 		this->SetWidgetDirty(WID_GL_LIST_VEHICLE);
 	}
@@ -1185,7 +1219,7 @@ static inline VehicleGroupWindow *FindVehicleGroupWindow(VehicleType vt, Owner o
  * @param cmd Unused.
  * @see CmdCreateGroup
  */
-void CcCreateGroup(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcCreateGroup(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 	assert(p1 <= VEH_AIRCRAFT);
@@ -1202,12 +1236,12 @@ void CcCreateGroup(const CommandCost &result, TileIndex tile, uint32 p1, uint32 
  * @param p2 Bit 0-19: Vehicle ID.
  * @param cmd Unused.
  */
-void CcAddVehicleNewGroup(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint32 cmd)
+void CcAddVehicleNewGroup(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
 {
 	if (result.Failed()) return;
 	assert(Vehicle::IsValidID(GB(p2, 0, 20)));
 
-	CcCreateGroup(result, 0, Vehicle::Get(GB(p2, 0, 20))->type, 0, cmd);
+	CcCreateGroup(result, 0, Vehicle::Get(GB(p2, 0, 20))->type, 0, 0, cmd);
 }
 
 /**
