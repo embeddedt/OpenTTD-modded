@@ -29,11 +29,11 @@ if(NOT OPTION_DEDICATED)
         CONDITION WIN32
     )
 
-    add_files(
-        xaudio2_s.cpp
-        xaudio2_s.h
-        CONDITION WIN32 AND XAUDIO2_FOUND
-    )
+#    add_files(
+#        xaudio2_s.cpp
+#        xaudio2_s.h
+#        CONDITION WIN32 AND XAUDIO2_FOUND
+#    )
 endif()
 
 add_files(
