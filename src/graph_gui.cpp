@@ -1706,7 +1706,7 @@ struct IndustryProductionGraphWindow : BaseGraphWindow {
 		CargoTypes excluded_cargo = this->excluded_data;
 		this->UpdateExcludedData();
 
-		int mo = _cur_month - this->num_vert_lines;
+		int mo = (_cur_date_ymd.month / this->month_increment - this->num_vert_lines) * this->month_increment;
 		int yr = _cur_year;
 		while (mo < 0) {
 			yr--;

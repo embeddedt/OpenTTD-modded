@@ -478,6 +478,9 @@ add_files(
     tree_cmd.cpp
     tree_gui.cpp
     tree_map.h
+    triphistory_cmd.cpp
+    triphistory_gui.cpp
+    triphistory.h
     tunnel_base.h
     tunnel_map.cpp
     tunnel_map.h
