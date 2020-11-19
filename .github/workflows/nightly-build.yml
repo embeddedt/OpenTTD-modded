@@ -12,6 +12,28 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
+    - name: Install dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          libfontconfig-dev \
+          libicu-dev \
+          liblzma-dev \
+          liblzo2-dev \
+          libsdl1.2-dev \
+          libsdl2-dev \
+          libxdg-basedir-dev \
+          zlib1g-dev \
+          # EOF
+    - name: Prepare vcpkg (with cache)
+      uses: lukka/run-vcpkg@v4
+      if: runner.os == 'Windows'
+      with:
+        vcpkgDirectory: 'c:/vcpkg'
+        doNotUpdateVcpkg: true
+        vcpkgArguments: 'liblzma libpng lzo zlib'
+        vcpkgTriplet: '${{ matrix.arch }}-windows-static'
     - name: configure
       run: mkdir build && cd build && cmake ..
     - name: build
