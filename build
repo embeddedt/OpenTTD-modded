@@ -1,0 +1,15 @@
+#! /bin/zsh
+
+echo "building linux";
+cd ./cmbuild;
+cmake ..;
+make -j24;
+cd ..;
+echo "linux build done";
+echo "building windows";
+cd ./winbuild;
+CFLAGS="-I/usr/local/x86_64-w64-mingw32/include" CXXFLAGS="-I/usr/local/x86_64-w64-mingw32/include" LDFLAGS="-L/usr/local/x86_64-w64-mingw32/lib" cmake -DCMAKE_TOOLCHAIN_FILE=../mingw.cmake -DWIN32=True -DXAUDIO2_FOUND=False ..;
+make -j24;
+cd ..;
+echo "windows build done";
+echo "all builds done";
