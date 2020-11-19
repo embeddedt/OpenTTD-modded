@@ -18,9 +18,9 @@ jobs:
       run: cmake --build build
     - uses: actions/upload-artifact@v2
       with:
-      name: binaries
-      path: |
-        build/openttd
-        build/lang/
-        build/ai/
-        build/scripts/
+        name: binaries
+        path: |
+          build/openttd
+          build/lang/
+          build/ai/
+          build/scripts/
