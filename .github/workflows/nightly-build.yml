@@ -35,14 +35,14 @@ jobs:
         vcpkgArguments: 'liblzma libpng lzo zlib'
         vcpkgTriplet: 'x64-windows-static'
     - name: configure
-      run: mkdir build && cd build && cmake ..
+      run: mkdir cmbuild && cd cmbuild && cmake ..
     - name: build
-      run: cmake --build build
+      run: cmake --build cmbuild
     - uses: actions/upload-artifact@v2
       with:
         name: binaries
         path: |
-          build/openttd
-          build/lang/
-          build/ai/
-          build/scripts/
+          cmbuild/openttd
+          cmbuild/lang/
+          cmbuild/ai/
+          cmbuild/scripts/
