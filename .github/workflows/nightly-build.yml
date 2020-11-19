@@ -1,0 +1,48 @@
+name: Build nightly binaries
+
+on: [push]
+
+jobs:
+  build-nightlies:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2019, ubuntu-16.04]
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          libfontconfig-dev \
+          libicu-dev \
+          liblzma-dev \
+          liblzo2-dev \
+          libsdl1.2-dev \
+          libsdl2-dev \
+          libxdg-basedir-dev \
+          zlib1g-dev \
+          # EOF
+    - name: Prepare vcpkg (with cache)
+      uses: lukka/run-vcpkg@v4
+      if: runner.os == 'Windows'
+      with:
+        vcpkgDirectory: 'c:/vcpkg'
+        doNotUpdateVcpkg: true
+        vcpkgArguments: 'liblzma libpng lzo zlib'
+        vcpkgTriplet: '${{ matrix.ARCH }}-windows-static'
+    - name: configure
+      run: mkdir build && cd build && cmake ..
+    - name: build
+      run: cmake --build build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: binaries
+        path: |
+          build/openttd
+          build/lang/
+          build/ai/
+          build/scripts/
