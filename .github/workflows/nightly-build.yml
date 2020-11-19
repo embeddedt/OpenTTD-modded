@@ -33,7 +33,7 @@ jobs:
         vcpkgDirectory: 'c:/vcpkg'
         doNotUpdateVcpkg: true
         vcpkgArguments: 'liblzma libpng lzo zlib'
-        vcpkgTriplet: '${{ matrix.ARCH }}-windows-static'
+        vcpkgTriplet: 'x64-windows-static'
     - name: configure
       run: mkdir build && cd build && cmake ..
     - name: build
