@@ -11,7 +11,7 @@ jobs:
         os: [windows-2019, ubuntu-16.04]
     
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Install dependencies
       if: runner.os == 'Linux'
       run: |
