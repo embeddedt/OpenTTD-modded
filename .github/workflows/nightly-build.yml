@@ -37,7 +37,7 @@ jobs:
     - name: configure
       run: mkdir cmbuild && cd cmbuild && cmake -DCMAKE_DISABLE_FIND_PACKAGE_ICU=TRUE ..
     - name: build
-      run: cmake --build cmbuild --parallel
+      run: cmake --build cmbuild
     - uses: actions/upload-artifact@v2
       if: runner.os == 'Linux'     
       with:
