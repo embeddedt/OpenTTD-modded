@@ -35,7 +35,7 @@ jobs:
         vcpkgArguments: 'liblzma libpng lzo zlib'
         vcpkgTriplet: 'x64-windows-static'
     - name: configure
-      run: mkdir cmbuild && cd cmbuild && cmake ..
+      run: mkdir cmbuild && cd cmbuild && cmake -DCMAKE_DISABLE_FIND_PACKAGE_ICU=TRUE ..
     - name: build
       run: cmake --build cmbuild
     - uses: actions/upload-artifact@v2
