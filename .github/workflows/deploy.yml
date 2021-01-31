@@ -21,16 +21,17 @@ jobs:
       run: |
         cd os/emscripten
         docker build -t emsdk-lzma .
+        cd ../..
         mkdir build-host
         docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build-host emsdk-lzma cmake .. -DOPTION_TOOLS_ONLY=ON
         docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build-host emsdk-lzma make -j$(nproc) tools
-        mkdir build
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build emsdk-lzma emcmake cmake .. -DHOST_BINARY_DIR=$(pwd)/build-host -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPTION_USE_ASSERTS=OFF
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build emsdk-lzma emmake make -j$(nproc)
+        mkdir em_build
+        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/em_build emsdk-lzma emcmake cmake .. -DHOST_BINARY_DIR=$(pwd)/build-host -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPTION_USE_ASSERTS=OFF
+        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/em_build emsdk-lzma emmake make -j$(nproc)
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: os/emscripten/build # The folder the action should deploy.
+        FOLDER: em_build # The folder the action should deploy.
         CLEAN: true # Automatically remove deleted files from the deploy branch- name: Deploy 🚀
