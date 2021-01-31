@@ -20,7 +20,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          libfontconfig-dev \
+          libicu-dev \
+          liblzma-dev \
+          liblzo2-dev \
+          libsdl1.2-dev \
+          libsdl2-dev \
+          libxdg-basedir-dev \
+          zlib1g-dev \
+          # EOF
     - name: Setup cache
       uses: actions/cache@v2
       with:
