@@ -28,28 +28,28 @@ The CXX compiler identification is GNU, found in "/__w/OpenTTD-modded/OpenTTD-mo
 Determining if the C compiler works passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_df9a6/fast"
-/usr/bin/make -f CMakeFiles/cmTC_df9a6.dir/build.make CMakeFiles/cmTC_df9a6.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_55ab1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_55ab1.dir/build.make CMakeFiles/cmTC_55ab1.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_df9a6.dir/testCCompiler.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_df9a6.dir/testCCompiler.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/testCCompiler.c
-Linking C executable cmTC_df9a6
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_df9a6.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_df9a6.dir/testCCompiler.c.o  -o cmTC_df9a6 
+Building C object CMakeFiles/cmTC_55ab1.dir/testCCompiler.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_55ab1.dir/testCCompiler.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_55ab1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_55ab1.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_55ab1.dir/testCCompiler.c.o  -o cmTC_55ab1 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Detecting C compiler ABI info compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_2c7f3/fast"
-/usr/bin/make -f CMakeFiles/cmTC_2c7f3.dir/build.make CMakeFiles/cmTC_2c7f3.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_fab39/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fab39.dir/build.make CMakeFiles/cmTC_fab39.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c
-Linking C executable cmTC_2c7f3
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c7f3.dir/link.txt --verbose=1
-/usr/bin/cc     -v CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o  -o cmTC_2c7f3 
+Building C object CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_fab39
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fab39.dir/link.txt --verbose=1
+/usr/bin/cc     -v CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o  -o cmTC_fab39 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/cc
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper
@@ -61,9 +61,9 @@ Thread model: posix
 gcc version 8.3.0 (Debian 8.3.0-6) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2c7f3' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccSHNea8.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_2c7f3 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2c7f3' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_fab39' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccG1hB1X.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_fab39 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_fab39' '-mtune=generic' '-march=x86-64'
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -71,14 +71,14 @@ Parsed C implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_2c7f3/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_2c7f3.dir/build.make CMakeFiles/cmTC_2c7f3.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_fab39/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_fab39.dir/build.make CMakeFiles/cmTC_fab39.dir/build]
   ignore line: [make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp']
-  ignore line: [Building C object CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o]
-  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c]
-  ignore line: [Linking C executable cmTC_2c7f3]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2c7f3.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o  -o cmTC_2c7f3 ]
+  ignore line: [Building C object CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o]
+  ignore line: [/usr/bin/cc    -o CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake-3.13/Modules/CMakeCCompilerABI.c]
+  ignore line: [Linking C executable cmTC_fab39]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fab39.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/cc     -v CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o  -o cmTC_fab39 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/cc]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper]
@@ -90,13 +90,13 @@ Parsed C implicit link information from above output:
   ignore line: [gcc version 8.3.0 (Debian 8.3.0-6) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_2c7f3' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccSHNea8.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_2c7f3 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_fab39' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccG1hB1X.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_fab39 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccSHNea8.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccG1hB1X.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -111,7 +111,7 @@ Parsed C implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-pie] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_2c7f3] ==> ignore
+    arg [cmTC_fab39] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o] ==> ignore
@@ -123,7 +123,7 @@ Parsed C implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/8/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/8/../../..]
-    arg [CMakeFiles/cmTC_2c7f3.dir/CMakeCCompilerABI.c.o] ==> ignore
+    arg [CMakeFiles/cmTC_fab39.dir/CMakeCCompilerABI.c.o] ==> ignore
     arg [-lgcc] ==> lib [gcc]
     arg [--push-state] ==> ignore
     arg [--as-needed] ==> ignore
@@ -155,14 +155,14 @@ Parsed C implicit link information from above output:
 Detecting C [-std=c11] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_2f3b8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_2f3b8.dir/build.make CMakeFiles/cmTC_2f3b8.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_5a7b9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5a7b9.dir/build.make CMakeFiles/cmTC_5a7b9.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_2f3b8.dir/feature_tests.c.o
-/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_2f3b8.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
-Linking C executable cmTC_2f3b8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2f3b8.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_2f3b8.dir/feature_tests.c.o  -o cmTC_2f3b8 
+Building C object CMakeFiles/cmTC_5a7b9.dir/feature_tests.c.o
+/usr/bin/cc   -std=c11 -o CMakeFiles/cmTC_5a7b9.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
+Linking C executable cmTC_5a7b9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5a7b9.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_5a7b9.dir/feature_tests.c.o  -o cmTC_5a7b9 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -175,14 +175,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting C [-std=c99] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d2071/fast"
-/usr/bin/make -f CMakeFiles/cmTC_d2071.dir/build.make CMakeFiles/cmTC_d2071.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_2d4b3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_2d4b3.dir/build.make CMakeFiles/cmTC_2d4b3.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_d2071.dir/feature_tests.c.o
-/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_d2071.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
-Linking C executable cmTC_d2071
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d2071.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_d2071.dir/feature_tests.c.o  -o cmTC_d2071 
+Building C object CMakeFiles/cmTC_2d4b3.dir/feature_tests.c.o
+/usr/bin/cc   -std=c99 -o CMakeFiles/cmTC_2d4b3.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
+Linking C executable cmTC_2d4b3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2d4b3.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_2d4b3.dir/feature_tests.c.o  -o cmTC_2d4b3 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -195,14 +195,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting C [-std=c90] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_3fe85/fast"
-/usr/bin/make -f CMakeFiles/cmTC_3fe85.dir/build.make CMakeFiles/cmTC_3fe85.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_5d745/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5d745.dir/build.make CMakeFiles/cmTC_5d745.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_3fe85.dir/feature_tests.c.o
-/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_3fe85.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
-Linking C executable cmTC_3fe85
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3fe85.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_3fe85.dir/feature_tests.c.o  -o cmTC_3fe85 
+Building C object CMakeFiles/cmTC_5d745.dir/feature_tests.c.o
+/usr/bin/cc   -std=c90 -o CMakeFiles/cmTC_5d745.dir/feature_tests.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.c
+Linking C executable cmTC_5d745
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5d745.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_5d745.dir/feature_tests.c.o  -o cmTC_5d745 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -213,28 +213,28 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Determining if the CXX compiler works passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_045ac/fast"
-/usr/bin/make -f CMakeFiles/cmTC_045ac.dir/build.make CMakeFiles/cmTC_045ac.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0099a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0099a.dir/build.make CMakeFiles/cmTC_0099a.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_045ac.dir/testCXXCompiler.cxx.o
-/usr/bin/c++     -o CMakeFiles/cmTC_045ac.dir/testCXXCompiler.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
-Linking CXX executable cmTC_045ac
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_045ac.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_045ac.dir/testCXXCompiler.cxx.o  -o cmTC_045ac 
+Building CXX object CMakeFiles/cmTC_0099a.dir/testCXXCompiler.cxx.o
+/usr/bin/c++     -o CMakeFiles/cmTC_0099a.dir/testCXXCompiler.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/testCXXCompiler.cxx
+Linking CXX executable cmTC_0099a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0099a.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_0099a.dir/testCXXCompiler.cxx.o  -o cmTC_0099a 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Detecting CXX compiler ABI info compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7f99a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7f99a.dir/build.make CMakeFiles/cmTC_7f99a.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_a8383/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a8383.dir/build.make CMakeFiles/cmTC_a8383.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o
-/usr/bin/c++     -o CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp
-Linking CXX executable cmTC_7f99a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f99a.dir/link.txt --verbose=1
-/usr/bin/c++      -v CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_7f99a 
+Building CXX object CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o
+/usr/bin/c++     -o CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_a8383
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a8383.dir/link.txt --verbose=1
+/usr/bin/c++      -v CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_a8383 
 Using built-in specs.
 COLLECT_GCC=/usr/bin/c++
 COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper
@@ -246,9 +246,9 @@ Thread model: posix
 gcc version 8.3.0 (Debian 8.3.0-6) 
 COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/
 LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../:/lib/:/usr/lib/
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7f99a' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
- /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQog4FQ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_7f99a /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
-COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7f99a' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a8383' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
+ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccXbjIzq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_a8383 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o
+COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a8383' '-shared-libgcc' '-mtune=generic' '-march=x86-64'
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -256,14 +256,14 @@ Parsed CXX implicit link information from above output:
   link line regex: [^( *|.*[/\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\]+-)?ld|collect2)[^/\]*( |$)]
   ignore line: [Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp]
   ignore line: []
-  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_7f99a/fast"]
-  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_7f99a.dir/build.make CMakeFiles/cmTC_7f99a.dir/build]
+  ignore line: [Run Build Command:"/usr/bin/make" "cmTC_a8383/fast"]
+  ignore line: [/usr/bin/make -f CMakeFiles/cmTC_a8383.dir/build.make CMakeFiles/cmTC_a8383.dir/build]
   ignore line: [make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp']
-  ignore line: [Building CXX object CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o]
-  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp]
-  ignore line: [Linking CXX executable cmTC_7f99a]
-  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7f99a.dir/link.txt --verbose=1]
-  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_7f99a ]
+  ignore line: [Building CXX object CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o]
+  ignore line: [/usr/bin/c++     -o CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.13/Modules/CMakeCXXCompilerABI.cpp]
+  ignore line: [Linking CXX executable cmTC_a8383]
+  ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a8383.dir/link.txt --verbose=1]
+  ignore line: [/usr/bin/c++      -v CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o  -o cmTC_a8383 ]
   ignore line: [Using built-in specs.]
   ignore line: [COLLECT_GCC=/usr/bin/c++]
   ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper]
@@ -275,13 +275,13 @@ Parsed CXX implicit link information from above output:
   ignore line: [gcc version 8.3.0 (Debian 8.3.0-6) ]
   ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/]
   ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/8/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/8/../../../:/lib/:/usr/lib/]
-  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_7f99a' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
-  link line: [ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccQog4FQ.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_7f99a /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o]
+  ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_a8383' '-shared-libgcc' '-mtune=generic' '-march=x86-64']
+  link line: [ /usr/lib/gcc/x86_64-linux-gnu/8/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper -plugin-opt=-fresolution=/tmp/ccXbjIzq.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -o cmTC_a8383 /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/8 -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/8/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/8/../../.. CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/8/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crtn.o]
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/collect2] ==> ignore
     arg [-plugin] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/liblto_plugin.so] ==> ignore
     arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/8/lto-wrapper] ==> ignore
-    arg [-plugin-opt=-fresolution=/tmp/ccQog4FQ.res] ==> ignore
+    arg [-plugin-opt=-fresolution=/tmp/ccXbjIzq.res] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
     arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
     arg [-plugin-opt=-pass-through=-lc] ==> ignore
@@ -296,7 +296,7 @@ Parsed CXX implicit link information from above output:
     arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
     arg [-pie] ==> ignore
     arg [-o] ==> ignore
-    arg [cmTC_7f99a] ==> ignore
+    arg [cmTC_a8383] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/Scrt1.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/../../../x86_64-linux-gnu/crti.o] ==> ignore
     arg [/usr/lib/gcc/x86_64-linux-gnu/8/crtbeginS.o] ==> ignore
@@ -308,7 +308,7 @@ Parsed CXX implicit link information from above output:
     arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
     arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
     arg [-L/usr/lib/gcc/x86_64-linux-gnu/8/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/8/../../..]
-    arg [CMakeFiles/cmTC_7f99a.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+    arg [CMakeFiles/cmTC_a8383.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
     arg [-lstdc++] ==> lib [stdc++]
     arg [-lm] ==> lib [m]
     arg [-lgcc_s] ==> lib [gcc_s]
@@ -336,14 +336,14 @@ Parsed CXX implicit link information from above output:
 Detecting CXX [-std=c++2a] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6d2c0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6d2c0.dir/build.make CMakeFiles/cmTC_6d2c0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_fb47d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fb47d.dir/build.make CMakeFiles/cmTC_fb47d.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6d2c0.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++2a -o CMakeFiles/cmTC_6d2c0.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_6d2c0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6d2c0.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_6d2c0.dir/feature_tests.cxx.o  -o cmTC_6d2c0 
+Building CXX object CMakeFiles/cmTC_fb47d.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++2a -o CMakeFiles/cmTC_fb47d.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_fb47d
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fb47d.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_fb47d.dir/feature_tests.cxx.o  -o cmTC_fb47d 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -409,14 +409,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting CXX [-std=c++17] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_6f679/fast"
-/usr/bin/make -f CMakeFiles/cmTC_6f679.dir/build.make CMakeFiles/cmTC_6f679.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_04446/fast"
+/usr/bin/make -f CMakeFiles/cmTC_04446.dir/build.make CMakeFiles/cmTC_04446.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_6f679.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++17 -o CMakeFiles/cmTC_6f679.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_6f679
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6f679.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_6f679.dir/feature_tests.cxx.o  -o cmTC_6f679 
+Building CXX object CMakeFiles/cmTC_04446.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++17 -o CMakeFiles/cmTC_04446.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_04446
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04446.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_04446.dir/feature_tests.cxx.o  -o cmTC_04446 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -482,14 +482,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting CXX [-std=c++14] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7adc6/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7adc6.dir/build.make CMakeFiles/cmTC_7adc6.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_15d24/fast"
+/usr/bin/make -f CMakeFiles/cmTC_15d24.dir/build.make CMakeFiles/cmTC_15d24.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7adc6.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_7adc6.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_7adc6
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7adc6.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_7adc6.dir/feature_tests.cxx.o  -o cmTC_7adc6 
+Building CXX object CMakeFiles/cmTC_15d24.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++14 -o CMakeFiles/cmTC_15d24.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_15d24
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_15d24.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_15d24.dir/feature_tests.cxx.o  -o cmTC_15d24 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -555,14 +555,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting CXX [-std=c++11] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_60aa8/fast"
-/usr/bin/make -f CMakeFiles/cmTC_60aa8.dir/build.make CMakeFiles/cmTC_60aa8.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0db4e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0db4e.dir/build.make CMakeFiles/cmTC_0db4e.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_60aa8.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_60aa8.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_60aa8
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60aa8.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_60aa8.dir/feature_tests.cxx.o  -o cmTC_60aa8 
+Building CXX object CMakeFiles/cmTC_0db4e.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++11 -o CMakeFiles/cmTC_0db4e.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_0db4e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0db4e.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_0db4e.dir/feature_tests.cxx.o  -o cmTC_0db4e 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -628,14 +628,14 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Detecting CXX [-std=c++98] compiler features compiled with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_e2253/fast"
-/usr/bin/make -f CMakeFiles/cmTC_e2253.dir/build.make CMakeFiles/cmTC_e2253.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_5aa5f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5aa5f.dir/build.make CMakeFiles/cmTC_5aa5f.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_e2253.dir/feature_tests.cxx.o
-/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_e2253.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
-Linking CXX executable cmTC_e2253
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e2253.dir/link.txt --verbose=1
-/usr/bin/c++       CMakeFiles/cmTC_e2253.dir/feature_tests.cxx.o  -o cmTC_e2253 
+Building CXX object CMakeFiles/cmTC_5aa5f.dir/feature_tests.cxx.o
+/usr/bin/c++    -std=c++98 -o CMakeFiles/cmTC_5aa5f.dir/feature_tests.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/feature_tests.cxx
+Linking CXX executable cmTC_5aa5f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5aa5f.dir/link.txt --verbose=1
+/usr/bin/c++       CMakeFiles/cmTC_5aa5f.dir/feature_tests.cxx.o  -o cmTC_5aa5f 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
@@ -699,70 +699,70 @@ make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_too
 Determining if the include file sys/types.h exists passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0de7c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0de7c.dir/build.make CMakeFiles/cmTC_0de7c.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_3962e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3962e.dir/build.make CMakeFiles/cmTC_3962e.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0de7c.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_0de7c.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_0de7c
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0de7c.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_0de7c.dir/CheckIncludeFile.c.o  -o cmTC_0de7c 
+Building C object CMakeFiles/cmTC_3962e.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_3962e.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_3962e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3962e.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_3962e.dir/CheckIncludeFile.c.o  -o cmTC_3962e 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stdint.h exists passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_69a26/fast"
-/usr/bin/make -f CMakeFiles/cmTC_69a26.dir/build.make CMakeFiles/cmTC_69a26.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_61ce3/fast"
+/usr/bin/make -f CMakeFiles/cmTC_61ce3.dir/build.make CMakeFiles/cmTC_61ce3.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_69a26.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_69a26.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_69a26
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_69a26.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_69a26.dir/CheckIncludeFile.c.o  -o cmTC_69a26 
+Building C object CMakeFiles/cmTC_61ce3.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_61ce3.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_61ce3
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_61ce3.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_61ce3.dir/CheckIncludeFile.c.o  -o cmTC_61ce3 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the include file stddef.h exists passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_9f6d1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_9f6d1.dir/build.make CMakeFiles/cmTC_9f6d1.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_861fc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_861fc.dir/build.make CMakeFiles/cmTC_861fc.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_9f6d1.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_9f6d1.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_9f6d1
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9f6d1.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_9f6d1.dir/CheckIncludeFile.c.o  -o cmTC_9f6d1 
+Building C object CMakeFiles/cmTC_861fc.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_861fc.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_861fc
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_861fc.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_861fc.dir/CheckIncludeFile.c.o  -o cmTC_861fc 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining size of unsigned short passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_78163/fast"
-/usr/bin/make -f CMakeFiles/cmTC_78163.dir/build.make CMakeFiles/cmTC_78163.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_d4238/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d4238.dir/build.make CMakeFiles/cmTC_d4238.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_78163.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_78163.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c
-Linking C executable cmTC_78163
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_78163.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_78163.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTC_78163 
+Building C object CMakeFiles/cmTC_d4238.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_d4238.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CheckTypeSize/CMAKE_SIZEOF_UNSIGNED_SHORT.c
+Linking C executable cmTC_d4238
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d4238.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_d4238.dir/CMAKE_SIZEOF_UNSIGNED_SHORT.c.o  -o cmTC_d4238 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the system is big endian passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0d0ae/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0d0ae.dir/build.make CMakeFiles/cmTC_0d0ae.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_4b559/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4b559.dir/build.make CMakeFiles/cmTC_4b559.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_0d0ae.dir/TestEndianess.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_0d0ae.dir/TestEndianess.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/TestEndianess.c
-Linking C executable cmTC_0d0ae
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0d0ae.dir/link.txt --verbose=1
-/usr/bin/cc      CMakeFiles/cmTC_0d0ae.dir/TestEndianess.c.o  -o cmTC_0d0ae 
+Building C object CMakeFiles/cmTC_4b559.dir/TestEndianess.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_4b559.dir/TestEndianess.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/TestEndianess.c
+Linking C executable cmTC_4b559
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4b559.dir/link.txt --verbose=1
+/usr/bin/cc      CMakeFiles/cmTC_4b559.dir/TestEndianess.c.o  -o cmTC_4b559 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 TestEndianess.c:
@@ -794,14 +794,14 @@ int main(int argc, char *argv[])
 Performing C++ SOURCE FILE Test LIFETIME_DSE_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_e9b08/fast"
-/usr/bin/make -f CMakeFiles/cmTC_e9b08.dir/build.make CMakeFiles/cmTC_e9b08.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_364bd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_364bd.dir/build.make CMakeFiles/cmTC_364bd.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_e9b08.dir/src.cxx.o
-/usr/bin/c++    -DLIFETIME_DSE_FOUND   -flifetime-dse=1 -o CMakeFiles/cmTC_e9b08.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_e9b08
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e9b08.dir/link.txt --verbose=1
-/usr/bin/c++   -DLIFETIME_DSE_FOUND    CMakeFiles/cmTC_e9b08.dir/src.cxx.o  -o cmTC_e9b08 
+Building CXX object CMakeFiles/cmTC_364bd.dir/src.cxx.o
+/usr/bin/c++    -DLIFETIME_DSE_FOUND   -flifetime-dse=1 -o CMakeFiles/cmTC_364bd.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_364bd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_364bd.dir/link.txt --verbose=1
+/usr/bin/c++   -DLIFETIME_DSE_FOUND    CMakeFiles/cmTC_364bd.dir/src.cxx.o  -o cmTC_364bd 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -809,84 +809,84 @@ int main() { return 0; }
 Determining if the include file pthread.h exists passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_89047/fast"
-/usr/bin/make -f CMakeFiles/cmTC_89047.dir/build.make CMakeFiles/cmTC_89047.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_fa676/fast"
+/usr/bin/make -f CMakeFiles/cmTC_fa676.dir/build.make CMakeFiles/cmTC_fa676.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_89047.dir/CheckIncludeFile.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_89047.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
-Linking C executable cmTC_89047
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_89047.dir/link.txt --verbose=1
-/usr/bin/cc     -rdynamic  CMakeFiles/cmTC_89047.dir/CheckIncludeFile.c.o  -o cmTC_89047 
+Building C object CMakeFiles/cmTC_fa676.dir/CheckIncludeFile.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_fa676.dir/CheckIncludeFile.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckIncludeFile.c
+Linking C executable cmTC_fa676
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_fa676.dir/link.txt --verbose=1
+/usr/bin/cc     -rdynamic  CMakeFiles/cmTC_fa676.dir/CheckIncludeFile.c.o  -o cmTC_fa676 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the function pthread_create exists in the pthread passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_97ace/fast"
-/usr/bin/make -f CMakeFiles/cmTC_97ace.dir/build.make CMakeFiles/cmTC_97ace.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_50c1a/fast"
+/usr/bin/make -f CMakeFiles/cmTC_50c1a.dir/build.make CMakeFiles/cmTC_50c1a.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_97ace.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_97ace.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
-Linking C executable cmTC_97ace
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97ace.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create   -rdynamic  CMakeFiles/cmTC_97ace.dir/CheckFunctionExists.c.o  -o cmTC_97ace -lpthread 
+Building C object CMakeFiles/cmTC_50c1a.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_50c1a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_50c1a
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_50c1a.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create   -rdynamic  CMakeFiles/cmTC_50c1a.dir/CheckFunctionExists.c.o  -o cmTC_50c1a -lpthread 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the function lzma_auto_decoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d4132/fast"
-/usr/bin/make -f CMakeFiles/cmTC_d4132.dir/build.make CMakeFiles/cmTC_d4132.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_bb6a7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bb6a7.dir/build.make CMakeFiles/cmTC_bb6a7.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_d4132.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder   -o CMakeFiles/cmTC_d4132.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
-Linking C executable cmTC_d4132
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d4132.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder   -rdynamic  CMakeFiles/cmTC_d4132.dir/CheckFunctionExists.c.o  -o cmTC_d4132 /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_bb6a7.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder   -o CMakeFiles/cmTC_bb6a7.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_bb6a7
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bb6a7.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_auto_decoder   -rdynamic  CMakeFiles/cmTC_bb6a7.dir/CheckFunctionExists.c.o  -o cmTC_bb6a7 /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the function lzma_easy_encoder exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_de43f/fast"
-/usr/bin/make -f CMakeFiles/cmTC_de43f.dir/build.make CMakeFiles/cmTC_de43f.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_e141b/fast"
+/usr/bin/make -f CMakeFiles/cmTC_e141b.dir/build.make CMakeFiles/cmTC_e141b.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_de43f.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder   -o CMakeFiles/cmTC_de43f.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
-Linking C executable cmTC_de43f
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de43f.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder   -rdynamic  CMakeFiles/cmTC_de43f.dir/CheckFunctionExists.c.o  -o cmTC_de43f /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_e141b.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder   -o CMakeFiles/cmTC_e141b.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_e141b
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e141b.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_easy_encoder   -rdynamic  CMakeFiles/cmTC_e141b.dir/CheckFunctionExists.c.o  -o cmTC_e141b /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Determining if the function lzma_lzma_preset exists in the /usr/lib/x86_64-linux-gnu/liblzma.so passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_19c41/fast"
-/usr/bin/make -f CMakeFiles/cmTC_19c41.dir/build.make CMakeFiles/cmTC_19c41.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_de893/fast"
+/usr/bin/make -f CMakeFiles/cmTC_de893.dir/build.make CMakeFiles/cmTC_de893.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_19c41.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset   -o CMakeFiles/cmTC_19c41.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
-Linking C executable cmTC_19c41
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_19c41.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset   -rdynamic  CMakeFiles/cmTC_19c41.dir/CheckFunctionExists.c.o  -o cmTC_19c41 /usr/lib/x86_64-linux-gnu/liblzma.so 
+Building C object CMakeFiles/cmTC_de893.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset   -o CMakeFiles/cmTC_de893.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_de893
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de893.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=lzma_lzma_preset   -rdynamic  CMakeFiles/cmTC_de893.dir/CheckFunctionExists.c.o  -o cmTC_de893 /usr/lib/x86_64-linux-gnu/liblzma.so 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 
 Performing C++ SOURCE FILE Test BITMATH_BUILTINS_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_85a31/fast"
-/usr/bin/make -f CMakeFiles/cmTC_85a31.dir/build.make CMakeFiles/cmTC_85a31.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0fd5f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0fd5f.dir/build.make CMakeFiles/cmTC_0fd5f.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_85a31.dir/src.cxx.o
-/usr/bin/c++    -DBITMATH_BUILTINS_FOUND   -o CMakeFiles/cmTC_85a31.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_85a31
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85a31.dir/link.txt --verbose=1
-/usr/bin/c++   -DBITMATH_BUILTINS_FOUND   -rdynamic  CMakeFiles/cmTC_85a31.dir/src.cxx.o  -o cmTC_85a31 
+Building CXX object CMakeFiles/cmTC_0fd5f.dir/src.cxx.o
+/usr/bin/c++    -DBITMATH_BUILTINS_FOUND   -o CMakeFiles/cmTC_0fd5f.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_0fd5f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_0fd5f.dir/link.txt --verbose=1
+/usr/bin/c++   -DBITMATH_BUILTINS_FOUND   -rdynamic  CMakeFiles/cmTC_0fd5f.dir/src.cxx.o  -o cmTC_0fd5f 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -897,14 +897,14 @@ Source file was:
 Performing C++ SOURCE FILE Test OVERFLOW_BUILTINS_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_e1ae2/fast"
-/usr/bin/make -f CMakeFiles/cmTC_e1ae2.dir/build.make CMakeFiles/cmTC_e1ae2.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_594c6/fast"
+/usr/bin/make -f CMakeFiles/cmTC_594c6.dir/build.make CMakeFiles/cmTC_594c6.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_e1ae2.dir/src.cxx.o
-/usr/bin/c++    -DOVERFLOW_BUILTINS_FOUND   -o CMakeFiles/cmTC_e1ae2.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_e1ae2
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_e1ae2.dir/link.txt --verbose=1
-/usr/bin/c++   -DOVERFLOW_BUILTINS_FOUND   -rdynamic  CMakeFiles/cmTC_e1ae2.dir/src.cxx.o  -o cmTC_e1ae2 
+Building CXX object CMakeFiles/cmTC_594c6.dir/src.cxx.o
+/usr/bin/c++    -DOVERFLOW_BUILTINS_FOUND   -o CMakeFiles/cmTC_594c6.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_594c6
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_594c6.dir/link.txt --verbose=1
+/usr/bin/c++   -DOVERFLOW_BUILTINS_FOUND   -rdynamic  CMakeFiles/cmTC_594c6.dir/src.cxx.o  -o cmTC_594c6 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -922,14 +922,14 @@ int main() {
 Performing C++ SOURCE FILE Test DL_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7c889/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7c889.dir/build.make CMakeFiles/cmTC_7c889.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_85008/fast"
+/usr/bin/make -f CMakeFiles/cmTC_85008.dir/build.make CMakeFiles/cmTC_85008.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7c889.dir/src.cxx.o
-/usr/bin/c++    -DDL_FOUND   -o CMakeFiles/cmTC_7c889.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_7c889
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7c889.dir/link.txt --verbose=1
-/usr/bin/c++   -DDL_FOUND   -rdynamic  CMakeFiles/cmTC_7c889.dir/src.cxx.o  -o cmTC_7c889 -ldl 
+Building CXX object CMakeFiles/cmTC_85008.dir/src.cxx.o
+/usr/bin/c++    -DDL_FOUND   -o CMakeFiles/cmTC_85008.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_85008
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85008.dir/link.txt --verbose=1
+/usr/bin/c++   -DDL_FOUND   -rdynamic  CMakeFiles/cmTC_85008.dir/src.cxx.o  -o cmTC_85008 -ldl 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -942,14 +942,14 @@ Source file was:
 Performing C++ SOURCE FILE Test DEMANGLE_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8a5b6/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8a5b6.dir/build.make CMakeFiles/cmTC_8a5b6.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_f28d2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_f28d2.dir/build.make CMakeFiles/cmTC_f28d2.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_8a5b6.dir/src.cxx.o
-/usr/bin/c++    -DDEMANGLE_FOUND   -o CMakeFiles/cmTC_8a5b6.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_8a5b6
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8a5b6.dir/link.txt --verbose=1
-/usr/bin/c++   -DDEMANGLE_FOUND   -rdynamic  CMakeFiles/cmTC_8a5b6.dir/src.cxx.o  -o cmTC_8a5b6 
+Building CXX object CMakeFiles/cmTC_f28d2.dir/src.cxx.o
+/usr/bin/c++    -DDEMANGLE_FOUND   -o CMakeFiles/cmTC_f28d2.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_f28d2
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f28d2.dir/link.txt --verbose=1
+/usr/bin/c++   -DDEMANGLE_FOUND   -rdynamic  CMakeFiles/cmTC_f28d2.dir/src.cxx.o  -o cmTC_f28d2 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -963,14 +963,14 @@ Source file was:
 Performing C++ SOURCE FILE Test SIGACTION_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_036d4/fast"
-/usr/bin/make -f CMakeFiles/cmTC_036d4.dir/build.make CMakeFiles/cmTC_036d4.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_73ca9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_73ca9.dir/build.make CMakeFiles/cmTC_73ca9.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_036d4.dir/src.cxx.o
-/usr/bin/c++    -DSIGACTION_FOUND   -o CMakeFiles/cmTC_036d4.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_036d4
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_036d4.dir/link.txt --verbose=1
-/usr/bin/c++   -DSIGACTION_FOUND   -rdynamic  CMakeFiles/cmTC_036d4.dir/src.cxx.o  -o cmTC_036d4 
+Building CXX object CMakeFiles/cmTC_73ca9.dir/src.cxx.o
+/usr/bin/c++    -DSIGACTION_FOUND   -o CMakeFiles/cmTC_73ca9.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_73ca9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_73ca9.dir/link.txt --verbose=1
+/usr/bin/c++   -DSIGACTION_FOUND   -rdynamic  CMakeFiles/cmTC_73ca9.dir/src.cxx.o  -o cmTC_73ca9 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -993,14 +993,14 @@ Source file was:
 Performing C++ SOURCE FILE Test SIGALTSTACK succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_5132b/fast"
-/usr/bin/make -f CMakeFiles/cmTC_5132b.dir/build.make CMakeFiles/cmTC_5132b.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_43940/fast"
+/usr/bin/make -f CMakeFiles/cmTC_43940.dir/build.make CMakeFiles/cmTC_43940.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_5132b.dir/src.cxx.o
-/usr/bin/c++    -DSIGALTSTACK   -o CMakeFiles/cmTC_5132b.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_5132b
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5132b.dir/link.txt --verbose=1
-/usr/bin/c++   -DSIGALTSTACK   -rdynamic  CMakeFiles/cmTC_5132b.dir/src.cxx.o  -o cmTC_5132b 
+Building CXX object CMakeFiles/cmTC_43940.dir/src.cxx.o
+/usr/bin/c++    -DSIGALTSTACK   -o CMakeFiles/cmTC_43940.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_43940
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_43940.dir/link.txt --verbose=1
+/usr/bin/c++   -DSIGALTSTACK   -rdynamic  CMakeFiles/cmTC_43940.dir/src.cxx.o  -o cmTC_43940 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -1018,14 +1018,14 @@ Source file was:
 Performing C++ SOURCE FILE Test DBG_GDB_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_04b44/fast"
-/usr/bin/make -f CMakeFiles/cmTC_04b44.dir/build.make CMakeFiles/cmTC_04b44.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_3298f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3298f.dir/build.make CMakeFiles/cmTC_3298f.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_04b44.dir/src.cxx.o
-/usr/bin/c++    -DDBG_GDB_FOUND   -o CMakeFiles/cmTC_04b44.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_04b44
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_04b44.dir/link.txt --verbose=1
-/usr/bin/c++   -DDBG_GDB_FOUND   -rdynamic  CMakeFiles/cmTC_04b44.dir/src.cxx.o  -o cmTC_04b44 
+Building CXX object CMakeFiles/cmTC_3298f.dir/src.cxx.o
+/usr/bin/c++    -DDBG_GDB_FOUND   -o CMakeFiles/cmTC_3298f.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_3298f
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3298f.dir/link.txt --verbose=1
+/usr/bin/c++   -DDBG_GDB_FOUND   -rdynamic  CMakeFiles/cmTC_3298f.dir/src.cxx.o  -o cmTC_3298f 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -1045,14 +1045,14 @@ Source file was:
 Performing C++ SOURCE FILE Test PRCTL_PT_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_16dc0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_16dc0.dir/build.make CMakeFiles/cmTC_16dc0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_de07e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_de07e.dir/build.make CMakeFiles/cmTC_de07e.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_16dc0.dir/src.cxx.o
-/usr/bin/c++    -DPRCTL_PT_FOUND   -o CMakeFiles/cmTC_16dc0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_16dc0
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_16dc0.dir/link.txt --verbose=1
-/usr/bin/c++   -DPRCTL_PT_FOUND   -rdynamic  CMakeFiles/cmTC_16dc0.dir/src.cxx.o  -o cmTC_16dc0 
+Building CXX object CMakeFiles/cmTC_de07e.dir/src.cxx.o
+/usr/bin/c++    -DPRCTL_PT_FOUND   -o CMakeFiles/cmTC_de07e.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_de07e
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_de07e.dir/link.txt --verbose=1
+/usr/bin/c++   -DPRCTL_PT_FOUND   -rdynamic  CMakeFiles/cmTC_de07e.dir/src.cxx.o  -o cmTC_de07e 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -1064,14 +1064,14 @@ Source file was:
 Performing C++ SOURCE FILE Test UCONTEXT_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_d4808/fast"
-/usr/bin/make -f CMakeFiles/cmTC_d4808.dir/build.make CMakeFiles/cmTC_d4808.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_22a00/fast"
+/usr/bin/make -f CMakeFiles/cmTC_22a00.dir/build.make CMakeFiles/cmTC_22a00.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_d4808.dir/src.cxx.o
-/usr/bin/c++    -DUCONTEXT_FOUND   -o CMakeFiles/cmTC_d4808.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_d4808
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d4808.dir/link.txt --verbose=1
-/usr/bin/c++   -DUCONTEXT_FOUND   -rdynamic  CMakeFiles/cmTC_d4808.dir/src.cxx.o  -o cmTC_d4808 
+Building CXX object CMakeFiles/cmTC_22a00.dir/src.cxx.o
+/usr/bin/c++    -DUCONTEXT_FOUND   -o CMakeFiles/cmTC_22a00.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_22a00
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_22a00.dir/link.txt --verbose=1
+/usr/bin/c++   -DUCONTEXT_FOUND   -rdynamic  CMakeFiles/cmTC_22a00.dir/src.cxx.o  -o cmTC_22a00 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -1091,14 +1091,14 @@ int main() {
 Performing C++ SOURCE FILE Test SSE_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_8fb1a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_8fb1a.dir/build.make CMakeFiles/cmTC_8fb1a.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_280bd/fast"
+/usr/bin/make -f CMakeFiles/cmTC_280bd.dir/build.make CMakeFiles/cmTC_280bd.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_8fb1a.dir/src.cxx.o
-/usr/bin/c++    -DSSE_FOUND -msse4.1   -o CMakeFiles/cmTC_8fb1a.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_8fb1a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8fb1a.dir/link.txt --verbose=1
-/usr/bin/c++   -DSSE_FOUND -msse4.1   -rdynamic  CMakeFiles/cmTC_8fb1a.dir/src.cxx.o  -o cmTC_8fb1a 
+Building CXX object CMakeFiles/cmTC_280bd.dir/src.cxx.o
+/usr/bin/c++    -DSSE_FOUND -msse4.1   -o CMakeFiles/cmTC_280bd.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_280bd
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_280bd.dir/link.txt --verbose=1
+/usr/bin/c++   -DSSE_FOUND -msse4.1   -rdynamic  CMakeFiles/cmTC_280bd.dir/src.cxx.o  -o cmTC_280bd 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
 
 Source file was:
