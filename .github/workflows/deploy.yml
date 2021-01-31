@@ -1,10 +1,9 @@
-name: CI
+name: Deploy web build
 
 on:
-  pull_request:
   push:
     branches:
-    - master
+    - stock_jgr
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
