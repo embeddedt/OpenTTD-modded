@@ -66,6 +66,7 @@ jobs:
         echo "::group::Build"
         echo "Running on $(nproc) cores"
         emmake make -j$(nproc)
+        mv openttd.html index.html
         echo "::endgroup::"
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@3.7.1
