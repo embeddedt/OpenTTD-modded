@@ -706,8 +706,6 @@ int openttd_main(int argc, char *argv[])
 	_game_mode = GM_MENU;
 	_switch_mode = SM_MENU;
 
-    printf("ci test\n");
-
 	GetOptData mgo(argc - 1, argv + 1, _options);
 	int ret = 0;
 
