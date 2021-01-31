@@ -10,7 +10,6 @@ env:
 
 jobs:
   emscripten:
-   emscripten:
     name: Emscripten
 
     runs-on: ubuntu-20.04
