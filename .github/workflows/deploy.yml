@@ -61,7 +61,7 @@ jobs:
         mkdir em_build
         cd em_build
         echo "::group::CMake"
-        emcmake cmake .. -DHOST_BINARY_DIR=../build-host
+        emcmake cmake .. -DHOST_BINARY_DIR=../build-host -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         echo "::endgroup::"
         echo "::group::Build"
         echo "Running on $(nproc) cores"
