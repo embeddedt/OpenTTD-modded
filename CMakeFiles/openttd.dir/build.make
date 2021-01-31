@@ -61,7 +61,7 @@ CMakeFiles/openttd.dir/generated/rev.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/generated/rev.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/generated/rev.cpp.o: generated/rev.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/openttd.dir/generated/rev.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/generated/rev.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/rev.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/generated/rev.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/rev.cpp
 
 CMakeFiles/openttd.dir/generated/rev.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/generated/rev.cpp.i"
@@ -75,7 +75,7 @@ CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o: ../src/script/api/script_accounting.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_accounting.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_accounting.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_accounting.cpp.i"
@@ -89,7 +89,7 @@ CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o: ../src/script/api/script_admin.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_admin.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_admin.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_admin.cpp.i"
@@ -103,7 +103,7 @@ CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o: ../src/script/api/script_airport.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_airport.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_airport.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_airport.cpp.i"
@@ -117,7 +117,7 @@ CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o: ../src/script/api/script_base.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_base.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_base.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_base.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_base.cpp.i"
@@ -131,7 +131,7 @@ CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o: ../src/script/api/script_basestation.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_basestation.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_basestation.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_basestation.cpp.i"
@@ -145,7 +145,7 @@ CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o: ../src/script/api/script_bridge.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_bridge.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_bridge.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_bridge.cpp.i"
@@ -159,7 +159,7 @@ CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o: ../src/script/api/script_bridgelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_bridgelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_bridgelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_bridgelist.cpp.i"
@@ -173,7 +173,7 @@ CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/script/api/script_cargo.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargo.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargo.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.i"
@@ -187,7 +187,7 @@ CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o: CMakeFiles/openttd
 CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o: ../src/script/api/script_cargolist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargolist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargolist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.i"
@@ -201,7 +201,7 @@ CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o: ../src/script/api/script_cargomonitor.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargomonitor.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_cargomonitor.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_cargomonitor.cpp.i"
@@ -215,7 +215,7 @@ CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o: ../src/script/api/script_client.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_client.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_client.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_client.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_client.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_client.cpp.i"
@@ -229,7 +229,7 @@ CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o: ../src/script/api/script_clientlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_clientlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_clientlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_clientlist.cpp.i"
@@ -243,7 +243,7 @@ CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o: ../src/script/api/script_company.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_company.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_company.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_company.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_company.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_company.cpp.i"
@@ -257,7 +257,7 @@ CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o: ../src/script/api/script_companymode.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_companymode.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_companymode.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_companymode.cpp.i"
@@ -271,7 +271,7 @@ CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o: ../src/script/api/script_controller.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_controller.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_controller.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_controller.cpp.i"
@@ -285,7 +285,7 @@ CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o: ../src/script/api/script_date.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_date.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_date.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_date.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_date.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_date.cpp.i"
@@ -299,7 +299,7 @@ CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o: CMakeFiles/openttd
 CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o: ../src/script/api/script_depotlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_depotlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_depotlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_depotlist.cpp.i"
@@ -313,7 +313,7 @@ CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o: ../src/script/api/script_engine.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_engine.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_engine.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_engine.cpp.i"
@@ -327,7 +327,7 @@ CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o: ../src/script/api/script_enginelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_enginelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_enginelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_enginelist.cpp.i"
@@ -341,7 +341,7 @@ CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o: ../src/script/api/script_error.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_error.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_error.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_error.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_error.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_error.cpp.i"
@@ -355,7 +355,7 @@ CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o: ../src/script/api/script_event.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_event.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_event.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_event.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_event.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_event.cpp.i"
@@ -369,7 +369,7 @@ CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o: ../src/script/api/script_event_types.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_event_types.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_event_types.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_event_types.cpp.i"
@@ -383,7 +383,7 @@ CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o: ../src/script/api/script_execmode.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_execmode.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_execmode.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_execmode.cpp.i"
@@ -397,7 +397,7 @@ CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o: ../src/script/api/script_game.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_game.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_game.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_game.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_game.cpp.i"
@@ -411,7 +411,7 @@ CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o: ../src/script/api/script_gamesettings.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_gamesettings.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_gamesettings.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_gamesettings.cpp.i"
@@ -425,7 +425,7 @@ CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o: ../src/script/api/script_goal.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_goal.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_goal.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_goal.cpp.i"
@@ -439,7 +439,7 @@ CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o: ../src/script/api/script_group.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_group.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_group.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_group.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_group.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_group.cpp.i"
@@ -453,7 +453,7 @@ CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o: CMakeFiles/openttd
 CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o: ../src/script/api/script_grouplist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_grouplist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_grouplist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_grouplist.cpp.i"
@@ -467,7 +467,7 @@ CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o: ../src/script/api/script_industry.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industry.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industry.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_industry.cpp.i"
@@ -481,7 +481,7 @@ CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o: ../src/script/api/script_industrylist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrylist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrylist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_industrylist.cpp.i"
@@ -495,7 +495,7 @@ CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o: ../src/script/api/script_industrytype.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrytype.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrytype.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_industrytype.cpp.i"
@@ -509,7 +509,7 @@ CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o: ../src/script/api/script_industrytypelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrytypelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_industrytypelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.i"
@@ -523,7 +523,7 @@ CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o: CMakeFiles/op
 CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o: ../src/script/api/script_infrastructure.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_infrastructure.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_infrastructure.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.i"
@@ -537,7 +537,7 @@ CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o: ../src/script/api/script_list.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_list.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_list.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_list.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_list.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_list.cpp.i"
@@ -551,7 +551,7 @@ CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o: ../src/script/api/script_log.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_log.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_log.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_log.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_log.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_log.cpp.i"
@@ -565,7 +565,7 @@ CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o: ../src/script/api/script_map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_map.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_map.cpp.i"
@@ -579,7 +579,7 @@ CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o: ../src/script/api/script_marine.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_marine.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_marine.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.i"
@@ -593,7 +593,7 @@ CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o: ../src/script/api/script_news.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_news.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_news.cpp.i"
@@ -607,7 +607,7 @@ CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o: ../src/script/api/script_object.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_object.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_object.cpp.i"
@@ -621,7 +621,7 @@ CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o: ../src/script/api/script_order.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_order.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_order.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_order.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_order.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_order.cpp.i"
@@ -635,7 +635,7 @@ CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o: CMakeFiles/ope
 CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o: ../src/script/api/script_priorityqueue.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_priorityqueue.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_priorityqueue.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_priorityqueue.cpp.i"
@@ -649,7 +649,7 @@ CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o: ../src/script/api/script_rail.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_rail.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_rail.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_rail.cpp.i"
@@ -663,7 +663,7 @@ CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o: ../src/script/api/script_railtypelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_railtypelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_railtypelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_railtypelist.cpp.i"
@@ -677,7 +677,7 @@ CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o: ../src/script/api/script_road.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_road.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_road.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_road.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_road.cpp.i"
@@ -691,7 +691,7 @@ CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o: ../src/script/api/script_roadtypelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_roadtypelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_roadtypelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_roadtypelist.cpp.i"
@@ -705,7 +705,7 @@ CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o: ../src/script/api/script_sign.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_sign.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_sign.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_sign.cpp.i"
@@ -719,7 +719,7 @@ CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o: ../src/script/api/script_signlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_signlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_signlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_signlist.cpp.i"
@@ -733,7 +733,7 @@ CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o: ../src/script/api/script_station.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_station.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_station.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_station.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_station.cpp.i"
@@ -747,7 +747,7 @@ CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o: ../src/script/api/script_stationlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_stationlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_stationlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_stationlist.cpp.i"
@@ -761,7 +761,7 @@ CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o: CMakeFiles/opentt
 CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o: ../src/script/api/script_story_page.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_story_page.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_story_page.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_story_page.cpp.i"
@@ -775,7 +775,7 @@ CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o: CMakeFiles/ope
 CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o: ../src/script/api/script_storypagelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypagelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypagelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_storypagelist.cpp.i"
@@ -789,7 +789,7 @@ CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o: CMakeFi
 CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o: ../src/script/api/script_storypageelementlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypageelementlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypageelementlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_storypageelementlist.cpp.i"
@@ -803,7 +803,7 @@ CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o: ../src/script/api/script_subsidy.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidy.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidy.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_subsidy.cpp.i"
@@ -817,7 +817,7 @@ CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o: ../src/script/api/script_subsidylist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidylist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidylist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_subsidylist.cpp.i"
@@ -831,7 +831,7 @@ CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o: ../src/script/api/script_testmode.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_testmode.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_testmode.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_testmode.cpp.i"
@@ -845,7 +845,7 @@ CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o: ../src/script/api/script_text.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_text.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_text.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_text.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_text.cpp.i"
@@ -859,7 +859,7 @@ CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o: ../src/script/api/script_tile.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tile.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tile.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_tile.cpp.i"
@@ -873,7 +873,7 @@ CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o: ../src/script/api/script_tilelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tilelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tilelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_tilelist.cpp.i"
@@ -887,7 +887,7 @@ CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o: ../src/script/api/script_town.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_town.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_town.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_town.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_town.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_town.cpp.i"
@@ -901,7 +901,7 @@ CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o: ../src/script/api/script_townlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_townlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_townlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_townlist.cpp.i"
@@ -915,7 +915,7 @@ CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o: ../src/script/api/script_tunnel.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tunnel.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tunnel.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_tunnel.cpp.i"
@@ -929,7 +929,7 @@ CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o: ../src/script/api/script_vehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehicle.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_vehicle.cpp.i"
@@ -943,7 +943,7 @@ CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o: ../src/script/api/script_vehiclelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehiclelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehiclelist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_vehiclelist.cpp.i"
@@ -957,7 +957,7 @@ CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o: ../src/script/api/script_viewport.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_viewport.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_viewport.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_viewport.cpp.i"
@@ -971,7 +971,7 @@ CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o: ../src/script/api/script_waypoint.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypoint.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypoint.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_waypoint.cpp.i"
@@ -985,7 +985,7 @@ CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o: CMakeFiles/open
 CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o: ../src/script/api/script_waypointlist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypointlist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypointlist.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_waypointlist.cpp.i"
@@ -999,7 +999,7 @@ CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o: ../src/script/api/script_window.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building CXX object CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_window.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/api/script_window.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_window.cpp
 
 CMakeFiles/openttd.dir/src/script/api/script_window.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/api/script_window.cpp.i"
@@ -1013,7 +1013,7 @@ CMakeFiles/openttd.dir/src/script/script_config.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/script/script_config.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/script_config.cpp.o: ../src/script/script_config.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building CXX object CMakeFiles/openttd.dir/src/script/script_config.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_config.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_config.cpp
 
 CMakeFiles/openttd.dir/src/script/script_config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/script_config.cpp.i"
@@ -1027,7 +1027,7 @@ CMakeFiles/openttd.dir/src/script/script_info.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/script/script_info.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/script_info.cpp.o: ../src/script/script_info.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building CXX object CMakeFiles/openttd.dir/src/script/script_info.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_info.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_info.cpp
 
 CMakeFiles/openttd.dir/src/script/script_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/script_info.cpp.i"
@@ -1041,7 +1041,7 @@ CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o: ../src/script/script_info_dummy.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building CXX object CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_info_dummy.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_info_dummy.cpp
 
 CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/script_info_dummy.cpp.i"
@@ -1055,7 +1055,7 @@ CMakeFiles/openttd.dir/src/script/script_instance.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/script/script_instance.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/script_instance.cpp.o: ../src/script/script_instance.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building CXX object CMakeFiles/openttd.dir/src/script/script_instance.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_instance.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_instance.cpp
 
 CMakeFiles/openttd.dir/src/script/script_instance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/script_instance.cpp.i"
@@ -1069,7 +1069,7 @@ CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o: ../src/script/script_scanner.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building CXX object CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_scanner.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_scanner.cpp
 
 CMakeFiles/openttd.dir/src/script/script_scanner.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/script_scanner.cpp.i"
@@ -1083,7 +1083,7 @@ CMakeFiles/openttd.dir/src/script/squirrel.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/script/squirrel.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/squirrel.cpp.o: ../src/script/squirrel.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building CXX object CMakeFiles/openttd.dir/src/script/squirrel.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/squirrel.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/squirrel.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel.cpp
 
 CMakeFiles/openttd.dir/src/script/squirrel.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/squirrel.cpp.i"
@@ -1097,7 +1097,7 @@ CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o: ../src/script/squirrel_std.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building CXX object CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel_std.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel_std.cpp
 
 CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/script/squirrel_std.cpp.i"
@@ -1111,7 +1111,7 @@ CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o: ../src/strgen/strgen_base.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building CXX object CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/strgen/strgen_base.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/strgen/strgen_base.cpp
 
 CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.i"
@@ -1125,7 +1125,7 @@ CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o: ../src/3rdparty/md5/md5.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.i"
@@ -1139,7 +1139,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o: CMakeFiles
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o: ../src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.i"
@@ -1153,7 +1153,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o: CMakeFile
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o: ../src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/sqstdlib/sqstdmath.cpp.i"
@@ -1167,7 +1167,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o: CMakeFiles/op
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o: ../src/3rdparty/squirrel/squirrel/sqapi.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqapi.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqapi.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqapi.cpp.i"
@@ -1181,7 +1181,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o: CMakeFile
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o: ../src/3rdparty/squirrel/squirrel/sqbaselib.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqbaselib.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqbaselib.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqbaselib.cpp.i"
@@ -1195,7 +1195,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o: ../src/3rdparty/squirrel/squirrel/sqclass.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqclass.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqclass.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqclass.cpp.i"
@@ -1209,7 +1209,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o: CMakeFil
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o: ../src/3rdparty/squirrel/squirrel/sqcompiler.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqcompiler.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqcompiler.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqcompiler.cpp.i"
@@ -1223,7 +1223,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o: ../src/3rdparty/squirrel/squirrel/sqdebug.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqdebug.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqdebug.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqdebug.cpp.i"
@@ -1237,7 +1237,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o: CMakeFi
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o: ../src/3rdparty/squirrel/squirrel/sqfuncstate.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqfuncstate.cpp.i"
@@ -1251,7 +1251,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o: ../src/3rdparty/squirrel/squirrel/sqlexer.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqlexer.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqlexer.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqlexer.cpp.i"
@@ -1265,7 +1265,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o: CMakeFiles/op
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o: ../src/3rdparty/squirrel/squirrel/sqmem.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqmem.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqmem.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqmem.cpp.i"
@@ -1279,7 +1279,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o: CMakeFiles
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o: ../src/3rdparty/squirrel/squirrel/sqobject.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqobject.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqobject.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqobject.cpp.i"
@@ -1293,7 +1293,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o: ../src/3rdparty/squirrel/squirrel/sqstate.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqstate.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqstate.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.i"
@@ -1307,7 +1307,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o: CMakeFiles/
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o: ../src/3rdparty/squirrel/squirrel/sqtable.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqtable.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqtable.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.i"
@@ -1321,7 +1321,7 @@ CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o: CMakeFiles/ope
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o: ../src/3rdparty/squirrel/squirrel/sqvm.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqvm.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqvm.cpp
 
 CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.i"
@@ -1335,7 +1335,7 @@ CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o: ../src/ai/ai_config.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_config.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_config.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_config.cpp.i"
@@ -1349,7 +1349,7 @@ CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o: ../src/ai/ai_core.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_93) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_core.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_core.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_core.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_core.cpp.i"
@@ -1363,7 +1363,7 @@ CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o: ../src/ai/ai_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_94) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_gui.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.i"
@@ -1377,7 +1377,7 @@ CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o: ../src/ai/ai_info.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_95) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_info.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_info.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_info.cpp.i"
@@ -1391,7 +1391,7 @@ CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/ai/ai_instance.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_96) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_instance.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_instance.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.i"
@@ -1405,7 +1405,7 @@ CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o: ../src/ai/ai_scanner.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_97) "Building CXX object CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_scanner.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_scanner.cpp
 
 CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ai/ai_scanner.cpp.i"
@@ -1419,7 +1419,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/blitter/32bpp_anim.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_98) "Building CXX object CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_anim.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_anim.cpp
 
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.i"
@@ -1433,7 +1433,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/blitter/32bpp_base.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_99) "Building CXX object CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_base.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_base.cpp
 
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.i"
@@ -1447,7 +1447,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/blitter/32bpp_optimized.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_100) "Building CXX object CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_optimized.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_optimized.cpp
 
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.i"
@@ -1461,7 +1461,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/blitter/32bpp_simple.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_101) "Building CXX object CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_simple.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_simple.cpp
 
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.i"
@@ -1475,7 +1475,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/blitter/8bpp_base.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_102) "Building CXX object CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_base.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_base.cpp
 
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.i"
@@ -1489,7 +1489,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/blitter/8bpp_optimized.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_103) "Building CXX object CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_optimized.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_optimized.cpp
 
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.i"
@@ -1503,7 +1503,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/blitter/8bpp_simple.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_104) "Building CXX object CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_simple.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/8bpp_simple.cpp
 
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.i"
@@ -1517,7 +1517,7 @@ CMakeFiles/openttd.dir/src/blitter/null.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/blitter/null.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_105) "Building CXX object CMakeFiles/openttd.dir/src/blitter/null.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/null.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/null.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/blitter/null.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/null.cpp
 
 CMakeFiles/openttd.dir/src/blitter/null.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/blitter/null.cpp.i"
@@ -1531,7 +1531,7 @@ CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o: ../src/core/alloc_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_106) "Building CXX object CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/alloc_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.cpp
 
 CMakeFiles/openttd.dir/src/core/alloc_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/alloc_func.cpp.i"
@@ -1545,7 +1545,7 @@ CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o: ../src/core/bitmath_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_107) "Building CXX object CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.cpp
 
 CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/bitmath_func.cpp.i"
@@ -1559,7 +1559,7 @@ CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o: ../src/core/geometry_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_108) "Building CXX object CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/geometry_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.cpp
 
 CMakeFiles/openttd.dir/src/core/geometry_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/geometry_func.cpp.i"
@@ -1573,7 +1573,7 @@ CMakeFiles/openttd.dir/src/core/math_func.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/core/math_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/math_func.cpp.o: ../src/core/math_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_109) "Building CXX object CMakeFiles/openttd.dir/src/core/math_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/math_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/math_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.cpp
 
 CMakeFiles/openttd.dir/src/core/math_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/math_func.cpp.i"
@@ -1587,7 +1587,7 @@ CMakeFiles/openttd.dir/src/core/pool_func.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/core/pool_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/pool_func.cpp.o: ../src/core/pool_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_110) "Building CXX object CMakeFiles/openttd.dir/src/core/pool_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/pool_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/pool_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_func.cpp
 
 CMakeFiles/openttd.dir/src/core/pool_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/pool_func.cpp.i"
@@ -1601,7 +1601,7 @@ CMakeFiles/openttd.dir/src/core/random_func.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/core/random_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/core/random_func.cpp.o: ../src/core/random_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_111) "Building CXX object CMakeFiles/openttd.dir/src/core/random_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/random_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/core/random_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.cpp
 
 CMakeFiles/openttd.dir/src/core/random_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/core/random_func.cpp.i"
@@ -1615,7 +1615,7 @@ CMakeFiles/openttd.dir/src/game/game_config.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/game/game_config.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_config.cpp.o: ../src/game/game_config.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_112) "Building CXX object CMakeFiles/openttd.dir/src/game/game_config.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_config.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_config.cpp
 
 CMakeFiles/openttd.dir/src/game/game_config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_config.cpp.i"
@@ -1629,7 +1629,7 @@ CMakeFiles/openttd.dir/src/game/game_core.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/game/game_core.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_core.cpp.o: ../src/game/game_core.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_113) "Building CXX object CMakeFiles/openttd.dir/src/game/game_core.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_core.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_core.cpp
 
 CMakeFiles/openttd.dir/src/game/game_core.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_core.cpp.i"
@@ -1643,7 +1643,7 @@ CMakeFiles/openttd.dir/src/game/game_info.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/game/game_info.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_info.cpp.o: ../src/game/game_info.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_114) "Building CXX object CMakeFiles/openttd.dir/src/game/game_info.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_info.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_info.cpp
 
 CMakeFiles/openttd.dir/src/game/game_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_info.cpp.i"
@@ -1657,7 +1657,7 @@ CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/game/game_instance.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_115) "Building CXX object CMakeFiles/openttd.dir/src/game/game_instance.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_instance.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_instance.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_instance.cpp
 
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_instance.cpp.i"
@@ -1671,7 +1671,7 @@ CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o: ../src/game/game_scanner.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_116) "Building CXX object CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_scanner.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_scanner.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_scanner.cpp
 
 CMakeFiles/openttd.dir/src/game/game_scanner.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_scanner.cpp.i"
@@ -1685,7 +1685,7 @@ CMakeFiles/openttd.dir/src/game/game_text.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/game/game_text.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/game/game_text.cpp.o: ../src/game/game_text.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_117) "Building CXX object CMakeFiles/openttd.dir/src/game/game_text.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_text.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/game/game_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_text.cpp
 
 CMakeFiles/openttd.dir/src/game/game_text.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/game/game_text.cpp.i"
@@ -1699,7 +1699,7 @@ CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o: ../src/linkgraph/demands.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_118) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/demands.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/demands.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/demands.cpp.i"
@@ -1713,7 +1713,7 @@ CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o: ../src/linkgraph/flowmapper.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_119) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/flowmapper.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/flowmapper.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/flowmapper.cpp.i"
@@ -1727,7 +1727,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o: ../src/linkgraph/linkgraph.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_120) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/linkgraph.cpp.i"
@@ -1741,7 +1741,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/linkgraph/linkgraph_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_121) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_gui.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.i"
@@ -1755,7 +1755,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o: ../src/linkgraph/linkgraphjob.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_122) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphjob.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphjob.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/linkgraphjob.cpp.i"
@@ -1769,7 +1769,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o: CMakeFiles/openttd
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o: ../src/linkgraph/linkgraphschedule.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_123) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphschedule.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphschedule.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/linkgraphschedule.cpp.i"
@@ -1783,7 +1783,7 @@ CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o: ../src/linkgraph/mcf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_124) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/mcf.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/mcf.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/mcf.cpp.i"
@@ -1797,7 +1797,7 @@ CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o: ../src/linkgraph/refresh.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_125) "Building CXX object CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/refresh.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/refresh.cpp
 
 CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/linkgraph/refresh.cpp.i"
@@ -1811,7 +1811,7 @@ CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o: ../src/misc/countedobj.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_126) "Building CXX object CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedobj.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/countedobj.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedobj.cpp
 
 CMakeFiles/openttd.dir/src/misc/countedobj.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc/countedobj.cpp.i"
@@ -1825,7 +1825,7 @@ CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o: ../src/misc/dbg_helpers.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_127) "Building CXX object CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/dbg_helpers.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/dbg_helpers.cpp
 
 CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc/dbg_helpers.cpp.i"
@@ -1839,7 +1839,7 @@ CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o: ../src/misc/getoptdata.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_128) "Building CXX object CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/getoptdata.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc/getoptdata.cpp
 
 CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc/getoptdata.cpp.i"
@@ -1853,7 +1853,7 @@ CMakeFiles/openttd.dir/src/music/extmidi.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/music/extmidi.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/music/extmidi.cpp.o: ../src/music/extmidi.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_129) "Building CXX object CMakeFiles/openttd.dir/src/music/extmidi.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/extmidi.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/extmidi.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/extmidi.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/extmidi.cpp
 
 CMakeFiles/openttd.dir/src/music/extmidi.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/music/extmidi.cpp.i"
@@ -1867,7 +1867,7 @@ CMakeFiles/openttd.dir/src/music/midifile.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/music/midifile.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/music/midifile.cpp.o: ../src/music/midifile.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_130) "Building CXX object CMakeFiles/openttd.dir/src/music/midifile.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/midifile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/midifile.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/midifile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/midifile.cpp
 
 CMakeFiles/openttd.dir/src/music/midifile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/music/midifile.cpp.i"
@@ -1881,7 +1881,7 @@ CMakeFiles/openttd.dir/src/music/null_m.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/music/null_m.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/music/null_m.cpp.o: ../src/music/null_m.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_131) "Building CXX object CMakeFiles/openttd.dir/src/music/null_m.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/null_m.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/null_m.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music/null_m.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music/null_m.cpp
 
 CMakeFiles/openttd.dir/src/music/null_m.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/music/null_m.cpp.i"
@@ -1895,7 +1895,7 @@ CMakeFiles/openttd.dir/src/network/core/address.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/network/core/address.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/address.cpp.o: ../src/network/core/address.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_132) "Building CXX object CMakeFiles/openttd.dir/src/network/core/address.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/address.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/address.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.cpp
 
 CMakeFiles/openttd.dir/src/network/core/address.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/address.cpp.i"
@@ -1909,7 +1909,7 @@ CMakeFiles/openttd.dir/src/network/core/core.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/network/core/core.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/core.cpp.o: ../src/network/core/core.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_133) "Building CXX object CMakeFiles/openttd.dir/src/network/core/core.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.cpp
 
 CMakeFiles/openttd.dir/src/network/core/core.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/core.cpp.i"
@@ -1923,7 +1923,7 @@ CMakeFiles/openttd.dir/src/network/core/host.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/network/core/host.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/host.cpp.o: ../src/network/core/host.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_134) "Building CXX object CMakeFiles/openttd.dir/src/network/core/host.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/host.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/host.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/host.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/host.cpp
 
 CMakeFiles/openttd.dir/src/network/core/host.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/host.cpp.i"
@@ -1937,7 +1937,7 @@ CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/packet.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_135) "Building CXX object CMakeFiles/openttd.dir/src/network/core/packet.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/packet.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/packet.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.cpp
 
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/packet.cpp.i"
@@ -1951,7 +1951,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o: ../src/network/core/tcp.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_136) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp.cpp.i"
@@ -1965,7 +1965,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o: ../src/network/core/tcp_admin.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_137) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_admin.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_admin.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp_admin.cpp.i"
@@ -1979,7 +1979,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o: ../src/network/core/tcp_connect.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_138) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_connect.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_connect.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp_connect.cpp.i"
@@ -1993,7 +1993,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o: ../src/network/core/tcp_content.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_139) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.i"
@@ -2007,7 +2007,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/network/core/tcp_game.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_140) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.i"
@@ -2021,7 +2021,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o: ../src/network/core/tcp_http.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_141) "Building CXX object CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.cpp
 
 CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.i"
@@ -2035,7 +2035,7 @@ CMakeFiles/openttd.dir/src/network/core/udp.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/network/core/udp.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/core/udp.cpp.o: ../src/network/core/udp.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_142) "Building CXX object CMakeFiles/openttd.dir/src/network/core/udp.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/udp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/udp.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/core/udp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/udp.cpp
 
 CMakeFiles/openttd.dir/src/network/core/udp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/core/udp.cpp.i"
@@ -2049,7 +2049,7 @@ CMakeFiles/openttd.dir/src/network/network.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/network/network.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/network/network.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_143) "Building CXX object CMakeFiles/openttd.dir/src/network/network.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.cpp
 
 CMakeFiles/openttd.dir/src/network/network.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network.cpp.i"
@@ -2063,7 +2063,7 @@ CMakeFiles/openttd.dir/src/network/network_admin.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/network/network_admin.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_admin.cpp.o: ../src/network/network_admin.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_144) "Building CXX object CMakeFiles/openttd.dir/src/network/network_admin.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_admin.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_admin.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_admin.cpp
 
 CMakeFiles/openttd.dir/src/network/network_admin.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_admin.cpp.i"
@@ -2077,7 +2077,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/network/network_chat_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_145) "Building CXX object CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_chat_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_chat_gui.cpp
 
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.i"
@@ -2091,7 +2091,7 @@ CMakeFiles/openttd.dir/src/network/network_client.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/network/network_client.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_146) "Building CXX object CMakeFiles/openttd.dir/src/network/network_client.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_client.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_client.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_client.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_client.cpp
 
 CMakeFiles/openttd.dir/src/network/network_client.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_client.cpp.i"
@@ -2105,7 +2105,7 @@ CMakeFiles/openttd.dir/src/network/network_command.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/network/network_command.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_command.cpp.o: ../src/network/network_command.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_147) "Building CXX object CMakeFiles/openttd.dir/src/network/network_command.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_command.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_command.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_command.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_command.cpp
 
 CMakeFiles/openttd.dir/src/network/network_command.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_command.cpp.i"
@@ -2119,7 +2119,7 @@ CMakeFiles/openttd.dir/src/network/network_content.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/network/network_content.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_148) "Building CXX object CMakeFiles/openttd.dir/src/network/network_content.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_content.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_content.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.cpp
 
 CMakeFiles/openttd.dir/src/network/network_content.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_content.cpp.i"
@@ -2133,7 +2133,7 @@ CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: CMakeFiles/openttd
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/network/network_content_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_149) "Building CXX object CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content_gui.cpp
 
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.i"
@@ -2147,7 +2147,7 @@ CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o: ../src/network/network_gamelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_150) "Building CXX object CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gamelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gamelist.cpp
 
 CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.i"
@@ -2161,7 +2161,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_151) "Building CXX object CMakeFiles/openttd.dir/src/network/network_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gui.cpp
 
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_gui.cpp.i"
@@ -2175,7 +2175,7 @@ CMakeFiles/openttd.dir/src/network/network_server.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/network/network_server.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_server.cpp.o: ../src/network/network_server.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_152) "Building CXX object CMakeFiles/openttd.dir/src/network/network_server.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_server.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_server.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.cpp
 
 CMakeFiles/openttd.dir/src/network/network_server.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_server.cpp.i"
@@ -2189,7 +2189,7 @@ CMakeFiles/openttd.dir/src/network/network_udp.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/network/network_udp.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/network/network_udp.cpp.o: ../src/network/network_udp.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_153) "Building CXX object CMakeFiles/openttd.dir/src/network/network_udp.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_udp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_udp.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/network/network_udp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_udp.cpp
 
 CMakeFiles/openttd.dir/src/network/network_udp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/network/network_udp.cpp.i"
@@ -2203,7 +2203,7 @@ CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o: ../src/os/unix/crashlog_unix.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_154) "Building CXX object CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/os/unix/crashlog_unix.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/os/unix/crashlog_unix.cpp
 
 CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.i"
@@ -2217,7 +2217,7 @@ CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o: ../src/os/unix/unix.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_155) "Building CXX object CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/os/unix/unix.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/os/unix/unix.cpp
 
 CMakeFiles/openttd.dir/src/os/unix/unix.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/os/unix/unix.cpp.i"
@@ -2231,7 +2231,7 @@ CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o: ../src/pathfinder/npf/aystar.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_156) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/aystar.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/aystar.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.i"
@@ -2245,7 +2245,7 @@ CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/npf/npf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_157) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/npf.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/npf.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.i"
@@ -2259,7 +2259,7 @@ CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o: ../src/pathfinder/npf/queue.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_158) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/queue.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/queue.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/npf/queue.cpp.i"
@@ -2273,7 +2273,7 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/yapf/yapf_rail.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_159) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_rail.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_rail.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.i"
@@ -2287,7 +2287,7 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/yapf/yapf_road.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_160) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_road.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_road.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.i"
@@ -2301,7 +2301,7 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/yapf/yapf_ship.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_161) "Building CXX object CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_ship.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_ship.cpp
 
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.i"
@@ -2315,7 +2315,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/saveload/afterload.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_162) "Building CXX object CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/afterload.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/afterload.cpp
 
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/afterload.cpp.i"
@@ -2329,7 +2329,7 @@ CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o: ../src/saveload/ai_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_163) "Building CXX object CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/ai_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/ai_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/ai_sl.cpp.i"
@@ -2343,7 +2343,7 @@ CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o: ../src/saveload/airport_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_164) "Building CXX object CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/airport_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/airport_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/airport_sl.cpp.i"
@@ -2357,7 +2357,7 @@ CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o: ../src/saveload/animated_tile_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_165) "Building CXX object CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/animated_tile_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/animated_tile_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/animated_tile_sl.cpp.i"
@@ -2371,7 +2371,7 @@ CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o: ../src/saveload/autoreplace_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_166) "Building CXX object CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/autoreplace_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/autoreplace_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/autoreplace_sl.cpp.i"
@@ -2385,7 +2385,7 @@ CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o: ../src/saveload/bridge_signal_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_167) "Building CXX object CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/bridge_signal_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/bridge_signal_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.i"
@@ -2399,7 +2399,7 @@ CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o: ../src/saveload/cargomonitor_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_168) "Building CXX object CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cargomonitor_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cargomonitor_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.i"
@@ -2413,7 +2413,7 @@ CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o: CMakeFiles/openttd.dir
 CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o: ../src/saveload/cargopacket_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_169) "Building CXX object CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cargopacket_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cargopacket_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/cargopacket_sl.cpp.i"
@@ -2427,7 +2427,7 @@ CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o: ../src/saveload/cheat_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_170) "Building CXX object CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cheat_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/cheat_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/cheat_sl.cpp.i"
@@ -2441,7 +2441,7 @@ CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o: ../src/saveload/company_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_171) "Building CXX object CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/company_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/company_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.i"
@@ -2455,7 +2455,7 @@ CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o: ../src/saveload/debug_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_172) "Building CXX object CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/debug_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/debug_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.i"
@@ -2469,7 +2469,7 @@ CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o: ../src/saveload/depot_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_173) "Building CXX object CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/depot_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/depot_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/depot_sl.cpp.i"
@@ -2483,7 +2483,7 @@ CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o: ../src/saveload/economy_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_174) "Building CXX object CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/economy_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/economy_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/economy_sl.cpp.i"
@@ -2497,7 +2497,7 @@ CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o: ../src/saveload/engine_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_175) "Building CXX object CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/engine_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/engine_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/engine_sl.cpp.i"
@@ -2511,7 +2511,7 @@ CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o: ../src/saveload/extended_ver_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_176) "Building CXX object CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/extended_ver_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/extended_ver_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/extended_ver_sl.cpp.i"
@@ -2525,7 +2525,7 @@ CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o: ../src/saveload/game_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_177) "Building CXX object CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/game_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/game_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.i"
@@ -2539,7 +2539,7 @@ CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o: ../src/saveload/gamelog_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_178) "Building CXX object CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/gamelog_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/gamelog_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.i"
@@ -2553,7 +2553,7 @@ CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o: ../src/saveload/goal_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_179) "Building CXX object CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/goal_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/goal_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/goal_sl.cpp.i"
@@ -2567,7 +2567,7 @@ CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o: ../src/saveload/group_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_180) "Building CXX object CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/group_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/group_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/group_sl.cpp.i"
@@ -2581,7 +2581,7 @@ CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o: ../src/saveload/industry_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_181) "Building CXX object CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/industry_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/industry_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/industry_sl.cpp.i"
@@ -2595,7 +2595,7 @@ CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o: ../src/saveload/labelmaps_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_182) "Building CXX object CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/labelmaps_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/labelmaps_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.i"
@@ -2609,7 +2609,7 @@ CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o: ../src/saveload/linkgraph_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_183) "Building CXX object CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/linkgraph_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/linkgraph_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.i"
@@ -2623,7 +2623,7 @@ CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o: ../src/saveload/map_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_184) "Building CXX object CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/map_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/map_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.i"
@@ -2637,7 +2637,7 @@ CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o: ../src/saveload/misc_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_185) "Building CXX object CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/misc_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/misc_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.i"
@@ -2651,7 +2651,7 @@ CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o: ../src/saveload/newgrf_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_186) "Building CXX object CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/newgrf_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/newgrf_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.i"
@@ -2665,7 +2665,7 @@ CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o: ../src/saveload/object_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_187) "Building CXX object CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/object_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/object_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/object_sl.cpp.i"
@@ -2679,7 +2679,7 @@ CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o: ../src/saveload/oldloader.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_188) "Building CXX object CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/oldloader.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/oldloader.cpp
 
 CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/oldloader.cpp.i"
@@ -2693,7 +2693,7 @@ CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o: ../src/saveload/oldloader_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_189) "Building CXX object CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/oldloader_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/oldloader_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/oldloader_sl.cpp.i"
@@ -2707,7 +2707,7 @@ CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o: ../src/saveload/order_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_190) "Building CXX object CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/order_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/order_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/order_sl.cpp.i"
@@ -2721,7 +2721,7 @@ CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o: ../src/saveload/plans_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_191) "Building CXX object CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/plans_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/plans_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.i"
@@ -2735,7 +2735,7 @@ CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/saveload/saveload.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_192) "Building CXX object CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.cpp
 
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/saveload.cpp.i"
@@ -2749,7 +2749,7 @@ CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o: ../src/saveload/signal_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_193) "Building CXX object CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/signal_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/signal_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.i"
@@ -2763,7 +2763,7 @@ CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o: ../src/saveload/signs_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_194) "Building CXX object CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/signs_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/signs_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.i"
@@ -2777,7 +2777,7 @@ CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o: ../src/saveload/station_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_195) "Building CXX object CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/station_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/station_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/station_sl.cpp.i"
@@ -2791,7 +2791,7 @@ CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o: ../src/saveload/storage_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_196) "Building CXX object CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/storage_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/storage_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/storage_sl.cpp.i"
@@ -2805,7 +2805,7 @@ CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o: ../src/saveload/strings_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_197) "Building CXX object CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/strings_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/strings_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/strings_sl.cpp.i"
@@ -2819,7 +2819,7 @@ CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o: ../src/saveload/story_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_198) "Building CXX object CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/story_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/story_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/story_sl.cpp.i"
@@ -2833,7 +2833,7 @@ CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o: ../src/saveload/subsidy_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_199) "Building CXX object CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/subsidy_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/subsidy_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/subsidy_sl.cpp.i"
@@ -2847,7 +2847,7 @@ CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o: CMakeFil
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o: ../src/saveload/tbtr_template_replacement_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_200) "Building CXX object CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tbtr_template_replacement_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tbtr_template_replacement_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/tbtr_template_replacement_sl.cpp.i"
@@ -2861,7 +2861,7 @@ CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o: CMakeFiles/opent
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o: ../src/saveload/tbtr_template_veh_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_201) "Building CXX object CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tbtr_template_veh_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tbtr_template_veh_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.i"
@@ -2875,7 +2875,7 @@ CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/saveload/town_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_202) "Building CXX object CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/town_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/town_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.i"
@@ -2889,7 +2889,7 @@ CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o: CMakeFiles/openttd.d
 CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o: ../src/saveload/tracerestrict_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_203) "Building CXX object CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tracerestrict_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tracerestrict_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.i"
@@ -2903,7 +2903,7 @@ CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o: ../src/saveload/tunnel_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_204) "Building CXX object CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tunnel_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tunnel_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.i"
@@ -2917,7 +2917,7 @@ CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o: ../src/saveload/vehicle_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_205) "Building CXX object CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/vehicle_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/vehicle_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.i"
@@ -2931,7 +2931,7 @@ CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o: ../src/saveload/waypoint_sl.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_206) "Building CXX object CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/waypoint_sl.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/waypoint_sl.cpp
 
 CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.i"
@@ -2945,7 +2945,7 @@ CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o: ../src/sound/sdl2_s.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_207) "Building CXX object CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound/sdl2_s.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound/sdl2_s.cpp
 
 CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/sound/sdl2_s.cpp.i"
@@ -2959,7 +2959,7 @@ CMakeFiles/openttd.dir/src/sound/null_s.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/sound/null_s.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/sound/null_s.cpp.o: ../src/sound/null_s.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_208) "Building CXX object CMakeFiles/openttd.dir/src/sound/null_s.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound/null_s.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound/null_s.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound/null_s.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound/null_s.cpp
 
 CMakeFiles/openttd.dir/src/sound/null_s.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/sound/null_s.cpp.i"
@@ -2973,7 +2973,7 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/grf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_209) "Building CXX object CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.cpp
 
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.i"
@@ -2987,7 +2987,7 @@ CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/video/sdl2_v.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_210) "Building CXX object CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.cpp
 
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.i"
@@ -3001,7 +3001,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/video/dedicated_v.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_211) "Building CXX object CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/dedicated_v.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/dedicated_v.cpp
 
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.i"
@@ -3015,7 +3015,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/video/null_v.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_212) "Building CXX object CMakeFiles/openttd.dir/src/video/null_v.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/null_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/null_v.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/video/null_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/null_v.cpp
 
 CMakeFiles/openttd.dir/src/video/null_v.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/video/null_v.cpp.i"
@@ -3029,7 +3029,7 @@ CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o: ../src/widgets/dropdown.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_213) "Building CXX object CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown.cpp
 
 CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.i"
@@ -3043,7 +3043,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/aircraft_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_214) "Building CXX object CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft_cmd.cpp
 
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.i"
@@ -3057,7 +3057,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/aircraft_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_215) "Building CXX object CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft_gui.cpp
 
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/aircraft_gui.cpp.i"
@@ -3071,7 +3071,7 @@ CMakeFiles/openttd.dir/src/airport.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/airport.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/airport.cpp.o: ../src/airport.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_216) "Building CXX object CMakeFiles/openttd.dir/src/airport.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/airport.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/airport.cpp
 
 CMakeFiles/openttd.dir/src/airport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/airport.cpp.i"
@@ -3085,7 +3085,7 @@ CMakeFiles/openttd.dir/src/airport_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/airport_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/airport_gui.cpp.o: ../src/airport_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_217) "Building CXX object CMakeFiles/openttd.dir/src/airport_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/airport_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/airport_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/airport_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/airport_gui.cpp
 
 CMakeFiles/openttd.dir/src/airport_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/airport_gui.cpp.i"
@@ -3099,7 +3099,7 @@ CMakeFiles/openttd.dir/src/animated_tile.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/animated_tile.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/animated_tile.cpp.o: ../src/animated_tile.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_218) "Building CXX object CMakeFiles/openttd.dir/src/animated_tile.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/animated_tile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/animated_tile.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile.cpp
 
 CMakeFiles/openttd.dir/src/animated_tile.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/animated_tile.cpp.i"
@@ -3113,7 +3113,7 @@ CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o: ../src/articulated_vehicles.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_219) "Building CXX object CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/articulated_vehicles.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/articulated_vehicles.cpp
 
 CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/articulated_vehicles.cpp.i"
@@ -3127,7 +3127,7 @@ CMakeFiles/openttd.dir/src/autoreplace.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/autoreplace.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/autoreplace.cpp.o: ../src/autoreplace.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_220) "Building CXX object CMakeFiles/openttd.dir/src/autoreplace.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace.cpp
 
 CMakeFiles/openttd.dir/src/autoreplace.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/autoreplace.cpp.i"
@@ -3141,7 +3141,7 @@ CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/autoreplace_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_221) "Building CXX object CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_cmd.cpp
 
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.i"
@@ -3155,7 +3155,7 @@ CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o: ../src/autoreplace_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_222) "Building CXX object CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_gui.cpp
 
 CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/autoreplace_gui.cpp.i"
@@ -3169,7 +3169,7 @@ CMakeFiles/openttd.dir/src/base_consist.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/base_consist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/base_consist.cpp.o: ../src/base_consist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_223) "Building CXX object CMakeFiles/openttd.dir/src/base_consist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/base_consist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/base_consist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.cpp
 
 CMakeFiles/openttd.dir/src/base_consist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/base_consist.cpp.i"
@@ -3183,7 +3183,7 @@ CMakeFiles/openttd.dir/src/bmp.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/bmp.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/bmp.cpp.o: ../src/bmp.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_224) "Building CXX object CMakeFiles/openttd.dir/src/bmp.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bmp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bmp.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bmp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bmp.cpp
 
 CMakeFiles/openttd.dir/src/bmp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/bmp.cpp.i"
@@ -3197,7 +3197,7 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/bootstrap_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_225) "Building CXX object CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bootstrap_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bootstrap_gui.cpp
 
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.i"
@@ -3211,7 +3211,7 @@ CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/bridge_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_226) "Building CXX object CMakeFiles/openttd.dir/src/bridge_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bridge_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bridge_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_gui.cpp
 
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/bridge_gui.cpp.i"
@@ -3225,7 +3225,7 @@ CMakeFiles/openttd.dir/src/bridge_map.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/bridge_map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/bridge_map.cpp.o: ../src/bridge_map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_227) "Building CXX object CMakeFiles/openttd.dir/src/bridge_map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bridge_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/bridge_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_map.cpp
 
 CMakeFiles/openttd.dir/src/bridge_map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/bridge_map.cpp.i"
@@ -3239,7 +3239,7 @@ CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/build_vehicle_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_228) "Building CXX object CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/build_vehicle_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/build_vehicle_gui.cpp
 
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.i"
@@ -3253,7 +3253,7 @@ CMakeFiles/openttd.dir/src/cargoaction.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cargoaction.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cargoaction.cpp.o: ../src/cargoaction.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_229) "Building CXX object CMakeFiles/openttd.dir/src/cargoaction.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargoaction.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargoaction.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargoaction.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargoaction.cpp
 
 CMakeFiles/openttd.dir/src/cargoaction.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cargoaction.cpp.i"
@@ -3267,7 +3267,7 @@ CMakeFiles/openttd.dir/src/cargomonitor.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cargomonitor.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cargomonitor.cpp.o: ../src/cargomonitor.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_230) "Building CXX object CMakeFiles/openttd.dir/src/cargomonitor.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargomonitor.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargomonitor.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargomonitor.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargomonitor.cpp
 
 CMakeFiles/openttd.dir/src/cargomonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cargomonitor.cpp.i"
@@ -3281,7 +3281,7 @@ CMakeFiles/openttd.dir/src/cargopacket.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cargopacket.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cargopacket.cpp.o: ../src/cargopacket.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_231) "Building CXX object CMakeFiles/openttd.dir/src/cargopacket.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargopacket.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargopacket.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.cpp
 
 CMakeFiles/openttd.dir/src/cargopacket.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cargopacket.cpp.i"
@@ -3295,7 +3295,7 @@ CMakeFiles/openttd.dir/src/cargotype.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cargotype.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cargotype.cpp.o: ../src/cargotype.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_232) "Building CXX object CMakeFiles/openttd.dir/src/cargotype.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargotype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cargotype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.cpp
 
 CMakeFiles/openttd.dir/src/cargotype.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cargotype.cpp.i"
@@ -3309,7 +3309,7 @@ CMakeFiles/openttd.dir/src/cheat.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cheat.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cheat.cpp.o: ../src/cheat.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_233) "Building CXX object CMakeFiles/openttd.dir/src/cheat.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cheat.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cheat.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cheat.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cheat.cpp
 
 CMakeFiles/openttd.dir/src/cheat.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cheat.cpp.i"
@@ -3323,7 +3323,7 @@ CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/cheat_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_234) "Building CXX object CMakeFiles/openttd.dir/src/cheat_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cheat_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cheat_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_gui.cpp
 
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cheat_gui.cpp.i"
@@ -3337,7 +3337,7 @@ CMakeFiles/openttd.dir/src/clear_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/clear_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/clear_cmd.cpp.o: ../src/clear_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_235) "Building CXX object CMakeFiles/openttd.dir/src/clear_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/clear_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/clear_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/clear_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/clear_cmd.cpp
 
 CMakeFiles/openttd.dir/src/clear_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/clear_cmd.cpp.i"
@@ -3351,7 +3351,7 @@ CMakeFiles/openttd.dir/src/command.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/command.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/command.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_236) "Building CXX object CMakeFiles/openttd.dir/src/command.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/command.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/command.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/command.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/command.cpp
 
 CMakeFiles/openttd.dir/src/command.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/command.cpp.i"
@@ -3365,7 +3365,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/company_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_237) "Building CXX object CMakeFiles/openttd.dir/src/company_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/company_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/company_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/company_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/company_cmd.cpp
 
 CMakeFiles/openttd.dir/src/company_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/company_cmd.cpp.i"
@@ -3379,7 +3379,7 @@ CMakeFiles/openttd.dir/src/company_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/company_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_238) "Building CXX object CMakeFiles/openttd.dir/src/company_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/company_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/company_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/company_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/company_gui.cpp
 
 CMakeFiles/openttd.dir/src/company_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/company_gui.cpp.i"
@@ -3393,7 +3393,7 @@ CMakeFiles/openttd.dir/src/console.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/console.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/console.cpp.o: ../src/console.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_239) "Building CXX object CMakeFiles/openttd.dir/src/console.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console.cpp
 
 CMakeFiles/openttd.dir/src/console.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/console.cpp.i"
@@ -3407,7 +3407,7 @@ CMakeFiles/openttd.dir/src/console_cmds.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/console_cmds.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_240) "Building CXX object CMakeFiles/openttd.dir/src/console_cmds.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console_cmds.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console_cmds.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console_cmds.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console_cmds.cpp
 
 CMakeFiles/openttd.dir/src/console_cmds.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/console_cmds.cpp.i"
@@ -3421,7 +3421,7 @@ CMakeFiles/openttd.dir/src/console_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/console_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_241) "Building CXX object CMakeFiles/openttd.dir/src/console_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/console_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/console_gui.cpp
 
 CMakeFiles/openttd.dir/src/console_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/console_gui.cpp.i"
@@ -3435,7 +3435,7 @@ CMakeFiles/openttd.dir/src/cpu.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/cpu.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/cpu.cpp.o: ../src/cpu.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_242) "Building CXX object CMakeFiles/openttd.dir/src/cpu.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cpu.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/cpu.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.cpp
 
 CMakeFiles/openttd.dir/src/cpu.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/cpu.cpp.i"
@@ -3449,7 +3449,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/crashlog.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_243) "Building CXX object CMakeFiles/openttd.dir/src/crashlog.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/crashlog.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/crashlog.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/crashlog.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/crashlog.cpp
 
 CMakeFiles/openttd.dir/src/crashlog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/crashlog.cpp.i"
@@ -3463,7 +3463,7 @@ CMakeFiles/openttd.dir/src/currency.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/currency.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/currency.cpp.o: ../src/currency.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_244) "Building CXX object CMakeFiles/openttd.dir/src/currency.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/currency.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/currency.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/currency.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/currency.cpp
 
 CMakeFiles/openttd.dir/src/currency.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/currency.cpp.i"
@@ -3477,7 +3477,7 @@ CMakeFiles/openttd.dir/src/date.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/date.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/date.cpp.o: ../src/date.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_245) "Building CXX object CMakeFiles/openttd.dir/src/date.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/date.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/date.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/date.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/date.cpp
 
 CMakeFiles/openttd.dir/src/date.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/date.cpp.i"
@@ -3491,7 +3491,7 @@ CMakeFiles/openttd.dir/src/date_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/date_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/date_gui.cpp.o: ../src/date_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_246) "Building CXX object CMakeFiles/openttd.dir/src/date_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/date_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/date_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/date_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/date_gui.cpp
 
 CMakeFiles/openttd.dir/src/date_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/date_gui.cpp.i"
@@ -3505,7 +3505,7 @@ CMakeFiles/openttd.dir/src/debug.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/debug.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/debug.cpp.o: ../src/debug.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_247) "Building CXX object CMakeFiles/openttd.dir/src/debug.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/debug.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/debug.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/debug.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/debug.cpp
 
 CMakeFiles/openttd.dir/src/debug.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/debug.cpp.i"
@@ -3519,7 +3519,7 @@ CMakeFiles/openttd.dir/src/dedicated.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/dedicated.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/dedicated.cpp.o: ../src/dedicated.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_248) "Building CXX object CMakeFiles/openttd.dir/src/dedicated.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/dedicated.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/dedicated.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/dedicated.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/dedicated.cpp
 
 CMakeFiles/openttd.dir/src/dedicated.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/dedicated.cpp.i"
@@ -3533,7 +3533,7 @@ CMakeFiles/openttd.dir/src/departures.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/departures.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/departures.cpp.o: ../src/departures.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_249) "Building CXX object CMakeFiles/openttd.dir/src/departures.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/departures.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/departures.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/departures.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/departures.cpp
 
 CMakeFiles/openttd.dir/src/departures.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/departures.cpp.i"
@@ -3547,7 +3547,7 @@ CMakeFiles/openttd.dir/src/departures_gui.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/departures_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/departures_gui.cpp.o: ../src/departures_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_250) "Building CXX object CMakeFiles/openttd.dir/src/departures_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/departures_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/departures_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/departures_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/departures_gui.cpp
 
 CMakeFiles/openttd.dir/src/departures_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/departures_gui.cpp.i"
@@ -3561,7 +3561,7 @@ CMakeFiles/openttd.dir/src/depot.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/depot.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/depot.cpp.o: ../src/depot.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_251) "Building CXX object CMakeFiles/openttd.dir/src/depot.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot.cpp
 
 CMakeFiles/openttd.dir/src/depot.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/depot.cpp.i"
@@ -3575,7 +3575,7 @@ CMakeFiles/openttd.dir/src/depot_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/depot_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/depot_cmd.cpp.o: ../src/depot_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_252) "Building CXX object CMakeFiles/openttd.dir/src/depot_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot_cmd.cpp
 
 CMakeFiles/openttd.dir/src/depot_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/depot_cmd.cpp.i"
@@ -3589,7 +3589,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/depot_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_253) "Building CXX object CMakeFiles/openttd.dir/src/depot_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/depot_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/depot_gui.cpp
 
 CMakeFiles/openttd.dir/src/depot_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/depot_gui.cpp.i"
@@ -3603,7 +3603,7 @@ CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o: ../src/disaster_vehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_254) "Building CXX object CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/disaster_vehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/disaster_vehicle.cpp
 
 CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/disaster_vehicle.cpp.i"
@@ -3617,7 +3617,7 @@ CMakeFiles/openttd.dir/src/dock_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/dock_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/dock_gui.cpp.o: ../src/dock_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_255) "Building CXX object CMakeFiles/openttd.dir/src/dock_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/dock_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/dock_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/dock_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/dock_gui.cpp
 
 CMakeFiles/openttd.dir/src/dock_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/dock_gui.cpp.i"
@@ -3631,7 +3631,7 @@ CMakeFiles/openttd.dir/src/driver.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/driver.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/driver.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_256) "Building CXX object CMakeFiles/openttd.dir/src/driver.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/driver.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/driver.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/driver.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/driver.cpp
 
 CMakeFiles/openttd.dir/src/driver.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/driver.cpp.i"
@@ -3645,7 +3645,7 @@ CMakeFiles/openttd.dir/src/economy.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/economy.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/economy.cpp.o: ../src/economy.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_257) "Building CXX object CMakeFiles/openttd.dir/src/economy.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/economy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/economy.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/economy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/economy.cpp
 
 CMakeFiles/openttd.dir/src/economy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/economy.cpp.i"
@@ -3659,7 +3659,7 @@ CMakeFiles/openttd.dir/src/effectvehicle.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/effectvehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/effectvehicle.cpp.o: ../src/effectvehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_258) "Building CXX object CMakeFiles/openttd.dir/src/effectvehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/effectvehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/effectvehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/effectvehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/effectvehicle.cpp
 
 CMakeFiles/openttd.dir/src/effectvehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/effectvehicle.cpp.i"
@@ -3673,7 +3673,7 @@ CMakeFiles/openttd.dir/src/elrail.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/elrail.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/elrail.cpp.o: ../src/elrail.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_259) "Building CXX object CMakeFiles/openttd.dir/src/elrail.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/elrail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/elrail.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/elrail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/elrail.cpp
 
 CMakeFiles/openttd.dir/src/elrail.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/elrail.cpp.i"
@@ -3687,7 +3687,7 @@ CMakeFiles/openttd.dir/src/engine.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/engine.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/engine.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_260) "Building CXX object CMakeFiles/openttd.dir/src/engine.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/engine.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/engine.cpp
 
 CMakeFiles/openttd.dir/src/engine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/engine.cpp.i"
@@ -3701,7 +3701,7 @@ CMakeFiles/openttd.dir/src/engine_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/engine_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/engine_gui.cpp.o: ../src/engine_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_261) "Building CXX object CMakeFiles/openttd.dir/src/engine_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/engine_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/engine_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/engine_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/engine_gui.cpp
 
 CMakeFiles/openttd.dir/src/engine_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/engine_gui.cpp.i"
@@ -3715,7 +3715,7 @@ CMakeFiles/openttd.dir/src/error_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/error_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_262) "Building CXX object CMakeFiles/openttd.dir/src/error_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/error_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/error_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/error_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/error_gui.cpp
 
 CMakeFiles/openttd.dir/src/error_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/error_gui.cpp.i"
@@ -3729,7 +3729,7 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/fileio.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/fileio.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_263) "Building CXX object CMakeFiles/openttd.dir/src/fileio.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fileio.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fileio.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fileio.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fileio.cpp
 
 CMakeFiles/openttd.dir/src/fileio.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/fileio.cpp.i"
@@ -3743,7 +3743,7 @@ CMakeFiles/openttd.dir/src/fios.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/fios.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/fios.cpp.o: ../src/fios.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_264) "Building CXX object CMakeFiles/openttd.dir/src/fios.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fios.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fios.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fios.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fios.cpp
 
 CMakeFiles/openttd.dir/src/fios.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/fios.cpp.i"
@@ -3757,7 +3757,7 @@ CMakeFiles/openttd.dir/src/fios_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/fios_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_265) "Building CXX object CMakeFiles/openttd.dir/src/fios_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fios_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fios_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fios_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fios_gui.cpp
 
 CMakeFiles/openttd.dir/src/fios_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/fios_gui.cpp.i"
@@ -3771,7 +3771,7 @@ CMakeFiles/openttd.dir/src/fontcache.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/fontcache.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_266) "Building CXX object CMakeFiles/openttd.dir/src/fontcache.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fontcache.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fontcache.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.cpp
 
 CMakeFiles/openttd.dir/src/fontcache.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/fontcache.cpp.i"
@@ -3785,7 +3785,7 @@ CMakeFiles/openttd.dir/src/fontdetection.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/fontdetection.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/fontdetection.cpp.o: ../src/fontdetection.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_267) "Building CXX object CMakeFiles/openttd.dir/src/fontdetection.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fontdetection.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/fontdetection.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.cpp
 
 CMakeFiles/openttd.dir/src/fontdetection.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/fontdetection.cpp.i"
@@ -3799,7 +3799,7 @@ CMakeFiles/openttd.dir/src/framerate_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/framerate_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/framerate_gui.cpp.o: ../src/framerate_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_268) "Building CXX object CMakeFiles/openttd.dir/src/framerate_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/framerate_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/framerate_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/framerate_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/framerate_gui.cpp
 
 CMakeFiles/openttd.dir/src/framerate_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/framerate_gui.cpp.i"
@@ -3813,7 +3813,7 @@ CMakeFiles/openttd.dir/src/gamelog.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/gamelog.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/gamelog.cpp.o: ../src/gamelog.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_269) "Building CXX object CMakeFiles/openttd.dir/src/gamelog.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gamelog.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gamelog.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gamelog.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gamelog.cpp
 
 CMakeFiles/openttd.dir/src/gamelog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/gamelog.cpp.i"
@@ -3827,7 +3827,7 @@ CMakeFiles/openttd.dir/src/genworld.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/genworld.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/genworld.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_270) "Building CXX object CMakeFiles/openttd.dir/src/genworld.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/genworld.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/genworld.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/genworld.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/genworld.cpp
 
 CMakeFiles/openttd.dir/src/genworld.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/genworld.cpp.i"
@@ -3841,7 +3841,7 @@ CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/genworld_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_271) "Building CXX object CMakeFiles/openttd.dir/src/genworld_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/genworld_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/genworld_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/genworld_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/genworld_gui.cpp
 
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/genworld_gui.cpp.i"
@@ -3855,7 +3855,7 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/gfx.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/gfx.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_272) "Building CXX object CMakeFiles/openttd.dir/src/gfx.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfx.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfx.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfx.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfx.cpp
 
 CMakeFiles/openttd.dir/src/gfx.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/gfx.cpp.i"
@@ -3869,7 +3869,7 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/gfx_layout.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_273) "Building CXX object CMakeFiles/openttd.dir/src/gfx_layout.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfx_layout.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_layout.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfx_layout.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_layout.cpp
 
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/gfx_layout.cpp.i"
@@ -3883,7 +3883,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/gfxinit.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_274) "Building CXX object CMakeFiles/openttd.dir/src/gfxinit.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfxinit.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfxinit.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/gfxinit.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/gfxinit.cpp
 
 CMakeFiles/openttd.dir/src/gfxinit.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/gfxinit.cpp.i"
@@ -3897,7 +3897,7 @@ CMakeFiles/openttd.dir/src/goal.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/goal.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/goal.cpp.o: ../src/goal.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_275) "Building CXX object CMakeFiles/openttd.dir/src/goal.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/goal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/goal.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/goal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/goal.cpp
 
 CMakeFiles/openttd.dir/src/goal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/goal.cpp.i"
@@ -3911,7 +3911,7 @@ CMakeFiles/openttd.dir/src/goal_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/goal_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/goal_gui.cpp.o: ../src/goal_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_276) "Building CXX object CMakeFiles/openttd.dir/src/goal_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/goal_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/goal_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/goal_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/goal_gui.cpp
 
 CMakeFiles/openttd.dir/src/goal_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/goal_gui.cpp.i"
@@ -3925,7 +3925,7 @@ CMakeFiles/openttd.dir/src/graph_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/graph_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_277) "Building CXX object CMakeFiles/openttd.dir/src/graph_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/graph_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/graph_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.cpp
 
 CMakeFiles/openttd.dir/src/graph_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/graph_gui.cpp.i"
@@ -3939,7 +3939,7 @@ CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o: ../src/ground_vehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_278) "Building CXX object CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ground_vehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ground_vehicle.cpp
 
 CMakeFiles/openttd.dir/src/ground_vehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ground_vehicle.cpp.i"
@@ -3953,7 +3953,7 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/group_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/group_cmd.cpp.o: ../src/group_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_279) "Building CXX object CMakeFiles/openttd.dir/src/group_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/group_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/group_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/group_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/group_cmd.cpp
 
 CMakeFiles/openttd.dir/src/group_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/group_cmd.cpp.i"
@@ -3967,7 +3967,7 @@ CMakeFiles/openttd.dir/src/group_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/group_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_280) "Building CXX object CMakeFiles/openttd.dir/src/group_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/group_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/group_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/group_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/group_gui.cpp
 
 CMakeFiles/openttd.dir/src/group_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/group_gui.cpp.i"
@@ -3981,7 +3981,7 @@ CMakeFiles/openttd.dir/src/heightmap.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/heightmap.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_281) "Building CXX object CMakeFiles/openttd.dir/src/heightmap.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/heightmap.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/heightmap.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/heightmap.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/heightmap.cpp
 
 CMakeFiles/openttd.dir/src/heightmap.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/heightmap.cpp.i"
@@ -3995,7 +3995,7 @@ CMakeFiles/openttd.dir/src/highscore.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/highscore.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/highscore.cpp.o: ../src/highscore.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_282) "Building CXX object CMakeFiles/openttd.dir/src/highscore.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/highscore.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/highscore.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/highscore.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/highscore.cpp
 
 CMakeFiles/openttd.dir/src/highscore.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/highscore.cpp.i"
@@ -4009,7 +4009,7 @@ CMakeFiles/openttd.dir/src/highscore_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/highscore_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/highscore_gui.cpp.o: ../src/highscore_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_283) "Building CXX object CMakeFiles/openttd.dir/src/highscore_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/highscore_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/highscore_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/highscore_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/highscore_gui.cpp
 
 CMakeFiles/openttd.dir/src/highscore_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/highscore_gui.cpp.i"
@@ -4023,7 +4023,7 @@ CMakeFiles/openttd.dir/src/hotkeys.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/hotkeys.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/hotkeys.cpp.o: ../src/hotkeys.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_284) "Building CXX object CMakeFiles/openttd.dir/src/hotkeys.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/hotkeys.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/hotkeys.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/hotkeys.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/hotkeys.cpp
 
 CMakeFiles/openttd.dir/src/hotkeys.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/hotkeys.cpp.i"
@@ -4037,7 +4037,7 @@ CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/industry_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_285) "Building CXX object CMakeFiles/openttd.dir/src/industry_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/industry_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/industry_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/industry_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/industry_cmd.cpp
 
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/industry_cmd.cpp.i"
@@ -4051,7 +4051,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/industry_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_286) "Building CXX object CMakeFiles/openttd.dir/src/industry_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/industry_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/industry_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/industry_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/industry_gui.cpp
 
 CMakeFiles/openttd.dir/src/industry_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/industry_gui.cpp.i"
@@ -4065,7 +4065,7 @@ CMakeFiles/openttd.dir/src/ini.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ini.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ini.cpp.o: ../src/ini.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_287) "Building CXX object CMakeFiles/openttd.dir/src/ini.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ini.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ini.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ini.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ini.cpp
 
 CMakeFiles/openttd.dir/src/ini.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ini.cpp.i"
@@ -4079,7 +4079,7 @@ CMakeFiles/openttd.dir/src/ini_load.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ini_load.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ini_load.cpp.o: ../src/ini_load.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_288) "Building CXX object CMakeFiles/openttd.dir/src/ini_load.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ini_load.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ini_load.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ini_load.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ini_load.cpp
 
 CMakeFiles/openttd.dir/src/ini_load.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ini_load.cpp.i"
@@ -4093,7 +4093,7 @@ CMakeFiles/openttd.dir/src/infrastructure.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/infrastructure.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_289) "Building CXX object CMakeFiles/openttd.dir/src/infrastructure.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/infrastructure.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/infrastructure.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure.cpp
 
 CMakeFiles/openttd.dir/src/infrastructure.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/infrastructure.cpp.i"
@@ -4107,7 +4107,7 @@ CMakeFiles/openttd.dir/src/intro_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/intro_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_290) "Building CXX object CMakeFiles/openttd.dir/src/intro_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/intro_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/intro_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/intro_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/intro_gui.cpp
 
 CMakeFiles/openttd.dir/src/intro_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/intro_gui.cpp.i"
@@ -4121,7 +4121,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/landscape.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/landscape.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_291) "Building CXX object CMakeFiles/openttd.dir/src/landscape.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/landscape.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/landscape.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.cpp
 
 CMakeFiles/openttd.dir/src/landscape.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/landscape.cpp.i"
@@ -4135,7 +4135,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/main_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_292) "Building CXX object CMakeFiles/openttd.dir/src/main_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/main_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/main_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/main_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/main_gui.cpp
 
 CMakeFiles/openttd.dir/src/main_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/main_gui.cpp.i"
@@ -4149,7 +4149,7 @@ CMakeFiles/openttd.dir/src/map.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/map.cpp.o: ../src/map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_293) "Building CXX object CMakeFiles/openttd.dir/src/map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/map.cpp
 
 CMakeFiles/openttd.dir/src/map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/map.cpp.i"
@@ -4163,7 +4163,7 @@ CMakeFiles/openttd.dir/src/misc.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/misc.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc.cpp.o: ../src/misc.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_294) "Building CXX object CMakeFiles/openttd.dir/src/misc.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc.cpp
 
 CMakeFiles/openttd.dir/src/misc.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc.cpp.i"
@@ -4177,7 +4177,7 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/misc_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_295) "Building CXX object CMakeFiles/openttd.dir/src/misc_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc_cmd.cpp
 
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc_cmd.cpp.i"
@@ -4191,7 +4191,7 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/misc_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_296) "Building CXX object CMakeFiles/openttd.dir/src/misc_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/misc_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/misc_gui.cpp
 
 CMakeFiles/openttd.dir/src/misc_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/misc_gui.cpp.i"
@@ -4205,7 +4205,7 @@ CMakeFiles/openttd.dir/src/mixer.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/mixer.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/mixer.cpp.o: ../src/mixer.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_297) "Building CXX object CMakeFiles/openttd.dir/src/mixer.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/mixer.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/mixer.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/mixer.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/mixer.cpp
 
 CMakeFiles/openttd.dir/src/mixer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/mixer.cpp.i"
@@ -4219,7 +4219,7 @@ CMakeFiles/openttd.dir/src/music.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/music.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/music.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_298) "Building CXX object CMakeFiles/openttd.dir/src/music.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music.cpp
 
 CMakeFiles/openttd.dir/src/music.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/music.cpp.i"
@@ -4233,7 +4233,7 @@ CMakeFiles/openttd.dir/src/music_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/music_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_299) "Building CXX object CMakeFiles/openttd.dir/src/music_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/music_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/music_gui.cpp
 
 CMakeFiles/openttd.dir/src/music_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/music_gui.cpp.i"
@@ -4247,7 +4247,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/newgrf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_300) "Building CXX object CMakeFiles/openttd.dir/src/newgrf.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.cpp
 
 CMakeFiles/openttd.dir/src/newgrf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf.cpp.i"
@@ -4261,7 +4261,7 @@ CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o: ../src/newgrf_airport.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_301) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_airport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_airport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_airport.cpp.i"
@@ -4275,7 +4275,7 @@ CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o: CMakeFiles/openttd.dir/fla
 CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o: ../src/newgrf_airporttiles.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_302) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airporttiles.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airporttiles.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.i"
@@ -4289,7 +4289,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/newgrf_canal.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_303) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_canal.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_canal.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_canal.cpp.i"
@@ -4303,7 +4303,7 @@ CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o: ../src/newgrf_cargo.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_304) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cargo.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cargo.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_cargo.cpp.i"
@@ -4317,7 +4317,7 @@ CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/newgrf_commons.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_305) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_commons.cpp.i"
@@ -4331,7 +4331,7 @@ CMakeFiles/openttd.dir/src/newgrf_config.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/newgrf_config.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_config.cpp.o: ../src/newgrf_config.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_306) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_config.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_config.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_config.cpp.i"
@@ -4345,7 +4345,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/newgrf_debug_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_307) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug_gui.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.i"
@@ -4359,7 +4359,7 @@ CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o: ../src/newgrf_engine.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_308) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_engine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_engine.cpp.i"
@@ -4373,7 +4373,7 @@ CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o: ../src/newgrf_generic.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_309) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_generic.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_generic.cpp.i"
@@ -4387,7 +4387,7 @@ CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o: ../src/newgrf_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_310) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_gui.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_gui.cpp.i"
@@ -4401,7 +4401,7 @@ CMakeFiles/openttd.dir/src/newgrf_house.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_house.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_house.cpp.o: ../src/newgrf_house.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_311) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_house.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_house.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_house.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_house.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_house.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_house.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_house.cpp.i"
@@ -4415,7 +4415,7 @@ CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/newgrf_industries.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_312) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industries.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industries.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_industries.cpp.i"
@@ -4429,7 +4429,7 @@ CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o: ../src/newgrf_industrytiles.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_313) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.i"
@@ -4443,7 +4443,7 @@ CMakeFiles/openttd.dir/src/newgrf_object.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/newgrf_object.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_object.cpp.o: ../src/newgrf_object.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_314) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_object.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_object.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_object.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_object.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_object.cpp.i"
@@ -4457,7 +4457,7 @@ CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/newgrf_profiling.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_315) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_profiling.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_profiling.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.i"
@@ -4471,7 +4471,7 @@ CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o: ../src/newgrf_railtype.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_316) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.i"
@@ -4485,7 +4485,7 @@ CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o: ../src/newgrf_roadtype.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_317) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadtype.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadtype.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.i"
@@ -4499,7 +4499,7 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/newgrf_sound.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_318) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_sound.cpp.i"
@@ -4513,7 +4513,7 @@ CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o: CMakeFiles/openttd.dir/flag
 CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o: ../src/newgrf_spritegroup.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_319) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.i"
@@ -4527,7 +4527,7 @@ CMakeFiles/openttd.dir/src/newgrf_station.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/newgrf_station.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_station.cpp.o: ../src/newgrf_station.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_320) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_station.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_station.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_station.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_station.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_station.cpp.i"
@@ -4541,7 +4541,7 @@ CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o: ../src/newgrf_storage.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_321) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_storage.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_storage.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_storage.cpp.i"
@@ -4555,7 +4555,7 @@ CMakeFiles/openttd.dir/src/newgrf_text.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_text.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_text.cpp.o: ../src/newgrf_text.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_322) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_text.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_text.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_text.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_text.cpp.i"
@@ -4569,7 +4569,7 @@ CMakeFiles/openttd.dir/src/newgrf_town.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/newgrf_town.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_town.cpp.o: ../src/newgrf_town.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_323) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_town.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_town.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_town.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_town.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_town.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_town.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_town.cpp.i"
@@ -4583,7 +4583,7 @@ CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o: ../src/newgrf_townname.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_324) "Building CXX object CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/newgrf_townname.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.cpp
 
 CMakeFiles/openttd.dir/src/newgrf_townname.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/newgrf_townname.cpp.i"
@@ -4597,7 +4597,7 @@ CMakeFiles/openttd.dir/src/news_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/news_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/news_gui.cpp.o: ../src/news_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_325) "Building CXX object CMakeFiles/openttd.dir/src/news_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/news_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/news_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/news_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/news_gui.cpp
 
 CMakeFiles/openttd.dir/src/news_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/news_gui.cpp.i"
@@ -4611,7 +4611,7 @@ CMakeFiles/openttd.dir/src/object_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/object_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/object_cmd.cpp.o: ../src/object_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_326) "Building CXX object CMakeFiles/openttd.dir/src/object_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/object_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/object_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/object_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/object_cmd.cpp
 
 CMakeFiles/openttd.dir/src/object_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/object_cmd.cpp.i"
@@ -4625,7 +4625,7 @@ CMakeFiles/openttd.dir/src/object_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/object_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/object_gui.cpp.o: ../src/object_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_327) "Building CXX object CMakeFiles/openttd.dir/src/object_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/object_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/object_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/object_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/object_gui.cpp
 
 CMakeFiles/openttd.dir/src/object_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/object_gui.cpp.i"
@@ -4639,7 +4639,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/openttd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/openttd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_328) "Building CXX object CMakeFiles/openttd.dir/src/openttd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/openttd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/openttd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.cpp
 
 CMakeFiles/openttd.dir/src/openttd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/openttd.cpp.i"
@@ -4653,7 +4653,7 @@ CMakeFiles/openttd.dir/src/order_backup.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/order_backup.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/order_backup.cpp.o: ../src/order_backup.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_329) "Building CXX object CMakeFiles/openttd.dir/src/order_backup.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_backup.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_backup.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_backup.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_backup.cpp
 
 CMakeFiles/openttd.dir/src/order_backup.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/order_backup.cpp.i"
@@ -4667,7 +4667,7 @@ CMakeFiles/openttd.dir/src/order_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/order_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/order_cmd.cpp.o: ../src/order_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_330) "Building CXX object CMakeFiles/openttd.dir/src/order_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_cmd.cpp
 
 CMakeFiles/openttd.dir/src/order_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/order_cmd.cpp.i"
@@ -4681,7 +4681,7 @@ CMakeFiles/openttd.dir/src/order_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/order_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_331) "Building CXX object CMakeFiles/openttd.dir/src/order_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/order_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/order_gui.cpp
 
 CMakeFiles/openttd.dir/src/order_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/order_gui.cpp.i"
@@ -4695,7 +4695,7 @@ CMakeFiles/openttd.dir/src/osk_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/osk_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/osk_gui.cpp.o: ../src/osk_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_332) "Building CXX object CMakeFiles/openttd.dir/src/osk_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/osk_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/osk_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/osk_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/osk_gui.cpp
 
 CMakeFiles/openttd.dir/src/osk_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/osk_gui.cpp.i"
@@ -4709,7 +4709,7 @@ CMakeFiles/openttd.dir/src/pbs.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/pbs.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pbs.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_333) "Building CXX object CMakeFiles/openttd.dir/src/pbs.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pbs.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pbs.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/pbs.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pbs.cpp
 
 CMakeFiles/openttd.dir/src/pbs.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/pbs.cpp.i"
@@ -4723,7 +4723,7 @@ CMakeFiles/openttd.dir/src/plans.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/plans.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/plans.cpp.o: ../src/plans.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_334) "Building CXX object CMakeFiles/openttd.dir/src/plans.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans.cpp
 
 CMakeFiles/openttd.dir/src/plans.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/plans.cpp.i"
@@ -4737,7 +4737,7 @@ CMakeFiles/openttd.dir/src/plans_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/plans_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/plans_cmd.cpp.o: ../src/plans_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_335) "Building CXX object CMakeFiles/openttd.dir/src/plans_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans_cmd.cpp
 
 CMakeFiles/openttd.dir/src/plans_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/plans_cmd.cpp.i"
@@ -4751,7 +4751,7 @@ CMakeFiles/openttd.dir/src/plans_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/plans_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/plans_gui.cpp.o: ../src/plans_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_336) "Building CXX object CMakeFiles/openttd.dir/src/plans_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/plans_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/plans_gui.cpp
 
 CMakeFiles/openttd.dir/src/plans_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/plans_gui.cpp.i"
@@ -4765,7 +4765,7 @@ CMakeFiles/openttd.dir/src/programmable_signals.cpp.o: CMakeFiles/openttd.dir/fl
 CMakeFiles/openttd.dir/src/programmable_signals.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/programmable_signals.cpp.o: ../src/programmable_signals.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_337) "Building CXX object CMakeFiles/openttd.dir/src/programmable_signals.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/programmable_signals.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/programmable_signals.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/programmable_signals.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/programmable_signals.cpp
 
 CMakeFiles/openttd.dir/src/programmable_signals.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/programmable_signals.cpp.i"
@@ -4779,7 +4779,7 @@ CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/programmable_signals_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_338) "Building CXX object CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/programmable_signals_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/programmable_signals_gui.cpp
 
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.i"
@@ -4793,7 +4793,7 @@ CMakeFiles/openttd.dir/src/progress.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/progress.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/progress.cpp.o: ../src/progress.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_339) "Building CXX object CMakeFiles/openttd.dir/src/progress.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/progress.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/progress.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/progress.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/progress.cpp
 
 CMakeFiles/openttd.dir/src/progress.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/progress.cpp.i"
@@ -4807,7 +4807,7 @@ CMakeFiles/openttd.dir/src/rail.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/rail.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/rail.cpp.o: ../src/rail.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_340) "Building CXX object CMakeFiles/openttd.dir/src/rail.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail.cpp
 
 CMakeFiles/openttd.dir/src/rail.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/rail.cpp.i"
@@ -4821,7 +4821,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/rail_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_341) "Building CXX object CMakeFiles/openttd.dir/src/rail_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail_cmd.cpp
 
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/rail_cmd.cpp.i"
@@ -4835,7 +4835,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/rail_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_342) "Building CXX object CMakeFiles/openttd.dir/src/rail_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/rail_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.cpp
 
 CMakeFiles/openttd.dir/src/rail_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/rail_gui.cpp.i"
@@ -4849,7 +4849,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/road.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/road.cpp.o: ../src/road.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_343) "Building CXX object CMakeFiles/openttd.dir/src/road.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road.cpp
 
 CMakeFiles/openttd.dir/src/road.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/road.cpp.i"
@@ -4863,7 +4863,7 @@ CMakeFiles/openttd.dir/src/road_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/road_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/road_cmd.cpp.o: ../src/road_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_344) "Building CXX object CMakeFiles/openttd.dir/src/road_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_cmd.cpp
 
 CMakeFiles/openttd.dir/src/road_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/road_cmd.cpp.i"
@@ -4877,7 +4877,7 @@ CMakeFiles/openttd.dir/src/road_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/road_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/road_gui.cpp.o: ../src/road_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_345) "Building CXX object CMakeFiles/openttd.dir/src/road_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_gui.cpp
 
 CMakeFiles/openttd.dir/src/road_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/road_gui.cpp.i"
@@ -4891,7 +4891,7 @@ CMakeFiles/openttd.dir/src/road_map.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/road_map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/road_map.cpp.o: ../src/road_map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_346) "Building CXX object CMakeFiles/openttd.dir/src/road_map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/road_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.cpp
 
 CMakeFiles/openttd.dir/src/road_map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/road_map.cpp.i"
@@ -4905,7 +4905,7 @@ CMakeFiles/openttd.dir/src/roadstop.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/roadstop.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/roadstop.cpp.o: ../src/roadstop.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_347) "Building CXX object CMakeFiles/openttd.dir/src/roadstop.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadstop.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadstop.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadstop.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadstop.cpp
 
 CMakeFiles/openttd.dir/src/roadstop.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/roadstop.cpp.i"
@@ -4919,7 +4919,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/roadveh_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_348) "Building CXX object CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadveh_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadveh_cmd.cpp
 
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.i"
@@ -4933,7 +4933,7 @@ CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o: ../src/roadveh_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_349) "Building CXX object CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadveh_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/roadveh_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/roadveh_gui.cpp
 
 CMakeFiles/openttd.dir/src/roadveh_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/roadveh_gui.cpp.i"
@@ -4947,7 +4947,7 @@ CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o: ../src/schdispatch_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_350) "Building CXX object CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch_cmd.cpp
 
 CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/schdispatch_cmd.cpp.i"
@@ -4961,7 +4961,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/schdispatch_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_351) "Building CXX object CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch_gui.cpp
 
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.i"
@@ -4975,7 +4975,7 @@ CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o: CMakeFiles/openttd.dir/flags.ma
 CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o: ../src/screenshot_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_352) "Building CXX object CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/screenshot_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot_gui.cpp
 
 CMakeFiles/openttd.dir/src/screenshot_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/screenshot_gui.cpp.i"
@@ -4989,7 +4989,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/screenshot.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_353) "Building CXX object CMakeFiles/openttd.dir/src/screenshot.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/screenshot.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/screenshot.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot.cpp
 
 CMakeFiles/openttd.dir/src/screenshot.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/screenshot.cpp.i"
@@ -5003,7 +5003,7 @@ CMakeFiles/openttd.dir/src/scope_info.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/scope_info.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/scope_info.cpp.o: ../src/scope_info.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_354) "Building CXX object CMakeFiles/openttd.dir/src/scope_info.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/scope_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/scope_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.cpp
 
 CMakeFiles/openttd.dir/src/scope_info.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/scope_info.cpp.i"
@@ -5017,7 +5017,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/settings.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/settings.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_355) "Building CXX object CMakeFiles/openttd.dir/src/settings.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/settings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/settings.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/settings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/settings.cpp
 
 CMakeFiles/openttd.dir/src/settings.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/settings.cpp.i"
@@ -5031,7 +5031,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/settings_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_356) "Building CXX object CMakeFiles/openttd.dir/src/settings_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/settings_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/settings_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/settings_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/settings_gui.cpp
 
 CMakeFiles/openttd.dir/src/settings_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/settings_gui.cpp.i"
@@ -5045,7 +5045,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/ship_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_357) "Building CXX object CMakeFiles/openttd.dir/src/ship_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ship_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ship_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ship_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ship_cmd.cpp
 
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ship_cmd.cpp.i"
@@ -5059,7 +5059,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/ship_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_358) "Building CXX object CMakeFiles/openttd.dir/src/ship_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ship_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ship_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/ship_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/ship_gui.cpp
 
 CMakeFiles/openttd.dir/src/ship_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/ship_gui.cpp.i"
@@ -5073,7 +5073,7 @@ CMakeFiles/openttd.dir/src/signal.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/signal.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/signal.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_359) "Building CXX object CMakeFiles/openttd.dir/src/signal.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signal.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signal.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signal.cpp
 
 CMakeFiles/openttd.dir/src/signal.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/signal.cpp.i"
@@ -5087,7 +5087,7 @@ CMakeFiles/openttd.dir/src/signs.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/signs.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/signs.cpp.o: ../src/signs.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_360) "Building CXX object CMakeFiles/openttd.dir/src/signs.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs.cpp
 
 CMakeFiles/openttd.dir/src/signs.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/signs.cpp.i"
@@ -5101,7 +5101,7 @@ CMakeFiles/openttd.dir/src/signs_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/signs_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/signs_cmd.cpp.o: ../src/signs_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_361) "Building CXX object CMakeFiles/openttd.dir/src/signs_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs_cmd.cpp
 
 CMakeFiles/openttd.dir/src/signs_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/signs_cmd.cpp.i"
@@ -5115,7 +5115,7 @@ CMakeFiles/openttd.dir/src/signs_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/signs_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_362) "Building CXX object CMakeFiles/openttd.dir/src/signs_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/signs_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/signs_gui.cpp
 
 CMakeFiles/openttd.dir/src/signs_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/signs_gui.cpp.i"
@@ -5129,7 +5129,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/smallmap_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_363) "Building CXX object CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/smallmap_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/smallmap_gui.cpp
 
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/smallmap_gui.cpp.i"
@@ -5143,7 +5143,7 @@ CMakeFiles/openttd.dir/src/sound.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/sound.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/sound.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_364) "Building CXX object CMakeFiles/openttd.dir/src/sound.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sound.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sound.cpp
 
 CMakeFiles/openttd.dir/src/sound.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/sound.cpp.i"
@@ -5157,7 +5157,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/sprite.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/sprite.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_365) "Building CXX object CMakeFiles/openttd.dir/src/sprite.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sprite.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/sprite.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.cpp
 
 CMakeFiles/openttd.dir/src/sprite.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/sprite.cpp.i"
@@ -5171,7 +5171,7 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spritecache.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_366) "Building CXX object CMakeFiles/openttd.dir/src/spritecache.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/spritecache.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/spritecache.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.cpp
 
 CMakeFiles/openttd.dir/src/spritecache.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/spritecache.cpp.i"
@@ -5185,7 +5185,7 @@ CMakeFiles/openttd.dir/src/station.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/station.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/station.cpp.o: ../src/station.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_367) "Building CXX object CMakeFiles/openttd.dir/src/station.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station.cpp
 
 CMakeFiles/openttd.dir/src/station.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/station.cpp.i"
@@ -5199,7 +5199,7 @@ CMakeFiles/openttd.dir/src/station_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/station_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/station_cmd.cpp.o: ../src/station_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_368) "Building CXX object CMakeFiles/openttd.dir/src/station_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station_cmd.cpp
 
 CMakeFiles/openttd.dir/src/station_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/station_cmd.cpp.i"
@@ -5213,7 +5213,7 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/station_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/station_gui.cpp.o: ../src/station_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_369) "Building CXX object CMakeFiles/openttd.dir/src/station_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/station_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/station_gui.cpp
 
 CMakeFiles/openttd.dir/src/station_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/station_gui.cpp.i"
@@ -5227,7 +5227,7 @@ CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o: ../src/statusbar_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_370) "Building CXX object CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/statusbar_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/statusbar_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/statusbar_gui.cpp
 
 CMakeFiles/openttd.dir/src/statusbar_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/statusbar_gui.cpp.i"
@@ -5241,7 +5241,7 @@ CMakeFiles/openttd.dir/src/story.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/story.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/story.cpp.o: ../src/story.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_371) "Building CXX object CMakeFiles/openttd.dir/src/story.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/story.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/story.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/story.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/story.cpp
 
 CMakeFiles/openttd.dir/src/story.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/story.cpp.i"
@@ -5255,7 +5255,7 @@ CMakeFiles/openttd.dir/src/story_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/story_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/story_gui.cpp.o: ../src/story_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_372) "Building CXX object CMakeFiles/openttd.dir/src/story_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/story_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/story_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/story_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/story_gui.cpp
 
 CMakeFiles/openttd.dir/src/story_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/story_gui.cpp.i"
@@ -5269,7 +5269,7 @@ CMakeFiles/openttd.dir/src/string.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/string.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/string.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_373) "Building CXX object CMakeFiles/openttd.dir/src/string.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/string.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/string.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/string.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/string.cpp
 
 CMakeFiles/openttd.dir/src/string.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/string.cpp.i"
@@ -5283,7 +5283,7 @@ CMakeFiles/openttd.dir/src/stringfilter.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/stringfilter.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/stringfilter.cpp.o: ../src/stringfilter.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_374) "Building CXX object CMakeFiles/openttd.dir/src/stringfilter.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/stringfilter.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/stringfilter.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/stringfilter.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/stringfilter.cpp
 
 CMakeFiles/openttd.dir/src/stringfilter.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/stringfilter.cpp.i"
@@ -5297,7 +5297,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/strings.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/strings.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_375) "Building CXX object CMakeFiles/openttd.dir/src/strings.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/strings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/strings.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/strings.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/strings.cpp
 
 CMakeFiles/openttd.dir/src/strings.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/strings.cpp.i"
@@ -5311,7 +5311,7 @@ CMakeFiles/openttd.dir/src/subsidy.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/subsidy.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/subsidy.cpp.o: ../src/subsidy.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_376) "Building CXX object CMakeFiles/openttd.dir/src/subsidy.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/subsidy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/subsidy.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy.cpp
 
 CMakeFiles/openttd.dir/src/subsidy.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/subsidy.cpp.i"
@@ -5325,7 +5325,7 @@ CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/subsidy_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_377) "Building CXX object CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_gui.cpp
 
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/subsidy_gui.cpp.i"
@@ -5339,7 +5339,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: CMakeFiles/openttd.dir/
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/tbtr_template_gui_main.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_378) "Building CXX object CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_gui_main.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_gui_main.cpp
 
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.i"
@@ -5353,7 +5353,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: CMakeFiles/openttd.di
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/tbtr_template_gui_create.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_379) "Building CXX object CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_gui_create.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_gui_create.cpp
 
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.i"
@@ -5367,7 +5367,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o: CMakeFiles/openttd.dir/f
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o: ../src/tbtr_template_vehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_380) "Building CXX object CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle.cpp
 
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tbtr_template_vehicle.cpp.i"
@@ -5381,7 +5381,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: CMakeFiles/openttd.
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/tbtr_template_vehicle_func.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_381) "Building CXX object CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle_func.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle_func.cpp
 
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.i"
@@ -5395,7 +5395,7 @@ CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o: ../src/terraform_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_382) "Building CXX object CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/terraform_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/terraform_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/terraform_cmd.cpp
 
 CMakeFiles/openttd.dir/src/terraform_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/terraform_cmd.cpp.i"
@@ -5409,7 +5409,7 @@ CMakeFiles/openttd.dir/src/terraform_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/terraform_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/terraform_gui.cpp.o: ../src/terraform_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_383) "Building CXX object CMakeFiles/openttd.dir/src/terraform_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/terraform_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/terraform_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/terraform_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/terraform_gui.cpp
 
 CMakeFiles/openttd.dir/src/terraform_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/terraform_gui.cpp.i"
@@ -5423,7 +5423,7 @@ CMakeFiles/openttd.dir/src/textbuf.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/textbuf.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/textbuf.cpp.o: ../src/textbuf.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_384) "Building CXX object CMakeFiles/openttd.dir/src/textbuf.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/textbuf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/textbuf.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/textbuf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/textbuf.cpp
 
 CMakeFiles/openttd.dir/src/textbuf.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/textbuf.cpp.i"
@@ -5437,7 +5437,7 @@ CMakeFiles/openttd.dir/src/texteff.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/texteff.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/texteff.cpp.o: ../src/texteff.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_385) "Building CXX object CMakeFiles/openttd.dir/src/texteff.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/texteff.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/texteff.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/texteff.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/texteff.cpp
 
 CMakeFiles/openttd.dir/src/texteff.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/texteff.cpp.i"
@@ -5451,7 +5451,7 @@ CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/textfile_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_386) "Building CXX object CMakeFiles/openttd.dir/src/textfile_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/textfile_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/textfile_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_gui.cpp
 
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/textfile_gui.cpp.i"
@@ -5465,7 +5465,7 @@ CMakeFiles/openttd.dir/src/tgp.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tgp.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tgp.cpp.o: ../src/tgp.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_387) "Building CXX object CMakeFiles/openttd.dir/src/tgp.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tgp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tgp.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tgp.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tgp.cpp
 
 CMakeFiles/openttd.dir/src/tgp.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tgp.cpp.i"
@@ -5479,7 +5479,7 @@ CMakeFiles/openttd.dir/src/tile_map.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tile_map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tile_map.cpp.o: ../src/tile_map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_388) "Building CXX object CMakeFiles/openttd.dir/src/tile_map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tile_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tile_map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tile_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tile_map.cpp
 
 CMakeFiles/openttd.dir/src/tile_map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tile_map.cpp.i"
@@ -5493,7 +5493,7 @@ CMakeFiles/openttd.dir/src/tilearea.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tilearea.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tilearea.cpp.o: ../src/tilearea.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_389) "Building CXX object CMakeFiles/openttd.dir/src/tilearea.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tilearea.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tilearea.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tilearea.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tilearea.cpp
 
 CMakeFiles/openttd.dir/src/tilearea.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tilearea.cpp.i"
@@ -5507,7 +5507,7 @@ CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o: ../src/timetable_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_390) "Building CXX object CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/timetable_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/timetable_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/timetable_cmd.cpp
 
 CMakeFiles/openttd.dir/src/timetable_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/timetable_cmd.cpp.i"
@@ -5521,7 +5521,7 @@ CMakeFiles/openttd.dir/src/timetable_gui.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/timetable_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/timetable_gui.cpp.o: ../src/timetable_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_391) "Building CXX object CMakeFiles/openttd.dir/src/timetable_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/timetable_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/timetable_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/timetable_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/timetable_gui.cpp
 
 CMakeFiles/openttd.dir/src/timetable_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/timetable_gui.cpp.i"
@@ -5535,7 +5535,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/toolbar_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_392) "Building CXX object CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/toolbar_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/toolbar_gui.cpp
 
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/toolbar_gui.cpp.i"
@@ -5549,7 +5549,7 @@ CMakeFiles/openttd.dir/src/town_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/town_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_393) "Building CXX object CMakeFiles/openttd.dir/src/town_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/town_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/town_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/town_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/town_cmd.cpp
 
 CMakeFiles/openttd.dir/src/town_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/town_cmd.cpp.i"
@@ -5563,7 +5563,7 @@ CMakeFiles/openttd.dir/src/town_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/town_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_394) "Building CXX object CMakeFiles/openttd.dir/src/town_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/town_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/town_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/town_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/town_gui.cpp
 
 CMakeFiles/openttd.dir/src/town_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/town_gui.cpp.i"
@@ -5577,7 +5577,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/townname.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/townname.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_395) "Building CXX object CMakeFiles/openttd.dir/src/townname.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/townname.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/townname.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/townname.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/townname.cpp
 
 CMakeFiles/openttd.dir/src/townname.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/townname.cpp.i"
@@ -5591,7 +5591,7 @@ CMakeFiles/openttd.dir/src/tracerestrict.cpp.o: CMakeFiles/openttd.dir/flags.mak
 CMakeFiles/openttd.dir/src/tracerestrict.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tracerestrict.cpp.o: ../src/tracerestrict.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_396) "Building CXX object CMakeFiles/openttd.dir/src/tracerestrict.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tracerestrict.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tracerestrict.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.cpp
 
 CMakeFiles/openttd.dir/src/tracerestrict.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tracerestrict.cpp.i"
@@ -5605,7 +5605,7 @@ CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: CMakeFiles/openttd.dir/flags
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/tracerestrict_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_397) "Building CXX object CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict_gui.cpp
 
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.i"
@@ -5619,7 +5619,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/train_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_398) "Building CXX object CMakeFiles/openttd.dir/src/train_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/train_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/train_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/train_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/train_cmd.cpp
 
 CMakeFiles/openttd.dir/src/train_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/train_cmd.cpp.i"
@@ -5633,7 +5633,7 @@ CMakeFiles/openttd.dir/src/train_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/train_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/train_gui.cpp.o: ../src/train_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_399) "Building CXX object CMakeFiles/openttd.dir/src/train_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/train_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/train_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/train_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/train_gui.cpp
 
 CMakeFiles/openttd.dir/src/train_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/train_gui.cpp.i"
@@ -5647,7 +5647,7 @@ CMakeFiles/openttd.dir/src/transparency_gui.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/transparency_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/transparency_gui.cpp.o: ../src/transparency_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_400) "Building CXX object CMakeFiles/openttd.dir/src/transparency_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/transparency_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/transparency_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/transparency_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/transparency_gui.cpp
 
 CMakeFiles/openttd.dir/src/transparency_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/transparency_gui.cpp.i"
@@ -5661,7 +5661,7 @@ CMakeFiles/openttd.dir/src/tree_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tree_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tree_cmd.cpp.o: ../src/tree_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_401) "Building CXX object CMakeFiles/openttd.dir/src/tree_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tree_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tree_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tree_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tree_cmd.cpp
 
 CMakeFiles/openttd.dir/src/tree_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tree_cmd.cpp.i"
@@ -5675,7 +5675,7 @@ CMakeFiles/openttd.dir/src/tree_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tree_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tree_gui.cpp.o: ../src/tree_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_402) "Building CXX object CMakeFiles/openttd.dir/src/tree_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tree_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tree_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tree_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tree_gui.cpp
 
 CMakeFiles/openttd.dir/src/tree_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tree_gui.cpp.i"
@@ -5689,7 +5689,7 @@ CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o: ../src/triphistory_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_403) "Building CXX object CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory_cmd.cpp
 
 CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/triphistory_cmd.cpp.i"
@@ -5703,7 +5703,7 @@ CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o: CMakeFiles/openttd.dir/flags.m
 CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o: ../src/triphistory_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_404) "Building CXX object CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/triphistory_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory_gui.cpp
 
 CMakeFiles/openttd.dir/src/triphistory_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/triphistory_gui.cpp.i"
@@ -5717,7 +5717,7 @@ CMakeFiles/openttd.dir/src/tunnel_map.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/tunnel_map.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tunnel_map.cpp.o: ../src/tunnel_map.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_405) "Building CXX object CMakeFiles/openttd.dir/src/tunnel_map.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tunnel_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tunnel_map.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.cpp
 
 CMakeFiles/openttd.dir/src/tunnel_map.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tunnel_map.cpp.i"
@@ -5731,7 +5731,7 @@ CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o: CMakeFiles/openttd.dir/flags.
 CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o: ../src/tunnelbridge_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_406) "Building CXX object CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_cmd.cpp
 
 CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/tunnelbridge_cmd.cpp.i"
@@ -5745,7 +5745,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/vehicle.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_407) "Building CXX object CMakeFiles/openttd.dir/src/vehicle.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle.cpp
 
 CMakeFiles/openttd.dir/src/vehicle.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/vehicle.cpp.i"
@@ -5759,7 +5759,7 @@ CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o: ../src/vehicle_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_408) "Building CXX object CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_cmd.cpp
 
 CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/vehicle_cmd.cpp.i"
@@ -5773,7 +5773,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/vehicle_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_409) "Building CXX object CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_gui.cpp
 
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/vehicle_gui.cpp.i"
@@ -5787,7 +5787,7 @@ CMakeFiles/openttd.dir/src/vehiclelist.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/vehiclelist.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/vehiclelist.cpp.o: ../src/vehiclelist.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_410) "Building CXX object CMakeFiles/openttd.dir/src/vehiclelist.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehiclelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/vehiclelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.cpp
 
 CMakeFiles/openttd.dir/src/vehiclelist.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/vehiclelist.cpp.i"
@@ -5801,7 +5801,7 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/viewport.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/viewport.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_411) "Building CXX object CMakeFiles/openttd.dir/src/viewport.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/viewport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/viewport.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/viewport.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/viewport.cpp
 
 CMakeFiles/openttd.dir/src/viewport.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/viewport.cpp.i"
@@ -5815,7 +5815,7 @@ CMakeFiles/openttd.dir/src/viewport_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/viewport_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/viewport_gui.cpp.o: ../src/viewport_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_412) "Building CXX object CMakeFiles/openttd.dir/src/viewport_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/viewport_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/viewport_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_gui.cpp
 
 CMakeFiles/openttd.dir/src/viewport_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/viewport_gui.cpp.i"
@@ -5829,7 +5829,7 @@ CMakeFiles/openttd.dir/src/void_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/void_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/void_cmd.cpp.o: ../src/void_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_413) "Building CXX object CMakeFiles/openttd.dir/src/void_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/void_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/void_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/void_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/void_cmd.cpp
 
 CMakeFiles/openttd.dir/src/void_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/void_cmd.cpp.i"
@@ -5843,7 +5843,7 @@ CMakeFiles/openttd.dir/src/water_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/water_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/water_cmd.cpp.o: ../src/water_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_414) "Building CXX object CMakeFiles/openttd.dir/src/water_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/water_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/water_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/water_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/water_cmd.cpp
 
 CMakeFiles/openttd.dir/src/water_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/water_cmd.cpp.i"
@@ -5857,7 +5857,7 @@ CMakeFiles/openttd.dir/src/waypoint.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/waypoint.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/waypoint.cpp.o: ../src/waypoint.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_415) "Building CXX object CMakeFiles/openttd.dir/src/waypoint.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint.cpp
 
 CMakeFiles/openttd.dir/src/waypoint.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/waypoint.cpp.i"
@@ -5871,7 +5871,7 @@ CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o: ../src/waypoint_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_416) "Building CXX object CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_cmd.cpp
 
 CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/waypoint_cmd.cpp.i"
@@ -5885,7 +5885,7 @@ CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o: ../src/waypoint_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_417) "Building CXX object CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/waypoint_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_gui.cpp
 
 CMakeFiles/openttd.dir/src/waypoint_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/waypoint_gui.cpp.i"
@@ -5899,7 +5899,7 @@ CMakeFiles/openttd.dir/src/widget.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/widget.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/widget.cpp.o: ../src/widget.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_418) "Building CXX object CMakeFiles/openttd.dir/src/widget.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/widget.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widget.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/widget.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widget.cpp
 
 CMakeFiles/openttd.dir/src/widget.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/widget.cpp.i"
@@ -5913,7 +5913,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/window.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/window.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_419) "Building CXX object CMakeFiles/openttd.dir/src/window.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/window.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/window.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/window.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/window.cpp
 
 CMakeFiles/openttd.dir/src/window.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/window.cpp.i"
@@ -5927,7 +5927,7 @@ CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/zoning_cmd.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_420) "Building CXX object CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/zoning_cmd.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/zoning_cmd.cpp
 
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/zoning_cmd.cpp.i"
@@ -5941,7 +5941,7 @@ CMakeFiles/openttd.dir/src/zoning_gui.cpp.o: CMakeFiles/openttd.dir/flags.make
 CMakeFiles/openttd.dir/src/zoning_gui.cpp.o: CMakeFiles/openttd.dir/includes_CXX.rsp
 CMakeFiles/openttd.dir/src/zoning_gui.cpp.o: ../src/zoning_gui.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_421) "Building CXX object CMakeFiles/openttd.dir/src/zoning_gui.cpp.o"
-	/emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/zoning_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/zoning_gui.cpp
+	ccache /emsdk/upstream/emscripten/em++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/openttd.dir/src/zoning_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/zoning_gui.cpp
 
 CMakeFiles/openttd.dir/src/zoning_gui.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/openttd.dir/src/zoning_gui.cpp.i"

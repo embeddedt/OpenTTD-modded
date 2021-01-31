@@ -39,6 +39,9 @@ CMAKE_CXX_COMPILER:FILEPATH=/emsdk/upstream/emscripten/em++
 //Emscripten ar
 CMAKE_CXX_COMPILER_AR:FILEPATH=/emsdk/upstream/emscripten/emar
 
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER_LAUNCHER:UNINITIALIZED=ccache
+
 //Emscripten ranlib
 CMAKE_CXX_COMPILER_RANLIB:FILEPATH=/emsdk/upstream/emscripten/emranlib
 
@@ -62,6 +65,9 @@ CMAKE_C_COMPILER:FILEPATH=/emsdk/upstream/emscripten/emcc
 
 //Emscripten ar
 CMAKE_C_COMPILER_AR:FILEPATH=/emsdk/upstream/emscripten/emar
+
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER_LAUNCHER:UNINITIALIZED=ccache
 
 //Emscripten ranlib
 CMAKE_C_COMPILER_RANLIB:FILEPATH=/emsdk/upstream/emscripten/emranlib
