@@ -32,13 +32,15 @@ jobs:
           libsdl2-dev \
           libxdg-basedir-dev \
           zlib1g-dev \
+          rsync \
           # EOF
     - name: Setup cache
       uses: actions/cache@v2
       with:
         path: /emsdk/upstream/emscripten/cache
         key: 2.0.10-${{ runner.os }}
-
+    - name: ccache
+      uses: hendrikmuhs/ccache-action@v1
     - name: Build (host tools)
       run: |
         mkdir build-host
@@ -55,6 +57,7 @@ jobs:
 
     - name: Build
       run: |
+        export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
         mkdir em_build
         cd em_build
         echo "::group::CMake"
