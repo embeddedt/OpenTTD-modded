@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2019, ubuntu-16.04]
+        os: [windows-2019, ubuntu-16.04, ubuntu-18.04, ubuntu-20.04]
     
     steps:
     - uses: actions/checkout@v2
@@ -41,7 +41,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       if: runner.os == 'Linux'     
       with:
-        name: linux-binary
+        name: ${{ matrix.os }}
         path: |
           cmbuild/openttd
           cmbuild/lang/
