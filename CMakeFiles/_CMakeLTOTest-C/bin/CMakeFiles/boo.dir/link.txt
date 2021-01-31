@@ -1,0 +1,1 @@
+/emsdk/upstream/emscripten/emcc -flto=thin   @CMakeFiles/boo.dir/objects1.rsp  -o boo.js @CMakeFiles/boo.dir/linklibs.rsp

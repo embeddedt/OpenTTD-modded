@@ -1,0 +1,41 @@
+file(REMOVE_RECURSE
+  "CMakeFiles/binfiles_files"
+  "../ai/compat_0.7.nut"
+  "../ai/compat_1.0.nut"
+  "../ai/compat_1.1.nut"
+  "../ai/compat_1.10.nut"
+  "../ai/compat_1.11.nut"
+  "../ai/compat_1.2.nut"
+  "../ai/compat_1.3.nut"
+  "../ai/compat_1.4.nut"
+  "../ai/compat_1.5.nut"
+  "../ai/compat_1.6.nut"
+  "../ai/compat_1.7.nut"
+  "../ai/compat_1.8.nut"
+  "../ai/compat_1.9.nut"
+  "../game/compat_1.10.nut"
+  "../game/compat_1.11.nut"
+  "../game/compat_1.2.nut"
+  "../game/compat_1.3.nut"
+  "../game/compat_1.4.nut"
+  "../game/compat_1.5.nut"
+  "../game/compat_1.6.nut"
+  "../game/compat_1.7.nut"
+  "../game/compat_1.8.nut"
+  "../game/compat_1.9.nut"
+  "../game/compat_brgs.nut"
+  "../scripts/autoexec.scr.example"
+  "../scripts/game_start.scr.example"
+  "../scripts/on_client.scr.example"
+  "../scripts/on_dedicated.scr.example"
+  "../scripts/on_server.scr.example"
+  "../scripts/on_server_connect.scr.example"
+  "../scripts/pre_dedicated.scr.example"
+  "../scripts/pre_server.scr.example"
+  "../scripts/readme.txt"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang )
+  include(CMakeFiles/binfiles_files.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

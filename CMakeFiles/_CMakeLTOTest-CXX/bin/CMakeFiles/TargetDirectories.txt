@@ -1,0 +1,4 @@
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir

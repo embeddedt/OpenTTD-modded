@@ -1,0 +1,1 @@
+/usr/bin/c++     -rdynamic CMakeFiles/settingsgen.dir/settingsgen.cpp.o CMakeFiles/settingsgen.dir/__/core/alloc_func.cpp.o CMakeFiles/settingsgen.dir/__/misc/getoptdata.cpp.o CMakeFiles/settingsgen.dir/__/ini_load.cpp.o CMakeFiles/settingsgen.dir/__/string.cpp.o  -o settingsgen -ldl 

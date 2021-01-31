@@ -1,0 +1,81 @@
+The target system is: Emscripten - 1 - x86
+The host system is: Linux - 5.4.0-1036-azure - x86_64
+Determining if the pthread_create exist passed with the following output:
+Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_d771f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d771f.dir/build.make CMakeFiles/cmTC_d771f.dir/build
+make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_d771f.dir/CheckSymbolExists.c.o
+/emsdk/upstream/emscripten/emcc    -o CMakeFiles/cmTC_d771f.dir/CheckSymbolExists.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_d771f.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d771f.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/emcc     -rdynamic  @CMakeFiles/cmTC_d771f.dir/objects1.rsp  -o cmTC_d771f.js 
+make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+
+File /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+/* */
+#include <pthread.h>
+
+int main(int argc, char** argv)
+{
+  (void)argv;
+#ifndef pthread_create
+  return ((int*)(&pthread_create))[argc];
+#else
+  (void)argc;
+  return 0;
+#endif
+}
+
+Performing C++ SOURCE FILE Test DEMANGLE_FOUND succeeded with the following output:
+Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_68b4f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_68b4f.dir/build.make CMakeFiles/cmTC_68b4f.dir/build
+make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_68b4f.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DDEMANGLE_FOUND   -o CMakeFiles/cmTC_68b4f.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_68b4f.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_68b4f.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DDEMANGLE_FOUND   -rdynamic  @CMakeFiles/cmTC_68b4f.dir/objects1.rsp  -o cmTC_68b4f.js 
+make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+    #include <cxxabi.h>
+    int main() {
+        int status = -1;
+        char *demangled = abi::__cxa_demangle("test", 0, 0, &status);
+        return 0;
+    }
+Performing C++ SOURCE FILE Test SIGACTION_FOUND succeeded with the following output:
+Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
+
+Run Build Command:"/usr/bin/make" "cmTC_92d1c/fast"
+/usr/bin/make -f CMakeFiles/cmTC_92d1c.dir/build.make CMakeFiles/cmTC_92d1c.dir/build
+make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+Building CXX object CMakeFiles/cmTC_92d1c.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DSIGACTION_FOUND   -o CMakeFiles/cmTC_92d1c.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_92d1c.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_92d1c.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DSIGACTION_FOUND   -rdynamic  @CMakeFiles/cmTC_92d1c.dir/objects1.rsp  -o cmTC_92d1c.js 
+make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
+
+Source file was:
+
+    #include <signal.h>
+    void *addr;
+    int code;
+    void handler(int sig, siginfo_t *si, void *context) {
+        addr = si->si_addr;
+        code = si->si_code;
+    }
+    int main() {
+        struct sigaction sa;
+        sa.sa_flags = SA_SIGINFO;
+        sigemptyset(&sa.sa_mask);
+        sa.sa_sigaction = handler;
+        sigaction(SIGSEGV, &sa, 0);
+        return 0;
+    }
