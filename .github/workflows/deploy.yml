@@ -10,24 +10,49 @@ env:
 
 jobs:
   emscripten:
+   emscripten:
     name: Emscripten
 
     runs-on: ubuntu-20.04
+    container:
+      # If you change this version, change the number in the cache step too.
+      image: emscripten/emsdk:2.0.10
+
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Setup cache
+      uses: actions/cache@v2
+      with:
+        path: /emsdk/upstream/emscripten/cache
+        key: 2.0.10-${{ runner.os }}
+
+    - name: Build (host tools)
+      run: |
+        mkdir build-host
+        cd build-host
+        echo "::group::CMake"
+        cmake .. -DOPTION_TOOLS_ONLY=ON
+        echo "::endgroup::"
+        echo "::group::Build"
+        echo "Running on $(nproc) cores"
+        make -j$(nproc) tools
+        echo "::endgroup::"
+    - name: Install GCC problem matcher
+      uses: ammaraskar/gcc-problem-matcher@master
+
     - name: Build
       run: |
-        cd os/emscripten
-        docker build -t emsdk-lzma .
-        cd ../..
-        mkdir build-host
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build-host emsdk-lzma cmake .. -DOPTION_TOOLS_ONLY=ON
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/build-host emsdk-lzma make -j$(nproc) tools
         mkdir em_build
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/em_build emsdk-lzma emcmake cmake .. -DHOST_BINARY_DIR=$(pwd)/build-host -DCMAKE_BUILD_TYPE=RelWithDebInfo -DOPTION_USE_ASSERTS=OFF
-        docker run --rm -v $(pwd):$(pwd) -u $(id -u):$(id -g) --workdir $(pwd)/em_build emsdk-lzma emmake make -j$(nproc)
+        cd em_build
+        echo "::group::CMake"
+        emcmake cmake .. -DHOST_BINARY_DIR=../build-host
+        echo "::endgroup::"
+        echo "::group::Build"
+        echo "Running on $(nproc) cores"
+        emmake make -j$(nproc)
+        echo "::endgroup::"
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
