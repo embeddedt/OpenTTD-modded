@@ -72,12 +72,12 @@ STR_CARGO_PLURAL_SUGAR                                          :Suhkur
 STR_CARGO_PLURAL_SUGAR.g                                        :Suhkru
 STR_CARGO_PLURAL_TOYS                                           :Mänguasjad
 STR_CARGO_PLURAL_TOYS.g                                         :Mänguasjade
-STR_CARGO_PLURAL_CANDY                                          :Maiustused
-STR_CARGO_PLURAL_CANDY.g                                        :Maiustuste
+STR_CARGO_PLURAL_SWEETS                                         :Maiustused
+STR_CARGO_PLURAL_SWEETS.g                                       :Maiustuste
 STR_CARGO_PLURAL_COLA                                           :Koola
 STR_CARGO_PLURAL_COLA.g                                         :Koola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Suhkruvatt
-STR_CARGO_PLURAL_COTTON_CANDY.g                                 :Suhkruvati
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Suhkruvatt
+STR_CARGO_PLURAL_CANDYFLOSS.g                                   :Suhkruvati
 STR_CARGO_PLURAL_BUBBLES                                        :Mullid
 STR_CARGO_PLURAL_BUBBLES.g                                      :Mullide
 STR_CARGO_PLURAL_TOFFEE                                         :Iiris
@@ -137,9 +137,9 @@ STR_CARGO_SINGULAR_SUGAR                                        :Suhkur
 STR_CARGO_SINGULAR_SUGAR.g                                      :Suhkru
 STR_CARGO_SINGULAR_TOY                                          :Mänguasjad
 STR_CARGO_SINGULAR_TOY.g                                        :Mänguasjade
-STR_CARGO_SINGULAR_CANDY                                        :Maiustus
+STR_CARGO_SINGULAR_SWEETS                                       :Maiustus
 STR_CARGO_SINGULAR_COLA                                         :Koola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Suhkruvatt
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Suhkruvatt
 STR_CARGO_SINGULAR_BUBBLE                                       :Mullid
 STR_CARGO_SINGULAR_TOFFEE                                       :Iiris
 STR_CARGO_SINGULAR_TOFFEE.g                                     :Iirise
@@ -367,6 +367,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Kandevõime
 STR_SORT_BY_RANGE                                               :Vahekaugus
 STR_SORT_BY_POPULATION                                          :Rahvaarv
 STR_SORT_BY_RATING                                              :Hinnang
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Seiska mäng
@@ -1574,8 +1576,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Täielik
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Värvilised uudised ilmuvad aastast {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Värviliste uudiste ilmumise algusaasta. Varasematel aastatel ilmuvad uudised must-valgelt
 STR_CONFIG_SETTING_STARTING_YEAR                                :Alustamise aeg: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Sujuv majandus (rohkem, kuid väikesed muutused): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Toodangumahtude muutused on väiksemad ja sagedasemad. Juhul kui tööstused tulevad NewGRF-ist ei oma see seade tavaliselt mõju
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Aktsiatehingud teiste ettevõtetega: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Kui on aktiveeritud siis on ettevõtte aktsiate ostmine ja müümine lubatud. Aktsiad on saadaval ainult ettevõtetel mille vanus on üle teatud piiri
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Protsent tuludest mis läheb 'kanna edasi' süsteemis alumistesse lülidesse: {STRING}
@@ -1621,9 +1621,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :Lubatud, koos l
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Mängu jooksul kasvavad puud: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Juhib suvalist puude kasvu mängu jooksul. See seade võib mõjutada osade tööstuste tööd, mis sõltuvad puude kasvust (näiteks saekaater)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Ei {RED}(saeveski ei tööta)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Ainult vihmametsades
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Igal pool
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Peamine tarvikuriba paikneb: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Tarvikuriba rõhtne paiknemine ekraani ülaosas
@@ -1821,17 +1818,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}{NUM} t�
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Mängust väljumine
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Kas soovite OpenTTD sulgeda ja minna tagasi süsteemi {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Jah
 STR_QUIT_NO                                                     :{BLACK}Ei
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Mängu lõpetamine
@@ -1953,10 +1941,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Vaheta k
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Mitmikmäng
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Reklaamitav
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Valib reklaamitava (internet) või mittereklaamitava (kohtvõrk, LAN) mängu
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Ei
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Jah
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Mängija nimi:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Teised mängijad tunnevad sind selle nime järgi
 
@@ -1997,8 +1981,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Liitu m�
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Uuenda andmeid
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Serveri info värskendamine
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Uuenda loendit
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Uuenda võrgus asuvate serverite loendit
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Sisesta server
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Sisesta loendisse uus server, milles toimuvaid mänge jälgida
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Tee server
@@ -2015,6 +1997,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Serveril
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Määra salasõna
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Et server ei oleks avalik, kaitse oma mäng salasõnaga
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Reklaamitav
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Valib reklaamitava (internet) või mittereklaamitava (kohtvõrk, LAN) mängu
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Jah
 STR_NETWORK_START_SERVER_ADVERTISED                             :Jah
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} klient{P "" i}
@@ -2237,8 +2221,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} li
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} alustas uue ettevõtte (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} lahkus mängust ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} uus nimi on {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} andis su ettevõttele {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Sa andsid {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Server sulges sessiooni
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Server restardib...{}Palun oota...
 
@@ -2539,7 +2521,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Suurus: 
 STR_OBJECT_CLASS_LTHS                                           :Majakad
 STR_OBJECT_CLASS_TRNS                                           :Saatejaamad
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Puud
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Vali istutatava puu liik. Kui ruudus juba on puu, siis lisatakse rohkem eri liikide puid, olenemata valikust
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Suvalised puutüübid
@@ -4562,6 +4544,11 @@ STR_BASESOUNDS_NONE_DESCRIPTION                                 :Helikogu ilma h
 STR_BASEMUSIC_WIN_DESCRIPTION                                   :Algse Transport Tycoon Deluxe Windowsi versiooni muusika.
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Algse Transport Tycoon Deluxe DOSi versiooni muusika.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Muusikakogu ilma muusikata.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Rong {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Mootorsõiduk {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Laev {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Õhusõiduk {COMMA}
 
 ##id 0x2000
 # Town building names

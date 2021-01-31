@@ -56,6 +56,11 @@ enum GroundVehicleFlags {
 	GVF_CHUNNEL_BIT              = 3,  ///< Vehicle may currently be in a chunnel. (Cached track information for inclination changes)
 };
 
+struct GroundVehicleAcceleration {
+	int acceleration;
+	int braking;
+};
+
 /**
  * Base class for all vehicles that move through ground.
  *
@@ -95,7 +100,7 @@ struct GroundVehicle : public SpecializedVehicle<T, Type> {
 
 	void CalculatePower(uint32& power, uint32& max_te, bool breakdowns) const;
 
-	int GetAcceleration();
+	GroundVehicleAcceleration GetAcceleration();
 
 	/**
 	 * Common code executed for crashed ground vehicles
@@ -399,8 +404,20 @@ struct GroundVehicle : public SpecializedVehicle<T, Type> {
 			SetWindowWidgetDirty(WC_VEHICLE_VIEW, this->index, WID_VV_START_STOP);
 			this->gcache.last_speed = this->cur_speed;
 			if (HasBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE) && !_settings_client.gui.disable_vehicle_image_update) {
-				this->InvalidateImageCacheOfChain();
+				this->RefreshImageCacheOfChain();
 			}
+		}
+	}
+
+	/**
+	 * Refresh cached image of all vehicles in the chain (after the current vehicle)
+	 */
+	inline void RefreshImageCacheOfChain()
+	{
+		ClrBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE);
+		ClrBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_TRIGGER);
+		for (Vehicle *u = this; u != nullptr; u = u->Next()) {
+			SetBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH_NEXT);
 		}
 	}
 
@@ -415,104 +432,84 @@ protected:
 	 * the required amount of progress for moving a step on the map.
 	 * @param acceleration_model The acceleration model to use.
 	 * @param accel     The acceleration we would like to give this vehicle.
-	 *                  For the original acceleration model, this is the speed increment in 1/256 km/h.
-	 *                  For the realistic acceleration model, this is the acceleration in mm/s^2.
-	 * @param min_speed The minimum speed here, in km/h.
-	 * @param max_speed The maximum speed here, in km/h.
-	 * @param callsPerTick The number of times this function is called per tick (determines timestep).
-	 * @return The amount of progress that the vehicle can drive this timestep.
+	 * @param min_speed The minimum speed here, in vehicle specific units.
+	 * @param max_speed The maximum speed here, in vehicle specific units.
+	 * @param advisory_max_speed The advisory maximum speed here, in vehicle specific units.
+	 * @return Distance to drive.
 	 */
-	inline uint DoUpdateSpeed(AccelerationModel acceleration_model, int accel, int min_speed, int max_speed, int callsPerTick)
+	inline uint DoUpdateSpeed(GroundVehicleAcceleration accel, int min_speed, int max_speed, int advisory_max_speed)
 	{
-		const T *v = T::From(this);
-		bool maglev = v->GetAccelerationType() == 2;
-		if(maglev) {
-			uint spd = this->subspeed + accel;
-			this->subspeed = (byte)spd;
+		const byte initial_subspeed = this->subspeed;
+		uint spd = this->subspeed + accel.acceleration;
+		this->subspeed = (byte)spd;
 
-			/* When we are going faster than the maximum speed, reduce the speed
-			* somewhat gradually. But never lower than the maximum speed. */
-			int tempmax = max_speed;
-			if (this->cur_speed > max_speed) {
-				tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
-			}
-
-			/* Enforce a maximum and minimum speed. Normally we would use something like
-			* Clamp for this, but in this case min_speed might be below the maximum speed
-			* threshold for some reason. That makes acceleration fail and assertions
-			* happen in Clamp. So make it explicit that min_speed overrules the maximum
-			* speed by explicit ordering of min and max. */
-			this->cur_speed = spd = max(min(this->cur_speed + ((int)spd >> 8), tempmax), min_speed);
-
-			int scaled_spd = this->GetAdvanceSpeed(spd);
-
-			scaled_spd += this->progress;
-			this->progress = 0; // set later in *Handler or *Controller
-			return scaled_spd;
-		} else {
-			const int timestep = 150 // duration of a tick for the physics simulation, in ms.
-				/ callsPerTick;
-			const int tilediag = 80; // diagonal of a tile, in m.
-
-			int spd;
-			switch (acceleration_model) {
-				default: NOT_REACHED();
-				case AM_ORIGINAL:
-					spd = this->subspeed + accel;
-					break;
-				case AM_REALISTIC:
-					spd = this->subspeed + 256
-						* accel / 1000 * timestep * 18 / 1000 / 5; // speed increment in km/h
-			}
-
-			this->subspeed = (byte)spd;
-
-			int tempmax = max_speed;
-
-			/* When we are going faster than the maximum speed, reduce the speed
-			* somewhat gradually. But never lower than the maximum speed. */
-			if (this->breakdown_ctr == 1) {
-				if (this->breakdown_type == BREAKDOWN_LOW_POWER) {
-					if ((this->tick_counter & 0x7) == 0 && _settings_game.vehicle.train_acceleration_model == AM_ORIGINAL) {
-						if (this->cur_speed > (this->breakdown_severity * max_speed) >> 8) {
-							tempmax = this->cur_speed - (this->cur_speed / 10) - 1;
-						} else {
-							tempmax = (this->breakdown_severity * max_speed) >> 8;
-						}
-					}
-				} else if (this->breakdown_type == BREAKDOWN_LOW_SPEED) {
-					tempmax = min(max_speed, this->breakdown_severity);
-				} else {
-					tempmax = this->cur_speed;
-				}
-			}
-
-			if (this->cur_speed > max_speed) {
-				tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
-			}
-
-			/* Enforce a maximum and minimum speed. Normally we would use something like
-			* Clamp for this, but in this case min_speed might be below the maximum speed
-			* threshold for some reason. That makes acceleration fail and assertions
-			* happen in Clamp. So make it explicit that min_speed overrules the maximum
-			* speed by explicit ordering of min and max. */
-			this->cur_speed = spd = max(min(this->cur_speed + (spd >> 8), tempmax), min_speed);
-
-			int progress;
-			switch (acceleration_model) {
-				default: NOT_REACHED();
-				case AM_ORIGINAL:
-					progress = this->GetAdvanceSpeed(spd) * 2 / callsPerTick;
-					break;
-				case AM_REALISTIC:
-					progress = 256
-						* 5 * spd * timestep / 18 // distance travelled in mm
-						/ tilediag * TILE_SIZE / 1000;
-			}
-			progress += this->progress;
-			this->progress = 0; // set later in *Handler or *Controller
-			return progress;
+		if (!(Type == VEH_TRAIN && _settings_game.vehicle.train_braking_model == TBM_REALISTIC)) {
+			max_speed = min(max_speed, advisory_max_speed);
 		}
+
+		int tempmax = max_speed;
+
+		/* When we are going faster than the maximum speed, reduce the speed
+		 * somewhat gradually. But never lower than the maximum speed. */
+		if (this->breakdown_ctr == 1) {
+			if (this->breakdown_type == BREAKDOWN_LOW_POWER) {
+				if ((this->tick_counter & 0x7) == 0 && _settings_game.vehicle.train_acceleration_model == AM_ORIGINAL) {
+					if (this->cur_speed > (this->breakdown_severity * max_speed) >> 8) {
+						tempmax = this->cur_speed - (this->cur_speed / 10) - 1;
+					} else {
+						tempmax = (this->breakdown_severity * max_speed) >> 8;
+					}
+				}
+			} else if (this->breakdown_type == BREAKDOWN_LOW_SPEED) {
+				tempmax = min(max_speed, this->breakdown_severity);
+			} else {
+				tempmax = this->cur_speed;
+			}
+        }
+
+		if (this->cur_speed > max_speed) {
+			if (Type == VEH_TRAIN && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && accel.braking >= 0) {
+				extern void TrainBrakesOverheatedBreakdown(Vehicle *v);
+				TrainBrakesOverheatedBreakdown(this);
+			}
+			tempmax = max(this->cur_speed - (this->cur_speed / 10) - 1, max_speed);
+		}
+
+        /* Enforce a maximum and minimum speed. Normally we would use something like
+		 * Clamp for this, but in this case min_speed might be below the maximum speed
+		 * threshold for some reason. That makes acceleration fail and assertions
+		 * happen in Clamp. So make it explicit that min_speed overrules the maximum
+		 * speed by explicit ordering of min and max. */
+		int tempspeed = min(this->cur_speed + ((int)spd >> 8), tempmax);
+
+		if (Type == VEH_TRAIN && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && tempspeed > advisory_max_speed && accel.braking != accel.acceleration) {
+			spd = initial_subspeed + accel.braking;
+			int braking_speed = this->cur_speed + ((int)spd >> 8);
+			if (braking_speed >= advisory_max_speed) {
+				if (braking_speed > tempmax) {
+					if (Type == VEH_TRAIN && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && accel.braking >= 0) {
+						extern void TrainBrakesOverheatedBreakdown(Vehicle *v);
+						TrainBrakesOverheatedBreakdown(this);
+					}
+					tempspeed = tempmax;
+					this->subspeed = 0;
+				} else {
+					tempspeed = braking_speed;
+					this->subspeed = (byte)spd;
+				}
+			} else {
+				tempspeed = advisory_max_speed;
+				this->subspeed = 0;
+			}
+		}
+
+		this->cur_speed = max(tempspeed, min_speed);
+
+		int scaled_spd = this->GetAdvanceSpeed(this->cur_speed);
+
+		scaled_spd += this->progress;
+		this->progress = 0; // set later in *Handler or *Controller
+		return scaled_spd;
 	}
 };
 

@@ -23,6 +23,7 @@
 #include "pathfinder/yapf/yapf_cache.h"
 #include "scope_info.h"
 #include "vehicle_func.h"
+#include "date_func.h"
 
 #include <vector>
 #include <algorithm>
@@ -89,7 +90,7 @@ const uint16 _tracerestrict_pathfinder_penalty_preset_values[] = {
 	8000,
 };
 
-assert_compile(lengthof(_tracerestrict_pathfinder_penalty_preset_values) == TRPPPI_END);
+static_assert(lengthof(_tracerestrict_pathfinder_penalty_preset_values) == TRPPPI_END);
 
 /**
  * This should be used when all pools have been or are immediately about to be also cleared
@@ -511,6 +512,14 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 						break;
 					}
 
+					case TRIT_COND_TIME_DATE_VALUE: {
+						// TRVT_TIME_DATE_INT value type uses the next slot
+						i++;
+						uint32_t value = this->items[i];
+						result = TestCondition(GetTraceRestrictTimeDateValue(static_cast<TraceRestrictTimeDateValueField>(GetTraceRestrictValue(item))), condop, value);
+						break;
+					}
+
 					default:
 						NOT_REACHED();
 				}
@@ -699,6 +708,8 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 					default:
 						NOT_REACHED();
 				}
+			} else {
+				if (IsTraceRestrictDoubleItem(type)) i++;
 			}
 		}
 	}
@@ -791,6 +802,7 @@ CommandCost TraceRestrictProgram::Validate(const std::vector<TraceRestrictItem> 
 				case TRIT_COND_TRAIN_STATUS:
 				case TRIT_COND_LOAD_PERCENT:
 				case TRIT_COND_COUNTER_VALUE:
+				case TRIT_COND_TIME_DATE_VALUE:
 					break;
 
 				default:
@@ -941,6 +953,7 @@ void SetTraceRestrictValueDefault(TraceRestrictItem &item, TraceRestrictValueTyp
 		case TRVT_REVERSE:
 		case TRVT_PERCENT:
 		case TRVT_NEWS_CONTROL:
+		case TRVT_TIME_DATE_INT:
 			SetTraceRestrictValue(item, 0);
 			if (!IsTraceRestrictTypeAuxSubtype(GetTraceRestrictType(item))) {
 				SetTraceRestrictAuxField(item, 0);
@@ -1196,6 +1209,7 @@ static uint32 GetDualInstructionInitialValue(TraceRestrictItem item)
 
 		case TRIT_COND_SLOT_OCCUPANCY:
 		case TRIT_COND_COUNTER_VALUE:
+		case TRIT_COND_TIME_DATE_VALUE:
 			return 0;
 
 		case TRIT_COUNTER:
@@ -1613,6 +1627,25 @@ CommandCost CmdProgramSignalTraceRestrictProgMgmt(TileIndex tile, DoCommandFlag 
 	InvalidateWindowClassesData(WC_TRACE_RESTRICT);
 
 	return CommandCost();
+}
+
+int GetTraceRestrictTimeDateValue(TraceRestrictTimeDateValueField type)
+{
+	Minutes minutes = (_scaled_date_ticks / _settings_game.game_time.ticks_per_minute) + _settings_game.game_time.clock_offset;
+
+	switch (type) {
+		case TRTDVF_MINUTE:
+			return MINUTES_MINUTE(minutes);
+
+		case TRTDVF_HOUR:
+			return MINUTES_HOUR(minutes);
+
+		case TRTDVF_HOUR_MINUTE:
+			return (MINUTES_HOUR(minutes) * 100) + MINUTES_MINUTE(minutes);
+
+		default:
+			return 0;
+	}
 }
 
 /**

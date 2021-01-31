@@ -19,6 +19,8 @@
 #include "core/geometry_type.hpp"
 #include "debug.h"
 #include "zoom_func.h"
+#include "core/backup_type.hpp"
+#include "core/random_func.hpp"
 
 #include "table/sprites.h"
 #include "table/strings.h"
@@ -41,7 +43,7 @@
 
 #include "safeguards.h"
 
-Vehicle *vhead, *vtmp;
+bool _template_vehicle_images_valid = false;
 
 #ifdef _DEBUG
 // debugging printing functions for convenience, usually called from gdb
@@ -125,8 +127,7 @@ void DrawTemplate(const TemplateVehicle *tv, int left, int right, int y)
 	int offset = 0;
 
 	while (t) {
-		PaletteID pal = GetEnginePalette(t->engine_type, _current_company);
-		t->sprite_seq.Draw(offset + t->image_dimensions.GetOffsetX(), t->image_dimensions.GetOffsetY() + ScaleGUITrad(10), pal, false);
+		t->sprite_seq.Draw(offset + t->image_dimensions.GetOffsetX(), t->image_dimensions.GetOffsetY() + ScaleGUITrad(10), t->colourmap, false);
 
 		offset += t->image_dimensions.GetDisplayImageWidth();
 		t = t->Next();
@@ -153,6 +154,8 @@ void SetupTemplateVehicleFromVirtual(TemplateVehicle *tmp, TemplateVehicle *prev
 	tmp->cargo_subtype = virt->cargo_subtype;
 	tmp->cargo_cap = virt->cargo_cap;
 
+	SB(tmp->ctrl_flags, TVCF_REVERSED, 1, HasBit(virt->flags, VRF_REVERSE_DIRECTION) ? 1 : 0);
+
 	if (!virt->Previous()) {
 		uint cargo_weight = 0;
 		uint full_cargo_weight = 0;
@@ -170,6 +173,7 @@ void SetupTemplateVehicleFromVirtual(TemplateVehicle *tmp, TemplateVehicle *prev
 
 	virt->GetImage(DIR_W, EIT_IN_DEPOT, &tmp->sprite_seq);
 	tmp->image_dimensions.SetFromTrain(virt);
+	tmp->colourmap = GetUncachedTrainPaletteIgnoringGroup(virt);
 }
 
 // create a full TemplateVehicle based train according to a virtual train
@@ -265,6 +269,20 @@ Train* ChainContainsEngine(EngineID eid, Train *chain) {
 	return nullptr;
 }
 
+static bool IsTrainUsableAsTemplateReplacementSource(const Train *t)
+{
+	if (t->IsFreeWagon()) return true;
+
+	if (t->IsPrimaryVehicle() && t->IsStoppedInDepot()) {
+		if (t->GetNumOrders() != 0) return false;
+		if (t->IsOrderListShared()) return false;
+		if (t->group_id != DEFAULT_GROUP) return false;
+		return true;
+	}
+
+	return false;
+}
+
 // has O(n^2)
 Train* DepotContainsEngine(TileIndex tile, EngineID eid, Train *not_in = nullptr)
 {
@@ -274,7 +292,7 @@ Train* DepotContainsEngine(TileIndex tile, EngineID eid, Train *not_in = nullptr
 		if (t->tile == tile
 				// If the veh belongs to a chain, wagons will not return true on IsStoppedInDepot(), only primary vehicles will
 				// in case of t not a primary veh, we demand it to be a free wagon to consider it for replacement
-				&& ((t->IsPrimaryVehicle() && t->IsStoppedInDepot()) || t->IsFreeWagon())
+				&& IsTrainUsableAsTemplateReplacementSource(t)
 				&& t->engine_type == eid
 				&& (not_in == nullptr || ChainContainsVehicle(not_in, t) == false)) {
 			return t;
@@ -313,7 +331,7 @@ bool TrainMatchesTemplateRefit(const Train *t, const TemplateVehicle *tv)
 	}
 
 	while (t && tv) {
-		if (t->cargo_type != tv->cargo_type || t->cargo_subtype != tv->cargo_subtype) {
+		if (t->cargo_type != tv->cargo_type || t->cargo_subtype != tv->cargo_subtype || HasBit(t->flags, VRF_REVERSE_DIRECTION) != HasBit(tv->ctrl_flags, TVCF_REVERSED)) {
 			return false;
 		}
 		t = t->GetNextUnit();
@@ -366,6 +384,10 @@ CommandCost CmdRefitTrainFromTemplate(Train *t, TemplateVehicle *tv, DoCommandFl
 		uint32 cb = GetCmdRefitVeh(t);
 
 		cost.AddCost(DoCommand(t->tile, t->index, tv->cargo_type | tv->cargo_subtype << 8 | (1 << 16) | (1 << 31), flags, cb));
+
+		if (HasBit(t->flags, VRF_REVERSE_DIRECTION) != HasBit(tv->ctrl_flags, TVCF_REVERSED)) {
+			cost.AddCost(DoCommand(t->tile, t->index, true, flags, CMD_REVERSE_TRAIN_DIRECTION | CMD_MSG(STR_ERROR_CAN_T_REVERSE_DIRECTION_RAIL_VEHICLE)));
+		}
 
 		// next
 		t = t->GetNextUnit();
@@ -427,4 +449,44 @@ void TransferCargoForTrain(Train *old_veh, Train *new_head)
 
 	/* Update train weight etc., the old vehicle will be sold anyway */
 	new_head->ConsistChanged(CCF_LOADUNLOAD);
+}
+
+void UpdateAllTemplateVehicleImages()
+{
+	SavedRandomSeeds saved_seeds;
+	SaveRandomSeeds(&saved_seeds);
+
+	for (TemplateVehicle *tv : TemplateVehicle::Iterate()) {
+		if (tv->Prev() == nullptr) {
+			Backup<CompanyID> cur_company(_current_company, tv->owner, FILE_LINE);
+			StringID err;
+			Train* t = VirtualTrainFromTemplateVehicle(tv, err, 0);
+			if (t != nullptr) {
+				int tv_len = 0;
+				for (TemplateVehicle *u = tv; u != nullptr; u = u->Next()) {
+					tv_len++;
+				}
+				int t_len = 0;
+				for (Train *u = t; u != nullptr; u = u->Next()) {
+					t_len++;
+				}
+				if (t_len == tv_len) {
+					Train *v = t;
+					for (TemplateVehicle *u = tv; u != nullptr; u = u->Next(), v = v->Next()) {
+						v->GetImage(DIR_W, EIT_IN_DEPOT, &u->sprite_seq);
+						u->image_dimensions.SetFromTrain(v);
+						u->colourmap = GetVehiclePalette(v);
+					}
+				} else {
+					DEBUG(misc, 0, "UpdateAllTemplateVehicleImages: vehicle count mismatch: %u, %u", t_len, tv_len);
+				}
+				delete t;
+			}
+			cur_company.Restore();
+		}
+	}
+
+	RestoreRandomSeeds(saved_seeds);
+
+	_template_vehicle_images_valid = true;
 }

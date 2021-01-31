@@ -89,7 +89,6 @@ GRFConfig::~GRFConfig()
 		free(this->filename);
 		delete this->error;
 	}
-	free(this->full_filename);
 
 	for (uint i = 0; i < this->param_info.size(); i++) delete this->param_info[i];
 }
@@ -616,7 +615,7 @@ GRFListCompatibility IsGoodGRFConfigList(GRFConfig *grfconfig)
 			f = FindGRFConfig(c->ident.grfid, FGCM_COMPATIBLE, nullptr, c->version);
 			if (f != nullptr) {
 				md5sumToString(buf, lastof(buf), c->ident.md5sum);
-				DEBUG(grf, 1, "NewGRF %08X (%s) not found; checksum %s. Compatibility mode on", BSWAP32(c->ident.grfid), c->GetDisplayPath(), buf);
+				DEBUG(grf, 1, "NewGRF %08X (%s) not found; checksum %s, name: '%s'. Compatibility mode on", BSWAP32(c->ident.grfid), c->GetDisplayPath(), buf, GetDefaultLangGRFStringFromGRFText(c->name));
 				if (!HasBit(c->flags, GCF_COMPATIBLE)) {
 					/* Preserve original_md5sum after it has been assigned */
 					SetBit(c->flags, GCF_COMPATIBLE);
@@ -630,7 +629,7 @@ GRFListCompatibility IsGoodGRFConfigList(GRFConfig *grfconfig)
 
 			/* No compatible grf was found, mark it as disabled */
 			md5sumToString(buf, lastof(buf), c->ident.md5sum);
-			DEBUG(grf, 0, "NewGRF %08X (%s) not found; checksum %s", BSWAP32(c->ident.grfid), c->GetDisplayPath(), buf);
+			DEBUG(grf, 0, "NewGRF %08X (%s) not found; checksum %s, name: '%s'", BSWAP32(c->ident.grfid), c->GetDisplayPath(), buf, GetDefaultLangGRFStringFromGRFText(c->name));
 
 			c->status = GCS_NOT_FOUND;
 			res = GLC_NOT_FOUND;
@@ -683,7 +682,7 @@ public:
 #endif
 	}
 
-	bool AddFile(const char *filename, size_t basepath_length, const char *tar_filename) override;
+	bool AddFile(const std::string &filename, size_t basepath_length, const std::string &tar_filename) override;
 
 	/** Do the scan for GRFs. */
 	static uint DoScan()
@@ -731,9 +730,9 @@ public:
 	}
 };
 
-bool GRFFileScanner::AddFile(const char *filename, size_t basepath_length, const char *tar_filename)
+bool GRFFileScanner::AddFile(const std::string &filename, size_t basepath_length, const std::string &tar_filename)
 {
-	GRFConfig *c = new GRFConfig(filename + basepath_length);
+	GRFConfig *c = new GRFConfig(filename.c_str() + basepath_length);
 
 	bool added = FillGRFDetails(c, false);
 	if (added) {

@@ -617,7 +617,7 @@ static bool QZ_PollEvent()
 }
 
 
-void QZ_GameLoop()
+void VideoDriver_Cocoa::GameLoop()
 {
 	uint32 cur_ticks = GetTick();
 	uint32 last_cur_ticks = cur_ticks;
@@ -634,8 +634,8 @@ void QZ_GameLoop()
 	CSleep(1);
 
 	for (int i = 0; i < 2; i++) {
-		GameLoop();
-		GameLoopPaletteAnimations();
+		::GameLoop();
+		::GameLoopPaletteAnimations();
 	}
 
 	UpdateWindows();
@@ -655,7 +655,11 @@ void QZ_GameLoop()
 
 		while (QZ_PollEvent()) {}
 
-		if (_exit_game) break;
+		if (_exit_game) {
+			/* Restore saved resolution if in fullscreen mode. */
+			if (_cocoa_subdriver->IsFullscreen()) _cur_resolution = this->orig_res;
+			break;
+		}
 
 #if defined(_DEBUG)
 		if (_current_mods & NSShiftKeyMask)
@@ -683,8 +687,8 @@ void QZ_GameLoop()
 			if (old_ctrl_pressed != _ctrl_pressed) HandleCtrlChanged();
 			if (old_shift_pressed != _shift_pressed) HandleShiftChanged();
 
-			GameLoop();
-			GameLoopPaletteAnimations();
+			::GameLoop();
+			::GameLoopPaletteAnimations();
 
 			UpdateWindows();
 			QZ_CheckPaletteAnim();

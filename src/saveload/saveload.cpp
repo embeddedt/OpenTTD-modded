@@ -43,8 +43,12 @@
 #include "../string_func_extra.h"
 #include "../fios.h"
 #include "../error.h"
+#include "../scope.h"
 #include <atomic>
 #include <string>
+#ifdef __EMSCRIPTEN__
+#	include <emscripten.h>
+#endif
 
 #include "../tbtr_template_vehicle.h"
 
@@ -226,6 +230,7 @@ struct SaveLoadParams {
 
 	byte ff_state;                       ///< The state of fast-forward when saving started.
 	bool saveinprogress;                 ///< Whether there is currently a save in progress.
+	bool networkserversave;              ///< Whether this save is being sent to a network client
 };
 
 static SaveLoadParams _sl; ///< Parameters used for/at saveload.
@@ -350,16 +355,12 @@ static void SlNullPointers()
 	_sl_version = SAVEGAME_VERSION;
 	SlXvSetCurrentState();
 
-	DEBUG(sl, 1, "Nulling pointers");
-
 	FOR_ALL_CHUNK_HANDLERS(ch) {
 		if (ch->ptrs_proc != nullptr) {
-			DEBUG(sl, 2, "Nulling pointers for %c%c%c%c", ch->id >> 24, ch->id >> 16, ch->id >> 8, ch->id);
+			DEBUG(sl, 3, "Nulling pointers for %c%c%c%c", ch->id >> 24, ch->id >> 16, ch->id >> 8, ch->id);
 			ch->ptrs_proc();
 		}
 	}
-
-	DEBUG(sl, 1, "All pointers nulled");
 
 	assert(_sl.action == SLA_NULL);
 }
@@ -1272,7 +1273,7 @@ static size_t ReferenceToInt(const void *obj, SLRefType rt)
  */
 static void *IntToReference(size_t index, SLRefType rt)
 {
-	assert_compile(sizeof(size_t) <= sizeof(void *));
+	static_assert(sizeof(size_t) <= sizeof(void *));
 
 	assert(_sl.action == SLA_PTRS);
 
@@ -1946,7 +1947,7 @@ void SlObject(void *object, const SaveLoad *sld)
 	}
 
 	for (; sld->cmd != SL_END; sld++) {
-		void *ptr = sld->global ? sld->address : GetVariableAddress(object, sld);
+		void *ptr = GetVariableAddress(object, sld);
 		SlObjectMember(ptr, sld);
 	}
 }
@@ -2041,6 +2042,8 @@ inline void SlRIFFSpringPPCheck(size_t len)
 			SlXvSpringPPSpecialSavegameVersions();
 		} else if (_sl_version > SAVEGAME_VERSION) {
 			SlError(STR_GAME_SAVELOAD_ERROR_TOO_NEW_SAVEGAME);
+		} else if (_sl_version >= SLV_START_PATCHPACKS && _sl_version <= SLV_END_PATCHPACKS) {
+			SlError(STR_GAME_SAVELOAD_ERROR_PATCHPACK);
 		}
 	}
 }
@@ -2307,16 +2310,12 @@ static void SlFixPointers()
 {
 	_sl.action = SLA_PTRS;
 
-	DEBUG(sl, 1, "Fixing pointers");
-
 	FOR_ALL_CHUNK_HANDLERS(ch) {
 		if (ch->ptrs_proc != nullptr) {
-			DEBUG(sl, 2, "Fixing pointers for %c%c%c%c", ch->id >> 24, ch->id >> 16, ch->id >> 8, ch->id);
+			DEBUG(sl, 3, "Fixing pointers for %c%c%c%c", ch->id >> 24, ch->id >> 16, ch->id >> 8, ch->id);
 			ch->ptrs_proc();
 		}
 	}
-
-	DEBUG(sl, 1, "All pointers fixed");
 
 	assert(_sl.action == SLA_PTRS);
 }
@@ -2874,7 +2873,7 @@ static const SaveLoadFormat *GetSavegameFormat(char *s, byte *compression_level)
 /* actual loader/saver function */
 void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settings);
 extern bool AfterLoadGame();
-extern bool LoadOldSaveGame(const char *file);
+extern bool LoadOldSaveGame(const std::string &file);
 
 /**
  * Clear temporary data that is passed between various saveload phases.
@@ -2902,6 +2901,8 @@ static inline void ClearSaveLoadState()
 
 	delete _sl.lf;
 	_sl.lf = nullptr;
+
+	_sl.networkserversave = false;
 
 	GamelogStopAnyAction();
 }
@@ -2933,8 +2934,9 @@ static void SaveFileDone()
 
 	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_SAVELOAD_FINISH);
 	_sl.saveinprogress = false;
+
 #ifdef __EMSCRIPTEN__
-	EM_ASM(save_data());
+	EM_ASM(if (window["openttd_syncfs"]) openttd_syncfs());
 #endif
 }
 
@@ -3056,17 +3058,24 @@ static SaveOrLoadResult DoSave(SaveFilter *writer, bool threaded)
  * Save the game using a (writer) filter.
  * @param writer   The filter to write the savegame to.
  * @param threaded Whether to try to perform the saving asynchronously.
+ * @param networkserversave Whether this is a network server save.
  * @return Return the result of the action. #SL_OK or #SL_ERROR
  */
-SaveOrLoadResult SaveWithFilter(SaveFilter *writer, bool threaded)
+SaveOrLoadResult SaveWithFilter(SaveFilter *writer, bool threaded, bool networkserversave)
 {
 	try {
 		_sl.action = SLA_SAVE;
+		_sl.networkserversave = networkserversave;
 		return DoSave(writer, threaded);
 	} catch (...) {
 		ClearSaveLoadState();
 		return SL_ERROR;
 	}
+}
+
+bool IsNetworkServerSave()
+{
+	return _sl.networkserversave;
 }
 
 struct ThreadedLoadFilter : LoadFilter {
@@ -3193,6 +3202,10 @@ static SaveOrLoadResult DoLoad(LoadFilter *reader, bool load_check)
 	}
 
 	SlXvResetState();
+	SlResetVENC();
+	auto guard = scope_guard([&]() {
+		SlResetVENC();
+	});
 
 	uint32 hdr[2];
 	if (_sl.lf->Read((byte*)hdr, sizeof(hdr)) != sizeof(hdr)) SlError(STR_GAME_SAVELOAD_ERROR_FILE_NOT_READABLE);
@@ -3242,6 +3255,7 @@ static SaveOrLoadResult DoLoad(LoadFilter *reader, bool load_check)
 
 			/* Is the version higher than the current? */
 			if (_sl_version > SAVEGAME_VERSION && !special_version) SlError(STR_GAME_SAVELOAD_ERROR_TOO_NEW_SAVEGAME);
+			if (_sl_version >= SLV_START_PATCHPACKS && _sl_version <= SLV_END_PATCHPACKS && !special_version) SlError(STR_GAME_SAVELOAD_ERROR_PATCHPACK);
 			break;
 		}
 
@@ -3357,7 +3371,7 @@ SaveOrLoadResult LoadWithFilter(LoadFilter *reader)
  * @param threaded True when threaded saving is allowed
  * @return Return the result of the action. #SL_OK, #SL_ERROR, or #SL_REINIT ("unload" the game)
  */
-SaveOrLoadResult SaveOrLoad(const char *filename, SaveLoadOperation fop, DetailedFileType dft, Subdirectory sb, bool threaded)
+SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, DetailedFileType dft, Subdirectory sb, bool threaded)
 {
 	/* An instance of saving is already active, so don't go saving again */
 	if (_sl.saveinprogress && fop == SLO_SAVE && dft == DFT_GAME_FILE && threaded) {
@@ -3410,6 +3424,7 @@ SaveOrLoadResult SaveOrLoad(const char *filename, SaveLoadOperation fop, Detaile
 
 			default: NOT_REACHED();
 		}
+		_sl.networkserversave = false;
 
 		FILE *fh = (fop == SLO_SAVE) ? FioFOpenFile(filename, "wb", sb) : FioFOpenFile(filename, "rb", sb);
 
@@ -3423,7 +3438,7 @@ SaveOrLoadResult SaveOrLoad(const char *filename, SaveLoadOperation fop, Detaile
 		}
 
 		if (fop == SLO_SAVE) { // SAVE game
-			DEBUG(desync, 1, "save: date{%08x; %02x; %02x}; %s", _date, _date_fract, _tick_skip_counter, filename);
+			DEBUG(desync, 1, "save: date{%08x; %02x; %02x}; %s", _date, _date_fract, _tick_skip_counter, filename.c_str());
 			if (_network_server || !_settings_client.gui.threaded_saves) threaded = false;
 
 			return DoSave(new FileWriter(fh), threaded);
@@ -3431,7 +3446,7 @@ SaveOrLoadResult SaveOrLoad(const char *filename, SaveLoadOperation fop, Detaile
 
 		/* LOAD game */
 		assert(fop == SLO_LOAD || fop == SLO_CHECK);
-		DEBUG(desync, 1, "load: %s", filename);
+		DEBUG(desync, 1, "load: %s", filename.c_str());
 		return DoLoad(new FileReader(fh), fop == SLO_CHECK);
 	} catch (...) {
 		/* This code may be executed both for old and new save games. */
@@ -3520,7 +3535,7 @@ void FileToSaveLoad::SetMode(SaveLoadOperation fop, AbstractFileType aft, Detail
  */
 void FileToSaveLoad::SetName(const char *name)
 {
-	strecpy(this->name, name, lastof(this->name));
+	this->name = name;
 }
 
 /**

@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :小麦
 STR_CARGO_PLURAL_RUBBER                                         :橡胶
 STR_CARGO_PLURAL_SUGAR                                          :蔗糖
 STR_CARGO_PLURAL_TOYS                                           :玩具
-STR_CARGO_PLURAL_CANDY                                          :糖果
+STR_CARGO_PLURAL_SWEETS                                         :糖果
 STR_CARGO_PLURAL_COLA                                           :可乐
-STR_CARGO_PLURAL_COTTON_CANDY                                   :棉花糖
+STR_CARGO_PLURAL_CANDYFLOSS                                     :棉花糖
 STR_CARGO_PLURAL_BUBBLES                                        :泡泡
 STR_CARGO_PLURAL_TOFFEE                                         :太妃糖
 STR_CARGO_PLURAL_BATTERIES                                      :电池
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :小麦
 STR_CARGO_SINGULAR_RUBBER                                       :橡胶
 STR_CARGO_SINGULAR_SUGAR                                        :蔗糖
 STR_CARGO_SINGULAR_TOY                                          :玩具
-STR_CARGO_SINGULAR_CANDY                                        :糖果
+STR_CARGO_SINGULAR_SWEETS                                       :糖果
 STR_CARGO_SINGULAR_COLA                                         :可乐
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :棉花糖
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :棉花糖
 STR_CARGO_SINGULAR_BUBBLE                                       :泡泡
 STR_CARGO_SINGULAR_TOFFEE                                       :太妃糖
 STR_CARGO_SINGULAR_BATTERY                                      :电池
@@ -314,6 +314,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :运载能力
 STR_SORT_BY_RANGE                                               :航行距离
 STR_SORT_BY_POPULATION                                          :人口
 STR_SORT_BY_RATING                                              :等级
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}暂停游戏
@@ -1553,8 +1555,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :结束计分年
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :游戏结束计分的年份。在这一年的年底，公司的分数将被记录，并展示高分榜；在此之后玩家仍可继续游戏。{}如果该年份早于游戏开始年份，则高分榜将不会展示。
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :从不
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :启用平滑经济模式 (更多小的经济变化)：{STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :“打开”时，工业产量变化频繁而幅度小，如果工业是由NewGRF控制的，本选项不起作用
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :允许购买其他公司的股份：{STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :“打开”时，允许买卖其它公司股份。被入股公司必须经营一定年限
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :公司可发售股份的最小已存续年份数：{STRING}
@@ -1606,9 +1606,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :线性
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :树木自动生长： {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :控制游戏中数目的随机生长，这将影响依赖树木的工业，比如木材厂
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :无 {RED}(损坏伐木场)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :仅在雨林中
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :任意地点
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :主工具栏位置：{STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :主工具栏在屏幕上方的位置
@@ -1807,17 +1804,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}中文�
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}退出
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}你确定要放弃当前游戏并{}退出到 {STRING} 吗？
 STR_QUIT_YES                                                    :{BLACK}是
 STR_QUIT_NO                                                     :{BLACK}否
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}放弃游戏
@@ -1939,10 +1927,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}选择�
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}联机游戏
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}发布到互联网
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}选择是否将游戏发布到官方服务器列表。发布的话，可以让互联网上的玩家找到你的服务器并加入游戏，否则进行局域网内的游戏。
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :否
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :是
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}玩家名称：
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}其他玩家将通过该名字来认识您
 
@@ -1983,8 +1967,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}加入�
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}刷新服务器
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}刷新服务器信息
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}搜索服务器
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}在网络上搜索服务器
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}添加服务器
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}添加一个永远显示在列表中的服务器
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}启动服务器
@@ -2001,6 +1983,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}游戏�
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}设置密码：
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}如果不希望你的游戏被外人加入，请设置一个密码
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}发布到互联网
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}选择是否将游戏发布到官方服务器列表。发布的话，可以让互联网上的玩家找到你的服务器并加入游戏，否则进行局域网内的游戏。
 STR_NETWORK_START_SERVER_UNADVERTISED                           :否
 STR_NETWORK_START_SERVER_ADVERTISED                             :是
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} 客户端
@@ -2222,8 +2206,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} �
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} 成立了新公司 (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} 已离开游戏 ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} 已更改姓名为 {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} 送给您的公司 {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** 您送了 {2:CURRENCY_LONG} 给 {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}服务器关闭了进程
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}服务器正在重新启动。{}请等待……
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} 被踢出服务器。原因：({STRING})
@@ -2529,7 +2511,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}大小: 
 STR_OBJECT_CLASS_LTHS                                           :灯塔
 STR_OBJECT_CLASS_TRNS                                           :发射机
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}树木
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}选择要种植的树木类型。如果格子内已经有树木，将种植随机类型的树木
 STR_TREES_RANDOM_TYPE                                           :{BLACK}随机类型的树木
@@ -4652,6 +4634,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Transport Tycoo
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :运输大亨DOS豪华版原版音乐。
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :原版运输大亨（DOS版及地图编辑器扩展）音乐。
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :一个没有实际内容的音乐包.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :列车 {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :汽车 {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :船只 {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :飞机 {COMMA}
 
 ##id 0x2000
 # Town building names

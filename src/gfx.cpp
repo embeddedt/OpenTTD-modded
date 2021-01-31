@@ -47,11 +47,13 @@ bool _right_button_down;    ///< Is right mouse button pressed?
 bool _right_button_clicked; ///< Is right mouse button clicked?
 DrawPixelInfo _screen;
 bool _screen_disable_anim = false;   ///< Disable palette animation (important for 32bpp-anim blitter during giant screenshot)
+bool _check_special_modes;
 bool _exit_game;
 GameMode _game_mode;
 SwitchMode _switch_mode;  ///< The next mainloop command.
 PauseMode _pause_mode;
 Palette _cur_palette;
+std::string _switch_baseset;
 
 static byte _stringwidth_table[FS_END][224]; ///< Cache containing width of often used characters. @see GetCharacterWidth()
 DrawPixelInfo *_cur_dpi;
@@ -1510,7 +1512,7 @@ static void DrawDirtyViewport(uint occlusion, int left, int top, int right, int 
 		extern void ViewportDrawChk(Viewport *vp, int left, int top, int right, int bottom);
 		ViewportDrawChk(_dirty_viewport, left, top, right, bottom);
 		if (_dirty_viewport_disp_flags & (ND_SHADE_GREY | ND_SHADE_DIMMED)) {
-			GfxFillRect(left, top, right, bottom,
+			GfxFillRect(left, top, right - 1, bottom - 1,
 					(_dirty_viewport_disp_flags & ND_SHADE_DIMMED) ? PALETTE_TO_TRANSPARENT : PALETTE_NEWSPAPER, FILLRECT_RECOLOUR);
 		}
 		VideoDriver::GetInstance()->MakeDirty(left, top, right - left, bottom - top);
@@ -1985,7 +1987,7 @@ void UpdateCursorSize()
 	/* Ignore setting any cursor before the sprites are loaded. */
 	if (GetMaxSpriteID() == 0) return;
 
-	assert_compile(lengthof(_cursor.sprite_seq) == lengthof(_cursor.sprite_pos));
+	static_assert(lengthof(_cursor.sprite_seq) == lengthof(_cursor.sprite_pos));
 	assert(_cursor.sprite_count <= lengthof(_cursor.sprite_seq));
 	for (uint i = 0; i < _cursor.sprite_count; ++i) {
 		const Sprite *p = GetSprite(GB(_cursor.sprite_seq[i].sprite, 0, SPRITE_WIDTH), ST_NORMAL);
@@ -2086,6 +2088,30 @@ void SetAnimatedMouseCursor(const AnimCursor *table)
 	_cursor.animate_cur = nullptr;
 	_cursor.sprite_seq[0].pal = PAL_NONE;
 	SwitchAnimatedCursor();
+}
+
+/**
+ * Update cursor position on mouse movement for relative modes.
+ * @param delta_x How much change in the X position.
+ * @param delta_y How much change in the Y position.
+ */
+void CursorVars::UpdateCursorPositionRelative(int delta_x, int delta_y)
+{
+	if (this->fix_at) {
+		this->delta.x = delta_x;
+		this->delta.y = delta_y;
+	} else {
+		int last_position_x = this->pos.x;
+		int last_position_y = this->pos.y;
+
+		this->pos.x = Clamp(this->pos.x + delta_x, 0, _cur_resolution.width - 1);
+		this->pos.y = Clamp(this->pos.y + delta_y, 0, _cur_resolution.height - 1);
+
+		this->delta.x = last_position_x - this->pos.x;
+		this->delta.y = last_position_y - this->pos.y;
+
+		this->dirty = true;
+	}
 }
 
 /**

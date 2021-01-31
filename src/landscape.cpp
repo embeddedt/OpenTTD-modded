@@ -823,7 +823,7 @@ void RunTileLoop()
 		0xD8F, 0x1296, 0x2496, 0x4357, 0x8679, 0x1030E, 0x206CD, 0x403FE, 0x807B8, 0x1004B2, 0x2006A8,
 		0x4004B2, 0x800B87, 0x10004F3, 0x200072D, 0x40006AE, 0x80009E3,
 	};
-	assert_compile(lengthof(feedbacks) == MAX_MAP_TILES_BITS - 2 * MIN_MAP_SIZE_BITS + 1);
+	static_assert(lengthof(feedbacks) == MAX_MAP_TILES_BITS - 2 * MIN_MAP_SIZE_BITS + 1);
 	const uint32 feedback = feedbacks[MapLogX() + MapLogY() - 2 * MIN_MAP_SIZE_BITS];
 
 	/* We update every tile every 256 ticks, so divide the map size by 2^8 = 256 */
@@ -879,7 +879,8 @@ static void GenerateTerrain(int type, uint flag)
 	uint x = r & MapMaxX();
 	uint y = (r >> MapLogX()) & MapMaxY();
 
-	if (x < 2 || y < 2) return;
+	uint edge_distance = 1 + (_settings_game.construction.freeform_edges ? 1 : 0);
+	if (x <= edge_distance || y <= edge_distance) return;
 
 	DiagDirection direction = (DiagDirection)GB(r, 22, 2);
 	uint w = templ->width;
@@ -914,8 +915,8 @@ static void GenerateTerrain(int type, uint flag)
 		}
 	}
 
-	if (x + w >= MapMaxX() - 1) return;
-	if (y + h >= MapMaxY() - 1) return;
+	if (x + w >= MapMaxX()) return;
+	if (y + h >= MapMaxY()) return;
 
 	TileIndex tile = TileXY(x, y);
 
@@ -1318,7 +1319,7 @@ void GenerateLandscape(byte mode)
 
 	if (mode == GWM_HEIGHTMAP) {
 		SetGeneratingWorldProgress(GWP_LANDSCAPE, steps + GLS_HEIGHTMAP);
-		LoadHeightmap(_file_to_saveload.detail_ftype, _file_to_saveload.name);
+		LoadHeightmap(_file_to_saveload.detail_ftype, _file_to_saveload.name.c_str());
 		IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
 	} else if (_settings_game.game_creation.land_generator == LG_TERRAGENESIS) {
 		SetGeneratingWorldProgress(GWP_LANDSCAPE, steps + GLS_TERRAGENESIS);

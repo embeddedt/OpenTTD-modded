@@ -508,7 +508,7 @@ static StringID TTDPStringIDToOTTDStringIDMapping(StringID str)
 	assert(!IsInsideMM(str, 0xD000, 0xD7FF));
 
 #define TEXTID_TO_STRINGID(begin, end, stringid, stringend) \
-	assert_compile(stringend - stringid == end - begin); \
+	static_assert(stringend - stringid == end - begin); \
 	if (str >= begin && str <= end) return str + (stringid - begin)
 
 	/* We have some changes in our cargo strings, resulting in some missing. */
@@ -1951,8 +1951,7 @@ static ChangeInfoResult StationChangeInfo(uint stid, int numinfo, int prop, cons
 					tmp_layout.clear();
 					for (;;) {
 						/* no relative bounding box support */
-						/*C++17: DrawTileSeqStruct &dtss = */ tmp_layout.emplace_back();
-						DrawTileSeqStruct &dtss = tmp_layout.back();
+						DrawTileSeqStruct &dtss = tmp_layout.emplace_back();
 						MemSetT(&dtss, 0);
 
 						dtss.delta_x = buf->ReadByte();
@@ -5159,8 +5158,7 @@ static void NewSpriteGroup(ByteReader *buf)
 			/* Loop through the var adjusts. Unfortunately we don't know how many we have
 			 * from the outset, so we shall have to keep reallocing. */
 			do {
-				/*C++17: DeterministicSpriteGroupAdjust &adjust = */ adjusts.emplace_back();
-				DeterministicSpriteGroupAdjust &adjust = adjusts.back();
+				DeterministicSpriteGroupAdjust &adjust = adjusts.emplace_back();
 
 				/* The first var adjust doesn't have an operation specified, so we set it to add. */
 				adjust.operation = adjusts.size() == 1 ? DSGA_OP_ADD : (DeterministicSpriteGroupAdjustOperation)buf->ReadByte();
@@ -6719,19 +6717,45 @@ static void SkipIf(ByteReader *buf)
 		return;
 	}
 
-	uint32 param_val = GetParamVal(param, &cond_val);
+	grfmsg(7, "SkipIf: Test condtype %d, param 0x%02X, condval 0x%08X", condtype, param, cond_val);
 
-	grfmsg(7, "SkipIf: Test condtype %d, param 0x%08X, condval 0x%08X", condtype, param_val, cond_val);
-
-	/*
-	 * Parameter (variable in specs) 0x88 can only have GRF ID checking
-	 * conditions, except conditions 0x0B, 0x0C (cargo availability) and
-	 * 0x0D, 0x0E (Rail type availability) as those ignore the parameter.
-	 * So, when the condition type is one of those, the specific variable
-	 * 0x88 code is skipped, so the "general" code for the cargo
-	 * availability conditions kicks in.
+	/* condtypes that do not use 'param' are always valid.
+	 * condtypes that use 'param' are either not valid for param 0x88, or they are only valid for param 0x88.
 	 */
-	if (param == 0x88 && (condtype < 0x0B || condtype > 0x0E)) {
+	if (condtype >= 0x0B) {
+		/* Tests that ignore 'param' */
+		switch (condtype) {
+			case 0x0B: result = GetCargoIDByLabel(BSWAP32(cond_val)) == CT_INVALID;
+				break;
+			case 0x0C: result = GetCargoIDByLabel(BSWAP32(cond_val)) != CT_INVALID;
+				break;
+			case 0x0D: result = GetRailTypeByLabel(BSWAP32(cond_val)) == INVALID_RAILTYPE;
+				break;
+			case 0x0E: result = GetRailTypeByLabel(BSWAP32(cond_val)) != INVALID_RAILTYPE;
+				break;
+			case 0x0F: {
+				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
+				result = rt == INVALID_ROADTYPE || !RoadTypeIsRoad(rt);
+				break;
+			}
+			case 0x10: {
+				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
+				result = rt != INVALID_ROADTYPE && RoadTypeIsRoad(rt);
+				break;
+			}
+			case 0x11: {
+				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
+				result = rt == INVALID_ROADTYPE || !RoadTypeIsTram(rt);
+				break;
+			}
+			case 0x12: {
+				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
+				result = rt != INVALID_ROADTYPE && RoadTypeIsTram(rt);
+				break;
+			}
+			default: grfmsg(1, "SkipIf: Unsupported condition type %02X. Ignoring", condtype); return;
+		}
+	} else if (param == 0x88) {
 		/* GRF ID checks */
 
 		GRFConfig *c = GetGRFConfig(cond_val, mask);
@@ -6772,7 +6796,8 @@ static void SkipIf(ByteReader *buf)
 			default: grfmsg(1, "SkipIf: Unsupported GRF condition type %02X. Ignoring", condtype); return;
 		}
 	} else {
-		/* Parameter or variable tests */
+		/* Tests that use 'param' and are not GRF ID checks.  */
+		uint32 param_val = GetParamVal(param, &cond_val); // cond_val is modified for param == 0x85
 		switch (condtype) {
 			case 0x00: result = !!(param_val & (1 << cond_val));
 				break;
@@ -6786,34 +6811,6 @@ static void SkipIf(ByteReader *buf)
 				break;
 			case 0x05: result = (param_val & mask) > cond_val;
 				break;
-			case 0x0B: result = GetCargoIDByLabel(BSWAP32(cond_val)) == CT_INVALID;
-				break;
-			case 0x0C: result = GetCargoIDByLabel(BSWAP32(cond_val)) != CT_INVALID;
-				break;
-			case 0x0D: result = GetRailTypeByLabel(BSWAP32(cond_val)) == INVALID_RAILTYPE;
-				break;
-			case 0x0E: result = GetRailTypeByLabel(BSWAP32(cond_val)) != INVALID_RAILTYPE;
-				break;
-			case 0x0F: {
-				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
-				result = rt == INVALID_ROADTYPE || !RoadTypeIsRoad(rt);
-				break;
-			}
-			case 0x10: {
-				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
-				result = rt != INVALID_ROADTYPE && RoadTypeIsRoad(rt);
-				break;
-			}
-			case 0x11: {
-				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
-				result = rt == INVALID_ROADTYPE || !RoadTypeIsTram(rt);
-				break;
-			}
-			case 0x12: {
-				RoadType rt = GetRoadTypeByLabel(BSWAP32(cond_val));
-				result = rt != INVALID_ROADTYPE && RoadTypeIsTram(rt);
-				break;
-			}
 			default: grfmsg(1, "SkipIf: Unsupported condition type %02X. Ignoring", condtype); return;
 		}
 	}
@@ -9007,7 +9004,8 @@ static void InitializeGRFSpecial()
 	                   |                                                      (1 << 0x1E)  // variablerunningcosts
 	                   |                                                      (1 << 0x1F); // any switch is on
 
-	_ttdpatch_flags[4] =                                                      (1 << 0x00); // larger persistent storage
+	_ttdpatch_flags[4] =                                                      (1 << 0x00)  // larger persistent storage
+	                   |             ((_settings_game.economy.inflation ? 1 : 0) << 0x01); // inflation is on
 }
 
 /** Reset and clear all NewGRF stations */
@@ -9345,7 +9343,7 @@ GRFFile::GRFFile(const GRFConfig *config)
 
 	/* Copy the initial parameter list
 	 * 'Uninitialised' parameters are zeroed as that is their default value when dynamically creating them. */
-	assert_compile(lengthof(this->param) == lengthof(config->param) && lengthof(this->param) == 0x80);
+	static_assert(lengthof(this->param) == lengthof(config->param) && lengthof(this->param) == 0x80);
 
 	assert(config->num_params <= lengthof(config->param));
 	this->param_end = config->num_params;
@@ -9984,8 +9982,7 @@ void LoadNewGRFFile(GRFConfig *config, uint file_index, GrfLoadingStage stage, S
 		return;
 	}
 
-	free(config->full_filename);
-	config->full_filename = nullptr;
+	config->full_filename.clear();
 	FioOpenFile(file_index, filename, subdir, &(config->full_filename));
 	_cur.file_index = file_index; // XXX
 	_palette_remap_grf[_cur.file_index] = (config->palette & GRFP_USE_MASK);

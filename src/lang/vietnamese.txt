@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Bột mì
 STR_CARGO_PLURAL_RUBBER                                         :Cao su
 STR_CARGO_PLURAL_SUGAR                                          :Đường
 STR_CARGO_PLURAL_TOYS                                           :Đồ chơi
-STR_CARGO_PLURAL_CANDY                                          :Kẹo
+STR_CARGO_PLURAL_SWEETS                                         :Kẹo
 STR_CARGO_PLURAL_COLA                                           :Nước cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Kẹo bông
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Kẹo bông
 STR_CARGO_PLURAL_BUBBLES                                        :Bong bóng
 STR_CARGO_PLURAL_TOFFEE                                         :Kẹo bơ cứng
 STR_CARGO_PLURAL_BATTERIES                                      :Pin
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Bột mì
 STR_CARGO_SINGULAR_RUBBER                                       :Cao su
 STR_CARGO_SINGULAR_SUGAR                                        :Đường
 STR_CARGO_SINGULAR_TOY                                          :Đồ chơi
-STR_CARGO_SINGULAR_CANDY                                        :Kẹo
+STR_CARGO_SINGULAR_SWEETS                                       :Kẹo
 STR_CARGO_SINGULAR_COLA                                         :Nước cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Kẹo bông
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Kẹo bông
 STR_CARGO_SINGULAR_BUBBLE                                       :Bong bóng
 STR_CARGO_SINGULAR_TOFFEE                                       :Kẹo bơ cứng
 STR_CARGO_SINGULAR_BATTERY                                      :Pin
@@ -314,6 +314,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Tải trọng
 STR_SORT_BY_RANGE                                               :Tầm xa
 STR_SORT_BY_POPULATION                                          :Dân số
 STR_SORT_BY_RATING                                              :Đánh giá
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Tạm dừng trò chơi
@@ -1553,8 +1555,8 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Năm kết thú
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Năm mà ván chơi sẽ kết thúc và tính điểm. Khi năm đó kết thúc, điểm số của công ty sẽ được lưu lại và hiển thị bảng điểm chơi cao nhất, sau đó người chơi vẫn có thể tiếp tục ván chơi.{} Nếu năm được đặt nhỏ hơn năm bắt đầu, bảng điểm chơi cao nhất sẽ không bao giờ được hiển thị.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Không bao giờ
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Nền kinh tế ít biến động: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Nếu bật, sản lượng của nhà máy sẽ thay đổi thường xuyên hơn, và thay đổi với mức độ nhỏ hơn. Thiết lập này sẽ không có tác dụng nếu kiểu nhà máy định nghĩa bởi NewGRF
+STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :Nguyên gốc
+STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :Đóng băng
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Cho phép mua cổ phần của các công ty khác: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Nếu bật, cho phép mua và bán cổ phần công ty. Cổ phần chỉ có thể mua bán nếu công ty đã tồn tại một thời gian nhất định nào đó
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Tuổi công ty tối thiểu để bán cổ phần: {STRING}
@@ -1606,9 +1608,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Tuyến tính
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Trồng cây trong trò chơi: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Điều khiển sự xuất hiện tự dộng của cây cối khi đang chơi. Điều này có thể ảnh hưởng đến những nhà máy dựa vào cây cối, ví dự như nhà máy chế biến gỗgỗ
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :không có {RED}(nhà máy chế biến gỗ bị ngưng)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Chỉ trong rừng nhiệt đới
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Mọi nơi
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Vị trí của thanh công cụ chính: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Vị trí nằm ngang của thanh công cụ chính ở phía trên màn hình
@@ -1807,17 +1806,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Bản d�
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Thoát
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Bạn có chắc chắn muốn thoát khỏi OpenTTD và trở lại {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Đồng ý
 STR_QUIT_NO                                                     :{BLACK}Không đồng ý
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Thoát
@@ -1939,10 +1929,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Thay đ�
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Ván Chơi Mạng
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Đã quảng bá
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Lựa chọn ván chơi quảng bá (ra ngoài internet) và không quảng bá (Local Area Network, LAN)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Không
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Có
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Tên người chơi:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Đây là tên khác mà người chơi sẽ nhận ra bạn
 
@@ -1983,8 +1969,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Vào gam
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Refresh server
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Refresh thông tin server
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Tìm server
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Tìm server trong mạng
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Thêm server
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Thêm server vào danh sách luôn được chọn khi chạy game.
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Tạo server
@@ -2001,6 +1985,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Tên c�
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Đặt mật khẩu
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Bảo vệ game của bạn bằng mật khẩu nếu bạn không muốn người khác vào tùy tiện
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Đã quảng bá
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Lựa chọn ván chơi quảng bá (ra ngoài internet) và không quảng bá (Local Area Network, LAN)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Không
 STR_NETWORK_START_SERVER_ADVERTISED                             :Có
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} máy trạm
@@ -2222,8 +2208,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} v�
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} khai trương công ty mới (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} rời bỏ ván chơi ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} đổi tên thành {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} tặng công ty bạn {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Bạn cho {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Server kết thúc phiên
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Server khởi động lại...{}Xin chờ...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} đã bị đá khỏi ván chơi. Lý do: ({STRING})
@@ -2529,7 +2513,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Kích th
 STR_OBJECT_CLASS_LTHS                                           :Đèn biển
 STR_OBJECT_CLASS_TRNS                                           :Tháp tín hiệu
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Cây Cối
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Chọn loại cây để trồng. Nếu ô đó đã có cây, thao tác này sẽ thêm hỗn hợp nhiều cây khác độc lập với loại đã chọn
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Loại cây ngẫu nhiên
@@ -4653,6 +4637,11 @@ STR_BASEMUSIC_DOS_DESCRIPTION                                   :Nhạc của ng
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Nhạc của nguyên bản Transport Tycoon (Original/World Editor) cho DOS.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Gói âm nhạc này không có nhạc nào.
 
+STR_TRADITIONAL_TRAIN_NAME                                      :Đoàn tàu {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Ôtô {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Tàu thuỷ {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Máy bay {COMMA}
+
 ##id 0x2000
 # Town building names
 STR_TOWN_BUILDING_NAME_TALL_OFFICE_BLOCK_1                      :Cao ốc văn phòng
@@ -5039,6 +5028,7 @@ STR_FORMAT_BUOY_NAME                                            :Phao {TOWN}
 STR_FORMAT_BUOY_NAME_SERIAL                                     :Phao {TOWN} số #{COMMA}
 STR_FORMAT_COMPANY_NUM                                          :(Công ty {COMMA})
 STR_FORMAT_GROUP_NAME                                           :Nhóm {COMMA}
+STR_FORMAT_GROUP_VEHICLE_NAME                                   :{GROUP} #{COMMA}
 STR_FORMAT_INDUSTRY_NAME                                        :{1:STRING} {0:TOWN}
 STR_FORMAT_WAYPOINT_NAME                                        :Điểm mốc {TOWN}
 STR_FORMAT_WAYPOINT_NAME_SERIAL                                 :Điểm mốc {TOWN} số #{COMMA}

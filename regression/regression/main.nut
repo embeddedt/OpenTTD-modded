@@ -426,13 +426,14 @@ function Regression::Company()
 	print("  GetCompanyHQ():                    " + AICompany.GetCompanyHQ(AICompany.COMPANY_SELF));
 	print("  BuildCompanyHQ():                  " + AICompany.BuildCompanyHQ(AIMap.GetTileIndex(129, 129)));
 	print("  GetCompanyHQ():                    " + AICompany.GetCompanyHQ(AICompany.COMPANY_SELF));
-	print("  BuildCompanyHQ():                  " + AICompany.BuildCompanyHQ(AIMap.GetTileIndex(129, 128)));
+	print("  BuildCompanyHQ():                  " + AICompany.BuildCompanyHQ(AIMap.GetTileIndex(239, 76)));
 	print("  GetLastErrorString():              " + AIError.GetLastErrorString());
 	print("  GetAutoRenewStatus();              " + AICompany.GetAutoRenewStatus(AICompany.COMPANY_SELF));
 	print("  SetAutoRenewStatus(true);          " + AICompany.SetAutoRenewStatus(true));
 	print("  GetAutoRenewStatus();              " + AICompany.GetAutoRenewStatus(AICompany.COMPANY_SELF));
 	print("  SetAutoRenewStatus(true);          " + AICompany.SetAutoRenewStatus(true));
 	print("  SetAutoRenewStatus(false);         " + AICompany.SetAutoRenewStatus(false));
+	print("  GetAutoRenewStatus();              " + AICompany.GetAutoRenewStatus(AICompany.COMPANY_SELF));
 	print("  GetAutoRenewMonths();              " + AICompany.GetAutoRenewMonths(AICompany.COMPANY_SELF));
 	print("  SetAutoRenewMonths(-12);           " + AICompany.SetAutoRenewMonths(-12));
 	print("  GetAutoRenewMonths();              " + AICompany.GetAutoRenewMonths(AICompany.COMPANY_SELF));

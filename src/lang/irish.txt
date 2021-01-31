@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Cruinneacht
 STR_CARGO_PLURAL_RUBBER                                         :Rubar
 STR_CARGO_PLURAL_SUGAR                                          :Siúcra
 STR_CARGO_PLURAL_TOYS                                           :Bréagáin
-STR_CARGO_PLURAL_CANDY                                          :Milseáin
+STR_CARGO_PLURAL_SWEETS                                         :Milseáin
 STR_CARGO_PLURAL_COLA                                           :Cóla
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Scamall siúcra
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Scamall siúcra
 STR_CARGO_PLURAL_BUBBLES                                        :Súilíní
 STR_CARGO_PLURAL_TOFFEE                                         :Taifí
 STR_CARGO_PLURAL_BATTERIES                                      :Cadhnraí
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Cruithneacht
 STR_CARGO_SINGULAR_RUBBER                                       :Rubar
 STR_CARGO_SINGULAR_SUGAR                                        :Siúcra
 STR_CARGO_SINGULAR_TOY                                          :Bréagán
-STR_CARGO_SINGULAR_CANDY                                        :Milseán
+STR_CARGO_SINGULAR_SWEETS                                       :Milseán
 STR_CARGO_SINGULAR_COLA                                         :Cóla
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Scamall siúcra
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Scamall siúcra
 STR_CARGO_SINGULAR_BUBBLE                                       :Súilín
 STR_CARGO_SINGULAR_TOFFEE                                       :Taifí
 STR_CARGO_SINGULAR_BATTERY                                      :Ceallra
@@ -309,6 +309,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Méid an Lastai
 STR_SORT_BY_RANGE                                               :Raon
 STR_SORT_BY_POPULATION                                          :Daonra
 STR_SORT_BY_RATING                                              :Rátáil
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Cuir an cluiche ar sos
@@ -1506,8 +1508,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Iomlán
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Bíonn nuacht daite ann don chéad uair in: {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :An bhliain a thosaítear ar fhógraí nuachtáin daite a chlóbhualadh. Roimh an bhliain sin, úsáidtear dubh/bán monacrómach
 STR_CONFIG_SETTING_STARTING_YEAR                                :Bliain tosaigh: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Cumasaigh geilleagar níos míne (tuilleadh athruithe, agus iad níos lú): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Má dhéantar é a chumasú, athraíonn táirgeadh na dtionscal níos minice, agus i gcéimeanna níos lú. Is iondúil nach mbíonn aon tionchar ag an socrú seo má chuirtear na cineálacha tioinscail ar fáil in NewGRF
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Ceadaigh scaireanna a cheannach ó chuideachtaí eile: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Má tá sé cumasaithe, tá cead scaireanna i gcuideachta a cheannach agus a dhíol. Ní bheidh scaireanna ar fáil ach do chuideachtaí a bhfuil aois áirithe bainte amach acu
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :An céatadán den bhrabús a íocfar ar chuid den turas i gcórais fhriothálacha: {STRING}
@@ -1553,9 +1553,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :ceadaithe, leag
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Áit a chuirtear crainnte sa chluiche: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Rialaigh an áit a gcuirfear na crainn go fánach i rith an chluiche. D'fhéadfadh tionchar a bheith aige seo ar thionscail a bhíonn ag brath ar fhás na gcrann, muilte adhmaid mar shampla
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :ná dean{RED}(bristear an muileann adhmaid)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :i bhforaois bháistí amháin
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :gach áit
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Suíomh an phríomhbharra uirlisí: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Suíomh cothrománach an phríomhbharra uirlise ag barr an scáileáin
@@ -1753,17 +1750,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Tá {NUM
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Scoir
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}An bhfuil tú cinnte gur mhaith leat dul amach as OpenTTD agus filleadh ar {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Tá
 STR_QUIT_NO                                                     :{BLACK}Níl
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Fág an Cluiche
@@ -1884,10 +1872,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Athraigh
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Ilimreoirí
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Fógartha
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Roghnaigh idir cluiche fógartha (idirlín) agus cluiche neamhfhógartha (Líonra Achair Logánta, LAN)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Níl
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Tá
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Ainm imreora:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Seo an t-ainm faoina mbeidh imreoirí eile in ann tú a aithint
 
@@ -1928,8 +1912,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Téigh i
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Athnuaigh an freastalaí
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Athnuaigh faisnéis an fhreastalaí
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Aimsigh freastalaí
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Cuardaigh líonra le haghaidh freastalaí
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Cuir freastalaí leis
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Cuirtear freastalaí leis an liosta a sheiceálfar i gcónaí le haghaidh cluichí ar rith.
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Tosaigh freastalaí
@@ -1946,6 +1928,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Taispeá
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Socraigh pasfhocal
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Cosain do chluiche le pasfhocal más mian leat nach mbeidh rochtain phoiblí air
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Fógartha
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Roghnaigh idir cluiche fógartha (idirlín) agus cluiche neamhfhógartha (Líonra Achair Logánta, LAN)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Níl
 STR_NETWORK_START_SERVER_ADVERTISED                             :Tá
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} {P ch ch ch gc c}lia{P "" "" "" "" i}nt
@@ -2165,8 +2149,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** Tá {STRING
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** Thosaigh {STRING} cuideachta nua (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** D'fhág {STRING} an cluiche ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** D'athraigh {STRING} a (h)ainm go {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** Thug {STRING} {2:CURRENCY_LONG} dod' chuideachta
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Thug tú {2:CURRENCY_LONG} do {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Dhún an freastalaí an seisiún
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Tá an freastalaí á atosú...{}Fan go fóill...
 
@@ -2466,7 +2448,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Méid: {
 STR_OBJECT_CLASS_LTHS                                           :Tithe solais
 STR_OBJECT_CLASS_TRNS                                           :Tarchuradóirí
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Crainnte
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Roghnaigh an cineál crainn le cur
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Crainnte randamacha
@@ -4448,6 +4430,11 @@ STR_BASESOUNDS_WIN_DESCRIPTION                                  :Fuaimeanna buna
 STR_BASESOUNDS_NONE_DESCRIPTION                                 :Pacáiste fuaimeanna gan aon fhuaimeanna ann.
 STR_BASEMUSIC_WIN_DESCRIPTION                                   :Ceol bunaidh Transport Tycoon Deluxe, eagrán Windows.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Pacáiste ceoil gan aon cheol iarbhír ann.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Traein {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Feithicil Bóthair {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Long {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Aerárthach {COMMA}
 
 ##id 0x2000
 # Town building names

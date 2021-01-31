@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :قمح
 STR_CARGO_PLURAL_RUBBER                                         :مطاط
 STR_CARGO_PLURAL_SUGAR                                          :سكر
 STR_CARGO_PLURAL_TOYS                                           :دُمَي
-STR_CARGO_PLURAL_CANDY                                          :حلويات
+STR_CARGO_PLURAL_SWEETS                                         :حلويات
 STR_CARGO_PLURAL_COLA                                           :كولا
-STR_CARGO_PLURAL_COTTON_CANDY                                   :سكر نبات
+STR_CARGO_PLURAL_CANDYFLOSS                                     :سكر نبات
 STR_CARGO_PLURAL_BUBBLES                                        :فقاعات
 STR_CARGO_PLURAL_TOFFEE                                         :توفي
 STR_CARGO_PLURAL_BATTERIES                                      :بطاريات
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :قمح
 STR_CARGO_SINGULAR_RUBBER                                       :مطاط
 STR_CARGO_SINGULAR_SUGAR                                        :سكر
 STR_CARGO_SINGULAR_TOY                                          :دُمِيه
-STR_CARGO_SINGULAR_CANDY                                        :حلويات
+STR_CARGO_SINGULAR_SWEETS                                       :حلويات
 STR_CARGO_SINGULAR_COLA                                         :كولا
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :سكر نبات
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :سكر نبات
 STR_CARGO_SINGULAR_BUBBLE                                       :فقاعات
 STR_CARGO_SINGULAR_TOFFEE                                       :توفي
 STR_CARGO_SINGULAR_BATTERY                                      :بطاريات
@@ -291,6 +291,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :سعة الشح
 STR_SORT_BY_RANGE                                               :مدى
 STR_SORT_BY_POPULATION                                          :عدد السكان
 
+# Group by options for vehicle list
+
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}ايقاف اللعبة
 STR_TOOLBAR_TOOLTIP_FORWARD                                     :{BLACK}سرع اللعبه
@@ -446,9 +448,11 @@ STR_ABOUT_MENU_SEPARATOR                                        :
 STR_ABOUT_MENU_TOGGLE_CONSOLE                                   :توقل كونسول
 STR_ABOUT_MENU_AI_DEBUG                                         :مكتشف اخطاء الذكاء الصناعي
 STR_ABOUT_MENU_SCREENSHOT                                       :صورة من الشاشة - Ctrl-S -
+STR_ABOUT_MENU_SHOW_FRAMERATE                                   :سرعة عرض الإطارات
 STR_ABOUT_MENU_ABOUT_OPENTTD                                    :حول 'OpenTTD'
 STR_ABOUT_MENU_SPRITE_ALIGNER                                   :موائم العفريتات
 STR_ABOUT_MENU_TOGGLE_BOUNDING_BOXES                            :اضهار /اخفاء مربح الحوارات/الخيارات
+STR_ABOUT_MENU_TOGGLE_DIRTY_BLOCKS                              :تبديل ألوان الكتل المتسخة
 ############ range ends here
 
 ############ range for ordinal numbers used for the place in the highscore window
@@ -1077,6 +1081,8 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :يسار
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :متوسط
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :يمين
 
+STR_CONFIG_SETTING_CONSTRUCTION_SPEED                           ::سرعة البناء {STRING}
+STR_CONFIG_SETTING_VEHICLE_BREAKDOWNS                           ::تعطلات العربة {STRING}
 
 STR_CONFIG_SETTING_AUTOSLOPE                                    :السماح بتحريك الأرض تحت المباني, الطرق, الخ : {STRING}
 STR_CONFIG_SETTING_CATCHMENT                                    :السماح بحدود اكثر واقعية للمحطات بحسب الحجم: {STRING}
@@ -1125,6 +1131,7 @@ STR_CONFIG_SETTING_ORDER_REVIEW_ON                              :لكل العر
 STR_CONFIG_SETTING_WARN_INCOME_LESS                             :حذر عندما يكون الدخل سالبا :{STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES                        :المركبات لا تنتهي صلاحيتها ابدا : {STRING}
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE                            :جدد العربات عندما تصبح قديمة : {STRING}
+STR_CONFIG_SETTING_AUTORENEW_VEHICLE_HELPTEXT                   :عند التمكين ، يتم استبدال العربة التي اقتربت من نهاية عمرها عند اكتمال شروط التجديد
 STR_CONFIG_SETTING_AUTORENEW_MONEY                              :التجديد التلقائي عند توفر السيولة الدنيا للتجديد: {STRING}
 STR_CONFIG_SETTING_POPULATION_IN_LABEL                          :أعرض عدد السكان مع الاسم على العلامة: {STRING}
 STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS                         :سمك الخطوط في العرض: {STRING}
@@ -1249,6 +1256,7 @@ STR_CONFIG_SETTING_AI_IN_MULTIPLAYER                            :السماح ب
 STR_CONFIG_SETTING_SCRIPT_MAX_OPCODES                           :#opcodes قبل تعليق الاسكربت: {STRING}
 
 STR_CONFIG_SETTING_SERVINT_ISPERCENT                            :فترات الصيانة بالنسبة المئوية : {STRING}
+STR_CONFIG_SETTING_SERVINT_AIRCRAFT                             ::مدة فحص الطائرة الإفتراضي{STRING}
 STR_CONFIG_SETTING_NOSERVICE                                    :الغاء الصيانة عندما يكون التعطيل للمركبات غير مفعل: {STRING}
 STR_CONFIG_SETTING_WAGONSPEEDLIMITS                             :السماح بتحديد سرعة العربات: {STRING}
 STR_CONFIG_SETTING_DISABLE_ELRAILS                              :تعطيل سكة القطار الكهربائي: {STRING}
@@ -1281,7 +1289,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :ممتلئ
 
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :الاخبار الملونة تظهر في: {STRING}
 STR_CONFIG_SETTING_STARTING_YEAR                                :سنة البدايه: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :السماح بأقتصاد ثابت )تغيرات صغيرة اكثر): {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :السماح بشراء حصص من الشركات الاخرى: {STRING}
 STR_CONFIG_SETTING_SEMAPHORE_BUILD_BEFORE_DATE                  :اتاحة استخدام الأشارات بالأعلام قبل :{STRING}
 STR_CONFIG_SETTING_ENABLE_SIGNAL_GUI                            :السماح باستخدام اشارات واجهة المستخدم الرسومية: {STRING}
@@ -1309,9 +1316,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED                        :مسموح
 STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :مسموح - نمط مدينة قابل للتعديل
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :اضافة الاشجار اثناء اللعب: {STRING}
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :بدون {RED}-المشغولات الخشبية معطل-
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :الغابات الماطرة فقط
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :كل مكان
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :موقع شريط الأدوات الرئيسي: {STRING}
 STR_CONFIG_SETTING_STATUSBAR_POS                                :موقع شريط المعلومات: {STRING}
@@ -1338,6 +1342,7 @@ STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :مضاعف ال
 
 
 
+STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :م) متري)
 
 STR_CONFIG_SETTING_GRAPHICS                                     :رسوميات {ORANGE}
 STR_CONFIG_SETTING_SOUND                                        :{ORANGE}الصوت
@@ -1426,17 +1431,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}هذة �
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}انهاء
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}هل تود اغلاق النسخة المفتوحة و العودة لـ {STRING}?
 STR_QUIT_YES                                                    :{BLACK}نعم
 STR_QUIT_NO                                                     :{BLACK}لا
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :ويندوز
-STR_OSNAME_UNIX                                                 :يونكس
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :هايكو
-STR_OSNAME_OS2                                                  :او اس/2
-STR_OSNAME_SUNOS                                                :صن
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}إغلاق اللعبه
@@ -1595,8 +1591,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}أنضم
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}حدث الخادم
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}حدث معلومات الخادم
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}إبحث عن خوادم
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}أبحث في الشبكة عن خادم
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}اضف خادم - سيرفر
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}اضف خادم (سيرفر) و الذي سوف يفحص اذا كان هناك لعبة قيد التشغيل حاليا
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}أبدأ الخادم
@@ -1731,7 +1725,6 @@ STR_NETWORK_SERVER                                              :خادم
 STR_NETWORK_CLIENT                                              :عميل
 STR_NETWORK_SPECTATORS                                          :المشاهدين
 
-
 # Network set password
 STR_COMPANY_PASSWORD_CANCEL                                     :{BLACK}لا تحفظ كلمة المرور المدخلة
 STR_COMPANY_PASSWORD_OK                                         :{BLACK}اعط الشركة كلمة المرور الجديدة
@@ -1821,8 +1814,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ا
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} قد بدأ شركة جديدة: (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} قد غادر اللعبة : - {2:STRING}-
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} قد غير اسمه / اسمها الى {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} اعطى شركتك : {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** انت اعطيت {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}اقفل الخادم الجلسة
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}يتم بدأ الخادم من جديد ...{} الرجاء الأنتظار
 
@@ -2107,7 +2098,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}حجم: 
 STR_OBJECT_CLASS_LTHS                                           :مناراة ضوئية
 STR_OBJECT_CLASS_TRNS                                           :النواقل
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}اشجار
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK} اختر نوع الشجر لزراعتة, اذا المربع يحتوي على اشجار فهذا الامر يضيف المزيد
 STR_TREES_RANDOM_TYPE                                           :{BLACK}شجر عشوائي
@@ -2183,6 +2174,8 @@ STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}اعرض
 STR_INDUSTRY_DISPLAY_CHAIN_TOOLTIP                              :{BLACK}اعرض المصانع التي تمد و تقبل البضائع
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP                            :{BLACK}اربط بالخريطة المصغرة
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP_TOOLTIP                    :{BLACK}اعرض المصانع المختارة في الخرائط المصغرة ايضا.
+STR_INDUSTRY_CARGOES_SELECT_CARGO                               :{BLACK}اختر البضائع
+STR_INDUSTRY_CARGOES_SELECT_INDUSTRY                            :{BLACK}اختر الصناعة
 
 # Land area window
 STR_LAND_AREA_INFORMATION_CAPTION                               :{WHITE}معلومات ارض
@@ -2206,6 +2199,7 @@ STR_LAND_AREA_INFORMATION_AIRPORTTILE_NAME                      :{BLACK}اسم �
 STR_LAND_AREA_INFORMATION_NEWGRF_NAME                           :{BLACK}NewGRF: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_CARGO_ACCEPTED                        :{BLACK}الشحنة المقبولة: {LTBLUE}
 STR_LAND_AREA_INFORMATION_CARGO_EIGHTS                          :({COMMA} /8 {STRING})
+STR_LANG_AREA_INFORMATION_ROAD_TYPE                             :{BLACK}:نوع الطريق {LTBLUE}{STRING}
 STR_LANG_AREA_INFORMATION_RAIL_SPEED_LIMIT                      :{BLACK}حدود سرعة سكة الحديد: {LTBLUE}{VELOCITY}
 STR_LANG_AREA_INFORMATION_ROAD_SPEED_LIMIT                      :{BLACK}حدود سرعه الطريق: {LTBLUE}{VELOCITY}
 
@@ -2803,6 +2797,7 @@ STR_INDUSTRY_VIEW_LOCATION_TOOLTIP                              :{BLACK}وسط �
 STR_INDUSTRY_VIEW_PRODUCTION_LEVEL                              :{BLACK}نسبة الانتاج: {YELLOW}{COMMA}%
 
 
+STR_INDUSTRY_VIEW_REQUIRES                                      :{BLACK}:يتطلب
 
 STR_CONFIG_GAME_PRODUCTION                                      :{WHITE}تغيير الانتاج مضاعف من 8 الى 2040
 STR_CONFIG_GAME_PRODUCTION_LEVEL                                :{WHITE}غير مستوى الانتاج{}نسبة مئوية حتى 800%.
@@ -2912,6 +2907,7 @@ STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_BUTTON                 :{BLACK}شراء
 STR_BUY_VEHICLE_SHIP_BUY_VEHICLE_BUTTON                         :{BLACK}شراء سفينة
 STR_BUY_VEHICLE_AIRCRAFT_BUY_VEHICLE_BUTTON                     :{BLACK}شراء طائرة
 
+STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_REFIT_VEHICLE_BUTTON           :{BLACK}شراء العربة وتجديد بضائعها
 
 STR_BUY_VEHICLE_TRAIN_BUY_VEHICLE_TOOLTIP                       :{BLACK}شراء العربة الموضحة
 STR_BUY_VEHICLE_ROAD_VEHICLE_BUY_VEHICLE_TOOLTIP                :{BLACK}شراء العربة
@@ -2931,6 +2927,7 @@ STR_BUY_VEHICLE_AIRCRAFT_RENAME_TOOLTIP                         :{BLACK}اعاد
 
 
 
+STR_BUY_VEHICLE_AIRCRAFT_HIDE_SHOW_TOGGLE_TOOLTIP               :{BLACK}   تبيدل بين إخفاء / عرض نوع الطائرة
 
 STR_QUERY_RENAME_TRAIN_TYPE_CAPTION                             :{WHITE}اعادة تسمية عربات القطار
 STR_QUERY_RENAME_ROAD_VEHICLE_TYPE_CAPTION                      :{WHITE}اعادة تسمية العربة
@@ -3058,6 +3055,7 @@ STR_REPLACE_ELRAIL_VEHICLES                                     :سكة حديد
 STR_REPLACE_MONORAIL_VEHICLES                                   :عربات احادية السكة
 STR_REPLACE_MAGLEV_VEHICLES                                     :مركبات ممغنطة
 
+STR_REPLACE_TRAM_VEHICLES                                       :مركبات الترام
 
 STR_REPLACE_REMOVE_WAGON                                        :{BLACK} إزالة العربات: {ORANGE}{STRING}
 STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK} المحافظة على طول القطار بازالة عربات ابتداء من المقدمة عند التبديل - عندما يكون التبدل ينتج قطارا اطول.
@@ -3636,6 +3634,7 @@ STR_ERROR_CAN_ONLY_BE_BUILT_IN_TOWNS_WITH_POPULATION_OF_1200    :{WHITE}... يم
 STR_ERROR_CAN_ONLY_BE_BUILT_IN_RAINFOREST                       :{WHITE}... يمكن بنائة في الغابات المطيرة فقط
 STR_ERROR_CAN_ONLY_BE_BUILT_IN_DESERT                           :{WHITE}... يمكن بنائة في المناطق الصحراوية فقط
 STR_ERROR_CAN_ONLY_BE_BUILT_IN_TOWNS                            :{WHITE}... يبنى فقط في المدن
+STR_ERROR_CAN_ONLY_BE_BUILT_NEAR_TOWN_CENTER                    :{WHITE}... لا يمكن بناؤها إلا بقرب وسط المدن
 STR_ERROR_CAN_ONLY_BE_BUILT_IN_LOW_AREAS                        :{WHITE}... يمكن بنائه في المناطق المنخفضة فقط
 STR_ERROR_CAN_ONLY_BE_POSITIONED                                :{WHITE}... يمكن بنائة على اطراف الخريطة فقط
 STR_ERROR_FOREST_CAN_ONLY_BE_PLANTED                            :{WHITE}... يمكن زراعة الغابة فوق خط الثلج فقط
@@ -3913,6 +3912,11 @@ STR_BASESOUNDS_WIN_DESCRIPTION                                  :النسخة ا
 STR_BASESOUNDS_NONE_DESCRIPTION                                 :مجموعة صوت بدوت اصوات مضافة
 STR_BASEMUSIC_WIN_DESCRIPTION                                   :النسخة الاصلية من ترانسبورت تايكون ديلوكس الموسيقية نسخة وندوز
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :مجموعة موسيقى بدون موسيقى
+
+STR_TRADITIONAL_TRAIN_NAME                                      :قطار {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :عربة {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :سفينة {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :طائرة {COMMA}
 
 ##id 0x2000
 # Town building names

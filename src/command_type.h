@@ -291,6 +291,7 @@ enum Commands {
 	CMD_CHANGE_SERVICE_INT,           ///< change the server interval of a vehicle
 
 	CMD_BUILD_INDUSTRY,               ///< build a new industry
+	CMD_INDUSTRY_CTRL,                ///< change industry properties
 
 	CMD_SET_COMPANY_MANAGER_FACE,     ///< set the manager's face of the company
 	CMD_SET_COMPANY_COLOUR,           ///< set the colour of the company
@@ -470,7 +471,7 @@ enum DoCommandFlag {
 	DC_AUTO                  = 0x002, ///< don't allow building on structures
 	DC_QUERY_COST            = 0x004, ///< query cost only,  don't build.
 	DC_NO_WATER              = 0x008, ///< don't allow building on water
-	DC_NO_RAIL_OVERLAP       = 0x010, ///< don't allow overlap of rails (used in buildrail)
+	// 0x010 is unused
 	DC_NO_TEST_TOWN_RATING   = 0x020, ///< town rating does not disallow you from building
 	DC_BANKRUPT              = 0x040, ///< company bankrupts, skip money check, skip vehicle on tile check in some cases
 	DC_AUTOREPLACE           = 0x080, ///< autoreplace/autorenew is in progress, this shall disable vehicle limits when building, and ignore certain restrictions when undoing things (like vehicle attach callback)

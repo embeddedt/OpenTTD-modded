@@ -816,8 +816,7 @@ static void AddTileSpriteToDraw(SpriteID image, PaletteID pal, int32 x, int32 y,
 {
 	assert((image & SPRITE_MASK) < MAX_SPRITES);
 
-	/*C++17: TileSpriteToDraw &ts = */ _vd.tile_sprites_to_draw.emplace_back();
-	TileSpriteToDraw &ts = _vd.tile_sprites_to_draw.back();
+	TileSpriteToDraw &ts = _vd.tile_sprites_to_draw.emplace_back();
 	ts.image = image;
 	ts.pal = pal;
 	ts.sub = sub;
@@ -1038,8 +1037,7 @@ void AddSortableSpriteToDraw(SpriteID image, PaletteID pal, int x, int y, int w,
 		return;
 	}
 
-	/*C++17: ParentSpriteToDraw &ps = */ _vd.parent_sprites_to_draw.emplace_back();
-	ParentSpriteToDraw &ps = _vd.parent_sprites_to_draw.back();
+	ParentSpriteToDraw &ps = _vd.parent_sprites_to_draw.emplace_back();
 	ps.x = tmp_x;
 	ps.y = tmp_y;
 
@@ -1180,8 +1178,7 @@ void AddChildSpriteScreen(SpriteID image, PaletteID pal, int x, int y, bool tran
 
 	*_vd.last_child = (uint)_vd.child_screen_sprites_to_draw.size();
 
-	/*C++17: ChildScreenSpriteToDraw &cs = */ _vd.child_screen_sprites_to_draw.emplace_back();
-	ChildScreenSpriteToDraw &cs = _vd.child_screen_sprites_to_draw.back();
+	ChildScreenSpriteToDraw &cs = _vd.child_screen_sprites_to_draw.emplace_back();
 	cs.image = image;
 	cs.pal = pal;
 	cs.sub = sub;
@@ -1201,8 +1198,7 @@ void AddChildSpriteScreen(SpriteID image, PaletteID pal, int x, int y, bool tran
 static void AddStringToDraw(int x, int y, StringID string, uint64 params_1, uint64 params_2, Colours colour, uint16 width)
 {
 	assert(width != 0);
-	/*C++17: StringSpriteToDraw &ss = */ _vd.string_sprites_to_draw.emplace_back();
-	StringSpriteToDraw &ss = _vd.string_sprites_to_draw.back();
+	StringSpriteToDraw &ss = _vd.string_sprites_to_draw.emplace_back();
 	ss.string = string;
 	ss.x = x;
 	ss.y = y;
@@ -2193,9 +2189,8 @@ static inline Vehicle *GetVehicleFromWindow(Window *w)
 
 static inline TileIndex GetLastValidOrderLocation(const Vehicle *veh)
 {
-	Order *order;
 	TileIndex tmp, result = INVALID_TILE;
-	FOR_VEHICLE_ORDERS(veh, order) {
+	for(const Order *order : veh->Orders()) {
 		switch (order->GetType()) {
 			case OT_GOTO_STATION:
 			case OT_GOTO_WAYPOINT:
@@ -2211,7 +2206,7 @@ static inline TileIndex GetLastValidOrderLocation(const Vehicle *veh)
 	return result;
 }
 
-static inline Order *GetFinalOrder(const Vehicle *veh, Order *order)
+static inline const Order *GetFinalOrder(const Vehicle *veh, const Order *order)
 {
 	// Use Floyd's cycle-finding algorithm to prevent endless loop
 	// due to a cycle formed by confitional orders.
@@ -2244,9 +2239,8 @@ static bool ViewportMapPrepareVehicleRoute(const Vehicle * const veh)
 		TileIndex from_tile = GetLastValidOrderLocation(veh);
 		if (from_tile == INVALID_TILE) return false;
 
-		Order *order;
-		FOR_VEHICLE_ORDERS(veh, order) {
-			Order *final_order = GetFinalOrder(veh, order);
+		for(const Order *order : veh->Orders()) {
+			const Order *final_order = GetFinalOrder(veh, order);
 			if (final_order == nullptr) continue;
 			const TileIndex to_tile = final_order->GetLocation(veh, veh->type == VEH_AIRCRAFT);
 			if (to_tile == INVALID_TILE) continue;
@@ -2381,9 +2375,8 @@ static bool ViewportPrepareVehicleRouteSteps(const Vehicle * const veh)
 
 	if (_vp_route_steps.size() == 0) {
 		/* Prepare data. */
-		Order *order;
 		int order_rank = 0;
-		FOR_VEHICLE_ORDERS(veh, order) {
+		for(const Order *order : veh->Orders()) {
 			const TileIndex tile = order->GetLocation(veh, veh->type == VEH_AIRCRAFT);
 			order_rank++;
 			if (tile == INVALID_TILE) continue;
@@ -4710,6 +4703,18 @@ void VpStartPlaceSizing(TileIndex tile, ViewportPlaceMethod method, ViewportDrag
 	_special_mouse_mode = WSM_SIZING;
 }
 
+/** Drag over the map while holding the left mouse down. */
+void VpStartDragging(ViewportDragDropSelectionProcess process)
+{
+	_thd.select_method = VPM_X_AND_Y;
+	_thd.select_proc = process;
+	_thd.selstart.x = 0;
+	_thd.selstart.y = 0;
+	_thd.next_drawstyle = HT_RECT;
+
+	_special_mouse_mode = WSM_DRAGGING;
+}
+
 void VpSetPlaceSizingLimit(int limit)
 {
 	_thd.sizelimit = limit;
@@ -5589,7 +5594,7 @@ calc_heightdiff_single_direction:;
  */
 EventState VpHandlePlaceSizingDrag()
 {
-	if (_special_mouse_mode != WSM_SIZING) return ES_NOT_HANDLED;
+	if (_special_mouse_mode != WSM_SIZING && _special_mouse_mode != WSM_DRAGGING) return ES_NOT_HANDLED;
 
 	/* stop drag mode if the window has been closed */
 	Window *w = _thd.GetCallbackWnd();
@@ -5598,14 +5603,23 @@ EventState VpHandlePlaceSizingDrag()
 		return ES_HANDLED;
 	}
 
+	if (_left_button_down && _special_mouse_mode == WSM_DRAGGING) {
+		/* Only register a drag event when the mouse moved. */
+		if (_thd.new_pos.x == _thd.selstart.x && _thd.new_pos.y == _thd.selstart.y) return ES_HANDLED;
+		_thd.selstart.x = _thd.new_pos.x;
+		_thd.selstart.y = _thd.new_pos.y;
+	}
+
 	/* While dragging execute the drag procedure of the corresponding window (mostly VpSelectTilesWithMethod() ).
 	 * Do it even if the button is no longer pressed to make sure that OnPlaceDrag was called at least once. */
 	w->OnPlaceDrag(_thd.select_method, _thd.select_proc, GetTileBelowCursor());
 	if (_left_button_down) return ES_HANDLED;
 
-	/* mouse button released..
-	 * keep the selected tool, but reset it to the original mode. */
+	/* Mouse button released. */
 	_special_mouse_mode = WSM_NONE;
+	if (_special_mouse_mode == WSM_DRAGGING) return ES_HANDLED;
+
+	/* Keep the selected tool, but reset it to the original mode. */
 	HighLightStyle others = _thd.place_mode & ~(HT_DRAG_MASK | HT_DIR_MASK);
 	if ((_thd.next_drawstyle & HT_DRAG_MASK) == HT_RECT) {
 		_thd.place_mode = HT_RECT | others;

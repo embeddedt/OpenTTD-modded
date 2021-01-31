@@ -50,9 +50,9 @@ STR_CARGO_PLURAL_WHEAT                                          :חיטה
 STR_CARGO_PLURAL_RUBBER                                         :גומי
 STR_CARGO_PLURAL_SUGAR                                          :סוכר
 STR_CARGO_PLURAL_TOYS                                           :צעצועים
-STR_CARGO_PLURAL_CANDY                                          :ממתקים
+STR_CARGO_PLURAL_SWEETS                                         :ממתקים
 STR_CARGO_PLURAL_COLA                                           :קולה
-STR_CARGO_PLURAL_COTTON_CANDY                                   :שערות סבתא
+STR_CARGO_PLURAL_CANDYFLOSS                                     :שערות סבתא
 STR_CARGO_PLURAL_BUBBLES                                        :בועות
 STR_CARGO_PLURAL_TOFFEE                                         :טופי
 STR_CARGO_PLURAL_BATTERIES                                      :סוללות
@@ -92,10 +92,10 @@ STR_CARGO_SINGULAR_RUBBER                                       :גומי
 STR_CARGO_SINGULAR_SUGAR                                        :סוכר
 STR_CARGO_SINGULAR_TOY                                          :צעצוע
 STR_CARGO_SINGULAR_TOY.plural                                   :צעצועים
-STR_CARGO_SINGULAR_CANDY                                        :ממתק
-STR_CARGO_SINGULAR_CANDY.plural                                 :ממתקים
+STR_CARGO_SINGULAR_SWEETS                                       :ממתק
+STR_CARGO_SINGULAR_SWEETS.plural                                :ממתקים
 STR_CARGO_SINGULAR_COLA                                         :קולה
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :צמר גפן מתוק
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :צמר גפן מתוק
 STR_CARGO_SINGULAR_BUBBLE                                       :בועה
 STR_CARGO_SINGULAR_BUBBLE.plural                                :בועות
 STR_CARGO_SINGULAR_TOFFEE                                       :טופי
@@ -323,6 +323,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :קיבולת ס
 STR_SORT_BY_RANGE                                               :טווח
 STR_SORT_BY_POPULATION                                          :אכלוסיה
 STR_SORT_BY_RATING                                              :דרוג
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}השהה משחק
@@ -1531,8 +1533,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :מלא
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :{STRING} :הצג חדשות צבעוניות החל משנת
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :השנה בה הודעות העיתונות מודפסות בצבע. לפני שנה זו הן מודפסות בשחור-לבן.
 STR_CONFIG_SETTING_STARTING_YEAR                                :{STRING} :שנת התחלה
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :אפשר כלכלה עדינה (יותר, שינויים קטנים יותר): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :כאשר מאופשר, הייצור של תעשיה משתנה לעיתים קרובות יותר, ובצעדים קטנים יותר. להגדרה זו בדרך כלל אין שום השפעה אם סוגי תעשיות מסופקים ע"י NewGRF
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :אפשר קניית מניות מחברות אחרות: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :כאשר מאופשר, מתיר קנייה ומכירה של מניות של חברות. מניות יהיו זמינות רק עבור חברות המגיעות לגיל מסוים
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :אחוז הרווח מקטע נסיעה לתשלום במערכות הזנה: {STRING}
@@ -1578,9 +1578,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :מותר, מת�
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :מיקום עצים במהלך המשחק: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :שלוט בהופעה אקראית של עצים במהלך המשחק. זה עלול להשפיע על תעשיות המסתמכות על צמיחת עצים, לדוגמא מנסרות
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :ללא {RED}(שובר מנסרת עץ)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :רק ביערות גשם
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :בכל מקום
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :{STRING} :מיקום הסרגל העיקרי
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :מיקום אופקי של סרגל הכלים הראשי בראש המסך
@@ -1779,17 +1776,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}בתרג
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}צא
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}אתה בטוח שברצונך לצאת ולחזור ל{STRING}?
 STR_QUIT_YES                                                    :{BLACK}כן
 STR_QUIT_NO                                                     :{BLACK}לא
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :חלונות
-STR_OSNAME_UNIX                                                 :יוניקס
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :הייקו
-STR_OSNAME_OS2                                                  :מערכת הפעלה או.אס שתיים
-STR_OSNAME_SUNOS                                                :סולריס
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}עזיבת משחק
@@ -1910,10 +1898,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK} שנה 
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}משחק רשת
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}מפורסם
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}בחר בין משחק מפורסם (אינטרנטי) ומשחק לא מפורסם (רשת מקומית, LAN)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :לא
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :כן
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK} :שם השחקן
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}זהו שמך כפי שיצפה ע"י המשתתפים האחרים
 
@@ -1954,8 +1938,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}הצטר
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}רענן שרת
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}רענן את המידע המוצג לגבי השרת
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}אתר שרת
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}סרוק את הרשת לאיתור שרת
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}הוסף שרת
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}מוסיף שרת לרשימה שתמיד תבדק למשחקים פעילים.
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}הפעל שרת
@@ -1972,6 +1954,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}השם �
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}קבע סיסמה
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}הגן על המשחק שלך עם סיסמה אם אתה לא רוצה שהוא יהיה זמין לכולם
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}מפורסם
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}בחר בין משחק מפורסם (אינטרנטי) ומשחק לא מפורסם (רשת מקומית, LAN)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :לא
 STR_NETWORK_START_SERVER_ADVERTISED                             :כן
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} לקוח{P "" "ות"}
@@ -2191,8 +2175,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :.הצטרף ל�
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :{2:NUM} הקים חברה חדשה {NBSP}{0:STRING} ***
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :({2:STRING}) עזב את המשחק {NBSP}{0:STRING} ***
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :{STRING} שינה את שמו ל {STRING} ***
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :{2:CURRENCY_LONG} נתן לחברתך {NBSP}{0:STRING} ***
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :{2:CURRENCY_LONG} {1:STRING} נתת ל ***
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}השרת סגר את המשחק
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}השרת מופעל מחדש...{}אנא המתן...
 
@@ -2492,7 +2474,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}גודל
 STR_OBJECT_CLASS_LTHS                                           :מגדלורים
 STR_OBJECT_CLASS_TRNS                                           :אנטנות
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}עצים
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}בחר סוג עץ לנטיעה. במידה ויש עץ במשבצת, יתווספו עצים נוספים מסוגים שונים ללא קשר לסוג הנבחר
 STR_TREES_RANDOM_TYPE                                           :{BLACK}עצים מסוג אקראי
@@ -4524,6 +4506,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :מנגינות 
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :מנגינות Transport Tycoon Deluxe המקורי בגרסת DOS.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :מנגינות Transport Tycoon Deluxe (Original/World Editor) המקורי בגרסת DOS.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :אוסף מנגינות ללא מנגינות.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :רכבת {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :רכב {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :כלי שייט {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :כלי טייס {COMMA}
 
 ##id 0x2000
 # Town building names

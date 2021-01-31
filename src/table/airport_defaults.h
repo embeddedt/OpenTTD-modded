@@ -778,7 +778,7 @@ extern const AirportSpec _origin_airport_specs[] = {
 	AS_C(circle,         15,15, 2015, MAX_YEAR, 15, 50,150, 30, ATP_TTDP_LARGE,APC_HUGE,     STR_AIRPORT_CIRCLE,            0)
 };
 
-assert_compile(NEW_AIRPORT_OFFSET == lengthof(_origin_airport_specs));
+static_assert(NEW_AIRPORT_OFFSET == lengthof(_origin_airport_specs));
 
 const AirportSpec AirportSpec::dummy = AS_GENERIC(&_airportfta_dummy, nullptr, _default_airports_rotation, 0, nullptr, 0, 0, 0, 0, 0, MIN_YEAR, MIN_YEAR, 0, 0, ATP_TTDP_LARGE, APC_BEGIN, STR_NULL, 0, false);
 

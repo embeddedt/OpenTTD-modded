@@ -50,9 +50,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Hvete
 STR_CARGO_PLURAL_RUBBER                                         :Gummi
 STR_CARGO_PLURAL_SUGAR                                          :Sukker
 STR_CARGO_PLURAL_TOYS                                           :Leketøy
-STR_CARGO_PLURAL_CANDY                                          :Godteri
+STR_CARGO_PLURAL_SWEETS                                         :Godteri
 STR_CARGO_PLURAL_COLA                                           :Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Sukkerspinn
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Sukkerspinn
 STR_CARGO_PLURAL_BUBBLES                                        :Bobler
 STR_CARGO_PLURAL_TOFFEE                                         :Karamell
 STR_CARGO_PLURAL_BATTERIES                                      :Batterier
@@ -84,9 +84,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Hvete
 STR_CARGO_SINGULAR_RUBBER                                       :Gummi
 STR_CARGO_SINGULAR_SUGAR                                        :Sukker
 STR_CARGO_SINGULAR_TOY                                          :Leketøy
-STR_CARGO_SINGULAR_CANDY                                        :Godteri
+STR_CARGO_SINGULAR_SWEETS                                       :Godteri
 STR_CARGO_SINGULAR_COLA                                         :Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Sukkerspinn
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Sukkerspinn
 STR_CARGO_SINGULAR_BUBBLE                                       :Boble
 STR_CARGO_SINGULAR_TOFFEE                                       :Karamell
 STR_CARGO_SINGULAR_BATTERY                                      :Batteri
@@ -316,6 +316,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Lastekapasitet
 STR_SORT_BY_RANGE                                               :Rekkevidde
 STR_SORT_BY_POPULATION                                          :Folketall
 STR_SORT_BY_RATING                                              :Rangering
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Sett spillet på pause
@@ -866,6 +868,7 @@ STR_NEWS_NEW_VEHICLE_NOW_AVAILABLE                              :{BIG_FONT}{BLAC
 STR_NEWS_NEW_VEHICLE_TYPE                                       :{BIG_FONT}{BLACK}{ENGINE}
 STR_NEWS_NEW_VEHICLE_NOW_AVAILABLE_WITH_TYPE                    :{BLACK}Ny{G "" "" tt} {STRING} er nå tilgjengelig!  -  {ENGINE}
 
+STR_NEWS_SHOW_VEHICLE_GROUP_TOOLTIP                             :{BLACK}Vis gruppe- og kjøretøyliste basert på kjøretøyets gruppe
 
 STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO                        :{WHITE}{STATION} godtar ikke lenger {STRING}
 STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO_OR_CARGO               :{WHITE}{STATION} godtar ikke lenger {STRING} eller {STRING}
@@ -936,6 +939,7 @@ STR_GAME_OPTIONS_CURRENCY_MXN                                   :Meksikansk peso
 STR_GAME_OPTIONS_CURRENCY_NTD                                   :Ny Taiwan Dollar (NTD)
 STR_GAME_OPTIONS_CURRENCY_CNY                                   :Chinese Renminbi (CNY)
 STR_GAME_OPTIONS_CURRENCY_HKD                                   :Hong Kong Dollar (HKD)
+STR_GAME_OPTIONS_CURRENCY_INR                                   :Indisk rupi (INR)
 ############ end of currency region
 
 STR_GAME_OPTIONS_ROAD_VEHICLES_FRAME                            :{BLACK}Kjøretøy
@@ -1311,6 +1315,7 @@ STR_CONFIG_SETTING_POPULATION_IN_LABEL                          :Vis byers innby
 STR_CONFIG_SETTING_POPULATION_IN_LABEL_HELPTEXT                 :Vis inbyggertallet i byer i tittelfeltet på kartet
 STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS                         :Graflinjenes tykkelse: {STRING}
 STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS_HELPTEXT                :Linjebredde i grafene. En tynn linje er mer presis å lese av, mens en tykkere linje er lettere å se, og farger er lettere å skille
+STR_CONFIG_SETTING_SHOW_NEWGRF_NAME_HELPTEXT                    :Legg til en linje i bygg kjøretøy vinduet, som viser hvilken NewGRF det valgte kjøretøyet kommer fra.
 
 STR_CONFIG_SETTING_LANDSCAPE                                    :Landskap: {STRING}
 STR_CONFIG_SETTING_LANDSCAPE_HELPTEXT                           :Landskap definerer grunnleggende spill-scenarier med forskjellige laster og byers vekstkrav. NewGRF og spill-skript tillater imidlertid finere kontroll
@@ -1548,10 +1553,13 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Fullt
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Farge i avisen kommer i: {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Året der avisannonseringene bli vist i farger. Før dette året blir alle annonseringer vist i svart/hvitt,
 STR_CONFIG_SETTING_STARTING_YEAR                                :Start spillet i år: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Jevn økonomi (flere, mindre endringer): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Når denne er aktivert, endrer industriproduksjonen seg oftere, og i mindre trinn. Denne innstillingen har vanligvis ingen effekt hvis industriene er fra en NewGRF
+STR_CONFIG_SETTING_ENDING_YEAR                                  :Poengsum ved slutten av året: {STRING}
+STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Året spillet slutter med tanke på poeng. På slutten av dette året, vil firmaets poengsum bli lagret og tavlen med høyeste poengsummer vil vises. Spilleren kan fortsette å spille etter dette.{}Hvis dette er før start året, vil tavlen med høyeste poengsummer aldri vises.
+STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
+STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Aldri
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Tillat aksjekjøp i andre firmaer: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Når aktivert, tillates kjøp og salg av selskapers aksjer. Aksjer vil kun være tilgjengelig selskaper som når en viss alder
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Sett minimum levetid for et selskap, før andre kan kjøpe og selge aksjer fra dem.
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Prosentandel av etappe-overskudd som skal betales i innmatingssystem: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Andel av inntekten gitt til de mellomliggende etapper i et overføringssystem, noe som gir mer kontroll over inntektene
 STR_CONFIG_SETTING_DRAG_SIGNALS_DENSITY                         :Når du drar en linje, plasser signaler hver: {STRING}
@@ -1599,9 +1607,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Lineær
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Plassering av trær i spillet: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Kontroll tilfeldige utseender til tre under spillet. Dette kan påvirke industrier som avhenger av trevekst, for eksempel trelast
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Ingen {RED}(ødelegger sagbruk)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Kun i regnskog
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Overalt
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Plassering av hovedverktøylinje: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Horisontal posisjon av hoved verktøylinjen på toppen av skjermen
@@ -1800,17 +1805,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Denne ov
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Avslutt
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Er du sikker på at du vil avslutte OpenTTD og gå tilbake til {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Ja
 STR_QUIT_NO                                                     :{BLACK}Nei
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Avslutt spill
@@ -1932,10 +1928,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Endre sl
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Flerspiller
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Annonsert
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Velg mellom et utlyst (internett) og et ikke utlyst (Lokalnettverk, LAN) spill
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Nei
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Ja
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Spillernavn:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Dette er navnet andre spillere vil identifisere deg med
 
@@ -1976,8 +1968,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Bli med 
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Oppdater tjener
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Oppdater tjenerinfo
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Finn tjenere
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Søk på nettverket etter en tjener
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Legg til tjener
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Legger til en tjener til listen som alltid vil bli sjekket for aktive spill.
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Start tjener
@@ -1994,6 +1984,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Spillnav
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Sett passord
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Beskytt ditt spill med et passord hvis du ikke vil at hvem som helst skal bli med på det
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Annonsert
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Velg mellom et utlyst (internett) og et ikke utlyst (Lokalnettverk, LAN) spill
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Nei
 STR_NETWORK_START_SERVER_ADVERTISED                             :Ja
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} klient{P "" er}
@@ -2160,6 +2152,7 @@ STR_NETWORK_ERROR_WRONG_PASSWORD                                :{WHITE}Feil pas
 STR_NETWORK_ERROR_SERVER_FULL                                   :{WHITE}Tjeneren er full
 STR_NETWORK_ERROR_SERVER_BANNED                                 :{WHITE}Du er bannlyst fra denne tjeneren
 STR_NETWORK_ERROR_KICKED                                        :{WHITE}Du ble kastet ut av spillet
+STR_NETWORK_ERROR_KICK_MESSAGE                                  :{WHITE}Grunn: {STRING}
 STR_NETWORK_ERROR_CHEATER                                       :{WHITE}Juksing er ikke tillatt på denne tjeneren
 STR_NETWORK_ERROR_TOO_MANY_COMMANDS                             :{WHITE}Du sendte for mange kommandoer til serveren
 STR_NETWORK_ERROR_TIMEOUT_PASSWORD                              :{WHITE}Du brukte for lang tid på å skrive inn passordet
@@ -2215,8 +2208,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ha
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} har startet et nytt firma (nr. {2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} har forlatt spillet ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} har forandret sitt navn til {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} ga {2:CURRENCY_LONG} til ditt firma
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Du ga {2:CURRENCY_LONG} til {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Tjeneren avsluttet spillet
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Tjeneren starter på nytt...{}Vennligst vent...
 
@@ -2521,7 +2512,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Størrel
 STR_OBJECT_CLASS_LTHS                                           :Fyrtårn
 STR_OBJECT_CLASS_TRNS                                           :Radiosendere
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Trær
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Velg typen tre som skal plantes. Hvis feltet allerede har et tre, vil dette plante flere typer trær uavhengig av den valgte typen
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Trær av tilfeldig type
@@ -3116,6 +3107,8 @@ STR_TOWN_VIEW_RENAME_TOWN_BUTTON                                :Endre bynavnet
 
 # Town local authority window
 STR_LOCAL_AUTHORITY_CAPTION                                     :{WHITE}{TOWN}s bystyre
+STR_LOCAL_AUTHORITY_ZONE                                        :{BLACK}Område
+STR_LOCAL_AUTHORITY_ZONE_TOOLTIP                                :{BLACK}Vis zonene innenfor de lokale myndigheters grenser
 STR_LOCAL_AUTHORITY_COMPANY_RATINGS                             :{BLACK}Vurdering av transportfirma:
 STR_LOCAL_AUTHORITY_COMPANY_RATING                              :{YELLOW}{COMPANY} {COMPANY_NUM}: {ORANGE}{STRING}
 STR_LOCAL_AUTHORITY_ACTIONS_TITLE                               :{BLACK}Handlinger tilgjengelig:
@@ -3386,8 +3379,17 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_TOTAL                           :{WHITE}{CURRENC
 # Industry directory
 STR_INDUSTRY_DIRECTORY_CAPTION                                  :{WHITE}Industrier
 STR_INDUSTRY_DIRECTORY_NONE                                     :{ORANGE}- Ingen -
+STR_INDUSTRY_DIRECTORY_ITEM_INFO                                :{BLACK}{CARGO_LONG}{STRING}{YELLOW} ({COMMA}% transportert){BLACK}
 STR_INDUSTRY_DIRECTORY_ITEM_NOPROD                              :{ORANGE}{INDUSTRY}
+STR_INDUSTRY_DIRECTORY_ITEM_PROD1                               :{ORANGE}{INDUSTRY} {STRING}
+STR_INDUSTRY_DIRECTORY_ITEM_PROD2                               :{ORANGE}{INDUSTRY} {STRING}, {STRING}
+STR_INDUSTRY_DIRECTORY_ITEM_PROD3                               :{ORANGE}{INDUSTRY} {STRING}, {STRING}, {STRING}
+STR_INDUSTRY_DIRECTORY_ITEM_PRODMORE                            :{ORANGE}{INDUSTRY} {STRING}, {STRING}, {STRING} og {NUM} flere...
 STR_INDUSTRY_DIRECTORY_LIST_CAPTION                             :{BLACK}Industrinavn - klikk på navn for å gå til industri. Ctrl+klikk åpner et nytt tilleggsvindu over industrien
+STR_INDUSTRY_DIRECTORY_ACCEPTED_CARGO_FILTER                    :{BLACK}Godtatte varer:{SILVER}{STRING}
+STR_INDUSTRY_DIRECTORY_PRODUCED_CARGO_FILTER                    :{BLACK}Produserte varer: {SILVER}{STRING}
+STR_INDUSTRY_DIRECTORY_FILTER_ALL_TYPES                         :Alle varetyper
+STR_INDUSTRY_DIRECTORY_FILTER_NONE                              :Ingen
 
 # Industry view
 STR_INDUSTRY_VIEW_CAPTION                                       :{WHITE}{INDUSTRY}
@@ -4163,6 +4165,13 @@ STR_AI_LIST_ACCEPT_TOOLTIP                                      :{BLACK}Velg det
 STR_AI_LIST_CANCEL                                              :{BLACK}Avbryt
 STR_AI_LIST_CANCEL_TOOLTIP                                      :{BLACK}Ikke endre skriptet
 
+STR_SCREENSHOT_CAPTION                                          :WHITE}Ta skjermbilde
+STR_SCREENSHOT_SCREENSHOT                                       :{BLACK}Normalt skjermbilde
+STR_SCREENSHOT_ZOOMIN_SCREENSHOT                                :{BLACK}Skjermbilde med maksimal zoom
+STR_SCREENSHOT_DEFAULTZOOM_SCREENSHOT                           :{BLACK}Standard zoomet skjermbilde
+STR_SCREENSHOT_WORLD_SCREENSHOT                                 :{BLACK}Skjermbilde av hele kartat
+STR_SCREENSHOT_HEIGHTMAP_SCREENSHOT                             :{BLACK}Høydekart skjermbilde
+STR_SCREENSHOT_MINIMAP_SCREENSHOT                               :{BLACK}Oversiktskart skjermbilde
 
 # AI Parameters
 STR_AI_SETTINGS_CAPTION                                         :{WHITE}{STRING} Parametre
@@ -4627,6 +4636,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Original musikk
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Original Transport Tycoon Deluxe DOS edition music.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Original Transport Tycoon (Original/World Editor) DOS edition music.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :En musikkpakke uten noe musikk.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Tog {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Kjøretøy {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Skip {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Luftfartøy {COMMA}
 
 ##id 0x2000
 # Town building names

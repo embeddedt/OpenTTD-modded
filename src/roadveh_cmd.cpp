@@ -64,7 +64,7 @@ static const uint16 _roadveh_full_adder[] = {
 	 0,  16,  16,   0,   8,   8,   8,   8,
 	 0,   0,   0,   8,   8,   8,   8
 };
-assert_compile(lengthof(_roadveh_images) == lengthof(_roadveh_full_adder));
+static_assert(lengthof(_roadveh_images) == lengthof(_roadveh_full_adder));
 
 template <>
 bool IsValidImageIndex<VEH_ROAD>(uint8 image_index)
@@ -616,12 +616,8 @@ static void RoadVehCrash(RoadVehicle *v)
 	Game::NewEvent(new ScriptEventVehicleCrashed(v->index, v->tile, ScriptEventVehicleCrashed::CRASH_RV_LEVEL_CROSSING));
 
 	SetDParam(0, pass);
-	AddVehicleNewsItem(
-		(pass == 1) ?
-			STR_NEWS_ROAD_VEHICLE_CRASH_DRIVER : STR_NEWS_ROAD_VEHICLE_CRASH,
-		NT_ACCIDENT,
-		v->index
-	);
+	StringID newsitem = (pass == 1) ? STR_NEWS_ROAD_VEHICLE_CRASH_DRIVER : STR_NEWS_ROAD_VEHICLE_CRASH;
+	AddTileNewsItem(newsitem, NT_ACCIDENT, v->tile);
 
 	ModifyStationRatingAround(v->tile, v->owner, -160, 22);
 	if (_settings_client.sound.disaster) SndPlayVehicleFx(SND_12_EXPLOSION, v);
@@ -794,13 +790,19 @@ static void RoadVehArrivesAt(const RoadVehicle *v, Station *st)
  */
 int RoadVehicle::UpdateSpeed()
 {
+	int max_speed = this->GetCurrentMaxSpeed();
 	switch (_settings_game.vehicle.roadveh_acceleration_model) {
 		default: NOT_REACHED();
-		case AM_ORIGINAL:
-			return this->DoUpdateSpeed(AM_ORIGINAL, this->overtaking != 0 ? 256 : 128, 0, this->GetCurrentMaxSpeed(), 1);
+		case AM_ORIGINAL: {
+			int acceleration = this->overtaking != 0 ? 512 : 256;
+			return this->DoUpdateSpeed({ acceleration, acceleration }, 0, max_speed, max_speed);
+		}
 
-		case AM_REALISTIC:
-			return this->DoUpdateSpeed(AM_REALISTIC, this->GetAcceleration() + (this->overtaking != 0 ? 500 : 0), this->GetAccelerationStatus() == AS_BRAKE ? 0 : 8, this->GetCurrentMaxSpeed(), 1);
+		case AM_REALISTIC: {
+			GroundVehicleAcceleration acceleration = this->GetAcceleration();
+			if (this->overtaking != 0) acceleration.acceleration += 256;
+			return this->DoUpdateSpeed(acceleration, this->GetAccelerationStatus() == AS_BRAKE ? 0 : 4, max_speed, max_speed);
+		}
 	}
 }
 
@@ -1021,7 +1023,7 @@ static void RoadVehCheckOvertake(RoadVehicle *v, RoadVehicle *u)
 	/* Can't overtake a vehicle that is moving faster than us. If the vehicle in front is
 	 * accelerating, take the maximum speed for the comparison, else the current speed.
 	 * Original acceleration always accelerates, so always use the maximum speed. */
-	int u_speed = (_settings_game.vehicle.roadveh_acceleration_model == AM_ORIGINAL || u->GetAcceleration() > 0) ? u->GetCurrentMaxSpeed() : u->cur_speed;
+	int u_speed = (_settings_game.vehicle.roadveh_acceleration_model == AM_ORIGINAL || u->GetAcceleration().acceleration > 0) ? u->GetCurrentMaxSpeed() : u->cur_speed;
 	if (u_speed >= v->GetCurrentMaxSpeed() &&
 			!(u->vehstatus & VS_STOPPED) &&
 			u->cur_speed != 0) {
@@ -1259,6 +1261,7 @@ static Trackdir RoadFindPathToDest(RoadVehicle *v, TileIndex tile, DiagDirection
 
 		default: NOT_REACHED();
 	}
+	DEBUG_UPDATESTATECHECKSUM("RoadFindPathToDest: v: %u, path_found: %d, best_track: %d", v->index, path_found, best_track);
 	UpdateStateChecksum((((uint64) v->index) << 32) | (path_found << 16) | best_track);
 	v->HandlePathfindingResult(path_found);
 
@@ -2116,7 +2119,9 @@ Money RoadVehicle::GetRunningCost() const
 
 bool RoadVehicle::Tick()
 {
+	DEBUG_UPDATESTATECHECKSUM("RoadVehicle::Tick 1: v: %u, x: %d, y: %d", this->index, this->x_pos, this->y_pos);
 	UpdateStateChecksum((((uint64) this->x_pos) << 32) | this->y_pos);
+	DEBUG_UPDATESTATECHECKSUM("RoadVehicle::Tick 2: v: %u, state: %d, frame: %d", this->index, this->state, this->frame);
 	UpdateStateChecksum((((uint64) this->state) << 32) | this->frame);
 	if (this->IsFrontEngine()) {
 		if (!(this->IsRoadVehicleStopped() || this->IsWaitingInDepot())) this->running_ticks++;

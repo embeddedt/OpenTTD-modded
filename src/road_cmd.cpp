@@ -63,7 +63,7 @@ RoadTypes _roadtypes_type;
  */
 void ResetRoadTypes()
 {
-	assert_compile(lengthof(_original_roadtypes) <= lengthof(_roadtypes));
+	static_assert(lengthof(_original_roadtypes) <= lengthof(_roadtypes));
 
 	uint i = 0;
 	for (; i < lengthof(_original_roadtypes); i++) _roadtypes[i] = _original_roadtypes[i];
@@ -771,6 +771,7 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 					if (GetRoadType(tile, OtherRoadTramType(rtt)) == INVALID_ROADTYPE) {
 						/* Includes MarkTileDirtyByTile() */
 						DoClearSquare(tile);
+						DeleteNewGRFInspectWindow(GSF_ROADTYPES, tile);
 					} else {
 						if (rtt == RTT_ROAD && IsRoadOwner(tile, rtt, OWNER_TOWN)) {
 							/* Update nearest-town index */
@@ -825,6 +826,13 @@ static CommandCost RemoveRoad(TileIndex tile, DoCommandFlag flags, RoadBits piec
 						c->infrastructure.rail[GetRailType(tile)] -= LEVELCROSSING_TRACKBIT_FACTOR - 1;
 						DirtyCompanyInfrastructureWindows(c->index);
 					}
+
+					if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+						AddTrackToSignalBuffer(tile, railtrack, GetTileOwner(tile));
+						UpdateSignalsInBuffer();
+					}
+
+					DeleteNewGRFInspectWindow(GSF_ROADTYPES, tile);
 				} else {
 					SetRoadType(tile, rtt, INVALID_ROADTYPE);
 				}
@@ -1106,6 +1114,10 @@ CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 				if (RoadLayoutChangeNotificationEnabled(true)) NotifyRoadLayoutChangedIfTileNonLeaf(tile, rtt, GetCrossingRoadBits(tile));
 				if (rtt == RTT_ROAD) {
 					UpdateRoadCachedOneWayStatesAroundTile(tile);
+				}
+				if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+					AddTrackToSignalBuffer(tile, railtrack, GetTileOwner(tile));
+					UpdateSignalsInBuffer();
 				}
 				MarkTileDirtyByTile(tile);
 			}
@@ -1597,7 +1609,8 @@ CommandCost CmdRemoveLongRoad(TileIndex start_tile, DoCommandFlag flags, uint32 
 		FlushDeferredUpdateRoadCachedOneWayStates();
 	});
 
-	Money money = GetAvailableMoneyForCommand();
+	Money money_available = GetAvailableMoneyForCommand();
+	Money money_spent = 0;
 	TileIndex tile = start_tile;
 	CommandCost last_error = CMD_ERROR;
 	bool had_success = false;
@@ -1614,8 +1627,8 @@ CommandCost CmdRemoveLongRoad(TileIndex start_tile, DoCommandFlag flags, uint32 
 			CommandCost ret = RemoveRoad(tile, flags & ~DC_EXEC, bits, rtt, true);
 			if (ret.Succeeded()) {
 				if (flags & DC_EXEC) {
-					money -= ret.GetCost();
-					if (money < 0) {
+					money_spent += ret.GetCost();
+					if (money_spent > 0 && money_spent > money_available) {
 						_additional_cash_required = DoCommand(start_tile, end_tile, p2, flags & ~DC_EXEC, CMD_REMOVE_LONG_ROAD).GetCost();
 						return cost;
 					}
@@ -1679,7 +1692,7 @@ CommandCost CmdBuildRoadDepot(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
 		dep->build_date = _date;
 
 		/* A road depot has two road bits. */
-		UpdateCompanyRoadInfrastructure(rt, _current_company, 2);
+		UpdateCompanyRoadInfrastructure(rt, _current_company, ROAD_DEPOT_TRACKBIT_FACTOR);
 
 		MakeRoadDepot(tile, _current_company, dep->index, dir, rt);
 		MarkTileDirtyByTile(tile);
@@ -1707,7 +1720,7 @@ static CommandCost RemoveRoadDepot(TileIndex tile, DoCommandFlag flags)
 			/* A road depot has two road bits. */
 			RoadType rt = GetRoadTypeRoad(tile);
 			if (rt == INVALID_ROADTYPE) rt = GetRoadTypeTram(tile);
-			c->infrastructure.road[rt] -= 2;
+			c->infrastructure.road[rt] -= ROAD_DEPOT_TRACKBIT_FACTOR;
 			DirtyCompanyInfrastructureWindows(c->index);
 		}
 
@@ -1715,6 +1728,7 @@ static CommandCost RemoveRoadDepot(TileIndex tile, DoCommandFlag flags)
 		DoClearSquare(tile);
 
 		NotifyRoadLayoutChanged(false);
+		DeleteNewGRFInspectWindow(GSF_ROADTYPES, tile);
 	}
 
 	return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_CLEAR_DEPOT_ROAD]);
@@ -2920,6 +2934,17 @@ CommandCost CmdConvertRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 		Owner owner = GetRoadOwner(tile, rtt);
 		if (!CanConvertUnownedRoadType(owner, rtt)) {
 			CommandCost ret = CheckOwnership(owner, tile);
+			if (ret.Failed()) {
+				error = ret;
+				continue;
+			}
+		}
+
+		/* Base the ability to replace town roads and bridges on the town's
+		 * acceptance of destructive actions. */
+		if (owner == OWNER_TOWN) {
+			Town *t = ClosestTownFromTile(tile, _settings_game.economy.dist_local_authority);
+			CommandCost ret = CheckforTownRating(DC_NONE, t, tt == MP_TUNNELBRIDGE ? TUNNELBRIDGE_REMOVE : ROAD_REMOVE);
 			if (ret.Failed()) {
 				error = ret;
 				continue;

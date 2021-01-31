@@ -119,11 +119,25 @@ void MarkBridgeOrTunnelDirty(TileIndex tile, ViewportMarkDirtyFlags flags)
 void MarkBridgeOrTunnelDirtyOnReservationChange(TileIndex tile, ViewportMarkDirtyFlags flags)
 {
 	if (IsTunnelBridgeWithSignalSimulation(tile)) {
-		MarkTileDirtyByTile(tile, flags);
+		if (IsBridge(tile)) {
+			MarkTileDirtyByTile(tile, flags);
+		} else {
+			MarkTileGroundDirtyByTile(tile, flags);
+		}
 	} else if (IsBridge(tile)) {
 		MarkBridgeDirty(tile, flags);
 	} else {
-		MarkTileDirtyByTile(tile, flags);
+		MarkTileGroundDirtyByTile(tile, flags);
+	}
+}
+
+uint GetTunnelBridgeSignalSimulationSpacing(TileIndex tile)
+{
+	Owner owner = GetTileOwner(tile);
+	if (Company::IsValidID(owner)) {
+		return Company::Get(owner)->settings.simulated_wormhole_signals;
+	} else {
+		return 4;
 	}
 }
 
@@ -135,7 +149,7 @@ void MarkBridgeOrTunnelDirtyOnReservationChange(TileIndex tile, ViewportMarkDirt
  */
 uint GetTunnelBridgeSignalSimulationSignalCount(TileIndex begin, TileIndex end)
 {
-	uint result = 2 + (GetTunnelBridgeLength(begin, end) / _settings_game.construction.simulated_wormhole_signals);
+	uint result = 2 + (GetTunnelBridgeLength(begin, end) / GetTunnelBridgeSignalSimulationSpacing(begin));
 	if (IsTunnelBridgeSignalSimulationBidirectional(begin)) result *= 2;
 	return result;
 }
@@ -388,6 +402,7 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 	Owner owner;
 	bool is_new_owner;
 	bool is_upgrade = false;
+	std::vector<Train *> vehicles_affected;
 	if (IsBridgeTile(tile_start) && IsBridgeTile(tile_end) &&
 			GetOtherBridgeEnd(tile_start) == tile_end &&
 			GetTunnelBridgeTransportType(tile_start) == transport_type) {
@@ -429,6 +444,26 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 		/* Do not allow replacing another company's bridges. */
 		if (!IsTileOwner(tile_start, company) && !IsTileOwner(tile_start, OWNER_TOWN) && !IsTileOwner(tile_start, OWNER_NONE)) {
 			return_cmd_error(STR_ERROR_AREA_IS_OWNED_BY_ANOTHER);
+		}
+
+		if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && GetBridgeSpec(bridge_type)->speed < GetBridgeSpec(GetBridgeType(tile_start))->speed) {
+			CommandCost ret = CheckTrainInTunnelBridgePreventsTrackModification(tile_start, tile_end);
+			if (ret.Failed()) return ret;
+			for (TileIndex t : { tile_start, tile_end }) {
+				TrackBits reserved = GetBridgeReservationTrackBits(t);
+				Track track;
+				while ((track = RemoveFirstTrack(&reserved)) != INVALID_TRACK) {
+					Train *v = GetTrainForReservation(t, track);
+					if (v != nullptr) {
+						CommandCost ret = CheckTrainReservationPreventsTrackModification(v);
+						if (ret.Failed()) return ret;
+						if (flags & DC_EXEC) {
+							FreeTrainTrackReservation(v);
+							vehicles_affected.push_back(v);
+						}
+					}
+				}
+			}
 		}
 
 		cost.AddCost((bridge_len + 1) * _price[PR_CLEAR_BRIDGE]); // The cost of clearing the current bridge.
@@ -702,6 +737,9 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 		Track track = AxisToTrack(direction);
 		AddSideToSignalBuffer(tile_start, INVALID_DIAGDIR, company);
 		YapfNotifyTrackLayoutChange(tile_start, track);
+		for (uint i = 0; i < vehicles_affected.size(); ++i) {
+			TryPathReserve(vehicles_affected[i], true);
+		}
 	}
 
 	/* Human players that build bridges get a selection to choose from (DC_QUERY_COST)
@@ -975,8 +1013,7 @@ CommandCost CmdBuildTunnel(TileIndex start_tile, DoCommandFlag flags, uint32 p1,
 		 * Do this for all tiles (like trees), not only objects. */
 		ClearedObjectArea *coa = FindClearedObject(end_tile);
 		if (coa == nullptr) {
-			/*C++17: coa = &*/ _cleared_object_areas.push_back({end_tile, TileArea(end_tile, 1, 1)});
-			coa = &_cleared_object_areas.back();
+			coa = &_cleared_object_areas.emplace_back(ClearedObjectArea{ end_tile, TileArea(end_tile, 1, 1) });
 		}
 
 		/* Hide the tile from the terraforming command */
@@ -985,7 +1022,7 @@ CommandCost CmdBuildTunnel(TileIndex start_tile, DoCommandFlag flags, uint32 p1,
 
 		/* CMD_TERRAFORM_LAND may append further items to _cleared_object_areas,
 		 * however it will never erase or re-order existing items.
-		 * _cleared_object_areas is a value-type SmallVector, therefore appending items
+		 * _cleared_object_areas is a value-type self-resizing vector, therefore appending items
 		 * may result in a backing-store re-allocation, which would invalidate the coa pointer.
 		 * The index of the coa pointer into the _cleared_object_areas vector remains valid,
 		 * and can be used safely after the CMD_TERRAFORM_LAND operation.
@@ -1127,6 +1164,15 @@ static CommandCost DoClearTunnel(TileIndex tile, DoCommandFlag flags)
 		if (ret.Failed()) return ret;
 	}
 
+	if (GetTunnelBridgeTransportType(tile) == TRANSPORT_RAIL && _settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+		DiagDirection dir = GetTunnelBridgeDirection(tile);
+		Track track = DiagDirToDiagTrack(dir);
+		CommandCost ret = CheckTrainReservationPreventsTrackModification(tile, track);
+		if (ret.Failed()) return ret;
+		ret = CheckTrainReservationPreventsTrackModification(endtile, track);
+		if (ret.Failed()) return ret;
+	}
+
 	/* checks if the owner is town then decrease town rating by RATING_TUNNEL_BRIDGE_DOWN_STEP until
 	 * you have a "Poor" (0) town rating */
 	if (IsTileOwner(tile, OWNER_TOWN) && _game_mode != GM_EDITOR) {
@@ -1144,11 +1190,18 @@ static CommandCost DoClearTunnel(TileIndex tile, DoCommandFlag flags)
 			Track track = DiagDirToDiagTrack(dir);
 			Owner owner = GetTileOwner(tile);
 
-			Train *v = nullptr;
-			if (HasTunnelReservation(tile)) {
-				v = GetTrainForReservation(tile, track);
-				if (v != nullptr) FreeTrainTrackReservation(v);
-			}
+			std::vector<Train *> vehicles_affected;
+			auto check_tile = [&](TileIndex t) {
+				if (HasTunnelReservation(t)) {
+					Train *v = GetTrainForReservation(t, track);
+					if (v != nullptr) {
+						FreeTrainTrackReservation(v);
+						vehicles_affected.push_back(v);
+					}
+				}
+			};
+			check_tile(tile);
+			check_tile(endtile);
 
 			if (Company::IsValidID(owner)) {
 				Company::Get(owner)->infrastructure.rail[GetRailType(tile)] -= len * TUNNELBRIDGE_TRACKBIT_FACTOR;
@@ -1170,7 +1223,9 @@ static CommandCost DoClearTunnel(TileIndex tile, DoCommandFlag flags)
 			YapfNotifyTrackLayoutChange(tile,    track);
 			YapfNotifyTrackLayoutChange(endtile, track);
 
-			if (v != nullptr) TryPathReserve(v);
+			for (Train *v : vehicles_affected) {
+				TryPathReserve(v);
+			}
 		} else {
 			/* A full diagonal road tile has two road bits. */
 			UpdateCompanyRoadInfrastructure(GetRoadTypeRoad(tile), GetRoadOwner(tile, RTT_ROAD), -(int)(len * 2 * TUNNELBRIDGE_TRACKBIT_FACTOR));
@@ -1238,8 +1293,17 @@ static CommandCost DoClearBridge(TileIndex tile, DoCommandFlag flags)
 		tile_tracks = GetCustomBridgeHeadTrackBits(tile);
 		endtile_tracks = GetCustomBridgeHeadTrackBits(endtile);
 		cost.AddCost(RailClearCost(GetRailType(tile)) * (CountBits(GetPrimaryTunnelBridgeTrackBits(tile)) + CountBits(GetPrimaryTunnelBridgeTrackBits(endtile)) - 2));
-		if (GetSecondaryTunnelBridgeTrackBits(tile)) cost.AddCost(RailClearCost(GetSecondaryRailType(tile)));
-		if (GetSecondaryTunnelBridgeTrackBits(endtile)) cost.AddCost(RailClearCost(GetSecondaryRailType(endtile)));
+		for (TileIndex t : { tile, endtile }) {
+			if (GetSecondaryTunnelBridgeTrackBits(t)) cost.AddCost(RailClearCost(GetSecondaryRailType(t)));
+			if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+				TrackBits reserved = GetBridgeReservationTrackBits(t);
+				Track track;
+				while ((track = RemoveFirstTrack(&reserved)) != INVALID_TRACK) {
+					CommandCost ret = CheckTrainReservationPreventsTrackModification(t, track);
+					if (ret.Failed()) return ret;
+				}
+			}
+		}
 	}
 
 	Money base_cost = (GetTunnelBridgeTransportType(tile) != TRANSPORT_WATER) ? _price[PR_CLEAR_BRIDGE] : _price[PR_CLEAR_AQUEDUCT];
@@ -1657,10 +1721,11 @@ static void DrawBridgeSignalOnMiddlePart(const TileInfo *ti, TileIndex bridge_st
 	uint bridge_signal_position = 0;
 	int m2_position = 0;
 
-	uint bridge_section = GetTunnelBridgeLength(ti->tile, bridge_start_tile) + 1;
+	const uint bridge_section = GetTunnelBridgeLength(ti->tile, bridge_start_tile) + 1;
+	const uint simulated_wormhole_signals = GetTunnelBridgeSignalSimulationSpacing(bridge_start_tile);
 
 	while (bridge_signal_position <= bridge_section) {
-		bridge_signal_position += _settings_game.construction.simulated_wormhole_signals;
+		bridge_signal_position += simulated_wormhole_signals;
 		if (bridge_signal_position == bridge_section) {
 			bool side = (_settings_game.vehicle.road_side != 0) && _settings_game.construction.train_signal_side;
 

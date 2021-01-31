@@ -89,7 +89,7 @@ SpecialMouseMode _special_mouse_mode; ///< Mode of the mouse.
 static std::vector<WindowDesc*> *_window_descs = nullptr;
 
 /** Config file to store WindowDesc */
-char *_windows_file;
+std::string _windows_file;
 
 /** Window description constructor. */
 WindowDesc::WindowDesc(WindowPosition def_pos, const char *ini_key, int16 def_width_trad, int16 def_height_trad,
@@ -1407,6 +1407,7 @@ static void AddWindowToZOrdering(Window *w)
 		/* Search down the z-ordering for its location. */
 		WindowBase *v = _z_front_window;
 		uint last_z_priority = UINT_MAX;
+		(void)last_z_priority; // Unused without asserts
 		while (v != nullptr && (v->window_class == WC_INVALID || GetWindowZPriority(v->window_class) > GetWindowZPriority(w->window_class))) {
 			if (v->window_class != WC_INVALID) {
 				/* Sanity check z-ordering, while we're at it. */

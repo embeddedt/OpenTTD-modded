@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Пченица
 STR_CARGO_PLURAL_RUBBER                                         :Гума
 STR_CARGO_PLURAL_SUGAR                                          :Шеќер
 STR_CARGO_PLURAL_TOYS                                           :Играчки
-STR_CARGO_PLURAL_CANDY                                          :Колачиња
+STR_CARGO_PLURAL_SWEETS                                         :Колачиња
 STR_CARGO_PLURAL_COLA                                           :Кола (сок)
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Суровина за колачиња
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Суровина за колачиња
 STR_CARGO_PLURAL_BUBBLES                                        :Меурчиња
 STR_CARGO_PLURAL_TOFFEE                                         :Карамели
 STR_CARGO_PLURAL_BATTERIES                                      :Батерии
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Пченица
 STR_CARGO_SINGULAR_RUBBER                                       :Гума
 STR_CARGO_SINGULAR_SUGAR                                        :Шеќер
 STR_CARGO_SINGULAR_TOY                                          :Играчка
-STR_CARGO_SINGULAR_CANDY                                        :Колаче
+STR_CARGO_SINGULAR_SWEETS                                       :Колаче
 STR_CARGO_SINGULAR_COLA                                         :Кола (сок)
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Суровина за колачиња
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Суровина за колачиња
 STR_CARGO_SINGULAR_BUBBLE                                       :Меурче
 STR_CARGO_SINGULAR_TOFFEE                                       :Карамела
 STR_CARGO_SINGULAR_BATTERY                                      :Батерија
@@ -289,6 +289,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Капацит�
 STR_SORT_BY_RANGE                                               :опсег
 STR_SORT_BY_POPULATION                                          :Населеност
 STR_SORT_BY_RATING                                              :Рејтинг
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Паузирај ја играта
@@ -938,16 +940,8 @@ STR_INTRO_TOOLTIP_SCRIPT_SETTINGS                               :{BLACK}Пока
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Напушти
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Дали сте сигурни дека сакате да ја напуштите OpenTTD и да се вратите во {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Да
 STR_QUIT_NO                                                     :{BLACK}Не
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Напушти ја Играта
@@ -998,7 +992,6 @@ STR_NETWORK_SERVER_LIST_MAP_SIZE_SHORT                          :{BLACK}{COMMA}x
 # Network company list added strings
 
 # Network client list
-
 
 
 # Network set password
@@ -1118,7 +1111,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Голе
 STR_OBJECT_CLASS_LTHS                                           :Светилници
 STR_OBJECT_CLASS_TRNS                                           :Предаватели
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 
 # Land generation window (SE)
 STR_TERRAFORM_TOOLBAR_LAND_GENERATION_CAPTION                   :{WHITE}Генерирање на терен

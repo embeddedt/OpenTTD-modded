@@ -119,18 +119,18 @@ STR_CARGO_PLURAL_TOYS                                           :{G=f}Dèideagan
 STR_CARGO_PLURAL_TOYS.nom                                       :Dèideagan
 STR_CARGO_PLURAL_TOYS.gen                                       :Dhèideagan
 STR_CARGO_PLURAL_TOYS.dat                                       :Dèideagan
-STR_CARGO_PLURAL_CANDY                                          :{G=m}Mìlseanan
-STR_CARGO_PLURAL_CANDY.nom                                      :Mìlseanan
-STR_CARGO_PLURAL_CANDY.gen                                      :Mhìlseanan
-STR_CARGO_PLURAL_CANDY.dat                                      :Mìlseanan
+STR_CARGO_PLURAL_SWEETS                                         :{G=m}Mìlseanan
+STR_CARGO_PLURAL_SWEETS.nom                                     :Mìlseanan
+STR_CARGO_PLURAL_SWEETS.gen                                     :Mhìlseanan
+STR_CARGO_PLURAL_SWEETS.dat                                     :Mìlseanan
 STR_CARGO_PLURAL_COLA                                           :{G=m}Cola
 STR_CARGO_PLURAL_COLA.nom                                       :Cola
 STR_CARGO_PLURAL_COLA.gen                                       :Cola
 STR_CARGO_PLURAL_COLA.dat                                       :Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :{G=f}Canach-shiùcair
-STR_CARGO_PLURAL_COTTON_CANDY.nom                               :Canach-shiùcair
-STR_CARGO_PLURAL_COTTON_CANDY.gen                               :Canaich-siùcair
-STR_CARGO_PLURAL_COTTON_CANDY.dat                               :Canach-shiùcair
+STR_CARGO_PLURAL_CANDYFLOSS                                     :{G=f}Canach-shiùcair
+STR_CARGO_PLURAL_CANDYFLOSS.nom                                 :Canach-shiùcair
+STR_CARGO_PLURAL_CANDYFLOSS.gen                                 :Canaich-siùcair
+STR_CARGO_PLURAL_CANDYFLOSS.dat                                 :Canach-shiùcair
 STR_CARGO_PLURAL_BUBBLES                                        :{G=m}Builgeanan
 STR_CARGO_PLURAL_BUBBLES.nom                                    :Builgeanan
 STR_CARGO_PLURAL_BUBBLES.gen                                    :Bhuilgeanan
@@ -246,18 +246,18 @@ STR_CARGO_SINGULAR_TOY                                          :{G=f}Dèideag
 STR_CARGO_SINGULAR_TOY.nom                                      :Dèideag
 STR_CARGO_SINGULAR_TOY.gen                                      :Dèideig
 STR_CARGO_SINGULAR_TOY.dat                                      :Dèideag
-STR_CARGO_SINGULAR_CANDY                                        :{G=m}Mìlsean
-STR_CARGO_SINGULAR_CANDY.nom                                    :Mìlsean
-STR_CARGO_SINGULAR_CANDY.gen                                    :Mìlsein
-STR_CARGO_SINGULAR_CANDY.dat                                    :Mìlsean
+STR_CARGO_SINGULAR_SWEETS                                       :{G=m}Mìlsean
+STR_CARGO_SINGULAR_SWEETS.nom                                   :Mìlsean
+STR_CARGO_SINGULAR_SWEETS.gen                                   :Mìlsein
+STR_CARGO_SINGULAR_SWEETS.dat                                   :Mìlsean
 STR_CARGO_SINGULAR_COLA                                         :{G=m}Cola
 STR_CARGO_SINGULAR_COLA.nom                                     :Cola
 STR_CARGO_SINGULAR_COLA.gen                                     :Cola
 STR_CARGO_SINGULAR_COLA.dat                                     :Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :{G=f}Canach-shiùcair
-STR_CARGO_SINGULAR_COTTON_CANDY.nom                             :Canach-shiùcair
-STR_CARGO_SINGULAR_COTTON_CANDY.gen                             :Canaich-siùcair
-STR_CARGO_SINGULAR_COTTON_CANDY.dat                             :Canach-shiùcair
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :{G=f}Canach-shiùcair
+STR_CARGO_SINGULAR_CANDYFLOSS.nom                               :Canach-shiùcair
+STR_CARGO_SINGULAR_CANDYFLOSS.gen                               :Canaich-siùcair
+STR_CARGO_SINGULAR_CANDYFLOSS.dat                               :Canach-shiùcair
 STR_CARGO_SINGULAR_BUBBLE                                       :{G=m}Builgean
 STR_CARGO_SINGULAR_BUBBLE.nom                                   :Builgean
 STR_CARGO_SINGULAR_BUBBLE.gen                                   :Builgein
@@ -497,6 +497,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Tomhas-lìonaid
 STR_SORT_BY_RANGE                                               :Dlùths
 STR_SORT_BY_POPULATION                                          :Àireamh-shluaigh
 STR_SORT_BY_RATING                                              :Rangachadh
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Cuir an geama na stad / a' dol
@@ -1716,8 +1718,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Slàn
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Nochdaidh naidheachdan dathte ann an: {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Am bliadhna a thèid pàipear-naidheachd dathte a chlò-bhualadh a' chiad turas. Bidh na pàipearan-naidheachd ann an dubh is geal roimhe seo
 STR_CONFIG_SETTING_STARTING_YEAR                                :Bliadhna tòiseachaidh: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Cuir eaconamaidh rèidh an comas (atharraichean nas trice is nas beaga): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Ma tha seo air, atharraichidh saothrachadh nan gnìomhachasan nas trice is le ceuman nas lugha. Chan eil buaidh aig seo air seòrsaichean gnìomhachais a chaidh a sholar le NewGRF mar as trice
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Ceadaich gun tèid stoca a cheannach bho chompanaidhean eile: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Ma tha seo air, ’s urrainn dhut stocan chompanaidhean a cheannach is a reic. Cha bhi stoca ri làimh ach aig companaidhean aig a bheil aois shònraichte
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :A' cheudad dhen phrothaid a gheibh carbadan le tar-aiseag carago: {STRING}
@@ -1763,9 +1763,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :Ceadaichte, co-
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Cur nan craobh sa gheama: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Cùm smachd air na craobhan a nochdas sa gheama air thuaiream. Dh'fhaoidte gun toir seo buaidh air gnìomhachasan a tha an eisimeil fàs nan craobhan a leithid muileannan-fiodha
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Chan eil gin {RED}(brisidh seo muileannan-fiodha)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Ann an coilltean-uisge a-mhàin
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Àite sam bith
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Ionad a' phrìomh bhàir-inneal: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Ionad còmhnard a' phrìomh bhàir-inneal air barr na sgrìn
@@ -1964,17 +1961,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Tha {NUM
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Fàg an-seo
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}A bheil thu cinnteach gu bheil thu airson OpenTTD fhàgail is tilleadh dha {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Tha
 STR_QUIT_NO                                                     :{BLACK}Chan eil
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Fàg an geama
@@ -2096,10 +2084,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Atharrai
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Ioma-chluicheadair
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Sanasaichte
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Dèan taghadh eadar geama sanasaichte (eadar-lìon) no gun sanasachadh (lìonra ionadail, LAN)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Gun sanasachadh
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Sanasaichte
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Ainm cluicheadair:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Seo an t-ainm leis an aithnich cluicheadairean eile thu
 
@@ -2140,8 +2124,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Gabh sa 
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Ath-nuadhaich am frithealaiche
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Ath-nuadhaich fiosrachadh an fhrithealaiche
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Lorg frithealaiche
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Lorg san lìonraidh airson frithealaiche
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Cuir frithealaiche ris
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Cuiridh seo frithealaiche ris an liosta gus an tèid sùil a thoirt air airson geamannan nan ruith
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Tòisich frithealaiche
@@ -2158,6 +2140,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Thèid a
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Suidhich facal-faire
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Dìon an geama agad le facal-faire ach nach eil e ri fhaighinn gu poblach
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Sanasaichte
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Dèan taghadh eadar geama sanasaichte (eadar-lìon) no gun sanasachadh (lìonra ionadail, LAN)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Chan eil
 STR_NETWORK_START_SERVER_ADVERTISED                             :Tha
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} {P chliant chliant cliantan cliant}
@@ -2377,8 +2361,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** Ghabh {STRI
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** Stèidhich {STRING} companaidh ùr ({2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** Dh'fhalbh {STRING} an geama ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** Dh'atharraich {0:STRING} (a h-)ainm gu {1:STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** Thug {STRING} {2:CURRENCY_LONG} dhan chompanaidh agad
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Thug thu {2:CURRENCY_LONG} dha {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Dhùin am frithealaiche an seisean
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Tha am frithealaiche ag ath-thòiseachadh...{}Fuirich greis...
 
@@ -2699,7 +2681,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Meud: {G
 STR_OBJECT_CLASS_LTHS                                           :Taighean-solais
 STR_OBJECT_CLASS_TRNS                                           :Tùir chraobh-sgaoilidh
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Craobhan
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Tagh seòrsa na craoibhe airson cur. Ma tha craobh air an leac mu thràth, cuiridh seo barrachd chraobhan aig a bheil caochladh dhe sheòrsachan a tha neo-eisimeileach on t-seòrsa a thagh thu
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Craobhan dhe sheòrsa air thuaiream
@@ -4745,6 +4727,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Ceòl aig an de
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Ceòl aig an deasachadh DOS tùsail aig Transport Tycoon Deluxe.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Ceòl aig an deasachadh DOS tùsail aig Transport Tycoon Deluxe (Original/World Editor).
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Pacaid ciùil anns nach eil fonn sam bith.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :{G=f}Trèan {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Carbad-rathaid {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :{G=f}Long {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Carbad-adhair {COMMA}
 
 ##id 0x2000
 # Town building names

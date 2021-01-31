@@ -49,9 +49,9 @@ STR_CARGO_PLURAL_WHEAT                                          :{G=m}Trigo
 STR_CARGO_PLURAL_RUBBER                                         :{G=f}Borracha
 STR_CARGO_PLURAL_SUGAR                                          :{G=m}Açúcar
 STR_CARGO_PLURAL_TOYS                                           :{G=m}Brinquedos
-STR_CARGO_PLURAL_CANDY                                          :{G=m}Doces
+STR_CARGO_PLURAL_SWEETS                                         :{G=m}Doces
 STR_CARGO_PLURAL_COLA                                           :{G=f}Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :{G=m}Algodão Doce
+STR_CARGO_PLURAL_CANDYFLOSS                                     :{G=m}Algodão Doce
 STR_CARGO_PLURAL_BUBBLES                                        :{G=f}Bolhas
 STR_CARGO_PLURAL_TOFFEE                                         :{G=m}Caramelo
 STR_CARGO_PLURAL_BATTERIES                                      :{G=f}Pilhas
@@ -83,9 +83,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :{G=m}Trigo
 STR_CARGO_SINGULAR_RUBBER                                       :{G=f}Borracha
 STR_CARGO_SINGULAR_SUGAR                                        :{G=m}Açúcar
 STR_CARGO_SINGULAR_TOY                                          :{G=m}Brinquedo
-STR_CARGO_SINGULAR_CANDY                                        :{G=m}Doce
+STR_CARGO_SINGULAR_SWEETS                                       :{G=m}Doce
 STR_CARGO_SINGULAR_COLA                                         :{G=m}Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :{G=m}Algodão doce
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :{G=m}Algodão doce
 STR_CARGO_SINGULAR_BUBBLE                                       :{G=f}Bolha
 STR_CARGO_SINGULAR_TOFFEE                                       :{G=m}Caramelo
 STR_CARGO_SINGULAR_BATTERY                                      :{G=f}Pilha
@@ -315,6 +315,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Capacidade de C
 STR_SORT_BY_RANGE                                               :Alcance
 STR_SORT_BY_POPULATION                                          :População
 STR_SORT_BY_RATING                                              :Classificação
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Pausar jogo
@@ -1554,8 +1556,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Pontuação no 
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Ano em que o jogo termina para fins de pontuação. No final deste ano, a pontuação da empresa é registrada e a tela de pontuação máxima é exibida, mas os jogadores podem continuar jogando depois disso.{} Se isso for antes do ano inicial, a tela de pontuação máxima nunca será exibida.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Nunca
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Ativar economia regular (alterações menores): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Quando ativado, a produção de indústrias muda com mais frequência, e mais sutilmente
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Permite comprar ações de outras empresas: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Se ativado, permite a compra e venda de ações de companhias. Ações de outras empresas poderão serem compradas após um período de tempo após a fundação da empresa
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Idade mínima da companhia para trocar ações: {STRING}
@@ -1607,9 +1607,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Linear
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Posicionamento de árvores: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Controla o nascimento aleatório de árvores durante o jogo. Isso pode afetar indústrias que dependem do crescimento de árvores, como serrarias
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Nenhum {RED}(extingue a serraria)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Apenas nas florestas tropicais
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Em todo o lugar
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Posição da barra de ferramentas principal: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Posição horizontal da barra de ferramentas principal no topo da tela
@@ -1808,17 +1805,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Faltam {
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Sair
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Tem a certeza que deseja abandonar este jogo e voltar ao {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Sim
 STR_QUIT_NO                                                     :{BLACK}Não
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Abandonar jogo
@@ -1940,10 +1928,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Alterar 
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multi-jogador
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :[BLACK}Publicado
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Selecione entre um jogo publicado (internet) ou não publicado (Rede de Área Local, LAN)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Não
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Sim
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Nome:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Este é o nome pelo qual os outros jogadores irão te identificar
 
@@ -1984,8 +1968,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Entrar n
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Atualizar dados
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Atualiza as informações sobre o servidor
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Localizar servidor
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Pesquisar por um servidor na rede
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Adicionar servidor
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Adiciona um servidor à lista que será sempre verificada se existem jogos ocorrendo
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Iniciar servidor
@@ -2002,6 +1984,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}O nome d
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Definir senha
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Proteja o jogo com uma senha se não desejar que seja publicamente acessível
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :[BLACK}Publicado
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Selecione entre um jogo publicado (internet) ou não publicado (Rede de Área Local, LAN)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Não
 STR_NETWORK_START_SERVER_ADVERTISED                             :Sim
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} cliente{P "" s}
@@ -2223,8 +2207,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} es
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} abriu uma nova companhia (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} saiu do jogo ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} mudou seu nome para {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} deu à sua companhia{2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Você deu a {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}O servidor fechou a sessão
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}O servidor está reiniciando...{}Aguarde...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} foi kickado. Motivo: ({STRING})
@@ -2530,7 +2512,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Tamanho:
 STR_OBJECT_CLASS_LTHS                                           :Faróis
 STR_OBJECT_CLASS_TRNS                                           :Transmissores
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Árvores
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Selecionar um tipo de árvore para plantar. Se o local já tiver uma árvore, isso irá adicionar mais árvores do tipo misto indepentendemente do tipo selecionado
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Árvores de tipo aleatório
@@ -4653,6 +4635,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Música Origina
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Música Original do Transport Tycoon Deluxe DOS.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Música Original do Transport Tycoon DOS
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Um pacote de músicas sem músicas.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Trem {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Automóvel {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Embarcação {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Aeronave {COMMA}
 
 ##id 0x2000
 # Town building names

@@ -5,29 +5,19 @@
  * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @file ottd_optional.h Header to select between native. */
+/** @file animated_tile.h %Tile animation! */
 
-#ifndef OTTD_OPTIONAL_H
-#define OTTD_OPTIONAL_H
+#ifndef ANIMATED_TILE_H
+#define ANIMATED_TILE_H
 
-#if defined(__has_include)
-#	if __has_include(<version>)
-#		include <version>
-#	endif
-#endif
+#include "tile_type.h"
+#include "3rdparty/cpp-btree/btree_map.h"
 
-#if (__cplusplus >= 201703L) || (defined(__cpp_lib_optional) && __cpp_lib_optional >= 201606L)
+struct AnimatedTileInfo {
+	uint8 speed = 0;
+	bool pending_deletion = false;
+};
 
-/* Native std::optional. */
-#include <optional>
-namespace opt = std;
+extern btree::btree_map<TileIndex, AnimatedTileInfo> _animated_tiles;
 
-#else
-
-/* No std::optional, use local copy instead. */
-#include "optional.hpp"
-namespace opt = std::experimental;
-
-#endif
-
-#endif /* OTTD_OPTIONAL_H */
+#endif /* ANIMATED_TILE_H */

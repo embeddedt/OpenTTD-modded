@@ -39,6 +39,7 @@
 #include "group.h"
 #include "company_base.h"
 #include "train.h"
+#include "newgrf_debug.h"
 
 #include "tbtr_template_gui_create.h"
 #include "tbtr_template_vehicle.h"
@@ -69,6 +70,7 @@ static const NWidgetPart _widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
 		NWidget(WWT_CAPTION, COLOUR_GREY, TCW_CAPTION), SetDataTip(STR_TMPL_CREATEGUI_TITLE, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
+		NWidget(WWT_DEBUGBOX, COLOUR_GREY),
 		NWidget(WWT_SHADEBOX, COLOUR_GREY),
 		NWidget(WWT_DEFSIZEBOX, COLOUR_GREY),
 		NWidget(WWT_STICKYBOX, COLOUR_GREY),
@@ -376,7 +378,10 @@ public:
 				GetDepotVehiclePtData gdvp = { nullptr, nullptr };
 
 				if (this->GetVehicleFromDepotWndPt(pt.x - nwi->pos_x, pt.y - nwi->pos_y, &v, &gdvp) == MODE_DRAG_VEHICLE && sel != INVALID_VEHICLE) {
-					if (gdvp.wagon == nullptr || gdvp.wagon->index != sel) {
+					if (gdvp.wagon != nullptr && gdvp.wagon->index == sel && _ctrl_pressed) {
+						DoCommandP(Vehicle::Get(sel)->tile, Vehicle::Get(sel)->index, true,
+								CMD_REVERSE_TRAIN_DIRECTION | CMD_MSG(STR_ERROR_CAN_T_REVERSE_DIRECTION_RAIL_VEHICLE));
+					} else if (gdvp.wagon == nullptr || gdvp.wagon->index != sel) {
 						this->vehicle_over = INVALID_VEHICLE;
 						TrainDepotMoveVehicle(gdvp.wagon, sel, gdvp.head);
 					}
@@ -593,6 +598,18 @@ public:
 	void UpdateButtonState()
 	{
 		this->SetWidgetDisabledState(TCW_REFIT, virtual_train == nullptr);
+	}
+
+	bool IsNewGRFInspectable() const override
+	{
+		return true;
+	}
+
+	void ShowNewGRFInspectWindow() const override
+	{
+		if (this->virtual_train != nullptr) {
+			::ShowNewGRFInspectWindow(GetGrfSpecFeature(VEH_TRAIN), this->virtual_train->index);
+		}
 	}
 };
 

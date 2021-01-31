@@ -68,6 +68,8 @@
 #include "string_func.h"
 #include "debug.h"
 #include "zoning.h"
+#include "vehicle_func.h"
+#include "scope_info.h"
 
 #include "void_map.h"
 #include "station_base.h"
@@ -91,7 +93,7 @@ GameSettings _settings_game;     ///< Game settings of a running game or the sce
 GameSettings _settings_newgame;  ///< Game settings for new games (updated from the intro screen).
 TimeSettings _settings_time; ///< The effective settings that are used for time display.
 VehicleDefaultSettings _old_vds; ///< Used for loading default vehicles settings from old savegames
-char *_config_file; ///< Configuration file of OpenTTD
+std::string _config_file; ///< Configuration file of OpenTTD
 std::string _config_file_text;
 
 typedef std::list<ErrorMessageData> ErrorList;
@@ -910,6 +912,9 @@ static bool RedrawSmallmap(int32 p1)
 	BuildLandLegend();
 	BuildOwnerLegend();
 	SetWindowClassesDirty(WC_SMALLMAP);
+
+	extern void MarkAllViewportMapLandscapesDirty();
+	MarkAllViewportMapLandscapesDirty();
 	return true;
 }
 
@@ -956,7 +961,10 @@ static bool UpdateConsists(int32 p1)
 {
 	for (Train *t : Train::Iterate()) {
 		/* Update the consist of all trains so the maximum speed is set correctly. */
-		if (t->IsFrontEngine() || t->IsFreeWagon()) t->ConsistChanged(CCF_TRACK);
+		if (t->IsFrontEngine() || t->IsFreeWagon()) {
+			t->ConsistChanged(CCF_TRACK);
+			if (t->lookahead != nullptr) SetBit(t->lookahead->flags, TRLF_APPLY_ADVISORY);
+		}
 	}
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE, 0);
 	return true;
@@ -1057,6 +1065,7 @@ static bool TrainAccelerationModelChanged(int32 p1)
 		if (t->IsFrontEngine()) {
 			t->tcache.cached_max_curve_speed = t->GetCurveSpeedLimit();
 			t->UpdateAcceleration();
+			if (t->lookahead != nullptr) SetBit(t->lookahead->flags, TRLF_APPLY_ADVISORY);
 		}
 	}
 
@@ -1064,6 +1073,86 @@ static bool TrainAccelerationModelChanged(int32 p1)
 	SetWindowClassesDirty(WC_ENGINE_PREVIEW);
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE, 0);
 	SetWindowClassesDirty(WC_VEHICLE_DETAILS);
+
+	return true;
+}
+
+static bool TrainBrakingModelChanged(int32 p1)
+{
+	for (Train *t : Train::Iterate()) {
+		if (t->IsFrontEngine()) {
+			t->UpdateAcceleration();
+		}
+	}
+	if (p1 == TBM_REALISTIC && (_game_mode == GM_NORMAL || _game_mode == GM_EDITOR)) {
+		for (TileIndex t = 0; t < MapSize(); t++) {
+			if (IsTileType(t, MP_RAILWAY) && GetRailTileType(t) == RAIL_TILE_SIGNALS) {
+				uint signals = GetPresentSignals(t);
+				if ((signals & 0x3) & ((signals & 0x3) - 1) || (signals & 0xC) & ((signals & 0xC) - 1)) {
+					/* Signals in both directions */
+					ShowErrorMessage(STR_CONFIG_SETTING_REALISTIC_BRAKING_SIGNALS_NOT_ALLOWED, INVALID_STRING_ID, WL_ERROR);
+					return false;
+				}
+				if (((signals & 0x3) && IsSignalTypeUnsuitableForRealisticBraking(GetSignalType(t, TRACK_LOWER))) ||
+						((signals & 0xC) && IsSignalTypeUnsuitableForRealisticBraking(GetSignalType(t, TRACK_UPPER)))) {
+					/* Banned signal types present */
+					ShowErrorMessage(STR_CONFIG_SETTING_REALISTIC_BRAKING_SIGNALS_NOT_ALLOWED, INVALID_STRING_ID, WL_ERROR);
+					return false;
+				}
+			}
+		}
+		for (TileIndex t = 0; t < MapSize(); t++) {
+			if (IsTileType(t, MP_RAILWAY) && GetRailTileType(t) == RAIL_TILE_SIGNALS) {
+				TrackBits bits = GetTrackBits(t);
+				do {
+					Track track = RemoveFirstTrack(&bits);
+					if (HasSignalOnTrack(t, track) && GetSignalType(t, track) == SIGTYPE_NORMAL && HasBit(GetRailReservationTrackBits(t), track)) {
+						if (EnsureNoTrainOnTrackBits(t, TrackToTrackBits(track)).Succeeded()) {
+							UnreserveTrack(t, track);
+						}
+					}
+				} while (bits != TRACK_BIT_NONE);
+			}
+		}
+		Train *v_cur = nullptr;
+		SCOPE_INFO_FMT([&v_cur], "TrainBrakingModelChanged: %s", scope_dumper().VehicleInfo(v_cur));
+		extern bool _long_reserve_disabled;
+		_long_reserve_disabled = true;
+		for (Train *v : Train::Iterate()) {
+			v_cur = v;
+			if (!v->IsPrimaryVehicle() || (v->vehstatus & VS_CRASHED) != 0 || HasBit(v->subtype, GVSF_VIRTUAL) || v->track == TRACK_BIT_DEPOT) continue;
+			TryPathReserve(v, true, HasStationTileRail(v->tile));
+		}
+		_long_reserve_disabled = false;
+		for (Train *v : Train::Iterate()) {
+			v_cur = v;
+			if (!v->IsPrimaryVehicle() || (v->vehstatus & VS_CRASHED) != 0 || HasBit(v->subtype, GVSF_VIRTUAL) || v->track == TRACK_BIT_DEPOT) continue;
+			TryPathReserve(v, true, HasStationTileRail(v->tile));
+			if (v->lookahead != nullptr) SetBit(v->lookahead->flags, TRLF_APPLY_ADVISORY);
+		}
+	} else if (p1 == TBM_ORIGINAL && (_game_mode == GM_NORMAL || _game_mode == GM_EDITOR)) {
+		Train *v_cur = nullptr;
+		SCOPE_INFO_FMT([&v_cur], "TrainBrakingModelChanged: %s", scope_dumper().VehicleInfo(v_cur));
+		for (Train *v : Train::Iterate()) {
+			v_cur = v;
+			if (!v->IsPrimaryVehicle() || (v->vehstatus & VS_CRASHED) != 0 || HasBit(v->subtype, GVSF_VIRTUAL) || v->track == TRACK_BIT_DEPOT) {
+				v->lookahead.reset();
+				continue;
+			}
+			if (!HasBit(v->flags, VRF_TRAIN_STUCK)) {
+				_settings_game.vehicle.train_braking_model = TBM_REALISTIC;
+				FreeTrainTrackReservation(v);
+				_settings_game.vehicle.train_braking_model = p1;
+				TryPathReserve(v, true, HasStationTileRail(v->tile));
+			} else {
+				v->lookahead.reset();
+			}
+		}
+	}
+
+	UpdateAllBlockSignals();
+
+	InvalidateWindowData(WC_BUILD_SIGNAL, 0);
 
 	return true;
 }
@@ -1076,7 +1165,10 @@ static bool TrainAccelerationModelChanged(int32 p1)
 static bool TrainSlopeSteepnessChanged(int32 p1)
 {
 	for (Train *t : Train::Iterate()) {
-		if (t->IsFrontEngine()) t->CargoChanged();
+		if (t->IsFrontEngine()) {
+			t->CargoChanged();
+			if (t->lookahead != nullptr) SetBit(t->lookahead->flags, TRLF_APPLY_ADVISORY);
+		}
 	}
 
 	return true;
@@ -2203,6 +2295,8 @@ CommandCost CmdChangeSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 		}
 
 		SetWindowClassesDirty(WC_GAME_OPTIONS);
+
+		if (_save_config) SaveToConfig();
 	}
 
 	return CommandCost();
@@ -2273,12 +2367,15 @@ bool SetSettingValue(uint index, int32 value, bool force_newgame)
 
 		SetWindowClassesDirty(WC_GAME_OPTIONS);
 
+		if (_save_config) SaveToConfig();
 		return true;
 	}
 
 	if (force_newgame && !no_newgame) {
 		void *var2 = GetVariableAddress(&_settings_newgame, &sd->save);
 		Write_ValidateSetting(var2, sd, value);
+
+		if (_save_config) SaveToConfig();
 		return true;
 	}
 
@@ -2345,6 +2442,7 @@ uint GetCompanySettingIndex(const char *name)
 {
 	uint i;
 	const SettingDesc *sd = GetSettingFromName(name, &i);
+	(void)sd; // Unused without asserts
 	assert(sd != nullptr && (sd->desc.flags & SGF_PER_COMPANY) != 0);
 	return i;
 }
@@ -2371,6 +2469,7 @@ bool SetSettingValue(uint index, const char *value, bool force_newgame)
 	}
 	if (sd->desc.proc != nullptr) sd->desc.proc(0);
 
+	if (_save_config) SaveToConfig();
 	return true;
 }
 
@@ -2455,6 +2554,7 @@ void IConsoleSetSetting(const char *name, int value)
 {
 	uint index;
 	const SettingDesc *sd = GetSettingFromName(name, &index);
+	(void)sd; // Unused without asserts
 	assert(sd != nullptr);
 	SetSettingValue(index, value);
 }

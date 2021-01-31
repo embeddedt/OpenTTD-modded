@@ -35,6 +35,7 @@
 #include "goal_base.h"
 #include "story_base.h"
 #include "zoning.h"
+#include "tbtr_template_vehicle_func.h"
 
 #include "table/strings.h"
 
@@ -544,13 +545,15 @@ void ResetCompanyLivery(Company *c)
 /**
  * Create a new company and sets all company variables default values
  *
- * @param is_ai is an AI company?
+ * @param flags oepration flags
  * @param company CompanyID to use for the new company
  * @return the company struct
  */
-Company *DoStartupNewCompany(bool is_ai, CompanyID company = INVALID_COMPANY)
+Company *DoStartupNewCompany(DoStartupNewCompanyFlag flags, CompanyID company)
 {
 	if (!Company::CanAllocateItem()) return nullptr;
+
+	const bool is_ai = (flags & DSNC_AI);
 
 	/* we have to generate colour before this company is valid */
 	Colours colour = GenerateCompanyColour();
@@ -568,7 +571,7 @@ Company *DoStartupNewCompany(bool is_ai, CompanyID company = INVALID_COMPANY)
 	ResetCompanyLivery(c);
 	_company_colours[c->index] = (Colours)c->colour;
 
-	c->money = c->current_loan = (100000ll * _economy.inflation_prices >> 16) / 50000 * 50000;
+	c->money = c->current_loan = (min(INITIAL_LOAN, _economy.max_loan) * _economy.inflation_prices >> 16) / 50000 * 50000;
 
 	c->share_owners[0] = c->share_owners[1] = c->share_owners[2] = c->share_owners[3] = INVALID_OWNER;
 
@@ -594,7 +597,7 @@ Company *DoStartupNewCompany(bool is_ai, CompanyID company = INVALID_COMPANY)
 	AI::BroadcastNewEvent(new ScriptEventCompanyNew(c->index), c->index);
 	Game::NewEvent(new ScriptEventCompanyNew(c->index));
 
-	if (!is_ai) UpdateAllTownVirtCoords();
+	if (!is_ai && !(flags & DSNC_DURING_LOAD)) UpdateAllTownVirtCoords();
 
 	return c;
 }
@@ -848,7 +851,7 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			/* Delete multiplayer progress bar */
 			DeleteWindowById(WC_NETWORK_STATUS_WINDOW, WN_NETWORK_STATUS_WINDOW_JOIN);
 
-			Company *c = DoStartupNewCompany(false);
+			Company *c = DoStartupNewCompany(DSNC_NONE);
 
 			/* A new company could not be created, revert to being a spectator */
 			if (c == nullptr) {
@@ -883,7 +886,7 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			if (!(flags & DC_EXEC)) return CommandCost();
 
 			if (company_id != INVALID_COMPANY && (company_id >= MAX_COMPANIES || Company::IsValidID(company_id))) return CMD_ERROR;
-			Company *c = DoStartupNewCompany(true, company_id);
+			Company *c = DoStartupNewCompany(DSNC_AI, company_id);
 			if (c != nullptr) {
 				NetworkServerNewCompany(c, nullptr);
 				DEBUG(desync, 1, "new_company_ai: date{%08x; %02x; %02x}, company_id: %u", _date, _date_fract, _tick_skip_counter, c->index);
@@ -1039,6 +1042,7 @@ CommandCost CmdSetCompanyColour(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 		}
 
 		ResetVehicleColourMap();
+		InvalidateTemplateReplacementImages();
 		MarkWholeScreenDirty();
 
 		/* All graph related to companies use the company colour. */
@@ -1051,6 +1055,9 @@ CommandCost CmdSetCompanyColour(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 		/* The smallmap owner view also stores the company colours. */
 		BuildOwnerLegend();
 		InvalidateWindowData(WC_SMALLMAP, 0, 1);
+
+		extern void MarkAllViewportMapLandscapesDirty();
+		MarkAllViewportMapLandscapesDirty();
 
 		/* Company colour data is indirectly cached. */
 		for (Vehicle *v : Vehicle::Iterate()) {

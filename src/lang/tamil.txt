@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :கோதும
 STR_CARGO_PLURAL_RUBBER                                         :இறப்பர்
 STR_CARGO_PLURAL_SUGAR                                          :சர்க்கரை
 STR_CARGO_PLURAL_TOYS                                           :பொம்மைகள்
-STR_CARGO_PLURAL_CANDY                                          :இனிப்புகள்
+STR_CARGO_PLURAL_SWEETS                                         :இனிப்புகள்
 STR_CARGO_PLURAL_COLA                                           :கோலா
-STR_CARGO_PLURAL_COTTON_CANDY                                   :பஞ்சுமிட்டாய்
+STR_CARGO_PLURAL_CANDYFLOSS                                     :பஞ்சுமிட்டாய்
 STR_CARGO_PLURAL_BUBBLES                                        :குமிழிகள்
 STR_CARGO_PLURAL_TOFFEE                                         :மிட்டாய்கள்
 STR_CARGO_PLURAL_BATTERIES                                      :பாட்டரிகள்
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :கோதும
 STR_CARGO_SINGULAR_RUBBER                                       :இறப்பர்
 STR_CARGO_SINGULAR_SUGAR                                        :சர்க்கரை
 STR_CARGO_SINGULAR_TOY                                          :பொம்மை
-STR_CARGO_SINGULAR_CANDY                                        :இனிப்பு
+STR_CARGO_SINGULAR_SWEETS                                       :இனிப்பு
 STR_CARGO_SINGULAR_COLA                                         :கோலா
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :பஞ்சுமிட்டாய்
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :பஞ்சுமிட்டாய்
 STR_CARGO_SINGULAR_BUBBLE                                       :குமிழி
 STR_CARGO_SINGULAR_TOFFEE                                       :மிட்டாய்
 STR_CARGO_SINGULAR_BATTERY                                      :மின்கலம்
@@ -308,6 +308,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :சரக்க
 STR_SORT_BY_RANGE                                               :வரையறை
 STR_SORT_BY_POPULATION                                          :மக்கள் தொகை
 STR_SORT_BY_RATING                                              :மதிப்பீடு
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}இடை நிறுத்து
@@ -1404,7 +1406,6 @@ STR_CONFIG_SETTING_STARTING_YEAR                                :தொடங்
 STR_CONFIG_SETTING_ENDING_YEAR                                  :மதிப்பீட்டிற்கான இறுதி ஆண்டு: {STRING}
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :என்றுமில்லை
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :இயல்பான பொருளாதாரத்தினைச் செயல்படுத்தவும் (அதிகமான, சிறிய மாற்றங்கள்): {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :மற்ற நிறுவனங்களின் பங்குகளை வாங்குவதை அனுமதிக்கவும்: {STRING}
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :பங்குகள் பரிமாற்றத்திற்கு தேவையான குறைந்தபட்ச நிறுவன வயது: {STRING}
 STR_CONFIG_SETTING_DRAG_SIGNALS_DENSITY                         :இழுத்தால், சிக்னல்களை இடவும், ஒவ்வொறு: {STRING}
@@ -1445,9 +1446,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :நேரிய
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :ஆட்டத்தின் போது மரங்களை நடுதல்: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :விளையாட்டின் போது மரங்களின் சீரற்ற தோற்றத்தைக் கட்டுப்படுத்தவும். இது மர வளர்ச்சியை நம்பியுள்ள தொழில்களை பாதிக்கலாம், எடுத்துக்காட்டாக மரம் வெட்டுதல் ஆலைகள்
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :ஒன்றுமில்லை {RED}(மர மில்லை உடைக்கும்)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :மழைக் காடுகளில் மட்டும்
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :எங்கும்
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :முக்கிய toolbarஇன் அமைப்பு இடம்: {STRING}
 STR_CONFIG_SETTING_STATUSBAR_POS                                :status barஇன் அமைப்பு இடம்: {STRING}
@@ -1607,14 +1605,6 @@ STR_QUIT_CAPTION                                                :{WHITE}வெ�
 STR_QUIT_YES                                                    :{BLACK}ஆமாம்
 STR_QUIT_NO                                                     :{BLACK}இல்லை
 
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
-
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}ஆட்டத்தை கைவிடு
 STR_ABANDON_GAME_QUERY                                          :{YELLOW}நீங்கள் இந்த ஆட்டத்தினை விட்டு வெளியேறுவதில் உறுதியா?
@@ -1727,9 +1717,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Tie அ�
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}பல்வீரர்
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}விளம்பரப்படுத்தப்பட்ட
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :இல்லை
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :ஆம்
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}விளையாடுபவரின் பெயர்:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}இந்தப் பெயரில் பிறர் உன்னை அறிவர்
 
@@ -1769,8 +1756,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}ஆட�
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}சர்வரினை புதுப்பிக்கவும்
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}சர்வரின் விவரத்தினை புதுப்பிக்கவும்
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}சர்வரினைத் தேடு
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}சர்வரினை இணையத்தில் தேடு
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}சர்வரினை இணை
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}சர்வரினை ஆரம்பி
 STR_NETWORK_SERVER_LIST_START_SERVER_TOOLTIP                    :{BLACK}தங்களின் சர்வரினை ஆரம்பிக்கவும்
@@ -1783,6 +1768,7 @@ STR_NETWORK_START_SERVER_CAPTION                                :{WHITE}பு�
 STR_NETWORK_START_SERVER_NEW_GAME_NAME                          :{BLACK}விளையாட்டு பெயர்:
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}கடவுச்சொல்லினை அமைக்கவும்
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}விளம்பரப்படுத்தப்பட்ட
 STR_NETWORK_START_SERVER_UNADVERTISED                           :இல்லை
 STR_NETWORK_START_SERVER_ADVERTISED                             :ஆம்
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} விளையாடுபவர்{P "" கள்}
@@ -1997,8 +1983,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} �
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} புதிய நிறுவனம் (#{2:NUM})வை துவக்கி உள்ளார்
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} ஆட்டத்தை விட்டு வெளியேரினார் ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} அவரது/அவளது பெயரினை {STRING} என்று மாற்றினார்
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} தங்கள் நிறுவனத்திற்கு {2:CURRENCY_LONG} கொடுத்தார்
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** நீங்கள் கொடுத்தீற்கள் {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}சர்வர் ஆட்டத்தினை முடித்தது
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}சர்வர் மீண்டும் தொடங்குகிறது...{}சற்று பொறுக்கவும்...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} வெளியேற்றப்பட்டார். காரணம்: ({STRING})
@@ -2259,7 +2243,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}அள�
 STR_OBJECT_CLASS_LTHS                                           :கலங்கரைவிளக்கு
 STR_OBJECT_CLASS_TRNS                                           :Transmitters
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}மரங்கள்
 STR_TREES_RANDOM_TYPE                                           :{BLACK}ஏதொவொறு வகையிலான மரங்கள்
 STR_TREES_RANDOM_TREES_BUTTON                                   :{BLACK}ஏதோவொறு மரங்கள்
@@ -4194,6 +4178,11 @@ STR_BASESOUNDS_NONE_DESCRIPTION                                 :ஒலிகள
 STR_BASEMUSIC_WIN_DESCRIPTION                                   :அசல் டிரான்ஸ்ஃபோர்ட் டைகூன் டீலக்ஸ் விண்டோஸ் பதிப்பு இசை.
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :அசல் டிரான்ஸ்ஃபோர்ட் டைகூன் டீலக்ஸ் DOS பதிப்பு இசை.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :இசை இல்லாத இசைத்தொகுப்பு.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :இரயில் {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :சாலை வாகனம் {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :கப்பல் {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :விமானம் {COMMA}
 
 ##id 0x2000
 # Town building names

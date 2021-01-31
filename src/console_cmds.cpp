@@ -49,6 +49,7 @@
 #include "industry.h"
 #include "string_func_extra.h"
 #include "linkgraph/linkgraphjob.h"
+#include "base_media_base.h"
 #include <time.h>
 
 #include "safeguards.h"
@@ -1240,7 +1241,24 @@ DEF_CONSOLE_CMD(ConStartAI)
 
 	AIConfig *config = AIConfig::GetConfig((CompanyID)n);
 	if (argc >= 2) {
-		config->Change(argv[1], -1, true);
+		config->Change(argv[1], -1, false);
+
+		/* If the name is not found, and there is a dot in the name,
+		 * try again with the assumption everything right of the dot is
+		 * the version the user wants to load. */
+		if (!config->HasScript()) {
+			char *name = stredup(argv[1]);
+			char *e = strrchr(name, '.');
+			if (e != nullptr) {
+				*e = '\0';
+				e++;
+
+				int version = atoi(e);
+				config->Change(name, version, true);
+			}
+			free(name);
+		}
+
 		if (!config->HasScript()) {
 			IConsoleWarning("Failed to load the specified AI");
 			return true;
@@ -1885,7 +1903,7 @@ struct ConsoleContentCallback : public ContentCallback {
 static void OutputContentState(const ContentInfo *const ci)
 {
 	static const char * const types[] = { "Base graphics", "NewGRF", "AI", "AI library", "Scenario", "Heightmap", "Base sound", "Base music", "Game script", "GS library" };
-	assert_compile(lengthof(types) == CONTENT_TYPE_END - CONTENT_TYPE_BEGIN);
+	static_assert(lengthof(types) == CONTENT_TYPE_END - CONTENT_TYPE_BEGIN);
 	static const char * const states[] = { "Not selected", "Selected", "Dep Selected", "Installed", "Unknown" };
 	static const TextColour state_to_colour[] = { CC_COMMAND, CC_INFO, CC_INFO, CC_WHITE, CC_ERROR };
 
@@ -1903,10 +1921,10 @@ DEF_CONSOLE_CMD(ConContent)
 	}
 
 	if (argc <= 1) {
-		IConsoleHelp("Query, select and download content. Usage: 'content update|upgrade|select [all|id]|unselect [all|id]|state [filter]|download'");
+		IConsoleHelp("Query, select and download content. Usage: 'content update|upgrade|select [id]|unselect [all|id]|state [filter]|download'");
 		IConsoleHelp("  update: get a new list of downloadable content; must be run first");
 		IConsoleHelp("  upgrade: select all items that are upgrades");
-		IConsoleHelp("  select: select a specific item given by its id or 'all' to select all. If no parameter is given, all selected content will be listed");
+		IConsoleHelp("  select: select a specific item given by its id. If no parameter is given, all selected content will be listed");
 		IConsoleHelp("  unselect: unselect a specific item given by its id or 'all' to unselect all");
 		IConsoleHelp("  state: show the download/select state of all downloadable content. Optionally give a filter string");
 		IConsoleHelp("  download: download all content you've selected");
@@ -1932,7 +1950,13 @@ DEF_CONSOLE_CMD(ConContent)
 				OutputContentState(*iter);
 			}
 		} else if (strcasecmp(argv[2], "all") == 0) {
-			_network_content_client.SelectAll();
+			/* The intention of this function was that you could download
+			 * everything after a filter was applied; but this never really
+			 * took off. Instead, a select few people used this functionality
+			 * to download every available package on BaNaNaS. This is not in
+			 * the spirit of this service. Additionally, these few people were
+			 * good for 70% of the consumed bandwidth of BaNaNaS. */
+			IConsolePrintF(CC_ERROR, "'select all' is no longer supported since 1.11");
 		} else {
 			_network_content_client.Select((ContentID)atoi(argv[2]));
 		}
@@ -2113,6 +2137,19 @@ DEF_CONSOLE_CMD(ConDumpCommandLog)
 	return true;
 }
 
+DEF_CONSOLE_CMD(ConDumpDesyncMsgLog)
+{
+	if (argc == 0) {
+		IConsoleHelp("Dump log of desync messages.");
+		return true;
+	}
+
+	char buffer[32768];
+	DumpDesyncMsgLog(buffer, lastof(buffer));
+	PrintLineByLine(buffer);
+	return true;
+}
+
 DEF_CONSOLE_CMD(ConDumpInflation)
 {
 	if (argc == 0) {
@@ -2254,6 +2291,16 @@ DEF_CONSOLE_CMD(ConDumpRoadTypes)
 		return true;
 	}
 
+	IConsolePrintF(CC_DEFAULT, "  Flags:");
+	IConsolePrintF(CC_DEFAULT, "    c = catenary");
+	IConsolePrintF(CC_DEFAULT, "    l = no level crossings");
+	IConsolePrintF(CC_DEFAULT, "    X = no houses");
+	IConsolePrintF(CC_DEFAULT, "    h = hidden");
+	IConsolePrintF(CC_DEFAULT, "    T = buildable by towns");
+	IConsolePrintF(CC_DEFAULT, "  Extra flags:");
+	IConsolePrintF(CC_DEFAULT, "    s = not available to scripts (AI/GS)");
+	IConsolePrintF(CC_DEFAULT, "    t = not modifiable by towns");
+
 	extern RoadTypeInfo _roadtypes[ROADTYPE_END];
 	btree::btree_set<uint32> grfids;
 	for (RoadType rt = ROADTYPE_BEGIN; rt < ROADTYPE_END; rt++) {
@@ -2291,6 +2338,17 @@ DEF_CONSOLE_CMD(ConDumpRailTypes)
 		return true;
 	}
 
+	IConsolePrintF(CC_DEFAULT, "  Flags:");
+	IConsolePrintF(CC_DEFAULT, "    c = catenary");
+	IConsolePrintF(CC_DEFAULT, "    l = no level crossings");
+	IConsolePrintF(CC_DEFAULT, "    h = hidden");
+	IConsolePrintF(CC_DEFAULT, "    s = no sprite combine");
+	IConsolePrintF(CC_DEFAULT, "    a = allow 90° turns");
+	IConsolePrintF(CC_DEFAULT, "    d = disallow 90° turns");
+	IConsolePrintF(CC_DEFAULT, "  Ctrl flags:");
+	IConsolePrintF(CC_DEFAULT, "    p = signal graphics callback enabled for programmable pre-signals");
+	IConsolePrintF(CC_DEFAULT, "    r = signal graphics callback restricted signal flag enabled");
+
 	btree::btree_set<uint32> grfids;
 	for (RailType rt = RAILTYPE_BEGIN; rt < RAILTYPE_END; rt++) {
 		const RailtypeInfo *rti = GetRailTypeInfo(rt);
@@ -2323,9 +2381,15 @@ DEF_CONSOLE_CMD(ConDumpRailTypes)
 DEF_CONSOLE_CMD(ConDumpBridgeTypes)
 {
 	if (argc == 0) {
-		IConsoleHelp("Dump brudge types.");
+		IConsoleHelp("Dump bridge types.");
 		return true;
 	}
+
+	IConsolePrintF(CC_DEFAULT, "  Ctrl flags:");
+	IConsolePrintF(CC_DEFAULT, "    c = custom pillar flags");
+	IConsolePrintF(CC_DEFAULT, "    i = invalid pillar flags");
+	IConsolePrintF(CC_DEFAULT, "    t = not available to towns");
+	IConsolePrintF(CC_DEFAULT, "    s = not available to scripts (AI/GS)");
 
 	btree::btree_set<uint32> grfids;
 	for (BridgeType bt = 0; bt < MAX_BRIDGES; bt++) {
@@ -2356,6 +2420,60 @@ DEF_CONSOLE_CMD(ConDumpBridgeTypes)
 				spec->pillar_flags[11],
 				BSWAP32(grfid),
 				GetStringPtr(spec->material)
+		);
+	}
+	for (uint32 grfid : grfids) {
+		extern GRFFile *GetFileByGRFID(uint32 grfid);
+		const GRFFile *grffile = GetFileByGRFID(grfid);
+		IConsolePrintF(CC_DEFAULT, "  GRF: %08X = %s", BSWAP32(grfid), grffile ? grffile->filename : "????");
+	}
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConDumpCargoTypes)
+{
+	if (argc == 0) {
+		IConsoleHelp("Dump cargo types.");
+		return true;
+	}
+
+	IConsolePrintF(CC_DEFAULT, "  Cargo classes:");
+	IConsolePrintF(CC_DEFAULT, "    p = passenger");
+	IConsolePrintF(CC_DEFAULT, "    m = mail");
+	IConsolePrintF(CC_DEFAULT, "    x = express");
+	IConsolePrintF(CC_DEFAULT, "    a = armoured");
+	IConsolePrintF(CC_DEFAULT, "    b = bulk");
+	IConsolePrintF(CC_DEFAULT, "    g = piece goods");
+	IConsolePrintF(CC_DEFAULT, "    l = liquid");
+	IConsolePrintF(CC_DEFAULT, "    r = refrigerated");
+	IConsolePrintF(CC_DEFAULT, "    h = hazardous");
+	IConsolePrintF(CC_DEFAULT, "    c = covered/sheltered");
+	IConsolePrintF(CC_DEFAULT, "    S = special");
+
+	btree::btree_set<uint32> grfids;
+	for (CargoID i = 0; i < NUM_CARGO; i++) {
+		const CargoSpec *spec = CargoSpec::Get(i);
+		if (!spec->IsValid()) continue;
+		uint32 grfid = GetStringGRFID(spec->name);
+		if (grfid != 0) grfids.insert(grfid);
+		IConsolePrintF(CC_DEFAULT, "  %02u Bit: %2u, Label: %c%c%c%c, Callback mask: 0x%02X, Cargo class: %c%c%c%c%c%c%c%c%c%c%c, GRF: %08X, %s",
+				(uint) i,
+				spec->bitnum,
+				spec->label >> 24, spec->label >> 16, spec->label >> 8, spec->label,
+				spec->callback_mask,
+				(spec->classes & CC_PASSENGERS)   != 0 ? 'p' : '-',
+				(spec->classes & CC_MAIL)         != 0 ? 'm' : '-',
+				(spec->classes & CC_EXPRESS)      != 0 ? 'x' : '-',
+				(spec->classes & CC_ARMOURED)     != 0 ? 'a' : '-',
+				(spec->classes & CC_BULK)         != 0 ? 'b' : '-',
+				(spec->classes & CC_PIECE_GOODS)  != 0 ? 'g' : '-',
+				(spec->classes & CC_LIQUID)       != 0 ? 'l' : '-',
+				(spec->classes & CC_REFRIGERATED) != 0 ? 'r' : '-',
+				(spec->classes & CC_HAZARDOUS)    != 0 ? 'h' : '-',
+				(spec->classes & CC_COVERED)      != 0 ? 'c' : '-',
+				(spec->classes & CC_SPECIAL)      != 0 ? 'S' : '-',
+				BSWAP32(grfid),
+				GetStringPtr(spec->name)
 		);
 	}
 	for (uint32 grfid : grfids) {
@@ -2772,6 +2890,94 @@ DEF_CONSOLE_CMD(ConRoadTypeFlagCtl)
 	return true;
 }
 
+DEF_CONSOLE_CMD(ConRailTypeMapColourCtl)
+{
+	if (argc != 3) {
+		IConsoleHelp("Debug: Rail type map colour control.");
+		return true;
+	}
+
+	RailType rt = (RailType)atoi(argv[1]);
+	uint8 map_colour = atoi(argv[2]);
+
+	if (rt >= RAILTYPE_END) return true;
+	extern RailtypeInfo _railtypes[RAILTYPE_END];
+
+	_railtypes[rt].map_colour = map_colour;
+	MarkAllViewportMapLandscapesDirty();
+
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConSwitchBaseset)
+{
+	if (argc != 2) {
+		IConsoleHelp("Debug: Try to switch baseset and reload NewGRFs. Usage: 'switch_baseset <baseset-name>'");
+		return true;
+	}
+
+	for (int i = 0; i < BaseGraphics::GetNumSets(); i++) {
+		const GraphicsSet *basegfx = BaseGraphics::GetSet(i);
+		if (argv[1] == basegfx->name) {
+			extern std::string _switch_baseset;
+			_switch_baseset = basegfx->name;
+			_check_special_modes = true;
+			return true;
+		}
+	}
+
+	IConsolePrintF(CC_WARNING, "No such baseset: %s.", argv[1]);
+	return 1;
+}
+
+static bool ConConditionalCommon(byte argc, char *argv[], int value, const char *value_name, const char *name)
+{
+	if (argc < 4) {
+		IConsolePrintF(CC_WARNING, "- Execute command if %s is within the specified range. Usage: '%s <minimum> <maximum> <command...>'", value_name, name);
+		return true;
+	}
+
+	int min_value = atoi(argv[1]);
+	int max_value = atoi(argv[2]);
+
+	if (value >= min_value && value <= max_value) IConsoleCmdExecTokens(argc - 3, argv + 3);
+
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConIfYear)
+{
+	return ConConditionalCommon(argc, argv, _cur_date_ymd.year, "the current year (in game)", "if_year");
+}
+
+DEF_CONSOLE_CMD(ConIfMonth)
+{
+	return ConConditionalCommon(argc, argv, _cur_date_ymd.month + 1, "the current month (in game)", "if_month");
+}
+
+DEF_CONSOLE_CMD(ConIfDay)
+{
+	return ConConditionalCommon(argc, argv, _cur_date_ymd.day, "the current day of the month (in game)", "if_day");
+}
+
+DEF_CONSOLE_CMD(ConIfHour)
+{
+	Minutes minutes = _scaled_date_ticks / _settings_time.ticks_per_minute + _settings_time.clock_offset;
+	return ConConditionalCommon(argc, argv,  MINUTES_HOUR(minutes), "the current hour (in game, assuming time is in minutes)", "if_hour");
+}
+
+DEF_CONSOLE_CMD(ConIfMinute)
+{
+	Minutes minutes = _scaled_date_ticks / _settings_time.ticks_per_minute + _settings_time.clock_offset;
+	return ConConditionalCommon(argc, argv, MINUTES_MINUTE(minutes), "the current minute (in game, assuming time is in minutes)", "if_minute");
+}
+
+DEF_CONSOLE_CMD(ConIfHourMinute)
+{
+	Minutes minutes = _scaled_date_ticks / _settings_time.ticks_per_minute + _settings_time.clock_offset;
+	return ConConditionalCommon(argc, argv, (MINUTES_HOUR(minutes) * 100) + MINUTES_MINUTE(minutes), "the current hour and minute 0000 - 2359 (in game, assuming time is in minutes)", "if_hour_minute");
+}
+
 #ifdef _DEBUG
 /******************
  *  debug commands
@@ -2813,6 +3019,35 @@ DEF_CONSOLE_CMD(ConFramerateWindow)
 	}
 
 	ShowFramerateWindow();
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConFindNonRealisticBrakingSignal)
+{
+	if (argc == 0) {
+		IConsoleHelp("Find next signal tile which prevents enabling of realitic braking");
+		return true;
+	}
+
+	for (TileIndex t = 0; t < MapSize(); t++) {
+		if (IsTileType(t, MP_RAILWAY) && GetRailTileType(t) == RAIL_TILE_SIGNALS) {
+			uint signals = GetPresentSignals(t);
+			if ((signals & 0x3) & ((signals & 0x3) - 1) || (signals & 0xC) & ((signals & 0xC) - 1)) {
+				/* Signals in both directions */
+				ScrollMainWindowToTile(t);
+				SetRedErrorSquare(t);
+				return true;
+			}
+			if (((signals & 0x3) && IsSignalTypeUnsuitableForRealisticBraking(GetSignalType(t, TRACK_LOWER))) ||
+					((signals & 0xC) && IsSignalTypeUnsuitableForRealisticBraking(GetSignalType(t, TRACK_UPPER)))) {
+				/* Banned signal types present */
+				ScrollMainWindowToTile(t);
+				SetRedErrorSquare(t);
+				return true;
+			}
+		}
+	}
+
 	return true;
 }
 
@@ -2952,6 +3187,14 @@ void IConsoleStdLibRegister()
 	IConsoleAliasRegister("min_players",           "setting min_active_clients %+");
 	IConsoleAliasRegister("reload_cfg",            "setting reload_cfg %+");
 
+	/* conditionals */
+	IConsoleCmdRegister("if_year", ConIfYear);
+	IConsoleCmdRegister("if_month", ConIfMonth);
+	IConsoleCmdRegister("if_day", ConIfDay);
+	IConsoleCmdRegister("if_hour", ConIfHour);
+	IConsoleCmdRegister("if_minute", ConIfMinute);
+	IConsoleCmdRegister("if_hour_minute", ConIfHourMinute);
+
 	/* debugging stuff */
 #ifdef _DEBUG
 	IConsoleDebugLibRegister();
@@ -2959,8 +3202,11 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("fps",     ConFramerate);
 	IConsoleCmdRegister("fps_wnd", ConFramerateWindow);
 
+	IConsoleCmdRegister("find_non_realistic_braking_signal", ConFindNonRealisticBrakingSignal);
+
 	IConsoleCmdRegister("getfulldate",  ConGetFullDate, nullptr, true);
 	IConsoleCmdRegister("dump_command_log", ConDumpCommandLog, nullptr, true);
+	IConsoleCmdRegister("dump_desync_msgs", ConDumpDesyncMsgLog, nullptr, true);
 	IConsoleCmdRegister("dump_inflation", ConDumpInflation, nullptr, true);
 	IConsoleCmdRegister("dump_cpdp_stats", ConDumpCpdpStats, nullptr, true);
 	IConsoleCmdRegister("dump_veh_stats", ConVehicleStats, nullptr, true);
@@ -2973,6 +3219,7 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("dump_road_types", ConDumpRoadTypes, nullptr, true);
 	IConsoleCmdRegister("dump_rail_types", ConDumpRailTypes, nullptr, true);
 	IConsoleCmdRegister("dump_bridge_types", ConDumpBridgeTypes, nullptr, true);
+	IConsoleCmdRegister("dump_cargo_types", ConDumpCargoTypes, nullptr, true);
 	IConsoleCmdRegister("check_caches", ConCheckCaches, nullptr, true);
 	IConsoleCmdRegister("show_town_window", ConShowTownWindow, nullptr, true);
 	IConsoleCmdRegister("show_station_window", ConShowStationWindow, nullptr, true);
@@ -2991,6 +3238,8 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("bankrupt_company", ConBankruptCompany, ConHookNewGRFDeveloperTool, true);
 	IConsoleCmdRegister("delete_company", ConDeleteCompany, ConHookNewGRFDeveloperTool, true);
 	IConsoleCmdRegister("road_type_flag_ctl", ConRoadTypeFlagCtl, ConHookNewGRFDeveloperTool, true);
+	IConsoleCmdRegister("rail_type_map_colour_ctl", ConRailTypeMapColourCtl, ConHookNewGRFDeveloperTool, true);
+	IConsoleCmdRegister("switch_baseset", ConSwitchBaseset, ConHookNewGRFDeveloperTool, true);
 
 	/* Bug workarounds */
 	IConsoleCmdRegister("jgrpp_bug_workaround_unblock_heliports", ConResetBlockedHeliports, ConHookNoNetwork, true);

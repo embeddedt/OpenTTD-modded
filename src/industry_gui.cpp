@@ -146,7 +146,7 @@ enum CargoSuffixInOut {
 template <typename TC, typename TS>
 static inline void GetAllCargoSuffixes(CargoSuffixInOut use_input, CargoSuffixType cst, const Industry *ind, IndustryType ind_type, const IndustrySpec *indspec, const TC &cargoes, TS &suffixes)
 {
-	assert_compile(lengthof(cargoes) <= lengthof(suffixes));
+	static_assert(lengthof(cargoes) <= lengthof(suffixes));
 
 	if (indspec->behaviour & INDUSTRYBEH_CARGOTYPES_UNLIMITED) {
 		/* Reworked behaviour with new many-in-many-out scheme */
@@ -1125,7 +1125,7 @@ public:
 		const Industry *i = Industry::Get(this->window_number);
 		if (IsProductionAlterable(i)) {
 			const IndustrySpec *ind = GetIndustrySpec(i->type);
-			this->editable = ind->UsesSmoothEconomy() ? EA_RATE : EA_MULTIPLIER;
+			this->editable = ind->UsesOriginalEconomy() ? EA_MULTIPLIER : EA_RATE;
 		} else {
 			this->editable = EA_NONE;
 		}
@@ -1145,11 +1145,11 @@ public:
 static void UpdateIndustryProduction(Industry *i)
 {
 	const IndustrySpec *indspec = GetIndustrySpec(i->type);
-	if (!indspec->UsesSmoothEconomy()) i->RecomputeProductionMultipliers();
+	if (indspec->UsesOriginalEconomy()) i->RecomputeProductionMultipliers();
 
 	for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
 		if (i->produced_cargo[j] != CT_INVALID) {
-			i->past_production[0][j] = 8 * i->production_rate[j];
+			i->past_production[0][j] = ScaleQuantity(8 * i->production_rate[j], _settings_game.economy.industry_cargo_scale_factor);
 		}
 	}
 }
@@ -2247,8 +2247,8 @@ private:
 	}
 };
 
-assert_compile(MAX_CARGOES >= cpp_lengthof(IndustrySpec, produced_cargo));
-assert_compile(MAX_CARGOES >= cpp_lengthof(IndustrySpec, accepts_cargo));
+static_assert(MAX_CARGOES >= cpp_lengthof(IndustrySpec, produced_cargo));
+static_assert(MAX_CARGOES >= cpp_lengthof(IndustrySpec, accepts_cargo));
 
 int CargoesField::small_height;      ///< Height of the header row.
 int CargoesField::normal_height;     ///< Height of the non-header rows.
@@ -2679,8 +2679,7 @@ struct IndustryCargoesWindow : public Window {
 		_displayed_industries.set(it);
 
 		this->fields.clear();
-		/*C++17: CargoesRow &row = */ this->fields.emplace_back();
-		CargoesRow &row = this->fields.back();
+		CargoesRow &row = this->fields.emplace_back();
 		row.columns[0].MakeHeader(STR_INDUSTRY_CARGOES_PRODUCERS);
 		row.columns[1].MakeEmpty(CFT_SMALL_EMPTY);
 		row.columns[2].MakeEmpty(CFT_SMALL_EMPTY);
@@ -2695,8 +2694,7 @@ struct IndustryCargoesWindow : public Window {
 		int num_cust = CountMatchingAcceptingIndustries(central_sp->produced_cargo, lengthof(central_sp->produced_cargo)) + houses_accept;
 		int num_indrows = max(3, max(num_supp, num_cust)); // One is needed for the 'it' industry, and 2 for the cargo labels.
 		for (int i = 0; i < num_indrows; i++) {
-			/*C++17: CargoesRow &row = */ this->fields.emplace_back();
-			CargoesRow &row = this->fields.back();
+			CargoesRow &row = this->fields.emplace_back();
 			row.columns[0].MakeEmpty(CFT_EMPTY);
 			row.columns[1].MakeCargo(central_sp->accepts_cargo, lengthof(central_sp->accepts_cargo));
 			row.columns[2].MakeEmpty(CFT_EMPTY);
@@ -2759,8 +2757,7 @@ struct IndustryCargoesWindow : public Window {
 		_displayed_industries.reset();
 
 		this->fields.clear();
-		/*C++17: CargoesRow &row = */ this->fields.emplace_back();
-		CargoesRow &row = this->fields.back();
+		CargoesRow &row = this->fields.emplace_back();
 		row.columns[0].MakeHeader(STR_INDUSTRY_CARGOES_PRODUCERS);
 		row.columns[1].MakeEmpty(CFT_SMALL_EMPTY);
 		row.columns[2].MakeHeader(STR_INDUSTRY_CARGOES_CUSTOMERS);
@@ -2773,8 +2770,7 @@ struct IndustryCargoesWindow : public Window {
 		int num_cust = CountMatchingAcceptingIndustries(&cid, 1) + houses_accept;
 		int num_indrows = max(num_supp, num_cust);
 		for (int i = 0; i < num_indrows; i++) {
-			/*C++17: CargoesRow &row = */ this->fields.emplace_back();
-			CargoesRow &row = this->fields.back();
+			CargoesRow &row = this->fields.emplace_back();
 			row.columns[0].MakeEmpty(CFT_EMPTY);
 			row.columns[1].MakeCargo(&cid, 1);
 			row.columns[2].MakeEmpty(CFT_EMPTY);

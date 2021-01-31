@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Wheat
 STR_CARGO_PLURAL_RUBBER                                         :Rubber
 STR_CARGO_PLURAL_SUGAR                                          :Sugar
 STR_CARGO_PLURAL_TOYS                                           :Toys
-STR_CARGO_PLURAL_CANDY                                          :Candy
+STR_CARGO_PLURAL_SWEETS                                         :Candy
 STR_CARGO_PLURAL_COLA                                           :Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Cotton Candy
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Cotton Candy
 STR_CARGO_PLURAL_BUBBLES                                        :Bubbles
 STR_CARGO_PLURAL_TOFFEE                                         :Toffee
 STR_CARGO_PLURAL_BATTERIES                                      :Batteries
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Wheat
 STR_CARGO_SINGULAR_RUBBER                                       :Rubber
 STR_CARGO_SINGULAR_SUGAR                                        :Sugar
 STR_CARGO_SINGULAR_TOY                                          :Toy
-STR_CARGO_SINGULAR_CANDY                                        :Candy
+STR_CARGO_SINGULAR_SWEETS                                       :Candy
 STR_CARGO_SINGULAR_COLA                                         :Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Cotton Candy
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Cotton Candy
 STR_CARGO_SINGULAR_BUBBLE                                       :Bubble
 STR_CARGO_SINGULAR_TOFFEE                                       :Toffee
 STR_CARGO_SINGULAR_BATTERY                                      :Battery
@@ -314,6 +314,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Cargo capacity
 STR_SORT_BY_RANGE                                               :Range
 STR_SORT_BY_POPULATION                                          :Population
 STR_SORT_BY_RATING                                              :Rating
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Pause game
@@ -1551,8 +1553,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Scoring end yea
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Year the game ends for scoring purposes. At the end of this year, the company's score is recorded and the high-score screen is displayed, but the players can continue playing after that.{}If this is before the starting year, the high-score screen is never displayed.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Never
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Enable smooth economy (more, smaller changes): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :When enabled, industry production changes more often, and in smaller steps. This setting has usually no effect, if industry types are provided by a NewGRF
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Allow buying shares from other companies: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :When enabled, allow buying and selling of company shares. Shares will only be available for companies reaching a certain age
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Minimum company age to trade shares: {STRING}
@@ -1604,9 +1604,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Linear
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :In-game placement of trees: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Control random appearance of trees during the game. This might affect industries which rely on tree growth, for example lumber mills
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :None {RED}(breaks lumber mill)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Only in rain forests
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Everywhere
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Position of main toolbar: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Horizontal position of the main toolbar at the top of the screen
@@ -1805,17 +1802,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}This tra
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Quit
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Are you sure you want to quit OpenTTD and return to {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Yes
 STR_QUIT_NO                                                     :{BLACK}No
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Abandon Game
@@ -1937,10 +1925,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Change t
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multiplayer
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Advertised
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Choose between an advertised (internet) and a not advertised (Local Area Network, LAN) game
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :No
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Yes
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Player name:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}This is the name other players will identify you by
 
@@ -1981,8 +1965,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Join gam
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Refresh server
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Refresh the server info
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Find server
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Search network for a server
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Add server
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Adds a server to the list which will always be checked for running games
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Start server
@@ -1999,6 +1981,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}The game
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Set password
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Protect your game with a password if you don't want it to be publicly accessible
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Advertised
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Choose between an advertised (internet) and a not advertised (Local Area Network, LAN) game
 STR_NETWORK_START_SERVER_UNADVERTISED                           :No
 STR_NETWORK_START_SERVER_ADVERTISED                             :Yes
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} client{P "" s}
@@ -2219,8 +2203,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ha
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} has started a new company (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} has left the game ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} has changed his/her name to {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} gave your company {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** You gave {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}The server closed the session
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}The server is restarting...{}Please wait...
 
@@ -2525,7 +2507,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Size: {G
 STR_OBJECT_CLASS_LTHS                                           :Lighthouses
 STR_OBJECT_CLASS_TRNS                                           :Transmitters
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Trees
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Select tree type to plant. If the tile already has a tree, this will add more trees of mixed types independent of the selected type
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Trees of random type
@@ -4639,6 +4621,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Original Transp
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Original Transport Tycoon Deluxe DOS edition music.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Original Transport Tycoon (Original/World Editor) DOS edition music.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :A music pack without actual music.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Train {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Road Vehicle {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Ship {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Aircraft {COMMA}
 
 ##id 0x2000
 # Town building names

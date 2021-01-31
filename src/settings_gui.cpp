@@ -1650,7 +1650,6 @@ static SettingsContainer &GetSettingsTree()
 			SettingsPage *construction = interface->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION));
 			{
 				construction->Add(new SettingEntry("gui.link_terraform_toolbar"));
-				construction->Add(new SettingEntry("construction.simulated_wormhole_signals"));
 				construction->Add(new SettingEntry("gui.enable_signal_gui"));
 				construction->Add(new SettingEntry("gui.persistent_buildingtools"));
 				construction->Add(new SettingEntry("gui.quick_goto"));
@@ -1737,6 +1736,7 @@ static SettingsContainer &GetSettingsTree()
 			interface->Add(new SettingEntry("gui.adv_sig_bridge_tun_modes"));
 			interface->Add(new SettingEntry("gui.show_depot_sell_gui"));
 			interface->Add(new SettingEntry("gui.open_vehicle_gui_clone_share"));
+			interface->Add(new SettingEntry("gui.vehicle_names"));
 		}
 
 		SettingsPage *advisors = main->Add(new SettingsPage(STR_CONFIG_SETTING_ADVISORS));
@@ -1771,6 +1771,7 @@ static SettingsContainer &GetSettingsTree()
 			company->Add(new SettingEntry("gui.default_signal_type"));
 			company->Add(new SettingEntry("gui.cycle_signal_types"));
 			company->Add(new SettingEntry("gui.drag_signals_fixed_distance"));
+			company->Add(new SettingEntry("gui.auto_remove_signals"));
 			company->Add(new SettingEntry("gui.new_nonstop"));
 			company->Add(new SettingEntry("gui.stop_location"));
 			company->Add(new SettingEntry("gui.starting_colour"));
@@ -1793,11 +1794,13 @@ static SettingsContainer &GetSettingsTree()
 			company->Add(new SettingEntry("company.infra_others_buy_in_depot[3]"));
 			company->Add(new SettingEntry("company.advance_order_on_clone"));
 			company->Add(new SettingEntry("company.copy_clone_add_to_group"));
+			company->Add(new SettingEntry("company.simulated_wormhole_signals"));
 		}
 
 		SettingsPage *accounting = main->Add(new SettingsPage(STR_CONFIG_SETTING_ACCOUNTING));
 		{
 			accounting->Add(new SettingEntry("economy.inflation"));
+			accounting->Add(new SettingEntry("economy.inflation_fixed_dates"));
 			accounting->Add(new SettingEntry("economy.day_length_factor"));
 			accounting->Add(new SettingEntry("difficulty.initial_interest"));
 			accounting->Add(new SettingEntry("difficulty.max_loan"));
@@ -1813,6 +1816,7 @@ static SettingsContainer &GetSettingsTree()
 			SettingsPage *physics = vehicles->Add(new SettingsPage(STR_CONFIG_SETTING_VEHICLES_PHYSICS));
 			{
 				physics->Add(new SettingEntry("vehicle.train_acceleration_model"));
+				physics->Add(new SettingEntry("vehicle.train_braking_model"));
 				physics->Add(new SettingEntry("vehicle.train_slope_steepness"));
 				physics->Add(new SettingEntry("vehicle.wagon_speed_limits"));
 				physics->Add(new SettingEntry("vehicle.freight_trains"));
@@ -1943,8 +1947,9 @@ static SettingsContainer &GetSettingsTree()
 				industries->Add(new SettingEntry("construction.industry_platform"));
 				industries->Add(new SettingEntry("economy.multiple_industry_per_town"));
 				industries->Add(new SettingEntry("game_creation.oil_refinery_limit"));
-				industries->Add(new SettingEntry("economy.smooth_economy"));
+				industries->Add(new SettingEntry("economy.type"));
 				industries->Add(new SettingEntry("station.serve_neutral_industries"));
+				industries->Add(new SettingEntry("economy.industry_cargo_scale_factor"));
 			}
 
 			SettingsPage *cdist = environment->Add(new SettingsPage(STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST));
@@ -2040,7 +2045,7 @@ static const StringID _game_settings_restrict_dropdown[] = {
 	STR_CONFIG_SETTING_RESTRICT_CHANGED_AGAINST_DEFAULT,          // RM_CHANGED_AGAINST_DEFAULT
 	STR_CONFIG_SETTING_RESTRICT_CHANGED_AGAINST_NEW,              // RM_CHANGED_AGAINST_NEW
 };
-assert_compile(lengthof(_game_settings_restrict_dropdown) == RM_END);
+static_assert(lengthof(_game_settings_restrict_dropdown) == RM_END);
 
 /** Warnings about hidden search results. */
 enum WarnHiddenResult {
@@ -2452,16 +2457,18 @@ struct GameSettingsWindow : Window {
 		} else {
 			/* Only open editbox if clicked for the second time, and only for types where it is sensible for. */
 			if (this->last_clicked == pe && sd->desc.cmd != SDT_BOOLX && !(sd->desc.flags & (SGF_MULTISTRING | SGF_ENUM))) {
+				int64 value64 = value;
 				/* Show the correct currency-translated value */
-				if (sd->desc.flags & SGF_CURRENCY) value *= _currency->rate;
+				if (sd->desc.flags & SGF_CURRENCY) value64 *= _currency->rate;
 
 				this->valuewindow_entry = pe;
 				if (sd->desc.flags & SGF_DECIMAL1) {
-					SetDParam(0, value);
+					SetDParam(0, value64);
 					ShowQueryString(STR_JUST_DECIMAL1, STR_CONFIG_SETTING_QUERY_CAPTION, 10, this, CS_NUMERAL_DECIMAL, QSF_ENABLE_DEFAULT);
 				} else {
-					SetDParam(0, value);
-					ShowQueryString(STR_JUST_INT, STR_CONFIG_SETTING_QUERY_CAPTION, 10, this, CS_NUMERAL, QSF_ENABLE_DEFAULT);
+					SetDParam(0, value64);
+					/* Limit string length to 14 so that MAX_INT32 * max currency rate doesn't exceed MAX_INT64. */
+					ShowQueryString(STR_JUST_INT, STR_CONFIG_SETTING_QUERY_CAPTION, 15, this, CS_NUMERAL, QSF_ENABLE_DEFAULT);
 				}
 			}
 			this->SetDisplayedHelpText(pe);
@@ -2487,14 +2494,17 @@ struct GameSettingsWindow : Window {
 
 		int32 value;
 		if (!StrEmpty(str)) {
+			long long llvalue;
 			if (sd->desc.flags & SGF_DECIMAL1) {
-				value = atof(str) * 10;
+				llvalue = atof(str) * 10;
 			} else {
-				value = atoi(str);
+				llvalue = atoll(str);
 			}
 
 			/* Save the correct currency-translated value */
-			if (sd->desc.flags & SGF_CURRENCY) value /= _currency->rate;
+			if (sd->desc.flags & SGF_CURRENCY) llvalue /= _currency->rate;
+
+			value = (int32)ClampToI32(llvalue);
 		} else {
 			value = (int32)(size_t)sd->desc.def;
 		}

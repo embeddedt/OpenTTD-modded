@@ -72,12 +72,12 @@ STR_CARGO_PLURAL_SUGAR                                          :Cukor
 STR_CARGO_PLURAL_SUGAR.t                                        :cukrot
 STR_CARGO_PLURAL_TOYS                                           :Játék
 STR_CARGO_PLURAL_TOYS.t                                         :játékot
-STR_CARGO_PLURAL_CANDY                                          :Cukorka
-STR_CARGO_PLURAL_CANDY.t                                        :cukorkát
+STR_CARGO_PLURAL_SWEETS                                         :Cukorka
+STR_CARGO_PLURAL_SWEETS.t                                       :cukorkát
 STR_CARGO_PLURAL_COLA                                           :Kóla
 STR_CARGO_PLURAL_COLA.t                                         :kólát
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Vattacukor
-STR_CARGO_PLURAL_COTTON_CANDY.t                                 :vattacukrot
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Vattacukor
+STR_CARGO_PLURAL_CANDYFLOSS.t                                   :vattacukrot
 STR_CARGO_PLURAL_BUBBLES                                        :Buborék
 STR_CARGO_PLURAL_BUBBLES.t                                      :buborékot
 STR_CARGO_PLURAL_TOFFEE                                         :Tejkaramella
@@ -137,12 +137,12 @@ STR_CARGO_SINGULAR_SUGAR                                        :cukor
 STR_CARGO_SINGULAR_SUGAR.t                                      :cukrot
 STR_CARGO_SINGULAR_TOY                                          :játék
 STR_CARGO_SINGULAR_TOY.t                                        :játékot
-STR_CARGO_SINGULAR_CANDY                                        :cukorka
-STR_CARGO_SINGULAR_CANDY.t                                      :cukorkát
+STR_CARGO_SINGULAR_SWEETS                                       :cukorka
+STR_CARGO_SINGULAR_SWEETS.t                                     :cukorkát
 STR_CARGO_SINGULAR_COLA                                         :kóla
 STR_CARGO_SINGULAR_COLA.t                                       :kólát
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :vattacukor
-STR_CARGO_SINGULAR_COTTON_CANDY.t                               :vattacukrot
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :vattacukor
+STR_CARGO_SINGULAR_CANDYFLOSS.t                                 :vattacukrot
 STR_CARGO_SINGULAR_BUBBLE                                       :buborék
 STR_CARGO_SINGULAR_BUBBLE.t                                     :buborékot
 STR_CARGO_SINGULAR_TOFFEE                                       :tejkaramella
@@ -377,6 +377,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Szállítási k
 STR_SORT_BY_RANGE                                               :Hatótávolság
 STR_SORT_BY_POPULATION                                          :Lakosság
 STR_SORT_BY_RATING                                              :Értékelés
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Játék szüneteltetése
@@ -1617,8 +1619,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Játék végi p
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :A játék ebben az évben ér véget pontozás szempontjából. Ennek az évnek a végén a vállalat teljesítménypontszáma rögzítésre kerül, és adott esetben megjelenik a rekord táblán, de a játékosok ezután folytathatják a játékot.{}Ha ez a kezdő év elé van állítva, akkor a rekord tábla sosem jelenik meg.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Soha
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Egyenletes gazdaság (több, kisebb változás): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Bekapcsolva a gazdasági épületek termelése gyakrabban és kisebb lépésekben változik. Ennek a beállításnak általában nincs hatása, ha a gazdasági épületeket NewGRF nyújta
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Más vállalatokból lehet részvényt vásárolni: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Bekapcsolva engedélyezi más vállalatok részvényeinek megvásárlását. A részvények csak akkor elérhetőek, ha a vállalat elért egy bizonyos kort
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Vállalatok minimális életkora részvénykibocsátáshoz: {STRING}
@@ -1670,9 +1670,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Lineáris
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Játékbeli faelhelyezkedés: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Fák véletlenszerű megjelenésének szabályozása a játék során. Ez befolyásolhatja a gazdasági épületeket, melyek a fák növekedésétől függnek, mint a favágók
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :sehol {RED}(favágók ellehetetlenítése)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :csak esőerdőkben
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :mindenhol
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :A fő eszközsor helye: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :A fő eszközsor vízszintes elhelyezésének beállítása a képernyő tetején
@@ -1871,17 +1868,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Ebből a
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Kilépés
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Biztosan bezárod ezt a programot és kilépsz a {STRING}ba?
 STR_QUIT_YES                                                    :{BLACK}Igen
 STR_QUIT_NO                                                     :{BLACK}Nem
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Kilépés a játékból
@@ -2003,10 +1991,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Nyakkend
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Hálózati játék
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Hírdetett
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Válassz hírdetett (internet) és nem hírdetett (helyi hálózat, LAN) játék közül.
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Nem
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Igen
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Játékos neve:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}A többi játékos ilyen néven fog ismerni Téged.
 
@@ -2047,8 +2031,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Csatlako
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Szerver frissítése
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Szerver infó frissítése
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Szerver keresése
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Szerver keresése a hálózaton
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Szerver hozzáadása
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Hozzáadja a szervert a listához, így később gyorsabban tudsz hozzá csatlakozni
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Szerver indítása
@@ -2065,6 +2047,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}A játé
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Jelszó beállítása
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Védd le a játékodat jelszóval, ha nem akarod hogy illetéktelenek csatlakozzanak
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Hírdetett
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Válassz hírdetett (internet) és nem hírdetett (helyi hálózat, LAN) játék közül.
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Nem
 STR_NETWORK_START_SERVER_ADVERTISED                             :Igen
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} kliens
@@ -2286,8 +2270,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} cs
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} új vállalatot alapított (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} kilépett a játékból ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} nevet változtatott. Új neve: {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} a következő összeget utalta vállalatodnak: {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** {1:STRING} vállalatnak sikeresen átutaltál {2:CURRENCY_LONG}-t
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}A szerver leállította a játékot
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}A szerver újraindul...{}Türelem...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} ki lett rúgva. Oka: ({STRING})
@@ -2593,7 +2575,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Méret: 
 STR_OBJECT_CLASS_LTHS                                           :Világítótornyok
 STR_OBJECT_CLASS_TRNS                                           :Adótornyok
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Fák
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Ültetendő fa kiválasztása. Ha már van fa a mezőn, akkor újabb fák ültetése a kiválasztott fatípustól függetlenül
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Véletlenszerű fafélék
@@ -4716,6 +4698,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Az eredeti Tran
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Az eredeti Transport Tycoon Deluxe DOS verziójának zenéje.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Az eredeti Transport Tycoon (az első változat és a World Editor) DOS verziójának zenéje.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Zenei alapcsomag zene nélkül.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Vonat {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Közúti jármű {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Hajó {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Repülő {COMMA}
 
 ##id 0x2000
 # Town building names

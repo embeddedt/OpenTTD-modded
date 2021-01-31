@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Vete
 STR_CARGO_PLURAL_RUBBER                                         :Gummi
 STR_CARGO_PLURAL_SUGAR                                          :Socker
 STR_CARGO_PLURAL_TOYS                                           :Leksaker
-STR_CARGO_PLURAL_CANDY                                          :Godis
+STR_CARGO_PLURAL_SWEETS                                         :Godis
 STR_CARGO_PLURAL_COLA                                           :Kola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Sockervadd
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Sockervadd
 STR_CARGO_PLURAL_BUBBLES                                        :Bubblor
 STR_CARGO_PLURAL_TOFFEE                                         :Knäck
 STR_CARGO_PLURAL_BATTERIES                                      :Batterier
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Spannmål
 STR_CARGO_SINGULAR_RUBBER                                       :Gummi
 STR_CARGO_SINGULAR_SUGAR                                        :Socker
 STR_CARGO_SINGULAR_TOY                                          :Leksak
-STR_CARGO_SINGULAR_CANDY                                        :Godis
+STR_CARGO_SINGULAR_SWEETS                                       :Godis
 STR_CARGO_SINGULAR_COLA                                         :Kola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Sockervadd
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Sockervadd
 STR_CARGO_SINGULAR_BUBBLE                                       :Bubbla
 STR_CARGO_SINGULAR_TOFFEE                                       :Knäck
 STR_CARGO_SINGULAR_BATTERY                                      :Batteri
@@ -314,6 +314,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Lastkapacitet
 STR_SORT_BY_RANGE                                               :Räckvidd
 STR_SORT_BY_POPULATION                                          :Folkmängd
 STR_SORT_BY_RATING                                              :Värdering
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Pausa spelet
@@ -1553,8 +1555,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Slutår för po
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Årtal då spelet slutar räkna poäng. Vid slutet av detta år sparas företagets poäng och listan med de bästa spelresultaten visas, men därefter kan spelarna fortsätta att spela.{}Om årtalet är satt till innan startåret visas aldrig de bästa spelresultaten.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Aldrig
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Lugn ekonomi (flera små ändringar): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :När det är aktiverat ändras industriproduktionen oftare och i mindre steg. Den här inställningen har vanligtvis ingen effekt om de olika industrityperna kommer från en NewGRF
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Tillåt köp av aktier från andra företag: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :När det är aktiverat blir det tillåtet att köpa och sälja andelar i företag. För att dess andelar ska bli tillgängliga måste ett företag ha uppnått en viss ålder
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Lägsta företagsålder för aktiehandel: {STRING}
@@ -1606,9 +1606,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Linjär
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Placering av träd i spelläge: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Kontrollera den slumpmässiga uppkomsten av träd under spelets gång. Detta kan påverka industrier som är beroende av växande träd, till exempel sågverk
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Inga {RED}(förstör sågverk)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Bara i regnskogar
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Överallt
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Verktygsradens position: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Verktygsradens horisontella position i skärmens överkant
@@ -1807,17 +1804,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Den här
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Avsluta
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Är du säker på att du vill avsluta OpenTTD och återvända till {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Ja
 STR_QUIT_NO                                                     :{BLACK}Nej
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Avsluta spelet
@@ -1939,10 +1927,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Ändra s
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Flera spelare
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Publikt
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Välj mellan ett publikt (internet) eller icke publikt (Local Area Network. LAN) spel
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Nej
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Ja
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Spelarnamn:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Namnet som andra spelare kommer se dej som
 
@@ -1983,8 +1967,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Gå med 
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Uppdatera server
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Uppdatera server info
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Leta server
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Sök i nätverket efter en server
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Lägg till server
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Lägg till en server till listan som alltid kommer kontrolleras för aktiva spel
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Starta server
@@ -2001,6 +1983,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Namnet p
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Bestäm lösenord
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Skydda spelet med ett lösenord så att inte andra än dem som har lösenordet kan gå med i spelet
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Publikt
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Välj mellan ett publikt (internet) eller icke publikt (Local Area Network. LAN) spel
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Nej
 STR_NETWORK_START_SERVER_ADVERTISED                             :Ja
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} klient{P "" er}
@@ -2222,8 +2206,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ha
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} har startat ett nytt företag (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} har lämnat spelet ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} har ändrat hans/hennes namn till {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} gav ditt företag {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** You gave {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Servern avslutade sessionen
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Servern startar om...{}Var vänlig vänta...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} kastades ut. Orsak: ({STRING})
@@ -2529,7 +2511,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Storlek:
 STR_OBJECT_CLASS_LTHS                                           :Fyrar
 STR_OBJECT_CLASS_TRNS                                           :Sändare
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Träd
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Välj trädtyp att plantera. Om rutan redan har ett träd, kommer ytterliggare träd att vara av slumpmässig typ oberoende av vilken trädtyp som valts
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Träd av slumpvald typ
@@ -4652,6 +4634,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Originalmusiken
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Originalmusiken från DOS-utgåvan av Transport Tycoon Deluxe.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Originalmusiken från DOS-utgåvan av Transport Tycoon (Original/World Editor).
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Ett musikpaket utan någon musik.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Tåg {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Vägfordon {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Skepp {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Luftfarkost {COMMA}
 
 ##id 0x2000
 # Town building names

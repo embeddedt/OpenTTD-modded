@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Gwenith
 STR_CARGO_PLURAL_RUBBER                                         :Rwber
 STR_CARGO_PLURAL_SUGAR                                          :Siwgr
 STR_CARGO_PLURAL_TOYS                                           :Teganau
-STR_CARGO_PLURAL_CANDY                                          :Melysion
+STR_CARGO_PLURAL_SWEETS                                         :Melysion
 STR_CARGO_PLURAL_COLA                                           :Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Candifflos
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Candifflos
 STR_CARGO_PLURAL_BUBBLES                                        :Swigod
 STR_CARGO_PLURAL_TOFFEE                                         :Toffi
 STR_CARGO_PLURAL_BATTERIES                                      :Baterïau
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Gwenith
 STR_CARGO_SINGULAR_RUBBER                                       :Rwber
 STR_CARGO_SINGULAR_SUGAR                                        :Siwgr
 STR_CARGO_SINGULAR_TOY                                          :Tegan
-STR_CARGO_SINGULAR_CANDY                                        :Melysyn
+STR_CARGO_SINGULAR_SWEETS                                       :Melysyn
 STR_CARGO_SINGULAR_COLA                                         :Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Candifflos
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Candifflos
 STR_CARGO_SINGULAR_BUBBLE                                       :Swigen
 STR_CARGO_SINGULAR_TOFFEE                                       :Toffi
 STR_CARGO_SINGULAR_BATTERY                                      :Batri
@@ -309,6 +309,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Gallu cludo llw
 STR_SORT_BY_RANGE                                               :Maes teithio
 STR_SORT_BY_POPULATION                                          :Poblogaeth
 STR_SORT_BY_RATING                                              :Gradd
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Oedi'r gêm
@@ -1512,8 +1514,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Llawn
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Bydd newyddion lliw yn ymddangos yn: {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Y blwyddyn y caiff cyhoeddiadau newyddion eu hargraffu mewn lliw. Cyn y dyddiad yma rhai du a gwyn fyddent
 STR_CONFIG_SETTING_STARTING_YEAR                                :Blwyddyn dechreuol: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Galluogi economi llyfn (mwy o newidiadau llai): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Pan fe wedi'i alluogi, mae gweithgynhyrchiant diwydiant yn newid yn fwy aml, ac mewn cammau llai. Ni fydd y gosodiad yma yn cael effaith os y defnyddir diwydiannau NewGRF, fel rheol
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Caniatáu prynu cyfranddaliadau mewn cwmnïau eraill: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Pan fo wedi'i alluogi, fe ganiateir prynnu a gwerthu cyfrandalaidau cwmni. Rhaid i gwmni gyrraedd oed penodol cyn y daw eu cyfrandaliadau ar gael
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Canran elw y cymal i'w dalu mewn systemau trosglwyddo: {STRING}
@@ -1559,9 +1559,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :Caniatáu, cynl
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Gosod coed mewn gêm: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Rheoli ymddangosiad coed ar hap yn ystod y gêm. Gall hyn effeithio ar ddiwydiannau sy'n ddibynnol ar dyfiant coed, megis melinau coed
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Dim {RED}(yn torri'r felin goed)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Mewn glawgoedwigoedd yn unig
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Pob man
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Safle'r prif far offer: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Lleoliad llorweddol y brif bar offer ar frig y sgrin
@@ -1760,17 +1757,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Mae'r cy
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Gadael
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Ydych chi eisiau gadael y gêm a dychwelyd i {STRING}?
 STR_QUIT_YES                                                    :{BLACK}Iawn
 STR_QUIT_NO                                                     :{BLACK}Na
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Rhoi'r gorau i Gêm
@@ -1892,10 +1880,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Newid te
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Amlchwaraewr
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Hysbys
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Dewis rhwyd gêm a hysbysebir (rhyngrwyd) neu un anhysbys (rhwydwaith leol)
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Na
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Ia
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Enw chwaraewr:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Byddwch chi'n ymddangos i'r chwaraewyr eraill dan yr enw hwn
 
@@ -1936,8 +1920,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Ymuno â
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Adnewyddu'r gweinydd
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Adnewyddu'r wybodaeth am y gweinydd
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Canfod gweinydd
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Chwilio'r rhwydwaith am weinydd
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Ychwanegu gweinydd
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Ychwanegu gweinydd i'r rhestr a gaiff ei wirio bob tro am gemau sy'n rhedeg
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Dechrau gweinydd
@@ -1954,6 +1936,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Bydd y g
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Gosod cyfrinair
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Diogelwch eich gêm â chyfrinair os nad ydych am i fynediad ato fod yn gyhoeddus
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Hysbys
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Dewis rhwyd gêm a hysbysebir (rhyngrwyd) neu un anhysbys (rhwydwaith leol)
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Na
 STR_NETWORK_START_SERVER_ADVERTISED                             :Ia
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} gwestai
@@ -2173,8 +2157,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** Mae {STRING
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** Mae {STRING} wedi dechrau cwmni newydd (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** Mae {STRING} wedi gadael y gêm ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** Mae {STRING} wedi newid ei (h)enw i {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** Rhoddodd {STRING} {2:CURRENCY_LONG} i'ch cwmni
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Fe roddoch chi {2:CURRENCY_LONG} {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Fe gaewyd y sesiwn gan y gweinydd
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Mae'r gweinydd yn ailgychwyn...{}Arhoswch...
 
@@ -2474,7 +2456,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Maint: {
 STR_OBJECT_CLASS_LTHS                                           :Goleudai
 STR_OBJECT_CLASS_TRNS                                           :Tyrrau Darlledu
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Coed
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Dewiswch y math o goeden i'w phlannu. Os oes coeden yno'n barod, bydd hyn yn plannu mwy o goed o fath ar hap
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Coed o fath ar hap
@@ -4487,6 +4469,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Cerddoriaeth gw
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Cerddoriaeth gwreiddiol fersiwn DOS o Transport Tycoon Deluxe.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Cerddoriaeth gwreiddiol fersion DOS o Transport Tycoon Deluxe (Gwreiddiol/Golygydd Byd).
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Pecyn cerddoriaeth heb unrhyw gerddoriaeth ynddo.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Trên {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Cerbyd Ffordd {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Llong {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Awyren {COMMA}
 
 ##id 0x2000
 # Town building names

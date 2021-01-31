@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Weess
 STR_CARGO_PLURAL_RUBBER                                         :Kautschuk
 STR_CARGO_PLURAL_SUGAR                                          :Zocker
 STR_CARGO_PLURAL_TOYS                                           :Spillsaachen
-STR_CARGO_PLURAL_CANDY                                          :Séissegkeeten
+STR_CARGO_PLURAL_SWEETS                                         :Séissegkeeten
 STR_CARGO_PLURAL_COLA                                           :Cola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Zockerwatt
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Zockerwatt
 STR_CARGO_PLURAL_BUBBLES                                        :Blosen
 STR_CARGO_PLURAL_TOFFEE                                         :Karamell
 STR_CARGO_PLURAL_BATTERIES                                      :Batterien
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Weess
 STR_CARGO_SINGULAR_RUBBER                                       :Kautschuck
 STR_CARGO_SINGULAR_SUGAR                                        :Zocker
 STR_CARGO_SINGULAR_TOY                                          :Spillsaach
-STR_CARGO_SINGULAR_CANDY                                        :Séissegkeet
+STR_CARGO_SINGULAR_SWEETS                                       :Séissegkeet
 STR_CARGO_SINGULAR_COLA                                         :Cola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Zockerwatt
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Zockerwatt
 STR_CARGO_SINGULAR_BUBBLE                                       :Blos
 STR_CARGO_SINGULAR_TOFFEE                                       :Karamell
 STR_CARGO_SINGULAR_BATTERY                                      :Batterie
@@ -314,6 +314,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Luedungskapazit
 STR_SORT_BY_RANGE                                               :Längt
 STR_SORT_BY_POPULATION                                          :Bevölkerung
 STR_SORT_BY_RATING                                              :Rating
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Spill pausen
@@ -1552,8 +1554,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :End-Joer vum Sc
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Joer wou d'Spill opgrond vum Scoring ophält. Um Enn vun desem Joer gëtt der Firma hiere Score  gespäichert an an der Highscore-Lëscht ugewisen, mee de Spiller kann dono weider spillen.{}Wann dese Wert virum Startjoer ass, gëtt d'Highscorelëscht nie ugewisen.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Nie
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Gläichméisseg Wiertschaft aschalten (méi oft an kleng Wiessel): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Wann ugeschalt, ännert d'Industrieproduktioun méi oft, an méi kléngen Schrëtter. Dës Astellung huet keng Auswierkung op NewGRF-Industrien
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Undeeler vun aaneren Firmen kafen: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Wann ugeschalt, dierfen Aktien vu Firmen kaf an verkaf ginn. Aktien si just fir Firme verfügbar, déi en gewëssen Alter erreecht hunn
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Minimalt Firmenalter fir Aktien ze handelen: {STRING}
@@ -1605,9 +1605,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Linear
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Bamplazéirung: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Kontrolléiert zoufälleg Optauche vu Beem während dem Spill. Dëst kann Industrie beaflossen, déi op d'Wuessen vu Beem ugewisen sinn
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Keng{RED}(zerstéiert Bauholzfabrik)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Nëmmen am Reebësch
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Iwwerall
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Positioun vun der Haapt-Toolbar: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Horizontal Positioun vun der Haapt-Toolbar uewen um Schierm
@@ -1806,17 +1803,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Dës Iww
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Eraus
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Bass du sécher, dass du aus OpenTTD eraus wëlls, an an den {STRING} zeréck?
 STR_QUIT_YES                                                    :{BLACK}Jo
 STR_QUIT_NO                                                     :{BLACK}Nee
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Spill ofbriechen
@@ -1938,10 +1926,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Krawatt 
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multiplayer
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Ugekënnegt
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Wiel tëschent engem ugekënnegten (Internet) an net ugekënnegten (LAN) Spill
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Nee
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Jo
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Spillernumm:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Daat ass den Numm mat deem iech déi aner Spiller Identifizéieren kënnen
 
@@ -1982,8 +1966,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Spill b�
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Server erneieren
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Serverinfo erneieren
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Server sichen
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Am Netzwierk no engem Server sichen
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Server bäisetzen
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Setzt en Server op d'Lëscht wou ëmmer no enger Partie gesicht gëtt
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Server starten
@@ -2000,6 +1982,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Den Numm
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Passwuert setzen
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}En Passwuert fir d'Spill setzen, dass et net Public accessibel ass
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Ugekënnegt
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Wiel tëschent engem ugekënnegten (Internet) an net ugekënnegten (LAN) Spill
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Nee
 STR_NETWORK_START_SERVER_ADVERTISED                             :Jo
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} Spiller
@@ -2221,8 +2205,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} as
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} huet eng nei Firma gegrënnt (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} huet d'Spill verlooss ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} huet säin Numm op {STRING} gewiesselt
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} huet ärer Firma {2:CURRENCY_LONG} ginn
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Du hues dem {1:STRING} {2:CURRENCY_LONG} ginn
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}De Server huet d'Sessioun zougemaach
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}De Server gëtt nei gestart...{}W.e.g. waarden...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} gouf gekickt. Grond: ({STRING})
@@ -2528,7 +2510,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Gréisst
 STR_OBJECT_CLASS_LTHS                                           :Liichttierm
 STR_OBJECT_CLASS_TRNS                                           :Antennen
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Beem
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Wielt de Baamtyp. Wann d'Feld schons e Baam huet, ginn méi Beem vu verschiddenen Arten gesat
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Zoufälleg Beem
@@ -4651,6 +4633,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Original Transp
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Original Transport Tycoon Deluxe DOS Editioun Musik.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Original Transport Tycoon (Original/World Editor) DOS Editioun-Musik.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :E Musikpack ouni aktuell Musik.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Zuch {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Stroossegefier {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Schëff {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Fliger {COMMA}
 
 ##id 0x2000
 # Town building names

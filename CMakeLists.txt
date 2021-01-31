@@ -10,6 +10,10 @@ if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
     message(FATAL_ERROR "In-source builds not allowed. Please run \"cmake ..\" from the bin directory")
 endif()
 
+if (EMSCRIPTEN)
+    set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/os/emscripten/cmake")
+endif()
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
@@ -26,6 +30,61 @@ set_directory_options()
 
 include(Static)
 set_static_if_needed()
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+set(CMAKE_CXX_EXTENSIONS NO)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
+
+# An empty target for the tools
+add_custom_target(tools)
+
+include(Endian)
+add_endian_definition()
+
+include(CompileFlags)
+compile_flags()
+
+if(APPLE OR UNIX)
+    add_definitions(-DUNIX)
+endif()
+
+if(UNIX)
+    find_package(Doxygen)
+endif()
+
+list(APPEND GENERATED_SOURCE_FILES "${CMAKE_BINARY_DIR}/generated/rev.cpp")
+if(WIN32)
+    list(APPEND GENERATED_SOURCE_FILES "${CMAKE_BINARY_DIR}/generated/ottdres.rc")
+endif()
+
+# Documentation
+if(DOXYGEN_EXECUTABLE)
+    add_custom_target(docs)
+    add_custom_target(docs_source
+        ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/docs
+        COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_BINARY_DIR}/Doxyfile
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Generating documentation for source"
+    )
+    add_dependencies(docs_source
+        find_version
+    )
+    add_dependencies(docs
+        docs_source
+    )
+endif()
+
+include(AddCustomXXXTimestamp)
+
+if(OPTION_TOOLS_ONLY)
+    if(HOST_BINARY_DIR)
+        unset(HOST_BINARY_DIR CACHE)
+    endif()
+    add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+    return()
+endif()
 
 # Prefer -pthread over -lpthread, which is often the better option of the two.
 set(CMAKE_THREAD_PREFER_PTHREAD YES)
@@ -48,7 +107,6 @@ if(NOT WIN32)
         find_package(Fluidsynth)
         find_package(Fontconfig)
         find_package(ICU OPTIONAL_COMPONENTS i18n lx)
-        find_package(XDG_basedir)
     else()
         find_package(Iconv)
 
@@ -74,12 +132,18 @@ if (UNIX)
     find_package(SelfDbg)
     find_package(Ucontext)
     find_package(BFD)
-    find_package(Fcitx)
+endif (UNIX)
+
+if(UNIX AND NOT APPLE)
+    find_package(Fcitx QUIET)
     if (Fcitx_FOUND)
+        message(STATUS "Found: Fcitx: ${Fcitx_VERSION}")
         find_package(DBus1)
         find_package(X11)
+    else(Fcitx_FOUND)
+        message(STATUS "Could not find Fcitx (Fcitx is OPTIONAL)")
     endif(Fcitx_FOUND)
-endif (UNIX)
+endif()
 
 if (MINGW)
     find_package(Demangle)
@@ -119,27 +183,7 @@ if(APPLE)
     endif()
 endif()
 
-if(MSVC)
-    # C++17 for MSVC
-    set(CMAKE_CXX_STANDARD 17)
-else()
-    # C++11 for all other targets
-    set(CMAKE_CXX_STANDARD 11)
-endif()
-
-set(CMAKE_CXX_STANDARD_REQUIRED YES)
-set(CMAKE_CXX_EXTENSIONS NO)
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS YES)
-
-list(APPEND GENERATED_SOURCE_FILES "${CMAKE_BINARY_DIR}/generated/rev.cpp")
-if(WIN32)
-    list(APPEND GENERATED_SOURCE_FILES "${CMAKE_BINARY_DIR}/generated/ottdres.rc")
-endif()
-
 include(SourceList)
-include(Endian)
-add_endian_definition()
 
 # Needed by rev.cpp
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -147,9 +191,6 @@ include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/3rdparty/squirrel/include)
 
 include(MSVCFilters)
-
-include(CompileFlags)
-compile_flags()
 
 add_executable(openttd WIN32 ${GENERATED_SOURCE_FILES})
 set_target_properties(openttd PROPERTIES OUTPUT_NAME "${BINARY_NAME}")
@@ -185,7 +226,6 @@ else()
     )
 endif()
 
-include(AddCustomXXXTimestamp)
 add_subdirectory(${CMAKE_SOURCE_DIR}/src)
 add_subdirectory(${CMAKE_SOURCE_DIR}/media/baseset)
 add_subdirectory(${CMAKE_SOURCE_DIR}/bin)
@@ -218,16 +258,11 @@ endif()
 set_target_properties(openttd PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
 process_compile_flags()
 
-if(APPLE OR UNIX)
-    add_definitions(-DUNIX)
-endif()
-
 include(LinkPackage)
 link_package(PNG TARGET PNG::PNG ENCOURAGED)
 link_package(ZLIB TARGET ZLIB::ZLIB ENCOURAGED)
 link_package(LIBLZMA TARGET LibLZMA::LibLZMA ENCOURAGED)
-link_package(LZO ENCOURAGED)
-link_package(XDG_basedir)
+link_package(LZO)
 
 if(NOT OPTION_DEDICATED)
     link_package(Fluidsynth)
@@ -254,8 +289,42 @@ if(APPLE)
 
     add_definitions(
         -DWITH_COCOA
-        -DENABLE_COCOA_QUARTZ
     )
+endif()
+
+if(EMSCRIPTEN)
+    add_library(WASM::WASM INTERFACE IMPORTED)
+
+    # Allow heap-growth, and start with a bigger memory size.
+    target_link_libraries(WASM::WASM INTERFACE "-s ALLOW_MEMORY_GROWTH=1")
+    target_link_libraries(WASM::WASM INTERFACE "-s INITIAL_MEMORY=33554432")
+    target_link_libraries(WASM::WASM INTERFACE "-s DISABLE_EXCEPTION_CATCHING=0")
+    add_definitions(-s DISABLE_EXCEPTION_CATCHING=0)
+
+    # Export functions to Javascript.
+    target_link_libraries(WASM::WASM INTERFACE "-s EXPORTED_FUNCTIONS='[\"_main\", \"_em_openttd_add_server\"]' -s EXTRA_EXPORTED_RUNTIME_METHODS='[\"cwrap\"]'")
+
+    # Preload all the files we generate during build.
+    # As we do not compile with FreeType / FontConfig, we also have no way to
+    # render several languages (like Chinese, ..), so where do you draw the
+    # line what languages to include and which not? In the end, especially as
+    # the more languages you add the slower downloading becomes, we decided to
+    # only ship the English language.
+    target_link_libraries(WASM::WASM INTERFACE "--preload-file ${CMAKE_BINARY_DIR}/baseset@/baseset")
+    target_link_libraries(WASM::WASM INTERFACE "--preload-file ${CMAKE_BINARY_DIR}/lang/english.lng@/lang/english.lng")
+    target_link_libraries(WASM::WASM INTERFACE "--preload-file ${CMAKE_SOURCE_DIR}/bin/ai@/ai")
+    target_link_libraries(WASM::WASM INTERFACE "--preload-file ${CMAKE_SOURCE_DIR}/bin/game@/game")
+
+    # We use IDBFS for persistent storage.
+    target_link_libraries(WASM::WASM INTERFACE "-lidbfs.js")
+
+    # Use custom pre-js and shell.html.
+    target_link_libraries(WASM::WASM INTERFACE "--pre-js ${CMAKE_SOURCE_DIR}/os/emscripten/pre.js")
+    target_link_libraries(WASM::WASM INTERFACE "--shell-file ${CMAKE_SOURCE_DIR}/os/emscripten/shell.html")
+
+    # Build the .html (which builds the .js, .wasm, and .data too).
+    set_target_properties(openttd PROPERTIES SUFFIX ".html")
+    target_link_libraries(openttd WASM::WASM)
 endif()
 
 if(NOT PERSONAL_DIR STREQUAL "(not set)")

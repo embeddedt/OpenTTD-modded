@@ -48,9 +48,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Garia
 STR_CARGO_PLURAL_RUBBER                                         :Goma
 STR_CARGO_PLURAL_SUGAR                                          :Azukrea
 STR_CARGO_PLURAL_TOYS                                           :Jostailuak
-STR_CARGO_PLURAL_CANDY                                          :Gozokiak
+STR_CARGO_PLURAL_SWEETS                                         :Gozokiak
 STR_CARGO_PLURAL_COLA                                           :Kola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Kotoiezko Azukrea
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Kotoiezko Azukrea
 STR_CARGO_PLURAL_BUBBLES                                        :Burbuilak
 STR_CARGO_PLURAL_TOFFEE                                         :Gozoki lehengaia
 STR_CARGO_PLURAL_BATTERIES                                      :Pilak
@@ -82,9 +82,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Garia
 STR_CARGO_SINGULAR_RUBBER                                       :Goma
 STR_CARGO_SINGULAR_SUGAR                                        :Azukrea
 STR_CARGO_SINGULAR_TOY                                          :Jostailua
-STR_CARGO_SINGULAR_CANDY                                        :Gozoki
+STR_CARGO_SINGULAR_SWEETS                                       :Gozoki
 STR_CARGO_SINGULAR_COLA                                         :Kola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Kotoiezko Azukrea
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Kotoiezko Azukrea
 STR_CARGO_SINGULAR_BUBBLE                                       :Burbuila
 STR_CARGO_SINGULAR_TOFFEE                                       :Gozoki lehengaia
 STR_CARGO_SINGULAR_BATTERY                                      :Pila
@@ -307,6 +307,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Zama edukiera
 STR_SORT_BY_RANGE                                               :Irismena
 STR_SORT_BY_POPULATION                                          :Biztanleria
 STR_SORT_BY_RATING                                              :Balorazioa
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Jokoa pausatu
@@ -1452,8 +1454,6 @@ STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Kolorezko albis
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Egunkarien mezuak kolorean imprimatuko diren urtea. Urte hau baino lehenago txuri/beltz monokromoa erabiliko da
 STR_CONFIG_SETTING_STARTING_YEAR                                :Hasierako urtea: {STRING}
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Gaitu ekonomia leuna (aldaketa gehiago baina txikiagoak): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Gaitua dagoenean, industrien ekoizpena gehiagotan aldatuko da baina urrats txikiagotan. Aukera honek gehienetan ez du eraginik izango industriak NewGRF batek ezartzen baditu
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Beste konpainien akzioak erostea baimendu: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Gaitua dagoenean, konpainiaren akzioak erostea eta saltzea baimendu. Konpainiak akzioak izateko gutxiengo adin batera iritsi beharko dira
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Elikadura sistemetan ordaindu beharreko irabazien ehunekoa: {STRING}
@@ -1499,9 +1499,6 @@ STR_CONFIG_SETTING_TOWN_FOUNDING_ALLOWED_CUSTOM_LAYOUT          :Gaitua herrien 
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Zuhaitzen landaketa jokoan: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Jokoa bitartean zuhaitzen ausazko landatzea kontrolatu. Zuhaitzen landatzean oinarritzen diren industriei eragin dezake, zerrategiei adibidez
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Ezer ez {RED}(Paisai tropikalean zerrategiak hautsiko ditu)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Bakarrik basoetan
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Leku guztietan
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Tresna barra nagusiaren kokapena: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Tresna barra nagusia posizio horizontalean pantailaren goiko aldean
@@ -1674,17 +1671,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Itzultze
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Irten
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Zihur zaude OpenTTD-tik irten nahi duzula eta {STRING}-ra itzuli?
 STR_QUIT_YES                                                    :{BLACK}Bai
 STR_QUIT_NO                                                     :{BLACK}Ez
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Jokoa Utzi
@@ -1803,8 +1791,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Aldatu k
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multijokalaria
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Ez
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Bai
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Jokalariaren izena:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Izen honen bidez ezagutua izango zara beste jokalarien artean
 
@@ -1845,8 +1831,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Jokoan s
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Zerbitzaria freskatu
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Zerbitzariaren informazioa freskatu
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Zerbitzaria bilatu
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Sarean zerbitzariak bilatu
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Zerbitzaria gehitu
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Zerrendara zerbitzari bat gehitu martxa dauden jokoak bilatuko dituena
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Zerbitzari bat sortu
@@ -2082,8 +2066,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ik
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} konpainia berria sortu du (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} jokoa utzi du ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING}-k bere izena {STRING}-ra aldatu du
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} zure empresa eman {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Zuk eman diozu {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Zebitzariak saioa itxi du
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Zerbitzaria berriro hasten ari da...{}Mesedez itxaron...
 
@@ -2378,7 +2360,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Tamainua
 STR_OBJECT_CLASS_LTHS                                           :Itsasargiak
 STR_OBJECT_CLASS_TRNS                                           :Igorgailuak
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Zuhaitzak
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK} Aukeratu landatuko diren zuhaitz motak. Laukiak zuhaitza badauka mota ezberdinetako zuhaitz gehio geituko ditu
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Ausazko zuhaitz motak
@@ -4330,6 +4312,11 @@ STR_BASESOUNDS_DOS_DESCRIPTION                                  :Transport Tycoo
 STR_BASESOUNDS_WIN_DESCRIPTION                                  :Transport Tycoon Deluxe originaleko Windows edizioko grafikoak.
 STR_BASESOUNDS_NONE_DESCRIPTION                                 :Soinurik gabeko soinu pakete bat
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Musika gabeko musika paketea.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Trena {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Errepide ibilgailua {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Itsasontzia {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Hegazkina {COMMA}
 
 ##id 0x2000
 # Town building names

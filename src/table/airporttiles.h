@@ -131,7 +131,7 @@ static const AirportTileSpec _huge_airporttile_specs[] = {
 	AT_NOANIM,
 };
 
-assert_compile(NEW_AIRPORTTILE_OFFSET == lengthof(_origin_airporttile_specs));
+static_assert(NEW_AIRPORTTILE_OFFSET == lengthof(_origin_airporttile_specs));
 
 #undef AT_NOANIM
 #undef AT

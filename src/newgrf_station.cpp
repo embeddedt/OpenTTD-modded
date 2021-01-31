@@ -431,9 +431,9 @@ uint32 Station::GetNewGRFVariable(const ResolverObject &object, byte variable, b
 			case 0x64: return ge->HasVehicleEverTriedLoading() && ge->IsSupplyAllowed() ? ge->last_speed | (ge->last_age << 8) : 0xFF00;
 			case 0x65: return GB(ge->status, GoodsEntry::GES_ACCEPTANCE, 1) << 3;
 			case 0x69: {
-				assert_compile((int)GoodsEntry::GES_EVER_ACCEPTED + 1 == (int)GoodsEntry::GES_LAST_MONTH);
-				assert_compile((int)GoodsEntry::GES_EVER_ACCEPTED + 2 == (int)GoodsEntry::GES_CURRENT_MONTH);
-				assert_compile((int)GoodsEntry::GES_EVER_ACCEPTED + 3 == (int)GoodsEntry::GES_ACCEPTED_BIGTICK);
+				static_assert((int)GoodsEntry::GES_EVER_ACCEPTED + 1 == (int)GoodsEntry::GES_LAST_MONTH);
+				static_assert((int)GoodsEntry::GES_EVER_ACCEPTED + 2 == (int)GoodsEntry::GES_CURRENT_MONTH);
+				static_assert((int)GoodsEntry::GES_EVER_ACCEPTED + 3 == (int)GoodsEntry::GES_ACCEPTED_BIGTICK);
 				return GB(ge->status, GoodsEntry::GES_EVER_ACCEPTED, 4);
 			}
 		}
@@ -922,6 +922,14 @@ void AnimateStationTile(TileIndex tile)
 	if (ss == nullptr) return;
 
 	StationAnimationBase::AnimateTile(ss, BaseStation::GetByTile(tile), tile, HasBit(ss->flags, SSF_CB141_RANDOM_BITS));
+}
+
+uint8 GetStationTileAnimationSpeed(TileIndex tile)
+{
+	const StationSpec *ss = GetStationSpec(tile);
+	if (ss == nullptr) return 0;
+
+	return StationAnimationBase::GetAnimationSpeed(ss);
 }
 
 void TriggerStationAnimation(BaseStation *st, TileIndex tile, StationAnimationTrigger trigger, CargoID cargo_type)

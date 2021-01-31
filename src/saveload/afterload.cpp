@@ -63,6 +63,8 @@
 #include "../bridge_signal_map.h"
 #include "../water.h"
 #include "../settings_func.h"
+#include "../animated_tile.h"
+#include "../company_func.h"
 
 
 #include "saveload_internal.h"
@@ -71,8 +73,6 @@
 #include <algorithm>
 
 #include "../safeguards.h"
-
-extern Company *DoStartupNewCompany(bool is_ai, CompanyID company = INVALID_COMPANY);
 
 /**
  * Makes a tile canal or water depending on the surroundings.
@@ -1000,7 +1000,7 @@ bool AfterLoadGame()
 	 * 1 exception: network-games. Those can have 0 companies
 	 *   But this exception is not true for non-dedicated network servers! */
 	if (!Company::IsValidID(GetDefaultLocalCompany()) && (!_networking || (_networking && _network_server && !_network_dedicated))) {
-		Company *c = DoStartupNewCompany(false);
+		Company *c = DoStartupNewCompany(DSNC_DURING_LOAD);
 		c->settings = _settings_client.company;
 	}
 
@@ -1475,8 +1475,8 @@ bool AfterLoadGame()
 			}
 		}
 	} else if (SlXvIsFeaturePresent(XSLFI_JOKERPP, SL_JOKER_1_27)) {
-		uint next_road_type = 0;
-		uint next_tram_type = 0;
+		uint next_road_type = 2;
+		uint next_tram_type = 2;
 		RoadType road_types[32];
 		RoadType tram_types[32];
 		MemSetT(road_types, ROADTYPE_ROAD, 31);
@@ -1484,10 +1484,23 @@ bool AfterLoadGame()
 		road_types[31] = INVALID_ROADTYPE;
 		tram_types[31] = INVALID_ROADTYPE;
 		for (RoadType rt = ROADTYPE_BEGIN; rt < ROADTYPE_END; rt++) {
+			const RoadTypeInfo *rti = GetRoadTypeInfo(rt);
 			if (RoadTypeIsRoad(rt)) {
-				if (next_road_type < 31) road_types[next_road_type++] = rt;
+				if (rti->label == 'ROAD') {
+					road_types[0] = rt;
+				} else if (rti->label == 'ELRD') {
+					road_types[1] = rt;
+				} else if (next_road_type < 31) {
+					road_types[next_road_type++] = rt;
+				}
 			} else {
-				if (next_tram_type < 31) tram_types[next_tram_type++] = rt;
+				if (rti->label == 'RAIL') {
+					tram_types[0] = rt;
+				} else if (rti->label == 'ELRL') {
+					tram_types[1] = rt;
+				} else if (next_tram_type < 31) {
+					tram_types[next_tram_type++] = rt;
+				}
 			}
 		}
 		for (TileIndex t = 0; t < map_size; t++) {
@@ -1999,8 +2012,7 @@ bool AfterLoadGame()
 
 			v->current_order.ConvertFromOldSavegame();
 			if (v->type == VEH_ROAD && v->IsPrimaryVehicle() && v->FirstShared() == v) {
-				Order* order;
-				FOR_VEHICLE_ORDERS(v, order) order->SetNonStopType(ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS);
+				for (Order *order : v->Orders()) order->SetNonStopType(ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS);
 			}
 		}
 	} else if (IsSavegameVersionBefore(SLV_94)) {
@@ -2479,7 +2491,7 @@ bool AfterLoadGame()
 			for (Vehicle *v : st->loading_vehicles) {
 				/* There are always as many CargoPayments as Vehicles. We need to make the
 				 * assert() in Pool::GetNew() happy by calling CanAllocateItem(). */
-				assert_compile(CargoPaymentPool::MAX_SIZE == VehiclePool::MAX_SIZE);
+				static_assert(CargoPaymentPool::MAX_SIZE == VehiclePool::MAX_SIZE);
 				assert(CargoPayment::CanAllocateItem());
 				if (v->cargo_payment == nullptr) v->cargo_payment = new CargoPayment(v);
 			}
@@ -2490,16 +2502,9 @@ bool AfterLoadGame()
 		/* Animated tiles would sometimes not be actually animated or
 		 * in case of old savegames duplicate. */
 
-		extern std::vector<TileIndex> _animated_tiles;
-
-		for (auto tile = _animated_tiles.begin(); tile < _animated_tiles.end(); /* Nothing */) {
+		for (auto tile = _animated_tiles.begin(); tile != _animated_tiles.end(); /* Nothing */) {
 			/* Remove if tile is not animated */
-			bool remove = _tile_type_procs[GetTileType(*tile)]->animate_tile_proc == nullptr;
-
-			/* and remove if duplicate */
-			for (auto j = _animated_tiles.begin(); !remove && j < tile; j++) {
-				remove = *tile == *j;
-			}
+			bool remove = _tile_type_procs[GetTileType(tile->first)]->animate_tile_proc == nullptr;
 
 			if (remove) {
 				tile = _animated_tiles.erase(tile);
@@ -3316,8 +3321,7 @@ bool AfterLoadGame()
 					cur_skip = prev_tile_skip;
 				}
 
-				/*C++17: uint &this_skip = */ skip_frames.push_back(prev_tile_skip);
-				uint &this_skip = skip_frames.back();
+				uint &this_skip = skip_frames.emplace_back(prev_tile_skip);
 
 				/* The following 3 curves now take longer than before */
 				switch (u->state) {
@@ -3603,6 +3607,12 @@ bool AfterLoadGame()
 			}
 		}
 	}
+	if (SlXvIsFeaturePresent(XSLFI_SIG_TUNNEL_BRIDGE, 1, 7)) {
+		/* spacing setting moved to company settings */
+		for (Company *c : Company::Iterate()) {
+			c->settings.simulated_wormhole_signals = _settings_game.construction.old_simulated_wormhole_signals;
+		}
+	}
 
 	if (SlXvIsFeatureMissing(XSLFI_CUSTOM_BRIDGE_HEADS)) {
 		/* ensure that previously unused custom bridge-head bits are cleared */
@@ -3698,6 +3708,22 @@ bool AfterLoadGame()
 		 * SLV_MULTITILE_DOCKS and SLV_ENDING_YEAR. */
 		for (Station *st : Station::Iterate()) {
 			if (st->ship_station.tile != INVALID_TILE) UpdateStationDockingTiles(st);
+		}
+	}
+
+	/* Make sure all industries exclusive supplier/consumer set correctly. */
+	if (IsSavegameVersionBefore(SLV_GS_INDUSTRY_CONTROL)) {
+		for (Industry *i : Industry::Iterate()) {
+			i->exclusive_supplier = INVALID_OWNER;
+			i->exclusive_consumer = INVALID_OWNER;
+		}
+	}
+
+	/* Make sure all industries exclusive supplier/consumer set correctly. */
+	if (IsSavegameVersionBefore(SLV_GS_INDUSTRY_CONTROL)) {
+		for (Industry *i : Industry::Iterate()) {
+			i->exclusive_supplier = INVALID_OWNER;
+			i->exclusive_consumer = INVALID_OWNER;
 		}
 	}
 
@@ -3829,6 +3855,18 @@ bool AfterLoadGame()
 		RecalculateRoadCachedOneWayStates();
 	}
 
+	if (SlXvIsFeatureMissing(XSLFI_ANIMATED_TILE_EXTRA)) {
+		UpdateAllAnimatedTileSpeeds();
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_REALISTIC_TRAIN_BRAKING)) {
+		_settings_game.vehicle.train_braking_model = TBM_ORIGINAL;
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_INFLATION_FIXED_DATES)) {
+		_settings_game.economy.inflation_fixed_dates = !IsSavegameVersionBefore(SLV_GS_INDUSTRY_CONTROL);
+	}
+
 	InitializeRoadGUI();
 
 	/* This needs to be done after conversion. */
@@ -3850,7 +3888,7 @@ bool AfterLoadGame()
 	AfterLoadLinkGraphs();
 
 	AfterLoadTraceRestrict();
-	AfterLoadTemplateVehiclesUpdateImage();
+	AfterLoadTemplateVehiclesUpdate();
 	if (SlXvIsFeaturePresent(XSLFI_TEMPLATE_REPLACEMENT, 1, 5)) {
 		AfterLoadTemplateVehiclesUpdateProperties();
 	}
@@ -3862,6 +3900,10 @@ bool AfterLoadGame()
 
 	extern void YapfCheckRailSignalPenalties();
 	YapfCheckRailSignalPenalties();
+
+	if (_networking && !_network_server) {
+		SlProcessVENC();
+	}
 
 	/* Show this message last to avoid covering up an error message if we bail out part way */
 	switch (gcf_res) {
@@ -3945,6 +3987,7 @@ void ReloadNewGRFData()
 	/* redraw the whole screen */
 	MarkWholeScreenDirty();
 	CheckTrainsLengths();
-	AfterLoadTemplateVehiclesUpdateImage();
+	AfterLoadTemplateVehiclesUpdateImages();
 	AfterLoadTemplateVehiclesUpdateProperties();
+	UpdateAllAnimatedTileSpeeds();
 }

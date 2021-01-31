@@ -35,6 +35,7 @@
 #include "tbtr_template_vehicle_func.h"
 #include <sstream>
 #include <iomanip>
+#include <cctype>
 
 #include "table/strings.h"
 
@@ -782,7 +783,7 @@ CommandCost CmdDepotMassAutoReplace(TileIndex tile, DoCommandFlag flags, uint32 
 /**
  * Test if a name is unique among vehicle names.
  * @param name Name to test.
- * @return True ifffffff the name is unique.
+ * @return True if the name is unique.
  */
 static bool IsUniqueVehicleName(const char *name)
 {
@@ -800,51 +801,32 @@ static bool IsUniqueVehicleName(const char *name)
  */
 static void CloneVehicleName(const Vehicle *src, Vehicle *dst)
 {
-	std::string buf;
-	std::string src_name = src->name.c_str();
+	std::string new_name = src->name.c_str();
 
-	/* Find the position of the first digit in the last group of digits. */
-	size_t number_position;
-	for (number_position = src_name.length(); number_position > 0; number_position--) {
-		/* The design of UTF-8 lets this work simply without having to check
-		 * for UTF-8 sequences. */
-		if (src_name[number_position - 1] < '0' || src_name[number_position - 1] > '9') break;
+	if (!std::isdigit(*new_name.rbegin())) {
+		// No digit at the end, so start at number 1 (this will get incremented to 2)
+		new_name += " 1";
 	}
 
-	/* Format buffer and determine starting number. */
-	long num;
-	byte padding = 0;
-	if (number_position == src_name.length()) {
-		/* No digit at the end, so start at number 2. */
-		buf = src_name;
-		buf += " ";
-		number_position = buf.length();
-		num = 2;
-	} else {
-		/* Found digits, parse them and start at the next number. */
-		buf = src_name.substr(0, number_position);
-
-		auto num_str = src_name.substr(number_position);
-		padding = (byte)num_str.length();
-
-		std::istringstream iss(num_str);
-		iss >> num;
-		num++;
-	}
-
-	/* Check if this name is already taken. */
-	for (int max_iterations = 1000; max_iterations > 0; max_iterations--, num++) {
-		std::ostringstream oss;
-
-		/* Attach the number to the temporary name. */
-		oss << buf << std::setw(padding) << std::setfill('0') << std::internal << num;
-
-		/* Check the name is unique. */
-		auto new_name = oss.str();
-		if (IsUniqueVehicleName(new_name.c_str())) {
-			dst->name = new_name;
-			break;
+	int max_iterations = 1000;
+	do {
+		size_t pos = new_name.length() - 1;
+		// Handle any carrying
+		for (; pos != std::string::npos && new_name[pos] == '9'; --pos) {
+			new_name[pos] = '0';
 		}
+
+		if (pos != std::string::npos && std::isdigit(new_name[pos])) {
+			++new_name[pos];
+		} else {
+			new_name[++pos] = '1';
+			new_name.push_back('0');
+		}
+		--max_iterations;
+	} while(max_iterations > 0 && !IsUniqueVehicleName(new_name.c_str()));
+
+	if (max_iterations > 0) {
+		dst->name = new_name;
 	}
 
 	/* All done. If we didn't find a name, it'll just use its default. */
@@ -1005,10 +987,11 @@ CommandCost CmdVirtualTrainFromTemplateVehicle(TileIndex tile, DoCommandFlag fla
 
 CommandCost CmdDeleteVirtualTrain(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text);
 
-Train* VirtualTrainFromTemplateVehicle(TemplateVehicle* tv, StringID &err, uint32 user)
+Train* VirtualTrainFromTemplateVehicle(const TemplateVehicle* tv, StringID &err, uint32 user)
 {
 	CommandCost c;
 	Train *tmp, *head, *tail;
+	const TemplateVehicle* tv_head = tv;
 
 	assert(tv->owner == _current_company);
 
@@ -1024,12 +1007,16 @@ Train* VirtualTrainFromTemplateVehicle(TemplateVehicle* tv, StringID &err, uint3
 			return nullptr;
 		}
 
-		tmp->cargo_type = tv->cargo_type;
-		tmp->cargo_subtype = tv->cargo_subtype;
 		CmdMoveRailVehicle(INVALID_TILE, DC_EXEC, (1 << 21) | tmp->index, tail->index, 0);
 		tail = tmp;
 
 		tv = tv->GetNextUnit();
+	}
+
+	for (tv = tv_head, tmp = head; tv != nullptr && tmp != nullptr; tv = tv->Next(), tmp = tmp->Next()) {
+		tmp->cargo_type = tv->cargo_type;
+		tmp->cargo_subtype = tv->cargo_subtype;
+		SB(tmp->flags, VRF_REVERSE_DIRECTION, 1, HasBit(tv->ctrl_flags, TVCF_REVERSED) ? 1 : 0);
 	}
 
 	_new_vehicle_id = head->index;
@@ -1078,6 +1065,7 @@ CommandCost CmdVirtualTrainFromTrain(TileIndex tile, DoCommandFlag flags, uint32
 
 			tmp->cargo_type = train->cargo_type;
 			tmp->cargo_subtype = train->cargo_subtype;
+			SB(tmp->flags, VRF_REVERSE_DIRECTION, 1, HasBit(train->flags, VRF_REVERSE_DIRECTION) ? 1 : 0);
 			CmdMoveRailVehicle(0, DC_EXEC, (1 << 21) | tmp->index, tail->index, 0);
 			tail = tmp;
 
@@ -1166,7 +1154,7 @@ CommandCost CmdReplaceTemplateVehicle(TileIndex tile, DoCommandFlag flags, uint3
 		VehicleID old_ID = INVALID_VEHICLE;
 
 		bool restore_flags = false;
-		bool reuse_depot_vehicles = true;
+		bool reuse_depot_vehicles = false;
 		bool keep_remaining_vehicles = false;
 		bool refit_as_template = true;
 		bool replace_old_only = false;
@@ -1522,7 +1510,12 @@ CommandCost CmdCloneVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 		 * the vehicle refitted before doing this, otherwise the moved
 		 * cargo types might not match (passenger vs non-passenger)
 		 */
-		DoCommand(0, w_front->index | (p2 & 1 ? CO_SHARE : CO_COPY) << 30, v_front->index, flags, CMD_CLONE_ORDER);
+		CommandCost result = DoCommand(0, w_front->index | (p2 & 1 ? CO_SHARE : CO_COPY) << 30, v_front->index, flags, CMD_CLONE_ORDER);
+		if (result.Failed()) {
+			/* The vehicle has already been bought, so now it must be sold again. */
+			DoCommand(w_front->tile, w_front->index | 1 << 20, 0, flags, GetCmdSellVeh(w_front));
+			return result;
+		}
 
 		/* Now clone the vehicle's name, if it has one. */
 		if (!v_front->name.empty()) CloneVehicleName(v_front, w_front);

@@ -49,9 +49,9 @@ STR_CARGO_PLURAL_WHEAT                                          :Buğday
 STR_CARGO_PLURAL_RUBBER                                         :Kauçuk
 STR_CARGO_PLURAL_SUGAR                                          :Şeker
 STR_CARGO_PLURAL_TOYS                                           :Oyuncak
-STR_CARGO_PLURAL_CANDY                                          :Tatlı
+STR_CARGO_PLURAL_SWEETS                                         :Tatlı
 STR_CARGO_PLURAL_COLA                                           :Kola
-STR_CARGO_PLURAL_COTTON_CANDY                                   :Pamuk şeker
+STR_CARGO_PLURAL_CANDYFLOSS                                     :Pamuk şeker
 STR_CARGO_PLURAL_BUBBLES                                        :Baloncuk
 STR_CARGO_PLURAL_TOFFEE                                         :Şekerleme
 STR_CARGO_PLURAL_BATTERIES                                      :Pil
@@ -83,9 +83,9 @@ STR_CARGO_SINGULAR_WHEAT                                        :Buğday
 STR_CARGO_SINGULAR_RUBBER                                       :Kauçuk
 STR_CARGO_SINGULAR_SUGAR                                        :Şeker
 STR_CARGO_SINGULAR_TOY                                          :Oyuncak
-STR_CARGO_SINGULAR_CANDY                                        :Tatlı
+STR_CARGO_SINGULAR_SWEETS                                       :Tatlı
 STR_CARGO_SINGULAR_COLA                                         :Kola
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :Pamuk helva
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :Pamuk helva
 STR_CARGO_SINGULAR_BUBBLE                                       :Balon
 STR_CARGO_SINGULAR_TOFFEE                                       :Şekerleme
 STR_CARGO_SINGULAR_BATTERY                                      :Pil
@@ -315,6 +315,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Kargo kapasites
 STR_SORT_BY_RANGE                                               :Menzil
 STR_SORT_BY_POPULATION                                          :Nüfus
 STR_SORT_BY_RATING                                              :Değerlendirme
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Oyunu durdur
@@ -1554,8 +1556,6 @@ STR_CONFIG_SETTING_ENDING_YEAR                                  :Yıl sonu puan�
 STR_CONFIG_SETTING_ENDING_YEAR_HELPTEXT                         :Oyunun puan sonucuna göre bittiği yıl. Bu yılın sonunda, şirketin puanı kaydedilir ve yüksek puan ekranında gösterilir ama oyuncular oynamaya devam edebilir.{}Eğer bu başlama yılından önce ise, yüksek puan ekranı gösterilmez.
 STR_CONFIG_SETTING_ENDING_YEAR_VALUE                            :{NUM}
 STR_CONFIG_SETTING_ENDING_YEAR_ZERO                             :Asla
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Yüzeysel ekonomi (daha çok ve küçük çapta değişiklikler): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Etkinleştirildiğinde, endüstri üretim miktarı daha sık ve daha küçük adımlarla değişir. Eğer endüstriler bir NewGRF dosyası tarafından sağlanıyorsa bu özellik genellikle etkisiz kalır
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Diğer şirketlerin hisseleri alınabilsin: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Etkinleştirildiğinde, şirketlerin hisse senetlerinin alınıp satılması mümkün olur. Hisse senetleri sadece belli bir yaşa ulaşan şirketler için geçerlidir
 STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Hisse satmak için gerekli minimum şirket yaşı: {STRING}
@@ -1607,9 +1607,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Doğrusal
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Oyunda ağaç dikme: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Oyundaki rastgele ağaçların görünümünü kontrol eder. Bu, ağaçların büyümesine bağımlı olan endüstrileri etkileyebilir, örneğin keresteciler gibi
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Hiçbiri {RED}(kauçuk fabrikasını yok eder)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Yalnız yağmur ormanlarında
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Her yerde
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Ana araç çubuğu konumu: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Ekranın üst kısmındaki ana araç çubuğunun yatay konumu
@@ -1808,17 +1805,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Bu çevi
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Çıkış
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Oyundan çıkıp {STRING} sisteminize dönmek istediğinizden emin misiniz?
 STR_QUIT_YES                                                    :{BLACK}Evet
 STR_QUIT_NO                                                     :{BLACK}Hayır
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Ana Menüye Dön
@@ -1940,10 +1928,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Kravatı
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Çok Oyunculu
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Duyurulan
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Duyurulan (internet) ve duyurulmayan (yerel ağ, LAN) oyun türlerinden birini seçin
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Hayır
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Evet
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Oyuncu adı:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Oyuncuların görecegi adınızı seçin
 
@@ -1984,8 +1968,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Oyuna gi
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Sunucuyu tazele
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Sunucu bilgisini tazele
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Sunucu bul
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Sunucu bulmak için bir agi ara
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Sunucu ekle
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Her zaman çalışan oyunlarına bakabilmek için bir sunucu ekle
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Sunucu başlat
@@ -2002,6 +1984,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Bu oyun 
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Parola koy
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Erişimi kısıtlamak için oyuna parola koy
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Duyurulan
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Duyurulan (internet) ve duyurulmayan (yerel ağ, LAN) oyun türlerinden birini seçin
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Hayır
 STR_NETWORK_START_SERVER_ADVERTISED                             :Evet
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} istemci
@@ -2223,8 +2207,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} g�
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} yeni bir şirket kurdu (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} oyunu terketti ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} adını {STRING} olarak değiştirdi
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} şirketinize {2:CURRENCY_LONG} verdi
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** {1:STRING} oyuncusuna {2:CURRENCY_LONG} verdiniz
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Sunucu kapandı
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Sunucu baştan başlatılıyor...{}Lütfen bekleyin...
 STR_NETWORK_MESSAGE_KICKED                                      :*** {STRING} atıldı. Sebep: ({STRING})
@@ -2530,7 +2512,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Boyut: {
 STR_OBJECT_CLASS_LTHS                                           :Deniz fenerleri
 STR_OBJECT_CLASS_TRNS                                           :Vericiler
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Ağaçlar
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Dikilecek ağaç türünü seçin. Eğer alan zaten ağaç içeriyorsa, bu seçimden bağımsız olarak karışık ağaç türleri ekleyecek.
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Rastgele türde ağaçlar
@@ -4653,6 +4635,11 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Özgün Transpo
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Özgün Transport Tycoon Deluxe DOS sürüm müziği.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Özgün Transport Tycoon Deluxe (Original/World Editor) DOS sürümü müzikleri.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Müzik içermeyen boş bir müzik paketi.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :Tren {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :Karayolu Aracı {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :Gemi {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :Uçak {COMMA}
 
 ##id 0x2000
 # Town building names

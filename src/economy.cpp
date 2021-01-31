@@ -52,6 +52,7 @@
 #include "linkgraph/refresh.h"
 #include "tracerestrict.h"
 #include "tbtr_template_vehicle.h"
+#include "tbtr_template_vehicle_func.h"
 #include "scope_info.h"
 #include "pathfinder/yapf/yapf_cache.h"
 
@@ -579,6 +580,8 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 	NotifyRoadLayoutChanged();
 
+	InvalidateTemplateReplacementImages();
+
 	cur_company.Restore();
 
 	RegisterGameEvents(new_owner != INVALID_OWNER ? GEF_COMPANY_MERGE : GEF_COMPANY_DELETE);
@@ -766,7 +769,11 @@ bool AddInflation(bool check_year)
 	 * inflation doesn't add anything after that either; it even makes playing
 	 * it impossible due to the diverging cost and income rates.
 	 */
-	if (check_year && (_cur_year - _settings_game.game_creation.starting_year) >= (ORIGINAL_MAX_YEAR - ORIGINAL_BASE_YEAR)) return true;
+	if (_settings_game.economy.inflation_fixed_dates) {
+		if (check_year && (_cur_year < ORIGINAL_BASE_YEAR || _cur_year >= ORIGINAL_MAX_YEAR)) return true;
+	} else {
+		if (check_year && (_cur_year - _settings_game.game_creation.starting_year) >= (ORIGINAL_MAX_YEAR - ORIGINAL_BASE_YEAR)) return true;
+	}
 
 	if (_economy.inflation_prices == MAX_INFLATION || _economy.inflation_payment == MAX_INFLATION) return true;
 
@@ -790,7 +797,7 @@ bool AddInflation(bool check_year)
 void RecomputePrices()
 {
 	/* Setup maximum loan */
-	_economy.max_loan = (_settings_game.difficulty.max_loan * _economy.inflation_prices >> 16) / 50000 * 50000;
+	_economy.max_loan = ((uint64)_settings_game.difficulty.max_loan * _economy.inflation_prices >> 16) / 50000 * 50000;
 
 	/* Setup price bases */
 	for (Price i = PR_BEGIN; i < PR_END; i++) {
@@ -958,6 +965,14 @@ void StartupEconomy()
 	_economy.infl_amount_pr = max(0, _settings_game.difficulty.initial_interest - 1);
 	_economy.fluct = GB(Random(), 0, 8) + 168;
 
+	if (_settings_game.economy.inflation && _settings_game.economy.inflation_fixed_dates) {
+		/* Apply inflation that happened before our game start year. */
+		int months = (min(_cur_year, ORIGINAL_MAX_YEAR) - ORIGINAL_BASE_YEAR) * 12;
+		for (int i = 0; i < months; i++) {
+			AddInflation(false);
+		}
+	}
+
 	/* Set up prices */
 	RecomputePrices();
 
@@ -1085,6 +1100,8 @@ static uint DeliverGoodsToIndustry(const Station *st, CargoID cargo_type, uint n
 
 		/* Check if industry temporarily refuses acceptance */
 		if (IndustryTemporarilyRefusesCargo(ind, cargo_type)) continue;
+
+		if (ind->exclusive_supplier != INVALID_OWNER && ind->exclusive_supplier != st->owner) continue;
 
 		/* Insert the industry into _cargo_delivery_destinations, if not yet contained */
 		include(_cargo_delivery_destinations, ind);
@@ -1331,7 +1348,7 @@ void PrepareUnload(Vehicle *front_v)
 	assert(front_v->cargo_payment == nullptr);
 	/* One CargoPayment per vehicle and the vehicle limit equals the
 	 * limit in number of CargoPayments. Can't go wrong. */
-	assert_compile(CargoPaymentPool::MAX_SIZE == VehiclePool::MAX_SIZE);
+	static_assert(CargoPaymentPool::MAX_SIZE == VehiclePool::MAX_SIZE);
 	assert(CargoPayment::CanAllocateItem());
 	front_v->cargo_payment = new CargoPayment(front_v);
 
@@ -2402,4 +2419,36 @@ CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 		DoAcquireCompany(c);
 	}
 	return cost;
+}
+
+uint ScaleQuantity(uint amount, int scale_factor)
+{
+	scale_factor += 200; // ensure factor is positive
+	assert(scale_factor >= 0);
+	int cf = (scale_factor / 10) - 20;
+	int fine = scale_factor % 10;
+	return ScaleQuantity(amount, cf, fine);
+}
+
+uint ScaleQuantity(uint amount, int cf, int fine)
+{
+	if (fine != 0) {
+		// 2^0.1 << 16 to 2^0.9 << 16
+		const uint32 adj[9] = {70239, 75281, 80684, 86475, 92681, 99334, 106463, 114104, 122294};
+		uint64 scaled_amount = ((uint64) amount) * ((uint64) adj[fine - 1]);
+		amount = scaled_amount >> 16;
+	}
+
+	// apply scale factor
+	if (cf < 0) {
+		// approx (amount / 2^cf)
+		// adjust with a constant offset of {(2 ^ cf) - 1} (i.e. add cf * 1-bits) before dividing to ensure that it doesn't become zero
+		// this skews the curve a little so that isn't entirely exponential, but will still decrease
+		amount = (amount + ((1 << -cf) - 1)) >> -cf;
+	} else if (cf > 0) {
+		// approx (amount * 2^cf)
+		amount = amount << cf;
+	}
+
+	return amount;
 }

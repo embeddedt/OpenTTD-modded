@@ -72,12 +72,12 @@ STR_CARGO_PLURAL_SUGAR                                          :{G=f}Ζάχαρ
 STR_CARGO_PLURAL_SUGAR.geniki                                   :Ζάχαρης
 STR_CARGO_PLURAL_TOYS                                           :{G=n}Παιχνίδια
 STR_CARGO_PLURAL_TOYS.geniki                                    :Παιχνιδιών
-STR_CARGO_PLURAL_CANDY                                          :{G=n}Γλυκίσματα
-STR_CARGO_PLURAL_CANDY.geniki                                   :Γλυκισμάτων
+STR_CARGO_PLURAL_SWEETS                                         :{G=n}Γλυκίσματα
+STR_CARGO_PLURAL_SWEETS.geniki                                  :Γλυκισμάτων
 STR_CARGO_PLURAL_COLA                                           :{G=f}Κόλα
 STR_CARGO_PLURAL_COLA.geniki                                    :Κόλας
-STR_CARGO_PLURAL_COTTON_CANDY                                   :{G=n}Μαλλιά της γριάς
-STR_CARGO_PLURAL_COTTON_CANDY.geniki                            :Μαλλιών της γριάς
+STR_CARGO_PLURAL_CANDYFLOSS                                     :{G=n}Μαλλιά της γριάς
+STR_CARGO_PLURAL_CANDYFLOSS.geniki                              :Μαλλιών της γριάς
 STR_CARGO_PLURAL_BUBBLES                                        :{G=f}Φυσαλίδες
 STR_CARGO_PLURAL_BUBBLES.geniki                                 :Φυσαλίδων
 STR_CARGO_PLURAL_TOFFEE                                         :{G=n}Καραμέλες βουτύρου
@@ -136,11 +136,11 @@ STR_CARGO_SINGULAR_SUGAR                                        :{G=f}Ζάχαρ
 STR_CARGO_SINGULAR_SUGAR.subs                                   :Ζάχαρες
 STR_CARGO_SINGULAR_TOY                                          :{G=n}Παιχνίδι
 STR_CARGO_SINGULAR_TOY.subs                                     :Παιχνίδια
-STR_CARGO_SINGULAR_CANDY                                        :{G=n}Γλυκό
-STR_CARGO_SINGULAR_CANDY.subs                                   :Γλυκα
+STR_CARGO_SINGULAR_SWEETS                                       :{G=n}Γλυκό
+STR_CARGO_SINGULAR_SWEETS.subs                                  :Γλυκα
 STR_CARGO_SINGULAR_COLA                                         :{G=f}Κόλα
-STR_CARGO_SINGULAR_COTTON_CANDY                                 :{G=n}Μαλλί της γριάς
-STR_CARGO_SINGULAR_COTTON_CANDY.subs                            :Μαλλί της γριάς
+STR_CARGO_SINGULAR_CANDYFLOSS                                   :{G=n}Μαλλί της γριάς
+STR_CARGO_SINGULAR_CANDYFLOSS.subs                              :Μαλλί της γριάς
 STR_CARGO_SINGULAR_BUBBLE                                       :{G=f}Φυσαλίδα
 STR_CARGO_SINGULAR_BUBBLE.subs                                  :Φυσαλίδες
 STR_CARGO_SINGULAR_TOFFEE                                       :{G=n}Καραμέλα βουτύρου
@@ -372,6 +372,8 @@ STR_SORT_BY_CARGO_CAPACITY                                      :Χωρητικ�
 STR_SORT_BY_RANGE                                               :Εμβέλεια
 STR_SORT_BY_POPULATION                                          :Πληθυσμός
 STR_SORT_BY_RATING                                              :Εκτίμηση
+
+# Group by options for vehicle list
 
 # Tooltips for the main toolbar
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}Παύση παιχνιδιού
@@ -1641,8 +1643,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :Ολόκληρ�
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR                           :Τα έγχρωμα νέα εμφανίζονται από το: {STRING}
 STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT                  :Το έτος κατά το οποίο οι ανακοινώσεις στην εφημερίδα εκτυπώνονται έγχρωμες. Πριν από αυτό το έτος, εκτυπώνονται μονόχρωμες και ασπρόμαυρες
 STR_CONFIG_SETTING_STARTING_YEAR                                :Έτος εκκίνησης: {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY                               :Ενεργοποίηση ομαλής οικονομίας (περισσότερες, μικρότερες αλλαγές): {STRING}
-STR_CONFIG_SETTING_SMOOTH_ECONOMY_HELPTEXT                      :Όταν είναι ενεργοποιημένη, η παραγωγή των βιομηχανιών αλλάζει συχνότερα και σε μικρότερα βήματα. Αυτή η ρύθμιση συνήθως δεν έχει καμία επίδραση όταν οι τύποι των βιομηχανιών παρέχονται από NewGRF
 STR_CONFIG_SETTING_ALLOW_SHARES                                 :Ενεργοποίηση της δυνατότητας αγοράς μετοχών από άλλες εταιρίες: {STRING}
 STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Όταν είναι ενεργοποιημένη, επιτρέπεται η αγοραπωλησία εταιρικών μετοχών. Οι μετοχές θα είναι διαθέσιμες μόνο όταν οι εταιρείες φτάνουν μια ορισμένη ηλικία
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Το ποσοστό κέρδους από το σκέλος μεταφοράς στα συστήματα τροφοδότησης: {STRING}
@@ -1692,9 +1692,6 @@ STR_CONFIG_SETTING_TOWN_CARGOGENMODE_BITCOUNT                   :Γραμμικ�
 
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT                         :Τοποθέτηση δέντρων εντός παιχνιδιού: {STRING}
 STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_HELPTEXT                :Έλεγχος της τυχαίας εμφάνισης δέντρων κατά τη διάρκεια του παιχνιδιού. Αυτό είναι πιθανό να επηρεάσει βιομηχανίες που εξαρτώνται από την ανάπτυξη των δέντρων, όπως για παράδειγμα οι υλοτομίες
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_NONE                    :Κανένα {RED}(καταστρέφει το ξυλουργείο)
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_RAINFOREST              :Μόνο σε τροπικά δάση
-STR_CONFIG_SETTING_EXTRA_TREE_PLACEMENT_ALL                     :Παντού
 
 STR_CONFIG_SETTING_TOOLBAR_POS                                  :Θέση κύριας εργαλειοθήκης: {STRING}
 STR_CONFIG_SETTING_TOOLBAR_POS_HELPTEXT                         :Οριζόντια τοποθέτηση της κύριας γραμμής εργαλείων στο επάνω μέρος της οθόνης
@@ -1893,17 +1890,8 @@ STR_INTRO_TRANSLATION                                           :{BLACK}Λείπ
 
 # Quit window
 STR_QUIT_CAPTION                                                :{WHITE}Έξοδος
-STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD                  :{YELLOW}Είστε σίγουροι ότι θέλετε να εγκαταλείψετε το OpenTTD και να επιστρέψετε στο λειτουργικό {STRING};
 STR_QUIT_YES                                                    :{BLACK}Ναι
 STR_QUIT_NO                                                     :{BLACK}Όχι
-
-# Supported OSes
-STR_OSNAME_WINDOWS                                              :Windows
-STR_OSNAME_UNIX                                                 :Unix
-STR_OSNAME_OSX                                                  :OS{NBSP}X
-STR_OSNAME_HAIKU                                                :Haiku
-STR_OSNAME_OS2                                                  :OS/2
-STR_OSNAME_SUNOS                                                :SunOS
 
 # Abandon game
 STR_ABANDON_GAME_CAPTION                                        :{WHITE}Εγκατάλειψη Παιχνιδιού
@@ -2025,10 +2013,6 @@ STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Αλλα
 
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Παιχνίδι πολλών παικτών
-STR_NETWORK_SERVER_LIST_ADVERTISED                              :{BLACK}Διαφημιζόμενο
-STR_NETWORK_SERVER_LIST_ADVERTISED_TOOLTIP                      :{BLACK}Επιλογή ανάμεσα σε ένα διαφημιζόμενο (διαδίκτυο) ή μη διαφημιζόμενο (Τοπικό Δίκτυο/LAN) παιχνίδι
-STR_NETWORK_SERVER_LIST_ADVERTISED_NO                           :Όχι
-STR_NETWORK_SERVER_LIST_ADVERTISED_YES                          :Ναι
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Όνομα παίκτη:
 STR_NETWORK_SERVER_LIST_ENTER_NAME_TOOLTIP                      :{BLACK}Αυτό είναι το όνομα με το οποίο θα σας αναγνωρίζουν οι άλλοι παίκτες
 
@@ -2069,8 +2053,6 @@ STR_NETWORK_SERVER_LIST_JOIN_GAME                               :{BLACK}Συμμ
 STR_NETWORK_SERVER_LIST_REFRESH                                 :{BLACK}Ανανέωση διακομιστή
 STR_NETWORK_SERVER_LIST_REFRESH_TOOLTIP                         :{BLACK}Ανανεώση πληροφοριών του διακομιστή
 
-STR_NETWORK_SERVER_LIST_FIND_SERVER                             :{BLACK}Αναζήτηση διακομιστή
-STR_NETWORK_SERVER_LIST_FIND_SERVER_TOOLTIP                     :{BLACK}Ψάξτε το δίκτυο για ένα διακομιστή
 STR_NETWORK_SERVER_LIST_ADD_SERVER                              :{BLACK}Προσθήκη διακομιστή
 STR_NETWORK_SERVER_LIST_ADD_SERVER_TOOLTIP                      :{BLACK}Προσθέτει ένα διακομιστή στη λίστα ο οποίος θα ελέγχεται κάθε φορά για ενεργά παιχνίδια.
 STR_NETWORK_SERVER_LIST_START_SERVER                            :{BLACK}Εκκίνηση διακομιστή
@@ -2087,6 +2069,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}Το ό�
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Θέση κωδικού
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Προστατέψτε το παιχνίδι με έναν κωδικό εάν δε θέλετε να είναι δημοσίως προσβάσιμο
 
+STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Διαφημιζόμενο
+STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Επιλογή ανάμεσα σε ένα διαφημιζόμενο (διαδίκτυο) ή μη διαφημιζόμενο (Τοπικό Δίκτυο/LAN) παιχνίδι
 STR_NETWORK_START_SERVER_UNADVERTISED                           :Όχι
 STR_NETWORK_START_SERVER_ADVERTISED                             :Ναι
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} συμπαίκτ{P ης ες}
@@ -2307,8 +2291,6 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} σ
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} ξεκίνησε μια νέα εταιρία (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} αποχώρησε από το παιχνίδι ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} άλλαξαν το όνομά τους σε {STRING}
-STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {STRING} έδωσαν στην εταιρία σας {2:CURRENCY_LONG}
-STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Δώσατε {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}Ο διακομιστής έκλεισε την συνεδρία
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}Ο διακομιστής επανεκκινεί...{}Παρακαλώ περιμένετε...
 
@@ -2609,7 +2591,7 @@ STR_OBJECT_BUILD_SIZE                                           :{BLACK}Μέγε
 STR_OBJECT_CLASS_LTHS                                           :Φάροι
 STR_OBJECT_CLASS_TRNS                                           :Αναμεταδότες
 
-# Tree planting window (last two for SE only)
+# Tree planting window (last eight for SE only)
 STR_PLANT_TREE_CAPTION                                          :{WHITE}Δέντρα
 STR_PLANT_TREE_TOOLTIP                                          :{BLACK}Επιλέξτε τύπο δέντρου για φύτευση. Αν το τετραγωνίδιο έχει ήδη ένα δέντρο, αυτό θα προσθέσει περισσότερα δέντρα μεικτών τύπων ανεξάρτητα από τον επιλεγμένο τύπο
 STR_TREES_RANDOM_TYPE                                           :{BLACK}Δέντρα τυχαίου τύπου
@@ -4696,6 +4678,15 @@ STR_BASEMUSIC_WIN_DESCRIPTION                                   :Αρχική μ
 STR_BASEMUSIC_DOS_DESCRIPTION                                   :Αρχική μουσική από το Transport Tycoon Deluxe έκδοση DOS.
 STR_BASEMUSIC_TTO_DESCRIPTION                                   :Αρχική μουσική από το Transport Tycoon (Αρχικός Επεξεργαστής Κόσμου) έκδοση DOS.
 STR_BASEMUSIC_NONE_DESCRIPTION                                  :Ένα πάκετο μουσικής χωρίς πραγματική μουσική.
+
+STR_TRADITIONAL_TRAIN_NAME                                      :{G=n}Τρένο {COMMA}
+STR_TRADITIONAL_TRAIN_NAME.geniki                               :Τρένου {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME                               :{G=n}Όχημα Δρόμου {COMMA}
+STR_TRADITIONAL_ROAD_VEHICLE_NAME.geniki                        :Οχήματος Δρόμου {COMMA}
+STR_TRADITIONAL_SHIP_NAME                                       :{G=n}Πλοίο {COMMA}
+STR_TRADITIONAL_SHIP_NAME.geniki                                :Πλοίου {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME                                   :{G=n}Αεροσκάφος {COMMA}
+STR_TRADITIONAL_AIRCRAFT_NAME.geniki                            :Αεροσκάφους {COMMA}
 
 ##id 0x2000
 # Town building names

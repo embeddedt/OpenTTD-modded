@@ -1006,6 +1006,8 @@ static CommandCost CheckFlatLandRailStation(TileArea tile_area, DoCommandFlag fl
 					if (HasBit(GetRailReservationTrackBits(tile_cur), track)) {
 						Train *v = GetTrainForReservation(tile_cur, track);
 						if (v != nullptr) {
+							CommandCost ret = CheckTrainReservationPreventsTrackModification(v);
+							if (ret.Failed()) return ret;
 							affected_vehicles.push_back(v);
 						}
 					}
@@ -1529,6 +1531,7 @@ CommandCost CmdBuildRailStation(TileIndex tile_org, DoCommandFlag flags, uint32 
 					Train *v = GetTrainForReservation(tile, AxisToTrack(GetRailStationAxis(tile)));
 					if (v != nullptr) {
 						affected_vehicles.push_back(v);
+						/* Not necessary to call CheckTrainReservationPreventsTrackModification as that is done by CheckFlatLandRailStation */
 						FreeTrainReservation(v);
 					}
 				}
@@ -1739,6 +1742,18 @@ CommandCost RemoveFromRailBaseStation(TileArea ta, std::vector<T *> &affected_st
 			if (ret.Failed()) continue;
 		}
 
+		Train *v = nullptr;
+		Track track = GetRailStationTrack(tile);
+		if (HasStationReservation(tile)) {
+			v = GetTrainForReservation(tile, track);
+			if (v != nullptr) {
+				CommandCost ret = CheckTrainReservationPreventsTrackModification(v);
+				error.AddCost(ret);
+				if (ret.Failed()) continue;
+				if (flags & DC_EXEC) FreeTrainReservation(v);
+			}
+		}
+
 		/* If we reached here, the tile is valid so increase the quantity of tiles we will remove */
 		quantity++;
 
@@ -1754,15 +1769,8 @@ CommandCost RemoveFromRailBaseStation(TileArea ta, std::vector<T *> &affected_st
 
 			/* read variables before the station tile is removed */
 			uint specindex = GetCustomStationSpecIndex(tile);
-			Track track = GetRailStationTrack(tile);
 			Owner owner = GetTileOwner(tile);
 			RailType rt = GetRailType(tile);
-			Train *v = nullptr;
-
-			if (HasStationReservation(tile)) {
-				v = GetTrainForReservation(tile, track);
-				if (v != nullptr) FreeTrainReservation(v);
-			}
 
 			bool build_rail = keep_rail && !IsStationTileBlocked(tile);
 			if (!build_rail && !IsStationTileBlocked(tile)) Company::Get(owner)->infrastructure.rail[rt]--;
@@ -2095,8 +2103,8 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 				if (road_rt == INVALID_ROADTYPE && RoadTypeIsRoad(rt)) road_rt = rt;
 				if (tram_rt == INVALID_ROADTYPE && RoadTypeIsTram(rt)) tram_rt = rt;
 
-				UpdateCompanyRoadInfrastructure(road_rt, road_owner, 2);
-				UpdateCompanyRoadInfrastructure(tram_rt, tram_owner, 2);
+				UpdateCompanyRoadInfrastructure(road_rt, road_owner, ROAD_STOP_TRACKBIT_FACTOR);
+				UpdateCompanyRoadInfrastructure(tram_rt, tram_owner, ROAD_STOP_TRACKBIT_FACTOR);
 
 				MakeDriveThroughRoadStop(cur_tile, st->owner, road_owner, tram_owner, st->index, rs_type, road_rt, tram_rt, axis);
 				SetDriveThroughStopDisallowedRoadDirections(cur_tile, drd);
@@ -2105,7 +2113,7 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 				if (road_rt == INVALID_ROADTYPE && RoadTypeIsRoad(rt)) road_rt = rt;
 				if (tram_rt == INVALID_ROADTYPE && RoadTypeIsTram(rt)) tram_rt = rt;
 				/* Non-drive-through stop never overbuild and always count as two road bits. */
-				Company::Get(st->owner)->infrastructure.road[rt] += 2;
+				Company::Get(st->owner)->infrastructure.road[rt] += ROAD_STOP_TRACKBIT_FACTOR;
 				MakeRoadStop(cur_tile, st->owner, st->index, rs_type, road_rt, tram_rt, ddir);
 			}
 			Company::Get(st->owner)->infrastructure.station++;
@@ -2196,7 +2204,7 @@ static CommandCost RemoveRoadStop(TileIndex tile, DoCommandFlag flags)
 		/* Update company infrastructure counts. */
 		FOR_ALL_ROADTRAMTYPES(rtt) {
 			RoadType rt = GetRoadType(tile, rtt);
-			UpdateCompanyRoadInfrastructure(rt, GetRoadOwner(tile, rtt), -2);
+			UpdateCompanyRoadInfrastructure(rt, GetRoadOwner(tile, rtt), -ROAD_STOP_TRACKBIT_FACTOR);
 		}
 
 		Company::Get(st->owner)->infrastructure.station--;
@@ -2792,8 +2800,10 @@ CommandCost CmdBuildDock(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 
 	if (IsBridgeAbove(slope_tile) && !_settings_game.construction.allow_docks_under_bridges) return_cmd_error(STR_ERROR_MUST_DEMOLISH_BRIDGE_FIRST);
 
+	CommandCost cost(EXPENSES_CONSTRUCTION, _price[PR_BUILD_STATION_DOCK]);
 	ret = DoCommand(slope_tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
 	if (ret.Failed()) return ret;
+	cost.AddCost(ret);
 
 	if (!IsTileType(flat_tile, MP_WATER) || !IsTileFlat(flat_tile)) {
 		return_cmd_error(STR_ERROR_SITE_UNSUITABLE);
@@ -2847,7 +2857,7 @@ CommandCost CmdBuildDock(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 		ZoningMarkDirtyStationCoverageArea(st);
 	}
 
-	return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_BUILD_STATION_DOCK]);
+	return cost;
 }
 
 void RemoveDockingTile(TileIndex t)
@@ -3589,6 +3599,18 @@ void AnimateTile_Station(TileIndex tile)
 	}
 }
 
+uint8 GetAnimatedTileSpeed_Station(TileIndex tile)
+{
+	if (HasStationRail(tile)) {
+		return GetStationTileAnimationSpeed(tile);
+	}
+
+	if (IsAirport(tile)) {
+		AnimateAirportTile(tile);
+	}
+	return 0;
+}
+
 
 static bool ClickTile_Station(TileIndex tile)
 {
@@ -3634,7 +3656,7 @@ static VehicleEnterTileStatus VehicleEnter_Station(Vehicle *v, TileIndex tile, i
 
 		int station_ahead;
 		int station_length;
-		int stop = GetTrainStopLocation(station_id, tile, Train::From(v), &station_ahead, &station_length, x, y);
+		int stop = GetTrainStopLocation(station_id, tile, Train::From(v), true, &station_ahead, &station_length, x, y);
 
 		/* Stop whenever that amount of station ahead + the distance from the
 		 * begin of the platform to the stop location is longer than the length
@@ -3653,8 +3675,25 @@ static VehicleEnterTileStatus VehicleEnter_Station(Vehicle *v, TileIndex tile, i
 			stop &= TILE_SIZE - 1;
 
 			if (x == stop) {
+				if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && front->cur_speed > 15 && !(front->lookahead != nullptr && HasBit(front->lookahead->flags, TRLF_APPLY_ADVISORY))) {
+					/* Travelling too fast, do not stop and report overshoot to player */
+					SetDParam(0, front->index);
+					SetDParam(1, IsRailWaypointTile(tile) ? STR_WAYPOINT_NAME : STR_STATION_NAME);
+					SetDParam(2, station_id);
+					AddNewsItem(STR_NEWS_TRAIN_OVERSHOT_STATION, NT_ADVICE, NF_INCOLOUR | NF_SMALL | NF_VEHICLE_PARAM0,
+							NR_VEHICLE, v->index,
+							NR_STATION, station_id);
+					for (Train *u = front; u != nullptr; u = u->Next()) {
+						ClrBit(u->flags, VRF_BEYOND_PLATFORM_END);
+					}
+					return VETSB_CONTINUE;
+				}
 				return VETSB_ENTERED_STATION | (VehicleEnterTileStatus)(station_id << VETS_STATION_ID_OFFSET); // enter station
 			} else if (x < stop) {
+				if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && front->cur_speed > 30) {
+					/* Travelling too fast, take no action */
+					return VETSB_CONTINUE;
+				}
 				front->vehstatus |= VS_TRAIN_SLOWING;
 				uint16 spd = max(0, (stop - x) * 20 - 15);
 				if (spd < front->cur_speed) front->cur_speed = spd;
@@ -4352,7 +4391,7 @@ static bool CanMoveGoodsToStation(const Station *st, CargoID type)
 	return true;
 }
 
-uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, SourceID source_id, const StationList *all_stations)
+uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, SourceID source_id, const StationList *all_stations, Owner exclusivity)
 {
 	/* Return if nothing to do. Also the rounding below fails for 0. */
 	if (all_stations->empty()) return 0;
@@ -4363,6 +4402,7 @@ uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, Sourc
 	std::vector<StationInfo> used_stations;
 
 	for (Station *st : *all_stations) {
+		if (exclusivity != INVALID_OWNER && exclusivity != st->owner) continue;
 		if (!CanMoveGoodsToStation(st, type)) continue;
 
 		/* Avoid allocating a vector if there is only one station to significantly

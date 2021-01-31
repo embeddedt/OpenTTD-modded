@@ -709,6 +709,125 @@ CommandCost TunnelBridgeIsFree(TileIndex tile, TileIndex endtile, const Vehicle 
 	return CommandCost();
 }
 
+struct FindTrainClosestToTunnelBridgeEndInfo {
+	Train *best;     ///< The currently "best" vehicle we have found.
+	int32 best_pos;
+	DiagDirection direction;
+
+	FindTrainClosestToTunnelBridgeEndInfo(DiagDirection direction) : best(nullptr), best_pos(INT32_MIN), direction(direction) {}
+};
+
+/** Callback for Has/FindVehicleOnPos to find a train in a signalled tunnel/bridge */
+static Vehicle *FindClosestTrainToTunnelBridgeEndEnum(Vehicle *v, void *data)
+{
+	FindTrainClosestToTunnelBridgeEndInfo *info = (FindTrainClosestToTunnelBridgeEndInfo *)data;
+
+	/* Only look for train heads and tails. */
+	if (v->Previous() != nullptr && v->Next() != nullptr) return nullptr;
+
+	if ((v->vehstatus & VS_CRASHED)) return nullptr;
+
+	Train *t = Train::From(v);
+
+	if (!IsDiagonalDirection(t->direction)) {
+		/* Check for vehicles on non-across track pieces of custom bridge head */
+		if ((GetAcrossTunnelBridgeTrackBits(t->tile) & t->track & TRACK_BIT_ALL) == TRACK_BIT_NONE) return nullptr;
+	}
+
+	int32 pos;
+	switch (info->direction) {
+		default: NOT_REACHED();
+		case DIAGDIR_NE: pos = -v->x_pos; break; // X: lower is better
+		case DIAGDIR_SE: pos =  v->y_pos; break; // Y: higher is better
+		case DIAGDIR_SW: pos =  v->x_pos; break; // X: higher is better
+		case DIAGDIR_NW: pos = -v->y_pos; break; // Y: lower is better
+	}
+
+	/* ALWAYS return the lowest ID (anti-desync!) if the coordinate is the same */
+	if (pos > info->best_pos || (pos == info->best_pos && t->First()->index < info->best->index)) {
+		info->best = t->First();
+		info->best_pos = pos;
+	}
+
+	return t;
+}
+
+Train *GetTrainClosestToTunnelBridgeEnd(TileIndex tile, TileIndex other_tile)
+{
+	FindTrainClosestToTunnelBridgeEndInfo info(ReverseDiagDir(GetTunnelBridgeDirection(tile)));
+	FindVehicleOnPos(tile, VEH_TRAIN, &info, FindClosestTrainToTunnelBridgeEndEnum);
+	FindVehicleOnPos(other_tile, VEH_TRAIN, &info, FindClosestTrainToTunnelBridgeEndEnum);
+	return info.best;
+}
+
+
+struct GetAvailableFreeTilesInSignalledTunnelBridgeChecker {
+	DiagDirection direction;
+	int pos;
+	int lowest_seen;
+};
+
+static Vehicle *GetAvailableFreeTilesInSignalledTunnelBridgeEnum(Vehicle *v, void *data)
+{
+	/* Don't look at wagons between front and back of train. */
+	if ((v->Previous() != nullptr && v->Next() != nullptr)) return nullptr;
+
+	if (!IsDiagonalDirection(v->direction)) {
+		/* Check for vehicles on non-across track pieces of custom bridge head */
+		if ((GetAcrossTunnelBridgeTrackBits(v->tile) & Train::From(v)->track & TRACK_BIT_ALL) == TRACK_BIT_NONE) return nullptr;
+	}
+
+	GetAvailableFreeTilesInSignalledTunnelBridgeChecker *checker = (GetAvailableFreeTilesInSignalledTunnelBridgeChecker*) data;
+	int v_pos;
+
+	switch (checker->direction) {
+		default: NOT_REACHED();
+		case DIAGDIR_NE: v_pos = -v->x_pos + TILE_UNIT_MASK; break;
+		case DIAGDIR_SE: v_pos =  v->y_pos; break;
+		case DIAGDIR_SW: v_pos =  v->x_pos; break;
+		case DIAGDIR_NW: v_pos = -v->y_pos + TILE_UNIT_MASK; break;
+	}
+	if (v_pos > checker->pos && v_pos < checker->lowest_seen) {
+		checker->lowest_seen = v_pos;
+	}
+
+	return nullptr;
+}
+
+int GetAvailableFreeTilesInSignalledTunnelBridgeWithStartOffset(TileIndex entrance, TileIndex exit, int offset)
+{
+	if (offset < 0) offset = 0;
+	TileIndex tile = entrance;
+	if (offset > 0) tile += offset * TileOffsByDiagDir(GetTunnelBridgeDirection(entrance));
+	int free_tiles = GetAvailableFreeTilesInSignalledTunnelBridge(entrance, exit, tile);
+	if (free_tiles != INT_MAX && offset > 0) free_tiles += offset;
+	return free_tiles;
+}
+
+int GetAvailableFreeTilesInSignalledTunnelBridge(TileIndex entrance, TileIndex exit, TileIndex tile)
+{
+	GetAvailableFreeTilesInSignalledTunnelBridgeChecker checker;
+	checker.direction = GetTunnelBridgeDirection(entrance);
+	checker.lowest_seen = INT_MAX;
+	switch (checker.direction) {
+		default: NOT_REACHED();
+		case DIAGDIR_NE: checker.pos = -(TileX(tile) * TILE_SIZE); break;
+		case DIAGDIR_SE: checker.pos =  (TileY(tile) * TILE_SIZE); break;
+		case DIAGDIR_SW: checker.pos =  (TileX(tile) * TILE_SIZE); break;
+		case DIAGDIR_NW: checker.pos = -(TileY(tile) * TILE_SIZE); break;
+	}
+
+	FindVehicleOnPos(entrance, VEH_TRAIN, &checker, &GetAvailableFreeTilesInSignalledTunnelBridgeEnum);
+	FindVehicleOnPos(exit, VEH_TRAIN, &checker, &GetAvailableFreeTilesInSignalledTunnelBridgeEnum);
+
+	if (checker.lowest_seen == INT_MAX) {
+		/* Remainder of bridge/tunnel is clear */
+		return INT_MAX;
+	}
+
+	return (checker.lowest_seen - checker.pos) / TILE_SIZE;
+}
+
 static Vehicle *EnsureNoTrainOnTrackProc(Vehicle *v, void *data)
 {
 	TrackBits rail_bits = *(TrackBits *)data;
@@ -2004,6 +2123,10 @@ bool Vehicle::HandleBreakdown()
 							CheckBreakdownFlags(Train::From(this->First()));
 							SetBit(Train::From(this->First())->flags, VRF_BREAKDOWN_STOPPED);
 							break;
+						case BREAKDOWN_BRAKE_OVERHEAT:
+							CheckBreakdownFlags(Train::From(this->First()));
+							SetBit(Train::From(this->First())->flags, VRF_BREAKDOWN_STOPPED);
+							break;
 						case BREAKDOWN_LOW_SPEED:
 							CheckBreakdownFlags(Train::From(this->First()));
 							SetBit(Train::From(this->First())->flags, VRF_BREAKDOWN_SPEED);
@@ -2085,7 +2208,8 @@ bool Vehicle::HandleBreakdown()
 					}
 				}
 			}
-			return (this->breakdown_type == BREAKDOWN_CRITICAL || this->breakdown_type == BREAKDOWN_EM_STOP || this->breakdown_type == BREAKDOWN_RV_CRASH);
+			return (this->breakdown_type == BREAKDOWN_CRITICAL || this->breakdown_type == BREAKDOWN_EM_STOP ||
+					this->breakdown_type == BREAKDOWN_RV_CRASH || this->breakdown_type == BREAKDOWN_BRAKE_OVERHEAT);
 
 		default:
 			if (!this->current_order.IsType(OT_LOADING)) this->breakdown_ctr--;
@@ -2252,6 +2376,7 @@ void VehicleEnterDepot(Vehicle *v)
 			ClrBit(t->flags, VRF_TOGGLE_REVERSE);
 			t->ConsistChanged(CCF_ARRANGE);
 			t->reverse_distance = 0;
+			t->lookahead.reset();
 			break;
 		}
 
@@ -2713,15 +2838,16 @@ LiveryScheme GetEngineLiveryScheme(EngineID engine_type, EngineID parent_engine_
  * @param parent_engine_type EngineID of the front vehicle. INVALID_VEHICLE if vehicle is at front itself.
  * @param v the vehicle. nullptr if in purchase list etc.
  * @param livery_setting The livery settings to use for acquiring the livery information.
+ * @param ignore_group Ignore group overrides.
  * @return livery to use
  */
-const Livery *GetEngineLivery(EngineID engine_type, CompanyID company, EngineID parent_engine_type, const Vehicle *v, byte livery_setting)
+const Livery *GetEngineLivery(EngineID engine_type, CompanyID company, EngineID parent_engine_type, const Vehicle *v, byte livery_setting, bool ignore_group)
 {
 	const Company *c = Company::Get(company);
 	LiveryScheme scheme = LS_DEFAULT;
 
 	if (livery_setting == LIT_ALL || (livery_setting == LIT_COMPANY && company == _local_company)) {
-		if (v != nullptr) {
+		if (v != nullptr && !ignore_group) {
 			const Group *g = Group::GetIfValid(v->First()->group_id);
 			if (g != nullptr) {
 				/* Traverse parents until we find a livery or reach the top */
@@ -2744,9 +2870,9 @@ const Livery *GetEngineLivery(EngineID engine_type, CompanyID company, EngineID 
 }
 
 
-static PaletteID GetEngineColourMap(EngineID engine_type, CompanyID company, EngineID parent_engine_type, const Vehicle *v)
+static PaletteID GetEngineColourMap(EngineID engine_type, CompanyID company, EngineID parent_engine_type, const Vehicle *v, bool ignore_group = false)
 {
-	PaletteID map = (v != nullptr) ? v->colourmap : PAL_NONE;
+	PaletteID map = (v != nullptr && !ignore_group) ? v->colourmap : PAL_NONE;
 
 	/* Return cached value if any */
 	if (map != PAL_NONE) return map;
@@ -2758,7 +2884,7 @@ static PaletteID GetEngineColourMap(EngineID engine_type, CompanyID company, Eng
 		uint16 callback = GetVehicleCallback(CBID_VEHICLE_COLOUR_MAPPING, 0, 0, engine_type, v);
 		/* Failure means "use the default two-colour" */
 		if (callback != CALLBACK_FAILED) {
-			assert_compile(PAL_NONE == 0); // Returning 0x4000 (resp. 0xC000) coincidences with default value (PAL_NONE)
+			static_assert(PAL_NONE == 0); // Returning 0x4000 (resp. 0xC000) coincidences with default value (PAL_NONE)
 			map = GB(callback, 0, 14);
 			/* If bit 14 is set, then the company colours are applied to the
 			 * map else it's returned as-is. */
@@ -2777,13 +2903,13 @@ static PaletteID GetEngineColourMap(EngineID engine_type, CompanyID company, Eng
 	/* Spectator has news shown too, but has invalid company ID - as well as dedicated server */
 	if (!Company::IsValidID(company)) return map;
 
-	const Livery *livery = GetEngineLivery(engine_type, company, parent_engine_type, v, _settings_client.gui.liveries);
+	const Livery *livery = GetEngineLivery(engine_type, company, parent_engine_type, v, _settings_client.gui.liveries, ignore_group);
 
 	map += livery->colour1;
 	if (twocc) map += livery->colour2 * 16;
 
 	/* Update cache */
-	if (v != nullptr) const_cast<Vehicle *>(v)->colourmap = map;
+	if (v != nullptr && !ignore_group) const_cast<Vehicle *>(v)->colourmap = map;
 	return map;
 }
 
@@ -2810,6 +2936,16 @@ PaletteID GetVehiclePalette(const Vehicle *v)
 	}
 
 	return GetEngineColourMap(v->engine_type, v->owner, INVALID_ENGINE, v);
+}
+
+/**
+ * Get the uncached colour map for a train, ignoring the vehicle's group.
+ * @param v Vehicle to get colour map for
+ * @return A ready-to-use palette modifier
+ */
+PaletteID GetUncachedTrainPaletteIgnoringGroup(const Train *v)
+{
+	return GetEngineColourMap(v->engine_type, v->owner, v->GetGroundVehicleCache()->first_engine, v, true);
 }
 
 /**
@@ -3545,7 +3681,7 @@ static void SpawnAdvancedVisualEffect(const Vehicle *v)
 	}
 }
 
-uint16 ReversingDistanceTargetSpeed(const Train *v);
+int ReversingDistanceTargetSpeed(const Train *v);
 
 /**
  * Draw visual effects (smoke and/or sparks) for a vehicle chain.
@@ -3574,13 +3710,15 @@ void Vehicle::ShowVisualEffect() const
 		const Train *t = Train::From(this);
 		/* For trains, do not show any smoke when:
 		 * - the train is reversing
+		 * - the train is exceeding the max speed
 		 * - is entering a station with an order to stop there and its speed is equal to maximum station entering speed
 		 * - is approaching a reversing point and its speed is equal to maximum approach speed
 		 */
 		if (HasBit(t->flags, VRF_REVERSING) ||
+				t->cur_speed > max_speed ||
 				(HasStationTileRail(t->tile) && t->IsFrontEngine() && t->current_order.ShouldStopAtStation(t, GetStationIndex(t->tile), IsRailWaypoint(t->tile)) &&
 				t->cur_speed >= max_speed) ||
-				(t->reverse_distance >= 1 && t->cur_speed >= ReversingDistanceTargetSpeed(t))) {
+				(t->reverse_distance >= 1 && (int)t->cur_speed >= ReversingDistanceTargetSpeed(t))) {
 			return;
 		}
 	}
@@ -3598,9 +3736,9 @@ void Vehicle::ShowVisualEffect() const
 		} else {
 			effect_model = (VisualEffectSpawnModel)GB(v->vcache.cached_vis_effect, VE_TYPE_START, VE_TYPE_COUNT);
 			assert(effect_model != (VisualEffectSpawnModel)VE_TYPE_DEFAULT); // should have been resolved by UpdateVisualEffect
-			assert_compile((uint)VESM_STEAM    == (uint)VE_TYPE_STEAM);
-			assert_compile((uint)VESM_DIESEL   == (uint)VE_TYPE_DIESEL);
-			assert_compile((uint)VESM_ELECTRIC == (uint)VE_TYPE_ELECTRIC);
+			static_assert((uint)VESM_STEAM    == (uint)VE_TYPE_STEAM);
+			static_assert((uint)VESM_DIESEL   == (uint)VE_TYPE_DIESEL);
+			static_assert((uint)VESM_ELECTRIC == (uint)VE_TYPE_ELECTRIC);
 		}
 
 		/* Show no smoke when:
@@ -3843,6 +3981,7 @@ char *Vehicle::DumpVehicleFlags(char *b, const char *last, bool include_tile) co
 	dump('s', HasBit(this->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE));
 	dump('R', HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH));
 	dump('N', HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_REFRESH_NEXT));
+	dump('c', HasBit(this->vcache.cached_veh_flags, VCF_IMAGE_CURVATURE));
 	if (this->IsGroundVehicle()) {
 		uint16 gv_flags = this->GetGroundVehicleFlags();
 		b += seprintf(b, last, ", gvf:");

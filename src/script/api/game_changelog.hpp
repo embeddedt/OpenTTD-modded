@@ -21,6 +21,14 @@
  * \li GSEventStoryPageButtonClick
  * \li GSEventStoryPageTileSelect
  * \li GSEventStoryPageVehicleSelect
+ * \li GSIndustry::GetCargoLastAcceptedDate
+ * \li GSIndustry::GetControlFlags
+ * \li GSIndustry::GetExclusiveConsumer
+ * \li GSIndustry::GetExclusiveSupplier
+ * \li GSIndustry::GetLastProductionYear
+ * \li GSIndustry::SetControlFlags
+ * \li GSIndustry::SetExclusiveConsumer
+ * \li GSIndustry::SetExclusiveSupplier
  * \li GSStoryPage::MakePushButtonReference
  * \li GSStoryPage::MakeTileButtonReference
  * \li GSStoryPage::MakeVehicleButtonReference

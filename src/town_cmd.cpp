@@ -432,6 +432,14 @@ static Foundation GetFoundation_Town(TileIndex tile, Slope tileh)
 	return FlatteningFoundation(tileh);
 }
 
+uint8 GetAnimatedTileSpeed_Town(TileIndex tile)
+{
+	if (GetHouseType(tile) >= NEW_HOUSE_OFFSET) {
+		return GetNewHouseTileAnimationSpeed(tile);
+	}
+	return 2;
+}
+
 /**
  * Animate a tile for a town
  * Only certain houses can be animated
@@ -631,38 +639,12 @@ static void MakeTownHouseBigger(TileIndex tile)
  */
 static void TownGenerateCargo (Town *t, CargoID ct, uint amount, StationFinder &stations, bool economy_adjust)
 {
-	// custom cargo generation factor
-	int factor = _settings_game.economy.town_cargo_scale_factor;
-
 	// when the economy flunctuates, everyone wants to stay at home
 	if (economy_adjust && EconomyIsInRecession()) {
 		amount = (amount + 1) >> 1;
 	}
 
-	factor += 200; // ensure factor is positive
-	assert(factor >= 0);
-	int cf = (factor / 10) - 20;
-	int fine = factor % 10;
-	if (fine != 0) {
-		// 2^0.1 << 16 to 2^0.9 << 16
-		const uint32 adj[9] = {70239, 75281, 80684, 86475, 92681, 99334, 106463, 114104, 122294};
-		uint64 scaled_amount = ((uint64) amount) * ((uint64) adj[fine - 1]);
-		amount = scaled_amount >> 16;
-	}
-
-	// apply custom factor?
-	if (cf < 0) {
-		// approx (amount / 2^cf)
-		// adjust with a constant offset of {(2 ^ cf) - 1} (i.e. add cf * 1-bits) before dividing to ensure that it doesn't become zero
-		// this skews the curve a little so that isn't entirely exponential, but will still decrease
-		amount = (amount + ((1 << -cf) - 1)) >> -cf;
-	}
-
-	else if (cf > 0) {
-		// approx (amount * 2^cf)
-		// XXX: overflow?
-		amount = amount << cf;
-	}
+	amount = ScaleQuantity(amount, _settings_game.economy.town_cargo_scale_factor);
 
 	// calculate for town stats
 
@@ -786,7 +768,28 @@ static void TileLoop_Town(TileIndex tile)
 		ClearTownHouse(t, tile);
 
 		/* Rebuild with another house? */
-		if (GB(r, 24, 8) >= 12) BuildTownHouse(t, tile);
+		if (GB(r, 24, 8) >= 12) {
+			/* If we are multi-tile houses, make sure to replace the house
+			 * closest to city center. If we do not do this, houses tend to
+			 * wander away from roads and other houses. */
+			if (hs->building_flags & BUILDING_HAS_2_TILES) {
+				/* House tiles are always the most north tile. Move the new
+				 * house to the south if we are north of the city center. */
+				TileIndexDiffC grid_pos = TileIndexToTileIndexDiffC(t->xy, tile);
+				int x = Clamp(grid_pos.x, 0, 1);
+				int y = Clamp(grid_pos.y, 0, 1);
+
+				if (hs->building_flags & TILE_SIZE_2x2) {
+					tile = TILE_ADDXY(tile, x, y);
+				} else if (hs->building_flags & TILE_SIZE_1x2) {
+					tile = TILE_ADDXY(tile, 0, y);
+				} else if (hs->building_flags & TILE_SIZE_2x1) {
+					tile = TILE_ADDXY(tile, x, 0);
+				}
+			}
+
+			BuildTownHouse(t, tile);
+		}
 	}
 
 	cur_company.Restore();
@@ -1258,6 +1261,48 @@ static bool GrowTownWithRoad(const Town *t, TileIndex tile, RoadBits rcmd)
 }
 
 /**
+ * Checks if a town road can be continued on the other side of a bridge.
+ *
+ * @param end_tile The end tile of the bridge
+ * @param bridge_dir The direction of the bridge
+ * @return true if the road can be continued, else false
+ */
+static bool CanRoadContinueAfterBridge(const Town* t, const TileIndex end_tile, const DiagDirection bridge_dir)
+{
+	const int delta = TileOffsByDiagDir(bridge_dir); // +1 tile in the direction of the bridge
+	TileIndex next_tile = end_tile + delta; // The tile beyond the bridge
+	RoadBits rcmd = DiagDirToRoadBits(ReverseDiagDir(bridge_dir));
+	RoadType rt = GetTownRoadType(t);
+
+	/* Before we try anything, make sure the tile is on the map and not the void. */
+	if (!IsValidTile(next_tile)) return false;
+
+	/* If the next tile is a bridge or tunnel, allow if it's a road bridge/tunnel continuing in the same direction. */
+	if (IsTileType(next_tile, MP_TUNNELBRIDGE)) {
+		return GetTunnelBridgeTransportType(next_tile) == TRANSPORT_ROAD && GetTunnelBridgeDirection(next_tile) == bridge_dir;
+	}
+
+	/* If the next tile is a station, allow if it's a road station facing the proper direction. Otherwise return false. */
+	if (IsTileType(next_tile, MP_STATION)) {
+		/* If the next tile is a road station, allow if it's facing the same direction, otherwise disallow. */
+		return IsRoadStop(next_tile) && GetRoadStopDir(next_tile) == ReverseDiagDir(bridge_dir);
+	}
+
+	/* If the next tile is a road depot, allow if it's facing the new bridge. */
+	if (IsTileType(next_tile, MP_ROAD)) {
+		return IsRoadDepot(next_tile) && GetRoadDepotDirection(next_tile) == ReverseDiagDir(bridge_dir);
+	}
+
+	/* If the next tile is a railroad track, check if towns are allowed to build level crossings.
+	 * If level crossing are not allowed, reject the bridge. Else allow DoCommand to determine if the rail track is buildable. */
+	if (IsTileType(next_tile, MP_RAILWAY) && !_settings_game.economy.allow_town_level_crossings) return false;
+
+	/* If a road tile can be built, the bridge is allowed.
+	 * If not, the bridge is rejected. */
+	return DoCommand(next_tile, rcmd | (rt << 4), t->index, DC_AUTO | DC_NO_WATER, CMD_BUILD_ROAD).Succeeded();
+}
+
+/**
  * Grows the town with a bridge.
  *  At first we check if a bridge is reasonable.
  *  If so we check if we are able to build it.
@@ -1287,10 +1332,15 @@ static bool GrowTownWithBridge(const Town *t, const TileIndex tile, const DiagDi
 
 	const int delta = TileOffsByDiagDir(bridge_dir);
 
+	/* To prevent really small towns from building disproportionately
+	 * long bridges, make the max a function of its population. */
+	int base_bridge_length = 5;
+	int max_bridge_length = t->cache.population / 1000 + base_bridge_length;
+
 	if (slope == SLOPE_FLAT) {
 		/* Bridges starting on flat tiles are only allowed when crossing rivers, rails or one-way roads. */
 		do {
-			if (bridge_length++ >= 4) {
+			if (bridge_length++ >= base_bridge_length) {
 				/* Allow to cross rivers, not big lakes, nor large amounts of rails or one-way roads. */
 				return false;
 			}
@@ -1298,19 +1348,22 @@ static bool GrowTownWithBridge(const Town *t, const TileIndex tile, const DiagDi
 		} while (IsValidTile(bridge_tile) && ((IsWaterTile(bridge_tile) && !IsSea(bridge_tile)) || IsPlainRailTile(bridge_tile) || (IsNormalRoadTile(bridge_tile) && GetDisallowedRoadDirections(bridge_tile) != DRD_NONE)));
 	} else {
 		do {
-			if (bridge_length++ >= 11) {
-				/* Max 11 tile long bridges */
+			if (bridge_length++ >= max_bridge_length) {
+				/* Ensure the bridge is not longer than the max allowed length. */
 				return false;
 			}
 			bridge_tile += delta;
 		} while (IsValidTile(bridge_tile) && (IsWaterTile(bridge_tile) || IsPlainRailTile(bridge_tile) || (IsNormalRoadTile(bridge_tile) && GetDisallowedRoadDirections(bridge_tile) != DRD_NONE)));
 	}
 
-	/* no water tiles in between? */
+	/* Don't allow a bridge where the start and end tiles are adjacent with no span between. */
 	if (bridge_length == 1) return false;
 
 	if (!MayTownModifyRoad(bridge_tile)) return false;
 	if (IsValidTile(bridge_tile + delta) && !MayTownModifyRoad(bridge_tile + delta)) return false;
+
+	/* Make sure the road can be continued past the bridge. At this point, bridge_tile holds the end tile of the bridge. */
+	if (!CanRoadContinueAfterBridge(t, bridge_tile, bridge_dir)) return false;
 
 	std::bitset <MAX_BRIDGES> tried;
 	uint n = MAX_BRIDGES;
@@ -1342,7 +1395,6 @@ static bool GrowTownWithBridge(const Town *t, const TileIndex tile, const DiagDi
 	/* Quit if no bridge can be built. */
 	return false;
 }
-
 
 /**
  * Checks whether at least one surrounding roads allows to build a house here
@@ -2057,7 +2109,7 @@ CommandCost CmdFoundTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 
 	static const byte price_mult[][TSZ_RANDOM + 1] = {{ 15, 25, 40, 25 }, { 20, 35, 55, 35 }};
 	/* multidimensional arrays have to have defined length of non-first dimension */
-	assert_compile(lengthof(price_mult[0]) == 4);
+	static_assert(lengthof(price_mult[0]) == 4);
 
 	CommandCost cost(EXPENSES_OTHER, _price[PR_BUILD_TOWN]);
 	byte mult = price_mult[city][size];

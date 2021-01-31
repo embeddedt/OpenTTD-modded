@@ -18,6 +18,7 @@
 #include "town.h"
 #include "news_func.h"
 #include "cheat_type.h"
+#include "company_base.h"
 #include "genworld.h"
 #include "tree_map.h"
 #include "tunnel_map.h"
@@ -543,7 +544,7 @@ static bool TransportIndustryGoods(TileIndex tile)
 
 			i->this_month_production[j] += cw;
 
-			uint am = MoveGoodsToStation(i->produced_cargo[j], cw, ST_INDUSTRY, i->index, &i->stations_near);
+			uint am = MoveGoodsToStation(i->produced_cargo[j], cw, ST_INDUSTRY, i->index, &i->stations_near, i->exclusive_consumer);
 			i->this_month_transported[j] += am;
 
 			moved_cargo |= (am != 0);
@@ -723,6 +724,47 @@ void AnimateTile_Industry(TileIndex tile)
 			}
 			break;
 		}
+	}
+}
+
+
+uint8 GetAnimatedTileSpeed_Industry(TileIndex tile)
+{
+	IndustryGfx gfx = GetIndustryGfx(tile);
+
+	if (GetIndustryTileSpec(gfx)->animation.status != ANIM_STATUS_NO_ANIMATION) {
+		return GetNewIndustryTileAnimationSpeed(tile);
+	}
+
+	switch (gfx) {
+	case GFX_SUGAR_MINE_SIEVE:
+		return 1;
+
+	case GFX_TOFFEE_QUARY:
+		return 2;
+
+	case GFX_BUBBLE_CATCHER:
+		return 1;
+
+	case GFX_POWERPLANT_SPARKS:
+		return 2;
+
+	case GFX_TOY_FACTORY:
+		return 1;
+
+	case GFX_PLASTIC_FOUNTAIN_ANIMATED_1: case GFX_PLASTIC_FOUNTAIN_ANIMATED_2:
+	case GFX_PLASTIC_FOUNTAIN_ANIMATED_3: case GFX_PLASTIC_FOUNTAIN_ANIMATED_4:
+	case GFX_PLASTIC_FOUNTAIN_ANIMATED_5: case GFX_PLASTIC_FOUNTAIN_ANIMATED_6:
+	case GFX_PLASTIC_FOUNTAIN_ANIMATED_7: case GFX_PLASTIC_FOUNTAIN_ANIMATED_8:
+		return 2;
+
+	case GFX_OILWELL_ANIMATED_1:
+	case GFX_OILWELL_ANIMATED_2:
+	case GFX_OILWELL_ANIMATED_3:
+		return 3;
+
+	default:
+		return 0;
 	}
 }
 
@@ -951,6 +993,9 @@ static void ChangeTileOwner_Industry(TileIndex tile, Owner old_owner, Owner new_
 	/* If the founder merges, the industry was created by the merged company */
 	Industry *i = Industry::GetByTile(tile);
 	if (i->founder == old_owner) i->founder = (new_owner == INVALID_OWNER) ? OWNER_NONE : new_owner;
+
+	if (i->exclusive_supplier == old_owner) i->exclusive_supplier = new_owner;
+	if (i->exclusive_consumer == old_owner) i->exclusive_consumer = new_owner;
 }
 
 /**
@@ -1126,6 +1171,19 @@ static void ChopLumberMillTrees(Industry *i)
 	}
 }
 
+static void ProduceIndustryGoodsFromRate(Industry *i, bool scale)
+{
+	for (size_t j = 0; j < lengthof(i->produced_cargo_waiting); j++) {
+		uint amount = i->production_rate[j];
+		if (amount != 0 && scale) {
+			amount = ScaleQuantity(amount, _settings_game.economy.industry_cargo_scale_factor);
+		}
+		i->produced_cargo_waiting[j] = min(0xffff, i->produced_cargo_waiting[j] + amount);
+	}
+}
+
+static uint _scaled_production_ticks;
+
 static void ProduceIndustryGoods(Industry *i)
 {
 	const IndustrySpec *indsp = GetIndustrySpec(i->type);
@@ -1148,15 +1206,22 @@ static void ProduceIndustryGoods(Industry *i)
 
 	i->counter--;
 
+	const bool scale_ticks = (_settings_game.economy.industry_cargo_scale_factor != 0) && HasBit(indsp->callback_mask, CBM_IND_PRODUCTION_256_TICKS);
+	if (scale_ticks) {
+		if ((i->counter % _scaled_production_ticks) == 0) {
+			if (HasBit(indsp->callback_mask, CBM_IND_PRODUCTION_256_TICKS)) IndustryProductionCallback(i, 1);
+			ProduceIndustryGoodsFromRate(i, false);
+		}
+	}
+
 	/* produce some cargo */
 	if ((i->counter % INDUSTRY_PRODUCE_TICKS) == 0) {
-		if (HasBit(indsp->callback_mask, CBM_IND_PRODUCTION_256_TICKS)) IndustryProductionCallback(i, 1);
-
-		IndustryBehaviour indbehav = indsp->behaviour;
-		for (size_t j = 0; j < lengthof(i->produced_cargo_waiting); j++) {
-			i->produced_cargo_waiting[j] = min(0xffff, i->produced_cargo_waiting[j] + i->production_rate[j]);
+		if (!scale_ticks) {
+			if (HasBit(indsp->callback_mask, CBM_IND_PRODUCTION_256_TICKS)) IndustryProductionCallback(i, 1);
+			ProduceIndustryGoodsFromRate(i, true);
 		}
 
+		IndustryBehaviour indbehav = indsp->behaviour;
 		if ((indbehav & INDUSTRYBEH_PLANT_FIELDS) != 0) {
 			uint16 cb_res = CALLBACK_FAILED;
 			if (HasBit(indsp->callback_mask, CBM_IND_SPECIAL_EFFECT)) {
@@ -1208,6 +1273,7 @@ void OnTick_Industry()
 
 	if (_game_mode == GM_EDITOR) return;
 
+	_scaled_production_ticks = ScaleQuantity(INDUSTRY_PRODUCE_TICKS, -_settings_game.economy.industry_cargo_scale_factor);
 	for (Industry *i : Industry::Iterate()) {
 		ProduceIndustryGoods(i);
 	}
@@ -1749,8 +1815,8 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 	MemSetT(i->incoming_cargo_waiting,     0, lengthof(i->incoming_cargo_waiting));
 	MemSetT(i->last_cargo_accepted_at,     0, lengthof(i->last_cargo_accepted_at));
 
-	/* don't use smooth economy for industries using production related callbacks */
-	if (indspec->UsesSmoothEconomy()) {
+	/* Randomize inital production if non-original economy is used and there are no production related callbacks. */
+	if (!indspec->UsesOriginalEconomy()) {
 		for (size_t ci = 0; ci < lengthof(i->production_rate); ci++) {
 			i->production_rate[ci] = min((RandomRange(256) + 128) * i->production_rate[ci] >> 8, 255);
 		}
@@ -1766,6 +1832,7 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 	i->was_cargo_delivered = false;
 	i->last_prod_year = _cur_year;
 	i->founder = founder;
+	i->ctlflags = INDCTL_NONE;
 
 	i->construction_date = _date;
 	i->construction_type = (_game_mode == GM_EDITOR) ? ICT_SCENARIO_EDITOR :
@@ -1775,6 +1842,9 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 	 * 0 = created prior of newindustries
 	 * else, chosen layout + 1 */
 	i->selected_layout = (byte)(layout_index + 1);
+
+	i->exclusive_supplier = INVALID_OWNER;
+	i->exclusive_consumer = INVALID_OWNER;
 
 	i->prod_level = PRODLEVEL_DEFAULT;
 
@@ -2065,6 +2135,66 @@ CommandCost CmdBuildIndustry(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 	return CommandCost(EXPENSES_OTHER, indspec->GetConstructionCost());
 }
 
+/**
+ * Change industry properties
+ * @param tile Unused.
+ * @param flags Type of operation.
+ * @param p1 IndustryID
+ * @param p2 various bitstuffed elements
+ * - p2 = (bit 0 - 7) - action to perform:
+ *                      0 = set control flags
+ *                      1 = set exclusive supplier
+ *                      2 = set exclusive consumer
+ * - p2 = (bit 8 - 15) - IndustryControlFlags
+ *                       (only used with set control flags)
+ * - p2 = (bit 16 - 23) - CompanyID to set or INVALID_OWNER (available to everyone) or
+ *                        OWNER_NONE (neutral stations only) or OWNER_DEITY (no one)
+ *                        (only used with set exclusive supplier / consumer)
+ * @param text unused
+ * @return Empty cost or an error.
+ */
+CommandCost CmdIndustryCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	if (_current_company != OWNER_DEITY) return CMD_ERROR;
+
+	Industry *ind = Industry::GetIfValid(p1);
+	if (ind == nullptr) return CMD_ERROR;
+
+	uint8 action = GB(p2, 0, 8);
+
+	switch (action) {
+		case 0: {
+			IndustryControlFlags ctlflags = (IndustryControlFlags)GB(p2, 8, 8) & INDCTL_MASK;
+
+			if (flags & DC_EXEC) ind->ctlflags = ctlflags;
+
+			break;
+		}
+
+		case 1:
+		case 2: {
+			Owner company_id = (Owner)GB(p2, 16, 8);
+
+			if (company_id != OWNER_NONE && company_id != INVALID_OWNER && company_id != OWNER_DEITY
+				&& !Company::IsValidID(company_id)) return CMD_ERROR;
+
+			if (flags & DC_EXEC) {
+				if (action == 1) {
+					ind->exclusive_supplier = company_id;
+				} else {
+					ind->exclusive_consumer = company_id;
+				}
+			}
+
+			break;
+		}
+
+		default:
+			NOT_REACHED();
+	}
+
+	return CommandCost();
+}
 
 /**
  * Create a new industry of random layout.
@@ -2329,7 +2459,7 @@ static void UpdateIndustryStatistics(Industry *i)
 void Industry::RecomputeProductionMultipliers()
 {
 	const IndustrySpec *indspec = GetIndustrySpec(this->type);
-	assert(!indspec->UsesSmoothEconomy());
+	assert(indspec->UsesOriginalEconomy());
 
 	/* Rates are rounded up, so e.g. oilrig always produces some passengers */
 	for (size_t i = 0; i < lengthof(this->production_rate); i++) {
@@ -2593,8 +2723,7 @@ static int WhoCanServiceIndustry(Industry *ind)
 		 * We cannot check the first of shared orders only, since the first vehicle in such a chain
 		 * may have a different cargo type.
 		 */
-		const Order *o;
-		FOR_VEHICLE_ORDERS(v, o) {
+		for (const Order *o : v->Orders()) {
 			if (o->IsType(OT_GOTO_STATION) && !(o->GetUnloadType() & OUFB_TRANSFER)) {
 				/* Vehicle visits a station to load or unload */
 				Station *st = Station::Get(o->GetDestination());
@@ -2656,8 +2785,8 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 	bool standard = false;
 	bool suppress_message = false;
 	bool recalculate_multipliers = false; ///< reinitialize production_rate to match prod_level
-	/* don't use smooth economy for industries using production related callbacks */
-	bool smooth_economy = indspec->UsesSmoothEconomy();
+	/* use original economy for industries using production related callbacks */
+	bool original_economy = indspec->UsesOriginalEconomy();
 	byte div = 0;
 	byte mul = 0;
 	int8 increment = 0;
@@ -2692,7 +2821,8 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 			}
 		}
 	} else {
-		if (monthly != smooth_economy) return;
+		if (monthly == original_economy) return;
+		if (!original_economy && _settings_game.economy.type == ET_FROZEN) return;
 		if (indspec->life_type == INDUSTRYLIFE_BLACK_HOLE) return;
 	}
 
@@ -2700,8 +2830,17 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 		/* decrease or increase */
 		bool only_decrease = (indspec->behaviour & INDUSTRYBEH_DONT_INCR_PROD) && _settings_game.game_creation.landscape == LT_TEMPERATE;
 
-		if (smooth_economy) {
-			closeit = true;
+		if (original_economy) {
+			if (only_decrease || Chance16(1, 3)) {
+				/* If more than 60% transported, 66% chance of increase, else 33% chance of increase */
+				if (!only_decrease && (i->past_pct_transported[0][0] > PERCENT_TRANSPORTED_60) != Chance16(1, 3)) {
+					mul = 1; // Increase production
+				} else {
+					div = 1; // Decrease production
+				}
+			}
+		} else if (_settings_game.economy.type == ET_SMOOTH) {
+			closeit = !(i->ctlflags & (INDCTL_NO_CLOSURE | INDCTL_NO_PRODUCTION_DECREASE));
 			for (byte j = 0; j < lengthof(i->produced_cargo); j++) {
 				if (i->produced_cargo[j] == CT_INVALID) continue;
 				uint32 r = Random();
@@ -2734,6 +2873,10 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 					new_prod = Clamp(new_prod, 0, 16);
 				}
 
+				/* If override flags are set, prevent actually changing production if any was decided on */
+				if ((i->ctlflags & INDCTL_NO_PRODUCTION_DECREASE) && new_prod < old_prod) continue;
+				if ((i->ctlflags & INDCTL_NO_PRODUCTION_INCREASE) && new_prod > old_prod) continue;
+
 				/* Do not stop closing the industry when it has the lowest possible production rate */
 				if (new_prod == old_prod && old_prod > 1) {
 					closeit = false;
@@ -2750,20 +2893,15 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 					ReportNewsProductionChangeIndustry(i, i->produced_cargo[j], percent);
 				}
 			}
-		} else {
-			if (only_decrease || Chance16(1, 3)) {
-				/* If more than 60% transported, 66% chance of increase, else 33% chance of increase */
-				if (!only_decrease && (i->past_pct_transported[0][0] > PERCENT_TRANSPORTED_60) != Chance16(1, 3)) {
-					mul = 1; // Increase production
-				} else {
-					div = 1; // Decrease production
-				}
-			}
 		}
 	}
 
+	/* If override flags are set, prevent actually changing production if any was decided on */
+	if ((i->ctlflags & INDCTL_NO_PRODUCTION_DECREASE) && (div > 0 || increment < 0)) return;
+	if ((i->ctlflags & INDCTL_NO_PRODUCTION_INCREASE) && (mul > 0 || increment > 0)) return;
+
 	if (!callback_enabled && (indspec->life_type & INDUSTRYLIFE_PROCESSING)) {
-		if ( (byte)(_cur_year - i->last_prod_year) >= 5 && Chance16(1, smooth_economy ? 180 : 2)) {
+		if ( (byte)(_cur_year - i->last_prod_year) >= 5 && Chance16(1, original_economy ? 2 : 180)) {
 			closeit = true;
 		}
 	}
@@ -2779,6 +2917,7 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 	while (div-- != 0 && !closeit) {
 		if (i->prod_level == PRODLEVEL_MINIMUM) {
 			closeit = true;
+			break;
 		} else {
 			i->prod_level = max(i->prod_level / 2, (int)PRODLEVEL_MINIMUM); // typecast to int required to please MSVC
 			recalculate_multipliers = true;
@@ -2801,7 +2940,7 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 	if (recalculate_multipliers) i->RecomputeProductionMultipliers();
 
 	/* Close if needed and allowed */
-	if (closeit && !CheckIndustryCloseDownProtection(i->type)) {
+	if (closeit && !CheckIndustryCloseDownProtection(i->type) && !(i->ctlflags & INDCTL_NO_CLOSURE)) {
 		i->prod_level = PRODLEVEL_CLOSURE;
 		SetWindowDirty(WC_INDUSTRY_VIEW, i->index);
 		str = indspec->closure_text;
@@ -2986,14 +3125,14 @@ Money IndustrySpec::GetRemovalCost() const
 }
 
 /**
- * Determines whether this industrytype uses smooth economy or whether it uses standard/newgrf production changes.
- * @return true if smooth economy is used.
+ * Determines whether this industrytype uses standard/newgrf production changes.
+ * @return true if original economy is used.
  */
-bool IndustrySpec::UsesSmoothEconomy() const
+bool IndustrySpec::UsesOriginalEconomy() const
 {
-	return _settings_game.economy.smooth_economy &&
-		!(HasBit(this->callback_mask, CBM_IND_PRODUCTION_256_TICKS) || HasBit(this->callback_mask, CBM_IND_PRODUCTION_CARGO_ARRIVAL)) && // production callbacks
-		!(HasBit(this->callback_mask, CBM_IND_MONTHLYPROD_CHANGE) || HasBit(this->callback_mask, CBM_IND_PRODUCTION_CHANGE) || HasBit(this->callback_mask, CBM_IND_PROD_CHANGE_BUILD)); // production change callbacks
+	return _settings_game.economy.type == ET_ORIGINAL ||
+		HasBit(this->callback_mask, CBM_IND_PRODUCTION_256_TICKS) || HasBit(this->callback_mask, CBM_IND_PRODUCTION_CARGO_ARRIVAL) || // production callbacks
+		HasBit(this->callback_mask, CBM_IND_MONTHLYPROD_CHANGE) || HasBit(this->callback_mask, CBM_IND_PRODUCTION_CHANGE) || HasBit(this->callback_mask, CBM_IND_PROD_CHANGE_BUILD); // production change callbacks
 }
 
 IndustrySpec::~IndustrySpec()
