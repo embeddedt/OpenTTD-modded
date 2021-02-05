@@ -1096,6 +1096,7 @@ public:
 	/* automatically generated from ../../widgets/cheat_widget.h */
 	/** Widgets of the #CheatWindow class. */
 	enum CheatWidgets {
+		WID_C_NOTE                                   = ::WID_C_NOTE,                                   ///< Note on top of panel for use of cheat.
 		WID_C_PANEL                                  = ::WID_C_PANEL,                                  ///< Panel where all cheats are shown in.
 	};
 
@@ -1718,6 +1719,7 @@ public:
 	/* automatically generated from ../../widgets/misc_widget.h */
 	/** Widgets of the #LandInfoWindow class. */
 	enum LandInfoWidgets {
+		WID_LI_LOCATION                              = ::WID_LI_LOCATION,                              ///< Scroll to location.
 		WID_LI_BACKGROUND                            = ::WID_LI_BACKGROUND,                            ///< Background of the window.
 	};
 
@@ -2461,6 +2463,7 @@ public:
 	/** Widgets of the #SignWindow class. */
 	enum QueryEditSignWidgets {
 		WID_QES_CAPTION                              = ::WID_QES_CAPTION,                              ///< Caption of the window.
+		WID_QES_LOCATION                             = ::WID_QES_LOCATION,                             ///< Scroll to sign location.
 		WID_QES_TEXT                                 = ::WID_QES_TEXT,                                 ///< Text of the query.
 		WID_QES_OK                                   = ::WID_QES_OK,                                   ///< OK button.
 		WID_QES_CANCEL                               = ::WID_QES_CANCEL,                               ///< Cancel button.
@@ -2831,7 +2834,9 @@ public:
 		WID_VV_CAPTION                               = ::WID_VV_CAPTION,                               ///< Caption of window.
 		WID_VV_VIEWPORT                              = ::WID_VV_VIEWPORT,                              ///< Viewport widget.
 		WID_VV_START_STOP                            = ::WID_VV_START_STOP,                            ///< Start or stop this vehicle, and show information about the current state.
-		WID_VV_CENTER_MAIN_VIEW                      = ::WID_VV_CENTER_MAIN_VIEW,                      ///< Center the main view on this vehicle.
+		WID_VV_RENAME                                = ::WID_VV_RENAME,                                ///< Rename vehicle
+		WID_VV_LOCATION                              = ::WID_VV_LOCATION,                              ///< Center the main view on this vehicle.
+		WID_VV_ORDER_LOCATION                        = ::WID_VV_ORDER_LOCATION,                        ///< Center the main view on the order's target location.
 		WID_VV_GOTO_DEPOT                            = ::WID_VV_GOTO_DEPOT,                            ///< Order this vehicle to go to the depot.
 		WID_VV_REFIT                                 = ::WID_VV_REFIT,                                 ///< Open the refit window.
 		WID_VV_SHOW_ORDERS                           = ::WID_VV_SHOW_ORDERS,                           ///< Show the orders of this vehicle.
@@ -2860,7 +2865,6 @@ public:
 	enum VehicleDetailsWidgets {
 		WID_VD_CAPTION                               = ::WID_VD_CAPTION,                               ///< Caption of window.
 		WID_VD_TRIP_HISTORY                          = ::WID_VD_TRIP_HISTORY,                          ///< Show the trip history of vehicle.
-		WID_VD_RENAME_VEHICLE                        = ::WID_VD_RENAME_VEHICLE,                        ///< Rename this vehicle.
 		WID_VD_TOP_DETAILS                           = ::WID_VD_TOP_DETAILS,                           ///< Panel with generic details.
 		WID_VD_INCREASE_SERVICING_INTERVAL           = ::WID_VD_INCREASE_SERVICING_INTERVAL,           ///< Increase the servicing interval.
 		WID_VD_DECREASE_SERVICING_INTERVAL           = ::WID_VD_DECREASE_SERVICING_INTERVAL,           ///< Decrease the servicing interval.

@@ -269,6 +269,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BV_SHOW_HIDE,                          "WID_BV_SHOW_HIDE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BV_BUILD_SEL,                          "WID_BV_BUILD_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BV_RENAME,                             "WID_BV_RENAME");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_C_NOTE,                                "WID_C_NOTE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_C_PANEL,                               "WID_C_PANEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_C_CAPTION,                             "WID_C_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_C_FACE,                                "WID_C_FACE");
@@ -683,6 +684,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_LGL_CARGOES_ALL,                       "WID_LGL_CARGOES_ALL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_LGL_CARGOES_NONE,                      "WID_LGL_CARGOES_NONE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_M_VIEWPORT,                            "WID_M_VIEWPORT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_LI_LOCATION,                           "WID_LI_LOCATION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_LI_BACKGROUND,                         "WID_LI_BACKGROUND");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TT_BACKGROUND,                         "WID_TT_BACKGROUND");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_SCROLLING_TEXT,                      "WID_A_SCROLLING_TEXT");
@@ -1196,6 +1198,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SIL_FILTER_MATCH_CASE_BTN,             "WID_SIL_FILTER_MATCH_CASE_BTN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SIL_FILTER_ENTER_BTN,                  "WID_SIL_FILTER_ENTER_BTN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QES_CAPTION,                           "WID_QES_CAPTION");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QES_LOCATION,                          "WID_QES_LOCATION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QES_TEXT,                              "WID_QES_TEXT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QES_OK,                                "WID_QES_OK");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QES_CANCEL,                            "WID_QES_CANCEL");
@@ -1460,7 +1463,9 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_CAPTION,                            "WID_VV_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_VIEWPORT,                           "WID_VV_VIEWPORT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_START_STOP,                         "WID_VV_START_STOP");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_CENTER_MAIN_VIEW,                   "WID_VV_CENTER_MAIN_VIEW");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_RENAME,                             "WID_VV_RENAME");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_LOCATION,                           "WID_VV_LOCATION");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_ORDER_LOCATION,                     "WID_VV_ORDER_LOCATION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_GOTO_DEPOT,                         "WID_VV_GOTO_DEPOT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_REFIT,                              "WID_VV_REFIT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VV_SHOW_ORDERS,                        "WID_VV_SHOW_ORDERS");
@@ -1481,7 +1486,6 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VR_REFIT,                              "WID_VR_REFIT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_CAPTION,                            "WID_VD_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_TRIP_HISTORY,                       "WID_VD_TRIP_HISTORY");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_RENAME_VEHICLE,                     "WID_VD_RENAME_VEHICLE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_TOP_DETAILS,                        "WID_VD_TOP_DETAILS");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_INCREASE_SERVICING_INTERVAL,        "WID_VD_INCREASE_SERVICING_INTERVAL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VD_DECREASE_SERVICING_INTERVAL,        "WID_VD_DECREASE_SERVICING_INTERVAL");

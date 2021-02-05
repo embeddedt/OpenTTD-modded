@@ -45,6 +45,7 @@ void SQGSCargo_Register(Squirrel *engine)
 
 	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::IsValidCargo,        "IsValidCargo",        2, ".i");
 	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::IsValidTownEffect,   "IsValidTownEffect",   2, ".i");
+	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::GetName,             "GetName",             2, ".i");
 	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::GetCargoLabel,       "GetCargoLabel",       2, ".i");
 	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::IsFreight,           "IsFreight",           2, ".i");
 	SQGSCargo.DefSQStaticMethod(engine, &ScriptCargo::HasCargoClass,       "HasCargoClass",       3, ".ii");

@@ -30,6 +30,7 @@ void SQGSIndustry_Register(Squirrel *engine)
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::IsValidIndustry,                   "IsValidIndustry",                   2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetIndustryID,                     "GetIndustryID",                     2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetName,                           "GetName",                           2, ".i");
+	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::SetText,                           "SetText",                           3, ".i.");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::IsCargoAccepted,                   "IsCargoAccepted",                   3, ".ii");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetStockpiledCargo,                "GetStockpiledCargo",                3, ".ii");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetLastMonthProduction,            "GetLastMonthProduction",            3, ".ii");

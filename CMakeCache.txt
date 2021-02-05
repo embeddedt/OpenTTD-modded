@@ -347,6 +347,9 @@ OPTION_FORCE_COLORED_OUTPUT:BOOL=OFF
 //Install with Filesystem Hierarchy Standard folders
 OPTION_INSTALL_FHS:BOOL=ON
 
+//Copy dependencies into lib/ for easy packaging (Linux only)
+OPTION_PACKAGE_DEPENDENCIES:BOOL=OFF
+
 //Build only tools target
 OPTION_TOOLS_ONLY:BOOL=OFF
 

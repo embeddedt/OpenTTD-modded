@@ -97,7 +97,7 @@ void SQGSCompany_Register(Squirrel *engine)
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetMaxLoanAmount,              "GetMaxLoanAmount",              1, ".");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetLoanInterval,               "GetLoanInterval",               1, ".");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetBankBalance,                "GetBankBalance",                2, ".i");
-	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ChangeBankBalance,             "ChangeBankBalance",             4, ".iii");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ChangeBankBalance,             "ChangeBankBalance",             5, ".iiii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyIncome,            "GetQuarterlyIncome",            3, ".ii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyExpenses,          "GetQuarterlyExpenses",          3, ".ii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyCargoDelivered,    "GetQuarterlyCargoDelivered",    3, ".ii");

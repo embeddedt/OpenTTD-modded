@@ -49,8 +49,6 @@ mem_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
 vector
 -
-algorithm
--
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
 
@@ -170,6 +168,8 @@ strings.h
 inttypes.h
 -
 stdint.h
+-
+algorithm
 -
 cstdio
 -

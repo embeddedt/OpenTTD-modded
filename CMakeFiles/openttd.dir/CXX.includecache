@@ -279,8 +279,6 @@ mem_func.hpp
 ../src/core/mem_func.hpp
 vector
 -
-algorithm
--
 
 ../src/core/string_compare_type.hpp
 
@@ -363,8 +361,6 @@ newgrf_commons.h
 ../src/house_type.h
 
 ../src/industry.h
-algorithm
--
 newgrf_storage.h
 ../src/newgrf_storage.h
 subsidy_type.h
@@ -1257,6 +1253,8 @@ inttypes.h
 -
 stdint.h
 -
+algorithm
+-
 cstdio
 -
 cstddef
@@ -1837,8 +1835,6 @@ sqclass.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqbaselib.cpp
 ../../../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
-algorithm
--
 sqpcheader.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqpcheader.h
 sqvm.h
@@ -2635,6 +2631,10 @@ road.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
 ai/ai.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
+news_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/news_func.h
+strings_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -3243,8 +3243,6 @@ string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
-algorithm
--
 table/sprites.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/sprites.h
 table/strings.h
@@ -3709,6 +3707,10 @@ console_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_func.h
 engine_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
+road.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/road.h
+rail.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
 game/game.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/game/game.hpp
 table/strings.h
@@ -3757,6 +3759,8 @@ console_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_gui.h
 console_internal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_internal.h
+guitimer_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
 window_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 string_func.h
@@ -3877,8 +3881,6 @@ geometry_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 vector
 -
-algorithm
--
 limits
 -
 
@@ -3985,8 +3987,6 @@ mem_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
 vector
 -
-algorithm
--
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
 
@@ -4008,6 +4008,8 @@ core/bitmath_func.hpp
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 intrin.h
+-
+windows.h
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
@@ -4997,6 +4999,8 @@ company_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
 core/geometry_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
+guitimer_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/error_gui.cpp
 stdafx.h
@@ -5060,8 +5064,6 @@ unistd.h
 pwd.h
 -
 sys/stat.h
--
-algorithm
 -
 array
 -
@@ -6169,8 +6171,6 @@ newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/house_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/industry.h
-algorithm
--
 newgrf_storage.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
 subsidy_type.h
@@ -6255,6 +6255,10 @@ game/game.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/game/game.hpp
 error.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
+cmd_helper.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/cmd_helper.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/industry_land.h
@@ -7115,6 +7119,10 @@ company_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_gui.h
 company_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
+tile_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tile_map.h
+texteff.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/texteff.hpp
 core/backup_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
 cheat_type.h
@@ -7165,6 +7173,8 @@ viewport_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_type.h
 guitimer_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
+viewport_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/viewport_func.h
 rev.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
 widgets/misc_widget.h
@@ -7263,8 +7273,6 @@ midifile.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
 midi.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/music/midi.h
-algorithm
--
 ../console_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_func.h
 ../console_internal.h
@@ -8205,8 +8213,6 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 stdarg.h
 -
-algorithm
--
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 fileio_func.h
@@ -9083,8 +9089,6 @@ vehicle_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.cpp
 stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
-algorithm
--
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 newgrf_spritegroup.h
@@ -9201,8 +9205,6 @@ tile_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.cpp
 stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
-algorithm
--
 array
 -
 newgrf.h
@@ -9839,6 +9841,8 @@ aircraft.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft.h
 engine_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_func.h
+vehicle_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_func.h
 vehiclelist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.h
 tracerestrict.h
@@ -12447,8 +12451,12 @@ script_cargo.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/economy_func.h
 ../../core/bitmath_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+../../strings_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 ../../settings_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
+table/strings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/table/strings.h
 ../../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -12949,6 +12957,8 @@ script_map.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
 ../../industry.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/industry.h
+../../string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 ../../strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 ../../station_base.h
@@ -13247,8 +13257,6 @@ script_error.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_instance.hpp
 ../../debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
-algorithm
--
 ../../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -14585,6 +14593,8 @@ hotkeys.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/hotkeys.h
 transparency.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/transparency.h
+gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
 widgets/sign_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/sign_widget.h
 table/strings.h
@@ -15236,6 +15246,8 @@ strings.h
 inttypes.h
 -
 stdint.h
+-
+algorithm
 -
 cstdio
 -
@@ -17913,6 +17925,8 @@ video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
 ../core/geometry_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
+../core/math_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
 vector
 -
 

@@ -1068,6 +1068,7 @@ CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/ai/ai_instance.cpp.o: ../src/livery.h
@@ -2274,6 +2275,8 @@ CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/newgrf_properties.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/newgrf_spritegroup.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/newgrf_text.h
+CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/news_func.h
+CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/news_type.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/order_base.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/order_func.h
@@ -2312,6 +2315,7 @@ CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/string_type.h
+CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/strings_type.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/autoreplace_cmd.cpp.o: ../src/table/sprites.h
@@ -2908,6 +2912,7 @@ CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/error.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/bridge_gui.cpp.o: ../src/map_func.h
@@ -3101,6 +3106,7 @@ CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/build_vehicle_gui.cpp.o: ../src/landscape.h
@@ -3592,6 +3598,7 @@ CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/linkgraph/linkgraph.h
@@ -3819,6 +3826,7 @@ CMakeFiles/openttd.dir/src/command.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/command.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/command.cpp.o: ../src/landscape.h
@@ -4218,6 +4226,7 @@ CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/company_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
@@ -4672,6 +4681,7 @@ CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/driver.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/console_gui.cpp.o: ../src/network/core/config.h
@@ -6319,6 +6329,7 @@ CMakeFiles/openttd.dir/src/dock_gui.cpp.o: generated/table/strings.h
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/core/geometry_type.hpp
+CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/core/string_compare_type.hpp
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/driver.cpp.o: ../src/debug.h
@@ -7006,6 +7017,7 @@ CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/engine.cpp.o: ../src/landscape_type.h
@@ -7288,6 +7300,7 @@ CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/landscape.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/error_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
@@ -7514,6 +7527,7 @@ CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o: ../src/livery.h
@@ -8404,6 +8418,7 @@ CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/livery.h
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/game/game_instance.cpp.o: ../src/newgrf_config.h
@@ -8951,6 +8966,7 @@ CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/gfxinit.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/heightmap.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/house_type.h
@@ -9095,6 +9111,7 @@ CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/heightmap.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/genworld_gui.cpp.o: ../src/house_type.h
@@ -10339,6 +10356,7 @@ CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/heightmap.cpp
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/heightmap.h
 CMakeFiles/openttd.dir/src/heightmap.cpp.o: ../src/industry_type.h
@@ -10679,6 +10697,7 @@ CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/industry_cmd.cpp.o: ../src/industry.h
@@ -11033,6 +11052,7 @@ CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o: ../src/infrastructure.cpp
@@ -11193,6 +11213,7 @@ CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/highscore.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/intro_gui.cpp
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o: ../src/landscape_type.h
@@ -12980,6 +13001,7 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/rail_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/settings_type.h
+CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/stdafx.h
@@ -12989,7 +13011,9 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/strings_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/textbuf_gui.h
+CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/texteff.hpp
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/textfile_type.h
+CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/tile_map.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/tile_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/tilearea_type.h
 CMakeFiles/openttd.dir/src/misc_cmd.cpp.o: ../src/town_type.h
@@ -13005,9 +13029,11 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/3rdparty/cpp-btree/btree_conta
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/3rdparty/cpp-btree/btree_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/3rdparty/cpp-btree/btree_set.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/autoreplace_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/base_consist.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/bridge.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/bridge_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/cargo_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/cargopacket.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/cargotype.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/cmd_helper.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/command_func.h
@@ -13024,6 +13050,7 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/geometry_func.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/geometry_type.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/mem_func.hpp
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/multimap.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/overflowsafe_type.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/pool_type.hpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/core/smallmap_type.hpp
@@ -13057,12 +13084,17 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/map_func.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/map_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/misc_gui.cpp
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/network/core/config.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf_animation_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf_commons.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf_debug.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/openttd.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/order_base.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/order_func.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/rail_type.h
@@ -13072,6 +13104,7 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/road_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/safeguards.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/schdispatch.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/signal_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/slope_func.h
@@ -13095,6 +13128,7 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tile_cmd.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tile_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tile_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tilearea_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/timetable.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/town.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/town_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/town_type.h
@@ -13102,10 +13136,13 @@ CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/track_func.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/track_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/transparency.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/transport_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/triphistory.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tunnel_base.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tunnel_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/tunnelbridge_map.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/vehicle_base.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/vehicle_type.h
+CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/viewport_func.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/viewport_type.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/water_map.h
 CMakeFiles/openttd.dir/src/misc_gui.cpp.o: ../src/widget_type.h
@@ -13326,6 +13363,7 @@ CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/music_gui.cpp.o: ../src/music/music_driver.hpp
@@ -13763,6 +13801,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/error.h
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/network/core/address.h
 CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o: ../src/network/core/config.h
@@ -13944,6 +13983,7 @@ CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o: ../src/livery.h
@@ -14337,6 +14377,7 @@ CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/network/network_client.cpp.o: ../src/livery.h
@@ -14561,6 +14602,7 @@ CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/game/game_scann
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/goal_type.h
+CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/network/network_content.cpp.o: ../src/livery.h
@@ -14719,6 +14761,7 @@ CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/game/game_s
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/goal_type.h
+CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/livery.h
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o: ../src/network/core/address.h
@@ -15797,6 +15840,7 @@ CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/newgrf_commons.cpp.o: ../src/industry_type.h
@@ -16629,6 +16673,7 @@ CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o: ../src/industry.h
@@ -18782,8 +18827,10 @@ CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/infrastructure_func.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/landscape.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/livery.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/map_func.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/map_type.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf.h
@@ -18793,11 +18840,13 @@ CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_callbacks.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_class.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_commons.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_config.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_engine.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_generic.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_properties.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_spritegroup.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_storage.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/newgrf_text.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/order_base.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/order_func.h
@@ -18832,9 +18881,11 @@ CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/string_type.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/strings_type.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/subsidy_type.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/table/sprites.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/textbuf_gui.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/texteff.hpp
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/textfile_type.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tile_cmd.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tile_map.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tile_type.h
@@ -18853,6 +18904,7 @@ CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tunnel_base.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tunnel_map.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/tunnelbridge_map.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/vehicle_base.h
+CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/vehicle_func.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/vehicle_gui.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/vehicle_type.h
 CMakeFiles/openttd.dir/src/order_gui.cpp.o: ../src/vehiclelist.h
@@ -20234,6 +20286,7 @@ CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/programmable_signals_gui.cpp.o: ../src/map_func.h
@@ -24376,6 +24429,7 @@ CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o: ../src/industry_type.h
@@ -26725,6 +26779,8 @@ CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/script/squirrel
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/stdafx.h
+CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/string_type.h
+CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/strings_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/tile_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/tilearea_type.h
@@ -26732,6 +26788,7 @@ CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/town_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/transport_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/vehicle_type.h
 CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: ../src/zoom_type.h
+CMakeFiles/openttd.dir/src/script/api/script_cargo.cpp.o: generated/table/strings.h
 
 CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o: ../src/3rdparty/squirrel/include/squirrel.h
 CMakeFiles/openttd.dir/src/script/api/script_cargolist.cpp.o: ../src/cargotype.h
@@ -32931,6 +32988,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/highscore.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/house_type.h
@@ -33435,6 +33493,7 @@ CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/signal.cpp.o: ../src/infrastructure_func.h
@@ -33783,6 +33842,7 @@ CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/gui.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/hotkeys.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/linkgraph/linkgraph_type.h
@@ -33812,6 +33872,7 @@ CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/sortlist_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/stdafx.h
+CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/story_type.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/string_base.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/signs_gui.cpp.o: ../src/string_type.h
@@ -34245,6 +34306,7 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/network/core/config.h
@@ -34285,6 +34347,7 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/gfx_type.h
+CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/grf.cpp
@@ -37506,6 +37569,7 @@ CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/town_cmd.cpp.o: ../src/industry.h
@@ -37686,6 +37750,7 @@ CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/house.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/town_gui.cpp.o: ../src/industry_type.h
@@ -38066,6 +38131,7 @@ CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/gui.h
+CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/infrastructure_func.h
 CMakeFiles/openttd.dir/src/tracerestrict_gui.cpp.o: ../src/landscape_type.h
@@ -38295,6 +38361,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/goal_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/infrastructure_func.h
@@ -39348,6 +39415,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/ground_vehicle.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/group_gui.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/group_type.h
+CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/guitimer_func.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/house_type.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/industry_type.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/infrastructure_func.h
