@@ -605,9 +605,8 @@ public:
 		this->SetWidgetDisabledState(WID_NG_REFRESH, sel == nullptr);
 		/* 'Join' button disabling conditions */
 		this->SetWidgetDisabledState(WID_NG_JOIN, sel == nullptr || // no Selected Server
-				!sel->online || // Server offline
-				sel->info.clients_on >= sel->info.clients_max || // Server full
-				!sel->info.compatible); // Revision mismatch
+			(sel->online && (sel->info.clients_on >= sel->info.clients_max || !sel->info.compatible))
+		); // Revision mismatch
 
 		/* 'NewGRF Settings' button invisible if no NewGRF is used */
 		this->GetWidget<NWidgetStacked>(WID_NG_NEWGRF_SEL)->SetDisplayedPlane(sel == nullptr || !sel->online || sel->info.grfconfig == nullptr);
