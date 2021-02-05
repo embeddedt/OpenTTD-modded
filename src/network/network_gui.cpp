@@ -614,7 +614,7 @@ public:
 #ifdef __EMSCRIPTEN__
 		this->SetWidgetDisabledState(WID_NG_SEARCH_INTERNET, true);
 		this->SetWidgetDisabledState(WID_NG_SEARCH_LAN, true);
-		this->SetWidgetDisabledState(WID_NG_ADD, true);
+		/*this->SetWidgetDisabledState(WID_NG_ADD, true);*/
 		this->SetWidgetDisabledState(WID_NG_START, true);
 #endif
 
