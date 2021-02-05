@@ -1,20 +1,20 @@
 Determining if the pthread_create exist failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_52203/fast"
-/usr/bin/make -f CMakeFiles/cmTC_52203.dir/build.make CMakeFiles/cmTC_52203.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_251de/fast"
+/usr/bin/make -f CMakeFiles/cmTC_251de.dir/build.make CMakeFiles/cmTC_251de.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_52203.dir/CheckSymbolExists.c.o
-/usr/bin/cc    -o CMakeFiles/cmTC_52203.dir/CheckSymbolExists.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_52203
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_52203.dir/link.txt --verbose=1
-/usr/bin/cc     -rdynamic  CMakeFiles/cmTC_52203.dir/CheckSymbolExists.c.o  -o cmTC_52203 
-/usr/bin/ld: CMakeFiles/cmTC_52203.dir/CheckSymbolExists.c.o: in function `main':
+Building C object CMakeFiles/cmTC_251de.dir/CheckSymbolExists.c.o
+/usr/bin/cc    -o CMakeFiles/cmTC_251de.dir/CheckSymbolExists.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_251de
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_251de.dir/link.txt --verbose=1
+/usr/bin/cc     -rdynamic  CMakeFiles/cmTC_251de.dir/CheckSymbolExists.c.o  -o cmTC_251de 
+/usr/bin/ld: CMakeFiles/cmTC_251de.dir/CheckSymbolExists.c.o: in function `main':
 CheckSymbolExists.c:(.text+0x1b): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_52203.dir/build.make:87: cmTC_52203] Error 1
+make[1]: *** [CMakeFiles/cmTC_251de.dir/build.make:87: cmTC_251de] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_52203/fast] Error 2
+make: *** [Makefile:121: cmTC_251de/fast] Error 2
 
 File /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
@@ -34,36 +34,36 @@ int main(int argc, char** argv)
 Determining if the function pthread_create exists in the pthreads failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_018bf/fast"
-/usr/bin/make -f CMakeFiles/cmTC_018bf.dir/build.make CMakeFiles/cmTC_018bf.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_1d1c1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1d1c1.dir/build.make CMakeFiles/cmTC_1d1c1.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_018bf.dir/CheckFunctionExists.c.o
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_018bf.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
-Linking C executable cmTC_018bf
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_018bf.dir/link.txt --verbose=1
-/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create   -rdynamic  CMakeFiles/cmTC_018bf.dir/CheckFunctionExists.c.o  -o cmTC_018bf -lpthreads 
+Building C object CMakeFiles/cmTC_1d1c1.dir/CheckFunctionExists.c.o
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_1d1c1.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.13/Modules/CheckFunctionExists.c
+Linking C executable cmTC_1d1c1
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1d1c1.dir/link.txt --verbose=1
+/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=pthread_create   -rdynamic  CMakeFiles/cmTC_1d1c1.dir/CheckFunctionExists.c.o  -o cmTC_1d1c1 -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-make[1]: *** [CMakeFiles/cmTC_018bf.dir/build.make:87: cmTC_018bf] Error 1
+make[1]: *** [CMakeFiles/cmTC_1d1c1.dir/build.make:87: cmTC_1d1c1] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_018bf/fast] Error 2
+make: *** [Makefile:121: cmTC_1d1c1/fast] Error 2
 
 
 Performing C++ SOURCE FILE Test BFD_FOUND_A0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7dc4b/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7dc4b.dir/build.make CMakeFiles/cmTC_7dc4b.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_61669/fast"
+/usr/bin/make -f CMakeFiles/cmTC_61669.dir/build.make CMakeFiles/cmTC_61669.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7dc4b.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_A0   -o CMakeFiles/cmTC_7dc4b.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_61669.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_A0   -o CMakeFiles/cmTC_61669.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_7dc4b.dir/build.make:66: CMakeFiles/cmTC_7dc4b.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_61669.dir/build.make:66: CMakeFiles/cmTC_61669.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_7dc4b/fast] Error 2
+make: *** [Makefile:121: cmTC_61669/fast] Error 2
 
 Source file was:
 
@@ -88,18 +88,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_A1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_80a0d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_80a0d.dir/build.make CMakeFiles/cmTC_80a0d.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_15719/fast"
+/usr/bin/make -f CMakeFiles/cmTC_15719.dir/build.make CMakeFiles/cmTC_15719.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_80a0d.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_A1   -o CMakeFiles/cmTC_80a0d.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_15719.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_A1   -o CMakeFiles/cmTC_15719.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_80a0d.dir/build.make:66: CMakeFiles/cmTC_80a0d.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_15719.dir/build.make:66: CMakeFiles/cmTC_15719.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_80a0d/fast] Error 2
+make: *** [Makefile:121: cmTC_15719/fast] Error 2
 
 Source file was:
 
@@ -124,18 +124,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_B0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_117f9/fast"
-/usr/bin/make -f CMakeFiles/cmTC_117f9.dir/build.make CMakeFiles/cmTC_117f9.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_ea30e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ea30e.dir/build.make CMakeFiles/cmTC_ea30e.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_117f9.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_B0   -o CMakeFiles/cmTC_117f9.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_ea30e.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_B0   -o CMakeFiles/cmTC_ea30e.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_117f9.dir/build.make:66: CMakeFiles/cmTC_117f9.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_ea30e.dir/build.make:66: CMakeFiles/cmTC_ea30e.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_117f9/fast] Error 2
+make: *** [Makefile:121: cmTC_ea30e/fast] Error 2
 
 Source file was:
 
@@ -160,18 +160,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_B1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cd7e9/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cd7e9.dir/build.make CMakeFiles/cmTC_cd7e9.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_aec64/fast"
+/usr/bin/make -f CMakeFiles/cmTC_aec64.dir/build.make CMakeFiles/cmTC_aec64.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cd7e9.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_B1   -o CMakeFiles/cmTC_cd7e9.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_aec64.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_B1   -o CMakeFiles/cmTC_aec64.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_cd7e9.dir/build.make:66: CMakeFiles/cmTC_cd7e9.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_aec64.dir/build.make:66: CMakeFiles/cmTC_aec64.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_cd7e9/fast] Error 2
+make: *** [Makefile:121: cmTC_aec64/fast] Error 2
 
 Source file was:
 
@@ -196,18 +196,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_C0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a6ade/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a6ade.dir/build.make CMakeFiles/cmTC_a6ade.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0bae1/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0bae1.dir/build.make CMakeFiles/cmTC_0bae1.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_a6ade.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_C0   -o CMakeFiles/cmTC_a6ade.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_0bae1.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_C0   -o CMakeFiles/cmTC_0bae1.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_a6ade.dir/build.make:66: CMakeFiles/cmTC_a6ade.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_0bae1.dir/build.make:66: CMakeFiles/cmTC_0bae1.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_a6ade/fast] Error 2
+make: *** [Makefile:121: cmTC_0bae1/fast] Error 2
 
 Source file was:
 
@@ -232,18 +232,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_C1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_84d3b/fast"
-/usr/bin/make -f CMakeFiles/cmTC_84d3b.dir/build.make CMakeFiles/cmTC_84d3b.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_1ebac/fast"
+/usr/bin/make -f CMakeFiles/cmTC_1ebac.dir/build.make CMakeFiles/cmTC_1ebac.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_84d3b.dir/src.cxx.o
-/usr/bin/c++    -DBFD_FOUND_C1   -o CMakeFiles/cmTC_84d3b.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_1ebac.dir/src.cxx.o
+/usr/bin/c++    -DBFD_FOUND_C1   -o CMakeFiles/cmTC_1ebac.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: bfd.h: No such file or directory
          #include <bfd.h>
                   ^~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_84d3b.dir/build.make:66: CMakeFiles/cmTC_84d3b.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_1ebac.dir/build.make:66: CMakeFiles/cmTC_1ebac.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_84d3b/fast] Error 2
+make: *** [Makefile:121: cmTC_1ebac/fast] Error 2
 
 Source file was:
 
@@ -268,18 +268,18 @@ Source file was:
 Performing C++ SOURCE FILE Test XAUDIO2_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_efab4/fast"
-/usr/bin/make -f CMakeFiles/cmTC_efab4.dir/build.make CMakeFiles/cmTC_efab4.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_38332/fast"
+/usr/bin/make -f CMakeFiles/cmTC_38332.dir/build.make CMakeFiles/cmTC_38332.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_efab4.dir/src.cxx.o
-/usr/bin/c++    -DXAUDIO2_FOUND   -o CMakeFiles/cmTC_efab4.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_38332.dir/src.cxx.o
+/usr/bin/c++    -DXAUDIO2_FOUND   -o CMakeFiles/cmTC_38332.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp/src.cxx:3:14: fatal error: windows.h: No such file or directory
      #include <windows.h>
               ^~~~~~~~~~~
 compilation terminated.
-make[1]: *** [CMakeFiles/cmTC_efab4.dir/build.make:66: CMakeFiles/cmTC_efab4.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_38332.dir/build.make:66: CMakeFiles/cmTC_38332.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_efab4/fast] Error 2
+make: *** [Makefile:121: cmTC_38332/fast] Error 2
 
 Source file was:
 
