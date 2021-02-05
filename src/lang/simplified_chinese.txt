@@ -233,7 +233,6 @@ STR_TOOLTIP_SORT_ORDER                                          :{BLACK}选择�
 STR_TOOLTIP_SORT_CRITERIA                                       :{BLACK}选择排序标准
 STR_TOOLTIP_FILTER_CRITERIA                                     :{BLACK}选择过滤标准
 STR_BUTTON_SORT_BY                                              :{BLACK}排序
-STR_BUTTON_LOCATION                                             :{BLACK}定位
 STR_BUTTON_RENAME                                               :{BLACK}重命名
 STR_BUTTON_CATCHMENT                                            :{BLACK}覆盖范围
 STR_TOOLTIP_CATCHMENT                                           :{BLACK}显示覆盖范围
@@ -1815,7 +1814,6 @@ STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}你确�
 # Cheat window
 STR_CHEATS                                                      :{WHITE}作弊
 STR_CHEATS_TOOLTIP                                              :{BLACK}标志您是否用过此作弊选项的单选框
-STR_CHEATS_WARNING                                              :{BLACK}注意！作弊是不光彩的！所有作弊都将被记录下来！
 STR_CHEAT_MONEY                                                 :{LTBLUE}增加 {CURRENCY_LONG} 现金
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}作为{ORANGE}{COMMA}进行游戏
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}神奇推土机 (清除工业设施和其他不可移除物)： {ORANGE}{STRING}
@@ -2323,6 +2321,8 @@ STR_JOIN_STATION_CREATE_SPLITTED_STATION                        :{YELLOW}建造�
 
 STR_JOIN_WAYPOINT_CAPTION                                       :{WHITE}合并路点
 STR_JOIN_WAYPOINT_CREATE_SPLITTED_WAYPOINT                      :{YELLOW}建造分体路点
+
+# Generic toolbar
 
 # Rail construction toolbar
 STR_RAIL_TOOLBAR_RAILROAD_CONSTRUCTION_CAPTION                  :铁路建设
@@ -3719,10 +3719,6 @@ STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}当车�
 # Vehicle view
 STR_VEHICLE_VIEW_CAPTION                                        :{WHITE}{VEHICLE}
 
-STR_VEHICLE_VIEW_TRAIN_LOCATION_TOOLTIP                         :{BLACK}将屏幕中心移动到列车所在的位置. 单击的同时按住Ctrl则主窗口会跟踪列车的路线
-STR_VEHICLE_VIEW_ROAD_VEHICLE_LOCATION_TOOLTIP                  :{BLACK}将屏幕中心移动到车辆所在的位置. 单击的同时按住Ctrl则主窗口会跟踪车辆的路线
-STR_VEHICLE_VIEW_SHIP_LOCATION_TOOLTIP                          :{BLACK}将屏幕中心移动到船只所在的位置. 单击的同时按住Ctrl则主窗口会跟踪船只的航线
-STR_VEHICLE_VIEW_AIRCRAFT_LOCATION_TOOLTIP                      :{BLACK}将屏幕中心移动到飞机所在的位置. 单击的同时按住Ctrl则主窗口会跟踪飞机的航线
 
 STR_VEHICLE_VIEW_TRAIN_SEND_TO_DEPOT_TOOLTIP                    :{BLACK}命令列车返回车库
 STR_VEHICLE_VIEW_ROAD_VEHICLE_SEND_TO_DEPOT_TOOLTIP             :{BLACK}命令汽车前往车库{}Ctrl+单击 时汽车只进行保养
@@ -3754,10 +3750,7 @@ STR_VEHICLE_VIEW_ROAD_VEHICLE_SHOW_DETAILS_TOOLTIP              :{BLACK}显示�
 STR_VEHICLE_VIEW_SHIP_SHOW_DETAILS_TOOLTIP                      :{BLACK}显示船只的详情
 STR_VEHICLE_VIEW_AIRCRAFT_SHOW_DETAILS_TOOLTIP                  :{BLACK}显示飞机的详情
 
-STR_VEHICLE_VIEW_TRAIN_STATE_START_STOP_TOOLTIP                 :{BLACK}当前列车状态{}点击可以 启动/停止 列车。Ctrl+点击切换至目的地。
-STR_VEHICLE_VIEW_ROAD_VEHICLE_STATE_START_STOP_TOOLTIP          :{BLACK}当前车辆的任务{}单击这里可以 停止/启动 车辆。Ctrl+点击切换至目的地。
-STR_VEHICLE_VIEW_SHIP_STATE_START_STOP_TOOLTIP                  :{BLACK}当前船只的任务{}点击可以 启动/停止 船只。Ctrl+点击切换至目的地。
-STR_VEHICLE_VIEW_AIRCRAFT_STATE_START_STOP_TOOLTIP              :{BLACK}飞机当前的状态{}点击可以 停止/启动 飞机。 Ctrl+点击 切换至目的地
+
 
 # Messages in the start stop button in the vehicle view
 STR_VEHICLE_STATUS_LOADING_UNLOADING                            :{LTBLUE}装载/卸货

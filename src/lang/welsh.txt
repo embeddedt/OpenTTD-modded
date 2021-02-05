@@ -231,7 +231,6 @@ STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Dewiswch
 STR_TOOLTIP_SORT_CRITERIA                                       :{BLACK}Dewiswch drefn trefnu
 STR_TOOLTIP_FILTER_CRITERIA                                     :{BLACK}Dewis criteria hidlydd
 STR_BUTTON_SORT_BY                                              :{BLACK}Trefnu yn ôl
-STR_BUTTON_LOCATION                                             :{BLACK}Lleoliad
 STR_BUTTON_RENAME                                               :{BLACK}Ailenwi
 
 STR_TOOLTIP_CLOSE_WINDOW                                        :{BLACK}Cau ffenestr
@@ -1768,7 +1767,6 @@ STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}Ydych c
 # Cheat window
 STR_CHEATS                                                      :{WHITE}Twyllo
 STR_CHEATS_TOOLTIP                                              :{BLACK}Mae'r blychau marcio'n dangos os ydych chi wedi twyllo neu beidio, gan nodi sut
-STR_CHEATS_WARNING                                              :{BLACK}Rhybudd! Rydych ar fin bradychu eich cydgystadleuwyr. Cofiwch y bydd y fath gywilydd yn cael ei gofio o'r awr hon hyd byth
 STR_CHEAT_MONEY                                                 :{LTBLUE}Cynyddu arian {CURRENCY_LONG}
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}Chwarae fel cwmni: {ORANGE}{COMMA}
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}Tarw Dur Hud (chwalu diwydiannau, gwrthrychau nad oes modd eu chwalu): {ORANGE}{STRING}
@@ -2272,6 +2270,8 @@ STR_JOIN_STATION_CREATE_SPLITTED_STATION                        :{YELLOW}Adeilad
 
 STR_JOIN_WAYPOINT_CAPTION                                       :{WHITE}Uno pwynt llwybro
 STR_JOIN_WAYPOINT_CREATE_SPLITTED_WAYPOINT                      :{YELLOW}Adeiladu pwynt llwybro annibynnol
+
+# Generic toolbar
 
 # Rail construction toolbar
 STR_RAIL_TOOLBAR_RAILROAD_CONSTRUCTION_CAPTION                  :Adeiladu Rheilffyrdd
@@ -3567,10 +3567,6 @@ STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Gwneud i
 # Vehicle view
 STR_VEHICLE_VIEW_CAPTION                                        :{WHITE}{VEHICLE}
 
-STR_VEHICLE_VIEW_TRAIN_LOCATION_TOOLTIP                         :{BLACK}Canoli'r brif olygfa ar leoliad y trên. Bydd Ctrl+Clic yn dilyn yn ffenestr bennaf
-STR_VEHICLE_VIEW_ROAD_VEHICLE_LOCATION_TOOLTIP                  :{BLACK}Canoli'r brif olygfa ar leoliad y cerbyd, Bydd Ctrl+Clic yn dilyn yn ffenestr bennaf
-STR_VEHICLE_VIEW_SHIP_LOCATION_TOOLTIP                          :{BLACK}Canol'r prif olygfa ar leoliad yr long. Bydd Ctrl+Clic yn dilyn yn ffenestr bennaf
-STR_VEHICLE_VIEW_AIRCRAFT_LOCATION_TOOLTIP                      :{BLACK}Canoli'r brif olygfa ar leoliad yr awyren. Bydd Ctrl+Clic yn dilyn yn ffenestr bennaf
 
 STR_VEHICLE_VIEW_TRAIN_SEND_TO_DEPOT_TOOLTIP                    :{BLACK}Anfon trên i'r depo. Bydd CTRL+clic yn rhoi gwasanaeth iddo'n unig
 STR_VEHICLE_VIEW_ROAD_VEHICLE_SEND_TO_DEPOT_TOOLTIP             :{BLACK}Anfon cerbyd i'r depo. Bydd CTRL+clic yn rhoi gwasanaeth iddo'n unig
@@ -3602,10 +3598,7 @@ STR_VEHICLE_VIEW_ROAD_VEHICLE_SHOW_DETAILS_TOOLTIP              :{BLACK}Dangos m
 STR_VEHICLE_VIEW_SHIP_SHOW_DETAILS_TOOLTIP                      :{BLACK}Dangos manylion llong
 STR_VEHICLE_VIEW_AIRCRAFT_SHOW_DETAILS_TOOLTIP                  :{BLACK}Dangos manylion awyren
 
-STR_VEHICLE_VIEW_TRAIN_STATE_START_STOP_TOOLTIP                 :{BLACK}Gweithred y trên - cliciwch yma stopio/cychwyn y trên. Ctrl+Clic i sgrolio i'r gyrchfan
-STR_VEHICLE_VIEW_ROAD_VEHICLE_STATE_START_STOP_TOOLTIP          :{BLACK}Gweithred y cerbyd - cliciwch yma stopio/cychwyn y cerbyd. Ctrl+Clic i sgrolio i'r gyrchfan
-STR_VEHICLE_VIEW_SHIP_STATE_START_STOP_TOOLTIP                  :{BLACK}Gweithred y llong - cliciwch yma stopio/cychwyn y llong. Ctrl+Clic i sgrolio i'r gyrchfan
-STR_VEHICLE_VIEW_AIRCRAFT_STATE_START_STOP_TOOLTIP              :{BLACK}Gweithred yr awyren - cliciwch yma stopio/cychwyn yr awyren. Ctrl+Clic i sgrolio i'r gyrchfan
+
 
 # Messages in the start stop button in the vehicle view
 STR_VEHICLE_STATUS_LOADING_UNLOADING                            :{LTBLUE}Llwytho / Dadlwytho

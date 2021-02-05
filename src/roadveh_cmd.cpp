@@ -475,11 +475,11 @@ int RoadVehicle::GetEffectiveMaxSpeed() const
 	if (this->critical_breakdown_count == 0) return max_speed;
 
 	for (uint i = 0; i < this->critical_breakdown_count; i++) {
-		max_speed = min(max_speed - (max_speed / 3) + 1, max_speed);
+		max_speed = std::min(max_speed - (max_speed / 3) + 1, max_speed);
 	}
 
 	/* clamp speed to be no less than lower of 5mph and 1/8 of base speed */
-	return max<uint16>(max_speed, min<uint16>(10, (this->vcache.cached_max_speed + 7) >> 3));
+	return std::max<uint16>(max_speed, std::min<uint16>(10, (this->vcache.cached_max_speed + 7) >> 3));
 }
 
 /**
@@ -488,7 +488,7 @@ int RoadVehicle::GetEffectiveMaxSpeed() const
  */
 inline int RoadVehicle::GetCurrentMaxSpeed() const
 {
-	int max_speed = min(this->GetEffectiveMaxSpeed(), this->gcache.cached_max_track_speed);
+	int max_speed = std::min<int>(this->GetEffectiveMaxSpeed(), this->gcache.cached_max_track_speed);
 
 	/* Limit speed to 50% while reversing, 75% in curves. */
 	for (const RoadVehicle *u = this; u != nullptr; u = u->Next()) {
@@ -503,11 +503,11 @@ inline int RoadVehicle::GetCurrentMaxSpeed() const
 
 		/* Vehicle is on the middle part of a bridge. */
 		if (u->state == RVSB_WORMHOLE && !(u->vehstatus & VS_HIDDEN)) {
-			max_speed = min(max_speed, GetBridgeSpec(GetBridgeType(u->tile))->speed);
+			max_speed = std::min<int>(max_speed, GetBridgeSpec(GetBridgeType(u->tile))->speed);
 		}
 	}
 
-	return min(max_speed, this->current_order.GetMaxSpeed());
+	return std::min<int>(max_speed, this->current_order.GetMaxSpeed());
 }
 
 /**
@@ -1871,7 +1871,16 @@ again:
 		int y = TileY(v->tile) * TILE_SIZE + rdp[turn_around_start_frame].y;
 
 		Direction new_dir = RoadVehGetSlidingDirection(v, x, y);
-		if (v->IsFrontEngine() && RoadVehFindCloseTo(v, x, y, new_dir) != nullptr) return false;
+		if (v->IsFrontEngine() && RoadVehFindCloseTo(v, x, y, new_dir) != nullptr) {
+			/* We are blocked. */
+			v->cur_speed = 0;
+			if (!v->path.empty()) {
+				/* Prevent pathfinding rerun as we already know where we are heading to. */
+				v->path.tile.push_front(v->tile);
+				v->path.td.push_front(dir);
+			}
+			return false;
+		}
 
 		uint32 r = VehicleEnterTile(v, v->tile, x, y);
 		if (HasBit(r, VETS_CANNOT_ENTER)) {

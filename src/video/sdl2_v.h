@@ -40,11 +40,17 @@ public:
 	void EditBoxLostFocus() override;
 
 	const char *GetName() const override { return "sdl"; }
+
+protected:
+	Dimension GetScreenSize() const override;
+
 private:
 	int PollEvent();
 	void LoopOnce();
 	void MainLoopCleanup();
 	bool CreateMainSurface(uint w, uint h, bool resize);
+	bool CreateMainWindow(uint w, uint h);
+	void CheckPaletteAnim();
 
 #ifdef __EMSCRIPTEN__
 	/* Convert a constant pointer back to a non-constant pointer to a member function. */
@@ -60,6 +66,7 @@ private:
 	uint32 last_cur_ticks;
 	uint32 next_tick;
 
+	int startup_display;
 	std::thread draw_thread;
 	std::unique_lock<std::recursive_mutex> draw_lock;
 };

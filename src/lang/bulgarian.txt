@@ -233,7 +233,6 @@ STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Избе
 STR_TOOLTIP_SORT_CRITERIA                                       :{BLACK}Избери критерий за сортиране
 STR_TOOLTIP_FILTER_CRITERIA                                     :{BLACK}Избери критерии за филтриране
 STR_BUTTON_SORT_BY                                              :{BLACK}Сортирай по
-STR_BUTTON_LOCATION                                             :{BLACK}Позиция
 STR_BUTTON_RENAME                                               :{BLACK}Преименувай
 STR_BUTTON_CATCHMENT                                            :{BLACK}Покритие
 
@@ -1728,7 +1727,6 @@ STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}Иск�
 # Cheat window
 STR_CHEATS                                                      :{WHITE}Кодове
 STR_CHEATS_TOOLTIP                                              :{BLACK}Кутийките показват дали този код е бил използван
-STR_CHEATS_WARNING                                              :{BLACK}Внимание! По този начин ще измамите своите съперници. Имайте в предвид, че това безчестие ще бъде запомнено вовеки веков.
 STR_CHEAT_MONEY                                                 :{LTBLUE}Увеличаване на парите с {CURRENCY_LONG}
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}Играе като компания: {ORANGE}{COMMA}
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}Магически булдозер (премахва промишленост, неподвижни обекти): {ORANGE}{STRING}
@@ -2229,6 +2227,8 @@ STR_JOIN_STATION_CREATE_SPLITTED_STATION                        :{YELLOW}Нап�
 
 STR_JOIN_WAYPOINT_CAPTION                                       :{WHITE}Съедини пътеводител
 STR_JOIN_WAYPOINT_CREATE_SPLITTED_WAYPOINT                      :{YELLOW}Построи отделен пътеводител
+
+# Generic toolbar
 
 # Rail construction toolbar
 STR_RAIL_TOOLBAR_RAILROAD_CONSTRUCTION_CAPTION                  :Конструкции за Двурелсов път
@@ -3513,10 +3513,6 @@ STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Авто
 # Vehicle view
 STR_VEHICLE_VIEW_CAPTION                                        :{WHITE}{VEHICLE}
 
-STR_VEHICLE_VIEW_TRAIN_LOCATION_TOOLTIP                         :{BLACK}Позициониране на главният изглед върху влака.При Ctrl+Click ще проследява влака в главният изглед
-STR_VEHICLE_VIEW_ROAD_VEHICLE_LOCATION_TOOLTIP                  :{BLACK}Позициониране на главния изглед върху МПС-то. При Ctrl+Click МПС-то ще бъде проследявано в главния изглед
-STR_VEHICLE_VIEW_SHIP_LOCATION_TOOLTIP                          :{BLACK}Фокусирай общия план върху местонахождението на кораба
-STR_VEHICLE_VIEW_AIRCRAFT_LOCATION_TOOLTIP                      :{BLACK}Позициониране на главния изглед върху летателната машина. При Ctrl-click летателната машина ще бъде проследяван в главния изглед
 
 STR_VEHICLE_VIEW_TRAIN_SEND_TO_DEPOT_TOOLTIP                    :{BLACK}Изпращане влака в депо
 STR_VEHICLE_VIEW_ROAD_VEHICLE_SEND_TO_DEPOT_TOOLTIP             :{BLACK}Изпращане на ПС в депо. CTRL+натискане ще изпрати само за преглед
@@ -3548,10 +3544,7 @@ STR_VEHICLE_VIEW_ROAD_VEHICLE_SHOW_DETAILS_TOOLTIP              :{BLACK}Пока
 STR_VEHICLE_VIEW_SHIP_SHOW_DETAILS_TOOLTIP                      :{BLACK}Покажи детайлите за кораба
 STR_VEHICLE_VIEW_AIRCRAFT_SHOW_DETAILS_TOOLTIP                  :{BLACK}Информация за самолета
 
-STR_VEHICLE_VIEW_TRAIN_STATE_START_STOP_TOOLTIP                 :{BLACK}Текущо състояние на влака - натиснете за спиране/пускане. Ctrl-click за да скролирате до целта
-STR_VEHICLE_VIEW_ROAD_VEHICLE_STATE_START_STOP_TOOLTIP          :{BLACK}Текущо действие - натиснете за спиране/пускане на превозното средство. С Ctrl-click можеш да скролираш до целта
-STR_VEHICLE_VIEW_SHIP_STATE_START_STOP_TOOLTIP                  :{BLACK}Настоящо корабно действие - натисни тук, за да спреш/задвижиш кораба. С Ctrl-click можеш да скролираш до целта
-STR_VEHICLE_VIEW_AIRCRAFT_STATE_START_STOP_TOOLTIP              :{BLACK}Състояние на самолета - натиснете за спиране/пускане. С Ctrl-click можете да скролирате до целта
+
 
 # Messages in the start stop button in the vehicle view
 STR_VEHICLE_STATUS_LOADING_UNLOADING                            :{LTBLUE}Товарене/ Разтоварване

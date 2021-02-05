@@ -10,7 +10,6 @@
 #ifndef INDUSTRY_H
 #define INDUSTRY_H
 
-#include <algorithm>
 #include "newgrf_storage.h"
 #include "subsidy_type.h"
 #include "industry_map.h"
@@ -32,6 +31,13 @@ enum ProductionLevels {
 	PRODLEVEL_MINIMUM = 0x04,  ///< below this level, the industry is set to be closing
 	PRODLEVEL_DEFAULT = 0x10,  ///< default level set when the industry is created
 	PRODLEVEL_MAXIMUM = 0x80,  ///< the industry is running at full speed
+};
+
+enum class IndustryAction : byte {
+	SetControlFlags = 0,       ///< Set IndustryControlFlags
+	SetExclusiveSupplier = 1,  ///< Set exclusive supplier
+	SetExclusiveConsumer = 2,  ///< Set exclusive consumer
+	SetText = 3,               ///< Set additional text
 };
 
 /**
@@ -93,6 +99,7 @@ struct Industry : IndustryPool::PoolItem<&_industry_pool> {
 	byte selected_layout;               ///< Which tile layout was used when creating the industry
 	Owner exclusive_supplier;           ///< Which company has exclusive rights to deliver cargo (INVALID_OWNER = anyone)
 	Owner exclusive_consumer;           ///< Which company has exclusive rights to take cargo (INVALID_OWNER = anyone)
+	std::string text;                   ///< General text with additional information.
 
 	uint16 random;                      ///< Random value used for randomisation of all kinds of things
 

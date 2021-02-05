@@ -247,7 +247,7 @@ struct AIListWindow : public Window {
 		this->vscroll->SetCount((int)this->info_list->size() + 1);
 
 		/* selected goes from -1 .. length of ai list - 1. */
-		this->selected = min(this->selected, this->vscroll->GetCount() - 2);
+		this->selected = std::min(this->selected, this->vscroll->GetCount() - 2);
 	}
 };
 
@@ -360,7 +360,7 @@ struct AISettingsWindow : public Window {
 	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
 		if (widget == WID_AIS_BACKGROUND) {
-			this->line_height = max(SETTING_BUTTON_HEIGHT, FONT_HEIGHT_NORMAL) + WD_MATRIX_TOP + WD_MATRIX_BOTTOM;
+			this->line_height = std::max(SETTING_BUTTON_HEIGHT, FONT_HEIGHT_NORMAL) + WD_MATRIX_TOP + WD_MATRIX_BOTTOM;
 
 			resize->width = 1;
 			resize->height = this->line_height;
@@ -890,9 +890,9 @@ struct AIConfigWindow : public Window {
 			case WID_AIC_INCREASE: {
 				int new_value;
 				if (widget == WID_AIC_DECREASE) {
-					new_value = max(0, GetGameSettings().difficulty.max_no_competitors - 1);
+					new_value = std::max(0, GetGameSettings().difficulty.max_no_competitors - 1);
 				} else {
-					new_value = min(MAX_COMPANIES - 1, GetGameSettings().difficulty.max_no_competitors + 1);
+					new_value = std::min(MAX_COMPANIES - 1, GetGameSettings().difficulty.max_no_competitors + 1);
 				}
 				IConsoleSetSetting("difficulty.max_no_competitors", new_value);
 				break;
@@ -1187,7 +1187,7 @@ struct AIDebugWindow : public Window {
 			this->autoscroll = this->vscroll->GetPosition() >= log->used - this->vscroll->GetCapacity();
 		}
 		if (this->autoscroll) {
-			int scroll_pos = max(0, log->used - this->vscroll->GetCapacity());
+			int scroll_pos = std::max(0, log->used - this->vscroll->GetCapacity());
 			if (scroll_pos != this->vscroll->GetPosition()) {
 				this->vscroll->SetPosition(scroll_pos);
 
@@ -1424,7 +1424,8 @@ struct AIDebugWindow : public Window {
 		this->SetWidgetLoweredState(WID_AID_MATCH_CASE_BTN, this->case_sensitive_break_check);
 
 		this->SetWidgetDisabledState(WID_AID_SETTINGS, ai_debug_company == INVALID_COMPANY);
-		this->SetWidgetDisabledState(WID_AID_RELOAD_TOGGLE, ai_debug_company == INVALID_COMPANY || (ai_debug_company == OWNER_DEITY && !UserIsAllowedToChangeGameScript()));
+		extern CompanyID _local_company;
+		this->SetWidgetDisabledState(WID_AID_RELOAD_TOGGLE, ai_debug_company == INVALID_COMPANY || ai_debug_company == _local_company || (ai_debug_company == OWNER_DEITY && !UserIsAllowedToChangeGameScript()));
 		this->SetWidgetDisabledState(WID_AID_CONTINUE_BTN, ai_debug_company == INVALID_COMPANY ||
 				(ai_debug_company == OWNER_DEITY ? !Game::IsPaused() : !AI::IsPaused(ai_debug_company)));
 	}

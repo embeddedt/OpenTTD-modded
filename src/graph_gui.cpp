@@ -111,7 +111,7 @@ struct GraphLegendWindow : Window {
 static NWidgetBase *MakeNWidgetCompanyLines(int *biggest_index)
 {
 	NWidgetVertical *vert = new NWidgetVertical();
-	uint line_height = max<uint>(GetSpriteSize(SPR_COMPANY_ICON).height, FONT_HEIGHT_NORMAL) + WD_FRAMERECT_TOP + WD_FRAMERECT_BOTTOM;
+	uint line_height = std::max<uint>(GetSpriteSize(SPR_COMPANY_ICON).height, FONT_HEIGHT_NORMAL) + WD_FRAMERECT_TOP + WD_FRAMERECT_BOTTOM;
 
 	for (int widnum = WID_GL_FIRST_COMPANY; widnum <= WID_GL_LAST_COMPANY; widnum++) {
 		NWidgetBackground *panel = new NWidgetBackground(WWT_PANEL, COLOUR_GREY, widnum);
@@ -214,8 +214,8 @@ protected:
 				OverflowSafeInt64 datapoint = this->cost[i][j];
 
 				if (datapoint != INVALID_DATAPOINT) {
-					current_interval.highest = max(current_interval.highest, datapoint);
-					current_interval.lowest  = min(current_interval.lowest, datapoint);
+					current_interval.highest = std::max(current_interval.highest, datapoint);
+					current_interval.lowest  = std::min(current_interval.lowest, datapoint);
 				}
 			}
 		}
@@ -242,7 +242,7 @@ protected:
 			/* Get the required grid size for each side and use the maximum one. */
 			int64 grid_size_higher = (abs_higher > 0) ? ((int64)abs_higher + num_pos_grids - 1) / num_pos_grids : 0;
 			int64 grid_size_lower = (abs_lower > 0) ? ((int64)abs_lower + num_hori_lines - num_pos_grids - 1) / (num_hori_lines - num_pos_grids) : 0;
-			grid_size = max(grid_size_higher, grid_size_lower);
+			grid_size = std::max(grid_size_higher, grid_size_lower);
 		} else {
 			/* If both values are zero, show an empty graph. */
 			num_pos_grids = num_hori_lines / 2;
@@ -329,6 +329,9 @@ protected:
 		OverflowSafeInt64 interval_size = interval.highest + abs(interval.lowest);
 		/* Where to draw the X axis. Use floating point to avoid overflowing and results of zero. */
 		x_axis_offset = (int)((r.bottom - r.top) * (double)interval.highest / (double)interval_size);
+
+		/* Draw the background of the graph itself. */
+		GfxFillRect(r.left, r.top, r.right, r.bottom, GREY_SCALE(2));
 
 		/* Draw the vertical grid lines. */
 
@@ -446,7 +449,7 @@ protected:
 						 * least significant bits are removed.
 						 */
 						int mult_range = FindLastBit(x_axis_offset) + FindLastBit(abs(datapoint));
-						int reduce_range = max(mult_range - 31, 0);
+						int reduce_range = std::max(mult_range - 31, 0);
 
 						/* Handle negative values differently (don't shift sign) */
 						if (datapoint < 0) {
@@ -509,11 +512,11 @@ public:
 					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
 					SetDParam(1, STR_MONTH_ABBREV_JAN + (month + this->month_increment - 1) % 12);
 					SetDParam(2, year);
-					x_label_width = max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
+					x_label_width = std::max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
 				} else {
 					SetDParam(0, STR_MONTH_ABBREV_JAN + month % 12);
 					SetDParam(1, year);
-					x_label_width = max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH).width);
+					x_label_width = std::max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH).width);
 				}
 
 				month += this->month_increment;
@@ -532,9 +535,9 @@ public:
 		SetDParam(1, INT64_MAX);
 		uint y_label_width = GetStringBoundingBox(STR_GRAPH_Y_LABEL).width;
 
-		size->width  = max<uint>(size->width,  5 + y_label_width + this->num_on_x_axis * (x_label_width + 5) + 9);
-		size->height = max<uint>(size->height, 5 + (1 + MIN_GRAPH_NUM_LINES_Y * 2 + (this->month == 0xFF ? 1 : (this->month_increment == 1 ? 2 : 3))) * FONT_HEIGHT_SMALL + 4);
-		size->height = max<uint>(size->height, size->width / 3);
+		size->width  = std::max<uint>(size->width,  5 + y_label_width + this->num_on_x_axis * (x_label_width + 5) + 9);
+		size->height = std::max<uint>(size->height, 5 + (1 + MIN_GRAPH_NUM_LINES_Y * 2 + (this->month == 0xFF ? 1 : (this->month_increment == 1 ? 2 : 3))) * FONT_HEIGHT_SMALL + 4);
+		size->height = std::max<uint>(size->height, size->width / 3);
 	}
 
 	void DrawWidget(const Rect &r, int widget) const override
@@ -586,7 +589,7 @@ public:
 
 		byte nums = 0;
 		for (const Company *c : Company::Iterate()) {
-			nums = min(this->num_vert_lines, max(nums, c->num_valid_stat_ent));
+			nums = std::min(this->num_vert_lines, std::max(nums, c->num_valid_stat_ent));
 		}
 
 		int mo = (_cur_date_ymd.month / this->month_increment - nums) * this->month_increment;
@@ -1133,7 +1136,7 @@ static const StringID _performance_titles[] = {
 
 static inline StringID GetPerformanceTitleFromValue(uint value)
 {
-	return _performance_titles[minu(value, 1000) >> 6];
+	return _performance_titles[std::min(value, 1000u) >> 6];
 }
 
 class CompanyLeagueWindow : public Window {
@@ -1217,7 +1220,7 @@ public:
 
 		this->ordinal_width = 0;
 		for (uint i = 0; i < MAX_COMPANIES; i++) {
-			this->ordinal_width = max(this->ordinal_width, GetStringBoundingBox(STR_ORDINAL_NUMBER_1ST + i).width);
+			this->ordinal_width = std::max(this->ordinal_width, GetStringBoundingBox(STR_ORDINAL_NUMBER_1ST + i).width);
 		}
 		this->ordinal_width += 5; // Keep some extra spacing
 
@@ -1233,13 +1236,13 @@ public:
 
 		Dimension d = GetSpriteSize(SPR_COMPANY_ICON);
 		this->icon_width = d.width + 2;
-		this->line_height = max<int>(d.height + 2, FONT_HEIGHT_NORMAL);
+		this->line_height = std::max<int>(d.height + 2, FONT_HEIGHT_NORMAL);
 
 		for (const Company *c : Company::Iterate()) {
 			SetDParam(0, c->index);
 			SetDParam(1, c->index);
 			SetDParam(2, _performance_titles[widest_title]);
-			widest_width = max(widest_width, GetStringBoundingBox(STR_COMPANY_LEAGUE_COMPANY_NAME).width);
+			widest_width = std::max(widest_width, GetStringBoundingBox(STR_COMPANY_LEAGUE_COMPANY_NAME).width);
 		}
 
 		this->text_width = widest_width + 30; // Keep some extra spacing
@@ -1339,7 +1342,7 @@ struct PerformanceRatingDetailWindow : Window {
 
 				uint score_info_width = 0;
 				for (uint i = SCORE_BEGIN; i < SCORE_END; i++) {
-					score_info_width = max(score_info_width, GetStringBoundingBox(STR_PERFORMANCE_DETAIL_VEHICLES + i).width);
+					score_info_width = std::max(score_info_width, GetStringBoundingBox(STR_PERFORMANCE_DETAIL_VEHICLES + i).width);
 				}
 				SetDParamMaxValue(0, 1000);
 				score_info_width += GetStringBoundingBox(STR_BLACK_COMMA).width + WD_FRAMERECT_LEFT;

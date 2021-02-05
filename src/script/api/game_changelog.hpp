@@ -18,6 +18,7 @@
  * This version is not yet released. The following changes are not set in stone yet.
  *
  * API additions:
+ * \li GSCargo::GetName
  * \li GSEventStoryPageButtonClick
  * \li GSEventStoryPageTileSelect
  * \li GSEventStoryPageVehicleSelect
@@ -29,10 +30,14 @@
  * \li GSIndustry::SetControlFlags
  * \li GSIndustry::SetExclusiveConsumer
  * \li GSIndustry::SetExclusiveSupplier
+ * \li GSIndustry::SetText
  * \li GSStoryPage::MakePushButtonReference
  * \li GSStoryPage::MakeTileButtonReference
  * \li GSStoryPage::MakeVehicleButtonReference
  * \li GSPriorityQueue
+ *
+ * Other changes:
+ * \li GSCompany::ChangeBankBalance takes one extra parameter to refer to a location to show text effect on
  *
  * \b 1.10.0
  *

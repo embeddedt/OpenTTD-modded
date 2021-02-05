@@ -26,7 +26,6 @@
 #include "../thread.h"
 #include "allegro_v.h"
 #include <allegro.h>
-#include <algorithm>
 
 #include "../safeguards.h"
 
@@ -417,6 +416,8 @@ const char *VideoDriver_Allegro::Start(const StringList &parm)
 		return "Failed to set up Allegro";
 	}
 	_allegro_instance_count++;
+
+	this->UpdateAutoResolution();
 
 	install_timer();
 	install_mouse();

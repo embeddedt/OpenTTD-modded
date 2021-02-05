@@ -341,7 +341,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdChangeServiceInt,                               0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_CHANGE_SERVICE_INT
 
 	DEF_CMD(CmdBuildIndustry,                          CMD_DEITY, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_INDUSTRY
-	DEF_CMD(CmdIndustryCtrl,                           CMD_DEITY, CMDT_OTHER_MANAGEMENT      ), // CMD_INDUSTRY_CTRL
+	DEF_CMD(CmdIndustryCtrl,            CMD_STR_CTRL | CMD_DEITY, CMDT_OTHER_MANAGEMENT      ), // CMD_INDUSTRY_CTRL
 
 	DEF_CMD(CmdSetCompanyManagerFace,                          0, CMDT_OTHER_MANAGEMENT      ), // CMD_SET_COMPANY_MANAGER_FACE
 	DEF_CMD(CmdSetCompanyColour,                               0, CMDT_OTHER_MANAGEMENT      ), // CMD_SET_COMPANY_COLOUR
@@ -600,12 +600,12 @@ static void DumpSubCommandLog(char *&buffer, const char *last, const CommandLog 
 
 char *DumpCommandLog(char *buffer, const char *last)
 {
-	const unsigned int count = min<unsigned int>(_command_log.count, 128);
+	const unsigned int count = std::min<unsigned int>(_command_log.count, 128);
 	buffer += seprintf(buffer, last, "Command Log:\n Showing most recent %u of %u commands\n", count, _command_log.count);
 	DumpSubCommandLog(buffer, last, _command_log, count);
 
 	if (_command_log_aux.count > 0) {
-		const unsigned int aux_count = min<unsigned int>(_command_log_aux.count, 32);
+		const unsigned int aux_count = std::min<unsigned int>(_command_log_aux.count, 32);
 		buffer += seprintf(buffer, last, "\n Showing most recent %u of %u commands (aux log)\n", aux_count, _command_log_aux.count);
 		DumpSubCommandLog(buffer, last, _command_log_aux, aux_count);
 	}

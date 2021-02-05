@@ -294,7 +294,6 @@ STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Επιλ
 STR_TOOLTIP_SORT_CRITERIA                                       :{BLACK}Επιλογή κριτηρίου ταξινόμησης
 STR_TOOLTIP_FILTER_CRITERIA                                     :{BLACK}Επιλέξτε κριτήρια φιλτραρίσματος
 STR_BUTTON_SORT_BY                                              :{BLACK}Ταξινόμηση κατά
-STR_BUTTON_LOCATION                                             :{BLACK}Τοποθεσία
 STR_BUTTON_RENAME                                               :{BLACK}Μετονομασία
 
 STR_TOOLTIP_CLOSE_WINDOW                                        :{BLACK}Κλείσιμο παραθύρου
@@ -1901,7 +1900,6 @@ STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}Είσ�
 # Cheat window
 STR_CHEATS                                                      :{WHITE}Απατεωνιές
 STR_CHEATS_TOOLTIP                                              :{BLACK}Τα κουτάκια δείχνουν αν έχετε ξαναχρησιμοποιήσει αυτή την απατεωνιά
-STR_CHEATS_WARNING                                              :{BLACK}Προσοχή! Είστε έτοιμοι να προδώσετε τους φίλους ανταγωνιστές σας. Θυμηθείτε ότι αυτή η ντροπή θα μείνει για πάντα.
 STR_CHEAT_MONEY                                                 :{LTBLUE}Αύξηση χρημάτων κατά {CURRENCY_LONG}
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}Παίζετε με την εταιρία: {ORANGE}{COMMA}
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}Μαγική μπουλντόζα (αφαιρεί βιομηχανίες, αμετακίνητα αντικείμενα): {ORANGE}{STRING}
@@ -2407,6 +2405,8 @@ STR_JOIN_STATION_CREATE_SPLITTED_STATION                        :{YELLOW}Χτί�
 
 STR_JOIN_WAYPOINT_CAPTION                                       :{WHITE}Συνένωση σημείου καθοδήγησης
 STR_JOIN_WAYPOINT_CREATE_SPLITTED_WAYPOINT                      :{YELLOW}Κτίσιμο ενός ξεχωριστού σημείου καθοδήγησης
+
+# Generic toolbar
 
 # Rail construction toolbar
 STR_RAIL_TOOLBAR_RAILROAD_CONSTRUCTION_CAPTION                  :Κατασκευή Σιδηρόδρομου
@@ -3777,10 +3777,6 @@ STR_REPLACE_REMOVE_WAGON_HELP                                   :{BLACK}Υποχ
 # Vehicle view
 STR_VEHICLE_VIEW_CAPTION                                        :{WHITE}{VEHICLE}
 
-STR_VEHICLE_VIEW_TRAIN_LOCATION_TOOLTIP                         :{BLACK}Κεντράρισμα της κύριας προβολής στην τοποθεσία του τρένου. Με Ctrl+Κλικ ακολουθεί το τρένο στην κύρια προβολή
-STR_VEHICLE_VIEW_ROAD_VEHICLE_LOCATION_TOOLTIP                  :{BLACK}Κεντράρισμα της κύριας προβολής στην τοποθεσία του οχήματος δρόμου. Με Ctrl+Κλικ ακολουθεί το όχημα στην κύρια προβολή
-STR_VEHICLE_VIEW_SHIP_LOCATION_TOOLTIP                          :{BLACK}Κεντράρισμα της κύριας προβολής στη τοποθεσία του πλοίου. Με Ctrl+Κλικ ακολουθεί το πλοίο στην κύρια προβολή
-STR_VEHICLE_VIEW_AIRCRAFT_LOCATION_TOOLTIP                      :{BLACK}Κεντράρισμα της κύριας προβολής στην τοποθεσία του αεροσκάφους. Με Ctrl+Κλικ ακολουθεί το αεροσκάφος στην κύρια προβολή
 
 STR_VEHICLE_VIEW_TRAIN_SEND_TO_DEPOT_TOOLTIP                    :{BLACK}Στέλνει το τρένο στο αμαξοστάσιο. Με Ctrl+Κλικ κάνει μόνο επισκευή
 STR_VEHICLE_VIEW_ROAD_VEHICLE_SEND_TO_DEPOT_TOOLTIP             :{BLACK}Στέλνει το όχημα στο αμαξοστάσιο. Με Ctrl+Κλικ κάνει μόνο επισκευή
@@ -3812,10 +3808,7 @@ STR_VEHICLE_VIEW_ROAD_VEHICLE_SHOW_DETAILS_TOOLTIP              :{BLACK}Εμφά
 STR_VEHICLE_VIEW_SHIP_SHOW_DETAILS_TOOLTIP                      :{BLACK}Εμφάνιση λεπτομερειών πλοίου
 STR_VEHICLE_VIEW_AIRCRAFT_SHOW_DETAILS_TOOLTIP                  :{BLACK}Εμφάνιση λεπτομερειών αεροσκάφους
 
-STR_VEHICLE_VIEW_TRAIN_STATE_START_STOP_TOOLTIP                 :{BLACK}Τρέχουσα ενέργεια τρένου - πατήστε εδώ για ξεκινήσετε/σταματήσετε το τρένο. Με Ctrl+Κλικ πηγαίνετε στον προορισμό
-STR_VEHICLE_VIEW_ROAD_VEHICLE_STATE_START_STOP_TOOLTIP          :{BLACK}Τρέχουσα ενέργεια οχήματος - πατήστε εδώ για ξεκινήσετε/σταματήσετε το όχημα. Με Ctrl+Κλικ πηγαίνετε στον προορισμό
-STR_VEHICLE_VIEW_SHIP_STATE_START_STOP_TOOLTIP                  :{BLACK}Τρέχουσα ενέργεια πλοίου - πατήστε εδώ για ξεκινήσετε/σταματήσετε το πλοίο. Με Ctrl+Κλικ πηγαίνετε στον προορισμό
-STR_VEHICLE_VIEW_AIRCRAFT_STATE_START_STOP_TOOLTIP              :{BLACK}Τρέχουσα ενέργεια αεροσκάφους - πατήστε εδώ για ξεκινήσετε/σταματήσετε το πλοίο. Με Ctrl+Κλικ πηγαίνετε στον προορισμό
+
 
 # Messages in the start stop button in the vehicle view
 STR_VEHICLE_STATUS_LOADING_UNLOADING                            :{LTBLUE}Φόρτωση / Εκφόρτωση

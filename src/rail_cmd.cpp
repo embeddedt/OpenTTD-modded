@@ -1429,7 +1429,7 @@ CommandCost CmdBuildSingleSignal(TileIndex tile, DoCommandFlag flags, uint32 p1,
 			} else if (!is_pbs) {
 				will_be_bidi = false;
 			}
-			if ((!p2_active && (sigvar == SIG_SEMAPHORE) != IsTunnelBridgeSemaphore(tile)) ||
+			if ((p2_active && (sigvar == SIG_SEMAPHORE) != IsTunnelBridgeSemaphore(tile)) ||
 					(convert_signal && (ctrl_pressed || (sigvar == SIG_SEMAPHORE) != IsTunnelBridgeSemaphore(tile)))) {
 				flip_variant = true;
 				cost = CommandCost(EXPENSES_CONSTRUCTION, ((_price[PR_BUILD_SIGNALS] * (will_be_bidi ? 2 : 1)) + (_price[PR_CLEAR_SIGNALS] * (is_bidi ? 2 : 1))) *
@@ -1888,7 +1888,7 @@ static CommandCost CmdSignalTrackHelper(TileIndex tile, DoCommandFlag flags, uin
 				last_suitable_ctr = signal_ctr;
 				last_suitable_tile = tile;
 				last_suitable_trackdir = trackdir;
-			} else if (!test_only && last_suitable_tile != INVALID_TILE) {
+			} else if (!test_only && last_suitable_tile != INVALID_TILE && ret.GetErrorMessage() != STR_ERROR_CANNOT_MODIFY_TRACK_TRAIN_APPROACHING) {
 				/* If a signal can't be placed, place it at the last possible position. */
 				SB(p1, 0, 3, TrackdirToTrack(last_suitable_trackdir));
 				ClrBit(p1, 17);
@@ -2029,17 +2029,19 @@ CommandCost CmdRemoveSingleSignal(TileIndex tile, DoCommandFlag flags, uint32 p1
 				}
 			}
 		}
-		Company::Get(GetTileOwner(tile))->infrastructure.signal -= GetTunnelBridgeSignalSimulationSignalCount(tile, end);
-		ClearBridgeTunnelSignalSimulation(end, tile);
-		ClearBridgeTunnelSignalSimulation(tile, end);
-		MarkBridgeOrTunnelDirty(tile);
-		AddSideToSignalBuffer(tile, INVALID_DIAGDIR, GetTileOwner(tile));
-		AddSideToSignalBuffer(end, INVALID_DIAGDIR, GetTileOwner(tile));
-		YapfNotifyTrackLayoutChange(tile, track);
-		YapfNotifyTrackLayoutChange(end, track);
-		DirtyCompanyInfrastructureWindows(GetTileOwner(tile));
-		for (Train *v : re_reserve_trains) {
-			ReReserveTrainPath(v);
+		if (flags & DC_EXEC) {
+			Company::Get(GetTileOwner(tile))->infrastructure.signal -= GetTunnelBridgeSignalSimulationSignalCount(tile, end);
+			ClearBridgeTunnelSignalSimulation(end, tile);
+			ClearBridgeTunnelSignalSimulation(tile, end);
+			MarkBridgeOrTunnelDirty(tile);
+			AddSideToSignalBuffer(tile, INVALID_DIAGDIR, GetTileOwner(tile));
+			AddSideToSignalBuffer(end, INVALID_DIAGDIR, GetTileOwner(tile));
+			YapfNotifyTrackLayoutChange(tile, track);
+			YapfNotifyTrackLayoutChange(end, track);
+			DirtyCompanyInfrastructureWindows(GetTileOwner(tile));
+			for (Train *v : re_reserve_trains) {
+				ReReserveTrainPath(v);
+			}
 		}
 		return CommandCost(EXPENSES_CONSTRUCTION, cost);
 	}
@@ -3305,7 +3307,7 @@ static void DrawTile_Track(TileInfo *ti, DrawTileProcParams params)
 	_drawtile_track_palette = COMPANY_SPRITE_COLOUR(GetTileOwner(ti->tile));
 
 	if (IsPlainRail(ti->tile)) {
-		if (!IsBridgeAbove(ti->tile) && params.min_visible_height > max<int>(SIGNAL_DIRTY_TOP, (TILE_HEIGHT + BB_HEIGHT_UNDER_BRIDGE) * ZOOM_LVL_BASE) && !_signal_sprite_oversized) return;
+		if (!IsBridgeAbove(ti->tile) && params.min_visible_height > std::max<int>(SIGNAL_DIRTY_TOP, (TILE_HEIGHT + BB_HEIGHT_UNDER_BRIDGE) * ZOOM_LVL_BASE) && !_signal_sprite_oversized) return;
 
 		TrackBits rails = GetTrackBits(ti->tile);
 
@@ -3800,7 +3802,7 @@ static void GetTileDesc_Track(TileIndex tile, TileDesc *td)
 			td->str = STR_LAI_RAIL_DESCRIPTION_TRAIN_DEPOT;
 			if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) {
 				if (td->rail_speed > 0) {
-					td->rail_speed = min(td->rail_speed, 61);
+					td->rail_speed = std::min<uint16>(td->rail_speed, 61);
 				} else {
 					td->rail_speed = 61;
 				}

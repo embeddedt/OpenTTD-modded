@@ -83,6 +83,11 @@ void DeleteVisibleTrain(Train *v);
 void CheckBreakdownFlags(Train *v);
 void GetTrainSpriteSize(EngineID engine, uint &width, uint &height, int &xoffs, int &yoffs, EngineImageType image_type);
 
+inline int GetTrainRealisticBrakingTargetDecelerationLimit(int acceleration_type)
+{
+	return 120 + (acceleration_type * 48);
+}
+
 /** Variables that are cached to improve performance and such */
 struct TrainCache {
 	/* Cached wagon override spritegroup */
@@ -269,7 +274,7 @@ protected: // These functions should not be called outside acceleration code.
 
 		for (const Train *w = this; w != nullptr; w = w->Next()) {
 			if (w->breakdown_ctr == 1 && w->breakdown_type == BREAKDOWN_LOW_SPEED) {
-				speed = min(speed, w->breakdown_severity);
+				speed = std::min<uint16>(speed, w->breakdown_severity);
 			}
 		}
 		return speed;
