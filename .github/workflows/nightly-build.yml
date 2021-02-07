@@ -3,58 +3,83 @@ name: Build nightly binaries
 on: [push]
 
 jobs:
-  build-nightlies:
-    runs-on: ${{ matrix.os }}
+  windows:
+    name: Windows
+
     strategy:
+      fail-fast: false
       matrix:
-        os: [windows-2019, ubuntu-18.04, ubuntu-20.04]
-    
+        include:
+        - arch: x86
+        - arch: x64
+        - arch: arm64
+
+    runs-on: windows-latest
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Install dependencies
-      if: runner.os == 'Linux'
+    - name: Download source
+      uses: actions/checkout@v2
+    # "restore-cache" which is done by "run-vcpkg" uses Windows tar.
+    # A git clone on windows marks a few files as read-only; when Windows tar
+    # tries to extract the cache over this folder, it fails, despite the files
+    # being identical. This failure shows up as an warning in the logs. We
+    # avoid this by simply removing the read-only mark from the git folder.
+    # In other words: this is a hack!
+    # See: https://github.com/lukka/run-vcpkg/issues/61
+    - name: Remove read-only flag from vcpkg git folder
+      shell: powershell
       run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends \
-          libfontconfig-dev \
-          libicu-dev \
-          liblzma-dev \
-          liblzo2-dev \
-          libsdl1.2-dev \
-          libsdl2-dev \
-          libxdg-basedir-dev \
-          zlib1g-dev \
-          # EOF
+        attrib -r "c:\vcpkg\.git\*.*" /s
     - name: Prepare vcpkg (with cache)
-      uses: lukka/run-vcpkg@v4
-      if: runner.os == 'Windows'
+      uses: lukka/run-vcpkg@v6
       with:
         vcpkgDirectory: 'c:/vcpkg'
         doNotUpdateVcpkg: true
         vcpkgArguments: 'liblzma libpng lzo zlib'
-        vcpkgTriplet: 'x64-windows-static'
-    - name: configure
-      run: mkdir cmbuild && cd cmbuild && cmake -DCMAKE_DISABLE_FIND_PACKAGE_ICU=TRUE ..
-    - name: build
-      run: cmake --build cmbuild
-    - uses: actions/upload-artifact@v2
-      if: runner.os == 'Linux'     
+        vcpkgTriplet: '${{ matrix.arch }}-windows-static'
+
+    - name: Build tools
+      uses: lukka/run-cmake@v3
       with:
-        name: ${{ matrix.os }}
-        path: |
-          cmbuild/openttd
-          cmbuild/lang/
-          cmbuild/ai/
-          cmbuild/scripts/
-    - uses: actions/upload-artifact@v2
-      if: runner.os == 'Windows'     
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        useVcpkgToolchainFile: false
+        buildDirectory: '${{ github.workspace }}/build-host'
+        buildWithCMakeArgs: '--target tools'
+        cmakeAppendedArgs: ' -GNinja -DOPTION_TOOLS_ONLY=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+
+    - name: Install MSVC problem matcher
+      uses: ammaraskar/msvc-problem-matcher@master
+
+    - name: Build (without installer)
+      uses: lukka/run-cmake@v3
       with:
-        name: windows-binary
-        path: |
-          cmbuild/openttd.exe
-          cmbuild/lang/
-          cmbuild/ai/
-          cmbuild/scripts/
+        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
+        useVcpkgToolchainFile: true
+        buildDirectory: '${{ github.workspace }}/generic_build'
+        cmakeAppendedArgs: ' -GNinja -DHOST_BINARY_DIR=${{ github.workspace }}/build-host -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+
+    - name: Create bundles
+      shell: bash
+      run: |
+        cd ${GITHUB_WORKSPACE}/generic_build
+        echo "::group::Run CPack"
+        cpack
+        echo "::endgroup::"
+        echo "::group::Prepare PDB to be bundled"
+        PDB=$(ls bundles/*.zip | cut -d/ -f2 | sed 's/.zip$/.pdb/')
+        cp openttd.pdb bundles/${PDB}
+        xz -9 bundles/${PDB}
+        echo "::endgroup::"
+        echo "::group::Cleanup"
+        # Remove the sha256 files CPack generates; we will do this ourself at
+        # the end of this workflow.
+        rm -f bundles/*.sha256
+        echo "::endgroup::"
+    - name: Store bundles
+      uses: actions/upload-artifact@v2
+      with:
+        name: openttd-windows-${{ matrix.arch }}
+        path: generic_build/bundles
   linux-generic:
     name: Build generic linux binary
 
