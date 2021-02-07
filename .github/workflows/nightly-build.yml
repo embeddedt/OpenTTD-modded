@@ -12,7 +12,6 @@ jobs:
         include:
         - arch: x86
         - arch: x64
-        - arch: arm64
 
     runs-on: windows-latest
 
