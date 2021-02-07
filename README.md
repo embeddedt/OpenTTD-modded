@@ -1,3 +1,19 @@
+## embeddedt's JGR patchpack mod
+
+This is my personal collection of patches applied to [JGR's Patch Pack](https://github.com/JGRennison/OpenTTD-patches).
+
+Prebuilt bundles are linked here:
+
+* Windows, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x64.zip
+* Windows, 32-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x86.zip
+* Linux, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-linux-generic.zip
+
+32-bit Linux binaries are not provided, however, compiling from source should work fine on 32-bit hardware.
+
+MacOS binaries are also not provided due to a lack of hardware to test with, but compiling from source with vanilla instructions should work.
+
+> **⚠️ Note:** OpenTTD-modded should load JGR-compatible and vanilla savegames without issue. I frequently merge JGR's branch into my own so you are not missing out on any JGR patches by using this "modpack". Make sure you backup your existing game before trying it here, though!
+
 ## JGR's Patchpack version 0.40.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
