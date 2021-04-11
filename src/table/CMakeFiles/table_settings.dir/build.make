@@ -56,7 +56,7 @@ include src/table/CMakeFiles/table_settings.dir/progress.make
 src/table/CMakeFiles/table_settings: src/table/settings.h.timestamp
 
 
-src/table/settings.h.timestamp: host_tools/src/settingsgen/settingsgen
+src/table/settings.h.timestamp: ../build-host/src/settingsgen/settingsgen
 src/table/settings.h.timestamp: ../src/table/company_settings.ini
 src/table/settings.h.timestamp: ../src/table/currency_settings.ini
 src/table/settings.h.timestamp: ../src/table/gameopt_settings.ini
@@ -68,7 +68,7 @@ src/table/settings.h.timestamp: ../src/table/settings.h.preamble
 src/table/settings.h.timestamp: ../src/table/settings.h.postamble
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating table/settings.h"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/table
-	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table && /__w/OpenTTD-modded/OpenTTD-modded/em_build/host_tools/src/settingsgen/settingsgen -o /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/table/settings.h -b /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.h.preamble -a /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.h.postamble /__w/OpenTTD-modded/OpenTTD-modded/src/table/company_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/currency_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/gameopt_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/misc_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/win32_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/window_settings.ini
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table && /__w/OpenTTD-modded/OpenTTD-modded/build-host/src/settingsgen/settingsgen -o /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/table/settings.h -b /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.h.preamble -a /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.h.postamble /__w/OpenTTD-modded/OpenTTD-modded/src/table/company_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/currency_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/gameopt_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/misc_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/win32_settings.ini /__w/OpenTTD-modded/OpenTTD-modded/src/table/window_settings.ini
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table/settings.h.timestamp
 
 table_settings: src/table/CMakeFiles/table_settings

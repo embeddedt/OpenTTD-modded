@@ -1269,6 +1269,8 @@ cassert
 -
 memory
 -
+string
+-
 sys/types.h
 -
 types.h
@@ -1283,9 +1285,9 @@ intrin.h
 -
 malloc.h
 -
-tchar.h
--
 io.h
+-
+tchar.h
 -
 
 ../src/story_base.h
@@ -1771,6 +1773,30 @@ process.h
 -
 cstdio
 -
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
+utility
+-
+type_traits
+-
+initializer_list
+-
+cassert
+-
+functional
+-
+string
+-
+stdexcept
+-
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
+version
+-
+optional
+-
+optional.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
 
@@ -2971,6 +2997,8 @@ blitter/factory.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
 core/geometry_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
+error.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/error.h
 fontcache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
 gfx_func.h
@@ -3327,6 +3355,8 @@ network/network.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
 order_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
+currency.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/currency.h
 widgets/cheat_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/cheat_widget.h
 table/sprites.h
@@ -3521,6 +3551,8 @@ zoning.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoning.h
 tbtr_template_vehicle_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle_func.h
+widgets/statusbar_widget.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/statusbar_widget.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -4085,6 +4117,8 @@ unicode/uversion.h
 -
 lzma.h
 -
+zstd.h
+-
 lzo/lzo1x.h
 -
 SDL.h
@@ -4127,6 +4161,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/currency.h
 date_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 strings_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
 
@@ -4159,6 +4195,10 @@ console_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_func.h
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+landscape.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
+widgets/statusbar_widget.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/statusbar_widget.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -4627,6 +4667,8 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+error.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/error.h
 sound/sound_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/sound/sound_driver.hpp
 music/music_driver.hpp
@@ -4635,6 +4677,8 @@ video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+table/strings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 string
 -
 sstream
@@ -5103,14 +5147,16 @@ screenshot.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot.h
 string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+strings_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 tar_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tar_type.h
 sys/stat.h
 -
 functional
 -
-optional
--
+3rdparty/optional/ottd_optional.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
 unistd.h
 -
 table/strings.h
@@ -5183,6 +5229,8 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 fontcache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
+fontcache_internal.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fontcache_internal.h
 fontdetection.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.h
 blitter/factory.hpp
@@ -5211,8 +5259,6 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 ft2build.h
 -
-os/windows/win32.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/win32.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
 string_type.h
@@ -5220,37 +5266,11 @@ string_type.h
 spritecache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
 
-/__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.cpp
-stdafx.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
-debug.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
-fontdetection.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.h
-string_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
-strings_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
-core/alloc_func.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
-core/math_func.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
-windows.h
--
-shlobj.h
--
-os/windows/win32.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/win32.h
-safeguards.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
-os/macosx/macos.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/macos.h
-safeguards.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
-fontconfig/fontconfig.h
--
-safeguards.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fontcache_internal.h
+core/smallmap_type.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
+fontcache.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.h
 fontcache.h
@@ -5543,6 +5563,8 @@ string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 thread.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
+tgp.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tgp.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -5597,6 +5619,12 @@ progress.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
 error.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
+newgrf_townname.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.h
+townname_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/townname_type.h
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 widgets/genworld_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/genworld_widget.h
 safeguards.h
@@ -6331,6 +6359,10 @@ widgets/industry_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/industry_widget.h
 graph_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
+clear_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/clear_map.h
+graph_gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 bitset
@@ -6463,8 +6495,8 @@ fileio_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
 string
 -
-optional
--
+3rdparty/optional/ottd_optional.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
 string
 -
 
@@ -6567,6 +6599,8 @@ town.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+array
+-
 list
 -
 set
@@ -7017,14 +7051,10 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/array.hpp
 fixedsizearray.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/fixedsizearray.hpp
-str.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/str.hpp
+../string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/binaryheap.hpp
-../core/alloc_func.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
-
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/blob.hpp
 ../core/alloc_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
 
@@ -7045,6 +7075,10 @@ countedptr.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
 dbg_helpers.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/dbg_helpers.h
+sstream
+-
+iomanip
+-
 ../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -7053,8 +7087,8 @@ map
 -
 stack
 -
-str.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/str.hpp
+string
+-
 ../direction_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
 ../signal_type.h
@@ -7081,18 +7115,6 @@ getoptdata.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/hashtable.hpp
 ../core/math_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
-
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/str.hpp
-errno.h
--
-stdarg.h
--
-blob.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/blob.hpp
-../core/math_func.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
-../string_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc_cmd.cpp
 stdafx.h
@@ -7193,6 +7215,8 @@ core/math_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
 framerate_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/framerate_type.h
+settings_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 mixer.h
@@ -7345,6 +7369,8 @@ widgets/dropdown_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_func.h
 widgets/dropdown_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
+widgets/slider_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider_func.h
 widgets/music_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/music_widget.h
 table/strings.h
@@ -7485,6 +7511,8 @@ nerrno.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../../string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+../../string_func_extra.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
 ../../command_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/command_type.h
 packet.h
@@ -7612,6 +7640,8 @@ tcp.h
 ../../core/pool_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
 memory
+-
+chrono
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.cpp
@@ -7949,6 +7979,8 @@ core/tcp_http.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/game/game.hpp
 ../base_media_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
+../openttd.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
 ../sortlist_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
 ../stringfilter_type.h
@@ -8065,6 +8097,8 @@ network_udp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
 ../guitimer_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
+../zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 ../widgets/network_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/network_widget.h
 table/strings.h
@@ -9289,10 +9323,14 @@ core/alloc_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
 string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+table/strings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.h
+vector
+-
 strings_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
 
@@ -9361,6 +9399,8 @@ guitimer_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
 group_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/group_gui.h
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 widgets/news_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/news_widget.h
 table/strings.h
@@ -9465,12 +9505,24 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 command_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/command_func.h
+hotkeys.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/hotkeys.h
 newgrf.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
 newgrf_object.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
 newgrf_text.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
+object.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/object.h
+querystring_gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
+sortlist_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
+stringfilter_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stringfilter_type.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 viewport_func.h
@@ -9639,6 +9691,10 @@ linkgraph/linkgraphschedule.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphschedule.h
 tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
+mutex
+-
+3rdparty/mingw-std-threads/mingw.mutex.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
 stdarg.h
 -
 system_error
@@ -9963,6 +10019,8 @@ signal.h
 -
 SDL.h
 -
+emscripten.h
+-
 sys/mount.h
 -
 sys/statvfs.h
@@ -10015,6 +10073,8 @@ querystring_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
 video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 widgets/osk_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/osk_widget.h
 table/sprites.h
@@ -10041,6 +10101,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/depot_map.h
 ../infrastructure_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
+pathfinder_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pathfinder_func.h
 pf_performance_timer.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pf_performance_timer.hpp
 
@@ -10111,6 +10173,8 @@ queue.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/queue.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pathfinder_func.h
+../tile_cmd.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tile_cmd.h
 ../waypoint_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_base.h
 
@@ -10153,10 +10217,6 @@ queue.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pf_performance_timer.hpp
 yapf.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf.h
-../../misc/blob.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/blob.hpp
-../../misc/str.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/misc/str.hpp
 ../../misc/fixedsizearray.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/fixedsizearray.hpp
 ../../misc/array.hpp
@@ -10203,6 +10263,8 @@ yapf_costcache.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_costrail.hpp
+vector
+-
 ../../pbs.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pbs.h
 ../../tracerestrict.h
@@ -10277,6 +10339,10 @@ yapf_node_ship.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_type.hpp
+iomanip
+-
+sstream
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/pbs.cpp
 stdafx.h
@@ -10481,24 +10547,12 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 progress.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
-chrono
--
-mutex
--
-condition_variable
--
-3rdparty/mingw-std-threads/mingw.mutex.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
-3rdparty/mingw-std-threads/mingw.condition_variable.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
-mutex
--
-3rdparty/mingw-std-threads/mingw.mutex.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
 textbuf_type.h
@@ -10677,6 +10731,14 @@ zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 rail_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
+querystring_gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
+sortlist_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
+stringfilter_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stringfilter_type.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 programmable_signals.h
@@ -11833,6 +11895,8 @@ zlib.h
 -
 lzma.h
 -
+zstd.h
+-
 emscripten.h
 -
 
@@ -12265,6 +12329,8 @@ tile_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tile_map.h
 landscape.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 smallmap_colours.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/smallmap_colours.h
 smallmap_gui.h
@@ -14211,6 +14277,10 @@ vehicle_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_func.h
 scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+viewport_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/viewport_func.h
+gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
 void_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/void_map.h
 station_base.h
@@ -14257,8 +14327,6 @@ town.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/town.h
 settings_internal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_internal.h
-newgrf_townname.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.h
 strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 window_func.h
@@ -14269,6 +14337,8 @@ widgets/dropdown_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
 widgets/dropdown_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_func.h
+widgets/slider_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider_func.h
 highscore.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/highscore.h
 base_media_base.h
@@ -14297,12 +14367,22 @@ fontcache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
+music/music_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/music/music_driver.hpp
 vector
 -
 functional
 -
+iterator
+-
+set
+-
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_gui.h
 gfx_type.h
@@ -14807,6 +14887,8 @@ core/math_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
 core/mem_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
+video/video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
 table/sprites.h
@@ -14827,6 +14909,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
 gfx_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
+spriteloader/spriteloader.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.cpp
 ../stdafx.h
@@ -14837,6 +14921,8 @@ gfx_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
 ../debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+../settings_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
 ../strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 table/strings.h
@@ -14861,6 +14947,8 @@ spriteloader.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
 ../core/alloc_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
+../core/enum_type.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
 ../gfx_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
 
@@ -15049,6 +15137,8 @@ zoning.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoning.h
 tunnelbridge_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_map.h
+cheat_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/cheat_type.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 3rdparty/cpp-btree/btree_set.h
@@ -15263,6 +15353,8 @@ cassert
 -
 memory
 -
+string
+-
 sys/types.h
 -
 types.h
@@ -15277,9 +15369,9 @@ intrin.h
 -
 malloc.h
 -
-tchar.h
--
 io.h
+-
+tchar.h
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/story.cpp
@@ -16319,6 +16411,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+crashlog.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/crashlog.h
 system_error
 -
 thread
@@ -16825,6 +16919,8 @@ newgrf_townname.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.h
 town_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
+string_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
 set
 -
 string
@@ -17735,6 +17831,8 @@ economy_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
 sortlist_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
+vehicle_base.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_base.h
 vehiclelist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.h
 window_gui.h
@@ -17744,6 +17842,8 @@ widgets/dropdown_type.h
 cargo_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
 iterator
+-
+numeric
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
@@ -17801,6 +17901,8 @@ tile_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
 ../thread.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
+../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 dedicated_v.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/dedicated_v.h
 sys/time.h
@@ -17845,6 +17947,8 @@ video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
 ../blitter/factory.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
+../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 null_v.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/null_v.h
 ../safeguards.h
@@ -17854,7 +17958,7 @@ null_v.h
 video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 
-/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.cpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_default_v.cpp
 ../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../openttd.h
@@ -17875,6 +17979,62 @@ video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 ../core/math_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
+../core/mem_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
+../core/geometry_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
+../fileio_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+../framerate_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/framerate_type.h
+../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
+sdl2_default_v.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_default_v.h
+SDL.h
+-
+mutex
+-
+condition_variable
+-
+../3rdparty/mingw-std-threads/mingw.mutex.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
+../3rdparty/mingw-std-threads/mingw.condition_variable.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
+emscripten.h
+-
+emscripten/html5.h
+-
+../safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_default_v.h
+sdl2_v.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.cpp
+../stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+../openttd.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
+../gfx_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
+../rev.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
+../blitter/factory.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
+../thread.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
+../progress.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
+../core/random_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
+../core/math_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
+../core/mem_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
+../core/geometry_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
 ../fileio_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
 ../framerate_type.h
@@ -17885,16 +18045,8 @@ sdl2_v.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.h
 SDL.h
 -
-mutex
--
-condition_variable
--
 algorithm
 -
-../3rdparty/mingw-std-threads/mingw.mutex.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
-../3rdparty/mingw-std-threads/mingw.condition_variable.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
 emscripten.h
 -
 emscripten/html5.h
@@ -17917,6 +18069,36 @@ unistd.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_v.h
+condition_variable
+-
+../3rdparty/mingw-std-threads/mingw.condition_variable.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
+video_driver.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.cpp
+../stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+../core/random_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
+../network/network.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
+../blitter/factory.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
+../debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+../fontcache.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
+../gfx_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
+../gfxinit.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfxinit.h
+../progress.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
+../thread.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
+../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 
@@ -17927,8 +18109,30 @@ video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
 ../core/math_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
+../gfx_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
+../settings_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
+../zoom_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
+atomic
+-
+chrono
+-
+condition_variable
+-
+mutex
+-
+thread
+-
 vector
 -
+../3rdparty/mingw-std-threads/mingw.mutex.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
+../3rdparty/mingw-std-threads/mingw.condition_variable.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
+../3rdparty/mingw-std-threads/mingw.thread.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/viewport.cpp
 stdafx.h
@@ -18025,6 +18229,10 @@ video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
+blitter/32bpp_base.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_base.hpp
 map
 -
 vector
@@ -18533,6 +18741,28 @@ table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/screenshot_widget.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/sign_widget.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider.cpp
+../stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+../window_gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
+../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
+../strings_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
+../zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+slider_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider_func.h
+../safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider_func.h
+../window_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_type.h
+../gfx_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/smallmap_widget.h
 

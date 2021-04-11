@@ -1059,6 +1059,13 @@ public:
 		WID_BB_BACKGROUND                            = ::WID_BB_BACKGROUND,                            ///< Background of the window.
 	};
 
+	/** Widgets of the #BootstrapErrmsgWindow class. */
+	enum BootstrapErrorMessageWidgets {
+		WID_BEM_CAPTION                              = ::WID_BEM_CAPTION,                              ///< Caption of the window.
+		WID_BEM_MESSAGE                              = ::WID_BEM_MESSAGE,                              ///< Error message.
+		WID_BEM_QUIT                                 = ::WID_BEM_QUIT,                                 ///< Quit button.
+	};
+
 	/** Widgets of the #BootstrapContentDownloadStatusWindow class. */
 	enum BootstrapAskForDownloadWidgets {
 		WID_BAFD_QUESTION                            = ::WID_BAFD_QUESTION,                            ///< The question whether to download.
@@ -1444,23 +1451,35 @@ public:
 		WID_GL_MAPSIZE_Y_PULLDOWN                    = ::WID_GL_MAPSIZE_Y_PULLDOWN,                    ///< Dropdown 'map Y size'.
 
 		WID_GL_TOWN_PULLDOWN                         = ::WID_GL_TOWN_PULLDOWN,                         ///< Dropdown 'No. of towns'.
+		WID_GL_TOWNNAME_DROPDOWN                     = ::WID_GL_TOWNNAME_DROPDOWN,                     ///< Dropdown 'Townnames'.
 		WID_GL_INDUSTRY_PULLDOWN                     = ::WID_GL_INDUSTRY_PULLDOWN,                     ///< Dropdown 'No. of industries'.
 
 		WID_GL_GENERATE_BUTTON                       = ::WID_GL_GENERATE_BUTTON,                       ///< 'Generate' button.
 
-		WID_GL_MAX_HEIGHTLEVEL_DOWN                  = ::WID_GL_MAX_HEIGHTLEVEL_DOWN,                  ///< Decrease max. heightlevel
-		WID_GL_MAX_HEIGHTLEVEL_TEXT                  = ::WID_GL_MAX_HEIGHTLEVEL_TEXT,                  ///< Max. heightlevel
-		WID_GL_MAX_HEIGHTLEVEL_UP                    = ::WID_GL_MAX_HEIGHTLEVEL_UP,                    ///< Increase max. heightlevel
+		WID_GL_HEIGHTMAP_HEIGHT_DOWN                 = ::WID_GL_HEIGHTMAP_HEIGHT_DOWN,                 ///< Decrease heightmap highest mountain
+		WID_GL_HEIGHTMAP_HEIGHT_TEXT                 = ::WID_GL_HEIGHTMAP_HEIGHT_TEXT,                 ///< Max. heightmap highest mountain
+		WID_GL_HEIGHTMAP_HEIGHT_UP                   = ::WID_GL_HEIGHTMAP_HEIGHT_UP,                   ///< Increase max. heightmap highest mountain
 
 		WID_GL_START_DATE_DOWN                       = ::WID_GL_START_DATE_DOWN,                       ///< Decrease start year.
 		WID_GL_START_DATE_TEXT                       = ::WID_GL_START_DATE_TEXT,                       ///< Start year.
 		WID_GL_START_DATE_UP                         = ::WID_GL_START_DATE_UP,                         ///< Increase start year.
 
+		WID_GL_SNOW_COVERAGE_DOWN                    = ::WID_GL_SNOW_COVERAGE_DOWN,                    ///< Decrease snow coverage.
+		WID_GL_SNOW_COVERAGE_TEXT                    = ::WID_GL_SNOW_COVERAGE_TEXT,                    ///< Snow coverage.
+		WID_GL_SNOW_COVERAGE_UP                      = ::WID_GL_SNOW_COVERAGE_UP,                      ///< Increase snow coverage.
+
+		WID_GL_DESERT_COVERAGE_DOWN                  = ::WID_GL_DESERT_COVERAGE_DOWN,                  ///< Decrease desert coverage.
+		WID_GL_DESERT_COVERAGE_TEXT                  = ::WID_GL_DESERT_COVERAGE_TEXT,                  ///< Desert coverage.
+		WID_GL_DESERT_COVERAGE_UP                    = ::WID_GL_DESERT_COVERAGE_UP,                    ///< Increase desert coverage.
+
 		WID_GL_SNOW_LEVEL_DOWN                       = ::WID_GL_SNOW_LEVEL_DOWN,                       ///< Decrease snow level.
 		WID_GL_SNOW_LEVEL_TEXT                       = ::WID_GL_SNOW_LEVEL_TEXT,                       ///< Snow level.
 		WID_GL_SNOW_LEVEL_UP                         = ::WID_GL_SNOW_LEVEL_UP,                         ///< Increase snow level.
 
-		WID_GL_TREE_PULLDOWN                         = ::WID_GL_TREE_PULLDOWN,                         ///< Dropdown 'Tree algorithm'.
+		WID_GL_RAINFOREST_LEVEL_DOWN                 = ::WID_GL_RAINFOREST_LEVEL_DOWN,                 ///< Decrease rainforest level.
+		WID_GL_RAINFOREST_LEVEL_TEXT                 = ::WID_GL_RAINFOREST_LEVEL_TEXT,                 ///< Rainforest level.
+		WID_GL_RAINFOREST_LEVEL_UP                   = ::WID_GL_RAINFOREST_LEVEL_UP,                   ///< Increase rainforest level.
+
 		WID_GL_LANDSCAPE_PULLDOWN                    = ::WID_GL_LANDSCAPE_PULLDOWN,                    ///< Dropdown 'Land generator'.
 
 		WID_GL_HEIGHTMAP_NAME_TEXT                   = ::WID_GL_HEIGHTMAP_NAME_TEXT,                   ///< Heightmap name.
@@ -1478,6 +1497,9 @@ public:
 		WID_GL_WATER_NE                              = ::WID_GL_WATER_NE,                              ///< NE 'Water'/'Freeform'.
 		WID_GL_WATER_SE                              = ::WID_GL_WATER_SE,                              ///< SE 'Water'/'Freeform'.
 		WID_GL_WATER_SW                              = ::WID_GL_WATER_SW,                              ///< SW 'Water'/'Freeform'.
+
+		WID_GL_CLIMATE_SEL_LABEL                     = ::WID_GL_CLIMATE_SEL_LABEL,                     ///< NWID_SELECTION for snow or desert coverage label
+		WID_GL_CLIMATE_SEL_SELECTOR                  = ::WID_GL_CLIMATE_SEL_SELECTOR,                  ///< NWID_SELECTION for snow or desert coverage selector
 	};
 
 	/** Widgets of the #CreateScenarioWindow class. */
@@ -1509,6 +1531,9 @@ public:
 	/** Widgets of the #GoalListWindow class. */
 	enum GoalListWidgets {
 		WID_GOAL_CAPTION                             = ::WID_GOAL_CAPTION,                             ///< Caption of the window.
+		WID_GOAL_SELECT_BUTTONS                      = ::WID_GOAL_SELECT_BUTTONS,                      ///< Selection widget for the title bar button.
+		WID_GOAL_GLOBAL_BUTTON                       = ::WID_GOAL_GLOBAL_BUTTON,                       ///< Button to show global goals.
+		WID_GOAL_COMPANY_BUTTON                      = ::WID_GOAL_COMPANY_BUTTON,                      ///< Button to show company goals.
 		WID_GOAL_LIST                                = ::WID_GOAL_LIST,                                ///< Goal list.
 		WID_GOAL_SCROLLBAR                           = ::WID_GOAL_SCROLLBAR,                           ///< Scrollbar of the goal list.
 	};
@@ -1521,6 +1546,7 @@ public:
 		WID_GQ_BUTTON_1                              = ::WID_GQ_BUTTON_1,                              ///< First button.
 		WID_GQ_BUTTON_2                              = ::WID_GQ_BUTTON_2,                              ///< Second button.
 		WID_GQ_BUTTON_3                              = ::WID_GQ_BUTTON_3,                              ///< Third button.
+		WID_GQ_BUTTON_SPACER                         = ::WID_GQ_BUTTON_SPACER,                         ///< Selection to hide extra padding if there are no buttons
 	};
 
 	/* automatically generated from ../../widgets/graph_widget.h */
@@ -1628,6 +1654,9 @@ public:
 	/* automatically generated from ../../widgets/industry_widget.h */
 	/** Widgets of the #BuildIndustryWindow class. */
 	enum DynamicPlaceIndustriesWidgets {
+		WID_DPI_SCENARIO_EDITOR_PANE                 = ::WID_DPI_SCENARIO_EDITOR_PANE,                 ///< Pane containing SE-only widgets.
+		WID_DPI_REMOVE_ALL_INDUSTRIES_WIDGET         = ::WID_DPI_REMOVE_ALL_INDUSTRIES_WIDGET,         ///< Remove all industries button.
+		WID_DPI_CREATE_RANDOM_INDUSTRIES_WIDGET      = ::WID_DPI_CREATE_RANDOM_INDUSTRIES_WIDGET,      ///< Create random industries button.
 		WID_DPI_MATRIX_WIDGET                        = ::WID_DPI_MATRIX_WIDGET,                        ///< Matrix of the industries.
 		WID_DPI_SCROLLBAR                            = ::WID_DPI_SCROLLBAR,                            ///< Scrollbar of the matrix.
 		WID_DPI_INFOPANEL                            = ::WID_DPI_INFOPANEL,                            ///< Info panel about the industry.
@@ -2098,6 +2127,7 @@ public:
 	/* automatically generated from ../../widgets/object_widget.h */
 	/** Widgets of the #BuildObjectWindow class. */
 	enum BuildObjectWidgets {
+		WID_BO_FILTER                                = ::WID_BO_FILTER,                                ///< The filter text box for the object list.
 		WID_BO_CLASS_LIST                            = ::WID_BO_CLASS_LIST,                            ///< The list with classes.
 		WID_BO_SCROLLBAR                             = ::WID_BO_SCROLLBAR,                             ///< The scrollbar associated with the list.
 		WID_BO_OBJECT_MATRIX                         = ::WID_BO_OBJECT_MATRIX,                         ///< The matrix with preview sprites.
@@ -2138,7 +2168,10 @@ public:
 		WID_O_COND_AUX_CARGO                         = ::WID_O_COND_AUX_CARGO,                         ///< Choose condition cargo.
 		WID_O_COND_SLOT                              = ::WID_O_COND_SLOT,                              ///< Choose condition slot.
 		WID_O_COND_COUNTER                           = ::WID_O_COND_COUNTER,                           ///< Choose condition counter.
+		WID_O_COND_TIME_DATE                         = ::WID_O_COND_TIME_DATE,                         ///< Choose time/date value.
+		WID_O_COND_TIMETABLE                         = ::WID_O_COND_TIMETABLE,                         ///< Choose timetable value.
 		WID_O_COND_AUX_VIA                           = ::WID_O_COND_AUX_VIA,                           ///< Condition via button.
+		WID_O_RELEASE_SLOT                           = ::WID_O_RELEASE_SLOT,                           ///< Choose slot to release.
 		WID_O_SEL_COND_VALUE                         = ::WID_O_SEL_COND_VALUE,                         ///< Widget for conditional value or conditional cargo type.
 		WID_O_SEL_COND_AUX                           = ::WID_O_SEL_COND_AUX,                           ///< Widget for auxiliary conditional cargo type.
 		WID_O_SEL_COND_AUX2                          = ::WID_O_SEL_COND_AUX2,                          ///< Widget for auxiliary conditional via button.
@@ -2273,6 +2306,8 @@ public:
 		WID_BRAS_IMAGE                               = ::WID_BRAS_IMAGE,                               ///< Panel used at each cell of the matrix.
 		WID_BRAS_MATRIX_SCROLL                       = ::WID_BRAS_MATRIX_SCROLL,                       ///< Scrollbar of the matrix widget.
 
+		WID_BRAS_FILTER_CONTAINER                    = ::WID_BRAS_FILTER_CONTAINER,                    ///< Container for the filter text box for the station class list.
+		WID_BRAS_FILTER_EDITBOX                      = ::WID_BRAS_FILTER_EDITBOX,                      ///< Filter text box for the station class list.
 		WID_BRAS_SHOW_NEWST_DEFSIZE                  = ::WID_BRAS_SHOW_NEWST_DEFSIZE,                  ///< Selection for default-size button for newstation.
 		WID_BRAS_SHOW_NEWST_ADDITIONS                = ::WID_BRAS_SHOW_NEWST_ADDITIONS,                ///< Selection for newstation class selection list.
 		WID_BRAS_SHOW_NEWST_MATRIX                   = ::WID_BRAS_SHOW_NEWST_MATRIX,                   ///< Selection for newstation image matrix.
@@ -2386,6 +2421,7 @@ public:
 		WID_SC_TAKE_ZOOMIN                           = ::WID_SC_TAKE_ZOOMIN,                           ///< Button for taking a zoomed in screenshot
 		WID_SC_TAKE_DEFAULTZOOM                      = ::WID_SC_TAKE_DEFAULTZOOM,                      ///< Button for taking a screenshot at normal zoom
 		WID_SC_TAKE_WORLD                            = ::WID_SC_TAKE_WORLD,                            ///< Button for taking a screenshot of the whole world
+		WID_SC_TAKE_WORLD_ZOOM                       = ::WID_SC_TAKE_WORLD_ZOOM,                       ///< Button for taking a screenshot of the whole world at the current zoom level
 		WID_SC_TAKE_HEIGHTMAP                        = ::WID_SC_TAKE_HEIGHTMAP,                        ///< Button for taking a heightmap "screenshot"
 		WID_SC_TAKE_MINIMAP                          = ::WID_SC_TAKE_MINIMAP,                          ///< Button for taking a minimap screenshot
 	};
@@ -2396,8 +2432,6 @@ public:
 		WID_GO_BACKGROUND                            = ::WID_GO_BACKGROUND,                            ///< Background of the window.
 		WID_GO_CURRENCY_DROPDOWN                     = ::WID_GO_CURRENCY_DROPDOWN,                     ///< Currency dropdown.
 		WID_GO_DISTANCE_DROPDOWN                     = ::WID_GO_DISTANCE_DROPDOWN,                     ///< Measuring unit dropdown.
-		WID_GO_ROADSIDE_DROPDOWN                     = ::WID_GO_ROADSIDE_DROPDOWN,                     ///< Dropdown to select the road side (to set the right side ;)).
-		WID_GO_TOWNNAME_DROPDOWN                     = ::WID_GO_TOWNNAME_DROPDOWN,                     ///< Town name dropdown.
 		WID_GO_AUTOSAVE_DROPDOWN                     = ::WID_GO_AUTOSAVE_DROPDOWN,                     ///< Dropdown to say how often to autosave.
 		WID_GO_LANG_DROPDOWN                         = ::WID_GO_LANG_DROPDOWN,                         ///< Language dropdown.
 		WID_GO_RESOLUTION_DROPDOWN                   = ::WID_GO_RESOLUTION_DROPDOWN,                   ///< Dropdown for the resolution.
@@ -2408,13 +2442,17 @@ public:
 		WID_GO_BASE_GRF_TEXTFILE                     = ::WID_GO_BASE_GRF_TEXTFILE,                     ///< Open base GRF readme, changelog (+1) or license (+2).
 		WID_GO_BASE_GRF_DESCRIPTION                  = ::WID_GO_BASE_GRF_DESCRIPTION,                  ///< Description of selected base GRF.
 		WID_GO_BASE_SFX_DROPDOWN                     = ::WID_GO_BASE_SFX_DROPDOWN,                     ///< Use to select a base SFX.
+		WID_GO_BASE_SFX_VOLUME                       = ::WID_GO_BASE_SFX_VOLUME,                       ///< Change sound effects volume.
 		WID_GO_BASE_SFX_TEXTFILE                     = ::WID_GO_BASE_SFX_TEXTFILE,                     ///< Open base SFX readme, changelog (+1) or license (+2).
 		WID_GO_BASE_SFX_DESCRIPTION                  = ::WID_GO_BASE_SFX_DESCRIPTION,                  ///< Description of selected base SFX.
 		WID_GO_BASE_MUSIC_DROPDOWN                   = ::WID_GO_BASE_MUSIC_DROPDOWN,                   ///< Use to select a base music set.
+		WID_GO_BASE_MUSIC_VOLUME                     = ::WID_GO_BASE_MUSIC_VOLUME,                     ///< Change music volume.
 		WID_GO_BASE_MUSIC_STATUS                     = ::WID_GO_BASE_MUSIC_STATUS,                     ///< Info about corrupted files etc.
 		WID_GO_BASE_MUSIC_TEXTFILE                   = ::WID_GO_BASE_MUSIC_TEXTFILE,                   ///< Open base music readme, changelog (+1) or license (+2).
 		WID_GO_BASE_MUSIC_DESCRIPTION                = ::WID_GO_BASE_MUSIC_DESCRIPTION,                ///< Description of selected base music set.
 		WID_GO_FONT_ZOOM_DROPDOWN                    = ::WID_GO_FONT_ZOOM_DROPDOWN,                    ///< Dropdown for the font zoom level.
+		WID_GO_VIDEO_ACCEL_BUTTON                    = ::WID_GO_VIDEO_ACCEL_BUTTON,                    ///< Toggle for video acceleration.
+		WID_GO_REFRESH_RATE_DROPDOWN                 = ::WID_GO_REFRESH_RATE_DROPDOWN,                 ///< Dropdown for all available refresh rates.
 	};
 
 	/** Widgets of the #GameSettingsWindow class. */
@@ -2425,6 +2463,7 @@ public:
 		WID_GS_HELP_TEXT                             = ::WID_GS_HELP_TEXT,                             ///< Information area to display help text of the selected option.
 		WID_GS_EXPAND_ALL                            = ::WID_GS_EXPAND_ALL,                            ///< Expand all button.
 		WID_GS_COLLAPSE_ALL                          = ::WID_GS_COLLAPSE_ALL,                          ///< Collapse all button.
+		WID_GS_RESET_ALL                             = ::WID_GS_RESET_ALL,                             ///< Reset all button.
 		WID_GS_RESTRICT_CATEGORY                     = ::WID_GS_RESTRICT_CATEGORY,                     ///< Label upfront to the category drop-down box to restrict the list of settings to show
 		WID_GS_RESTRICT_TYPE                         = ::WID_GS_RESTRICT_TYPE,                         ///< Label upfront to the type drop-down box to restrict the list of settings to show
 		WID_GS_RESTRICT_DROPDOWN                     = ::WID_GS_RESTRICT_DROPDOWN,                     ///< The drop down box to restrict the list of settings

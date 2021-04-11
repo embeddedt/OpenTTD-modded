@@ -33,11 +33,11 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xRuntimex" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/__w/OpenTTD-modded/OpenTTD-modded/em_build/openttd.html")
-  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/openttd.html" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/openttd.html")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/games" TYPE EXECUTABLE FILES "/__w/OpenTTD-modded/OpenTTD-modded/em_build/openttd.html")
+  if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/games/openttd.html" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/games/openttd.html")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/openttd.html")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/games/openttd.html")
     endif()
   endif()
 endif()
@@ -46,8 +46,8 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xlanguage_filesx" OR NOT CMAKE_INSTA
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/games/openttd" TYPE DIRECTORY FILES
     "/__w/OpenTTD-modded/OpenTTD-modded/em_build/lang"
     "/__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset"
-    "/__w/OpenTTD-modded/OpenTTD-modded/bin/ai"
-    "/__w/OpenTTD-modded/OpenTTD-modded/bin/game"
+    "/__w/OpenTTD-modded/OpenTTD-modded/em_build/ai"
+    "/__w/OpenTTD-modded/OpenTTD-modded/em_build/game"
     "/__w/OpenTTD-modded/OpenTTD-modded/bin/scripts"
     )
 endif()
@@ -74,11 +74,22 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xmanualx" OR NOT CMAKE_INSTALL_COMPO
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/man/man6" TYPE FILE FILES "/__w/OpenTTD-modded/OpenTTD-modded/em_build/docs/openttd.6.gz")
 endif()
 
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xmediax" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share" TYPE DIRECTORY FILES
+    "/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/icons"
+    "/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/pixmaps"
+    )
+endif()
+
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xmenux" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications" TYPE FILE FILES "/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/openttd.desktop")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/bin/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/cmake_install.cmake")
 
 endif()
 

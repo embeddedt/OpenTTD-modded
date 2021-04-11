@@ -8,6 +8,6 @@ add_test(regression_regression "/usr/bin/cmake" "-DOPENTTD_EXECUTABLE=/__w/OpenT
 set_tests_properties(regression_regression PROPERTIES  WORKING_DIRECTORY "/__w/OpenTTD-modded/OpenTTD-modded/em_build")
 add_test(regression_stationlist "/usr/bin/cmake" "-DOPENTTD_EXECUTABLE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/openttd.html" "-DEDITBIN_EXECUTABLE=" "-DREGRESSION_TEST=stationlist" "-P" "/__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/Regression.cmake")
 set_tests_properties(regression_stationlist PROPERTIES  WORKING_DIRECTORY "/__w/OpenTTD-modded/OpenTTD-modded/em_build")
-subdirs("src")
-subdirs("media/baseset")
 subdirs("bin")
+subdirs("src")
+subdirs("media")

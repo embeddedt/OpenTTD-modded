@@ -36,6 +36,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/md5/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/squirrel/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/opengl/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/os2/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/cpp-btree/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/mingw-std-threads/cmake_install.cmake")

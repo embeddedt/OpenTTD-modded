@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/language_files"
+  "../../lang/english.lng"
   "../../lang/afrikaans.lng"
   "../../lang/arabic_egypt.lng"
   "../../lang/basque.lng"
@@ -11,7 +12,6 @@ file(REMOVE_RECURSE
   "../../lang/czech.lng"
   "../../lang/danish.lng"
   "../../lang/dutch.lng"
-  "../../lang/english.lng"
   "../../lang/english_AU.lng"
   "../../lang/english_US.lng"
   "../../lang/esperanto.lng"

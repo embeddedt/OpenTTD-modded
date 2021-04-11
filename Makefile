@@ -68,28 +68,59 @@ install/strip/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target test
-test:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
-	/usr/bin/ctest --force-new-ctest-process $(ARGS)
-.PHONY : test
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Runtime\" \"docs\" \"language_files\" \"manual\" \"media\" \"menu\""
+.PHONY : list_install_components
 
-# Special rule for the target test
-test/fast: test
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
 
-.PHONY : test/fast
+.PHONY : list_install_components/fast
 
-# Special rule for the target install/local
-install/local: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
 
-# Special rule for the target install/local
-install/local/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
-	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
-.PHONY : install/local/fast
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
+
+# Special rule for the target package_source
+package_source:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
+	/usr/bin/cpack --config ./CPackSourceConfig.cmake /__w/OpenTTD-modded/OpenTTD-modded/em_build/CPackSourceConfig.cmake
+.PHONY : package_source
+
+# Special rule for the target package_source
+package_source/fast: package_source
+
+.PHONY : package_source/fast
+
+# Special rule for the target package
+package: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
+	/usr/bin/cpack --config ./CPackConfig.cmake
+.PHONY : package
+
+# Special rule for the target package
+package/fast: package
+
+.PHONY : package/fast
 
 # Special rule for the target install
 install: preinstall
@@ -103,59 +134,28 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target package
-package: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	/usr/bin/cpack --config ./CPackConfig.cmake
-.PHONY : package
+# Special rule for the target install/local
+install/local: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local
 
-# Special rule for the target package
-package/fast: package
+# Special rule for the target install/local
+install/local/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
+	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
+.PHONY : install/local/fast
 
-.PHONY : package/fast
+# Special rule for the target test
+test:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
+	/usr/bin/ctest --force-new-ctest-process $(ARGS)
+.PHONY : test
 
-# Special rule for the target package_source
-package_source:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	/usr/bin/cpack --config ./CPackSourceConfig.cmake /__w/OpenTTD-modded/OpenTTD-modded/em_build/CPackSourceConfig.cmake
-.PHONY : package_source
+# Special rule for the target test
+test/fast: test
 
-# Special rule for the target package_source
-package_source/fast: package_source
-
-.PHONY : package_source/fast
-
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
-
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
-
-.PHONY : edit_cache/fast
-
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Runtime\" \"docs\" \"language_files\" \"manual\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
+.PHONY : test/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -190,45 +190,6 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named regression_stationlist
-
-# Build rule for target.
-regression_stationlist: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 regression_stationlist
-.PHONY : regression_stationlist
-
-# fast build rule for target.
-regression_stationlist/fast:
-	$(MAKE) -f CMakeFiles/regression_stationlist.dir/build.make CMakeFiles/regression_stationlist.dir/build
-.PHONY : regression_stationlist/fast
-
-#=============================================================================
-# Target rules for targets named regression_files
-
-# Build rule for target.
-regression_files: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 regression_files
-.PHONY : regression_files
-
-# fast build rule for target.
-regression_files/fast:
-	$(MAKE) -f CMakeFiles/regression_files.dir/build.make CMakeFiles/regression_files.dir/build
-.PHONY : regression_files/fast
-
-#=============================================================================
-# Target rules for targets named host_tools
-
-# Build rule for target.
-host_tools: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 host_tools
-.PHONY : host_tools
-
-# fast build rule for target.
-host_tools/fast:
-	$(MAKE) -f CMakeFiles/host_tools.dir/build.make CMakeFiles/host_tools.dir/build
-.PHONY : host_tools/fast
-
-#=============================================================================
 # Target rules for targets named openttd
 
 # Build rule for target.
@@ -255,17 +216,43 @@ tools/fast:
 .PHONY : tools/fast
 
 #=============================================================================
-# Target rules for targets named regression
+# Target rules for targets named regression_files
 
 # Build rule for target.
-regression: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 regression
-.PHONY : regression
+regression_files: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 regression_files
+.PHONY : regression_files
 
 # fast build rule for target.
-regression/fast:
-	$(MAKE) -f CMakeFiles/regression.dir/build.make CMakeFiles/regression.dir/build
-.PHONY : regression/fast
+regression_files/fast:
+	$(MAKE) -f CMakeFiles/regression_files.dir/build.make CMakeFiles/regression_files.dir/build
+.PHONY : regression_files/fast
+
+#=============================================================================
+# Target rules for targets named regression_regression
+
+# Build rule for target.
+regression_regression: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 regression_regression
+.PHONY : regression_regression
+
+# fast build rule for target.
+regression_regression/fast:
+	$(MAKE) -f CMakeFiles/regression_regression.dir/build.make CMakeFiles/regression_regression.dir/build
+.PHONY : regression_regression/fast
+
+#=============================================================================
+# Target rules for targets named regression_stationlist
+
+# Build rule for target.
+regression_stationlist: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 regression_stationlist
+.PHONY : regression_stationlist
+
+# fast build rule for target.
+regression_stationlist/fast:
+	$(MAKE) -f CMakeFiles/regression_stationlist.dir/build.make CMakeFiles/regression_stationlist.dir/build
+.PHONY : regression_stationlist/fast
 
 #=============================================================================
 # Target rules for targets named find_version
@@ -281,17 +268,30 @@ find_version/fast:
 .PHONY : find_version/fast
 
 #=============================================================================
-# Target rules for targets named regression_regression
+# Target rules for targets named regression
 
 # Build rule for target.
-regression_regression: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 regression_regression
-.PHONY : regression_regression
+regression: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 regression
+.PHONY : regression
 
 # fast build rule for target.
-regression_regression/fast:
-	$(MAKE) -f CMakeFiles/regression_regression.dir/build.make CMakeFiles/regression_regression.dir/build
-.PHONY : regression_regression/fast
+regression/fast:
+	$(MAKE) -f CMakeFiles/regression.dir/build.make CMakeFiles/regression.dir/build
+.PHONY : regression/fast
+
+#=============================================================================
+# Target rules for targets named binfiles_files
+
+# Build rule for target.
+binfiles_files: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 binfiles_files
+.PHONY : binfiles_files
+
+# fast build rule for target.
+binfiles_files/fast:
+	$(MAKE) -f bin/CMakeFiles/binfiles_files.dir/build.make bin/CMakeFiles/binfiles_files.dir/build
+.PHONY : binfiles_files/fast
 
 #=============================================================================
 # Target rules for targets named script_window
@@ -411,6 +411,32 @@ table_settings/fast:
 .PHONY : table_settings/fast
 
 #=============================================================================
+# Target rules for targets named media_files
+
+# Build rule for target.
+media_files: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 media_files
+.PHONY : media_files
+
+# fast build rule for target.
+media_files/fast:
+	$(MAKE) -f media/CMakeFiles/media_files.dir/build.make media/CMakeFiles/media_files.dir/build
+.PHONY : media_files/fast
+
+#=============================================================================
+# Target rules for targets named desktop_file
+
+# Build rule for target.
+desktop_file: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 desktop_file
+.PHONY : desktop_file
+
+# fast build rule for target.
+desktop_file/fast:
+	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/build
+.PHONY : desktop_file/fast
+
+#=============================================================================
 # Target rules for targets named baseset_files
 
 # Build rule for target.
@@ -422,19 +448,6 @@ baseset_files: cmake_check_build_system
 baseset_files/fast:
 	$(MAKE) -f media/baseset/CMakeFiles/baseset_files.dir/build.make media/baseset/CMakeFiles/baseset_files.dir/build
 .PHONY : baseset_files/fast
-
-#=============================================================================
-# Target rules for targets named binfiles_files
-
-# Build rule for target.
-binfiles_files: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 binfiles_files
-.PHONY : binfiles_files
-
-# fast build rule for target.
-binfiles_files/fast:
-	$(MAKE) -f bin/CMakeFiles/binfiles_files.dir/build.make bin/CMakeFiles/binfiles_files.dir/build
-.PHONY : binfiles_files/fast
 
 generated/rev.o: generated/rev.cpp.o
 
@@ -2838,33 +2851,6 @@ src/fontcache.s: src/fontcache.cpp.s
 src/fontcache.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache.cpp.s
 .PHONY : src/fontcache.cpp.s
-
-src/fontdetection.o: src/fontdetection.cpp.o
-
-.PHONY : src/fontdetection.o
-
-# target to build an object file
-src/fontdetection.cpp.o:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontdetection.cpp.o
-.PHONY : src/fontdetection.cpp.o
-
-src/fontdetection.i: src/fontdetection.cpp.i
-
-.PHONY : src/fontdetection.i
-
-# target to preprocess a source file
-src/fontdetection.cpp.i:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontdetection.cpp.i
-.PHONY : src/fontdetection.cpp.i
-
-src/fontdetection.s: src/fontdetection.cpp.s
-
-.PHONY : src/fontdetection.s
-
-# target to generate assembly for a file
-src/fontdetection.cpp.s:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontdetection.cpp.s
-.PHONY : src/fontdetection.cpp.s
 
 src/framerate_gui.o: src/framerate_gui.cpp.o
 
@@ -11452,6 +11438,33 @@ src/video/null_v.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/null_v.cpp.s
 .PHONY : src/video/null_v.cpp.s
 
+src/video/sdl2_default_v.o: src/video/sdl2_default_v.cpp.o
+
+.PHONY : src/video/sdl2_default_v.o
+
+# target to build an object file
+src/video/sdl2_default_v.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o
+.PHONY : src/video/sdl2_default_v.cpp.o
+
+src/video/sdl2_default_v.i: src/video/sdl2_default_v.cpp.i
+
+.PHONY : src/video/sdl2_default_v.i
+
+# target to preprocess a source file
+src/video/sdl2_default_v.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.i
+.PHONY : src/video/sdl2_default_v.cpp.i
+
+src/video/sdl2_default_v.s: src/video/sdl2_default_v.cpp.s
+
+.PHONY : src/video/sdl2_default_v.s
+
+# target to generate assembly for a file
+src/video/sdl2_default_v.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.s
+.PHONY : src/video/sdl2_default_v.cpp.s
+
 src/video/sdl2_v.o: src/video/sdl2_v.cpp.o
 
 .PHONY : src/video/sdl2_v.o
@@ -11478,6 +11491,33 @@ src/video/sdl2_v.s: src/video/sdl2_v.cpp.s
 src/video/sdl2_v.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.s
 .PHONY : src/video/sdl2_v.cpp.s
+
+src/video/video_driver.o: src/video/video_driver.cpp.o
+
+.PHONY : src/video/video_driver.o
+
+# target to build an object file
+src/video/video_driver.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/video_driver.cpp.o
+.PHONY : src/video/video_driver.cpp.o
+
+src/video/video_driver.i: src/video/video_driver.cpp.i
+
+.PHONY : src/video/video_driver.i
+
+# target to preprocess a source file
+src/video/video_driver.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/video_driver.cpp.i
+.PHONY : src/video/video_driver.cpp.i
+
+src/video/video_driver.s: src/video/video_driver.cpp.s
+
+.PHONY : src/video/video_driver.s
+
+# target to generate assembly for a file
+src/video/video_driver.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/video/video_driver.cpp.s
+.PHONY : src/video/video_driver.cpp.s
 
 src/viewport.o: src/viewport.cpp.o
 
@@ -11722,6 +11762,33 @@ src/widgets/dropdown.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.s
 .PHONY : src/widgets/dropdown.cpp.s
 
+src/widgets/slider.o: src/widgets/slider.cpp.o
+
+.PHONY : src/widgets/slider.o
+
+# target to build an object file
+src/widgets/slider.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/widgets/slider.cpp.o
+.PHONY : src/widgets/slider.cpp.o
+
+src/widgets/slider.i: src/widgets/slider.cpp.i
+
+.PHONY : src/widgets/slider.i
+
+# target to preprocess a source file
+src/widgets/slider.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/widgets/slider.cpp.i
+.PHONY : src/widgets/slider.cpp.i
+
+src/widgets/slider.s: src/widgets/slider.cpp.s
+
+.PHONY : src/widgets/slider.s
+
+# target to generate assembly for a file
+src/widgets/slider.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/widgets/slider.cpp.s
+.PHONY : src/widgets/slider.cpp.s
+
 src/window.o: src/window.cpp.o
 
 .PHONY : src/window.o
@@ -11810,22 +11877,22 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
-	@echo "... regression_stationlist"
-	@echo "... test"
-	@echo "... install/local"
-	@echo "... install"
-	@echo "... regression_files"
-	@echo "... host_tools"
-	@echo "... openttd"
-	@echo "... tools"
-	@echo "... package"
-	@echo "... regression"
-	@echo "... find_version"
-	@echo "... package_source"
-	@echo "... regression_regression"
-	@echo "... edit_cache"
-	@echo "... rebuild_cache"
 	@echo "... list_install_components"
+	@echo "... rebuild_cache"
+	@echo "... edit_cache"
+	@echo "... package_source"
+	@echo "... openttd"
+	@echo "... package"
+	@echo "... tools"
+	@echo "... regression_files"
+	@echo "... install"
+	@echo "... regression_regression"
+	@echo "... install/local"
+	@echo "... test"
+	@echo "... regression_stationlist"
+	@echo "... find_version"
+	@echo "... regression"
+	@echo "... binfiles_files"
 	@echo "... script_window"
 	@echo "... script_game_includes"
 	@echo "... script_ai_includes"
@@ -11835,8 +11902,9 @@ help:
 	@echo "... language_files"
 	@echo "... table_strings"
 	@echo "... table_settings"
+	@echo "... media_files"
+	@echo "... desktop_file"
 	@echo "... baseset_files"
-	@echo "... binfiles_files"
 	@echo "... generated/rev.o"
 	@echo "... generated/rev.i"
 	@echo "... generated/rev.s"
@@ -12104,9 +12172,6 @@ help:
 	@echo "... src/fontcache.o"
 	@echo "... src/fontcache.i"
 	@echo "... src/fontcache.s"
-	@echo "... src/fontdetection.o"
-	@echo "... src/fontdetection.i"
-	@echo "... src/fontdetection.s"
 	@echo "... src/framerate_gui.o"
 	@echo "... src/framerate_gui.i"
 	@echo "... src/framerate_gui.s"
@@ -13061,9 +13126,15 @@ help:
 	@echo "... src/video/null_v.o"
 	@echo "... src/video/null_v.i"
 	@echo "... src/video/null_v.s"
+	@echo "... src/video/sdl2_default_v.o"
+	@echo "... src/video/sdl2_default_v.i"
+	@echo "... src/video/sdl2_default_v.s"
 	@echo "... src/video/sdl2_v.o"
 	@echo "... src/video/sdl2_v.i"
 	@echo "... src/video/sdl2_v.s"
+	@echo "... src/video/video_driver.o"
+	@echo "... src/video/video_driver.i"
+	@echo "... src/video/video_driver.s"
 	@echo "... src/viewport.o"
 	@echo "... src/viewport.i"
 	@echo "... src/viewport.s"
@@ -13091,6 +13162,9 @@ help:
 	@echo "... src/widgets/dropdown.o"
 	@echo "... src/widgets/dropdown.i"
 	@echo "... src/widgets/dropdown.s"
+	@echo "... src/widgets/slider.o"
+	@echo "... src/widgets/slider.i"
+	@echo "... src/widgets/slider.s"
 	@echo "... src/window.o"
 	@echo "... src/window.i"
 	@echo "... src/window.s"

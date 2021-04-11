@@ -1051,6 +1051,11 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_default_v.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/video/sdl2_default_v.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/dedicated_v.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/video/dedicated_v.cpp"
 },
@@ -1061,8 +1066,18 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/video/video_driver.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/widgets/dropdown.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/widgets/slider.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/slider.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -1328,11 +1343,6 @@
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/fontcache.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.cpp"
-},
-{
-  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
-  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/fontdetection.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.cpp",
-  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/fontdetection.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
