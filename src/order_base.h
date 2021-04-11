@@ -168,6 +168,7 @@ public:
 	void MakeImplicit(StationID destination);
 	void MakeWaiting();
 	void MakeLoadingAdvance(StationID destination);
+	void MakeReleaseSlot();
 
 	/**
 	 * Is this a 'goto' order with a real destination?
@@ -189,7 +190,7 @@ public:
 
 	/**
 	 * Gets the destination of this order.
-	 * @pre IsType(OT_GOTO_WAYPOINT) || IsType(OT_GOTO_DEPOT) || IsType(OT_GOTO_STATION).
+	 * @pre IsType(OT_GOTO_WAYPOINT) || IsType(OT_GOTO_DEPOT) || IsType(OT_GOTO_STATION) || IsType(OT_RELEASE_SLOT).
 	 * @return the destination of the order.
 	 */
 	inline DestinationID GetDestination() const { return this->dest; }
@@ -197,7 +198,7 @@ public:
 	/**
 	 * Sets the destination of this order.
 	 * @param destination the new destination of the order.
-	 * @pre IsType(OT_GOTO_WAYPOINT) || IsType(OT_GOTO_DEPOT) || IsType(OT_GOTO_STATION).
+	 * @pre IsType(OT_GOTO_WAYPOINT) || IsType(OT_GOTO_DEPOT) || IsType(OT_GOTO_STATION) || IsType(OT_RELEASE_SLOT).
 	 */
 	inline void SetDestination(DestinationID destination) { this->dest = destination; }
 
@@ -494,6 +495,7 @@ public:
 	 */
 	inline void SetOccupancy(uint8 occupancy) { this->occupancy = occupancy; }
 
+	bool ShouldStopAtStation(StationID last_station_visited, StationID station, bool waypoint) const;
 	bool ShouldStopAtStation(const Vehicle *v, StationID station, bool waypoint) const;
 	bool CanLeaveWithCargo(bool has_cargo, CargoID cargo) const;
 

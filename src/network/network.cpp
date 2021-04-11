@@ -76,6 +76,9 @@ uint32 _sync_seed_2;                  ///< Second part of the seed.
 #endif
 uint64 _sync_state_checksum;          ///< State checksum to compare during sync checks.
 uint32 _sync_frame;                   ///< The frame to perform the sync check.
+Date   _last_sync_date;               ///< The game date of the last successfully received sync frame
+DateFract _last_sync_date_fract;      ///< "
+uint8  _last_sync_tick_skip_counter;  ///< "
 bool _network_first_time;             ///< Whether we have finished joining or not.
 bool _network_udp_server;             ///< Is the UDP server started?
 uint16 _network_udp_broadcast;        ///< Timeout for the UDP broadcasts.
@@ -582,6 +585,10 @@ static void NetworkInitialize(bool close_admins = true)
 	_network_first_time = true;
 
 	_network_reconnect = 0;
+
+	_last_sync_date = 0;
+	_last_sync_date_fract = 0;
+	_last_sync_tick_skip_counter = 0;
 }
 
 /** Non blocking connection create to query servers */
@@ -946,7 +953,7 @@ void NetworkGameLoop()
 				cp->text.resize(MAX_CMD_TEXT_LENGTH);
 				static_assert(MAX_CMD_TEXT_LENGTH > 8192);
 				int ret = sscanf(p, "date{%x; %x; %x}; company: %x; tile: %x (%*u x %*u); p1: %x; p2: %x; p3: " OTTD_PRINTFHEX64 "; cmd: %x; \"%8192[^\"]\"",
-						&next_date, &next_date_fract, &next_tick_skip_counter, &company, &cp->tile, &cp->p1, &cp->p2, &cp->p3, &cp->cmd, const_cast<char *>(cp->text.c_str()));
+						&next_date, &next_date_fract, &next_tick_skip_counter, &company, &cp->tile, &cp->p1, &cp->p2, &cp->p3, &cp->cmd, cp->text.data());
 				/* There are 10 pieces of data to read, however the last is a
 				 * string that might or might not exist. Ignore it if that
 				 * string misses because in 99% of the time it's not used. */

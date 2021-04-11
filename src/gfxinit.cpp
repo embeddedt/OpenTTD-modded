@@ -309,11 +309,13 @@ static bool SwitchNewGRFBlitter()
 	 * between multiple 32bpp blitters, which perform differently with 8bpp sprites.
 	 */
 	uint depth_wanted_by_base = BaseGraphics::GetUsedSet()->blitter == BLT_32BPP ? 32 : 8;
-	uint depth_wanted_by_grf = _support8bpp == S8BPP_NONE ? 32 : 8;
+	uint depth_wanted_by_grf = _support8bpp != S8BPP_NONE ? 8 : 32;
 	for (GRFConfig *c = _grfconfig; c != nullptr; c = c->next) {
 		if (c->status == GCS_DISABLED || c->status == GCS_NOT_FOUND || HasBit(c->flags, GCF_INIT_ONLY)) continue;
 		if (c->palette & GRFP_BLT_32BPP) depth_wanted_by_grf = 32;
 	}
+	/* We need a 32bpp blitter for font anti-alias. */
+	if (HasAntialiasedFonts()) depth_wanted_by_grf = 32;
 
 	/* Search the best blitter. */
 	static const struct {
@@ -321,13 +323,14 @@ static bool SwitchNewGRFBlitter()
 		uint animation; ///< 0: no support, 1: do support, 2: both
 		uint min_base_depth, max_base_depth, min_grf_depth, max_grf_depth;
 	} replacement_blitters[] = {
+		{ "8bpp-optimized",  2,  8,  8,  8,  8 },
+		{ "40bpp-anim",      2,  8, 32,  8, 32 },
 #ifdef WITH_SSE
 		{ "32bpp-sse4",      0, 32, 32,  8, 32 },
 		{ "32bpp-ssse3",     0, 32, 32,  8, 32 },
 		{ "32bpp-sse2",      0, 32, 32,  8, 32 },
 		{ "32bpp-sse4-anim", 1, 32, 32,  8, 32 },
 #endif
-		{ "8bpp-optimized",  2,  8,  8,  8,  8 },
 		{ "32bpp-optimized", 0,  8, 32,  8, 32 },
 #ifdef WITH_SSE
 		{ "32bpp-sse2-anim", 1,  8, 32,  8, 32 },
@@ -338,11 +341,6 @@ static bool SwitchNewGRFBlitter()
 	const bool animation_wanted = HasBit(_display_opt, DO_FULL_ANIMATION);
 	const char *cur_blitter = BlitterFactory::GetCurrentBlitter()->GetName();
 
-	VideoDriver::GetInstance()->AcquireBlitterLock();
-	auto guard = scope_guard([&]() {
-		VideoDriver::GetInstance()->ReleaseBlitterLock();
-	});
-
 	for (uint i = 0; i < lengthof(replacement_blitters); i++) {
 		if (animation_wanted && (replacement_blitters[i].animation == 0)) continue;
 		if (!animation_wanted && (replacement_blitters[i].animation == 1)) continue;
@@ -351,19 +349,14 @@ static bool SwitchNewGRFBlitter()
 		if (!IsInsideMM(depth_wanted_by_grf, replacement_blitters[i].min_grf_depth, replacement_blitters[i].max_grf_depth + 1)) continue;
 		const char *repl_blitter = replacement_blitters[i].name;
 
-		if (strcmp(repl_blitter, cur_blitter) == 0) return false;
+		if (strcmp(repl_blitter, cur_blitter) == 0) {
+			return false;
+		}
 		if (BlitterFactory::GetBlitterFactory(repl_blitter) == nullptr) continue;
 
-		DEBUG(misc, 1, "Switching blitter from '%s' to '%s'... ", cur_blitter, repl_blitter);
-		Blitter *new_blitter = BlitterFactory::SelectBlitter(repl_blitter);
-		if (new_blitter == nullptr) NOT_REACHED();
-		DEBUG(misc, 1, "Successfully switched to %s.", repl_blitter);
+		/* Inform the video driver we want to switch blitter as soon as possible. */
+		VideoDriver::GetInstance()->ChangeBlitter(repl_blitter);
 		break;
-	}
-
-	if (!VideoDriver::GetInstance()->AfterBlitterChange()) {
-		/* Failed to switch blitter, let's hope we can return to the old one. */
-		if (BlitterFactory::SelectBlitter(cur_blitter) == nullptr || !VideoDriver::GetInstance()->AfterBlitterChange()) usererror("Failed to reinitialize video driver. Specify a fixed blitter in the config");
 	}
 
 	return true;
@@ -428,6 +421,7 @@ static SpriteID GetSpriteIDForClearGround(const ClearGround cg, const Slope slop
 /** Once the sprites are loaded, we can determine main colours of ground/water/... */
 void GfxDetermineMainColours()
 {
+#if !defined(DEDICATED)
 	/* Water. */
 	extern uint32 _vp_map_water_colour[5];
 	_vp_map_water_colour[0] = GetSpriteMainColour(SPR_FLAT_WATER_TILE, PAL_NONE);
@@ -461,19 +455,33 @@ void GfxDetermineMainColours()
 	}
 
 	/* Trees. */
-	extern uint32 _vp_map_vegetation_tree_colours[5][MAX_TREE_COUNT_BY_LANDSCAPE];
+	extern uint32 _vp_map_vegetation_tree_colours[16][5][MAX_TREE_COUNT_BY_LANDSCAPE];
 	const uint base  = _tree_base_by_landscape[_settings_game.game_creation.landscape];
 	const uint count = _tree_count_by_landscape[_settings_game.game_creation.landscape];
 	for (uint tg = 0; tg < 5; tg++) {
 		for (uint i = base; i < base + count; i++) {
-			_vp_map_vegetation_tree_colours[tg][i - base] = GetSpriteMainColour(_tree_sprites[i].sprite, _tree_sprites[i].pal);
+			_vp_map_vegetation_tree_colours[0][tg][i - base] = GetSpriteMainColour(_tree_sprites[i].sprite, _tree_sprites[i].pal);
 		}
 		const int diff = MAX_TREE_COUNT_BY_LANDSCAPE - count;
 		if (diff > 0) {
 			for (uint i = count; i < MAX_TREE_COUNT_BY_LANDSCAPE; i++)
-				_vp_map_vegetation_tree_colours[tg][i] = _vp_map_vegetation_tree_colours[tg][i - count];
+				_vp_map_vegetation_tree_colours[0][tg][i] = _vp_map_vegetation_tree_colours[0][tg][i - count];
 		}
 	}
+	for (int s = 1; s <= SLOPE_ELEVATED; ++s) {
+		extern int GetSlopeTreeBrightnessAdjust(Slope slope);
+		int brightness_adjust = (BlitterFactory::GetCurrentBlitter()->GetScreenDepth() == 32) ? GetSlopeTreeBrightnessAdjust((Slope)s) * 2 : 0;
+		if (brightness_adjust != 0) {
+			for (uint tg = 0; tg < 5; tg++) {
+				for (uint i = 0; i < MAX_TREE_COUNT_BY_LANDSCAPE; i++) {
+					_vp_map_vegetation_tree_colours[s][tg][i] = Blitter_32bppBase::AdjustBrightness(Colour(_vp_map_vegetation_tree_colours[0][tg][i]), Blitter_32bppBase::DEFAULT_BRIGHTNESS + brightness_adjust).data;
+				}
+			}
+		} else {
+			memcpy(&(_vp_map_vegetation_tree_colours[s]), &(_vp_map_vegetation_tree_colours[0]), sizeof(_vp_map_vegetation_tree_colours[0]));
+		}
+	}
+#endif /* !DEDICATED */
 }
 
 /** Initialise and load all the sprites. */
@@ -484,6 +492,7 @@ void GfxLoadSprites()
 	_grf_bug_too_many_strings = false;
 
 	SwitchNewGRFBlitter();
+	VideoDriver::GetInstance()->ClearSystemSprites();
 	ClearFontCache();
 	GfxInitSpriteMem();
 	LoadSpriteTables();

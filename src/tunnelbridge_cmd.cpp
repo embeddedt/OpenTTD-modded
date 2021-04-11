@@ -730,11 +730,16 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 					if (is_upgrade) {
 						RoadBits road_bits = GetCustomBridgeHeadRoadBits(t, RTT_ROAD);
 						RoadBits tram_bits = GetCustomBridgeHeadRoadBits(t, RTT_TRAM);
-						if (RoadTypeIsRoad(roadtype)) road_bits |= DiagDirToRoadBits(d);
-						if (RoadTypeIsTram(roadtype)) tram_bits |= DiagDirToRoadBits(d);
 						MakeRoadBridgeRamp(t, owner, owner_road, owner_tram, bridge_type, d, road_rt, tram_rt);
-						if (road_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_ROAD, road_bits);
-						if (tram_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, RTT_TRAM, tram_bits);
+						auto add_road_bits = [roadtype, d, t](RoadTramType rtt, RoadBits bits, RoadType build_rt) {
+							if (GetRoadTramType(roadtype) == rtt) {
+								bits |= DiagDirToRoadBits(d);
+								if (HasAtMostOneBit(bits)) bits |= DiagDirToRoadBits(ReverseDiagDir(d));
+							}
+							if (build_rt != INVALID_ROADTYPE) SetCustomBridgeHeadRoadBits(t, rtt, bits);
+						};
+						add_road_bits(RTT_ROAD, road_bits, road_rt);
+						add_road_bits(RTT_TRAM, tram_bits, tram_rt);
 					} else {
 						MakeRoadBridgeRamp(t, owner, owner_road, owner_tram, bridge_type, d, road_rt, tram_rt);
 					}
@@ -2758,6 +2763,7 @@ static void ChangeTileOwner_TunnelBridge(TileIndex tile, Owner old_owner, Owner 
 			/* Since all of our vehicles have been removed, it is safe to remove the rail
 			 * bridge / tunnel. */
 			CommandCost ret = DoCommand(tile, 0, 0, DC_EXEC | DC_BANKRUPT, CMD_LANDSCAPE_CLEAR);
+			(void)ret; // assert only
 			assert(ret.Succeeded());
 		} else {
 			/* In any other case, we can safely reassign the ownership to OWNER_NONE. */

@@ -228,9 +228,9 @@ struct SaveLoadParams {
 	StringID error_str;                  ///< the translatable error message to show
 	char *extra_msg;                     ///< the error message
 
-	byte ff_state;                       ///< The state of fast-forward when saving started.
+	uint16 game_speed;                   ///< The game speed when saving started.
 	bool saveinprogress;                 ///< Whether there is currently a save in progress.
-	bool networkserversave;              ///< Whether this save is being sent to a network client
+	SaveModeFlags save_flags;            ///< Save mode flags
 };
 
 static SaveLoadParams _sl; ///< Parameters used for/at saveload.
@@ -1139,20 +1139,20 @@ static void SlStdString(std::string &str, VarType conv)
 	switch (_sl.action) {
 		case SLA_SAVE: {
 			SlWriteArrayLength(str.size());
-			SlCopyBytes(const_cast<char *>(str.data()), str.size());
+			SlCopyBytes(str.data(), str.size());
 			break;
 		}
 		case SLA_LOAD_CHECK:
 		case SLA_LOAD: {
 			size_t len = SlReadArrayLength();
 			str.resize(len);
-			SlCopyBytes(const_cast<char *>(str.c_str()), len);
+			SlCopyBytes(str.data(), len);
 
 			StringValidationSettings settings = SVS_REPLACE_WITH_QUESTION_MARK;
 			if ((conv & SLF_ALLOW_CONTROL) != 0) {
 				settings = settings | SVS_ALLOW_CONTROL_CODE;
 				if (IsSavegameVersionBefore(SLV_169)) {
-					char *buf = const_cast<char *>(str.c_str());
+					char *buf = str.data();
 					str.resize(str_fix_scc_encoded(buf, buf + str.size()) - buf);
 				}
 			}
@@ -2768,9 +2768,130 @@ struct LZMASaveFilter : SaveFilter {
 
 #endif /* WITH_LIBLZMA */
 
+/********************************************
+ ********** START OF ZSTD CODE **************
+ ********************************************/
+
+#if defined(WITH_ZSTD)
+#include <zstd.h>
+
+
+/** Filter using ZSTD compression. */
+struct ZSTDLoadFilter : LoadFilter {
+	ZSTD_DCtx *zstd;  ///< ZSTD decompression context
+	byte fread_buf[MEMORY_CHUNK_SIZE];  ///< Buffer for reading from the file
+	ZSTD_inBuffer input;  ///< ZSTD input buffer for fread_buf
+
+	/**
+	 * Initialise this filter.
+	 * @param chain The next filter in this chain.
+	 */
+	ZSTDLoadFilter(LoadFilter *chain) : LoadFilter(chain)
+	{
+		this->zstd = ZSTD_createDCtx();
+		if (!this->zstd) SlError(STR_GAME_SAVELOAD_ERROR_BROKEN_INTERNAL_ERROR, "cannot initialize compressor");
+		this->input = {this->fread_buf, 0, 0};
+	}
+
+	/** Clean everything up. */
+	~ZSTDLoadFilter()
+	{
+		ZSTD_freeDCtx(this->zstd);
+	}
+
+	size_t Read(byte *buf, size_t size) override
+	{
+		ZSTD_outBuffer output{buf, size, 0};
+
+		do {
+			/* read more bytes from the file? */
+			if (this->input.pos == this->input.size) {
+				this->input.size = this->chain->Read(this->fread_buf, sizeof(this->fread_buf));
+				this->input.pos = 0;
+				if (this->input.size == 0) break;
+			}
+
+			size_t ret = ZSTD_decompressStream(this->zstd, &output, &this->input);
+			if (ZSTD_isError(ret)) SlError(STR_GAME_SAVELOAD_ERROR_BROKEN_INTERNAL_ERROR, "libzstd returned error code");
+			if (ret == 0) break;
+		} while (output.pos < output.size);
+
+		return output.pos;
+	}
+};
+
+/** Filter using ZSTD compression. */
+struct ZSTDSaveFilter : SaveFilter {
+	ZSTD_CCtx *zstd;  ///< ZSTD compression context
+
+	/**
+	 * Initialise this filter.
+	 * @param chain             The next filter in this chain.
+	 * @param compression_level The requested level of compression.
+	 */
+	ZSTDSaveFilter(SaveFilter *chain, byte compression_level) : SaveFilter(chain)
+	{
+		this->zstd = ZSTD_createCCtx();
+		if (!this->zstd) SlError(STR_GAME_SAVELOAD_ERROR_BROKEN_INTERNAL_ERROR, "cannot initialize compressor");
+		if (ZSTD_isError(ZSTD_CCtx_setParameter(this->zstd, ZSTD_c_compressionLevel, (int)compression_level - 100))) {
+			ZSTD_freeCCtx(this->zstd);
+			SlError(STR_GAME_SAVELOAD_ERROR_BROKEN_INTERNAL_ERROR, "invalid compresison level");
+		}
+	}
+
+	/** Clean up what we allocated. */
+	~ZSTDSaveFilter()
+	{
+		ZSTD_freeCCtx(this->zstd);
+	}
+
+	/**
+	 * Helper loop for writing the data.
+	 * @param p      The bytes to write.
+	 * @param len    Amount of bytes to write.
+	 * @param mode   Mode for ZSTD_compressStream2.
+	 */
+	void WriteLoop(byte *p, size_t len, ZSTD_EndDirective mode)
+	{
+		byte buf[MEMORY_CHUNK_SIZE]; // output buffer
+		ZSTD_inBuffer input{p, len, 0};
+
+		bool finished;
+		do {
+			ZSTD_outBuffer output{buf, sizeof(buf), 0};
+			size_t remaining = ZSTD_compressStream2(this->zstd, &output, &input, mode);
+			if (ZSTD_isError(remaining)) SlError(STR_GAME_SAVELOAD_ERROR_BROKEN_INTERNAL_ERROR, "libzstd returned error code");
+
+			if (output.pos != 0) this->chain->Write(buf, output.pos);
+
+			finished = (mode == ZSTD_e_end ? (remaining == 0) : (input.pos == input.size));
+		} while (!finished);
+	}
+
+	void Write(byte *buf, size_t size) override
+	{
+		this->WriteLoop(buf, size, ZSTD_e_continue);
+	}
+
+	void Finish() override
+	{
+		this->WriteLoop(nullptr, 0, ZSTD_e_end);
+		this->chain->Finish();
+	}
+};
+
+#endif /* WITH_LIBZSTD */
+
 /*******************************************
  ************* END OF CODE *****************
  *******************************************/
+
+enum SaveLoadFormatFlags : byte {
+	SLF_NONE             = 0,
+	SLF_NO_THREADED_LOAD = 1 << 0, ///< Unsuitable for threaded loading
+	SLF_REQUIRES_ZSTD    = 1 << 1, ///< Automatic selection requires the zstd flag
+};
+DECLARE_ENUM_AS_BIT_SET(SaveLoadFormatFlags);
 
 /** The format for a reader/writer type of a savegame */
 struct SaveLoadFormat {
@@ -2783,26 +2904,26 @@ struct SaveLoadFormat {
 	byte min_compression;                 ///< the minimum compression level of this format
 	byte default_compression;             ///< the default compression level of this format
 	byte max_compression;                 ///< the maximum compression level of this format
-	bool no_threaded_load;                ///< unsuitable for threaded loading
+	SaveLoadFormatFlags flags;            ///< flags
 };
 
 /** The different saveload formats known/understood by OpenTTD. */
 static const SaveLoadFormat _saveload_formats[] = {
 #if defined(WITH_LZO)
 	/* Roughly 75% larger than zlib level 6 at only ~7% of the CPU usage. */
-	{"lzo",    TO_BE32X('OTTD'), CreateLoadFilter<LZOLoadFilter>,    CreateSaveFilter<LZOSaveFilter>,    0, 0, 0, true},
+	{"lzo",    TO_BE32X('OTTD'), CreateLoadFilter<LZOLoadFilter>,    CreateSaveFilter<LZOSaveFilter>,    0, 0, 0, SLF_NO_THREADED_LOAD},
 #else
-	{"lzo",    TO_BE32X('OTTD'), nullptr,                            nullptr,                            0, 0, 0, false},
+	{"lzo",    TO_BE32X('OTTD'), nullptr,                            nullptr,                            0, 0, 0, SLF_NO_THREADED_LOAD},
 #endif
 	/* Roughly 5 times larger at only 1% of the CPU usage over zlib level 6. */
-	{"none",   TO_BE32X('OTTN'), CreateLoadFilter<NoCompLoadFilter>, CreateSaveFilter<NoCompSaveFilter>, 0, 0, 0, false},
+	{"none",   TO_BE32X('OTTN'), CreateLoadFilter<NoCompLoadFilter>, CreateSaveFilter<NoCompSaveFilter>, 0, 0, 0, SLF_NONE},
 #if defined(WITH_ZLIB)
 	/* After level 6 the speed reduction is significant (1.5x to 2.5x slower per level), but the reduction in filesize is
 	 * fairly insignificant (~1% for each step). Lower levels become ~5-10% bigger by each level than level 6 while level
 	 * 1 is "only" 3 times as fast. Level 0 results in uncompressed savegames at about 8 times the cost of "none". */
-	{"zlib",   TO_BE32X('OTTZ'), CreateLoadFilter<ZlibLoadFilter>,   CreateSaveFilter<ZlibSaveFilter>,   0, 6, 9, false},
+	{"zlib",   TO_BE32X('OTTZ'), CreateLoadFilter<ZlibLoadFilter>,   CreateSaveFilter<ZlibSaveFilter>,   0, 6, 9, SLF_NONE},
 #else
-	{"zlib",   TO_BE32X('OTTZ'), nullptr,                            nullptr,                            0, 0, 0, false},
+	{"zlib",   TO_BE32X('OTTZ'), nullptr,                            nullptr,                            0, 0, 0, SLF_NONE},
 #endif
 #if defined(WITH_LIBLZMA)
 	/* Level 2 compression is speed wise as fast as zlib level 6 compression (old default), but results in ~10% smaller saves.
@@ -2810,9 +2931,20 @@ static const SaveLoadFormat _saveload_formats[] = {
 	 * The next significant reduction in file size is at level 4, but that is already 4 times slower. Level 3 is primarily 50%
 	 * slower while not improving the filesize, while level 0 and 1 are faster, but don't reduce savegame size much.
 	 * It's OTTX and not e.g. OTTL because liblzma is part of xz-utils and .tar.xz is preferred over .tar.lzma. */
-	{"lzma",   TO_BE32X('OTTX'), CreateLoadFilter<LZMALoadFilter>,   CreateSaveFilter<LZMASaveFilter>,   0, 2, 9, false},
+	{"lzma",   TO_BE32X('OTTX'), CreateLoadFilter<LZMALoadFilter>,   CreateSaveFilter<LZMASaveFilter>,   0, 2, 9, SLF_NONE},
 #else
-	{"lzma",   TO_BE32X('OTTX'), nullptr,                            nullptr,                            0, 0, 0, false},
+	{"lzma",   TO_BE32X('OTTX'), nullptr,                            nullptr,                            0, 0, 0, SLF_NONE},
+#endif
+#if defined(WITH_ZSTD)
+	/* Zstd provides a decent compression rate at a very high compression/decompression speed. Compared to lzma level 2
+	 * zstd saves are about 40% larger (on level 1) but it has about 30x faster compression and 5x decompression making it
+	 * a good choice for multiplayer servers. And zstd level 1 seems to be the optimal one for client connection speed
+	 * (compress + 10 MB/s download + decompress time), about 3x faster than lzma:2 and 1.5x than zlib:2 and lzo.
+	 * As zstd has negative compression levels the values were increased by 100 moving zstd level range -100..22 into
+	 * openttd 0..122. Also note that value 100 mathes zstd level 0 which is a special value for default level 3 (openttd 103) */
+	{"zstd",   TO_BE32X('OTTS'), CreateLoadFilter<ZSTDLoadFilter>,   CreateSaveFilter<ZSTDSaveFilter>,   0, 101, 122, SLF_REQUIRES_ZSTD},
+#else
+	{"zstd",   TO_BE32X('OTTS'), nullptr,                            nullptr,                            0, 0, 0, SLF_REQUIRES_ZSTD},
 #endif
 };
 
@@ -2823,12 +2955,12 @@ static const SaveLoadFormat _saveload_formats[] = {
  * @param compression_level Output for telling what compression level we want.
  * @return Pointer to SaveLoadFormat struct giving all characteristics of this type of savegame
  */
-static const SaveLoadFormat *GetSavegameFormat(char *s, byte *compression_level)
+static const SaveLoadFormat *GetSavegameFormat(char *s, byte *compression_level, SaveModeFlags flags)
 {
 	const SaveLoadFormat *def = lastof(_saveload_formats);
 
 	/* find default savegame format, the highest one with which files can be written */
-	while (!def->init_write) def--;
+	while (!def->init_write || ((def->flags & SLF_REQUIRES_ZSTD) && !(flags & SMF_ZSTD_OK))) def--;
 
 	if (!StrEmpty(s)) {
 		/* Get the ":..." of the compression level out of the way */
@@ -2902,7 +3034,7 @@ static inline void ClearSaveLoadState()
 	delete _sl.lf;
 	_sl.lf = nullptr;
 
-	_sl.networkserversave = false;
+	_sl.save_flags = SMF_NONE;
 
 	GamelogStopAnyAction();
 }
@@ -2914,8 +3046,8 @@ static inline void ClearSaveLoadState()
  */
 static void SaveFileStart()
 {
-	_sl.ff_state = _fast_forward;
-	_fast_forward = 0;
+	_sl.game_speed = _game_speed;
+	_game_speed = 100;
 	SetMouseCursorBusy(true);
 
 	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_SAVELOAD_START);
@@ -2929,7 +3061,7 @@ static void SaveFileStart()
 /** Update the gui accordingly when saving is done and release locks on saveload. */
 static void SaveFileDone()
 {
-	if (_game_mode != GM_MENU) _fast_forward = _sl.ff_state;
+	if (_game_mode != GM_MENU) _game_speed = _sl.game_speed;
 	SetMouseCursorBusy(false);
 
 	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_SAVELOAD_FINISH);
@@ -2973,7 +3105,9 @@ static SaveOrLoadResult SaveFileToDisk(bool threaded)
 {
 	try {
 		byte compression;
-		const SaveLoadFormat *fmt = GetSavegameFormat(_savegame_format, &compression);
+		const SaveLoadFormat *fmt = GetSavegameFormat(_savegame_format, &compression, _sl.save_flags);
+
+		DEBUG(sl, 3, "Using compression format: %s, level: %u", fmt->name, compression);
 
 		/* We have written our stuff to memory, now write it to file! */
 		uint32 hdr[2] = { fmt->tag, TO_BE32((uint32) (SAVEGAME_VERSION | SAVEGAME_VERSION_EXT) << 16) };
@@ -3058,14 +3192,14 @@ static SaveOrLoadResult DoSave(SaveFilter *writer, bool threaded)
  * Save the game using a (writer) filter.
  * @param writer   The filter to write the savegame to.
  * @param threaded Whether to try to perform the saving asynchronously.
- * @param networkserversave Whether this is a network server save.
+ * @param flags Save mode flags.
  * @return Return the result of the action. #SL_OK or #SL_ERROR
  */
-SaveOrLoadResult SaveWithFilter(SaveFilter *writer, bool threaded, bool networkserversave)
+SaveOrLoadResult SaveWithFilter(SaveFilter *writer, bool threaded, SaveModeFlags flags)
 {
 	try {
 		_sl.action = SLA_SAVE;
-		_sl.networkserversave = networkserversave;
+		_sl.save_flags = flags;
 		return DoSave(writer, threaded);
 	} catch (...) {
 		ClearSaveLoadState();
@@ -3075,7 +3209,7 @@ SaveOrLoadResult SaveWithFilter(SaveFilter *writer, bool threaded, bool networks
 
 bool IsNetworkServerSave()
 {
-	return _sl.networkserversave;
+	return _sl.save_flags & SMF_NET_SERVER;
 }
 
 struct ThreadedLoadFilter : LoadFilter {
@@ -3270,7 +3404,7 @@ static SaveOrLoadResult DoLoad(LoadFilter *reader, bool load_check)
 	}
 
 	_sl.lf = fmt->init_load(_sl.lf);
-	if (!fmt->no_threaded_load) {
+	if (!(fmt->flags & SLF_NO_THREADED_LOAD)) {
 		_sl.lf = new ThreadedLoadFilter(_sl.lf);
 	}
 	_sl.reader = new ReadBuffer(_sl.lf);
@@ -3371,7 +3505,7 @@ SaveOrLoadResult LoadWithFilter(LoadFilter *reader)
  * @param threaded True when threaded saving is allowed
  * @return Return the result of the action. #SL_OK, #SL_ERROR, or #SL_REINIT ("unload" the game)
  */
-SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, DetailedFileType dft, Subdirectory sb, bool threaded)
+SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, DetailedFileType dft, Subdirectory sb, bool threaded, SaveModeFlags save_flags)
 {
 	/* An instance of saving is already active, so don't go saving again */
 	if (_sl.saveinprogress && fop == SLO_SAVE && dft == DFT_GAME_FILE && threaded) {
@@ -3424,7 +3558,7 @@ SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, 
 
 			default: NOT_REACHED();
 		}
-		_sl.networkserversave = false;
+		_sl.save_flags = save_flags;
 
 		FILE *fh = (fop == SLO_SAVE) ? FioFOpenFile(filename, "wb", sb) : FioFOpenFile(filename, "rb", sb);
 
@@ -3463,7 +3597,7 @@ SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, 
 /** Do a save when exiting the game (_settings_client.gui.autosave_on_exit) */
 void DoExitSave()
 {
-	SaveOrLoad("exit.sav", SLO_SAVE, DFT_GAME_FILE, AUTOSAVE_DIR);
+	SaveOrLoad("exit.sav", SLO_SAVE, DFT_GAME_FILE, AUTOSAVE_DIR, true, SMF_ZSTD_OK);
 }
 
 /**

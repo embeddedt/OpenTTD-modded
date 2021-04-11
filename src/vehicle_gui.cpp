@@ -236,7 +236,7 @@ void BaseVehicleListWindow::BuildVehicleList()
 	if (this->grouping == GB_NONE) {
 		uint max_unitnumber = 0;
 		for (auto it = this->vehicles.begin(); it != this->vehicles.end(); ++it) {
-			this->vehgroups.emplace_back(it, it + 1, (*it)->GetDisplayProfitThisYear(), (*it)->GetDisplayProfitLastYear(), (*it)->age);
+			this->vehgroups.emplace_back(it, it + 1);
 
 			max_unitnumber = std::max<uint>(max_unitnumber, (*it)->unitnumber);
 		}
@@ -255,17 +255,7 @@ void BaseVehicleListWindow::BuildVehicleList()
 				return v->FirstShared() == first_shared;
 			});
 
-			Money display_profit_this_year = 0;
-			Money display_profit_last_year = 0;
-			Date age = 0;
-			for (auto it = begin; it != end; ++it) {
-				const Vehicle * const v = (*it);
-				display_profit_this_year += v->GetDisplayProfitThisYear();
-				display_profit_last_year += v->GetDisplayProfitLastYear();
-				age = std::max<Date>(age, v->age);
-			}
-
-			this->vehgroups.emplace_back(begin, end, display_profit_this_year, display_profit_last_year, age);
+			this->vehgroups.emplace_back(begin, end);
 
 			max_num_vehicles = std::max<uint>(max_num_vehicles, static_cast<uint>(end - begin));
 
@@ -1460,25 +1450,25 @@ static bool VehicleGroupLengthSorter(const GUIVehicleGroup &a, const GUIVehicleG
 /** Sort vehicle groups by the total profit this year */
 static bool VehicleGroupTotalProfitThisYearSorter(const GUIVehicleGroup &a, const GUIVehicleGroup &b)
 {
-	return a.display_profit_this_year < b.display_profit_this_year;
+	return a.GetDisplayProfitThisYear() < b.GetDisplayProfitThisYear();
 }
 
 /** Sort vehicle groups by the total profit last year */
 static bool VehicleGroupTotalProfitLastYearSorter(const GUIVehicleGroup &a, const GUIVehicleGroup &b)
 {
-	return a.display_profit_last_year < b.display_profit_last_year;
+	return a.GetDisplayProfitLastYear() < b.GetDisplayProfitLastYear();
 }
 
 /** Sort vehicle groups by the average profit this year */
 static bool VehicleGroupAverageProfitThisYearSorter(const GUIVehicleGroup &a, const GUIVehicleGroup &b)
 {
-	return a.display_profit_this_year * static_cast<uint>(b.NumVehicles()) < b.display_profit_this_year * static_cast<uint>(a.NumVehicles());
+	return a.GetDisplayProfitThisYear() * static_cast<uint>(b.NumVehicles()) < b.GetDisplayProfitThisYear() * static_cast<uint>(a.NumVehicles());
 }
 
 /** Sort vehicle groups by the average profit last year */
 static bool VehicleGroupAverageProfitLastYearSorter(const GUIVehicleGroup &a, const GUIVehicleGroup &b)
 {
-	return a.display_profit_last_year * static_cast<uint>(b.NumVehicles()) < b.display_profit_last_year * static_cast<uint>(a.NumVehicles());
+	return a.GetDisplayProfitLastYear() * static_cast<uint>(b.NumVehicles()) < b.GetDisplayProfitLastYear() * static_cast<uint>(a.NumVehicles());
 }
 
 /** Sort vehicles by their number */
@@ -1947,12 +1937,12 @@ void BaseVehicleListWindow::DrawVehicleListItems(VehicleID selected_vehicle, int
 				GfxFillRect((text_right - 1) - (FONT_HEIGHT_SMALL - 2), y + 1, text_right - 1, (y + 1) + (FONT_HEIGHT_SMALL - 2), ccolour, FILLRECT_OPAQUE);
 			}
 		} else {
-			SetDParam(0, vehgroup.display_profit_this_year);
-			SetDParam(1, vehgroup.display_profit_last_year);
+			SetDParam(0, vehgroup.GetDisplayProfitThisYear());
+			SetDParam(1, vehgroup.GetDisplayProfitLastYear());
 			DrawString(text_left, text_right, y + line_height - FONT_HEIGHT_SMALL - WD_FRAMERECT_BOTTOM - 1, STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR);
 		}
 
-		DrawVehicleProfitButton(vehgroup.age, vehgroup.display_profit_last_year, vehgroup.NumVehicles(), vehicle_button_x, y + FONT_HEIGHT_NORMAL + 3);
+		DrawVehicleProfitButton(vehgroup.GetOldestVehicleAge(), vehgroup.GetDisplayProfitLastYear(), vehgroup.NumVehicles(), vehicle_button_x, y + FONT_HEIGHT_NORMAL + 3);
 
 		switch (this->grouping) {
 			case GB_NONE: {
@@ -1985,7 +1975,6 @@ void BaseVehicleListWindow::DrawVehicleListItems(VehicleID selected_vehicle, int
 			}
 
 			case GB_SHARED_ORDERS:
-
 				assert(vehgroup.NumVehicles() > 0);
 
 				for (int i = 0; i < static_cast<int>(vehgroup.NumVehicles()); ++i) {
@@ -2278,12 +2267,18 @@ public:
 						break;
 					}
 
-					case GB_SHARED_ORDERS:
+					case GB_SHARED_ORDERS: {
 						assert(vehgroup.NumVehicles() > 0);
+						const Vehicle *v = vehgroup.vehicles_begin[0];
 						/* We do not support VehicleClicked() here since the contextual action may only make sense for individual vehicles */
 
-						ShowVehicleListWindow(vehgroup.vehicles_begin[0]);
+						if (vehgroup.NumVehicles() == 1) {
+							ShowVehicleViewWindow(v);
+						} else {
+							ShowVehicleListWindow(v);
+						}
 						break;
+					}
 
 					default: NOT_REACHED();
 				}
@@ -2541,12 +2536,30 @@ void DirtyVehicleListWindowForVehicle(const Vehicle *v)
 	FOR_ALL_WINDOWS_FROM_BACK(w) {
 		if (w->window_class == cls || w->window_class == cls2) {
 			BaseVehicleListWindow *listwin = static_cast<BaseVehicleListWindow *>(w);
-			uint max = std::min<uint>(listwin->vscroll->GetPosition() + listwin->vscroll->GetCapacity(), (uint)listwin->vehicles.size());
-			for (uint i = listwin->vscroll->GetPosition(); i < max; ++i) {
-				if (v == listwin->vehicles[i]) {
-					listwin->SetWidgetDirty(0);
+			uint max = std::min<uint>(listwin->vscroll->GetPosition() + listwin->vscroll->GetCapacity(), (uint)listwin->vehgroups.size());
+			switch (listwin->grouping) {
+				case BaseVehicleListWindow::GB_NONE:
+					for (uint i = listwin->vscroll->GetPosition(); i < max; ++i) {
+						if (v == listwin->vehgroups[i].vehicles_begin[0]) {
+							listwin->SetWidgetDirty(0);
+							break;
+						}
+					}
+					break;
+
+				case BaseVehicleListWindow::GB_SHARED_ORDERS: {
+					const Vehicle *v_first_shared = v->FirstShared();
+					for (uint i = listwin->vscroll->GetPosition(); i < max; ++i) {
+						if (v_first_shared == listwin->vehgroups[i].vehicles_begin[0]->FirstShared()) {
+							listwin->SetWidgetDirty(0);
+							break;
+						}
+					}
 					break;
 				}
+
+				default:
+					NOT_REACHED();
 			}
 		}
 	}
@@ -3751,7 +3764,7 @@ public:
 					ShowExtraViewportWindow(TileVirtXY(v->x_pos, v->y_pos));
 				} else {
 					const Window *mainwindow = FindWindowById(WC_MAIN_WINDOW, 0);
-					if (click_count > 1 && mainwindow->viewport->zoom <= ZOOM_LVL_OUT_4X) {
+					if (click_count > 1 && mainwindow->viewport->zoom < ZOOM_LVL_DRAW_MAP) {
 						/* main window 'follows' vehicle */
 						mainwindow->viewport->follow_vehicle = v->index;
 					} else {
@@ -4067,7 +4080,7 @@ void SetMouseCursorVehicle(const Vehicle *v, EngineImageType image_type)
 	_cursor.sprite_count = 0;
 	int total_width = 0;
 	for (; v != nullptr; v = v->HasArticulatedPart() ? v->GetNextArticulatedPart() : nullptr) {
-		if (total_width >= 2 * (int)VEHICLEINFO_FULL_VEHICLE_WIDTH) break;
+		if (total_width >= ScaleGUITrad(2 * (int)VEHICLEINFO_FULL_VEHICLE_WIDTH)) break;
 
 		PaletteID pal = (v->vehstatus & VS_CRASHED) ? PALETTE_CRASH : GetVehiclePalette(v);
 		VehicleSpriteSeq seq;
@@ -4087,7 +4100,7 @@ void SetMouseCursorVehicle(const Vehicle *v, EngineImageType image_type)
 		total_width += GetSingleVehicleWidth(v, image_type);
 	}
 
-	int offs = ((int)VEHICLEINFO_FULL_VEHICLE_WIDTH - total_width) / 2;
+	int offs = (ScaleGUITrad(VEHICLEINFO_FULL_VEHICLE_WIDTH) - total_width) / 2;
 	if (rtl) offs = -offs;
 	for (uint i = 0; i < _cursor.sprite_count; ++i) {
 		_cursor.sprite_pos[i].x += offs;

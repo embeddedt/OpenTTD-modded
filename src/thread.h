@@ -11,15 +11,12 @@
 #define THREAD_H
 
 #include "debug.h"
+#include "crashlog.h"
 #include <system_error>
 #include <thread>
 #if defined(__MINGW32__)
 #include "3rdparty/mingw-std-threads/mingw.thread.h"
 #endif
-
-/** Signal used for signalling we knowingly want to end the thread. */
-class OTTDThreadExitSignal { };
-
 
 /**
  * Sleep on the current thread for a defined time.
@@ -50,14 +47,34 @@ int GetCurrentThreadName(char *str, const char *last);
 void SetSelfAsMainThread();
 
 /**
- * @return true if the current thread definitely the "main" thread. If in doubt returns false.
+ * Set the current thread as the "game" thread
+ */
+void SetSelfAsGameThread();
+
+/**
+ * Perform per-thread setup
+ */
+void PerThreadSetup();
+
+/**
+ * Setup thread functionality required for later calls to PerThreadSetup
+ */
+void PerThreadSetupInit();
+
+/**
+ * @return true if the current thread is definitely the "main" thread. If in doubt returns false.
  */
 bool IsMainThread();
 
 /**
- * @return true if the current thread definitely a "non-main" thread. If in doubt returns false.
+ * @return true if the current thread is definitely a "non-main" thread. If in doubt returns false.
  */
 bool IsNonMainThread();
+
+/**
+ * @return true if the current thread is definitely the "game" thread. If in doubt returns false.
+ */
+bool IsGameThread();
 
 
 /**
@@ -77,10 +94,11 @@ inline bool StartNewThread(std::thread *thr, const char *name, TFn&& _Fx, TArgs&
 	try {
 		std::thread t([] (const char *name, TFn&& F, TArgs&&... A) {
 				SetCurrentThreadName(name);
+				PerThreadSetup();
+				CrashLog::InitThread();
 				try {
 					/* Call user function with the given arguments. */
 					F(A...);
-				} catch (OTTDThreadExitSignal&) {
 				} catch (...) {
 					NOT_REACHED();
 				}

@@ -107,6 +107,8 @@
 #include "tunnelbridge_map.h"
 #include "video/video_driver.hpp"
 #include "scope_info.h"
+#include "scope.h"
+#include "blitter/32bpp_base.hpp"
 
 #include <map>
 #include <vector>
@@ -263,6 +265,7 @@ struct ViewportDrawer {
 
 static void MarkRouteStepDirty(RouteStepsMap::const_iterator cit);
 static void MarkRouteStepDirty(const TileIndex tile, uint order_nr);
+static void HideMeasurementTooltips();
 
 static DrawPixelInfo _dpi_for_text;
 static ViewportDrawer _vd;
@@ -1397,7 +1400,7 @@ static void DrawTileHighlightType(const TileInfo *ti, TileHighlightType tht)
 		case THT_NONE: break;
 		case THT_WHITE: DrawTileSelectionRect(ti, PAL_NONE); break;
 		case THT_BLUE:  DrawTileSelectionRect(ti, PALETTE_SEL_TILE_BLUE); break;
-		case THT_RED:   DrawTileSelectionRect(ti, PALETTE_TILE_RED_PULSATING); break;
+		case THT_RED:   DrawTileSelectionRect(ti, PALETTE_SEL_TILE_RED); break;
 		case THT_LIGHT_BLUE: DrawTileSelectionRect(ti, SPR_ZONING_INNER_HIGHLIGHT_LIGHT_BLUE); break;
 	}
 }
@@ -2206,13 +2209,16 @@ static inline TileIndex GetLastValidOrderLocation(const Vehicle *veh)
 	return result;
 }
 
-static inline const Order *GetFinalOrder(const Vehicle *veh, const Order *order)
+static inline std::pair<const Order *, bool> GetFinalOrder(const Vehicle *veh, const Order *order)
 {
 	// Use Floyd's cycle-finding algorithm to prevent endless loop
 	// due to a cycle formed by confitional orders.
 	auto cycle_check = order;
 
+	bool is_conditional = false;
+
 	while (order->IsType(OT_CONDITIONAL)) {
+		if (order->GetConditionVariable() != OCV_UNCONDITIONALLY) is_conditional = true;
 		order = veh->GetOrder(order->GetConditionSkipToOrder());
 
 		if (cycle_check->IsType(OT_CONDITIONAL)) {
@@ -2225,10 +2231,10 @@ static inline const Order *GetFinalOrder(const Vehicle *veh, const Order *order)
 
 		bool cycle_detected = (order->IsType(OT_CONDITIONAL) && (order == cycle_check));
 
-		if (cycle_detected) return nullptr;
+		if (cycle_detected) return std::pair<const Order *, bool>(nullptr, is_conditional);
 	}
 
-	return order;
+	return std::pair<const Order *, bool>(order, is_conditional);
 }
 
 static bool ViewportMapPrepareVehicleRoute(const Vehicle * const veh)
@@ -2240,14 +2246,21 @@ static bool ViewportMapPrepareVehicleRoute(const Vehicle * const veh)
 		if (from_tile == INVALID_TILE) return false;
 
 		for(const Order *order : veh->Orders()) {
-			const Order *final_order = GetFinalOrder(veh, order);
+			auto guard = scope_guard([&]() {
+				if (order->IsType(OT_CONDITIONAL) && order->GetConditionVariable() == OCV_UNCONDITIONALLY) from_tile = INVALID_TILE;
+			});
+			const Order *final_order;
+			bool conditional;
+			std::tie(final_order, conditional) = GetFinalOrder(veh, order);
 			if (final_order == nullptr) continue;
 			const TileIndex to_tile = final_order->GetLocation(veh, veh->type == VEH_AIRCRAFT);
 			if (to_tile == INVALID_TILE) continue;
 
-			DrawnPathRouteTileLine path = { from_tile, to_tile, (final_order == order) };
-			if (path.from_tile > path.to_tile) std::swap(path.from_tile, path.to_tile);
-			_vp_route_paths.push_back(path);
+			if (from_tile != INVALID_TILE) {
+				DrawnPathRouteTileLine path = { from_tile, to_tile, !conditional };
+				if (path.from_tile > path.to_tile) std::swap(path.from_tile, path.to_tile);
+				_vp_route_paths.push_back(path);
+			}
 
 			const OrderType ot = order->GetType();
 			if (ot == OT_GOTO_STATION || ot == OT_GOTO_DEPOT || ot == OT_GOTO_WAYPOINT || ot == OT_IMPLICIT) from_tile = to_tile;
@@ -2447,7 +2460,7 @@ void ViewportDrawPlans(const Viewport *vp)
 		ScaleByZoom(_dpi_for_text.left - 2, vp->zoom),
 		ScaleByZoom(_dpi_for_text.top - 2, vp->zoom),
 		ScaleByZoom(_dpi_for_text.left + _dpi_for_text.width + 2, vp->zoom),
-		ScaleByZoom(_dpi_for_text.top + _dpi_for_text.height + 2, vp->zoom) + (int)(ZOOM_LVL_BASE * TILE_HEIGHT * _settings_game.construction.max_heightlevel)
+		ScaleByZoom(_dpi_for_text.top + _dpi_for_text.height + 2, vp->zoom) + (int)(ZOOM_LVL_BASE * TILE_HEIGHT * _settings_game.construction.map_height_limit)
 	};
 
 	const int min_coord_delta = bounds.left / (int)(2 * ZOOM_LVL_BASE * TILE_SIZE);
@@ -2555,7 +2568,7 @@ void ViewportDrawPlans(const Viewport *vp)
 
 /* Variables containing Colour if 32bpp or palette index if 8bpp. */
 uint32 _vp_map_vegetation_clear_colours[16][6][8]; ///< [Slope][ClearGround][Multi (see LoadClearGroundMainColours())]
-uint32 _vp_map_vegetation_tree_colours[5][MAX_TREE_COUNT_BY_LANDSCAPE]; ///< [TreeGround][max of _tree_count_by_landscape]
+uint32 _vp_map_vegetation_tree_colours[16][5][MAX_TREE_COUNT_BY_LANDSCAPE]; ///< [Slope][TreeGround][max of _tree_count_by_landscape]
 uint32 _vp_map_water_colour[5]; ///< [Slope]
 
 static inline uint ViewportMapGetColourIndexMulti(const TileIndex tile, const ClearGround cg)
@@ -2606,10 +2619,10 @@ static inline uint32 ViewportMapGetColourVegetation(const TileIndex tile, TileTy
 		case MP_TREES: {
 			const TreeGround tg = GetTreeGround(tile);
 			const uint td = GetTreeDensity(tile);
+			Slope slope = show_slope ? (Slope) (GetTileSlope(tile, nullptr) & 15) : SLOPE_FLAT;
 			if (IsTransparencySet(TO_TREES)) {
 				ClearGround cg = _treeground_to_clearground[tg];
 				if (cg == CLEAR_SNOW && _settings_game.game_creation.landscape == LT_TROPIC) cg = CLEAR_DESERT;
-				Slope slope = show_slope ? (Slope) (GetTileSlope(tile, nullptr) & 15) : SLOPE_FLAT;
 				uint32 ground_colour = _vp_map_vegetation_clear_colours[slope][cg][td];
 
 				if (IsInvisibilitySet(TO_TREES)) {
@@ -2627,10 +2640,10 @@ static inline uint32 ViewportMapGetColourVegetation(const TileIndex tile, TileTy
 				}
 			} else {
 				if (tg == TREE_GROUND_SNOW_DESERT || tg == TREE_GROUND_ROUGH_SNOW) {
-					return _vp_map_vegetation_clear_colours[colour_index][_settings_game.game_creation.landscape == LT_TROPIC ? CLEAR_DESERT : CLEAR_SNOW][td];
+					return _vp_map_vegetation_clear_colours[colour_index ^ slope][_settings_game.game_creation.landscape == LT_TROPIC ? CLEAR_DESERT : CLEAR_SNOW][td];
 				} else {
 					const uint rnd = std::min<uint>(GetTreeCount(tile) ^ (((tile & 3) ^ (TileY(tile) & 3)) * td), MAX_TREE_COUNT_BY_LANDSCAPE - 1);
-					return _vp_map_vegetation_tree_colours[tg][rnd];
+					return _vp_map_vegetation_tree_colours[slope][tg][rnd];
 				}
 			}
 		}
@@ -4283,6 +4296,7 @@ HandleViewportClickedResult HandleViewportClicked(const Viewport *vp, int x, int
 			static bool stop_snap_on_double_click = false;
 			if (double_click && stop_snap_on_double_click) {
 				SetRailSnapMode(RSM_NO_SNAP);
+				HideMeasurementTooltips();
 				return HVCR_DENY;
 			}
 			stop_snap_on_double_click = !(_thd.drawstyle & HT_LINE) || (_thd.dir2 == HT_DIR_END);
@@ -4653,7 +4667,7 @@ void UpdateTileSelection()
  * @param params (optional) up to 5 pieces of additional information that may be added to a tooltip
  * @param close_cond Condition for closing this tooltip.
  */
-static inline void ShowMeasurementTooltips(StringID str, uint paramcount, const uint64 params[], TooltipCloseCondition close_cond = TCC_NONE)
+static inline void ShowMeasurementTooltips(StringID str, uint paramcount, const uint64 params[], TooltipCloseCondition close_cond = TCC_EXIT_VIEWPORT)
 {
 	if (!_settings_client.gui.measure_tooltip) return;
 	GuiShowTooltips(_thd.GetCallbackWnd(), str, paramcount, params, close_cond);
@@ -4903,7 +4917,7 @@ static int CalcHeightdiff(HighLightStyle style, uint distance, TileIndex start_t
 	return (int)(h1 - h0) * TILE_HEIGHT_STEP;
 }
 
-static void ShowLengthMeasurement(HighLightStyle style, TileIndex start_tile, TileIndex end_tile, TooltipCloseCondition close_cond = TCC_NONE, bool show_single_tile_length = false)
+static void ShowLengthMeasurement(HighLightStyle style, TileIndex start_tile, TileIndex end_tile, TooltipCloseCondition close_cond = TCC_EXIT_VIEWPORT, bool show_single_tile_length = false)
 {
 	static const StringID measure_strings_length[] = {STR_NULL, STR_MEASURE_LENGTH, STR_MEASURE_LENGTH_HEIGHTDIFF};
 
@@ -5324,6 +5338,7 @@ static HighLightStyle CalcPolyrailDrawstyle(Point pt, bool dragging)
 	if (snap_mode == RSM_SNAP_TO_TILE && GetRailSnapTile() == TileVirtXY(pt.x, pt.y)) {
 		_thd.selend.x = pt.x;
 		_thd.selend.y = pt.y;
+		HideMeasurementTooltips();
 		return GetAutorailHT(pt.x, pt.y);
 	}
 
@@ -5343,7 +5358,10 @@ static HighLightStyle CalcPolyrailDrawstyle(Point pt, bool dragging)
 		snap_point = FindBestPolyline(pt, _rail_snap_points.data(), _rail_snap_points.size(), &line);
 	}
 
-	if (snap_point == nullptr) return HT_NONE; // no match
+	if (snap_point == nullptr) {
+		HideMeasurementTooltips();
+		return HT_NONE; // no match
+	}
 
 	if (lock_snapping && _current_snap_lock.x == -1) {
 		/* lock down the snap point */
@@ -5383,7 +5401,7 @@ static HighLightStyle CalcPolyrailDrawstyle(Point pt, bool dragging)
 	}
 
 	HighLightStyle ret = HT_LINE | (HighLightStyle)TrackdirToTrack(seldir);
-	ShowLengthMeasurement(ret, TileVirtXY(_thd.selstart.x, _thd.selstart.y), TileVirtXY(_thd.selend.x, _thd.selend.y), TCC_HOVER, true);
+	ShowLengthMeasurement(ret, TileVirtXY(_thd.selstart.x, _thd.selstart.y), TileVirtXY(_thd.selend.x, _thd.selend.y), TCC_EXIT_VIEWPORT, true);
 	return ret;
 }
 
@@ -5505,7 +5523,7 @@ calc_heightdiff_single_direction:;
 			params[index++] = GetTileMaxZ(t1) * TILE_HEIGHT_STEP;
 			params[index++] = heightdiff;
 			//Show always the measurement tooltip
-			GuiShowTooltips(_thd.GetCallbackWnd(),STR_MEASURE_DIST_HEIGHTDIFF, index, params, TCC_NONE);
+			GuiShowTooltips(_thd.GetCallbackWnd(),STR_MEASURE_DIST_HEIGHTDIFF, index, params, TCC_EXIT_VIEWPORT);
 			break;
 		}
 
@@ -5975,4 +5993,35 @@ void SetViewportCatchmentTown(const Town *t, bool sel)
 		MarkWholeNonMapViewportsDirty();
 	}
 	if (_viewport_highlight_town != nullptr) SetWindowDirty(WC_TOWN_VIEW, _viewport_highlight_town->index);
+}
+
+int GetSlopeTreeBrightnessAdjust(Slope slope)
+{
+	switch (slope) {
+		case SLOPE_NW:
+		case SLOPE_STEEP_N:
+		case SLOPE_STEEP_W:
+			return 8;
+		case SLOPE_N:
+		case SLOPE_W:
+		case SLOPE_ENW:
+		case SLOPE_NWS:
+			return 4;
+		case SLOPE_SE:
+			return -10;
+		case SLOPE_STEEP_S:
+		case SLOPE_STEEP_E:
+			return -4;
+		case SLOPE_NE:
+			return -8;
+		case SLOPE_SW:
+			return -4;
+		case SLOPE_S:
+		case SLOPE_E:
+		case SLOPE_SEN:
+		case SLOPE_WSE:
+			return -6;
+		default:
+			return 0;
+	}
 }

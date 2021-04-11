@@ -324,6 +324,8 @@ static CommandCost BuildReplacementVehicle(Vehicle *old_veh, Vehicle **new_vehic
 	/* Does it need to be refitted */
 	CargoID refit_cargo = GetNewCargoTypeForReplace(old_veh, e, part_of_chain);
 	if (refit_cargo == CT_INVALID) {
+		if (!IsLocalCompany()) return CommandCost();
+
 		SetDParam(0, old_veh->index);
 
 		int order_id = GetIncompatibleRefitOrderIdForAutoreplace(old_veh, e);
@@ -612,6 +614,7 @@ static CommandCost ReplaceChain(Vehicle **chain, DoCommandFlag flags, bool wagon
 
 					/* Sell wagon */
 					CommandCost ret = DoCommand(0, wagon->index, 0, DC_EXEC, GetCmdSellVeh(wagon));
+					(void)ret; // assert only
 					assert(ret.Succeeded());
 					new_vehs[i] = nullptr;
 
@@ -667,6 +670,7 @@ static CommandCost ReplaceChain(Vehicle **chain, DoCommandFlag flags, bool wagon
 
 				for (int i = num_units - 1; i > 0; i--) {
 					CommandCost ret = CmdMoveVehicle(old_vehs[i], old_head, DC_EXEC | DC_AUTOREPLACE, false);
+					(void)ret; // assert only
 					assert(ret.Succeeded());
 				}
 			}

@@ -14,7 +14,7 @@
         <key>CFBundleIconFile</key>
         <string>${CPACK_BUNDLE_NAME}.icns</string>
         <key>CFBundleIdentifier</key>
-        <string>org.openttd.openttd</string>
+        <string>org.openttd.openttd.jgrpp</string>
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
         <key>CFBundleName</key>
@@ -29,5 +29,7 @@
         <string>Copyright 2004-${CURRENT_YEAR} The OpenTTD team</string>
         <key>NSPrincipalClass</key>
         <string>NSApplication</string>
+        <key>NSHighResolutionCapable</key>
+        <string>True</string>
 </dict>
 </plist>

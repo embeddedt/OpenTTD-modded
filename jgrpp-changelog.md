@@ -2,6 +2,96 @@
 
 * * *
 
+### v0.40.5 (2021-03-29)
+* Fix through load crash when the rearmost unit of a train is longer than the whole platform and has no cargo capacity.
+* Realistic braking:
+  * Fix crash which could occur when a command caused multiple reserved signals to be unreserved.
+  * Fix unnecessary braking when leaving station with order without non-stop flag.
+  * Fix building over existing stations bypassing realistic braking moving train restrictions.
+  * Fix train overshot station advice message being shown to all companies.
+  * Improve braking behaviour when descending slopes.
+  * Increase signal sighting distance (how close the train needs to get to a signal before the driver can "see" it).
+* Map generation:
+  * Allow configuring the height at which rainforests start in the sub-tropic climate.
+  * Allow configuring the size of rocky patches and how the size of rocky patches increases with height.
+  * Add "very many" and "extremely many" modes for the number of rivers to generate.
+  * Add settings to control river and lake generation parameters, and how rivers interact with deserts in the sub-tropic climate.
+* Fix flickering of polyrail measurement tooltip.
+* Fix routing restriction train is loading status condition incorrectly evaluating as false when predicting future orders.
+* Add settings to customise the size of town zones.
+* Allow clicking the money text in the cheats window to enter a quantity.
+* Allow shift-clicking on borrow/repay money buttons to enter a quantity.
+* Add setting to disable new vehicles being introduced after a given year.
+* Add setting to enable non-admin multiplayer clients to rename towns.
+* Add timetable lateness/earliness conditional order.
+* Add additional YAPF pathfinder penalty when reversing at a waypoint which is already reserved.
+* Fix save/load errors which could occur on some GCC versions.
+* Fix Windows crash log dialog not appearing for crashes not on the main thread.
+* Packaging: Fix various issues with the package metadata for Debian/Ubuntu .deb files.
+* Add Korean translations by TELK.
+
+### v0.40.4 (2021-03-07)
+* Fix crash when removing/upgrading airport with hangar window open.
+* Fix compiling as a dedicated server.
+* Fix compiling with Allegro.
+* Add screenshot type: whole map at current zoom level.
+* Add empty hotkey for the industry chains window.
+* Allow following vehicles at all non-map zoom levels.
+* Add Korean translations by TELK.
+* Bump trunk base from commit c656633bea39d2002330eddee54522c8db542785 to commit f70aa8fabe5eabb39a62cc50a3a27ec1c2434ded.
+
+### v0.40.3 (2021-03-02)
+* Fix crashes with trains with no valid orders when using the realistic braking model.
+* Fix trains with no orders not stopping at stations when using the realistic braking model.
+* Fix trains passing signals when using both the original acceleration and original braking models.
+* Fix various issues with ship collision avoidance which could result in a group of ships being routed in a circle.
+* Fix for crash when exiting whilst NewGRF scan still in progress.
+* Add support for zstd savegame compression for autosaves and network joins.
+* Add setting for shading trees on slopes in viewports (default on).
+* Improve visibility of slopes under trees in viewport map vegetation mode.
+* Improve performance of water flooding checks.
+* Improve performance of snow line checks in the arctic climate.
+* Improve performance of drawing rail catenary.
+* Fix compilation on ARM Windows with MSVC.
+* MacOS: Change bundle identifier.
+* Add Korean translations by TELK.
+* Bump trunk base from commit 069fb5425302edc93a77ca54b3665a7102747f5a to commit c656633bea39d2002330eddee54522c8db542785.
+
+### v0.40.2 (2021-02-17)
+* Fix upgrading road bridge with opposite road/tram type producing broken bridge ramps where required road/tram pieces are missing.
+* Fix crash if AI attempts to set order flags of invalid vehicle's order and the no non-stop orders setting is enabled.
+* Fix case where reservations could become detached from trains when a restricted signal returns inconsistent reserve through results in the realistic braking model.
+* Fix trains slowing down too much when stopping at stations in the original braking model.
+* Fix train speed not being set to 0 for timetabled wait at waypoint orders.
+* Fix departure boards not handling unconditional order jumps.
+* Fix viewport order lines not handling unconditional jump orders.
+* Fix autorenew failure advice due to bad refit being shown to all companies.
+* Add conditional order for current time/date.
+* Add release slot train order.
+* Add "indifferent" mode to the town council attitude to area restructuring setting.
+* Show warning icon in order window if there are timetable warnings.
+* If realistic braking can't be enabled, show an extra viewport on the signal preventing enabling.
+* Routing restrictions:
+  * Add PBS end signal conditional for use with realistic braking.
+  * Add reserved tiles ahead conditional for use with realistic braking.
+  * Change PBS entry signal conditional to be in the advanced category in the UI.
+* Fix building on Apple MacOS 10.12.
+
+### v0.40.1 (2021-02-05)
+* Fix crash when removing signals from bridge or tunnel.
+* Fix left mouse button scrolling in viewport map mode.
+* Fix clicking trains in slots window, when a slot is selected.
+* Fix timetable crash which could occur when all rail tiles are removed from the station of a train order.
+* Realistic braking:
+  * Fix crash when downgrading road bridge when realistic braking enabled.
+  * Fix crash when removing tunnel which is not currently reserved when realistic braking enabled.
+  * Fix crash which could occur when a track edit command causes the reservation of a stationary train to be freed.
+  * Fix maglevs having braking parameters calculated incorrectly, and braking excessively slowly.
+  * Fix signal dragging placing the final signal too early when obstructed by a train reservation.
+  * Fix curve speed limit prediction being too pessimistic in some circumstances.
+  * Give monorail and maglev higher limits for realistic braking deceleration.
+* Fix players being charged to cycle tunnel/bridge signal type with CTRL, when it should be free.
+
 ### v0.40.0 (2021-02-02)
 * Fix crash in auto-separation when all orders removed.
 * Fix crash when removing rail depot or road when debug window open on tile.

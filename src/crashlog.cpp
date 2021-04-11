@@ -60,6 +60,9 @@
 #ifdef WITH_LIBLZMA
 #	include <lzma.h>
 #endif
+#ifdef WITH_ZSTD
+#include <zstd.h>
+#endif
 #ifdef WITH_LZO
 #include <lzo/lzo1x.h>
 #endif
@@ -75,7 +78,6 @@
 /* static */ const char *CrashLog::message = nullptr;
 /* static */ char *CrashLog::gamelog_buffer = nullptr;
 /* static */ const char *CrashLog::gamelog_last = nullptr;
-/* static */ const CrashLog *CrashLog::main_thread_pending_crashlog = nullptr;
 
 char *CrashLog::LogCompiler(char *buffer, const char *last) const
 {
@@ -292,6 +294,10 @@ char *CrashLog::LogLibraries(char *buffer, const char *last) const
 	buffer += seprintf(buffer, last, " LZMA:       %s\n", lzma_version_string());
 #endif
 
+#ifdef WITH_ZSTD
+	buffer += seprintf(buffer, last, " ZSTD:       %s\n", ZSTD_versionString());
+#endif
+
 #ifdef WITH_LZO
 	buffer += seprintf(buffer, last, " LZO:        %s\n", lzo_version_string());
 #endif
@@ -434,7 +440,7 @@ char *CrashLog::FillCrashLog(char *buffer, const char *last) const
 	buffer = this->LogError(buffer, last, CrashLog::message);
 
 #ifdef USE_SCOPE_INFO
-	if (IsMainThread()) {
+	if (IsMainThread() || IsGameThread()) {
 		buffer += WriteScopeLog(buffer, last);
 	}
 #endif
@@ -489,6 +495,16 @@ char *CrashLog::FillDesyncCrashLog(char *buffer, const char *last, const DesyncE
 	if (_game_load_time != 0) {
 		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), %s",
 				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter, asctime(gmtime(&_game_load_time)));
+	}
+	if (!_network_server) {
+		extern Date   _last_sync_date;
+		extern DateFract _last_sync_date_fract;
+		extern uint8  _last_sync_tick_skip_counter;
+
+		YearMonthDay ymd;
+		ConvertDateToYMD(_last_sync_date, &ymd);
+		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i)",
+				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter);
 	}
 	buffer += seprintf(buffer, last, "\n");
 
@@ -627,6 +643,10 @@ bool CrashLog::MakeCrashLog()
 	if (crashlogged) return false;
 	crashlogged = true;
 
+	if (!VideoDriver::EmergencyAcquireGameLock(20, 2)) {
+		printf("Failed to acquire gamelock before filling crash log\n\n");
+	}
+
 	char filename[MAX_PATH];
 	char buffer[65536 * 4];
 	bool ret = true;
@@ -662,15 +682,10 @@ bool CrashLog::MakeCrashLog()
 	_savegame_DBGL_data = buffer;
 	_save_DBGC_data = true;
 
-	if (IsNonMainThread()) {
-		printf("Asking main thread to write crash savegame and screenshot...\n\n");
-		CrashLog::main_thread_pending_crashlog = this;
-		_exit_game = true;
-		CSleep(60000);
-		if (!CrashLog::main_thread_pending_crashlog) return ret;
-		printf("Main thread did not write crash savegame and screenshot within 60s, trying it from this thread...\n\n");
+	if (!VideoDriver::EmergencyAcquireGameLock(1000, 5)) {
+		printf("Failed to acquire gamelock before writing crash savegame and screenshot, proceeding without lock as current owner is probably stuck\n\n");
 	}
-	CrashLog::main_thread_pending_crashlog = nullptr;
+
 	bret = CrashLog::MakeCrashSavegameAndScreenshot();
 	if (!bret) ret = false;
 
@@ -783,18 +798,6 @@ bool CrashLog::MakeCrashSavegameAndScreenshot() const
 	}
 
 	return ret;
-}
-
-/* static */ void CrashLog::MainThreadExitCheckPendingCrashlog()
-{
-	const CrashLog *cl = CrashLog::main_thread_pending_crashlog;
-	if (cl) {
-		CrashLog::main_thread_pending_crashlog = nullptr;
-		cl->MakeCrashSavegameAndScreenshot();
-
-		CrashLog::AfterCrashLogCleanup();
-		abort();
-	}
 }
 
 /**

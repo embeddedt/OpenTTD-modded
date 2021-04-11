@@ -263,11 +263,12 @@ DECLARE_ENUM_AS_BIT_SET(FollowReservationFlags)
 
 static void CheckCurveLookAhead(const Train *v, TrainReservationLookAhead *lookahead, int end_position, int z, RailType rt)
 {
+	/* Coarse filter: remove curves beyond train length */
 	while (!lookahead->curves.empty() && lookahead->curves.front().position < end_position - v->gcache.cached_total_length) {
 		lookahead->curves.pop_front();
 	}
 
-	if (lookahead->curves.empty()) return;
+	if (lookahead->curves.empty() || v->Next() == nullptr) return;
 
 	static const int absolute_max_speed = UINT16_MAX;
 	int max_speed = absolute_max_speed;
@@ -279,15 +280,22 @@ static void CheckCurveLookAhead(const Train *v, TrainReservationLookAhead *looka
 	int sum = 0;
 	int pos = 0;
 	int lastpos = -1;
-	const Train *u = v->Last();
-	int veh_offset = v->gcache.cached_total_length - u->gcache.cached_veh_length;
-	for (const TrainReservationLookAheadCurve &curve : lookahead->curves) {
+	const Train *u = v->Next();
+	int veh_offset = v->CalcNextVehicleOffset();
+	for (auto iter = lookahead->curves.rbegin(); iter != lookahead->curves.rend(); ++iter) {
+		const TrainReservationLookAheadCurve &curve = *iter;
 		int delta = end_position - curve.position;
-		while (veh_offset > delta && u->Previous() != nullptr) {
-			veh_offset -= u->gcache.cached_veh_length;
-			pos++;
-			u = u->Previous();
+		while (delta >= veh_offset) {
+			if (u->Next() != nullptr) {
+				veh_offset += u->CalcNextVehicleOffset();
+				u = u->Next();
+				pos++;
+			} else {
+				u = nullptr;
+				break;
+			}
 		}
+		if (u == nullptr) break;
 
 		if (curve.dir_diff == DIRDIFF_45LEFT) curvecount[0]++;
 		if (curve.dir_diff == DIRDIFF_45RIGHT) curvecount[1]++;
@@ -649,6 +657,23 @@ static Vehicle *FindTrainOnTrackEnum(Vehicle *v, void *data)
 	return nullptr;
 }
 
+bool ValidateLookAhead(const Train *v)
+{
+	TileIndex tile = v->lookahead->reservation_end_tile;
+	Trackdir trackdir = v->lookahead->reservation_end_trackdir;
+
+	if (HasBit(v->lookahead->flags, TRLF_TB_EXIT_FREE)) {
+		if (!likely(IsTileType(tile, MP_TUNNELBRIDGE) && GetTunnelBridgeTransportType(tile) == TRANSPORT_RAIL && TrackdirEntersTunnelBridge(tile, trackdir))) {
+			return false;
+		}
+	}
+	if (HasBit(v->lookahead->flags, TRLF_DEPOT_END) && !IsRailDepotTile(tile)) return false;
+
+	TrackdirBits trackdirbits = TrackStatusToTrackdirBits(GetTileTrackStatus(tile, TRANSPORT_RAIL, 0));
+	if (!HasTrackdir(trackdirbits, trackdir)) return false;
+
+	return true;
+}
 
 /**
  * Follow a train reservation to the last tile.
@@ -670,7 +695,7 @@ PBSTileInfo FollowTrainReservation(const Train *v, Vehicle **train_on_res, Follo
 		if (HasBit(v->lookahead->flags, TRLF_DEPOT_END)) return PBSTileInfo(tile, trackdir, false);
 		if (HasBit(v->lookahead->flags, TRLF_TB_EXIT_FREE)) {
 			TileIndex exit_tile = GetOtherTunnelBridgeEnd(tile);
-			if (GetTunnelBridgeExitSignalState(exit_tile) == SIGNAL_STATE_GREEN && HasAcrossTunnelBridgeReservation(exit_tile)) {
+			if (IsTunnelBridgeSignalSimulationExit(exit_tile) && GetTunnelBridgeExitSignalState(exit_tile) == SIGNAL_STATE_GREEN && HasAcrossTunnelBridgeReservation(exit_tile)) {
 				tile = exit_tile;
 				DiagDirection exit_dir = ReverseDiagDir(GetTunnelBridgeDirection(exit_tile));
 				trackdir = TrackEnterdirToTrackdir(FindFirstTrack(GetAcrossTunnelBridgeTrackBits(exit_tile)), exit_dir);
@@ -685,7 +710,7 @@ PBSTileInfo FollowTrainReservation(const Train *v, Vehicle **train_on_res, Follo
 
 	FindTrainOnTrackInfo ftoti;
 	ftoti.res = FollowReservation(v->owner, GetRailTypeInfo(v->railtype)->all_compatible_railtypes, tile, trackdir, FRF_NONE, v, nullptr);
-	ftoti.res.okay = IsSafeWaitingPosition(v, ftoti.res.tile, ftoti.res.trackdir, true, _settings_game.pf.forbid_90_deg);
+	ftoti.res.okay = (flags & FTRF_OKAY_UNUSED) ? false : IsSafeWaitingPosition(v, ftoti.res.tile, ftoti.res.trackdir, true, _settings_game.pf.forbid_90_deg);
 	if (train_on_res != nullptr) {
 		FindVehicleOnPos(ftoti.res.tile, VEH_TRAIN, &ftoti, FindTrainOnTrackEnum);
 		if (ftoti.best != nullptr) *train_on_res = ftoti.best->First();
@@ -808,6 +833,7 @@ static int ScanTrainPositionForLookAheadStation(Train *t, TileIndex start_tile)
 
 void TryCreateLookAheadForTrainInTunnelBridge(Train *t)
 {
+	if (IsTunnelBridgeSignalSimulationExitOnly(t->tile)) return;
 	DiagDirection tb_dir = GetTunnelBridgeDirection(t->tile);
 	if (DirToDiagDirAlongAxis(t->direction, DiagDirToAxis(tb_dir)) == tb_dir) {
 		/* going in the right direction, allocate a new lookahead */
@@ -1035,19 +1061,26 @@ CommandCost CheckTrainInTunnelBridgePreventsTrackModification(TileIndex start, T
  * This is called to retrieve the previous signal, as required
  * This is not run all the time as it is somewhat expensive and most restrictions will not test for the previous signal
  */
-TileIndex VehiclePosTraceRestrictPreviousSignalCallback(const Train *v, const void *)
+TileIndex VehiclePosTraceRestrictPreviousSignalCallback(const Train *v, const void *, TraceRestrictPBSEntrySignalAuxField mode)
 {
-	if (IsRailDepotTile(v->tile)) {
-		return v->tile;
-	}
-	if (v->track & TRACK_BIT_WORMHOLE && IsTileType(v->tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(v->tile) && IsTunnelBridgeEffectivelyPBS(v->tile)) {
-		return v->tile;
+	TileIndex tile;
+	Trackdir  trackdir;
+
+	if (mode == TRPESAF_RES_END && v->lookahead != nullptr) {
+		tile = v->lookahead->reservation_end_tile;
+		trackdir = v->lookahead->reservation_end_trackdir;
+	} else {
+		if (IsRailDepotTile(v->tile)) {
+			return v->tile;
+		}
+		if (v->track & TRACK_BIT_WORMHOLE && IsTileType(v->tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(v->tile) && IsTunnelBridgeEffectivelyPBS(v->tile)) {
+			return v->tile;
+		}
+		tile = v->tile;
+		trackdir = v->GetVehicleTrackdir();
 	}
 
 	// scan forwards from vehicle position, for the case that train is waiting at/approaching PBS signal
-
-	TileIndex tile = v->tile;
-	Trackdir  trackdir = v->GetVehicleTrackdir();
 
 	CFollowTrackRail ft(v);
 
@@ -1060,6 +1093,10 @@ TileIndex VehiclePosTraceRestrictPreviousSignalCallback(const Train *v, const vo
 				// wrong type of signal
 				return INVALID_TILE;
 			}
+		}
+
+		if (IsTileType(tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(tile) && IsTunnelBridgeEffectivelyPBS(tile) && TrackdirExitsTunnelBridge(tile, trackdir)) {
+			return tile;
 		}
 
 		// advance to next tile

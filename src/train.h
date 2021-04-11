@@ -99,6 +99,7 @@ struct TrainCache {
 	/* cached values, recalculated on load and each time a vehicle is added to/removed from the consist. */
 	bool cached_tilt;             ///< train can tilt; feature provides a bonus in curves
 	uint8 cached_num_engines;     ///< total number of engines, including rear ends of multiheaded engines
+	uint16 cached_centre_mass;    ///< Cached position of the centre of mass, from the front
 	uint16 cached_veh_weight;     ///< Cached individual vehicle weight
 	uint16 cached_uncapped_decel; ///< Uncapped cached deceleration for realistic braking lookahead purposes
 	uint8 cached_deceleration;    ///< Cached deceleration for realistic braking lookahead purposes
@@ -311,6 +312,10 @@ protected: // These functions should not be called outside acceleration code.
 		return 0;
 	}
 
+	/**
+	 * Allows to know the weight value that this vehicle will use (excluding cargo).
+	 * @return Weight value from the engine in tonnes.
+	 */
 	inline uint16 GetWeightWithoutCargo() const
 	{
 		uint16 weight = 0;
@@ -329,12 +334,21 @@ protected: // These functions should not be called outside acceleration code.
 	}
 
 	/**
+	 * Allows to know the weight value that this vehicle will use (cargo only).
+	 * @return Weight value from the engine in tonnes.
+	 */
+	inline uint16 GetCargoWeight() const
+	{
+		return this->GetCargoWeight(this->cargo.StoredCount());
+	}
+
+	/**
 	 * Allows to know the weight value that this vehicle will use.
 	 * @return Weight value from the engine in tonnes.
 	 */
 	inline uint16 GetWeight() const
 	{
-		return this->GetWeightWithoutCargo() + this->GetCargoWeight(this->cargo.StoredCount());
+		return this->GetWeightWithoutCargo() + this->GetCargoWeight();
 	}
 
 	/**

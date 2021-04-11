@@ -53,7 +53,7 @@ bool IniFile::SaveToDisk(const std::string &filename)
 	std::string file_new{ filename };
 	file_new.append(".new");
 
-	std::ofstream os(file_new);
+	std::ofstream os(OTTD2FS(file_new).c_str());
 	if (os.fail()) return false;
 
 	for (const IniGroup *group = this->group; group != nullptr; group = group->next) {
@@ -92,17 +92,15 @@ bool IniFile::SaveToDisk(const std::string &filename)
 #endif
 
 #if defined(_WIN32)
-	/* _tcsncpy = strcpy is TCHAR is char, but isn't when TCHAR is wchar. */
-#	undef strncpy
 	/* Allocate space for one more \0 character. */
-	TCHAR tfilename[MAX_PATH + 1], tfile_new[MAX_PATH + 1];
-	_tcsncpy(tfilename, OTTD2FS(filename.c_str()), MAX_PATH);
-	_tcsncpy(tfile_new, OTTD2FS(file_new.c_str()), MAX_PATH);
+	wchar_t tfilename[MAX_PATH + 1], tfile_new[MAX_PATH + 1];
+	wcsncpy(tfilename, OTTD2FS(filename).c_str(), MAX_PATH);
+	wcsncpy(tfile_new, OTTD2FS(file_new).c_str(), MAX_PATH);
 	/* SHFileOperation wants a double '\0' terminated string. */
 	tfilename[MAX_PATH - 1] = '\0';
 	tfile_new[MAX_PATH - 1] = '\0';
-	tfilename[_tcslen(tfilename) + 1] = '\0';
-	tfile_new[_tcslen(tfile_new) + 1] = '\0';
+	tfilename[wcslen(tfilename) + 1] = '\0';
+	tfile_new[wcslen(tfile_new) + 1] = '\0';
 
 	/* Rename file without any user confirmation. */
 	SHFILEOPSTRUCT shfopt;

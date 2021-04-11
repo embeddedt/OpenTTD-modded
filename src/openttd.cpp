@@ -82,6 +82,11 @@
 #include "linkgraph/linkgraphschedule.h"
 #include "tracerestrict.h"
 
+#include <mutex>
+#if defined(__MINGW32__)
+#include "3rdparty/mingw-std-threads/mingw.mutex.h"
+#endif
+
 #include <stdarg.h>
 #include <system_error>
 
@@ -94,6 +99,7 @@
 
 void CallLandscapeTick();
 void IncreaseDate();
+void DoPaletteAnimations();
 void MusicLoop();
 void ResetMusic();
 void CallWindowGameTickEvent();
@@ -103,6 +109,8 @@ extern void ShowOSErrorBox(const char *buf, bool system);
 extern std::string _config_file;
 
 bool _save_config = false;
+bool _request_newgrf_scan = false;
+NewGRFScanCallback *_request_newgrf_scan_callback = nullptr;
 
 GameEventFlags _game_events_since_load;
 GameEventFlags _game_events_overall;
@@ -353,7 +361,7 @@ static void WriteSavegameDebugData(const char *name)
 	if (_load_check_data.debug_log_data.size()) {
 		p += seprintf(p, buflast, "%u bytes of debug log data in savegame\n", (uint) _load_check_data.debug_log_data.size());
 		std::string buffer = _load_check_data.debug_log_data;
-		ProcessLineByLine(const_cast<char *>(buffer.data()), [&](const char *line) {
+		ProcessLineByLine(buffer.data(), [&](const char *line) {
 			if (buflast - p <= 1024) bump_size();
 			p += seprintf(p, buflast, "> %s\n", line);
 		});
@@ -363,7 +371,7 @@ static void WriteSavegameDebugData(const char *name)
 	if (_load_check_data.debug_config_data.size()) {
 		p += seprintf(p, buflast, "%u bytes of debug config data in savegame\n", (uint) _load_check_data.debug_config_data.size());
 		std::string buffer = _load_check_data.debug_config_data;
-		ProcessLineByLine(const_cast<char *>(buffer.data()), [&](const char *line) {
+		ProcessLineByLine(buffer.data(), [&](const char *line) {
 			if (buflast - p <= 1024) bump_size();
 			p += seprintf(p, buflast, "> %s\n", line);
 		});
@@ -481,7 +489,6 @@ static void LoadIntroGame(bool load_newgrfs = true)
 	/* Load the default opening screen savegame */
 	if (SaveOrLoad("opntitle.dat", SLO_LOAD, DFT_GAME_FILE, BASESET_DIR) != SL_OK) {
 		GenerateWorld(GWM_EMPTY, 64, 64); // if failed loading, make empty world.
-		WaitTillGeneratedWorld();
 		SetLocalCompany(COMPANY_SPECTATOR);
 	} else {
 		SetLocalCompany(COMPANY_FIRST);
@@ -685,6 +692,7 @@ static const OptionData _options[] = {
 int openttd_main(int argc, char *argv[])
 {
 	SetSelfAsMainThread();
+	PerThreadSetup();
 	std::string musicdriver;
 	std::string sounddriver;
 	std::string videodriver;
@@ -699,9 +707,6 @@ int openttd_main(int argc, char *argv[])
 
 	extern bool _dedicated_forks;
 	_dedicated_forks = false;
-
-	std::unique_lock<std::mutex> modal_work_lock(_modal_progress_work_mutex, std::defer_lock);
-	std::unique_lock<std::mutex> modal_paint_lock(_modal_progress_paint_mutex, std::defer_lock);
 
 	_game_mode = GM_MENU;
 	_switch_mode = SM_MENU;
@@ -925,6 +930,7 @@ int openttd_main(int argc, char *argv[])
 
 	/* Initialize the zoom level of the screen to normal */
 	_screen.zoom = ZOOM_LVL_NORMAL;
+	UpdateGUIZoom();
 
 	NetworkStartUp(); // initialize network-core
 
@@ -981,25 +987,13 @@ int openttd_main(int argc, char *argv[])
 	if (musicdriver.empty() && !_ini_musicdriver.empty()) musicdriver = _ini_musicdriver;
 	DriverFactoryBase::SelectDriver(musicdriver, Driver::DT_MUSIC);
 
-	/* Take our initial lock on whatever we might want to do! */
-	try {
-		modal_work_lock.lock();
-		modal_paint_lock.lock();
-	} catch (const std::system_error&) {
-		/* If there is some error we assume that threads aren't usable on the system we run. */
-		extern bool _use_threaded_modal_progress; // From progress.cpp
-		_use_threaded_modal_progress = false;
-	}
-
 	GenerateWorld(GWM_EMPTY, 64, 64); // Make the viewport initialization happy
-	WaitTillGeneratedWorld();
-
 	LoadIntroGame(false);
 
 	CheckForMissingGlyphs();
 
 	/* ScanNewGRFFiles now has control over the scanner. */
-	ScanNewGRFFiles(scanner.release());
+	RequestNewGRFScan(scanner.release());
 
 	VideoDriver::GetInstance()->MainLoop();
 
@@ -1007,10 +1001,7 @@ int openttd_main(int argc, char *argv[])
 	return 0;
 #endif
 
-	CrashLog::MainThreadExitCheckPendingCrashlog();
-
 	WaitTillSaved();
-	WaitTillGeneratedWorld(); // Make sure any generate world threads have been joined.
 
 	/* only save config if we have to */
 	if (_save_config) {
@@ -1646,10 +1637,11 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 						print_gv_cache_diff("train", gro_cache[length], Train::From(u)->gcache);
 					}
 					if (memcmp(&tra_cache[length], &Train::From(u)->tcache, sizeof(TrainCache)) != 0) {
-						CCLOGV("train cache mismatch: %c%c%c%c%c%c%c%c",
+						CCLOGV("train cache mismatch: %c%c%c%c%c%c%c%c%c",
 								tra_cache[length].cached_override != Train::From(u)->tcache.cached_override ? 'o' : '-',
 								tra_cache[length].cached_tilt != Train::From(u)->tcache.cached_tilt ? 't' : '-',
 								tra_cache[length].cached_num_engines != Train::From(u)->tcache.cached_num_engines ? 'e' : '-',
+								tra_cache[length].cached_centre_mass != Train::From(u)->tcache.cached_centre_mass ? 'm' : '-',
 								tra_cache[length].cached_veh_weight != Train::From(u)->tcache.cached_veh_weight ? 'w' : '-',
 								tra_cache[length].cached_uncapped_decel != Train::From(u)->tcache.cached_uncapped_decel ? 'D' : '-',
 								tra_cache[length].cached_deceleration != Train::From(u)->tcache.cached_deceleration ? 'd' : '-',
@@ -1796,8 +1788,8 @@ void StateGameLoop()
 		StateGameLoop_LinkGraphPauseControl();
 	}
 
-	/* don't execute the state loop during pause */
-	if (_pause_mode != PM_UNPAUSED) {
+	/* Don't execute the state loop during pause or when modal windows are open. */
+	if (_pause_mode != PM_UNPAUSED || HasModalProgress()) {
 		PerformanceMeasurer::Paused(PFE_GAMELOOP);
 		PerformanceMeasurer::Paused(PFE_GL_ECONOMY);
 		PerformanceMeasurer::Paused(PFE_GL_TRAINS);
@@ -1806,7 +1798,7 @@ void StateGameLoop()
 		PerformanceMeasurer::Paused(PFE_GL_AIRCRAFT);
 		PerformanceMeasurer::Paused(PFE_GL_LANDSCAPE);
 
-		UpdateLandscapingLimits();
+		if (!HasModalProgress()) UpdateLandscapingLimits();
 #ifndef DEBUG_DUMP_COMMANDS
 		Game::GameLoop();
 #endif
@@ -1815,7 +1807,6 @@ void StateGameLoop()
 
 	PerformanceMeasurer framerate(PFE_GAMELOOP);
 	PerformanceAccumulator::Reset(PFE_GL_LANDSCAPE);
-	if (HasModalProgress()) return;
 
 	Layouter::ReduceLineCache();
 
@@ -1903,9 +1894,22 @@ static void DoAutosave()
 	}
 
 	DEBUG(sl, 2, "Autosaving to '%s'", buf);
-	if (SaveOrLoad(buf, SLO_SAVE, DFT_GAME_FILE, AUTOSAVE_DIR) != SL_OK) {
+	if (SaveOrLoad(buf, SLO_SAVE, DFT_GAME_FILE, AUTOSAVE_DIR, true, SMF_ZSTD_OK) != SL_OK) {
 		ShowErrorMessage(STR_ERROR_AUTOSAVE_FAILED, INVALID_STRING_ID, WL_ERROR);
 	}
+}
+
+/**
+ * Request a new NewGRF scan. This will be executed on the next game-tick.
+ * This is mostly needed to ensure NewGRF scans (which are blocking) are
+ * done in the game-thread, and not in the draw-thread (which most often
+ * triggers this request).
+ * @param callback Optional callback to call when NewGRF scan is completed.
+ */
+void RequestNewGRFScan(NewGRFScanCallback *callback)
+{
+	_request_newgrf_scan = true;
+	_request_newgrf_scan_callback = callback;
 }
 
 void GameLoopSpecial()
@@ -1935,8 +1939,15 @@ void GameLoop()
 	if (_game_mode == GM_BOOTSTRAP) {
 		/* Check for UDP stuff */
 		if (_network_available) NetworkBackgroundLoop();
-		InputLoop();
 		return;
+	}
+
+	if (_request_newgrf_scan) {
+		ScanNewGRFFiles(_request_newgrf_scan_callback);
+		_request_newgrf_scan = false;
+		_request_newgrf_scan_callback = nullptr;
+		/* In case someone closed the game during our scan, don't do anything else. */
+		if (_exit_game) return;
 	}
 
 	ProcessAsyncSaveFinish();
@@ -1950,7 +1961,6 @@ void GameLoop()
 	}
 
 	IncreaseSpriteLRU();
-	InteractiveRandom();
 
 	/* Check for UDP stuff */
 	if (_network_available) NetworkBackgroundLoop();
@@ -1968,7 +1978,11 @@ void GameLoop()
 		StateGameLoop();
 	}
 
-	InputLoop();
+	if (!_pause_mode && HasBit(_display_opt, DO_FULL_ANIMATION)) {
+		extern std::mutex _cur_palette_mutex;
+		std::lock_guard<std::mutex> lock_state(_cur_palette_mutex);
+		DoPaletteAnimations();
+	}
 
 	SoundDriver::GetInstance()->MainLoop();
 	MusicLoop();

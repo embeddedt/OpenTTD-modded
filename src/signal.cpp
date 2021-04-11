@@ -735,6 +735,18 @@ void UpdateSignalsInBuffer()
 	}
 }
 
+/**
+ * Update signals in buffer if the owner could not be added to the current buffer
+ * Called from 'outside'
+ */
+void UpdateSignalsInBufferIfOwnerNotAddable(Owner owner)
+{
+	if (!_globset.IsEmpty() && !IsOneSignalBlock(owner, _last_owner)) {
+		UpdateSignalsInBuffer(_last_owner);
+		_last_owner = INVALID_OWNER; // invalidate
+	}
+}
+
 
 /**
  * Add track to signal update buffer
@@ -810,9 +822,10 @@ void AddSideToSignalBuffer(TileIndex tile, DiagDirection side, Owner owner)
  */
 SigSegState UpdateSignalsOnSegment(TileIndex tile, DiagDirection side, Owner owner)
 {
-	assert(_globset.IsEmpty());
+	UpdateSignalsInBufferIfOwnerNotAddable(owner);
 	_globset.Add(tile, side);
 
+	_last_owner = INVALID_OWNER;
 	return UpdateSignalsInBuffer(owner);
 }
 

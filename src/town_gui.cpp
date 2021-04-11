@@ -354,7 +354,8 @@ public:
 	{
 		extern const Town *_viewport_highlight_town;
 		this->SetWidgetLoweredState(WID_TV_CATCHMENT, _viewport_highlight_town == this->town);
-		this->SetWidgetDisabledState(WID_TV_CHANGE_NAME, _networking && !(_network_server || _network_settings_access));
+		this->SetWidgetDisabledState(WID_TV_CHANGE_NAME, _networking && !(_network_server || _network_settings_access) &&
+				!(_local_company != COMPANY_SPECTATOR && _settings_game.difficulty.rename_towns_in_multiplayer));
 
 		this->DrawWidgets();
 	}
@@ -565,7 +566,7 @@ public:
 	{
 		if (str == nullptr) return;
 
-		DoCommandP(0, this->window_number, 0, CMD_RENAME_TOWN | CMD_MSG(STR_ERROR_CAN_T_RENAME_TOWN), nullptr, str);
+		DoCommandP(0, this->window_number, 0, ((_networking && !(_network_server || _network_settings_access)) ? CMD_RENAME_TOWN_NON_ADMIN : CMD_RENAME_TOWN) | CMD_MSG(STR_ERROR_CAN_T_RENAME_TOWN), nullptr, str);
 	}
 
 	bool IsNewGRFInspectable() const override
@@ -1027,7 +1028,7 @@ void CcFoundTown(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2
 {
 	if (result.Failed()) return;
 
-	if (_settings_client.sound.confirm) SndPlayTileFx(SND_1F_SPLAT_OTHER, tile);
+	if (_settings_client.sound.confirm) SndPlayTileFx(SND_1F_CONSTRUCTION_OTHER, tile);
 	if (!_settings_client.gui.persistent_buildingtools) ResetObjectToPlace();
 }
 
@@ -1481,7 +1482,7 @@ public:
 		if (_cur_house != INVALID_HOUSE_ID) matrix->SetClicked(this->house_offset); // set clicked item again to make it visible
 	}
 
-	virtual void OnInit() OVERRIDE
+	virtual void OnInit() override
 	{
 		this->house_list.Build();
 		this->RestoreSelectedHouseIndex();
@@ -1524,7 +1525,7 @@ public:
 				case WID_HP_HOUSE_ZONES:
 					for (int i = 0; i < HZB_END; i++) {
 						SetDParam(2 * i, STR_HOUSE_BUILD_HOUSE_ZONE_DISABLED);
-						SetDParam(2 * i + 1, i + 1);
+						SetDParam(2 * i + 1, 4 - i);
 					}
 					break;
 
@@ -1566,8 +1567,8 @@ public:
 					for (int i = 0; i < HZB_END; i++) {
 						/* colour: gold(enabled)/grey(disabled)  */
 						SetDParam(2 * i, HasBit(zones, HZB_END - i - 1) ? STR_HOUSE_BUILD_HOUSE_ZONE_ENABLED : STR_HOUSE_BUILD_HOUSE_ZONE_DISABLED);
-						/* digit: 1(center)/2/3/4/5(edge) */
-						SetDParam(2 * i + 1, i + 1);
+						/* digit: 4(center)/3/1/1/0(edge) */
+						SetDParam(2 * i + 1, 4 - i);
 					}
 					break;
 				}
@@ -1751,12 +1752,12 @@ public:
 		}
 	}
 
-	virtual void OnPlaceObject(Point pt, TileIndex tile) OVERRIDE
+	virtual void OnPlaceObject(Point pt, TileIndex tile) override
 	{
 		PlaceProc_House(tile);
 	}
 
-	virtual void OnPlaceObjectAbort() OVERRIDE
+	virtual void OnPlaceObjectAbort() override
 	{
 		this->house_offset = -1;
 		_cur_house = INVALID_HOUSE_ID;
@@ -1987,7 +1988,7 @@ static void PlaceProc_House(TileIndex tile)
 		_cur_house, // p1 - house type and town index (town not yet set)
 		InteractiveRandom(), // p2 - random bits for the house
 		CMD_BUILD_HOUSE | CMD_MSG(STR_ERROR_CAN_T_BUILD_HOUSE_HERE),
-		CcPlaySound_SPLAT_RAIL
+		CcPlaySound_CONSTRUCTION_RAIL
 	);
 
 	if (!_ctrl_pressed) {

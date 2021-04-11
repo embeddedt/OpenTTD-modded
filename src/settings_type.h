@@ -21,6 +21,15 @@
 #include "zoom_type.h"
 #include "openttd.h"
 
+/* Used to validate sizes of "max" value in settings. */
+const size_t MAX_SLE_UINT8 = UINT8_MAX;
+const size_t MAX_SLE_UINT16 = UINT16_MAX;
+const size_t MAX_SLE_UINT32 = UINT32_MAX;
+const size_t MAX_SLE_UINT = UINT_MAX;
+const size_t MAX_SLE_INT8 = INT8_MAX;
+const size_t MAX_SLE_INT16 = INT16_MAX;
+const size_t MAX_SLE_INT32 = INT32_MAX;
+const size_t MAX_SLE_INT = INT_MAX;
 
 /** Settings profiles and highscore tables. */
 enum SettingsProfile {
@@ -69,6 +78,7 @@ struct DifficultySettings {
 	bool   disasters;                        ///< are disasters enabled
 	byte   town_council_tolerance;           ///< minimum required town ratings to be allowed to demolish stuff
 	bool   money_cheat_in_multiplayer;       ///< is the money cheat permitted for non-admin multiplayer clients
+	bool   rename_towns_in_multiplayer;      ///< is renaming towns permitted for non-admin multiplayer clients
 };
 
 /** Settings relating to viewport/smallmap scrolling. */
@@ -119,6 +129,7 @@ struct GUISettings : public TimeSettings {
 	uint8  window_soft_limit;                ///< soft limit of maximum number of non-stickied non-vital windows (0 = no limit)
 	ZoomLevel zoom_min;                      ///< minimum zoom out level
 	ZoomLevel zoom_max;                      ///< maximum zoom out level
+	ZoomLevel sprite_zoom_min;               ///< maximum zoom level at which higher-resolution alternative sprites will be used (if available) instead of scaling a lower resolution sprite
 	byte   autosave;                         ///< how often should we do autosaves?
 	bool   threaded_saves;                   ///< should we do threaded saves?
 	bool   keep_all_autosave;                ///< name the autosave in a different way
@@ -197,6 +208,8 @@ struct GUISettings : public TimeSettings {
 	byte   starting_colour;                  ///< default color scheme for the company to start a new game with
 	bool   show_newgrf_name;                 ///< Show the name of the NewGRF in the build vehicle window
 	bool   auto_remove_signals;              ///< automatically remove signals when in the way during rail construction
+	uint16 refresh_rate;                     ///< How often we refresh the screen (time between draw-ticks).
+	uint16 fast_forward_speed_limit;         ///< Game speed to use when fast-forward is enabled.
 	bool   show_vehicle_route_steps;         ///< when a window related to a specific vehicle is focused, show route steps
 	bool   show_vehicle_list_company_colour; ///< show the company colour of vehicles which have an owner different to the owner of the vehicle list
 	bool   enable_single_veh_shared_order_gui;    ///< enable showing a single vehicle in the shared order GUI window
@@ -208,6 +221,7 @@ struct GUISettings : public TimeSettings {
 	uint8  linkgraph_colours;                ///< linkgraph overlay colours
 	bool   disable_vehicle_image_update;     ///< Disable NewGRFs from continuously updating vehicle images
 	uint8  vehicle_names;                    ///< Vehicle naming scheme
+	bool   shade_trees_on_slopes;            ///< Shade trees on slopes
 
 	uint16 console_backlog_timeout;          ///< the minimum amount of time items should be in the console backlog before they will be removed in ~3 seconds granularity.
 	uint16 console_backlog_length;           ///< the minimum amount of items in the console backlog before items will be removed.
@@ -348,7 +362,12 @@ struct GameCreationSettings {
 	uint8  map_y;                            ///< Y size of map
 	byte   land_generator;                   ///< the landscape generator
 	byte   oil_refinery_limit;               ///< distance oil refineries allowed from map edge
-	byte   snow_line_height;                 ///< the configured snow line height
+	byte   snow_line_height;                 ///< the configured snow line height (deduced from "snow_coverage")
+	byte   snow_coverage;                    ///< the amount of snow coverage on the map
+	byte   rainforest_line_height;           ///< the configured rainforest line height
+	byte   desert_coverage;                  ///< the amount of desert coverage on the map
+	byte   climate_threshold_mode;           ///< climate threshold mode
+	byte   heightmap_height;                 ///< highest mountain for heightmap (towards what it scales)
 	byte   tgen_smoothness;                  ///< how rough is the terrain from 0-3
 	byte   tree_placer;                      ///< the tree placer algorithm
 	byte   heightmap_rotation;               ///< rotation director for the heightmap
@@ -358,15 +377,22 @@ struct GameCreationSettings {
 	byte   water_borders;                    ///< bitset of the borders that are water
 	uint16 custom_town_number;               ///< manually entered number of towns
 	byte   variety;                          ///< variety level applied to TGP
+	byte   custom_terrain_type;              ///< manually entered height for TGP to aim for
 	byte   custom_sea_level;                 ///< manually entered percentage of water in the map
 	byte   min_river_length;                 ///< the minimum river length
 	byte   river_route_random;               ///< the amount of randomicity for the route finding
 	byte   amount_of_rivers;                 ///< the amount of rivers
+	bool   rivers_top_of_hill;               ///< do rivers require starting near the tops of hills?
+	uint8  river_tropics_width;              ///< the configured width of tropics around rivers
+	uint8  lake_size;                        ///< how large can lakes get?
+	bool   lakes_allowed_in_deserts;         ///< are lakes allowed in deserts?
+	uint8  amount_of_rocks;                  ///< the amount of rocks
+	uint8  height_affects_rocks;             ///< the affect that map height has on rocks
 };
 
 /** Settings related to construction in-game */
 struct ConstructionSettings {
-	uint8  max_heightlevel;                  ///< maximum allowed heightlevel
+	uint8  map_height_limit;                 ///< the maximum allowed heightlevel
 	bool   build_on_slopes;                  ///< allow building on slopes
 	bool   autoslope;                        ///< allow terraforming under things
 	uint16 max_bridge_length;                ///< maximum length of bridges
@@ -555,6 +581,7 @@ struct VehicleSettings {
 	bool   dynamic_engines;                  ///< enable dynamic allocation of engine data
 	bool   never_expire_vehicles;            ///< never expire vehicles
 	Year   no_expire_vehicles_after;         ///< do not expire vehicles ater this year
+	Year   no_introduce_vehicles_after;      ///< do not introduce vehicles ater this year
 	byte   extend_vehicle_life;              ///< extend vehicle life by this many years
 	byte   road_side;                        ///< the side of the road vehicles drive on
 	uint8  plane_crashes;                    ///< number of plane crashes, 0 = none, 1 = reduced, 2 = normal
@@ -588,6 +615,12 @@ struct EconomySettings {
 	bool   multiple_industry_per_town;       ///< allow many industries of the same type per town
 	int8   town_growth_rate;                 ///< town growth rate
 	uint8  town_growth_cargo_transported;    ///< percentage of town growth rate which depends on proportion of transported cargo in the last month
+	bool   town_zone_calc_mode;              ///< calc mode for town zones
+	uint16 town_zone_0_mult;                 ///< multiplier for the size of zone 0
+	uint16 town_zone_1_mult;                 ///< multiplier for the size of zone 1
+	uint16 town_zone_2_mult;                 ///< multiplier for the size of zone 2
+	uint16 town_zone_3_mult;                 ///< multiplier for the size of zone 3
+	uint16 town_zone_4_mult;                 ///< multiplier for the size of zone 4
 	uint8  larger_towns;                     ///< the number of cities to build. These start off larger and grow twice as fast
 	uint8  initial_city_size;                ///< multiplier for the initial size of the cities compared to towns
 	TownLayout town_layout;                  ///< select town layout, @see TownLayout

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.9)
 
 if(NOT BINARY_NAME)
     set(BINARY_NAME openttd)
@@ -7,7 +7,7 @@ endif()
 project(${BINARY_NAME})
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
-    message(FATAL_ERROR "In-source builds not allowed. Please run \"cmake ..\" from the bin directory")
+    message(FATAL_ERROR "In-source builds not allowed. Please run \"cmake ..\" from the build directory. You may need to delete \"${CMAKE_SOURCE_DIR}/CMakeCache.txt\" first.")
 endif()
 
 if (EMSCRIPTEN)
@@ -18,9 +18,12 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
 set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
 
 # Use GNUInstallDirs to allow customisation
-# but set our own default data dir
+# but set our own default data and bin dir
 if(NOT CMAKE_INSTALL_DATADIR)
     set(CMAKE_INSTALL_DATADIR "share/games")
+endif()
+if(NOT CMAKE_INSTALL_BINDIR)
+    set(CMAKE_INSTALL_BINDIR "games")
 endif()
 include(GNUInstallDirs)
 
@@ -83,7 +86,24 @@ if(OPTION_TOOLS_ONLY)
         unset(HOST_BINARY_DIR CACHE)
     endif()
     add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+
+    # Cut down find_version which doesn't include cfg defines set in full configure
+    add_custom_target(find_version
+            ${CMAKE_COMMAND}
+                    -DFIND_VERSION_BINARY_DIR=${CMAKE_BINARY_DIR}/generated
+                    -DCPACK_BINARY_DIR=${CMAKE_BINARY_DIR}
+                    $<$<PLATFORM_ID:Windows>:-DWIN32=TRUE>
+                    -P "${CMAKE_SOURCE_DIR}/cmake/scripts/FindVersion.cmake"
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            BYPRODUCTS ${GENERATED_SOURCE_FILES}
+    )
+
     return()
+endif()
+
+if(APPLE)
+	# Avoid searching for headers in Frameworks, and libraries in LIBDIR.
+	set(CMAKE_FIND_FRAMEWORK LAST)
 endif()
 
 # Prefer -pthread over -lpthread, which is often the better option of the two.
@@ -94,28 +114,37 @@ find_package(Threads REQUIRED)
 find_package(ZLIB)
 find_package(LibLZMA)
 find_package(LZO)
+find_package(ZSTD 1.4)
 find_package(PNG)
 
-if(NOT WIN32)
-    find_package(Allegro)
-    find_package(Freetype)
-    if(NOT APPLE)
-        find_package(SDL2)
-        if(NOT SDL2_FOUND)
-            find_package(SDL)
+if(NOT OPTION_DEDICATED)
+    if(NOT WIN32)
+        find_package(Allegro)
+        if(NOT APPLE)
+            find_package(Freetype)
+            find_package(SDL2)
+            if(NOT SDL2_FOUND)
+                find_package(SDL)
+            endif()
+            find_package(Fluidsynth)
+            find_package(Fontconfig)
+            find_package(ICU OPTIONAL_COMPONENTS i18n lx)
         endif()
-        find_package(Fluidsynth)
-        find_package(Fontconfig)
-        find_package(ICU OPTIONAL_COMPONENTS i18n lx)
-    else()
-        find_package(Iconv)
-
-        find_library(AUDIOTOOLBOX_LIBRARY AudioToolbox)
-        find_library(AUDIOUNIT_LIBRARY AudioUnit)
-        find_library(COCOA_LIBRARY Cocoa)
-
-        find_package(MacUcontext)
     endif()
+endif()
+if(APPLE)
+    find_package(Iconv)
+
+    find_library(AUDIOTOOLBOX_LIBRARY AudioToolbox)
+    find_library(AUDIOUNIT_LIBRARY AudioUnit)
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(QUARTZCORE_LIBRARY QuartzCore)
+
+    find_package(MacUcontext)
+endif()
+
+if(NOT EMSCRIPTEN AND NOT OPTION_DEDICATED)
+    find_package(OpenGL COMPONENTS OpenGL)
 endif()
 
 if(MSVC)
@@ -134,7 +163,7 @@ if (UNIX)
     find_package(BFD)
 endif (UNIX)
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT OPTION_DEDICATED)
     find_package(Fcitx QUIET)
     if (Fcitx_FOUND)
         message(STATUS "Found: Fcitx: ${Fcitx_VERSION}")
@@ -156,19 +185,14 @@ find_package(Xaudio2)
 
 find_package(Grfcodec)
 
-# IPO is only properly supported from CMake 3.9. Despite the fact we are
-# CMake 3.5, still enable IPO if we detect we are 3.9+.
-if(POLICY CMP0069)
-    cmake_policy(SET CMP0069 NEW)
-    include(CheckIPOSupported)
-    check_ipo_supported(RESULT IPO_FOUND)
-endif()
+include(CheckIPOSupported)
+check_ipo_supported(RESULT IPO_FOUND)
 
 show_options()
 
 if(UNIX AND NOT APPLE AND NOT OPTION_DEDICATED)
-    if(NOT SDL_FOUND AND NOT SDL2_FOUND)
-        message(FATAL_ERROR "SDL or SDL2 is required for this platform")
+    if(NOT SDL_FOUND AND NOT SDL2_FOUND AND NOT ALLEGRO_FOUND)
+        message(FATAL_ERROR "SDL, SDL2 or Allegro is required for this platform")
     endif()
 endif()
 if(APPLE)
@@ -181,6 +205,30 @@ if(APPLE)
     if(NOT COCOA_LIBRARY)
         message(FATAL_ERROR "Cocoa is required for this platform")
     endif()
+    if(NOT QUARTZCORE_LIBRARY)
+        message(FATAL_ERROR "QuartzCore is required for this platform")
+    endif()
+endif()
+
+if(OPTION_PACKAGE_DEPENDENCIES)
+    if(NOT UNIX)
+        message(FATAL_ERROR "Can only package dependencies on Linux")
+    endif()
+    if(OPTION_INSTALL_FHS)
+        message(FATAL_ERROR "Cannot install in FHS folders when we are packaging dependencies")
+    endif()
+    if(${CMAKE_VERSION} VERSION_LESS "3.16.0")
+        message(FATAL_ERROR "OPTION_PACKAGE_DEPENDENCIES can only work with CMake 3.16+; you are using ${CMAKE_VERSION}")
+    endif()
+
+    # If we are packaging dependencies, we do two things:
+    # 1) set the RPATH to include $ORIGIN/lib; $ORIGIN (that literal string)
+    #    is a Linux indicator for "path where application is". In CMake, we
+    #    have to do this before add_executable() is executed.
+    # 2) copy the libraries that we compile against to the "lib" folder.
+    #    This is done in InstallAndPackage.cmake.
+    set(CMAKE_INSTALL_RPATH "\$ORIGIN/lib")
+    set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
 endif()
 
 if(OPTION_PACKAGE_DEPENDENCIES)
@@ -219,7 +267,9 @@ set_target_properties(openttd PROPERTIES OUTPUT_NAME "${BINARY_NAME}")
 
 set(host_tools_list strgen settingsgen)
 
-if(CMAKE_CROSSCOMPILING)
+if(HOST_BINARY_DIR)
+    # Host tools already exist, nothing to do
+elseif(CMAKE_CROSSCOMPILING)
     # Pawn off the creation of the host utilities into its own dedicated space
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/host_tools)
     file(TO_NATIVE_PATH ${CMAKE_COMMAND} native_cmake_command)
@@ -247,11 +297,16 @@ else()
     )
 endif()
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/src)
-add_subdirectory(${CMAKE_SOURCE_DIR}/media/baseset)
-add_subdirectory(${CMAKE_SOURCE_DIR}/bin)
+if(MSVC)
+    # Add DPI manifest to project; other WIN32 targets get this via ottdres.rc
+    target_sources(openttd PRIVATE "${CMAKE_SOURCE_DIR}/os/windows/openttd.manifest")
+endif()
 
-if(NOT CMAKE_CROSSCOMPILING)
+add_subdirectory(${CMAKE_SOURCE_DIR}/bin)
+add_subdirectory(${CMAKE_SOURCE_DIR}/src)
+add_subdirectory(${CMAKE_SOURCE_DIR}/media)
+
+if(NOT CMAKE_CROSSCOMPILING AND NOT HOST_BINARY_DIR)
     foreach(tgt IN ITEMS ${host_tools_list})
         add_executable(host${tgt} ALIAS ${tgt})
     endforeach()
@@ -265,6 +320,7 @@ add_dependencies(openttd
 target_link_libraries(openttd
     openttd::languages
     openttd::settings
+    openttd::media
     openttd::basesets
     openttd::script_api
     openttd::binfiles
@@ -276,7 +332,7 @@ if(IPO_FOUND)
     set_target_properties(openttd PROPERTIES INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL True)
     set_target_properties(openttd PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO True)
 endif()
-set_target_properties(openttd PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/bin")
+set_target_properties(openttd PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}")
 process_compile_flags()
 
 include(LinkPackage)
@@ -284,6 +340,7 @@ link_package(PNG TARGET PNG::PNG ENCOURAGED)
 link_package(ZLIB TARGET ZLIB::ZLIB ENCOURAGED)
 link_package(LIBLZMA TARGET LibLZMA::LibLZMA ENCOURAGED)
 link_package(LZO)
+link_package(ZSTD TARGET ZSTD::ZSTD RECOMMENDED)
 
 if(NOT OPTION_DEDICATED)
     link_package(Fluidsynth)
@@ -297,6 +354,16 @@ if(NOT OPTION_DEDICATED)
     link_package(Fcitx)
     link_package(DBus1)
     link_package(X11)
+
+    if(SDL2_FOUND AND OPENGL_FOUND AND UNIX)
+        # SDL2 dynamically loads OpenGL if needed, so do not link to OpenGL when
+        # on Linux. For Windows, we need to link to OpenGL as we also have a win32
+        # driver using it.
+        add_definitions(-DWITH_OPENGL)
+        message(STATUS "OpenGL found -- -DWITH_OPENGL -- (via SDL2)")
+    else()
+        link_package(OpenGL TARGET OpenGL::GL)
+    endif()
 endif()
 
 if(APPLE)
@@ -306,6 +373,7 @@ if(APPLE)
         ${AUDIOTOOLBOX_LIBRARY}
         ${AUDIOUNIT_LIBRARY}
         ${COCOA_LIBRARY}
+        ${QUARTZCORE_LIBRARY}
     )
 
     add_definitions(
@@ -393,6 +461,10 @@ endif()
 
 include(CreateRegression)
 create_regression()
+
+if(APPLE OR WIN32)
+    find_package(Pandoc)
+endif()
 
 include(InstallAndPackage)
 

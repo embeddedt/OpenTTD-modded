@@ -57,7 +57,7 @@
 #include "safeguards.h"
 
 /* scriptfile handling */
-static bool _script_running; ///< Script is running (used to abort execution when #ConReturn is encountered).
+static uint _script_current_depth; ///< Depth of scripts running (used to abort execution when #ConReturn is encountered).
 
 /** File list storage for the console, for caching the last 'ls' command. */
 class ConsoleFileList : public FileList {
@@ -1035,10 +1035,16 @@ DEF_CONSOLE_CMD(ConExec)
 		return true;
 	}
 
-	_script_running = true;
+	if (_script_current_depth == 11) {
+		IConsoleError("Maximum 'exec' depth reached; script A is calling script B is calling script C ... more than 10 times.");
+		return true;
+	}
+
+	_script_current_depth++;
+	uint script_depth = _script_current_depth;
 
 	char cmdline[ICON_CMDLN_SIZE];
-	while (_script_running && fgets(cmdline, sizeof(cmdline), script_file) != nullptr) {
+	while (fgets(cmdline, sizeof(cmdline), script_file) != nullptr) {
 		/* Remove newline characters from the executing script */
 		for (char *cmdptr = cmdline; *cmdptr != '\0'; cmdptr++) {
 			if (*cmdptr == '\n' || *cmdptr == '\r') {
@@ -1047,13 +1053,18 @@ DEF_CONSOLE_CMD(ConExec)
 			}
 		}
 		IConsoleCmdExec(cmdline);
+		/* Ensure that we are still on the same depth or that we returned via 'return'. */
+		assert(_script_current_depth == script_depth || _script_current_depth == script_depth - 1);
+
+		/* The 'return' command was executed. */
+		if (_script_current_depth == script_depth - 1) break;
 	}
 
 	if (ferror(script_file)) {
 		IConsoleError("Encountered error while trying to read from script file");
 	}
 
-	_script_running = false;
+	if (_script_current_depth == script_depth) _script_current_depth--;
 	FioFCloseFile(script_file);
 	return true;
 }
@@ -1065,7 +1076,7 @@ DEF_CONSOLE_CMD(ConReturn)
 		return true;
 	}
 
-	_script_running = false;
+	_script_current_depth--;
 	return true;
 }
 
@@ -1324,7 +1335,7 @@ DEF_CONSOLE_CMD(ConReloadAI)
 	}
 
 	/* First kill the company of the AI, then start a new one. This should start the current AI again */
-	DoCommandP(0, CCA_DELETE | company_id << 16 | CRR_MANUAL << 24, 0,CMD_COMPANY_CTRL);
+	DoCommandP(0, CCA_DELETE | company_id << 16 | CRR_MANUAL << 24, 0, CMD_COMPANY_CTRL);
 	DoCommandP(0, CCA_NEW_AI | company_id << 16, 0, CMD_COMPANY_CTRL);
 	IConsolePrint(CC_DEFAULT, "AI reloaded.");
 
@@ -1409,7 +1420,7 @@ DEF_CONSOLE_CMD(ConRescanNewGRF)
 		return true;
 	}
 
-	ScanNewGRFFiles(nullptr);
+	RequestNewGRFScan();
 
 	return true;
 }
@@ -1476,46 +1487,84 @@ DEF_CONSOLE_CMD(ConAlias)
 DEF_CONSOLE_CMD(ConScreenShot)
 {
 	if (argc == 0) {
-		IConsoleHelp("Create a screenshot of the game. Usage: 'screenshot [big | giant | no_con | minimap] [file name]'");
-		IConsoleHelp("'big' makes a zoomed-in screenshot of the visible area, 'giant' makes a screenshot of the "
-				"whole map, 'no_con' hides the console to create the screenshot. 'big' or 'giant' "
-				"screenshots are always drawn without console. "
-				"'minimap' makes a top-viewed minimap screenshot of whole world which represents one tile by one pixel.");
+		IConsoleHelp("Create a screenshot of the game. Usage: 'screenshot [viewport | normal | big | giant | world | heightmap | minimap] [no_con] [size <width> <height>] [<filename>]'");
+		IConsoleHelp("'viewport' (default) makes a screenshot of the current viewport (including menus, windows, ..), "
+				"'normal' makes a screenshot of the visible area, "
+				"'big' makes a zoomed-in screenshot of the visible area, "
+				"'giant' makes a screenshot of the whole map using the default zoom level, "
+				"'world' makes a screenshot of the whole map using the current zoom level, "
+				"'heightmap' makes a heightmap screenshot of the map that can be loaded in as heightmap, "
+				"'minimap' makes a top-viewed minimap screenshot of the whole world which represents one tile by one pixel. "
+				"'no_con' hides the console to create the screenshot (only useful in combination with 'viewport'). "
+				"'size' sets the width and height of the viewport to make a screenshot of (only useful in combination with 'normal' or 'big').");
 		return true;
 	}
 
-	if (argc > 3) return false;
+	if (argc > 7) return false;
 
 	ScreenshotType type = SC_VIEWPORT;
+	uint32 width = 0;
+	uint32 height = 0;
 	const char *name = nullptr;
+	uint32 arg_index = 1;
 
-	if (argc > 1) {
-		if (strcmp(argv[1], "big") == 0) {
-			/* screenshot big [filename] */
+	if (argc > arg_index) {
+		if (strcmp(argv[arg_index], "viewport") == 0) {
+			type = SC_VIEWPORT;
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "normal") == 0) {
+			type = SC_DEFAULTZOOM;
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "big") == 0) {
 			type = SC_ZOOMEDIN;
-			if (argc > 2) name = argv[2];
-		} else if (strcmp(argv[1], "giant") == 0) {
-			/* screenshot giant [filename] */
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "giant") == 0) {
 			type = SC_WORLD;
-			if (argc > 2) name = argv[2];
-		} else if (strcmp(argv[1], "minimap") == 0) {
-			/* screenshot minimap [filename] */
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "world") == 0) {
+			type = SC_WORLD_ZOOM;
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "heightmap") == 0) {
+			type = SC_HEIGHTMAP;
+			arg_index += 1;
+		} else if (strcmp(argv[arg_index], "minimap") == 0) {
 			type = SC_MINIMAP;
-			if (argc > 2) name = argv[2];
-		} else if (strcmp(argv[1], "no_con") == 0) {
-			/* screenshot no_con [filename] */
-			IConsoleClose();
-			if (argc > 2) name = argv[2];
-		} else if (argc == 2) {
-			/* screenshot filename */
-			name = argv[1];
-		} else {
-			/* screenshot argv[1] argv[2] - invalid */
-			return false;
+			arg_index += 1;
 		}
 	}
 
-	MakeScreenshot(type, name);
+	if (argc > arg_index && strcmp(argv[arg_index], "no_con") == 0) {
+		if (type != SC_VIEWPORT) {
+			IConsoleError("'no_con' can only be used in combination with 'viewport'");
+			return true;
+		}
+		IConsoleClose();
+		arg_index += 1;
+	}
+
+	if (argc > arg_index + 2 && strcmp(argv[arg_index], "size") == 0) {
+		/* size <width> <height> */
+		if (type != SC_DEFAULTZOOM && type != SC_ZOOMEDIN) {
+			IConsoleError("'size' can only be used in combination with 'normal' or 'big'");
+			return true;
+		}
+		GetArgumentInteger(&width, argv[arg_index + 1]);
+		GetArgumentInteger(&height, argv[arg_index + 2]);
+		arg_index += 3;
+	}
+
+	if (argc > arg_index) {
+		/* Last parameter that was not one of the keywords must be the filename. */
+		name = argv[arg_index];
+		arg_index += 1;
+	}
+
+	if (argc > arg_index) {
+		/* We have parameters we did not process; means we misunderstood any of the above. */
+		return false;
+	}
+
+	MakeScreenshot(type, name, width, height);
 	return true;
 }
 
@@ -1977,7 +2026,7 @@ DEF_CONSOLE_CMD(ConContent)
 			 * to download every available package on BaNaNaS. This is not in
 			 * the spirit of this service. Additionally, these few people were
 			 * good for 70% of the consumed bandwidth of BaNaNaS. */
-			IConsolePrintF(CC_ERROR, "'select all' is no longer supported since 1.11");
+			IConsoleError("'select all' is no longer supported since 1.11");
 		} else {
 			_network_content_client.Select((ContentID)atoi(argv[2]));
 		}
@@ -2134,6 +2183,27 @@ DEF_CONSOLE_CMD(ConMergeLinkgraphJobsAsap)
 	return true;
 }
 
+#ifdef _DEBUG
+DEF_CONSOLE_CMD(ConDeleteVehicleID)
+{
+	if (argc == 0) {
+		IConsoleHelp("Delete vehicle ID, for emergency single-player use only.");
+		return true;
+	}
+
+	if (argc == 2) {
+		uint32 result;
+		if (GetArgumentInteger(&result, argv[1])) {
+			extern void ConsoleRemoveVehicle(VehicleID id);
+			ConsoleRemoveVehicle(result);
+			return true;
+		}
+	}
+
+	return false;
+}
+#endif
+
 DEF_CONSOLE_CMD(ConGetFullDate)
 {
 	if (argc == 0) {
@@ -2266,7 +2336,7 @@ DEF_CONSOLE_CMD(ConDumpLoadDebugLog)
 	}
 
 	std::string dbgl = _loadgame_DBGL_data;
-	PrintLineByLine(const_cast<char *>(dbgl.c_str()));
+	PrintLineByLine(dbgl.data());
 	return true;
 }
 
@@ -2278,7 +2348,7 @@ DEF_CONSOLE_CMD(ConDumpLoadDebugConfig)
 	}
 
 	std::string dbgc = _loadgame_DBGC_data;
-	PrintLineByLine(const_cast<char *>(dbgc.c_str()));
+	PrintLineByLine(dbgc.data());
 	return true;
 }
 
@@ -2531,6 +2601,58 @@ DEF_CONSOLE_CMD(ConDumpCargoTypes)
 	return true;
 }
 
+/**
+ * Dump the state of a tile on the map.
+ * param x tile number or tile x coordinate.
+ * param y optional y coordinate.
+ * @note When only one argument is given it is interpreted as the tile number.
+ *       When two arguments are given, they are interpreted as the tile's x
+ *       and y coordinates.
+ * @return True when either console help was shown or a proper amount of parameters given.
+ */
+DEF_CONSOLE_CMD(ConDumpTile)
+{
+	char buffer[128];
+
+	switch (argc) {
+		case 0:
+			IConsoleHelp("Dump the map state of a given tile.");
+			IConsoleHelp("Usage: 'dump_tile <tile>' or 'dump_tile <x> <y>'");
+			IConsoleHelp("Numbers can be either decimal (34161) or hexadecimal (0x4a5B).");
+			return true;
+
+		case 2: {
+			uint32 result;
+			if (GetArgumentInteger(&result, argv[1])) {
+				if (result >= MapSize()) {
+					IConsolePrint(CC_ERROR, "Tile does not exist");
+					return true;
+				}
+				DumpTileInfo(buffer, lastof(buffer), (TileIndex)result);
+				IConsolePrintF(CC_DEFAULT, "  %s", buffer);
+				return true;
+			}
+			break;
+		}
+
+		case 3: {
+			uint32 x, y;
+			if (GetArgumentInteger(&x, argv[1]) && GetArgumentInteger(&y, argv[2])) {
+				if (x >= MapSizeX() || y >= MapSizeY()) {
+					IConsolePrint(CC_ERROR, "Tile does not exist");
+					return true;
+				}
+				DumpTileInfo(buffer, lastof(buffer), TileXY(x, y));
+				IConsolePrintF(CC_DEFAULT, "  %s", buffer);
+				return true;
+			}
+			break;
+		}
+	}
+
+	return false;
+}
+
 DEF_CONSOLE_CMD(ConCheckCaches)
 {
 	if (argc == 0) {
@@ -2620,6 +2742,12 @@ DEF_CONSOLE_CMD(ConViewportDebug)
 {
 	if (argc < 1 || argc > 2) {
 		IConsoleHelp("Debug: viewports flags.  Usage: 'viewport_debug [<flags>]'");
+		IConsoleHelp("   1: VDF_DIRTY_BLOCK_PER_DRAW");
+		IConsoleHelp("   2: VDF_DIRTY_WHOLE_VIEWPORT");
+		IConsoleHelp("   4: VDF_DIRTY_BLOCK_PER_SPLIT");
+		IConsoleHelp("   8: VDF_DISABLE_DRAW_SPLIT");
+		IConsoleHelp("  10: VDF_SHOW_NO_LANDSCAPE_MAP_DRAW");
+		IConsoleHelp("  20: VDF_DISABLE_LANDSCAPE_CACHE");
 		return true;
 	}
 
@@ -2678,6 +2806,9 @@ DEF_CONSOLE_CMD(ConGfxDebug)
 {
 	if (argc < 1 || argc > 2) {
 		IConsoleHelp("Debug: gfx flags.  Usage: 'gfx_debug [<flags>]'");
+		IConsoleHelp("  1: GDF_SHOW_WINDOW_DIRTY");
+		IConsoleHelp("  2: GDF_SHOW_WIDGET_DIRTY");
+		IConsoleHelp("  4: GDF_SHOW_RECT_DIRTY");
 		return true;
 	}
 
@@ -3295,6 +3426,7 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("dump_rail_types", ConDumpRailTypes, nullptr, true);
 	IConsoleCmdRegister("dump_bridge_types", ConDumpBridgeTypes, nullptr, true);
 	IConsoleCmdRegister("dump_cargo_types", ConDumpCargoTypes, nullptr, true);
+	IConsoleCmdRegister("dump_tile", ConDumpTile, nullptr, true);
 	IConsoleCmdRegister("check_caches", ConCheckCaches, nullptr, true);
 	IConsoleCmdRegister("show_town_window", ConShowTownWindow, nullptr, true);
 	IConsoleCmdRegister("show_station_window", ConShowStationWindow, nullptr, true);
@@ -3320,4 +3452,8 @@ void IConsoleStdLibRegister()
 	/* Bug workarounds */
 	IConsoleCmdRegister("jgrpp_bug_workaround_unblock_heliports", ConResetBlockedHeliports, ConHookNoNetwork, true);
 	IConsoleCmdRegister("merge_linkgraph_jobs_asap", ConMergeLinkgraphJobsAsap, ConHookNoNetwork, true);
+
+#ifdef _DEBUG
+	IConsoleCmdRegister("delete_vehicle_id", ConDeleteVehicleID, ConHookNoNetwork, true);
+#endif
 }

@@ -751,8 +751,8 @@ STR_MONTH_DEC                                                   :Decembris
 # Graph window
 STR_GRAPH_KEY_BUTTON                                            :{BLACK}Clavis
 STR_GRAPH_KEY_TOOLTIP                                           :{BLACK}Monstrare formularum clavem
-STR_GRAPH_X_LABEL_MONTH                                         :{TINY_FONT}{STRING}{} {STRING}
-STR_GRAPH_X_LABEL_MONTH_YEAR                                    :{TINY_FONT}{STRING}{} {STRING}{}{NUM}
+STR_GRAPH_X_LABEL_MONTH                                         :{TINY_FONT}{STRING}
+STR_GRAPH_X_LABEL_MONTH_YEAR                                    :{TINY_FONT}{STRING}{}{NUM}
 STR_GRAPH_Y_LABEL                                               :{TINY_FONT}{STRING}
 STR_GRAPH_Y_LABEL_NUMBER                                        :{TINY_FONT}{COMMA}
 
@@ -1115,8 +1115,6 @@ STR_GAME_OPTIONS_CURRENCY_IRR                                   :Regalis Iranica
 STR_GAME_OPTIONS_CURRENCY_RUB                                   :Novus Rubelus Russicus (RUB)
 ############ end of currency region
 
-STR_GAME_OPTIONS_ROAD_VEHICLES_FRAME                            :{BLACK}Vehicula Viaria
-STR_GAME_OPTIONS_ROAD_VEHICLES_DROPDOWN_TOOLTIP                 :{BLACK}Eligere latus viae gubernandi
 STR_GAME_OPTIONS_ROAD_VEHICLES_DROPDOWN_LEFT                    :Gubernantur sinistro
 STR_GAME_OPTIONS_ROAD_VEHICLES_DROPDOWN_RIGHT                   :Gubernantur dextro
 
@@ -1168,6 +1166,7 @@ STR_GAME_OPTIONS_RESOLUTION                                     :{BLACK}Resoluti
 STR_GAME_OPTIONS_RESOLUTION_TOOLTIP                             :{BLACK}Eligere resolutio scrinii adhibenda
 STR_GAME_OPTIONS_RESOLUTION_OTHER                               :alia
 
+
 STR_GAME_OPTIONS_GUI_ZOOM_FRAME                                 :{BLACK}Magnitudo interfaciei
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_TOOLTIP                      :{BLACK}Eligere magnitudinem interfaciei adhibendam
 
@@ -1181,6 +1180,8 @@ STR_GAME_OPTIONS_FONT_ZOOM_DROPDOWN_TOOLTIP                     :{BLACK}Eligere 
 STR_GAME_OPTIONS_FONT_ZOOM_DROPDOWN_NORMAL                      :Simplex
 STR_GAME_OPTIONS_FONT_ZOOM_DROPDOWN_2X_ZOOM                     :Duplex
 STR_GAME_OPTIONS_FONT_ZOOM_DROPDOWN_4X_ZOOM                     :Quadruplex
+
+
 
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}Fundamentum graphicum
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Eligere fundamentum graphicum adhibendum
@@ -1357,8 +1358,6 @@ STR_CONFIG_SETTING_DISASTERS_HELPTEXT                           :Sinere calamita
 STR_CONFIG_SETTING_CITY_APPROVAL                                :Quamdiu auctoritas vicinalis patitur malas actiones a societatibus: {STRING}
 STR_CONFIG_SETTING_CITY_APPROVAL_HELPTEXT                       :Eligere patientiam auctoritatis vicinalis - quomodo venia eius afficitur a sonito et detrimento vicinitatis. Nimis malis actionibus, auctoritates vetant stationes struere, aedificia viasque removere
 
-STR_CONFIG_SETTING_MAX_HEIGHTLEVEL                              :Altitudo tabulae maxima: {STRING}
-STR_CONFIG_SETTING_MAX_HEIGHTLEVEL_HELPTEXT                     :Eligere altitudinem montium maximam in tabula
 STR_CONFIG_SETTING_TOO_HIGH_MOUNTAIN                            :{WHITE}Non licet hanc altitudinem eligere. Unus pluresve mons in tabula altior est
 STR_CONFIG_SETTING_AUTOSLOPE                                    :Sinere terram plasmare sub aedificia, vias, etc.: {STRING}
 STR_CONFIG_SETTING_AUTOSLOPE_HELPTEXT                           :Sinere terram plasmare sub aedificia et vias; tum necesse non est aedificia viasve removere
@@ -1924,6 +1923,8 @@ STR_CONFIG_ERROR_INVALID_BASE_MUSIC_NOT_FOUND                   :{WHITE}... negl
 STR_CONFIG_ERROR_OUT_OF_MEMORY                                  :{WHITE}Memoria deest
 STR_CONFIG_ERROR_SPRITECACHE_TOO_BIG                            :{WHITE}Non potuit collocare {BYTES} promptuarii spiritus. Promptuarium spiritus minuitur ad {BYTES}. Haec minuit effectum OpenTTD. Conare removere graphicas 32bpp ut desideria memoriae minuatur
 
+# Video initalization errors
+
 # Intro window
 STR_INTRO_CAPTION                                               :{WHITE}OpenTTD {REV}
 
@@ -2453,6 +2454,7 @@ STR_MISSING_GRAPHICS_SET_MESSAGE                                :{BLACK}OpenTTD 
 STR_MISSING_GRAPHICS_YES_DOWNLOAD                               :{BLACK}Ita, arcessere graphica
 STR_MISSING_GRAPHICS_NO_QUIT                                    :{BLACK}Non, OpenTTD exire
 
+
 # Transparency settings window
 STR_TRANSPARENCY_CAPTION                                        :{WHITE}Optiones Perluciditatis
 STR_TRANSPARENT_SIGNS_TOOLTIP                                   :{BLACK}Mutare perluciditatem signorum. Ctrl+Preme ut figatur (non mutabitur globulo perluciditatem mutandi presso)
@@ -2938,14 +2940,10 @@ STR_MAPGEN_BY                                                   :{BLACK}*
 STR_MAPGEN_NUMBER_OF_TOWNS                                      :{BLACK}Numerus oppidorum:
 STR_MAPGEN_DATE                                                 :{BLACK}Dies:
 STR_MAPGEN_NUMBER_OF_INDUSTRIES                                 :{BLACK}Numerus industriarum:
-STR_MAPGEN_MAX_HEIGHTLEVEL                                      :{BLACK}Altitudo tabulae maxima:
-STR_MAPGEN_MAX_HEIGHTLEVEL_UP                                   :{BLACK}Augere maximam altitudinem montium in tabula unum gradum
-STR_MAPGEN_MAX_HEIGHTLEVEL_DOWN                                 :{BLACK}Minuere maximam altitudinem montium in tabula unum gradum
 STR_MAPGEN_SNOW_LINE_HEIGHT                                     :{BLACK}Altitudo nivis lineae:
 STR_MAPGEN_SNOW_LINE_UP                                         :{BLACK}Tollere altitudinem lineae nivis
 STR_MAPGEN_SNOW_LINE_DOWN                                       :{BLACK}Inclinere altitudinem lineae nivis
 STR_MAPGEN_LAND_GENERATOR                                       :{BLACK}Generatrum terrae:
-STR_MAPGEN_TREE_PLACER                                          :{BLACK}Algorithmus arbores ponendi:
 STR_MAPGEN_TERRAIN_TYPE                                         :{BLACK}Typus terrae:
 STR_MAPGEN_QUANTITY_OF_SEA_LAKES                                :{BLACK}Magnitudo maris:
 STR_MAPGEN_QUANTITY_OF_RIVERS                                   :{BLACK}Numerus fluviorum:
@@ -2970,7 +2968,6 @@ STR_MAPGEN_HEIGHTMAP_NAME                                       :{BLACK}Nomen ta
 STR_MAPGEN_HEIGHTMAP_SIZE_LABEL                                 :{BLACK}Magnitudo:
 STR_MAPGEN_HEIGHTMAP_SIZE                                       :{ORANGE}{NUM} x {NUM}
 
-STR_MAPGEN_MAX_HEIGHTLEVEL_QUERY_CAPT                           :{WHITE}Mutare altitudinem tabulae maximam
 STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Mutare altitudinem lineae nivis
 STR_MAPGEN_START_DATE_QUERY_CAPT                                :{WHITE}Mutare annum initii
 
@@ -3259,13 +3256,10 @@ STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{YELLOW}Largiri
 STR_GOALS_CAPTION                                               :{WHITE}{COMPANY} Proposita
 STR_GOALS_SPECTATOR_CAPTION                                     :{WHITE}Proposita Universalia
 STR_GOALS_SPECTATOR                                             :Proposita universalia
-STR_GOALS_GLOBAL_TITLE                                          :{BLACK}Proposita universalia:
 STR_GOALS_TEXT                                                  :{ORANGE}{STRING}
 STR_GOALS_NONE                                                  :{ORANGE}- Nullae -
-STR_GOALS_SPECTATOR_NONE                                        :{ORANGE}- Non applicabiles -
 STR_GOALS_PROGRESS                                              :{ORANGE}{STRING}
 STR_GOALS_PROGRESS_COMPLETE                                     :{GREEN}{STRING}
-STR_GOALS_COMPANY_TITLE                                         :{BLACK}Proposita Societatis:
 STR_GOALS_TOOLTIP_CLICK_ON_SERVICE_TO_CENTER                    :{BLACK}Preme in propositum ut conspectus moveatur supra industriam/oppidum/tegulam. Ctrl+Preme ut nova fenestra conspectus aperiatur supra industriam/oppidum/tegulam
 
 # Goal question window

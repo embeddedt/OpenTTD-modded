@@ -279,7 +279,7 @@ bool FioCheckFileExists(const std::string &filename, Subdirectory subdir)
  */
 bool FileExists(const std::string &filename)
 {
-	return access(OTTD2FS(filename.c_str()), 0) == 0;
+	return access(OTTD2FS(filename).c_str(), 0) == 0;
 }
 
 /**
@@ -340,7 +340,7 @@ std::string FioFindDirectory(Subdirectory subdir)
 
 static FILE *FioFOpenFileSp(const std::string &filename, const char *mode, Searchpath sp, Subdirectory subdir, size_t *filesize, std::string *output_filename)
 {
-#if defined(_WIN32) && defined(UNICODE)
+#if defined(_WIN32)
 	/* fopen is implemented as a define with ellipses for
 	 * Unicode support (prepend an L). As we are not sending
 	 * a string, but a variable, it 'renames' the variable,
@@ -358,7 +358,7 @@ static FILE *FioFOpenFileSp(const std::string &filename, const char *mode, Searc
 	}
 
 #if defined(_WIN32)
-	if (mode[0] == 'r' && GetFileAttributes(OTTD2FS(buf.c_str())) == INVALID_FILE_ATTRIBUTES) return nullptr;
+	if (mode[0] == 'r' && GetFileAttributes(OTTD2FS(buf).c_str()) == INVALID_FILE_ATTRIBUTES) return nullptr;
 #endif
 
 	f = fopen(buf.c_str(), mode);
@@ -432,6 +432,9 @@ FILE *FioFOpenFile(const std::string &filename, const char *mode, Subdirectory s
 			if (token == "..") {
 				if (tokens.size() < 2) return nullptr;
 				tokens.pop_back();
+			} else if (token == ".") {
+				/* Do nothing. "." means current folder, but you can create tar files with "." in the path.
+				 * This confuses our file resolver. So, act like this folder doesn't exist. */
 			} else {
 				tokens.push_back(token);
 			}
@@ -509,11 +512,11 @@ void FioCreateDirectory(const std::string &name)
 	/* Ignore directory creation errors; they'll surface later on, and most
 	 * of the time they are 'directory already exists' errors anyhow. */
 #if defined(_WIN32)
-	CreateDirectory(OTTD2FS(name.c_str()), nullptr);
+	CreateDirectory(OTTD2FS(name).c_str(), nullptr);
 #elif defined(OS2) && !defined(__INNOTEK_LIBC__)
-	mkdir(OTTD2FS(name.c_str()));
+	mkdir(OTTD2FS(name).c_str());
 #else
-	mkdir(OTTD2FS(name.c_str()), 0755);
+	mkdir(OTTD2FS(name).c_str(), 0755);
 #endif
 }
 
@@ -1262,7 +1265,7 @@ void SanitizeFilename(char *filename)
  * @return Pointer to new memory containing the loaded data, or \c nullptr if loading failed.
  * @note If \a maxsize less than the length of the file, loading fails.
  */
-std::unique_ptr<char> ReadFileToMem(const std::string &filename, size_t &lenp, size_t maxsize)
+std::unique_ptr<char[]> ReadFileToMem(const std::string &filename, size_t &lenp, size_t maxsize)
 {
 	FILE *in = fopen(filename.c_str(), "rb");
 	if (in == nullptr) return nullptr;
@@ -1274,10 +1277,7 @@ std::unique_ptr<char> ReadFileToMem(const std::string &filename, size_t &lenp, s
 	fseek(in, 0, SEEK_SET);
 	if (len > maxsize) return nullptr;
 
-	/* std::unique_ptr assumes new/delete unless a custom deleter is supplied.
-	 * As we don't want to have to carry that deleter all over the place, use
-	 * new directly to allocate the memory instead of malloc. */
-	std::unique_ptr<char> mem(static_cast<char *>(::operator new(len + 1)));
+	std::unique_ptr<char[]> mem = std::make_unique<char[]>(len + 1);
 
 	mem.get()[len] = 0;
 	if (fread(mem.get(), len, 1, in) != 1) return nullptr;
@@ -1321,7 +1321,7 @@ static uint ScanPath(FileScanner *fs, const char *extension, const char *path, s
 	if (path == nullptr || (dir = ttd_opendir(path)) == nullptr) return 0;
 
 	while ((dirent = readdir(dir)) != nullptr) {
-		const char *d_name = FS2OTTD(dirent->d_name);
+		std::string d_name = FS2OTTD(dirent->d_name);
 
 		if (!FiosIsValidFile(path, dirent, &sb)) continue;
 
@@ -1331,7 +1331,7 @@ static uint ScanPath(FileScanner *fs, const char *extension, const char *path, s
 		if (S_ISDIR(sb.st_mode)) {
 			/* Directory */
 			if (!recursive) continue;
-			if (strcmp(d_name, ".") == 0 || strcmp(d_name, "..") == 0) continue;
+			if (d_name == "." || d_name == "..") continue;
 			AppendPathSeparator(filename);
 			num += ScanPath(fs, extension, filename.c_str(), basepath_length, recursive);
 		} else if (S_ISREG(sb.st_mode)) {

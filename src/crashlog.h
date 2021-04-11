@@ -158,6 +158,12 @@ public:
 	 */
 	static void InitialiseCrashLog();
 
+	/**
+	 * Prepare crash log handler for a newly started thread.
+	 * @note must be implemented by all implementers of CrashLog.
+	 */
+	static void InitThread();
+
 	static void DesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info);
 	static void VersionInfoLog();
 
@@ -167,10 +173,6 @@ public:
 	inline const char *GetMessage() const { return this->message; }
 
 	static const char *GetAbortCrashlogReason();
-
-	static const CrashLog *main_thread_pending_crashlog;
-
-	static void MainThreadExitCheckPendingCrashlog();
 };
 
 #endif /* CRASHLOG_H */

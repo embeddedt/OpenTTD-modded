@@ -35,6 +35,7 @@
 #include "town.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 #include "scope_info.h"
+#include <array>
 #include <list>
 #include <set>
 #include <deque>
@@ -92,6 +93,8 @@ extern const byte _slope_to_sprite_offset[32] = {
  */
 static SnowLine *_snow_line = nullptr;
 
+byte _cached_snowline = 0;
+
 /**
  * Map 2D viewport or smallmap coordinate to 3D world or tile coordinate.
  * Function takes into account height of tiles and foundations.
@@ -121,7 +124,7 @@ Point InverseRemapCoords2(int x, int y, bool clamp_to_map, bool *clamped)
 		/* Bring the coordinates near to a valid range. At the top we allow a number
 		 * of extra tiles. This is mostly due to the tiles on the north side of
 		 * the map possibly being drawn higher due to the extra height levels. */
-		int extra_tiles = CeilDiv(_settings_game.construction.max_heightlevel * TILE_HEIGHT, TILE_PIXELS);
+		int extra_tiles = CeilDiv(_settings_game.construction.map_height_limit * TILE_HEIGHT, TILE_PIXELS);
 		Point old_pt = pt;
 		pt.x = Clamp(pt.x, -extra_tiles * TILE_SIZE, max_x);
 		pt.y = Clamp(pt.y, -extra_tiles * TILE_SIZE, max_y);
@@ -643,6 +646,8 @@ void SetSnowLine(byte table[SNOW_LINE_MONTHS][SNOW_LINE_DAYS])
 			_snow_line->lowest_value = std::min(_snow_line->lowest_value, table[i][j]);
 		}
 	}
+
+	UpdateCachedSnowLine();
 }
 
 /**
@@ -650,11 +655,16 @@ void SetSnowLine(byte table[SNOW_LINE_MONTHS][SNOW_LINE_DAYS])
  * @return the snow line height.
  * @ingroup SnowLineGroup
  */
-byte GetSnowLine()
+byte GetSnowLineUncached()
 {
 	if (_snow_line == nullptr) return _settings_game.game_creation.snow_line_height;
 
 	return _snow_line->table[_cur_date_ymd.month][_cur_date_ymd.day];
+}
+
+void UpdateCachedSnowLine()
+{
+	_cached_snowline = GetSnowLineUncached();
 }
 
 /**
@@ -685,6 +695,7 @@ void ClearSnowLine()
 {
 	free(_snow_line);
 	_snow_line = nullptr;
+	UpdateCachedSnowLine();
 }
 
 /**
@@ -981,11 +992,10 @@ static void GenerateTerrain(int type, uint flag)
 
 #include "table/genland.h"
 
-static void CreateDesertOrRainForest()
+static void CreateDesertOrRainForest(uint desert_tropic_line)
 {
 	TileIndex update_freq = MapSize() / 4;
 	const TileIndexDiffC *data;
-	uint max_desert_height = CeilDiv(_settings_game.construction.max_heightlevel, 4);
 
 	for (TileIndex tile = 0; tile != MapSize(); ++tile) {
 		if ((tile % update_freq) == 0) IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
@@ -995,7 +1005,7 @@ static void CreateDesertOrRainForest()
 		for (data = _make_desert_or_rainforest_data;
 				data != endof(_make_desert_or_rainforest_data); ++data) {
 			TileIndex t = AddTileIndexDiffCWrap(tile, *data);
-			if (t != INVALID_TILE && (TileHeight(t) >= max_desert_height || IsTileType(t, MP_WATER))) break;
+			if (t != INVALID_TILE && (TileHeight(t) >= desert_tropic_line || IsTileType(t, MP_WATER))) break;
 		}
 		if (data == endof(_make_desert_or_rainforest_data)) {
 			SetTropicZone(tile, TROPICZONE_DESERT);
@@ -1049,11 +1059,13 @@ static bool FindSpring(TileIndex tile, void *user_data)
 
 	if (num < 4) return false;
 
-	/* Are we near the top of a hill? */
-	for (int dx = -16; dx <= 16; dx++) {
-		for (int dy = -16; dy <= 16; dy++) {
-			TileIndex t = TileAddWrap(tile, dx, dy);
-			if (t != INVALID_TILE && GetTileMaxZ(t) > referenceHeight + 2) return false;
+	if (_settings_game.game_creation.rivers_top_of_hill) {
+		/* Are we near the top of a hill? */
+		for (int dx = -16; dx <= 16; dx++) {
+			for (int dy = -16; dy <= 16; dy++) {
+				TileIndex t = TileAddWrap(tile, dx, dy);
+				if (t != INVALID_TILE && GetTileMaxZ(t) > referenceHeight + 2) return false;
+			}
 		}
 	}
 
@@ -1076,9 +1088,10 @@ static bool MakeLake(TileIndex tile, void *user_data)
 		TileIndex t2 = tile + TileOffsByDiagDir(d);
 		if (IsWaterTile(t2)) {
 			MakeRiver(tile, Random());
+			MarkTileDirtyByTile(tile);
 			/* Remove desert directly around the river tile. */
 			TileIndex t = tile;
-			CircularTileSearch(&t, RIVER_OFFSET_DESERT_DISTANCE, RiverModifyDesertZone, nullptr);
+			CircularTileSearch(&t, _settings_game.game_creation.river_tropics_width, RiverModifyDesertZone, nullptr);
 			return false;
 		}
 	}
@@ -1149,8 +1162,9 @@ static void River_FoundEndNode(AyStar *aystar, OpenListNode *current)
 		TileIndex tile = path->node.tile;
 		if (!IsWaterTile(tile)) {
 			MakeRiver(tile, Random());
+			MarkTileDirtyByTile(tile);
 			/* Remove desert directly around the river tile. */
-			CircularTileSearch(&tile, RIVER_OFFSET_DESERT_DISTANCE, RiverModifyDesertZone, nullptr);
+			CircularTileSearch(&tile, _settings_game.game_creation.river_tropics_width, RiverModifyDesertZone, nullptr);
 		}
 	}
 }
@@ -1256,15 +1270,16 @@ static bool FlowRiver(TileIndex spring, TileIndex begin)
 				/* We don't want the lake at the entry of the valley. */
 				lakeCenter != begin &&
 				/* We don't want lakes in the desert. */
-				(_settings_game.game_creation.landscape != LT_TROPIC || GetTropicZone(lakeCenter) != TROPICZONE_DESERT) &&
+				(_settings_game.game_creation.landscape != LT_TROPIC || _settings_game.game_creation.lakes_allowed_in_deserts || GetTropicZone(lakeCenter) != TROPICZONE_DESERT) &&
 				/* We only want a lake if the river is long enough. */
 				DistanceManhattan(spring, lakeCenter) > _settings_game.game_creation.min_river_length) {
 			end = lakeCenter;
 			MakeRiver(lakeCenter, Random());
+			MarkTileDirtyByTile(lakeCenter);
 			/* Remove desert directly around the river tile. */
-			CircularTileSearch(&lakeCenter, RIVER_OFFSET_DESERT_DISTANCE, RiverModifyDesertZone, nullptr);
+			CircularTileSearch(&lakeCenter, _settings_game.game_creation.river_tropics_width, RiverModifyDesertZone, nullptr);
 			lakeCenter = end;
-			uint range = RandomRange(8) + 3;
+			uint range = RandomRange(_settings_game.game_creation.lake_size) + 3;
 			CircularTileSearch(&lakeCenter, range, MakeLake, &height);
 			/* Call the search a second time so artefacts from going circular in one direction get (mostly) hidden. */
 			lakeCenter = end;
@@ -1303,6 +1318,120 @@ static void CreateRivers()
 		if (i % 64 == 0) IncreaseGeneratingWorldProgress(GWP_RIVER);
 		RunTileLoop();
 	}
+}
+
+/**
+ * Calculate what height would be needed to cover N% of the landmass.
+ *
+ * The function allows both snow and desert/tropic line to be calculated. It
+ * tries to find the closests height which covers N% of the landmass; it can
+ * be below or above it.
+ *
+ * Tropic has a mechanism where water and tropic tiles in mountains grow
+ * inside the desert. To better approximate the requested coverage, this is
+ * taken into account via an edge histogram, which tells how many neighbouring
+ * tiles are lower than the tiles of that height. The multiplier indicates how
+ * severe this has to be taken into account.
+ *
+ * @param coverage A value between 0 and 100 indicating a percentage of landmass that should be covered.
+ * @param edge_multiplier How much effect neighbouring tiles that are of a lower height level have on the score.
+ * @return The estimated best height to use to cover N% of the landmass.
+ */
+static uint CalculateCoverageLine(uint coverage, uint edge_multiplier)
+{
+	const DiagDirection neighbour_dir[] = {
+		DIAGDIR_NE,
+		DIAGDIR_SE,
+		DIAGDIR_SW,
+		DIAGDIR_NW,
+	};
+
+	/* Histogram of how many tiles per height level exist. */
+	std::array<int, MAX_TILE_HEIGHT + 1> histogram = {};
+	/* Histogram of how many neighbour tiles are lower than the tiles of the height level. */
+	std::array<int, MAX_TILE_HEIGHT + 1> edge_histogram = {};
+
+	/* Build a histogram of the map height. */
+	for (TileIndex tile = 0; tile < MapSize(); tile++) {
+		uint h = TileHeight(tile);
+		histogram[h]++;
+
+		if (edge_multiplier != 0) {
+			/* Check if any of our neighbours is below us. */
+			for (auto dir : neighbour_dir) {
+				TileIndex neighbour_tile = AddTileIndexDiffCWrap(tile, TileIndexDiffCByDiagDir(dir));
+				if (IsValidTile(neighbour_tile) && TileHeight(neighbour_tile) < h) {
+					edge_histogram[h]++;
+				}
+			}
+		}
+	}
+
+	/* The amount of land we have is the map size minus the first (sea) layer. */
+	uint land_tiles = MapSizeX() * MapSizeY() - histogram[0];
+	int best_score = land_tiles;
+
+	/* Our goal is the coverage amount of the land-mass. */
+	int goal_tiles = land_tiles * coverage / 100;
+
+	/* We scan from top to bottom. */
+	uint h = MAX_TILE_HEIGHT;
+	uint best_h = h;
+
+	int current_tiles = 0;
+	for (; h > 0; h--) {
+		current_tiles += histogram[h];
+		int current_score = goal_tiles - current_tiles;
+
+		/* Tropic grows from water and mountains into the desert. This is a
+		 * great visual, but it also means we* need to take into account how
+		 * much less desert tiles are being created if we are on this
+		 * height-level. We estimate this based on how many neighbouring
+		 * tiles are below us for a given length, assuming that is where
+		 * tropic is growing from.
+		 */
+		if (edge_multiplier != 0 && h > 1) {
+			/* From water tropic tiles grow for a few tiles land inward. */
+			current_score -= edge_histogram[1] * edge_multiplier;
+			/* Tropic tiles grow into the desert for a few tiles. */
+			current_score -= edge_histogram[h] * edge_multiplier;
+		}
+
+		if (std::abs(current_score) < std::abs(best_score)) {
+			best_score = current_score;
+			best_h = h;
+		}
+
+		/* Always scan all height-levels, as h == 1 might give a better
+		 * score than any before. This is true for example with 0% desert
+		 * coverage. */
+	}
+
+	return best_h;
+}
+
+/**
+ * Calculate the line from which snow begins.
+ */
+static void CalculateSnowLine()
+{
+	if (_settings_game.game_creation.climate_threshold_mode == 0) {
+		/* We do not have snow sprites on coastal tiles, so never allow "1" as height. */
+		_settings_game.game_creation.snow_line_height = std::max(CalculateCoverageLine(_settings_game.game_creation.snow_coverage, 0), 2u);
+	}
+	UpdateCachedSnowLine();
+}
+
+/**
+ * Calculate the line (in height) between desert and tropic.
+ * @return The height of the line between desert and tropic.
+ */
+static uint8 CalculateDesertLine()
+{
+	if (_settings_game.game_creation.climate_threshold_mode != 0) return _settings_game.game_creation.rainforest_line_height;
+
+	/* CalculateCoverageLine() runs from top to bottom, so we need to invert the coverage. */
+	return CalculateCoverageLine(100 - _settings_game.game_creation.desert_coverage, 4);
 }
 
 void GenerateLandscape(byte mode)
@@ -1382,11 +1511,27 @@ void GenerateLandscape(byte mode)
 	/* Do not call IncreaseGeneratingWorldProgress() before FixSlopes(),
 	 * it allows screen redraw. Drawing of broken slopes crashes the game */
 	FixSlopes();
-	IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
-	ConvertGroundTilesIntoWaterTiles();
+	MarkWholeScreenDirty();
 	IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
 
-	if (_settings_game.game_creation.landscape == LT_TROPIC) CreateDesertOrRainForest();
+	ConvertGroundTilesIntoWaterTiles();
+	MarkWholeScreenDirty();
+	IncreaseGeneratingWorldProgress(GWP_LANDSCAPE);
+
+	switch (_settings_game.game_creation.landscape) {
+		case LT_ARCTIC:
+			CalculateSnowLine();
+			break;
+
+		case LT_TROPIC: {
+			uint desert_tropic_line = CalculateDesertLine();
+			CreateDesertOrRainForest(desert_tropic_line);
+			break;
+		}
+
+		default:
+			break;
+	}
 
 	CreateRivers();
 }

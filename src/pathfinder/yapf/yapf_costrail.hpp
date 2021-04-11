@@ -10,6 +10,8 @@
 #ifndef YAPF_COSTRAIL_HPP
 #define YAPF_COSTRAIL_HPP
 
+#include <vector>
+
 #include "../../pbs.h"
 #include "../../tracerestrict.h"
 
@@ -53,9 +55,9 @@ protected:
 	 * @note maximum cost doesn't work with caching enabled
 	 * @todo fix maximum cost failing with caching (e.g. FS#2900)
 	 */
-	int           m_max_cost;
-	CBlobT<int>   m_sig_look_ahead_costs;
-	bool          m_disable_cache;
+	int m_max_cost;
+	bool m_disable_cache;
+	std::vector<int> m_sig_look_ahead_costs;
 
 public:
 	bool          m_stopped_on_first_two_way_signal;
@@ -69,9 +71,10 @@ protected:
 		int p0 = Yapf().PfGetSettings().rail_look_ahead_signal_p0;
 		int p1 = Yapf().PfGetSettings().rail_look_ahead_signal_p1;
 		int p2 = Yapf().PfGetSettings().rail_look_ahead_signal_p2;
-		int *pen = m_sig_look_ahead_costs.GrowSizeNC(Yapf().PfGetSettings().rail_look_ahead_max_signals);
-		for (int i = 0; i < (int) Yapf().PfGetSettings().rail_look_ahead_max_signals; i++) {
-			pen[i] = std::max<int>(0, p0 + i * (p1 + i * p2));
+		m_sig_look_ahead_costs.clear();
+		m_sig_look_ahead_costs.reserve(Yapf().PfGetSettings().rail_look_ahead_max_signals);
+		for (uint i = 0; i < Yapf().PfGetSettings().rail_look_ahead_max_signals; i++) {
+			m_sig_look_ahead_costs.push_back(std::max<int>(0, p0 + i * (p1 + i * p2)));
 		}
 	}
 
@@ -153,7 +156,7 @@ public:
 	/** The cost for reserved tiles, including skipped ones. */
 	inline int ReservationCost(Node &n, TileIndex tile, Trackdir trackdir, int skipped)
 	{
-		if (n.m_num_signals_passed >= m_sig_look_ahead_costs.Size() / 2) return 0;
+		if (n.m_num_signals_passed >= m_sig_look_ahead_costs.size() / 2) return 0;
 		if (!IsPbsSignal(n.m_last_signal_type)) return 0;
 
 		if (IsRailStationTile(tile) && IsAnyStationTileReserved(tile, trackdir, skipped)) {
@@ -170,7 +173,7 @@ private:
 	// returns true if ExecuteTraceRestrict should be called
 	inline bool ShouldCheckTraceRestrict(Node& n, TileIndex tile)
 	{
-		return n.m_num_signals_passed < m_sig_look_ahead_costs.Size() &&
+		return n.m_num_signals_passed < m_sig_look_ahead_costs.size() &&
 				IsRestrictedSignal(tile);
 	}
 
@@ -178,14 +181,15 @@ private:
 	 * This is called to retrieve the previous signal, as required
 	 * This is not run all the time as it is somewhat expensive and most restrictions will not test for the previous signal
 	 */
-	static TileIndex TraceRestrictPreviousSignalCallback(const Train *v, const void *node_ptr)
+	static TileIndex TraceRestrictPreviousSignalCallback(const Train *v, const void *node_ptr, TraceRestrictPBSEntrySignalAuxField mode)
 	{
 		const Node *node = static_cast<const Node *>(node_ptr);
 		for (;;) {
 			TileIndex last_signal_tile = node->m_last_non_reserve_through_signal_tile;
 			if (last_signal_tile != INVALID_TILE) {
 				Trackdir last_signal_trackdir = node->m_last_non_reserve_through_signal_td;
-				if (HasPbsSignalOnTrackdir(last_signal_tile, last_signal_trackdir)) {
+				if (HasPbsSignalOnTrackdir(last_signal_tile, last_signal_trackdir) ||
+						(IsTileType(last_signal_tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(last_signal_tile) && IsTunnelBridgeEffectivelyPBS(last_signal_tile) && TrackdirExitsTunnelBridge(last_signal_tile, last_signal_trackdir))) {
 					return last_signal_tile;
 				} else {
 					return INVALID_TILE;
@@ -208,15 +212,21 @@ private:
 				TileIndex origin_tile = node->GetTile();
 				Trackdir origin_trackdir = node->GetTrackdir();
 
-				TileIndex tile = v->tile;
-				Trackdir  trackdir = v->GetVehicleTrackdir();
-
 				TileIndex candidate_tile = INVALID_TILE;
 
-				if (IsRailDepotTile(v->tile)) {
-					candidate_tile = v->tile;
-				} else if (v->track & TRACK_BIT_WORMHOLE && IsTileType(v->tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(v->tile) && IsTunnelBridgeEffectivelyPBS(v->tile)) {
-					candidate_tile = v->tile;
+				TileIndex tile;
+				Trackdir  trackdir;
+				if (mode == TRPESAF_RES_END && v->lookahead != nullptr) {
+					tile = v->lookahead->reservation_end_tile;
+					trackdir = v->lookahead->reservation_end_trackdir;
+				} else {
+					tile = v->tile;
+					trackdir = v->GetVehicleTrackdir();
+					if (IsRailDepotTile(v->tile)) {
+						candidate_tile = v->tile;
+					} else if (v->track & TRACK_BIT_WORMHOLE && IsTileType(v->tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(v->tile) && IsTunnelBridgeEffectivelyPBS(v->tile)) {
+						candidate_tile = v->tile;
+					}
 				}
 
 				CFollowTrackRail ft(v);
@@ -306,7 +316,7 @@ public:
 					n.m_last_signal_type = sig_type;
 
 					/* cache the look-ahead polynomial constant only if we didn't pass more signals than the look-ahead limit is */
-					int look_ahead_cost = (n.m_num_signals_passed < m_sig_look_ahead_costs.Size()) ? m_sig_look_ahead_costs.Data()[n.m_num_signals_passed] : 0;
+					int look_ahead_cost = (n.m_num_signals_passed < m_sig_look_ahead_costs.size()) ? m_sig_look_ahead_costs[n.m_num_signals_passed] : 0;
 					if (sig_state != SIGNAL_STATE_RED) {
 						/* green signal */
 						n.flags_u.flags_s.m_last_signal_was_red = false;
@@ -380,6 +390,11 @@ public:
 		if (IsTileType(tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExitOnly(tile) && TrackdirEntersTunnelBridge(tile, trackdir)) {
 			/* Entering a signalled bridge/tunnel from the wrong side, equivalent to encountering a one-way signal from the wrong side */
 			n.m_segment->m_end_segment_reason |= ESRB_DEAD_END;
+		}
+		if (IsTileType(tile, MP_TUNNELBRIDGE) && IsTunnelBridgeSignalSimulationExit(tile) && IsTunnelBridgeEffectivelyPBS(tile) && TrackdirExitsTunnelBridge(tile, trackdir)) {
+			/* Exiting a PBS signalled tunnel/bridge, record the last non-reserve through signal */
+			n.m_last_non_reserve_through_signal_tile = tile;
+			n.m_last_non_reserve_through_signal_td = trackdir;
 		}
 		return cost;
 	}
@@ -587,6 +602,10 @@ no_entry_cost: // jump here at the beginning if the node has no parent (it is th
 							!IsWaitingPositionFree(v, t, td, _settings_game.pf.forbid_90_deg)) {
 						extra_cost += Yapf().PfGetSettings().rail_lastred_penalty;
 					}
+
+					if (v->current_order.GetWaypointFlags() & OWF_REVERSE && HasStationReservation(cur.tile)) {
+						extra_cost += Yapf().PfGetSettings().rail_pbs_station_penalty * 4;
+					}
 				}
 				/* Waypoint is also a good reason to finish. */
 				end_segment_reason |= ESRB_WAYPOINT;
@@ -609,11 +628,11 @@ no_entry_cost: // jump here at the beginning if the node has no parent (it is th
 
 			/* Apply min/max speed penalties only when inside the look-ahead radius. Otherwise
 			 * it would cause desync in MP. */
-			if (n.m_num_signals_passed < m_sig_look_ahead_costs.Size())
+			if (n.m_num_signals_passed < m_sig_look_ahead_costs.size())
 			{
 				int min_speed = 0;
 				int max_speed = tf->GetSpeedLimit(&min_speed);
-				int max_veh_speed = v->GetDisplayMaxSpeed();
+				int max_veh_speed = std::min<int>(v->GetDisplayMaxSpeed(), v->current_order.GetMaxSpeed());
 				if (max_speed < max_veh_speed) {
 					extra_cost += YAPF_TILE_LENGTH * (max_veh_speed - max_speed) * (4 + tf->m_tiles_skipped) / max_veh_speed;
 				}
@@ -770,7 +789,7 @@ no_entry_cost: // jump here at the beginning if the node has no parent (it is th
 	{
 		return !m_disable_cache
 			&& (n.m_parent != nullptr)
-			&& (n.m_parent->m_num_signals_passed >= m_sig_look_ahead_costs.Size());
+			&& (n.m_parent->m_num_signals_passed >= m_sig_look_ahead_costs.size());
 	}
 
 	inline void ConnectNodeToCachedData(Node &n, CachedData &ci)

@@ -26,8 +26,8 @@ install(TARGETS openttd
 install(DIRECTORY
                 ${CMAKE_BINARY_DIR}/lang
                 ${CMAKE_BINARY_DIR}/baseset
-                ${CMAKE_SOURCE_DIR}/bin/ai
-                ${CMAKE_SOURCE_DIR}/bin/game
+                ${CMAKE_BINARY_DIR}/ai
+                ${CMAKE_BINARY_DIR}/game
                 ${CMAKE_SOURCE_DIR}/bin/scripts
         DESTINATION ${DATA_DESTINATION_DIR}
         COMPONENT language_files)
@@ -59,8 +59,18 @@ if(OPTION_INSTALL_FHS)
             COMPONENT manual)
 endif()
 
-# TODO -- Media files
-# TODO -- Menu files
+if(UNIX AND NOT APPLE)
+    install(DIRECTORY
+                    ${CMAKE_BINARY_DIR}/media/icons
+                    ${CMAKE_BINARY_DIR}/media/pixmaps
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}
+            COMPONENT media)
+
+    install(FILES
+                    ${CMAKE_BINARY_DIR}/media/${BINARY_NAME}.desktop
+            DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications
+            COMPONENT menu)
+endif()
 
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
     set(ARCHITECTURE "amd64")
@@ -89,14 +99,21 @@ endif()
 set(CPACK_SYSTEM_NAME "${ARCHITECTURE}")
 
 set(CPACK_PACKAGE_NAME "openttd")
-set(CPACK_PACKAGE_VENDOR "OpenTTD")
-set(CPACK_PACKAGE_DESCRIPTION "OpenTTD")
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpenTTD")
-set(CPACK_PACKAGE_HOMEPAGE_URL "https://www.openttd.org/")
-set(CPACK_PACKAGE_CONTACT "OpenTTD <info@openttd.org>")
-set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpenTTD")
+set(CPACK_PACKAGE_VENDOR "OpenTTD (JGRPP)")
+set(CPACK_PACKAGE_DESCRIPTION "OpenTTD (JGRPP)")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OpenTTD (JGRPP)")
+set(CPACK_PACKAGE_HOMEPAGE_URL "https://github.com/JGRennison/OpenTTD-patches")
+set(CPACK_PACKAGE_CONTACT "https://github.com/JGRennison/OpenTTD-patches")
+set(CPACK_PACKAGE_INSTALL_DIRECTORY "OpenTTD-JGRPP")
 set(CPACK_PACKAGE_CHECKSUM "SHA256")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING.md")
+
+if((APPLE OR WIN32) AND EXISTS ${PANDOC_EXECUTABLE})
+    execute_process(COMMAND ${PANDOC_EXECUTABLE} "${CMAKE_SOURCE_DIR}/COPYING.md" -s -o "${CMAKE_BINARY_DIR}/COPYING.rtf")
+    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_BINARY_DIR}/COPYING.rtf")
+else()
+    set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING.md")
+endif()
+
 set(CPACK_RESOURCE_FILE_README "${CMAKE_SOURCE_DIR}/README.md")
 set(CPACK_MONOLITHIC_INSTALL YES)
 set(CPACK_PACKAGE_EXECUTABLES "openttd;OpenTTD")

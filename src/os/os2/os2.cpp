@@ -203,9 +203,6 @@ bool GetClipboardContents(char *buffer, const char *last)
 }
 
 
-const char *FS2OTTD(const char *name) {return name;}
-const char *OTTD2FS(const char *name) {return name;}
-
 void OSOpenBrowser(const char *url)
 {
 	// stub only
@@ -219,6 +216,10 @@ void SetCurrentThreadName(const char *)
 int GetCurrentThreadName(char *str, const char *last) { return 0; }
 
 void SetSelfAsMainThread() { }
+void SetSelfAsGameThread() { }
+void PerThreadSetup() { }
+void PerThreadSetupInit() { }
 
 bool IsMainThread() { return false; }
 bool IsNonMainThread() { return false; }
+bool IsGameThread() { return false; }

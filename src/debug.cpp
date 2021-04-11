@@ -60,8 +60,6 @@ std::string _loadgame_DBGL_data;
 bool _save_DBGC_data = false;
 std::string _loadgame_DBGC_data;
 
-uint32 _realtime_tick = 0;
-
 struct DebugLevel {
 	const char *name;
 	int *level;
@@ -184,9 +182,9 @@ static void debug_print(const char *dbg, const char *buf)
 	 * crashing, and NetworkTextMessage includes these */
 #if defined(_WIN32)
 	if (strcmp(dbg, "desync") != 0) {
-		TCHAR system_buf[512];
-		convert_to_fs(buffer, system_buf, lengthof(system_buf), true);
-		_fputts(system_buf, stderr);
+		wchar_t system_buf[512];
+		convert_to_fs(buffer, system_buf, lengthof(system_buf));
+		fputws(system_buf, stderr);
 	}
 #else
 	fputs(buffer, stderr);

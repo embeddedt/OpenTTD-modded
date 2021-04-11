@@ -235,6 +235,12 @@ void Order::MakeLoadingAdvance(StationID destination)
 	this->dest = destination;
 }
 
+void Order::MakeReleaseSlot()
+{
+	this->type = OT_RELEASE_SLOT;
+	this->dest = INVALID_TRACE_RESTRICT_SLOT_ID;
+}
+
 /**
  * Make this depot/station order also a refit order.
  * @param cargo   the cargo type to change to.
@@ -649,7 +655,7 @@ CargoMaskedStationIDStack OrderList::GetNextStoppingStation(const Vehicle *v, Ca
 			});
 			if (invalid) return CargoMaskedStationIDStack(cargo_mask, INVALID_STATION);
 		}
-	} while (next->IsType(OT_GOTO_DEPOT) || next->GetDestination() == v->last_station_visited);
+	} while (next->IsType(OT_GOTO_DEPOT) || next->IsType(OT_RELEASE_SLOT) || next->GetDestination() == v->last_station_visited);
 
 	return CargoMaskedStationIDStack(cargo_mask, next->GetDestination());
 }
@@ -1175,6 +1181,13 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 			break;
 		}
 
+		case OT_RELEASE_SLOT: {
+			if (v->type != VEH_TRAIN) return CMD_ERROR;
+			TraceRestrictSlotID slot = new_order.GetDestination();
+			if (slot != INVALID_TRACE_RESTRICT_SLOT_ID && !TraceRestrictSlot::IsValidID(slot)) return CMD_ERROR;
+			break;
+		}
+
 		default: return CMD_ERROR;
 	}
 
@@ -1695,6 +1708,10 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			if (mof != MOF_COND_VARIABLE && mof != MOF_COND_COMPARATOR && mof != MOF_COND_VALUE && mof != MOF_COND_VALUE_2 && mof != MOF_COND_VALUE_3 && mof != MOF_COND_DESTINATION) return CMD_ERROR;
 			break;
 
+		case OT_RELEASE_SLOT:
+			if (mof != MOF_SLOT) return CMD_ERROR;
+			break;
+
 		default:
 			return CMD_ERROR;
 	}
@@ -1768,6 +1785,10 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					if (data != OCC_IS_TRUE && data != OCC_IS_FALSE && data != OCC_EQUALS && data != OCC_NOT_EQUALS) return CMD_ERROR;
 					break;
 
+				case OCV_TIMETABLE:
+					if (data == OCC_IS_TRUE || data == OCC_IS_FALSE || data == OCC_EQUALS || data == OCC_NOT_EQUALS) return CMD_ERROR;
+					break;
+
 				default:
 					if (data == OCC_IS_TRUE || data == OCC_IS_FALSE) return CMD_ERROR;
 					break;
@@ -1799,6 +1820,8 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 				case OCV_CARGO_WAITING_AMOUNT:
 				case OCV_COUNTER_VALUE:
+				case OCV_TIME_DATE:
+				case OCV_TIMETABLE:
 					if (data >= (1 << 16)) return CMD_ERROR;
 					break;
 
@@ -1817,6 +1840,14 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 				case OCV_COUNTER_VALUE:
 					if (data != INVALID_TRACE_RESTRICT_COUNTER_ID && !TraceRestrictCounter::IsValidID(data)) return CMD_ERROR;
+					break;
+
+				case OCV_TIME_DATE:
+					if (data >= TRTDVF_END) return CMD_ERROR;
+					break;
+
+				case OCV_TIMETABLE:
+					if (data >= OTCM_END) return CMD_ERROR;
 					break;
 
 				default:
@@ -1841,6 +1872,10 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 		case MOF_WAYPOINT_FLAGS:
 			if (data != (data & OWF_REVERSE)) return CMD_ERROR;
+			break;
+
+		case MOF_SLOT:
+			if (data != INVALID_TRACE_RESTRICT_SLOT_ID && !TraceRestrictSlot::IsValidID(data)) return CMD_ERROR;
 			break;
 	}
 
@@ -1926,6 +1961,8 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 						|| order->GetConditionVariable() == OCV_CARGO_LOAD_PERCENTAGE || order->GetConditionVariable() == OCV_CARGO_WAITING_AMOUNT);
 				bool old_var_was_slot = (order->GetConditionVariable() == OCV_SLOT_OCCUPANCY || order->GetConditionVariable() == OCV_TRAIN_IN_SLOT);
 				bool old_var_was_counter = (order->GetConditionVariable() == OCV_COUNTER_VALUE);
+				bool old_var_was_time = (order->GetConditionVariable() == OCV_TIME_DATE);
+				bool old_var_was_tt = (order->GetConditionVariable() == OCV_TIMETABLE);
 				order->SetConditionVariable((OrderConditionVariable)data);
 
 				OrderConditionComparator occ = order->GetConditionComparator();
@@ -1944,6 +1981,16 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					case OCV_COUNTER_VALUE:
 						if (!old_var_was_counter) order->GetXDataRef() = INVALID_TRACE_RESTRICT_COUNTER_ID << 16;
 						if (occ == OCC_IS_TRUE || occ == OCC_IS_FALSE) order->SetConditionComparator(OCC_EQUALS);
+						break;
+
+					case OCV_TIME_DATE:
+						if (!old_var_was_time) order->GetXDataRef() = 0;
+						if (occ == OCC_IS_TRUE || occ == OCC_IS_FALSE) order->SetConditionComparator(OCC_EQUALS);
+						break;
+
+					case OCV_TIMETABLE:
+						if (!old_var_was_tt) order->GetXDataRef() = 0;
+						if (occ == OCC_IS_TRUE || occ == OCC_IS_FALSE || occ == OCC_EQUALS || occ == OCC_NOT_EQUALS) order->SetConditionComparator(OCC_LESS_THAN);
 						break;
 
 					case OCV_CARGO_ACCEPTANCE:
@@ -1972,7 +2019,7 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 						FALLTHROUGH;
 
 					default:
-						if (old_var_was_cargo || old_var_was_slot || old_var_was_counter) order->SetConditionValue(0);
+						if (old_var_was_cargo || old_var_was_slot || old_var_was_counter || old_var_was_time || old_var_was_tt) order->SetConditionValue(0);
 						if (occ == OCC_IS_TRUE || occ == OCC_IS_FALSE) order->SetConditionComparator(OCC_EQUALS);
 						break;
 				}
@@ -1988,6 +2035,8 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 					case OCV_SLOT_OCCUPANCY:
 					case OCV_TRAIN_IN_SLOT:
 					case OCV_CARGO_LOAD_PERCENTAGE:
+					case OCV_TIME_DATE:
+					case OCV_TIMETABLE:
 						order->GetXDataRef() = data;
 						break;
 
@@ -2024,6 +2073,10 @@ CommandCost CmdModifyOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 			case MOF_WAYPOINT_FLAGS:
 				order->SetWaypointFlags((OrderWaypointFlags)data);
+				break;
+
+			case MOF_SLOT:
+				order->SetDestination(data);
 				break;
 
 			default: NOT_REACHED();
@@ -2840,6 +2893,27 @@ VehicleOrderID ProcessConditionalOrder(const Order *order, const Vehicle *v, boo
 			if (ctr != nullptr) skip_order = OrderConditionCompare(occ, ctr->value, GB(order->GetXData(), 0, 16));
 			break;
 		}
+		case OCV_TIME_DATE: {
+			skip_order = OrderConditionCompare(occ, GetTraceRestrictTimeDateValue(static_cast<TraceRestrictTimeDateValueField>(value)), order->GetXData());
+			break;
+		}
+		case OCV_TIMETABLE: {
+			int tt_value = 0;
+			switch (static_cast<OrderTimetableConditionMode>(value)) {
+				case OTCM_LATENESS:
+					tt_value = v->lateness_counter;
+					break;
+
+				case OTCM_EARLINESS:
+					tt_value = -v->lateness_counter;
+					break;
+
+				default:
+					break;
+			}
+			skip_order = OrderConditionCompare(occ, tt_value, order->GetXData());
+			break;
+		}
 		default: NOT_REACHED();
 	}
 
@@ -2949,6 +3023,16 @@ bool UpdateOrderDest(Vehicle *v, const Order *order, int conditional_depth, bool
 			}
 			break;
 		}
+
+		case OT_RELEASE_SLOT:
+			assert(!pbs_look_ahead);
+			if (order->GetDestination() != INVALID_TRACE_RESTRICT_SLOT_ID) {
+				TraceRestrictSlot *slot = TraceRestrictSlot::GetIfValid(order->GetDestination());
+				if (slot != nullptr) slot->Vacate(v->index);
+			}
+			UpdateVehicleTimetable(v, true);
+			v->IncrementRealOrderIndex();
+			break;
 
 		default:
 			v->SetDestTile(0);
@@ -3084,6 +3168,26 @@ bool ProcessOrders(Vehicle *v)
 /**
  * Check whether the given vehicle should stop at the given station
  * based on this order and the non-stop settings.
+ * @param last_station_visited the last visited station.
+ * @param station the station to stop at.
+ * @param waypoint if station is a waypoint.
+ * @return true if the vehicle should stop.
+ */
+bool Order::ShouldStopAtStation(StationID last_station_visited, StationID station, bool waypoint) const
+{
+	if (waypoint) return this->IsType(OT_GOTO_WAYPOINT) && this->dest == station && this->IsWaitTimetabled();
+	if (this->IsType(OT_LOADING_ADVANCE) && this->dest == station) return true;
+	bool is_dest_station = this->IsType(OT_GOTO_STATION) && this->dest == station;
+
+	return (!this->IsType(OT_GOTO_DEPOT) || (this->GetDepotOrderType() & ODTFB_PART_OF_ORDERS) != 0) &&
+			(last_station_visited != station) && // Do stop only when we've not just been there
+			/* Finally do stop when there is no non-stop flag set for this type of station. */
+			!(this->GetNonStopType() & (is_dest_station ? ONSF_NO_STOP_AT_DESTINATION_STATION : ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS));
+}
+
+/**
+ * Check whether the given vehicle should stop at the given station
+ * based on this order and the non-stop settings.
  * @param v       the vehicle that might be stopping.
  * @param station the station to stop at.
  * @param waypoint if station is a waypoint.
@@ -3091,14 +3195,7 @@ bool ProcessOrders(Vehicle *v)
  */
 bool Order::ShouldStopAtStation(const Vehicle *v, StationID station, bool waypoint) const
 {
-	if (waypoint) return this->IsType(OT_GOTO_WAYPOINT) && this->dest == station && this->IsWaitTimetabled();
-	if (this->IsType(OT_LOADING_ADVANCE) && this->dest == station) return true;
-	bool is_dest_station = this->IsType(OT_GOTO_STATION) && this->dest == station;
-
-	return (!this->IsType(OT_GOTO_DEPOT) || (this->GetDepotOrderType() & ODTFB_PART_OF_ORDERS) != 0) &&
-			(v == nullptr || v->last_station_visited != station) && // Do stop only when we've not just been there
-			/* Finally do stop when there is no non-stop flag set for this type of station. */
-			!(this->GetNonStopType() & (is_dest_station ? ONSF_NO_STOP_AT_DESTINATION_STATION : ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS));
+	return this->ShouldStopAtStation(v->last_station_visited, station, waypoint);
 }
 
 /**

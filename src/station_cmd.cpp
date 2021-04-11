@@ -57,6 +57,7 @@
 #include "widgets/station_widget.h"
 #include "zoning.h"
 #include "tunnelbridge_map.h"
+#include "cheat_type.h"
 
 #include "table/strings.h"
 
@@ -983,6 +984,10 @@ static CommandCost CheckFlatLandRailStation(TileArea tile_area, DoCommandFlag fl
 					*station = st;
 				} else if (*station != st) {
 					return_cmd_error(STR_ERROR_ADJOINS_MORE_THAN_ONE_EXISTING);
+				}
+				if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && HasStationReservation(tile_cur)) {
+					CommandCost ret = CheckTrainReservationPreventsTrackModification(tile_cur, GetRailStationTrack(tile_cur));
+					if (ret.Failed()) return ret;
 				}
 			}
 		} else {
@@ -2336,6 +2341,8 @@ uint8 GetAirportNoiseLevelForDistance(const AirportSpec *as, uint distance)
 	 * So no need to go any further*/
 	if (as->noise_level < 2) return as->noise_level;
 
+	if (_settings_game.difficulty.town_council_tolerance == TOWN_COUNCIL_INDIFFERENT) return 1;
+
 	/* The steps for measuring noise reduction are based on the "magical" (and arbitrary) 8 base distance
 	 * adding the town_council_tolerance 4 times, as a way to graduate, depending of the tolerance.
 	 * Basically, it says that the less tolerant a town is, the bigger the distance before
@@ -2569,6 +2576,13 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 	if (flags & DC_EXEC) {
 		if (action == AIRPORT_UPGRADE) {
 			/* delete old airport if upgrading */
+
+			for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
+				DeleteWindowById(
+					WC_VEHICLE_DEPOT, st->airport.GetHangarTile(i)
+				);
+			}
+
 			const AirportSpec *old_as = st->airport.GetSpec();
 			AirportTileTableIterator old_iter(old_as->table[st->airport.layout], st->airport.tile);
 			uint old_dist;
@@ -2586,12 +2600,6 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 				DeleteAnimatedTile(tile_cur);
 				DoClearSquare(tile_cur);
 				DeleteNewGRFInspectWindow(GSF_AIRPORTTILES, tile_cur);
-			}
-
-			for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
-				DeleteWindowById(
-					WC_VEHICLE_DEPOT, st->airport.GetHangarTile(i)
-				);
 			}
 
 			st->rect.AfterRemoveRect(st, st->airport);
@@ -2663,6 +2671,12 @@ static CommandCost RemoveAirport(TileIndex tile, DoCommandFlag flags)
 	if (cost.Failed()) return cost;
 
 	if (flags & DC_EXEC) {
+		for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
+			DeleteWindowById(
+				WC_VEHICLE_DEPOT, st->airport.GetHangarTile(i)
+			);
+		}
+
 		ZoningMarkDirtyStationCoverageArea(st);
 		const AirportSpec *as = st->airport.GetSpec();
 		/* The noise level is the noise from the airport and reduce it to account for the distance to the town center.
@@ -2682,12 +2696,6 @@ static CommandCost RemoveAirport(TileIndex tile, DoCommandFlag flags)
 
 		/* Clear the persistent storage. */
 		delete st->airport.psa;
-
-		for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
-			DeleteWindowById(
-				WC_VEHICLE_DEPOT, st->airport.GetHangarTile(i)
-			);
-		}
 
 		st->rect.AfterRemoveRect(st, st->airport);
 
@@ -3677,12 +3685,14 @@ static VehicleEnterTileStatus VehicleEnter_Station(Vehicle *v, TileIndex tile, i
 			if (x == stop) {
 				if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && front->cur_speed > 15 && !(front->lookahead != nullptr && HasBit(front->lookahead->flags, TRLF_APPLY_ADVISORY))) {
 					/* Travelling too fast, do not stop and report overshoot to player */
-					SetDParam(0, front->index);
-					SetDParam(1, IsRailWaypointTile(tile) ? STR_WAYPOINT_NAME : STR_STATION_NAME);
-					SetDParam(2, station_id);
-					AddNewsItem(STR_NEWS_TRAIN_OVERSHOT_STATION, NT_ADVICE, NF_INCOLOUR | NF_SMALL | NF_VEHICLE_PARAM0,
-							NR_VEHICLE, v->index,
-							NR_STATION, station_id);
+					if (front->owner == _local_company) {
+						SetDParam(0, front->index);
+						SetDParam(1, IsRailWaypointTile(tile) ? STR_WAYPOINT_NAME : STR_STATION_NAME);
+						SetDParam(2, station_id);
+						AddNewsItem(STR_NEWS_TRAIN_OVERSHOT_STATION, NT_ADVICE, NF_INCOLOUR | NF_SMALL | NF_VEHICLE_PARAM0,
+								NR_VEHICLE, v->index,
+								NR_STATION, station_id);
+					}
 					for (Train *u = front; u != nullptr; u = u->Next()) {
 						ClrBit(u->flags, VRF_BEYOND_PLATFORM_END);
 					}
@@ -3836,7 +3846,10 @@ static void UpdateStationRating(Station *st)
 			 */
 			uint waiting_avg = waiting / (num_dests + 1);
 
-			if (HasBit(cs->callback_mask, CBM_CARGO_STATION_RATING_CALC)) {
+			if (_extra_cheats.station_rating.value) {
+				ge->rating = rating = 255;
+				skip = true;
+			} else if (HasBit(cs->callback_mask, CBM_CARGO_STATION_RATING_CALC)) {
 				/* Perform custom station rating. If it succeeds the speed, days in transit and
 				 * waiting cargo ratings must not be executed. */
 
@@ -4162,6 +4175,14 @@ static void StationHandleSmallTick(BaseStation *st)
 	if (b == 0) UpdateStationRating(Station::From(st));
 }
 
+void UpdateAllStationRatings()
+{
+	for (Station *st : Station::Iterate()) {
+		if (!st->IsInUse()) continue;
+		UpdateStationRating(st);
+	}
+}
+
 void OnTick_Station()
 {
 	if (_game_mode == GM_EDITOR) return;
@@ -4413,7 +4434,7 @@ uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, Sourc
 			first_station = st;
 			continue;
 		}
-		if  (used_stations.empty()) {
+		if (used_stations.empty()) {
 			used_stations.reserve(2);
 			used_stations.emplace_back(std::make_pair(first_station, 0));
 		}
@@ -4458,9 +4479,9 @@ uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, Sourc
 		moving += p.second;
 	}
 
-	/* If there is some cargo left due to rounding issues distribute it among the best rated stations.  */
+	/* If there is some cargo left due to rounding issues distribute it among the best rated stations. */
 	if (amount > moving) {
-		std::sort(used_stations.begin(), used_stations.end(), [type] (const StationInfo &a, const StationInfo &b) {
+		std::sort(used_stations.begin(), used_stations.end(), [type](const StationInfo &a, const StationInfo &b) {
 			return b.first->goods[type].rating < a.first->goods[type].rating;
 		});
 

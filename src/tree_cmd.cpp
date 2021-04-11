@@ -229,6 +229,7 @@ static void PlaceTree(TileIndex tile, uint32 r)
 
 	if (tree != TREE_INVALID) {
 		PlantTreesOnTile(tile, tree, GB(r, 22, 2), std::min<byte>(GB(r, 16, 3), 6));
+		MarkTileDirtyByTile(tile);
 
 		/* Rerandomize ground, if neither snow nor shore */
 		TreeGround ground = GetTreeGround(tile);
@@ -637,9 +638,19 @@ static void DrawTile_Trees(TileInfo *ti, DrawTileProcParams params)
 	/* put the trees to draw in a list */
 	uint trees = GetTreeCount(ti->tile);
 
+	PaletteID palette_adjust = 0;
+	if (_settings_client.gui.shade_trees_on_slopes && ti->tileh != SLOPE_FLAT) {
+		extern int GetSlopeTreeBrightnessAdjust(Slope slope);
+		int adjust = GetSlopeTreeBrightnessAdjust(ti->tileh);
+		if (adjust != 0) {
+			SetBit(palette_adjust, PALETTE_BRIGHTNESS_MODIFY);
+			SB(palette_adjust, PALETTE_BRIGHTNESS_OFFSET, PALETTE_BRIGHTNESS_WIDTH, adjust & ((1 << PALETTE_BRIGHTNESS_WIDTH) - 1));
+		}
+	}
+
 	for (uint i = 0; i < trees; i++) {
 		SpriteID sprite = s[0].sprite + (i == trees - 1 ? GetTreeGrowth(ti->tile) : 3);
-		PaletteID pal = s[0].pal;
+		PaletteID pal = s[0].pal | palette_adjust;
 
 		te[i].sprite = sprite;
 		te[i].pal    = pal;
@@ -728,10 +739,10 @@ static void TileLoopTreesDesert(TileIndex tile)
 
 		case TROPICZONE_RAINFOREST: {
 			static const SoundFx forest_sounds[] = {
-				SND_42_LOON_BIRD,
-				SND_43_LION,
-				SND_44_MONKEYS,
-				SND_48_DISTANT_BIRD
+				SND_42_RAINFOREST_1,
+				SND_43_RAINFOREST_2,
+				SND_44_RAINFOREST_3,
+				SND_48_RAINFOREST_4
 			};
 			uint32 r = Random();
 
@@ -745,7 +756,13 @@ static void TileLoopTreesDesert(TileIndex tile)
 
 static void TileLoopTreesAlps(TileIndex tile)
 {
-	int k = GetTileZ(tile) - GetSnowLine() + 1;
+	int k;
+	if ((int)TileHeight(tile) < GetSnowLine() - 1) {
+		/* Fast path to avoid needing to check all 4 corners */
+		k = -1;
+	} else {
+		k = GetTileZ(tile) - GetSnowLine() + 1;
+	}
 
 	if (k < 0) {
 		switch (GetTreeGround(tile)) {
@@ -765,7 +782,7 @@ static void TileLoopTreesAlps(TileIndex tile)
 			if (GetTreeDensity(tile) == 3) {
 				uint32 r = Random();
 				if (Chance16I(1, 200, r) && _settings_client.sound.ambient) {
-					SndPlayTileFx((r & 0x80000000) ? SND_39_HEAVY_WIND : SND_34_WIND, tile);
+					SndPlayTileFx((r & 0x80000000) ? SND_39_ARCTIC_SNOW_2 : SND_34_ARCTIC_SNOW_1, tile);
 				}
 			}
 			return;
@@ -867,7 +884,7 @@ static void TileLoop_Trees(TileIndex tile)
 			break;
 
 		case 6: // final stage of tree destruction
-			 if (!CanPlantExtraTrees(tile)) {
+			if (!CanPlantExtraTrees(tile)) {
 				/* if trees can't spread just plant a new one to prevent deforestation */
 				SetTreeGrowth(tile, 0);
 			} else if (GetTreeCount(tile) > 1) {

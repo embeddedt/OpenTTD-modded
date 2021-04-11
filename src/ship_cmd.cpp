@@ -340,11 +340,11 @@ void Ship::UpdateDeltaXY()
 }
 
 /**
- * Test-procedure for HasVehicleOnPos to check for a ship.
+ * Test-procedure for HasVehicleOnPos to check for any ships which are visible and not stopped by the player.
  */
-static Vehicle *EnsureNoVisibleShipProc(Vehicle *v, void *data)
+static Vehicle *EnsureNoMovingShipProc(Vehicle *v, void *data)
 {
-	return (v->vehstatus & VS_HIDDEN) == 0 ? v : nullptr;
+	return (v->vehstatus & (VS_HIDDEN | VS_STOPPED)) == 0 ? v : nullptr;
 }
 
 static bool CheckShipLeaveDepot(Ship *v)
@@ -370,7 +370,7 @@ static bool CheckShipLeaveDepot(Ship *v)
 
 	/* Don't leave depot if another vehicle is already entering/leaving */
 	/* This helps avoid CPU load if many ships are set to start at the same time */
-	if (HasVehicleOnPos(v->tile, VEH_SHIP, nullptr, &EnsureNoVisibleShipProc)) return true;
+	if (HasVehicleOnPos(v->tile, VEH_SHIP, nullptr, &EnsureNoMovingShipProc)) return true;
 
 	TileIndex tile = v->tile;
 	Axis axis = GetShipDepotAxis(tile);
@@ -670,7 +670,7 @@ static void CheckDistanceBetweenShips(TileIndex tile, Ship *v, TrackBits tracks,
 		/* Bridge entrance */
 		if (IsBridgeTile(tile) && HandleSpeedOnAqueduct(v, tile, tile)) return;
 
-		scc.track_bits = v->state;
+		scc.track_bits = TrackToTrackBits(IsDiagonalTrack(track) ? track : TrackToOppositeTrack(track));
 		ti = TileIndexDiffCByDiagDir(_ship_search_directions[track][diagdir]);
 		scc.search_tile = TileAddWrap(tile, ti.x, ti.y);
 		if (scc.search_tile == INVALID_TILE) return;
@@ -691,7 +691,11 @@ static void CheckDistanceBetweenShips(TileIndex tile, Ship *v, TrackBits tracks,
 		v->cur_speed /= scc.search_tile == tile ? 8 : 2;
 
 		/* Clean none wanted trackbits, including pathfinder track, TRACK_BIT_WORMHOLE and no 90 degree turns. */
-		tracks = IsDiagonalTrack(track) ? KillFirstBit(tracks) : (tracks & TRACK_BIT_CROSS);
+		if (IsDiagonalTrack(track)) {
+			ClrBit(tracks, track);
+		} else {
+			tracks &= TRACK_BIT_CROSS;
+		}
 
 		/* Just follow track 1 tile and see if there is a track to follow. (try not to bang in coast or ship) */
 		while (tracks != TRACK_BIT_NONE) {
@@ -701,7 +705,9 @@ static void CheckDistanceBetweenShips(TileIndex tile, Ship *v, TrackBits tracks,
 			TileIndex tile_check = TileAddWrap(tile, ti.x, ti.y);
 			if (tile_check == INVALID_TILE) continue;
 
-			if (HasVehicleOnPos(tile_check, VEH_SHIP, &scc, FindShipOnTile)) continue;
+			scc.search_tile = tile_check;
+			scc.track_bits = TrackToTrackBits(IsDiagonalTrack(track) ? track : TrackToOppositeTrack(track));
+			if (HasVehicleOnPos(scc.search_tile, VEH_SHIP, &scc, FindShipOnTile)) continue;
 
 			TrackBits bits = GetTileShipTrackStatus(tile_check) & DiagdirReachesTracks(_ship_search_directions[track][diagdir]);
 			if (!IsDiagonalTrack(track)) bits &= TRACK_BIT_CROSS;  // No 90 degree turns.

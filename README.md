@@ -14,7 +14,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 
 > **⚠️ Note:** OpenTTD-modded should load JGR-compatible and vanilla savegames without issue. I frequently merge JGR's branch into my own so you are not missing out on any JGR patches by using this "modpack". Make sure you backup your existing game before trying it here, though!
 
-## JGR's Patchpack version 0.40.0
+## JGR's Patchpack version 0.40.5
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -292,10 +292,10 @@ See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on
   * Add support for allowing/disallowing supply to a station, per cargo, by ctrl-clicking the station cargo rating. (added in v0.34.0).  
   * Open train vehicle details window on total cargo tab if shift pressed. (added in v0.34.0).  
   * Ctrl-click up/down in NewGRF window to move to top or bottom. (added in v0.34.2).  
-  * Additional conditional order types/modes. (added in v0.24.0, v0.33.1, v0.34.3, v0.37.0).  
+  * Additional conditional order types/modes. (added in v0.24.0, v0.33.1, v0.34.3, v0.37.0, v0.40.2, v0.40.5).  
   * Improve road vehicle pathfinding when multiple vehicles are simultaneously heading to a station with multiple bay/stop entrances. (added in v0.35.0).  
   * Add setting to scale station cargo capacity and rating tolerance by size. (added in v0.35.0).  
-  * Add setting to disable vehicle expiry after a given year. (added in v0.35.0).  
+  * Add settings to disable vehicle expiry and introduction after the given years. (added in v0.35.0, v0.40.5).  
   * Add setting to control road vehicle re-routing on road layout changes. (added in v0.35.0).  
   * Add news setting for trains waiting due to routing restrictions. (added in v0.36.0).  
   * Add setting for alternative linkgraph overlay colour schemes. (added in v0.36.0).  
@@ -308,6 +308,14 @@ See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on
   * Add console commands for conditional execution from game date. (added in v0.39.2).  
   * Add client setting for vehicle naming scheme. (added in v0.40.0).  
   * Add setting to control dates over which inflation is applied. (added in v0.40.0).  
+  * Add "indifferent" mode to the town council attitude to area restructuring setting. (added in v0.40.2).  
+  * Add support for zstd savegame compression for autosaves and network joins. (added in v0.40.3).  
+  * Add setting for shading trees on slopes in viewports (default on). (added in v0.40.3).  
+  * Allow clicking the money text in the cheats window to enter a quantity. (added in v0.40.5).  
+  * Allow shift-clicking on borrow/repay money buttons to enter a quantity. (added in v0.40.5).  
+  * Add map generation settings to control river/lake and rocky patch generation. (added in v0.40.5).  
+  * Add settings to customise the size of town zones. (added in v0.40.5).  
+  * Add setting to enable non-admin multiplayer clients to rename towns. (added in v0.40.5).  
   * Various minor fixes, see changelog.  
   * [NewGRF specification additions](docs/newgrf-additions.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions.html)).
   * [NML specification additions](docs/newgrf-additions-nml.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions-nml.html)).
@@ -579,6 +587,9 @@ See the comments in the source files in `src/3rdparty/md5` for the complete lice
 
 The implementations of Posix `getaddrinfo` and `getnameinfo` for OS/2 in `src/3rdparty/os2` are distributed partly under the GNU Lesser General Public License 2.1, and partly under the (3-clause) BSD license.
 The exact licensing terms can be found in `src/3rdparty/os2/getaddrinfo.c` resp. `src/3rdparty/os2/getnameinfo.c`.
+
+The implementation of C++17 `std::optional` in `src/3rdparty/optional` is licensed under the Boost Software License - Version 1.0.
+See `src/3rdparty/optional/LICENSE_1_0.txt` for the complete license text.
 
 
 ## 4.0 Credits

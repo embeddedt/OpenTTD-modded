@@ -4,20 +4,22 @@
 #
 macro(compile_flags)
     if(MSVC)
-        # Switch to MT (static) instead of MD (dynamic) binary
+        if(VCPKG_TARGET_TRIPLET MATCHES "-static" AND NOT VCPKG_TARGET_TRIPLET MATCHES "-md")
+            # Switch to MT (static) instead of MD (dynamic) binary
 
-        # For MSVC two generators are available
-        # - a command line generator (Ninja) using CMAKE_BUILD_TYPE to specify the
-        #   configuration of the build tree
-        # - an IDE generator (Visual Studio) using CMAKE_CONFIGURATION_TYPES to
-        #   specify all configurations that will be available in the generated solution
-        list(APPEND MSVC_CONFIGS "${CMAKE_BUILD_TYPE}" "${CMAKE_CONFIGURATION_TYPES}")
+            # For MSVC two generators are available
+            # - a command line generator (Ninja) using CMAKE_BUILD_TYPE to specify the
+            #   configuration of the build tree
+            # - an IDE generator (Visual Studio) using CMAKE_CONFIGURATION_TYPES to
+            #   specify all configurations that will be available in the generated solution
+            list(APPEND MSVC_CONFIGS "${CMAKE_BUILD_TYPE}" "${CMAKE_CONFIGURATION_TYPES}")
 
-        # Set usage of static runtime for all configurations
-        foreach(MSVC_CONFIG ${MSVC_CONFIGS})
-            string(TOUPPER "CMAKE_CXX_FLAGS_${MSVC_CONFIG}" MSVC_FLAGS)
-            string(REPLACE "/MD" "/MT" ${MSVC_FLAGS} "${${MSVC_FLAGS}}")
-        endforeach()
+            # Set usage of static runtime for all configurations
+            foreach(MSVC_CONFIG ${MSVC_CONFIGS})
+                string(TOUPPER "CMAKE_CXX_FLAGS_${MSVC_CONFIG}" MSVC_FLAGS)
+                string(REPLACE "/MD" "/MT" ${MSVC_FLAGS} "${${MSVC_FLAGS}}")
+            endforeach()
+        endif()
 
         # "If /Zc:rvalueCast is specified, the compiler follows section 5.4 of the
         # C++11 standard". We need C++11 for the way we use threads.
@@ -27,9 +29,6 @@ macro(compile_flags)
             # Enable multi-threaded compilation.
             add_compile_options(/MP)
         endif()
-
-        # Add DPI manifest to project; other WIN32 targets get this via ottdres.rc
-        list(APPEND GENERATED_SOURCE_FILES "${CMAKE_SOURCE_DIR}/os/windows/openttd.manifest")
     endif()
 
     # Add some -D flags for Debug builds. We cannot use add_definitions(), because

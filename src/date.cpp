@@ -21,6 +21,8 @@
 #include "newgrf_profiling.h"
 #include "console_func.h"
 #include "debug.h"
+#include "landscape.h"
+#include "widgets/statusbar_widget.h"
 
 #include "safeguards.h"
 
@@ -53,6 +55,7 @@ void SetDate(Date date, DateFract fract)
 	ConvertDateToYMD(date, &ymd);
 	_cur_date_ymd = ymd;
 	SetScaledTickVariables();
+	UpdateCachedSnowLine();
 }
 
 void SetScaledTickVariables()
@@ -275,7 +278,7 @@ static void OnNewDay()
 	IndustryDailyLoop();
 
 	if (!_settings_time.time_in_minutes || _settings_client.gui.date_with_time > 0) {
-		SetWindowWidgetDirty(WC_STATUS_BAR, 0, 0);
+		SetWindowWidgetDirty(WC_STATUS_BAR, 0, WID_S_LEFT);
 	}
 	EnginesDailyLoop();
 
@@ -320,6 +323,8 @@ void IncreaseDate()
 
 	/* update internal variables before calling the daily/monthly/yearly loops */
 	_cur_date_ymd = ymd;
+
+	UpdateCachedSnowLine();
 
 	/* yes, call various daily loops */
 	OnNewDay();

@@ -44,7 +44,6 @@
 #include "string_type.h"
 
 void GameLoop();
-void GameLoopPaletteAnimations();
 
 void CreateConsole();
 
@@ -56,7 +55,7 @@ extern bool _ctrl_pressed;   ///< Is Ctrl pressed?
 extern bool _shift_pressed;  ///< Is Shift pressed?
 extern bool _invert_ctrl;
 extern bool _invert_shift;
-extern byte _fast_forward;
+extern uint16 _game_speed;
 
 extern bool _left_button_down;
 extern bool _left_button_clicked;
@@ -76,10 +75,12 @@ void HandleCtrlChanged();
 void HandleShiftChanged();
 void HandleMouseEvents();
 void UpdateWindows();
+void ChangeGameSpeed(bool enable_fast_forward);
 
 void DrawMouseCursor();
 void ScreenSizeChanged();
 void GameSizeChanged();
+void UpdateGUIZoom();
 void UndrawMouseCursor();
 
 /** Size of the buffer used for drawing strings. */

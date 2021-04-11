@@ -151,6 +151,7 @@ enum TraceRestrictItemType {
 	TRIT_COND_LOAD_PERCENT        = 26,   ///< Test train load percentage
 	TRIT_COND_COUNTER_VALUE       = 27,   ///< Test counter value
 	TRIT_COND_TIME_DATE_VALUE     = 28,   ///< Test time/date value
+	TRIT_COND_RESERVED_TILES      = 29,   ///< Test reserved tiles ahead of train
 
 	TRIT_COND_END                 = 48,   ///< End (exclusive) of conditional item types, note that this has the same value as TRIT_REVERSE
 	TRIT_REVERSE                  = 48,   ///< Reverse behind signal
@@ -294,6 +295,7 @@ enum TraceRestrictTimeDateValueField {
 	TRTDVF_MINUTE                 =  0,      ///< Minute
 	TRTDVF_HOUR                   =  1,      ///< Hour
 	TRTDVF_HOUR_MINUTE            =  2,      ///< Hour and minute
+	TRTDVF_END                    =  3,      ///< End tag
 };
 
 /**
@@ -327,6 +329,15 @@ enum TraceRestrictCounterCondOpField {
 	TRCCOF_DECREASE               = 1,       ///< decrease counter by value
 	TRCCOF_SET                    = 2,       ///< set counter to value
 	/* space up to 8 */
+};
+
+/**
+ * TraceRestrictItem auxiliary type field, for TRIT_COND_PBS_ENTRY_SIGNAL
+ */
+enum TraceRestrictPBSEntrySignalAuxField {
+	TRPESAF_VEH_POS               = 0,       ///< vehicle position signal
+	TRPESAF_RES_END               = 1,       ///< reservation end signal
+	/* space up to 3 */
 };
 
 /**
@@ -393,7 +404,7 @@ DECLARE_ENUM_AS_BIT_SET(TraceRestrictProgramInputSlotPermissions)
  * Execution input of a TraceRestrictProgram
  */
 struct TraceRestrictProgramInput {
-	typedef TileIndex PreviousSignalProc(const Train *v, const void *ptr);
+	typedef TileIndex PreviousSignalProc(const Train *v, const void *ptr, TraceRestrictPBSEntrySignalAuxField mode);
 
 	TileIndex tile;                               ///< Tile of restrict signal, for direction testing
 	Trackdir trackdir;                            ///< Track direction on tile of restrict signal, for direction testing
@@ -743,6 +754,10 @@ static inline TraceRestrictTypePropertySet GetTraceRestrictTypeProperties(TraceR
 				out.value_type = TRVT_TIME_DATE_INT;
 				break;
 
+			case TRIT_COND_RESERVED_TILES:
+				out.value_type = TRVT_INT;
+				break;
+
 			default:
 				NOT_REACHED();
 				break;
@@ -784,6 +799,7 @@ static inline bool IsTraceRestrictTypeAuxSubtype(TraceRestrictItemType type)
 		case TRIT_COND_PHYS_PROP:
 		case TRIT_COND_PHYS_RATIO:
 		case TRIT_COND_SLOT_OCCUPANCY:
+		case TRIT_COND_PBS_ENTRY_SIGNAL:
 			return true;
 
 		default:

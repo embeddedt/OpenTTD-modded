@@ -61,16 +61,26 @@ protected:
 			name(name), description(description)
 	{
 		if (usable) {
+			Blitters &blitters = GetBlitters();
+			assert(blitters.find(this->name) == blitters.end());
 			/*
 			 * Only add when the blitter is usable. Do not bail out or
 			 * do more special things since the blitters are always
 			 * instantiated upon start anyhow and freed upon shutdown.
 			 */
-			std::pair<Blitters::iterator, bool> P = GetBlitters().insert(Blitters::value_type(this->name, this));
-			assert(P.second);
+			blitters.insert(Blitters::value_type(this->name, this));
 		} else {
 			DEBUG(driver, 1, "Not registering blitter %s as it is not usable", name);
 		}
+	}
+
+	/**
+	 * Is the blitter usable with the current drivers and hardware config?
+	 * @return True if the blitter can be instantiated.
+	 */
+	virtual bool IsUsable() const
+	{
+		return true;
 	}
 
 public:
@@ -119,7 +129,7 @@ public:
 		for (; it != GetBlitters().end(); it++) {
 			BlitterFactory *b = (*it).second;
 			if (strcasecmp(bname, b->name.c_str()) == 0) {
-				return b;
+				return b->IsUsable() ? b : nullptr;
 			}
 		}
 		return nullptr;

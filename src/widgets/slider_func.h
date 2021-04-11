@@ -5,13 +5,17 @@
  * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @file splash.h Functions to support splash screens for OSX. */
+/** @file slider_type.h Types related to the horizontal slider widget. */
 
-#ifndef SPLASH_H
-#define SPLASH_H
+#ifndef WIDGETS_SLIDER_TYPE_H
+#define WIDGETS_SLIDER_TYPE_H
 
-#define SPLASH_IMAGE_FILE "splash.png"
+#include "../window_type.h"
+#include "../gfx_func.h"
 
-void DisplaySplashImage();
 
-#endif /* SPLASH_H */
+void DrawVolumeSliderWidget(Rect r, byte value);
+bool ClickVolumeSliderWidget(Rect r, Point pt, byte &value);
+
+
+#endif /* WIDGETS_SLIDER_TYPE_H */

@@ -2,9 +2,14 @@ name: CI
 
 on:
   pull_request:
-  push:
-    branches:
-    - master
+#  push:
+#    branches:
+#    - master
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Ref to build (for Pull Requests, use refs/pull/NNN/head)'
+        required: true
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
@@ -20,7 +25,14 @@ jobs:
 
     steps:
     - name: Checkout
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/checkout@v2
+
+    - name: Checkout (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Setup cache
       uses: actions/cache@v2
@@ -39,7 +51,7 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        make -j$(nproc) tools
+        cmake --build . -j $(nproc) --target tools
         echo "::endgroup::"
 
     - name: Install GCC problem matcher
@@ -56,7 +68,7 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        emmake make -j$(nproc)
+        cmake --build . -j $(nproc)
         echo "::endgroup::"
 
   linux:
@@ -66,10 +78,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - compiler: clang
-            cxxcompiler: clang++
-          - compiler: gcc
-            cxxcompiler: g++
+        - compiler: clang
+          cxxcompiler: clang++
+          libsdl: libsdl2-dev
+        - compiler: gcc
+          cxxcompiler: g++
+          libsdl: libsdl2-dev
+        - compiler: gcc
+          cxxcompiler: g++
+          libsdl: libsdl1.2-dev
+        - compiler: gcc
+          cxxcompiler: g++
+          extra-cmake-parameters: -DOPTION_DEDICATED=ON
 
     runs-on: ubuntu-20.04
     env:
@@ -88,12 +108,13 @@ jobs:
 
         echo "::group::Install dependencies"
         sudo apt-get install -y --no-install-recommends \
+          liballegro4-dev \
           libfontconfig-dev \
           libicu-dev \
           liblzma-dev \
+          libzstd-dev \
           liblzo2-dev \
-          libsdl1.2-dev \
-          libsdl2-dev \
+          ${{ matrix.libsdl }} \
           zlib1g-dev \
           # EOF
         echo "::endgroup::"
@@ -124,16 +145,16 @@ jobs:
         cd build
 
         echo "::group::CMake"
-        cmake ..
+        cmake .. ${{ matrix.extra-cmake-parameters }}
         echo "::endgroup::"
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        make -j$(nproc)
+        cmake --build . -j $(nproc)
         echo "::endgroup::"
 
-  windows:
-    name: Windows
+  macos:
+    name: Mac OS
 
     strategy:
       fail-fast: false
@@ -150,13 +171,28 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Prepare vcpkg (with cache)
-      uses: lukka/run-vcpkg@v6
+    - name: Prepare cache key
+      id: key
+      run: |
+        echo "::set-output name=image::$ImageOS-$ImageVersion"
+
+    - name: Enable vcpkg cache
+      uses: actions/cache@v2
       with:
-        vcpkgDirectory: '/usr/local/share/vcpkg'
-        doNotUpdateVcpkg: true
-        vcpkgArguments: 'freetype liblzma lzo'
-        vcpkgTriplet: '${{ matrix.arch }}-osx'
+        path: /usr/local/share/vcpkg/installed
+        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-0 # Increase the number whenever dependencies are modified
+        restore-keys: |
+          ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}
+
+    - name: Prepare vcpkg
+      run: |
+        vcpkg install --triplet=${{ matrix.arch }}-osx \
+          liblzma \
+          libpng \
+          lzo \
+          zlib \
+          zstd \
+          # EOF
 
     - name: Install OpenGFX
       run: |
@@ -191,44 +227,51 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(sysctl -n hw.logicalcpu) cores"
-        make -j$(sysctl -n hw.logicalcpu)
+        cmake --build . -j $(sysctl -n hw.logicalcpu)
         echo "::endgroup::"
 
-  macos:
-    name: Mac OS
+  windows:
+    name: Windows
 
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - arch: x86
-        - arch: x64
+        os: [windows-latest, windows-2016]
+        arch: [x86, x64]
 
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # "restore-cache" which is done by "run-vcpkg" uses Windows tar.
-    # A git clone on windows marks a few files as read-only; when Windows tar
-    # tries to extract the cache over this folder, it fails, despite the files
-    # being identical. This failure shows up as an warning in the logs. We
-    # avoid this by simply removing the read-only mark from the git folder.
-    # In other words: this is a hack!
-    # See: https://github.com/lukka/run-vcpkg/issues/61
-    - name: Remove read-only flag from vcpkg git folder
+    - name: Prepare cache key
+      id: key
       shell: powershell
       run: |
-        attrib -r "c:\vcpkg\.git\*.*" /s
+        # Work around caching failure with GNU tar
+        New-Item -Type Junction -Path vcpkg -Target c:\vcpkg
 
-    - name: Prepare vcpkg (with cache)
-      uses: lukka/run-vcpkg@v6
+        Write-Output "::set-output name=image::$env:ImageOS-$env:ImageVersion"
+
+    - name: Enable vcpkg cache
+      uses: actions/cache@v2
       with:
-        vcpkgDirectory: 'c:/vcpkg'
-        doNotUpdateVcpkg: true
-        vcpkgArguments: 'liblzma libpng lzo zlib'
-        vcpkgTriplet: '${{ matrix.arch }}-windows-static'
+        path: vcpkg/installed
+        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-0 # Increase the number whenever dependencies are modified
+        restore-keys: |
+          ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}
+
+    - name: Prepare vcpkg
+      shell: bash
+      run: |
+        vcpkg install --triplet=${{ matrix.arch }}-windows-static \
+          liblzma \
+          libpng \
+          lzo \
+          zlib \
+          zstd \
+          # EOF
 
     - name: Install OpenGFX
       shell: bash
@@ -249,5 +292,25 @@ jobs:
     - name: Install MSVC problem matcher
       uses: ammaraskar/msvc-problem-matcher@master
 
+    - name: Configure developer command prompt for ${{ matrix.arch }}
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{ matrix.arch }}
+
     - name: Build
-      run: cd build && make -j2
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+
+        echo "::group::CMake"
+        cmake .. \
+          -GNinja \
+          -DVCPKG_TARGET_TRIPLET=${{ matrix.arch }}-windows-static \
+          -DCMAKE_TOOLCHAIN_FILE="c:\vcpkg\scripts\buildsystems\vcpkg.cmake" \
+          # EOF
+        echo "::endgroup::"
+
+        echo "::group::Build"
+        cmake --build .
+        echo "::endgroup::"

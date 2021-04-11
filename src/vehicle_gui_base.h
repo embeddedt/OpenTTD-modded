@@ -14,32 +14,54 @@
 #include "date_type.h"
 #include "economy_type.h"
 #include "sortlist_type.h"
+#include "vehicle_base.h"
 #include "vehiclelist.h"
 #include "window_gui.h"
 #include "widgets/dropdown_type.h"
 #include "cargo_type.h"
 #include <iterator>
+#include <numeric>
 
 typedef GUIList<const Vehicle*, CargoID> GUIVehicleList;
 
 struct GUIVehicleGroup {
 	VehicleList::const_iterator vehicles_begin;    ///< Pointer to beginning element of this vehicle group.
 	VehicleList::const_iterator vehicles_end;      ///< Pointer to past-the-end element of this vehicle group.
-	Money display_profit_this_year;                ///< Total profit for the vehicle group this year.
-	Money display_profit_last_year;                ///< Total profit for the vehicle group laste year.
-	Date age;                                      ///< Age in days of oldest vehicle in the group.
 
-	GUIVehicleGroup(VehicleList::const_iterator vehicles_begin, VehicleList::const_iterator vehicles_end, Money display_profit_this_year, Money display_profit_last_year, Date age)
-		: vehicles_begin(vehicles_begin), vehicles_end(vehicles_end), display_profit_this_year(display_profit_this_year), display_profit_last_year(display_profit_last_year), age(age) {}
+	GUIVehicleGroup(VehicleList::const_iterator vehicles_begin, VehicleList::const_iterator vehicles_end)
+		: vehicles_begin(vehicles_begin), vehicles_end(vehicles_end) {}
 
 	std::ptrdiff_t NumVehicles() const
 	{
-		return std::distance(vehicles_begin, vehicles_end);
+		return std::distance(this->vehicles_begin, this->vehicles_end);
 	}
+
 	const Vehicle *GetSingleVehicle() const
 	{
-		assert(NumVehicles() == 1);
-		return vehicles_begin[0];
+		assert(this->NumVehicles() == 1);
+		return this->vehicles_begin[0];
+	}
+
+	Money GetDisplayProfitThisYear() const
+	{
+		return std::accumulate(this->vehicles_begin, this->vehicles_end, (Money)0, [](Money acc, const Vehicle *v) {
+			return acc + v->GetDisplayProfitThisYear();
+		});
+	}
+
+	Money GetDisplayProfitLastYear() const
+	{
+		return std::accumulate(this->vehicles_begin, this->vehicles_end, (Money)0, [](Money acc, const Vehicle *v) {
+			return acc + v->GetDisplayProfitLastYear();
+		});
+	}
+
+	Date GetOldestVehicleAge() const
+	{
+		const Vehicle *oldest = *std::max_element(this->vehicles_begin, this->vehicles_end, [](const Vehicle *v_a, const Vehicle *v_b) {
+			return v_a->age < v_b->age;
+		});
+		return oldest->age;
 	}
 };
 
@@ -54,7 +76,9 @@ struct BaseVehicleListWindow : public Window {
 	};
 
 	GroupBy grouping;                         ///< How we want to group the list.
+protected:
 	VehicleList vehicles;                     ///< List of vehicles.  This is the buffer for `vehgroups` to point into; if this is structurally modified, `vehgroups` must be rebuilt.
+public:
 	uint own_vehicles = 0;                    ///< Count of vehicles of the local company
 	CompanyID own_company;                    ///< Company ID used for own_vehicles
 	GUIVehicleGroupList vehgroups;            ///< List of (groups of) vehicles.  This stores iterators of `vehicles`, and should be rebuilt if `vehicles` is structurally changed.

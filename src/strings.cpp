@@ -185,10 +185,20 @@ static char *FormatString(char *buff, const char *str, StringParameters *args, c
 
 struct LanguagePack : public LanguagePackHeader {
 	char data[]; // list of strings
+
+	inline void operator delete(void *ptr) { ::operator delete (ptr); }
+};
+
+struct LanguagePackDeleter {
+	void operator()(LanguagePack *langpack)
+	{
+		/* LanguagePack is in fact reinterpreted char[], we need to reinterpret it back to free it properly. */
+		delete[] reinterpret_cast<char*>(langpack);
+	}
 };
 
 struct LoadedLanguagePack {
-	std::unique_ptr<LanguagePack> langpack;
+	std::unique_ptr<LanguagePack, LanguagePackDeleter> langpack;
 
 	std::vector<char *> offsets;
 
@@ -664,6 +674,12 @@ static int DeterminePluralForm(int64 count, int plural_form)
 		 *  Scottish Gaelic */
 		case 13:
 			return ((n == 1 || n == 11) ? 0 : (n == 2 || n == 12) ? 1 : ((n > 2 && n < 11) || (n > 12 && n < 20)) ? 2 : 3);
+
+		/* Three forms: special cases for 1, 0 and numbers ending in 01 to 19.
+		 * Used in:
+		 *   Romanian */
+		case 14:
+			return n == 1 ? 0 : (n == 0 || (n % 100 > 0 && n % 100 < 20)) ? 1 : 2;
 	}
 }
 
@@ -1486,6 +1502,29 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				buff = FormatTimeHHMMString(buff, args->GetInt64(SCC_TIME_HHMM), last, next_substr_case_index);
 				break;
 
+			case SCC_TT_TICKS: // {TT_TICKS}
+				if (_settings_client.gui.timetable_in_ticks) {
+					int64 args_array[1] = { args->GetInt64(SCC_TT_TICKS) };
+					StringParameters tmp_params(args_array);
+					buff = FormatString(buff, GetStringPtr(STR_TIMETABLE_TICKS), &tmp_params, last);
+				} else {
+					StringID str = _settings_time.time_in_minutes ? STR_TIMETABLE_MINUTES : STR_TIMETABLE_DAYS;
+					int64 ticks = args->GetInt64(SCC_TT_TICKS);
+					int64 ratio = DATE_UNIT_SIZE;
+					int64 units = ticks / ratio;
+					int64 leftover = ticks % ratio;
+					if (leftover) {
+						int64 args_array[3] = { str, units, leftover };
+						StringParameters tmp_params(args_array);
+						buff = FormatString(buff, GetStringPtr(STR_TIMETABLE_LEFTOVER_TICKS), &tmp_params, last);
+					} else {
+						int64 args_array[1] = { units };
+						StringParameters tmp_params(args_array);
+						buff = FormatString(buff, GetStringPtr(str), &tmp_params, last);
+					}
+				}
+				break;
+
 			case SCC_FORCE: { // {FORCE}
 				assert(_settings_game.locale.units_force < lengthof(_units_force));
 				int64 args_array[1] = {_units_force[_settings_game.locale.units_force].c.ToDisplay(args->GetInt64())};
@@ -1995,22 +2034,6 @@ static char *GetSpecialNameString(char *buff, int ind, StringParameters *args, c
 		return strecpy(buff, " Transport", last);
 	}
 
-	/* language name? */
-	if (IsInsideMM(ind, (SPECSTR_LANGUAGE_START - 0x70E4), (SPECSTR_LANGUAGE_END - 0x70E4) + 1)) {
-		int i = ind - (SPECSTR_LANGUAGE_START - 0x70E4);
-		return strecpy(buff,
-			&_languages[i] == _current_language ? _current_language->own_name : _languages[i].name, last);
-	}
-
-	/* resolution size? */
-	if (IsInsideBS(ind, (SPECSTR_RESOLUTION_START - 0x70E4), _resolutions.size())) {
-		int i = ind - (SPECSTR_RESOLUTION_START - 0x70E4);
-		buff += seprintf(
-			buff, last, "%ux%u", _resolutions[i].width, _resolutions[i].height
-		);
-		return buff;
-	}
-
 	NOT_REACHED();
 }
 
@@ -2046,7 +2069,7 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 {
 	/* Current language pack */
 	size_t len = 0;
-	std::unique_ptr<LanguagePack> lang_pack(reinterpret_cast<LanguagePack *>(ReadFileToMem(lang->file, len, 1U << 20).release()));
+	std::unique_ptr<LanguagePack, LanguagePackDeleter> lang_pack(reinterpret_cast<LanguagePack *>(ReadFileToMem(lang->file, len, 1U << 20).release()));
 	if (!lang_pack) return false;
 
 	/* End of read data (+ terminating zero added in ReadFileToMem()) */
@@ -2236,14 +2259,14 @@ static void GetLanguageList(const char *path)
 	if (dir != nullptr) {
 		struct dirent *dirent;
 		while ((dirent = readdir(dir)) != nullptr) {
-			const char *d_name    = FS2OTTD(dirent->d_name);
-			const char *extension = strrchr(d_name, '.');
+			std::string d_name = FS2OTTD(dirent->d_name);
+			const char *extension = strrchr(d_name.c_str(), '.');
 
 			/* Not a language file */
 			if (extension == nullptr || strcmp(extension, ".lng") != 0) continue;
 
 			LanguageMetadata lmd;
-			seprintf(lmd.file, lastof(lmd.file), "%s%s", path, d_name);
+			seprintf(lmd.file, lastof(lmd.file), "%s%s", path, d_name.c_str());
 
 			/* Check whether the file is of the correct version */
 			if (!GetLanguageFileHeader(lmd.file, &lmd)) {
@@ -2391,12 +2414,11 @@ class LanguagePackGlyphSearcher : public MissingGlyphSearcher {
 
 	void SetFontNames(FreeTypeSettings *settings, const char *font_name, const void *os_data) override
 	{
-#if defined(WITH_FREETYPE) || defined(_WIN32)
+#if defined(WITH_FREETYPE) || defined(_WIN32) || defined(WITH_COCOA)
 		strecpy(settings->small.font,  font_name, lastof(settings->small.font));
 		strecpy(settings->medium.font, font_name, lastof(settings->medium.font));
 		strecpy(settings->large.font,  font_name, lastof(settings->large.font));
 
-		free(settings->medium.os_handle); // Only free one, they are all the same pointer.
 		settings->small.os_handle = os_data;
 		settings->medium.os_handle = os_data;
 		settings->large.os_handle = os_data;
@@ -2422,7 +2444,7 @@ void CheckForMissingGlyphs(bool base_font, MissingGlyphSearcher *searcher)
 	static LanguagePackGlyphSearcher pack_searcher;
 	if (searcher == nullptr) searcher = &pack_searcher;
 	bool bad_font = !base_font || searcher->FindMissingGlyphs();
-#if defined(WITH_FREETYPE) || defined(_WIN32)
+#if defined(WITH_FREETYPE) || defined(_WIN32) || defined(WITH_COCOA)
 	if (bad_font) {
 		/* We found an unprintable character... lets try whether we can find
 		 * a fallback font that can print the characters in the current language. */
@@ -2433,9 +2455,6 @@ void CheckForMissingGlyphs(bool base_font, MissingGlyphSearcher *searcher)
 		_freetype.medium.os_handle = nullptr;
 
 		bad_font = !SetFallbackFont(&_freetype, _langpack.langpack->isocode, _langpack.langpack->winlangid, searcher);
-
-		free(_freetype.mono.os_handle);
-		free(_freetype.medium.os_handle);
 
 		memcpy(&_freetype, &backup, sizeof(backup));
 

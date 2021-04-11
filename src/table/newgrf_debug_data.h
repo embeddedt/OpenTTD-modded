@@ -151,8 +151,8 @@ class NIHVehicle : public NIHelper {
 		}
 		if (v->type == VEH_TRAIN) {
 			const Train *t = Train::From(v);
-			seprintf(buffer, lastof(buffer), "  T cache: tilt: %u, engines: %u, decel: %u, uncapped decel: %u",
-					t->tcache.cached_tilt, t->tcache.cached_num_engines, t->tcache.cached_deceleration, t->tcache.cached_uncapped_decel);
+			seprintf(buffer, lastof(buffer), "  T cache: tilt: %u, engines: %u, decel: %u, uncapped decel: %u, centre mass: %u",
+					t->tcache.cached_tilt, t->tcache.cached_num_engines, t->tcache.cached_deceleration, t->tcache.cached_uncapped_decel, t->tcache.cached_centre_mass);
 			print(buffer);
 			seprintf(buffer, lastof(buffer), "  T cache: veh weight: %u, user data: %u, curve speed: %u",
 					t->tcache.cached_veh_weight, t->tcache.user_def_data, t->tcache.cached_max_curve_speed);
@@ -426,6 +426,8 @@ class NIHHouse : public NIHelper {
 		seprintf(buffer, lastof(buffer), "  extra_flags: 0x%X", hs->extra_flags);
 		print(buffer);
 		seprintf(buffer, lastof(buffer), "  remove_rating_decrease: %u", hs->remove_rating_decrease);
+		print(buffer);
+		seprintf(buffer, lastof(buffer), "  population: %u, mail_generation: %u", hs->population, hs->mail_generation);
 		print(buffer);
 		seprintf(buffer, lastof(buffer), "  animation: frames: %u, status: %u, speed: %u, triggers: 0x%X", hs->animation.frames, hs->animation.status, hs->animation.speed, hs->animation.triggers);
 		print(buffer);
@@ -945,7 +947,7 @@ class NIHTown : public NIHelper {
 		return nullptr;
 	}
 
-	virtual std::vector<uint32> GetPSAGRFIDs(uint index) const
+	virtual std::vector<uint32> GetPSAGRFIDs(uint index) const override
 	{
 		Town *t = Town::Get(index);
 

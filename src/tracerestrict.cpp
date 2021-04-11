@@ -244,8 +244,8 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 	static std::vector<TraceRestrictCondStackFlags> condstack;
 	condstack.clear();
 
-	bool have_previous_signal = false;
-	TileIndex previous_signal_tile = INVALID_TILE;
+	byte have_previous_signal = 0;
+	TileIndex previous_signal_tile[2];
 
 	size_t size = this->items.size();
 	for (size_t i = 0; i < size; i++) {
@@ -344,17 +344,21 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 					}
 
 					case TRIT_COND_PBS_ENTRY_SIGNAL: {
-						// TRVT_TILE_INDEX value type uses the next slot
+						// TRIT_COND_PBS_ENTRY_SIGNAL value type uses the next slot
 						i++;
+						TraceRestrictPBSEntrySignalAuxField mode = static_cast<TraceRestrictPBSEntrySignalAuxField>(GetTraceRestrictAuxField(item));
+						assert(mode == TRPESAF_VEH_POS || mode == TRPESAF_RES_END);
 						uint32_t signal_tile = this->items[i];
-						if (!have_previous_signal) {
+						if (!HasBit(have_previous_signal, mode)) {
 							if (input.previous_signal_callback) {
-								previous_signal_tile = input.previous_signal_callback(v, input.previous_signal_ptr);
+								previous_signal_tile[mode] = input.previous_signal_callback(v, input.previous_signal_ptr, mode);
+							} else {
+								previous_signal_tile[mode] = INVALID_TILE;
 							}
-							have_previous_signal = true;
+							SetBit(have_previous_signal, mode);
 						}
 						bool match = (signal_tile != INVALID_TILE)
-								&& (previous_signal_tile == signal_tile);
+								&& (previous_signal_tile[mode] == signal_tile);
 						result = TestBinaryConditionCommon(item, match);
 						break;
 					}
@@ -478,9 +482,12 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 								has_status = v->current_order.IsType(OT_GOTO_DEPOT);
 								break;
 
-							case TRTSVF_LOADING:
-								has_status = v->current_order.IsType(OT_LOADING) || v->current_order.IsType(OT_LOADING_ADVANCE);
+							case TRTSVF_LOADING: {
+								extern const Order *_choose_train_track_saved_current_order;
+								const Order *o = (_choose_train_track_saved_current_order != nullptr) ? _choose_train_track_saved_current_order : &(v->current_order);
+								has_status = o->IsType(OT_LOADING) || o->IsType(OT_LOADING_ADVANCE);
 								break;
+							}
 
 							case TRTSVF_WAITING:
 								has_status = v->current_order.IsType(OT_WAITING);
@@ -517,6 +524,15 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 						i++;
 						uint32_t value = this->items[i];
 						result = TestCondition(GetTraceRestrictTimeDateValue(static_cast<TraceRestrictTimeDateValueField>(GetTraceRestrictValue(item))), condop, value);
+						break;
+					}
+
+					case TRIT_COND_RESERVED_TILES: {
+						uint tiles_ahead = 0;
+						if (v->lookahead != nullptr) {
+							tiles_ahead = std::max<int>(0, v->lookahead->reservation_end_position - v->lookahead->current_position) / TILE_SIZE;
+						}
+						result = TestCondition(tiles_ahead, condop, condvalue);
 						break;
 					}
 
@@ -803,6 +819,7 @@ CommandCost TraceRestrictProgram::Validate(const std::vector<TraceRestrictItem> 
 				case TRIT_COND_LOAD_PERCENT:
 				case TRIT_COND_COUNTER_VALUE:
 				case TRIT_COND_TIME_DATE_VALUE:
+				case TRIT_COND_RESERVED_TILES:
 					break;
 
 				default:
@@ -1941,6 +1958,10 @@ void TraceRestrictRemoveSlotID(TraceRestrictSlotID index)
 				(o->GetConditionVariable() == OCV_SLOT_OCCUPANCY || o->GetConditionVariable() == OCV_TRAIN_IN_SLOT) &&
 				o->GetXData() == index) {
 			o->GetXDataRef() = INVALID_TRACE_RESTRICT_SLOT_ID;
+			changed_order = true;
+		}
+		if (o->IsType(OT_RELEASE_SLOT) && o->GetDestination() == index) {
+			o->SetDestination(INVALID_TRACE_RESTRICT_SLOT_ID);
 			changed_order = true;
 		}
 	}
