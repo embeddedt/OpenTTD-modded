@@ -39,6 +39,7 @@
 #include "widgets/industry_widget.h"
 #include "graph_gui.h"
 #include "clear_map.h"
+#include "graph_gui.h"
 
 #include "table/strings.h"
 

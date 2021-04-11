@@ -387,16 +387,9 @@ protected:
 			byte month = this->month;
 			Year year  = this->year;
 			for (int i = 0; i < this->num_on_x_axis; i++) {
-				if (this->month_increment > 1) {
-					SetDParam(0, STR_MONTH_ABBREV_JAN + month);
-					SetDParam(1, STR_MONTH_ABBREV_JAN + (month + this->month_increment - 1) % 12);
-					SetDParam(2, year);
-					DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH, GRAPH_AXIS_LABEL_COLOUR, SA_LEFT);
-				} else {
-					SetDParam(0, STR_MONTH_ABBREV_JAN + month);
-					SetDParam(1, year);
-					DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH, GRAPH_AXIS_LABEL_COLOUR, SA_LEFT);
-				}
+				SetDParam(0, STR_MONTH_ABBREV_JAN + month);
+				SetDParam(1, year);
+				DrawStringMultiLine(x, x + x_sep, y, this->height, month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH, GRAPH_AXIS_LABEL_COLOUR, SA_LEFT);
 
 				month += this->month_increment;
 				if (month >= 12) {
@@ -512,16 +505,9 @@ public:
 			byte month = this->month;
 			Year year  = this->year;
 			for (int i = 0; i < this->num_on_x_axis; i++) {
-				if (this->month_increment > 1) {
-					SetDParam(0, STR_MONTH_ABBREV_JAN + month);
-					SetDParam(1, STR_MONTH_ABBREV_JAN + (month + this->month_increment - 1) % 12);
-					SetDParam(2, year);
-					x_label_width = std::max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
-				} else {
-					SetDParam(0, STR_MONTH_ABBREV_JAN + month);
-					SetDParam(1, year);
-					x_label_width = std::max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_SINGLE_MONTH_YEAR : STR_GRAPH_X_LABEL_SINGLE_MONTH).width);
-				}
+				SetDParam(0, STR_MONTH_ABBREV_JAN + month);
+				SetDParam(1, year);
+				x_label_width = std::max(x_label_width, GetStringBoundingBox(month == 0 ? STR_GRAPH_X_LABEL_MONTH_YEAR : STR_GRAPH_X_LABEL_MONTH).width);
 
 				month += this->month_increment;
 				if (month >= 12) {
