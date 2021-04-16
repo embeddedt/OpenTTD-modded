@@ -4543,6 +4543,7 @@ CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/crashlog.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/date_func.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/debug_settings.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/depot_type.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/direction_func.h
 CMakeFiles/openttd.dir/src/console_cmds.cpp.o: ../src/direction_type.h
@@ -38615,6 +38616,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/date_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/debug_settings.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/depot_map.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/depot_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/direction_func.h
@@ -42074,6 +42076,7 @@ CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/core/tinystring_type.hpp
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/debug_settings.h
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/depot_type.h
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/direction_func.h
 CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o: ../src/direction_type.h

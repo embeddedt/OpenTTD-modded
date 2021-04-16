@@ -2452,6 +2452,7 @@ public:
 		WID_GO_BASE_MUSIC_DESCRIPTION                = ::WID_GO_BASE_MUSIC_DESCRIPTION,                ///< Description of selected base music set.
 		WID_GO_FONT_ZOOM_DROPDOWN                    = ::WID_GO_FONT_ZOOM_DROPDOWN,                    ///< Dropdown for the font zoom level.
 		WID_GO_VIDEO_ACCEL_BUTTON                    = ::WID_GO_VIDEO_ACCEL_BUTTON,                    ///< Toggle for video acceleration.
+		WID_GO_VIDEO_VSYNC_BUTTON                    = ::WID_GO_VIDEO_VSYNC_BUTTON,                    ///< Toggle for video vsync.
 		WID_GO_REFRESH_RATE_DROPDOWN                 = ::WID_GO_REFRESH_RATE_DROPDOWN,                 ///< Dropdown for all available refresh rates.
 	};
 

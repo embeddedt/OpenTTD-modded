@@ -3769,6 +3769,8 @@ linkgraph/linkgraphjob.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraphjob.h
 base_media_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
 time.h
 -
 safeguards.h
@@ -17179,6 +17181,8 @@ scope.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 core/checksum_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/train_cmd.h
@@ -18931,6 +18935,8 @@ viewport_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_func.h
 road_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
 3rdparty/cpp-btree/btree_set.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 

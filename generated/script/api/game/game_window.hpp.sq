@@ -1197,6 +1197,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_BASE_MUSIC_DESCRIPTION,             "WID_GO_BASE_MUSIC_DESCRIPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_FONT_ZOOM_DROPDOWN,                 "WID_GO_FONT_ZOOM_DROPDOWN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_VIDEO_ACCEL_BUTTON,                 "WID_GO_VIDEO_ACCEL_BUTTON");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_VIDEO_VSYNC_BUTTON,                 "WID_GO_VIDEO_VSYNC_BUTTON");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_REFRESH_RATE_DROPDOWN,              "WID_GO_REFRESH_RATE_DROPDOWN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GS_FILTER,                             "WID_GS_FILTER");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GS_OPTIONSPANEL,                       "WID_GS_OPTIONSPANEL");

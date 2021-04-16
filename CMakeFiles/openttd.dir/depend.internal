@@ -4544,6 +4544,7 @@ CMakeFiles/openttd.dir/src/console_cmds.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/depot_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
@@ -38616,6 +38617,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/depot_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/depot_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_func.h
@@ -42075,6 +42077,7 @@ CMakeFiles/openttd.dir/src/zoning_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/depot_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
