@@ -598,7 +598,7 @@ struct AfterNewGRFScan : NewGRFScanCallback {
 		/* restore saved music volume */
 		MusicDriver::GetInstance()->SetVolume(_settings_client.music.music_vol);
 
-		if (startyear != INVALID_YEAR) _settings_newgame.game_creation.starting_year = startyear;
+		if (startyear != INVALID_YEAR) IConsoleSetSetting("game_creation.starting_year", startyear);
 		if (generation_seed != GENERATE_NEW_SEED) _settings_newgame.game_creation.generation_seed = generation_seed;
 
 		if (dedicated_host != nullptr) {
@@ -1420,8 +1420,8 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 		old_industry_stations_nears.push_back(ind->stations_near);
 	}
 
-	extern void RebuildTownCaches(bool cargo_update_required);
-	RebuildTownCaches(false);
+	extern void RebuildTownCaches(bool cargo_update_required, bool old_map_position);
+	RebuildTownCaches(false, false);
 	RebuildSubsidisedSourceAndDestinationCache();
 
 	Station::RecomputeCatchmentForAll();
@@ -1639,7 +1639,7 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 					if (memcmp(&tra_cache[length], &Train::From(u)->tcache, sizeof(TrainCache)) != 0) {
 						CCLOGV("train cache mismatch: %c%c%c%c%c%c%c%c%c",
 								tra_cache[length].cached_override != Train::From(u)->tcache.cached_override ? 'o' : '-',
-								tra_cache[length].cached_tilt != Train::From(u)->tcache.cached_tilt ? 't' : '-',
+								tra_cache[length].cached_tflags != Train::From(u)->tcache.cached_tflags ? 'f' : '-',
 								tra_cache[length].cached_num_engines != Train::From(u)->tcache.cached_num_engines ? 'e' : '-',
 								tra_cache[length].cached_centre_mass != Train::From(u)->tcache.cached_centre_mass ? 'm' : '-',
 								tra_cache[length].cached_veh_weight != Train::From(u)->tcache.cached_veh_weight ? 'w' : '-',
@@ -1905,11 +1905,15 @@ static void DoAutosave()
  * done in the game-thread, and not in the draw-thread (which most often
  * triggers this request).
  * @param callback Optional callback to call when NewGRF scan is completed.
+ * @return True when the NewGRF scan was actually requested, false when the scan was already running.
  */
-void RequestNewGRFScan(NewGRFScanCallback *callback)
+bool RequestNewGRFScan(NewGRFScanCallback *callback)
 {
+	if (_request_newgrf_scan) return false;
+
 	_request_newgrf_scan = true;
 	_request_newgrf_scan_callback = callback;
+	return true;
 }
 
 void GameLoopSpecial()

@@ -43,6 +43,7 @@
 #include "scope_info.h"
 #include "scope.h"
 #include "core/checksum_func.hpp"
+#include "debug_settings.h"
 
 #include "table/strings.h"
 #include "table/train_cmd.h"
@@ -337,7 +338,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 
 	/* store consist weight/max speed in cache */
 	this->vcache.cached_max_speed = max_speed;
-	this->tcache.cached_tilt = train_can_tilt;
+	this->tcache.cached_tflags = (train_can_tilt ? TCF_TILT : TCF_NONE);
 	this->tcache.cached_max_curve_speed = this->GetCurveSpeedLimit();
 
 	/* recalculate cached weights and power too (we do this *after* the rest, so it is known which wagons are powered and need extra weight added) */
@@ -367,7 +368,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 			u->tcache.cached_centre_mass = 0;
 			u->tcache.cached_deceleration = 0;
 			u->tcache.cached_uncapped_decel = 0;
-			u->tcache.cached_tilt = false;
+			u->tcache.cached_tflags = TCF_NONE;
 			u->tcache.cached_max_curve_speed = 0;
 		}
 	}
@@ -614,7 +615,7 @@ int Train::GetCurveSpeedLimit() const
 		const RailtypeInfo *rti = GetRailTypeInfo(GetRailType(this->tile));
 		max_speed += (max_speed / 2) * rti->curve_speed;
 
-		if (this->tcache.cached_tilt) {
+		if (this->tcache.cached_tflags & TCF_TILT) {
 			/* Apply max_speed bonus of 20% for a tilting train */
 			max_speed += max_speed / 5;
 		}
@@ -797,24 +798,24 @@ static int GetRealisticBrakingSpeedForDistance(const TrainDecelerationStats &sta
 			/* calculate speed at which braking would be sufficient */
 
 			uint weight = stats.t->gcache.cached_weight;
-			int64 power_w = stats.t->gcache.cached_power * 746ll;
-			int64 min_braking_force = (stats.t->gcache.cached_total_length * 300) + stats.t->gcache.cached_axle_resistance + (weight * 16);
+			int64 power_w = (stats.t->gcache.cached_power * 746ll) + (stats.t->gcache.cached_total_length * (int64)RBC_BRAKE_POWER_PER_LENGTH);
+			int64 min_braking_force = (stats.t->gcache.cached_total_length * (int64)RBC_BRAKE_FORCE_PER_LENGTH) + stats.t->gcache.cached_axle_resistance + (weight * 16);
 
 			/* F = (7/8) * (F_min + ((power_w * 18) / (5 * v)))
-			 * v^2 = sloped_ke + F * s / m
-			 * let k = sloped_ke + ((7 * F_min * s) / (8 * m))
-			 * v^3 - k * v - (7 * 18 * power_w * s) / (5 * 8 * m) = 0
+			 * v^2 = sloped_ke + F * s / (4 * m)
+			 * let k = sloped_ke + ((7 * F_min * s) / (8 * 4 * m))
+			 * v^3 - k * v - (7 * 18 * power_w * s) / (5 * 8 * 4 * m) = 0
 			 * v^3 + p * v + q = 0
 			 *   where: p = -k
-			 *          q = -(7 * 18 * power_w * s) / (5 * 8 * m)
+			 *          q = -(7 * 18 * power_w * s) / (5 * 8 * 4 * m)
 			 *
 			 * v = cbrt(-q / 2 + sqrt((q^2 / 4) - (k^3 / 27))) + cbrt(-q / 2 - sqrt((q^2 / 4) - (k^3 / 27)))
-			 * let r = - q / 2 = (7 * 9 * power_w * s) / (5 * 8 * m)
+			 * let r = - q / 2 = (7 * 9 * power_w * s) / (5 * 8 * 4 * m)
 			 * let l = k / 3
 			 * v = cbrt(r + sqrt(r^2 - l^3)) + cbrt(r - sqrt(r^2 - l^3))
 			 */
 			int64 l = (sloped_ke + ((7 * min_braking_force * (int64)distance) / (8 * weight))) / 3;
-			int64 r = (7 * 9 * power_w * (int64)distance) / (40 * weight);
+			int64 r = (7 * 9 * power_w * (int64)distance) / (160 * weight);
 			int64 sqrt_factor = (r * r) - (l * l * l);
 			if (sqrt_factor >= 0) {
 				int64 part = IntSqrt64(sqrt_factor);
@@ -979,7 +980,7 @@ Train::MaxSpeedInfo Train::GetCurrentMaxSpeedInfoInternal(bool update_state) con
 				int distance_to_go = station_ahead / TILE_SIZE - (station_length - stop_at) / TILE_SIZE;
 
 				if (distance_to_go > 0) {
-					if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+					if (this->UsingRealisticBraking()) {
 						advisory_max_speed = std::min(advisory_max_speed, 15 * distance_to_go);
 					} else {
 						int st_max_speed = 120;
@@ -1027,7 +1028,7 @@ Train::MaxSpeedInfo Train::GetCurrentMaxSpeedInfoInternal(bool update_state) con
 		advisory_max_speed = std::min<int>(advisory_max_speed, ReversingDistanceTargetSpeed(this));
 	}
 
-	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+	if (this->UsingRealisticBraking()) {
 		if (this->lookahead != nullptr) {
 			TrainDecelerationStats stats(this);
 			if (HasBit(this->lookahead->flags, TRLF_DEPOT_END)) {
@@ -1072,7 +1073,8 @@ void Train::UpdateAcceleration()
 	assert(weight != 0);
 	this->acceleration = Clamp(power / weight * 4, 1, 255);
 
-	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && !HasBit(GetRailTypeInfo(this->railtype)->ctrl_flags, RTCF_NOREALISTICBRAKING)) {
+		this->tcache.cached_tflags |= TCF_RL_BRAKING;
 		switch (_settings_game.vehicle.train_acceleration_model) {
 			default: NOT_REACHED();
 			case AM_ORIGINAL:
@@ -1083,7 +1085,7 @@ void Train::UpdateAcceleration()
 				int acceleration_type = this->GetAccelerationType();
 				bool maglev = (acceleration_type == 2);
 				int64 power_w = power * 746ll;
-				int64 min_braking_force = this->gcache.cached_total_length * 300;
+				int64 min_braking_force = this->gcache.cached_total_length * (int64)RBC_BRAKE_FORCE_PER_LENGTH;
 				if (!maglev) {
 					/* From GroundVehicle::GetAcceleration()
 					 * force = power * 18 / (speed * 5);
@@ -1102,12 +1104,13 @@ void Train::UpdateAcceleration()
 					 */
 					int evaluation_speed = this->vcache.cached_max_speed;
 					int area = 14;
+					int64 power_b = power_w + ((int64)this->gcache.cached_total_length * RBC_BRAKE_POWER_PER_LENGTH);
 					if (this->gcache.cached_air_drag > 0) {
-						uint64 v_3 = 1800 * (uint64)power_w / (area * this->gcache.cached_air_drag);
+						uint64 v_3 = 1800 * (uint64)power_b / (area * this->gcache.cached_air_drag);
 						evaluation_speed = std::min<int>(evaluation_speed, IntCbrt(v_3));
 					}
 					if (evaluation_speed > 0) {
-						min_braking_force += power_w * 18 / (evaluation_speed * 5);
+						min_braking_force += power_b * 18 / (evaluation_speed * 5);
 						min_braking_force += (area * this->gcache.cached_air_drag * evaluation_speed * evaluation_speed) / 1000;
 					}
 
@@ -1122,12 +1125,13 @@ void Train::UpdateAcceleration()
 					min_braking_force += power_w / 25;
 				}
 				min_braking_force -= (min_braking_force >> 3); // Slightly underestimate braking for defensive driving purposes
-				this->tcache.cached_uncapped_decel = Clamp(min_braking_force / weight, 1, UINT16_MAX);
+				this->tcache.cached_uncapped_decel = Clamp(min_braking_force / (weight * 4), 1, UINT16_MAX);
 				this->tcache.cached_deceleration = Clamp(this->tcache.cached_uncapped_decel, 1, GetTrainRealisticBrakingTargetDecelerationLimit(acceleration_type));
 				break;
 			}
 		}
 	} else {
+		this->tcache.cached_tflags &= ~TCF_RL_BRAKING;
 		this->tcache.cached_deceleration = 0;
 		this->tcache.cached_uncapped_decel = 0;
 	}
@@ -3209,6 +3213,8 @@ static bool CheckTrainStayInDepot(Train *v)
 				u->direction = direction;
 				u->x_pos = x;
 				u->y_pos = y;
+				u->UpdatePosition();
+				u->Vehicle::UpdateViewport(false);
 			}
 
 			InvalidateWindowData(WC_VEHICLE_DEPOT, depot_tile);
@@ -3792,7 +3798,7 @@ public:
 
 static bool IsReservationLookAheadLongEnough(const Train *v, const ChooseTrainTrackLookAheadState &lookahead_state)
 {
-	if (_settings_game.vehicle.train_braking_model != TBM_REALISTIC || v->lookahead == nullptr) return true;
+	if (!v->UsingRealisticBraking() || v->lookahead == nullptr) return true;
 
 	if (v->current_order.IsAnyLoadingType()) return true;
 
@@ -4387,10 +4393,12 @@ int Train::UpdateSpeed()
 	switch (_settings_game.vehicle.train_acceleration_model) {
 		default: NOT_REACHED();
 		case AM_ORIGINAL:
-			return this->DoUpdateSpeed({ this->acceleration * (this->GetAccelerationStatus() == AS_BRAKE ? -4 : 2), this->acceleration * -4 }, 0, max_speed_info.strict_max_speed, max_speed_info.advisory_max_speed);
+			return this->DoUpdateSpeed({ this->acceleration * (this->GetAccelerationStatus() == AS_BRAKE ? -4 : 2), this->acceleration * -4 }, 0,
+					max_speed_info.strict_max_speed, max_speed_info.advisory_max_speed, this->UsingRealisticBraking());
 
 		case AM_REALISTIC:
-			return this->DoUpdateSpeed(this->GetAcceleration(), accel_status == AS_BRAKE ? 0 : 2, max_speed_info.strict_max_speed, max_speed_info.advisory_max_speed);
+			return this->DoUpdateSpeed(this->GetAcceleration(), accel_status == AS_BRAKE ? 0 : 2,
+					max_speed_info.strict_max_speed, max_speed_info.advisory_max_speed, this->UsingRealisticBraking());
 	}
 }
 /**
@@ -4979,7 +4987,7 @@ inline void DecreaseReverseDistance(Train *v)
 
 int ReversingDistanceTargetSpeed(const Train *v)
 {
-	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+	if (v->UsingRealisticBraking()) {
 		TrainDecelerationStats stats(v);
 		return GetRealisticBrakingSpeedForDistance(stats, v->reverse_distance - 1, 0, 0);
 	}
@@ -5959,6 +5967,9 @@ static bool TrainLocoHandler(Train *v, bool mode)
 	/* train has crashed? */
 	if (v->vehstatus & VS_CRASHED) {
 		return mode ? true : HandleCrashedTrain(v); // 'this' can be deleted here
+	} else if (v->crash_anim_pos > 0) {
+		/* Reduce realistic braking brake overheating */
+		v->crash_anim_pos--;
 	}
 
 	if (v->force_proceed != TFP_NONE) {
@@ -6794,7 +6805,15 @@ void TrainRoadVehicleCrashBreakdown(Vehicle *v)
 void TrainBrakesOverheatedBreakdown(Vehicle *v)
 {
 	Train *t = Train::From(v)->First();
-	if (t->breakdown_ctr != 0) return;
+	if (t->breakdown_ctr != 0 || (t->vehstatus & VS_CRASHED)) return;
+
+	if (unlikely(HasBit(_misc_debug_flags, MDF_OVERHEAT_BREAKDOWN_OPEN_WIN)) && !_network_dedicated) {
+		ShowVehicleViewWindow(t);
+	}
+
+	t->crash_anim_pos = std::min<uint>(1500, t->crash_anim_pos + 200);
+	if (t->crash_anim_pos < 1500) return;
+
 	t->breakdown_ctr = 2;
 	SetBit(t->flags, VRF_CONSIST_BREAKDOWN);
 	t->breakdown_delay = 255;

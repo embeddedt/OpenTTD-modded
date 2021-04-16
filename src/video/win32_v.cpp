@@ -918,24 +918,27 @@ void VideoDriver_Win32Base::EditBoxLostFocus()
 	SetCandidatePos(this->main_wnd);
 }
 
+BOOL CALLBACK EnumDisplayMonitorsCallback(HMONITOR hMonitor, HDC hDC, LPRECT rc, LPARAM data)
+{
+	auto &list = *reinterpret_cast<std::vector<int>*>(data);
+
+	MONITORINFOEX monitorInfo = {};
+	monitorInfo.cbSize = sizeof(MONITORINFOEX);
+	GetMonitorInfo(hMonitor, &monitorInfo);
+
+	DEVMODE devMode = {};
+	devMode.dmSize = sizeof(DEVMODE);
+	devMode.dmDriverExtra = 0;
+	EnumDisplaySettings(monitorInfo.szDevice, ENUM_CURRENT_SETTINGS, &devMode);
+
+	if (devMode.dmDisplayFrequency != 0) list.push_back(devMode.dmDisplayFrequency);
+	return true;
+}
+
 std::vector<int> VideoDriver_Win32Base::GetListOfMonitorRefreshRates()
 {
 	std::vector<int> rates = {};
-	EnumDisplayMonitors(nullptr, nullptr, [](HMONITOR hMonitor, HDC hDC, LPRECT rc, LPARAM data) -> BOOL {
-		auto &list = *reinterpret_cast<std::vector<int>*>(data);
-
-		MONITORINFOEX monitorInfo = {};
-		monitorInfo.cbSize = sizeof(MONITORINFOEX);
-		GetMonitorInfo(hMonitor, &monitorInfo);
-
-		DEVMODE devMode = {};
-		devMode.dmSize = sizeof(DEVMODE);
-		devMode.dmDriverExtra = 0;
-		EnumDisplaySettings(monitorInfo.szDevice, ENUM_CURRENT_SETTINGS, &devMode);
-
-		if (devMode.dmDisplayFrequency != 0) list.push_back(devMode.dmDisplayFrequency);
-		return true;
-	}, reinterpret_cast<LPARAM>(&rates));
+	EnumDisplayMonitors(nullptr, nullptr, (MONITORENUMPROC)&EnumDisplayMonitorsCallback, reinterpret_cast<LPARAM>(&rates));
 	return rates;
 }
 
@@ -1295,7 +1298,6 @@ const char *VideoDriver_Win32OpenGL::Start(const StringList &param)
 	if (BlitterFactory::GetCurrentBlitter()->GetScreenDepth() == 0) return "Only real blitters supported";
 
 	Dimension old_res = _cur_resolution; // Save current screen resolution in case of errors, as MakeWindow invalidates it.
-	this->vsync = GetDriverParamBool(param, "vsync");
 
 	LoadWGLExtensions();
 
@@ -1311,6 +1313,12 @@ const char *VideoDriver_Win32OpenGL::Start(const StringList &param)
 	}
 
 	this->ClientSizeChanged(this->width, this->height, true);
+	/* We should have a valid screen buffer now. If not, something went wrong and we should abort. */
+	if (_screen.dst_ptr == nullptr) {
+		this->Stop();
+		_cur_resolution = old_res;
+		return "Can't get pointer to screen buffer";
+	}
 
 	MarkWholeScreenDirty();
 
@@ -1337,6 +1345,15 @@ void VideoDriver_Win32OpenGL::DestroyContext()
 	if (this->dc != nullptr) {
 		ReleaseDC(this->main_wnd, this->dc);
 		this->dc = nullptr;
+	}
+}
+
+void VideoDriver_Win32OpenGL::ToggleVsync(bool vsync)
+{
+	if (_wglSwapIntervalEXT != nullptr) {
+		_wglSwapIntervalEXT(vsync);
+	} else if (vsync) {
+		DEBUG(driver, 0, "OpenGL: Vsync requested, but not supported by driver");
 	}
 }
 
@@ -1368,12 +1385,7 @@ const char *VideoDriver_Win32OpenGL::AllocateContext()
 	}
 	if (!wglMakeCurrent(this->dc, rc)) return "Can't active GL context";
 
-	/* Enable/disable Vsync if supported. */
-	if (_wglSwapIntervalEXT != nullptr) {
-		_wglSwapIntervalEXT(this->vsync ? 1 : 0);
-	} else if (vsync) {
-		DEBUG(driver, 0, "OpenGL: Vsync requested, but not supported by driver");
-	}
+	this->ToggleVsync(_video_vsync);
 
 	this->gl_rc = rc;
 	return OpenGLBackend::Create(&GetOGLProcAddressCallback);

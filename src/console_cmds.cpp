@@ -52,6 +52,7 @@
 #include "string_func_extra.h"
 #include "linkgraph/linkgraphjob.h"
 #include "base_media_base.h"
+#include "debug_settings.h"
 #include <time.h>
 
 #include "safeguards.h"
@@ -1420,7 +1421,9 @@ DEF_CONSOLE_CMD(ConRescanNewGRF)
 		return true;
 	}
 
-	RequestNewGRFScan();
+	if (!RequestNewGRFScan()) {
+		IConsoleWarning("NewGRF scanning is already running. Please wait until completed to run again.");
+	}
 
 	return true;
 }
@@ -2465,7 +2468,7 @@ DEF_CONSOLE_CMD(ConDumpRailTypes)
 			grfid = grf->grfid;
 			grfs.insert(std::pair<uint32, const GRFFile *>(grfid, grf));
 		}
-		IConsolePrintF(CC_DEFAULT, "  %02u %c%c%c%c, Flags: %c%c%c%c%c%c, Ctrl Flags: %c%c, GRF: %08X, %s",
+		IConsolePrintF(CC_DEFAULT, "  %02u %c%c%c%c, Flags: %c%c%c%c%c%c, Ctrl Flags: %c%c%c, GRF: %08X, %s",
 				(uint) rt,
 				rti->label >> 24, rti->label >> 16, rti->label >> 8, rti->label,
 				HasBit(rti->flags, RTF_CATENARY)            ? 'c' : '-',
@@ -2476,6 +2479,7 @@ DEF_CONSOLE_CMD(ConDumpRailTypes)
 				HasBit(rti->flags, RTF_DISALLOW_90DEG)      ? 'd' : '-',
 				HasBit(rti->ctrl_flags, RTCF_PROGSIG)       ? 'p' : '-',
 				HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG) ? 'r' : '-',
+				HasBit(rti->ctrl_flags, RTCF_NOREALISTICBRAKING) ? 'b' : '-',
 				BSWAP32(grfid),
 				GetStringPtr(rti->strings.name)
 		);
@@ -2843,6 +2847,24 @@ DEF_CONSOLE_CMD(ConRecalculateRoadCachedOneWayStates)
 
 	extern void RecalculateRoadCachedOneWayStates();
 	RecalculateRoadCachedOneWayStates();
+
+	return true;
+}
+
+DEF_CONSOLE_CMD(ConMiscDebug)
+{
+	if (argc < 1 || argc > 2) {
+		IConsoleHelp("Debug: misc flags.  Usage: 'misc_debug [<flags>]'");
+		IConsoleHelp("  1: MDF_OVERHEAT_BREAKDOWN_OPEN_WIN");
+		IConsoleHelp("  2: MDF_ZONING_RS_WATER_FLOOD_STATE");
+		return true;
+	}
+
+	if (argc == 1) {
+		IConsolePrintF(CC_DEFAULT, "Misc debug flags: %X", _misc_debug_flags);
+	} else {
+		_misc_debug_flags = strtoul(argv[1], nullptr, 16);
+	}
 
 	return true;
 }
@@ -3437,6 +3459,7 @@ void IConsoleStdLibRegister()
 	IConsoleCmdRegister("gfx_debug", ConGfxDebug, nullptr, true);
 	IConsoleCmdRegister("csleep", ConCSleep, nullptr, true);
 	IConsoleCmdRegister("recalculate_road_cached_one_way_states", ConRecalculateRoadCachedOneWayStates, ConHookNoNetwork, true);
+	IConsoleCmdRegister("misc_debug", ConMiscDebug, nullptr, true);
 
 	/* NewGRF development stuff */
 	IConsoleCmdRegister("reload_newgrfs",  ConNewGRFReload, ConHookNewGRFDeveloperTool);

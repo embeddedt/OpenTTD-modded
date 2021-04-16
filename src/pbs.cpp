@@ -330,7 +330,7 @@ static void CheckCurveLookAhead(const Train *v, TrainReservationLookAhead *looka
 		const RailtypeInfo *rti = GetRailTypeInfo(rt);
 		max_speed += (max_speed / 2) * rti->curve_speed;
 
-		if (v->tcache.cached_tilt) {
+		if (v->tcache.cached_tflags & TCF_TILT) {
 			/* Apply max_speed bonus of 20% for a tilting train */
 			max_speed += max_speed / 5;
 		}
@@ -1033,7 +1033,7 @@ CommandCost CheckTrainReservationPreventsTrackModification(TileIndex tile, Track
 
 CommandCost CheckTrainReservationPreventsTrackModification(const Train *v)
 {
-	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && v != nullptr && (v->cur_speed > 0 || !(v->vehstatus & (VS_STOPPED | VS_CRASHED)))) {
+	if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && v != nullptr && v->UsingRealisticBraking() && (v->cur_speed > 0 || !(v->vehstatus & (VS_STOPPED | VS_CRASHED)))) {
 		return_cmd_error(STR_ERROR_CANNOT_MODIFY_TRACK_TRAIN_APPROACHING);
 	}
 	return CommandCost();

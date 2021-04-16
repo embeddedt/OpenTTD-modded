@@ -71,6 +71,11 @@ enum ConsistChangeFlags {
 };
 DECLARE_ENUM_AS_BIT_SET(ConsistChangeFlags)
 
+enum RealisticBrakingConstants {
+	RBC_BRAKE_FORCE_PER_LENGTH      = 1600,      ///< Additional force-based brake force per unit of train length
+	RBC_BRAKE_POWER_PER_LENGTH      = 15000,     ///< Additional power-based brake force per unit of train length (excludes maglevs)
+};
+
 byte FreightWagonMult(CargoID cargo);
 
 void CheckTrainsLengths();
@@ -88,6 +93,14 @@ inline int GetTrainRealisticBrakingTargetDecelerationLimit(int acceleration_type
 	return 120 + (acceleration_type * 48);
 }
 
+/** Flags for TrainCache::cached_tflags */
+enum TrainCacheFlags : byte {
+	TCF_NONE       = 0,        ///< No flags
+	TCF_TILT       = 0x01,     ///< Train can tilt; feature provides a bonus in curves.
+	TCF_RL_BRAKING = 0x02,     ///< Train realistic braking (movement physics) in effect for this vehicle
+};
+DECLARE_ENUM_AS_BIT_SET(TrainCacheFlags)
+
 /** Variables that are cached to improve performance and such */
 struct TrainCache {
 	/* Cached wagon override spritegroup */
@@ -97,7 +110,7 @@ struct TrainCache {
 	int cached_max_curve_speed;   ///< max consist speed limited by curves
 
 	/* cached values, recalculated on load and each time a vehicle is added to/removed from the consist. */
-	bool cached_tilt;             ///< train can tilt; feature provides a bonus in curves
+	TrainCacheFlags cached_tflags;///< train cached flags
 	uint8 cached_num_engines;     ///< total number of engines, including rear ends of multiheaded engines
 	uint16 cached_centre_mass;    ///< Cached position of the centre of mass, from the front
 	uint16 cached_veh_weight;     ///< Cached individual vehicle weight
@@ -120,7 +133,7 @@ struct Train FINAL : public GroundVehicle<Train, VEH_TRAIN> {
 
 	uint32 flags;
 
-	uint16 crash_anim_pos; ///< Crash animation counter.
+	uint16 crash_anim_pos; ///< Crash animation counter, also used for realistic braking train brake overheating
 
 	TrackBits track;
 	TrainForceProceeding force_proceed;
@@ -191,6 +204,8 @@ public:
 	}
 
 	int GetCurrentMaxSpeed() const;
+
+	bool UsingRealisticBraking() const { return this->tcache.cached_tflags & TCF_RL_BRAKING; }
 
 	/**
 	 * Get the next real (non-articulated part and non rear part of dualheaded engine) vehicle in the consist.

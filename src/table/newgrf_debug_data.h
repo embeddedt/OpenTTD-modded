@@ -151,8 +151,11 @@ class NIHVehicle : public NIHelper {
 		}
 		if (v->type == VEH_TRAIN) {
 			const Train *t = Train::From(v);
-			seprintf(buffer, lastof(buffer), "  T cache: tilt: %u, engines: %u, decel: %u, uncapped decel: %u, centre mass: %u",
-					t->tcache.cached_tilt, t->tcache.cached_num_engines, t->tcache.cached_deceleration, t->tcache.cached_uncapped_decel, t->tcache.cached_centre_mass);
+			seprintf(buffer, lastof(buffer), "  T cache: tilt: %d, engines: %u",
+					(t->tcache.cached_tflags & TCF_TILT) ? 1 : 0, t->tcache.cached_num_engines);
+			print(buffer);
+			seprintf(buffer, lastof(buffer), "  T cache: RL braking: %d, decel: %u, uncapped decel: %u, centre mass: %u",
+					(t->UsingRealisticBraking()) ? 1 : 0, t->tcache.cached_deceleration, t->tcache.cached_uncapped_decel, t->tcache.cached_centre_mass);
 			print(buffer);
 			seprintf(buffer, lastof(buffer), "  T cache: veh weight: %u, user data: %u, curve speed: %u",
 					t->tcache.cached_veh_weight, t->tcache.user_def_data, t->tcache.cached_max_curve_speed);
@@ -163,6 +166,13 @@ class NIHVehicle : public NIHelper {
 			seprintf(buffer, lastof(buffer), "  Railtype: %u, compatible_railtypes: 0x" OTTD_PRINTFHEX64,
 					t->railtype, t->compatible_railtypes);
 			print(buffer);
+			if (t->vehstatus & VS_CRASHED) {
+				seprintf(buffer, lastof(buffer), "  CRASHED: anim pos: %u", t->crash_anim_pos);
+				print(buffer);
+			} else if (t->crash_anim_pos > 0) {
+				seprintf(buffer, lastof(buffer), "  Brake heating: %u", t->crash_anim_pos);
+				print(buffer);
+			}
 			if (t->lookahead != nullptr) {
 				print ("  Look ahead:");
 				const TrainReservationLookAhead &l = *t->lookahead;
@@ -828,9 +838,10 @@ class NIHRailType : public NIHelper {
 					HasBit(info->flags, RTF_ALLOW_90DEG) ? 'a' : '-',
 					HasBit(info->flags, RTF_DISALLOW_90DEG) ? 'd' : '-');
 			print(buffer);
-			seprintf(buffer, lastof(buffer), "  Ctrl flags: %c%c",
+			seprintf(buffer, lastof(buffer), "  Ctrl flags: %c%c%c",
 					HasBit(info->ctrl_flags, RTCF_PROGSIG) ? 'p' : '-',
-					HasBit(info->ctrl_flags, RTCF_RESTRICTEDSIG) ? 'r' : '-');
+					HasBit(info->ctrl_flags, RTCF_RESTRICTEDSIG) ? 'r' : '-',
+					HasBit(info->ctrl_flags, RTCF_NOREALISTICBRAKING) ? 'b' : '-');
 			print(buffer);
 			seprintf(buffer, lastof(buffer), "  Powered: 0x" OTTD_PRINTFHEX64, info->powered_railtypes);
 			print(buffer);
