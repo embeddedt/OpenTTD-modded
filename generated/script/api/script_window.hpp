@@ -589,12 +589,6 @@ public:
 		WC_CLIENT_LIST                               = ::WC_CLIENT_LIST,
 
 		/**
-		 * Popup for the client list; %Window numbers:
-		 *   - #ClientID = #ClientListPopupWidgets
-		 */
-		WC_CLIENT_LIST_POPUP                         = ::WC_CLIENT_LIST_POPUP,
-
-		/**
 		 * Network status window; %Window numbers:
 		 *   - #WN_NETWORK_STATUS_WINDOW_JOIN = #NetworkJoinStatusWidgets
 		 *   - #WN_NETWORK_STATUS_WINDOW_CONTENT_DOWNLOAD = #NetworkContentDownloadStatusWidgets
@@ -1947,9 +1941,6 @@ public:
 		WID_NSS_SPECTATORS_TXT                       = ::WID_NSS_SPECTATORS_TXT,                       ///< 'Max spectators' text.
 		WID_NSS_SPECTATORS_BTNU                      = ::WID_NSS_SPECTATORS_BTNU,                      ///< 'Max spectators' uparrow.
 
-		WID_NSS_LANGUAGE_LABEL                       = ::WID_NSS_LANGUAGE_LABEL,                       ///< Label for 'language spoken'.
-		WID_NSS_LANGUAGE_BTN                         = ::WID_NSS_LANGUAGE_BTN,                         ///< 'Language spoken' droplist button.
-
 		WID_NSS_GENERATE_GAME                        = ::WID_NSS_GENERATE_GAME,                        ///< New game button.
 		WID_NSS_LOAD_GAME                            = ::WID_NSS_LOAD_GAME,                            ///< Load game button.
 		WID_NSS_PLAY_SCENARIO                        = ::WID_NSS_PLAY_SCENARIO,                        ///< Play scenario button.
@@ -1976,11 +1967,15 @@ public:
 	/** Widgets of the #NetworkClientListWindow class. */
 	enum ClientListWidgets {
 		WID_CL_PANEL                                 = ::WID_CL_PANEL,                                 ///< Panel of the window.
-	};
-
-	/** Widgets of the #NetworkClientListPopupWindow class. */
-	enum ClientListPopupWidgets {
-		WID_CLP_PANEL                                = ::WID_CLP_PANEL,                                ///< Panel of the window.
+		WID_CL_SERVER_SELECTOR                       = ::WID_CL_SERVER_SELECTOR,                       ///< Selector to hide the server frame.
+		WID_CL_SERVER_NAME                           = ::WID_CL_SERVER_NAME,                           ///< Server name.
+		WID_CL_SERVER_NAME_EDIT                      = ::WID_CL_SERVER_NAME_EDIT,                      ///< Edit button for server name.
+		WID_CL_SERVER_VISIBILITY                     = ::WID_CL_SERVER_VISIBILITY,                     ///< Server visibility.
+		WID_CL_CLIENT_NAME                           = ::WID_CL_CLIENT_NAME,                           ///< Client name.
+		WID_CL_CLIENT_NAME_EDIT                      = ::WID_CL_CLIENT_NAME_EDIT,                      ///< Edit button for client name.
+		WID_CL_MATRIX                                = ::WID_CL_MATRIX,                                ///< Company/client list.
+		WID_CL_SCROLLBAR                             = ::WID_CL_SCROLLBAR,                             ///< Scrollbar for company/client list.
+		WID_CL_COMPANY_JOIN                          = ::WID_CL_COMPANY_JOIN,                          ///< Used for QueryWindow when a company has a password.
 	};
 
 	/** Widgets of the #NetworkJoinStatusWindow class. */

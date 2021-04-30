@@ -79,6 +79,8 @@ btree_container.h
 ../src/string_type.h
 
 ../src/3rdparty/squirrel/squirrel/sqobject.h
+vector
+-
 squtils.h
 ../src/3rdparty/squirrel/squirrel/squtils.h
 
@@ -2043,6 +2045,8 @@ sqclosure.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/sqobject.h
+vector
+-
 squtils.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/squirrel/squtils.h
 
@@ -2613,6 +2617,8 @@ group.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
 autoreplace_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_base.h
+core/bitmath_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
 core/pool_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_func.hpp
 safeguards.h
@@ -3355,6 +3361,8 @@ network/network.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
 order_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
+vehicle_base.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_base.h
 currency.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/currency.h
 widgets/cheat_widget.h
@@ -3825,6 +3833,8 @@ window_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_internal.h
 gfx_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
+map
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/console_type.h
 gfx_type.h
@@ -7523,6 +7533,8 @@ packet.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
+os_abstraction.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
 config.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
 core.h
@@ -7530,6 +7542,8 @@ core.h
 ../../string_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
 string
+-
+functional
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.cpp
@@ -7817,6 +7831,8 @@ core/address.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_chat_gui.cpp
 stdarg.h
 -
+deque
+-
 ../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../strings_func.h
@@ -8071,6 +8087,8 @@ network_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_base.h
 network_content.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
+network_server.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.h
 ../gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
 network_udp.h
@@ -8079,6 +8097,8 @@ network_udp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 ../gfx_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
+../widgets/dropdown_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
 ../widgets/dropdown_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_func.h
 ../querystring_gui.h
@@ -8087,6 +8107,8 @@ network_udp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
 ../company_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_func.h
+../command_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/command_func.h
 ../core/geometry_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
 ../genworld.h
@@ -8101,6 +8123,10 @@ network_udp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
 ../zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+../sprite.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
+../settings_internal.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/settings_internal.h
 ../widgets/network_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/network_widget.h
 table/strings.h
@@ -8109,10 +8135,12 @@ table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/sprites.h
 ../stringfilter_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stringfilter_type.h
-../safeguards.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 emscripten.h
 -
+map
+-
+../safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gui.h
 ../company_type.h
@@ -10105,8 +10133,6 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
 pathfinder_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pathfinder_func.h
-pf_performance_timer.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pf_performance_timer.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/aystar.cpp
 ../../stdafx.h
@@ -10129,6 +10155,8 @@ queue.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/npf.cpp
 ../../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+../../debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 ../../network/network.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
 ../../viewport_func.h
@@ -10184,10 +10212,6 @@ queue.h
 ../tile_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
 
-/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pf_performance_timer.hpp
-../debug.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
-
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/nodelist.hpp
 ../../misc/array.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/misc/array.hpp
@@ -10215,8 +10239,6 @@ queue.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
 ../pathfinder_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pathfinder_func.h
-../pf_performance_timer.hpp
-/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/pf_performance_timer.hpp
 yapf.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf.h
 ../../misc/fixedsizearray.hpp
@@ -14369,6 +14391,8 @@ fontcache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+rev.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
 video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 music/music_driver.hpp
@@ -15733,6 +15757,8 @@ company_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
 cargo_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
+news_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/news_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_gui.cpp
 stdafx.h

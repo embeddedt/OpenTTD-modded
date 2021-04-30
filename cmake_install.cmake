@@ -49,7 +49,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xlanguage_filesx" OR NOT CMAKE_INSTA
     "/__w/OpenTTD-modded/OpenTTD-modded/em_build/ai"
     "/__w/OpenTTD-modded/OpenTTD-modded/em_build/game"
     "/__w/OpenTTD-modded/OpenTTD-modded/bin/scripts"
-    )
+    REGEX "ai/[^.]+$" EXCLUDE)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xdocsx" OR NOT CMAKE_INSTALL_COMPONENT)

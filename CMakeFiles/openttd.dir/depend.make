@@ -3586,6 +3586,7 @@ CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/3rdparty/cpp-btree/btree_set.
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/3rdparty/mingw-std-threads/mingw.thread.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/airport.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/autoreplace_type.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/base_consist.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/base_station_base.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/bitmap_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/bridge.h
@@ -3650,11 +3651,13 @@ CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf_airport.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf_class.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf_commons.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/order_base.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/rail.h
@@ -3688,19 +3691,23 @@ CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/strings_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/table/sprites.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/textbuf_gui.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/texteff.hpp
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/thread.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tile_cmd.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tile_map.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tile_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tilearea_type.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/timetable.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/town_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/track_func.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/track_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/transparency.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/transport_type.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/triphistory.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tunnel_base.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tunnel_map.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/tunnelbridge_map.h
+CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/vehicle_base.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/vehicle_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/viewport_type.h
 CMakeFiles/openttd.dir/src/cheat_gui.cpp.o: ../src/water_map.h
@@ -13607,6 +13614,8 @@ CMakeFiles/openttd.dir/src/network/core/host.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/network/core/host.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/network/core/host.cpp.o: ../src/string_type.h
 
+CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/3rdparty/os2/getaddrinfo.h
+CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/3rdparty/os2/getnameinfo.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/command_type.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/core/alloc_type.hpp
@@ -13622,6 +13631,7 @@ CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/core.h
+CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/os_abstraction.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/packet.cpp
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/network/core/packet.h
 CMakeFiles/openttd.dir/src/network/core/packet.cpp.o: ../src/newgrf_config.h
@@ -15027,6 +15037,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/3rdparty/os2/getnam
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/autoreplace_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/cargo_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/cargotype.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/command_func.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/command_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/company_base.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/company_func.h
@@ -15076,6 +15087,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/core/tcp.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/core/tcp_content.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/core/tcp_game.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/core/tcp_http.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/core/tcp_listen.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_base.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_client.h
@@ -15085,6 +15097,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_gam
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_gui.cpp
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_gui.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_internal.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_server.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/network/network_udp.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/newgrf.h
@@ -15096,9 +15109,13 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/rail_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/safeguards.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/saveload/extended_ver_sl.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/saveload/saveload.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/settings_internal.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/sortlist_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/sound_type.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/story_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/string_base.h
@@ -15114,6 +15131,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/textbuf_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/textfile_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/tile_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/town_type.h
+CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/transparency.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/transport_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/vehicle_type.h
 CMakeFiles/openttd.dir/src/network/network_gui.cpp.o: ../src/viewport_type.h
@@ -19337,7 +19355,6 @@ CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/npf/npf.c
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/npf/queue.h
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/pathfinder_func.h
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/pathfinder_type.h
-CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/pathfinder/npf/npf.cpp.o: ../src/rail_map.h
@@ -19500,7 +19517,6 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/os/macosx/osx
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/follow_track.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/pathfinder_func.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/pathfinder_type.h
-CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/yapf/nodelist.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_rail.cpp.o: ../src/pathfinder/yapf/yapf.hpp
@@ -19666,7 +19682,6 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/os/macosx/osx
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/follow_track.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/pathfinder_func.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/pathfinder_type.h
-CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/yapf/nodelist.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_road.cpp.o: ../src/pathfinder/yapf/yapf.hpp
@@ -19835,7 +19850,6 @@ CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/os/macosx/osx
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/follow_track.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/pathfinder_func.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/pathfinder_type.h
-CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/yapf/nodelist.hpp
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o: ../src/pathfinder/yapf/yapf.hpp
@@ -19998,7 +20012,6 @@ CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pathfinder/follow_track.hpp
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pathfinder/pathfinder_func.h
-CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pbs.cpp
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/pbs.cpp.o: ../src/rail.h
@@ -25475,6 +25488,7 @@ CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/newgrf_house.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/newgrf_spritegroup.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/newgrf_town.h
+CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/news_type.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o: ../src/rail_type.h
@@ -33254,6 +33268,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/road_map.h
@@ -36061,6 +36076,7 @@ CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/newgrf_class.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/newgrf_commons.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/newgrf_storage.h
+CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/news_type.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/order_base.h
 CMakeFiles/openttd.dir/src/subsidy_gui.cpp.o: ../src/order_func.h
@@ -38699,7 +38715,6 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/follow_track.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/npf/npf_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/pathfinder_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/pathfinder_type.h
-CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/pf_performance_timer.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/yapf/nodelist.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pathfinder/yapf/yapf.hpp

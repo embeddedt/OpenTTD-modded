@@ -64,6 +64,7 @@ media/openttd.desktop.timestamp: ../src/lang/belarusian.txt
 media/openttd.desktop.timestamp: ../src/lang/brazilian_portuguese.txt
 media/openttd.desktop.timestamp: ../src/lang/bulgarian.txt
 media/openttd.desktop.timestamp: ../src/lang/catalan.txt
+media/openttd.desktop.timestamp: ../src/lang/chuvash.txt
 media/openttd.desktop.timestamp: ../src/lang/croatian.txt
 media/openttd.desktop.timestamp: ../src/lang/czech.txt
 media/openttd.desktop.timestamp: ../src/lang/danish.txt
@@ -75,13 +76,16 @@ media/openttd.desktop.timestamp: ../src/lang/estonian.txt
 media/openttd.desktop.timestamp: ../src/lang/faroese.txt
 media/openttd.desktop.timestamp: ../src/lang/finnish.txt
 media/openttd.desktop.timestamp: ../src/lang/french.txt
+media/openttd.desktop.timestamp: ../src/lang/frisian.txt
 media/openttd.desktop.timestamp: ../src/lang/gaelic.txt
 media/openttd.desktop.timestamp: ../src/lang/galician.txt
 media/openttd.desktop.timestamp: ../src/lang/german.txt
 media/openttd.desktop.timestamp: ../src/lang/greek.txt
 media/openttd.desktop.timestamp: ../src/lang/hebrew.txt
+media/openttd.desktop.timestamp: ../src/lang/hindi.txt
 media/openttd.desktop.timestamp: ../src/lang/hungarian.txt
 media/openttd.desktop.timestamp: ../src/lang/icelandic.txt
+media/openttd.desktop.timestamp: ../src/lang/ido.txt
 media/openttd.desktop.timestamp: ../src/lang/indonesian.txt
 media/openttd.desktop.timestamp: ../src/lang/irish.txt
 media/openttd.desktop.timestamp: ../src/lang/italian.txt
@@ -91,9 +95,13 @@ media/openttd.desktop.timestamp: ../src/lang/latin.txt
 media/openttd.desktop.timestamp: ../src/lang/latvian.txt
 media/openttd.desktop.timestamp: ../src/lang/lithuanian.txt
 media/openttd.desktop.timestamp: ../src/lang/luxembourgish.txt
+media/openttd.desktop.timestamp: ../src/lang/macedonian.txt
 media/openttd.desktop.timestamp: ../src/lang/malay.txt
+media/openttd.desktop.timestamp: ../src/lang/maltese.txt
+media/openttd.desktop.timestamp: ../src/lang/marathi.txt
 media/openttd.desktop.timestamp: ../src/lang/norwegian_bokmal.txt
 media/openttd.desktop.timestamp: ../src/lang/norwegian_nynorsk.txt
+media/openttd.desktop.timestamp: ../src/lang/persian.txt
 media/openttd.desktop.timestamp: ../src/lang/polish.txt
 media/openttd.desktop.timestamp: ../src/lang/portuguese.txt
 media/openttd.desktop.timestamp: ../src/lang/romanian.txt
@@ -109,13 +117,14 @@ media/openttd.desktop.timestamp: ../src/lang/tamil.txt
 media/openttd.desktop.timestamp: ../src/lang/thai.txt
 media/openttd.desktop.timestamp: ../src/lang/traditional_chinese.txt
 media/openttd.desktop.timestamp: ../src/lang/turkish.txt
+media/openttd.desktop.timestamp: ../src/lang/urdu.txt
 media/openttd.desktop.timestamp: ../src/lang/ukrainian.txt
 media/openttd.desktop.timestamp: ../src/lang/vietnamese.txt
 media/openttd.desktop.timestamp: ../src/lang/welsh.txt
 media/openttd.desktop.timestamp: ../cmake/scripts/Desktop.cmake
 media/openttd.desktop.timestamp: ../media/openttd.desktop
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating desktop file"
-	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media && /usr/bin/cmake -DDESKTOP_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/media/openttd.desktop -DDESKTOP_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/openttd.desktop -DBINARY_NAME=openttd -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/Desktop.cmake -- /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/afrikaans.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/arabic_egypt.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/basque.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/belarusian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/brazilian_portuguese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/bulgarian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/catalan.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/croatian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/czech.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/danish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/dutch.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english_AU.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english_US.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/esperanto.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/estonian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/faroese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/finnish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/french.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/gaelic.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/galician.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/german.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/greek.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/hebrew.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/hungarian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/icelandic.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/indonesian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/irish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/italian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/japanese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/korean.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/latin.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/latvian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/lithuanian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/luxembourgish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/malay.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/norwegian_bokmal.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/norwegian_nynorsk.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/polish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/portuguese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/romanian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/russian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/serbian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/simplified_chinese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/slovak.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/slovenian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/spanish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/spanish_MX.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/swedish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/tamil.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/thai.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/traditional_chinese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/turkish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/ukrainian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/vietnamese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/welsh.txt
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media && /usr/bin/cmake -DDESKTOP_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/media/openttd.desktop -DDESKTOP_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/media/openttd.desktop -DBINARY_NAME=openttd -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/Desktop.cmake -- /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/afrikaans.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/arabic_egypt.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/basque.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/belarusian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/brazilian_portuguese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/bulgarian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/catalan.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/chuvash.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/croatian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/czech.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/danish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/dutch.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english_AU.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/english_US.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/esperanto.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/estonian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/faroese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/finnish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/french.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/frisian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/gaelic.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/galician.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/german.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/greek.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/hebrew.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/hindi.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/hungarian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/icelandic.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/ido.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/indonesian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/irish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/italian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/japanese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/korean.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/latin.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/latvian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/lithuanian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/luxembourgish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/macedonian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/malay.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/maltese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/marathi.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/norwegian_bokmal.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/norwegian_nynorsk.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/persian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/polish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/portuguese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/romanian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/russian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/serbian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/simplified_chinese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/slovak.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/slovenian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/spanish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/spanish_MX.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/swedish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/tamil.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/thai.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/traditional_chinese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/turkish.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/urdu.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/ukrainian.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/vietnamese.txt /__w/OpenTTD-modded/OpenTTD-modded/src/lang/welsh.txt
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/openttd.desktop.timestamp
 
 desktop_file: media/CMakeFiles/desktop_file

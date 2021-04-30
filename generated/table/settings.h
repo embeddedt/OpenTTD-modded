@@ -209,7 +209,6 @@ static const char *_autosave_interval = "off|monthly|quarterly|half year|yearly"
 static const char *_roadsides = "left|right";
 static const char *_savegame_date = "long|short|iso";
 static const char *_savegame_overwrite_confirm = "no|different|not same|yes";
-static const char *_server_langs = "ANY|ENGLISH|GERMAN|FRENCH|BRAZILIAN|BULGARIAN|CHINESE|CZECH|DANISH|DUTCH|ESPERANTO|FINNISH|HUNGARIAN|ICELANDIC|ITALIAN|JAPANESE|KOREAN|LITHUANIAN|NORWEGIAN|POLISH|PORTUGUESE|ROMANIAN|RUSSIAN|SLOVAK|SLOVENIAN|SPANISH|SWEDISH|TURKISH|UKRAINIAN|AFRIKAANS|CROATIAN|CATALAN|ESTONIAN|GALICIAN|GREEK|LATVIAN";
 static const char *_osk_activation = "disabled|double|single|immediately";
 static const char *_settings_profiles = "easy|medium|hard";
 static const char *_news_display = "off|summarized|full";
@@ -1138,7 +1137,6 @@ SDTC_VAR(       network.max_clients, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK
 SDTC_VAR(       network.max_spectators, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NETWORK_ONLY, 15,       0, MAX_CLIENTS, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, UpdateClientConfigValues, SL_MIN_VERSION, SL_MAX_VERSION,        SC_BASIC, false, SlXvFeatureTest(), nullptr, nullptr),
 SDTC_VAR(       network.restart_game_year, SLE_INT32, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_0ISDISABLED | SGF_NETWORK_ONLY, 0,       MIN_YEAR, MAX_YEAR, 1, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr, nullptr),
 SDTC_VAR(       network.min_active_clients, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NETWORK_ONLY, 0,       0, MAX_CLIENTS, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr, nullptr),
-SDTC_OMANY(       network.server_lang, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NETWORK_ONLY, 0,             35, _server_langs,     STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_BASIC, false, SlXvFeatureTest(), nullptr),
 SDTC_BOOL(       network.reload_cfg,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NETWORK_ONLY, false,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_STR(       network.last_host, SLE_STRB, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, "",                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_VAR(       network.last_port, SLE_UINT16, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 0,       0, UINT16_MAX, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr, nullptr),
@@ -1518,7 +1516,6 @@ static_assert(MAX_CLIENTS <= MAX_SLE_UINT8, "Maximum value for network.max_clien
 static_assert(MAX_CLIENTS <= MAX_SLE_UINT8, "Maximum value for network.max_spectators exceeds storage size");
 static_assert(MAX_YEAR <= MAX_SLE_INT32, "Maximum value for network.restart_game_year exceeds storage size");
 static_assert(MAX_CLIENTS <= MAX_SLE_UINT8, "Maximum value for network.min_active_clients exceeds storage size");
-static_assert(35 <= MAX_SLE_UINT8, "Maximum value for network.server_lang exceeds storage size");
 static_assert(UINT16_MAX <= MAX_SLE_UINT16, "Maximum value for network.last_port exceeds storage size");
 #ifdef __APPLE__
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for gui.right_mouse_btn_emulation exceeds storage size");

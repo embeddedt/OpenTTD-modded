@@ -108,7 +108,6 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_MODAL_PROGRESS,                         "WC_MODAL_PROGRESS");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_NETWORK_WINDOW,                         "WC_NETWORK_WINDOW");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_CLIENT_LIST,                            "WC_CLIENT_LIST");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_CLIENT_LIST_POPUP,                      "WC_CLIENT_LIST_POPUP");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_NETWORK_STATUS_WINDOW,                  "WC_NETWORK_STATUS_WINDOW");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_SEND_NETWORK_MSG,                       "WC_SEND_NETWORK_MSG");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WC_COMPANY_PASSWORD_WINDOW,                "WC_COMPANY_PASSWORD_WINDOW");
@@ -835,8 +834,6 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_SPECTATORS_BTND,                   "WID_NSS_SPECTATORS_BTND");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_SPECTATORS_TXT,                    "WID_NSS_SPECTATORS_TXT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_SPECTATORS_BTNU,                   "WID_NSS_SPECTATORS_BTNU");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_LANGUAGE_LABEL,                    "WID_NSS_LANGUAGE_LABEL");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_LANGUAGE_BTN,                      "WID_NSS_LANGUAGE_BTN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_GENERATE_GAME,                     "WID_NSS_GENERATE_GAME");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_LOAD_GAME,                         "WID_NSS_LOAD_GAME");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NSS_PLAY_SCENARIO,                     "WID_NSS_PLAY_SCENARIO");
@@ -854,7 +851,15 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NL_REFRESH,                            "WID_NL_REFRESH");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NL_CANCEL,                             "WID_NL_CANCEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_PANEL,                              "WID_CL_PANEL");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CLP_PANEL,                             "WID_CLP_PANEL");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_SERVER_SELECTOR,                    "WID_CL_SERVER_SELECTOR");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_SERVER_NAME,                        "WID_CL_SERVER_NAME");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_SERVER_NAME_EDIT,                   "WID_CL_SERVER_NAME_EDIT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_SERVER_VISIBILITY,                  "WID_CL_SERVER_VISIBILITY");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_CLIENT_NAME,                        "WID_CL_CLIENT_NAME");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_CLIENT_NAME_EDIT,                   "WID_CL_CLIENT_NAME_EDIT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_MATRIX,                             "WID_CL_MATRIX");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_SCROLLBAR,                          "WID_CL_SCROLLBAR");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CL_COMPANY_JOIN,                       "WID_CL_COMPANY_JOIN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NJS_BACKGROUND,                        "WID_NJS_BACKGROUND");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NJS_CANCELOK,                          "WID_NJS_CANCELOK");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_NCP_BACKGROUND,                        "WID_NCP_BACKGROUND");
