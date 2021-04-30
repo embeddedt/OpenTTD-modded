@@ -2037,8 +2037,6 @@ static char *GetSpecialNameString(char *buff, int ind, StringParameters *args, c
 	NOT_REACHED();
 }
 
-extern void SortNetworkLanguages();
-
 /**
  * Check whether the header is a valid header for OpenTTD.
  * @return true iff the header is deemed valid.
@@ -2058,6 +2056,15 @@ bool LanguagePackHeader::IsValid() const
 	       StrValid(this->digit_group_separator,          lastof(this->digit_group_separator)) &&
 	       StrValid(this->digit_group_separator_currency, lastof(this->digit_group_separator_currency)) &&
 	       StrValid(this->digit_decimal_separator,        lastof(this->digit_decimal_separator));
+}
+
+/**
+ * Check whether a translation is sufficiently finished to offer it to the public.
+ */
+bool LanguagePackHeader::IsReasonablyFinished() const
+{
+	/* "Less than 25% missing" is "sufficiently finished". */
+	return 4 * this->missing < LANGUAGE_TOTAL_STRINGS;
 }
 
 /**
@@ -2155,7 +2162,6 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 	InitializeSortedCargoSpecs();
 	SortIndustryTypes();
 	BuildIndustriesLegend();
-	SortNetworkLanguages();
 	BuildContentTypeStringList();
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE);      // Build vehicle window.
 	InvalidateWindowClassesData(WC_TRAINS_LIST);        // Train group window.
@@ -2315,6 +2321,10 @@ void InitializeLanguagePacks()
 		}
 
 		if (strcmp (lng.isocode, "en_GB") == 0) en_GB_fallback    = &lng;
+
+		/* Only auto-pick finished translations */
+		if (!lng.IsReasonablyFinished()) continue;
+
 		if (strncmp(lng.isocode, lang, 5) == 0) chosen_language   = &lng;
 		if (strncmp(lng.isocode, lang, 2) == 0) language_fallback = &lng;
 	}

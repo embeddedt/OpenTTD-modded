@@ -197,7 +197,6 @@ void ServerNetworkUDPSocketHandler::Receive_CLIENT_FIND_SERVER(Packet *p, Networ
 	ngi.clients_on     = _network_game_info.clients_on;
 	ngi.start_date     = ConvertYMDToDate(_settings_game.game_creation.starting_year, 0, 1);
 
-	ngi.server_lang    = _settings_client.network.server_lang;
 	ngi.use_password   = !StrEmpty(_settings_client.network.server_password);
 	ngi.clients_max    = _settings_client.network.max_clients;
 	ngi.companies_on   = (byte)Company::GetNumItems();
@@ -211,12 +210,11 @@ void ServerNetworkUDPSocketHandler::Receive_CLIENT_FIND_SERVER(Packet *p, Networ
 	ngi.dedicated      = _network_dedicated;
 	ngi.grfconfig      = _grfconfig;
 
-	strecpy(ngi.map_name, _network_game_info.map_name, lastof(ngi.map_name));
 	strecpy(ngi.server_name, _settings_client.network.server_name, lastof(ngi.server_name));
 	strecpy(ngi.server_revision, _openttd_revision, lastof(ngi.server_revision));
 	strecpy(ngi.short_server_revision, _openttd_revision, lastof(ngi.short_server_revision));
 
-	if (p->CanReadFromPacket(8, true) && p->Recv_uint32() == FIND_SERVER_EXTENDED_TOKEN) {
+	if (p->CanReadFromPacket(8) && p->Recv_uint32() == FIND_SERVER_EXTENDED_TOKEN) {
 		this->Reply_CLIENT_FIND_SERVER_extended(p, client_addr, &ngi);
 		return;
 	}
@@ -235,7 +233,7 @@ void ServerNetworkUDPSocketHandler::Reply_CLIENT_FIND_SERVER_extended(Packet *p,
 	uint16 flags = p->Recv_uint16();
 	uint16 version = p->Recv_uint16();
 
-	Packet packet(PACKET_UDP_EX_SERVER_RESPONSE);
+	Packet packet(PACKET_UDP_EX_SERVER_RESPONSE, SHRT_MAX);
 	this->SendNetworkGameInfoExtended(&packet, ngi, flags, version);
 
 	/* Let the client know that we are here */
@@ -263,23 +261,23 @@ void ServerNetworkUDPSocketHandler::Receive_CLIENT_DETAIL_INFO(Packet *p, Networ
 	static const uint MIN_CI_SIZE = 54;
 	uint max_cname_length = NETWORK_COMPANY_NAME_LENGTH;
 
-	if (Company::GetNumItems() * (MIN_CI_SIZE + NETWORK_COMPANY_NAME_LENGTH) >= (uint)SEND_MTU - packet.size) {
+	if (!packet.CanWriteToPacket(Company::GetNumItems() * (MIN_CI_SIZE + NETWORK_COMPANY_NAME_LENGTH))) {
 		/* Assume we can at least put the company information in the packets. */
-		assert(Company::GetNumItems() * MIN_CI_SIZE < (uint)SEND_MTU - packet.size);
+		assert(packet.CanWriteToPacket(Company::GetNumItems() * MIN_CI_SIZE));
 
 		/* At this moment the company names might not fit in the
 		 * packet. Check whether that is really the case. */
 
 		for (;;) {
-			int free = SEND_MTU - packet.size;
+			size_t required = 0;
 			for (const Company *company : Company::Iterate()) {
 				char company_name[NETWORK_COMPANY_NAME_LENGTH];
 				SetDParam(0, company->index);
 				GetString(company_name, STR_COMPANY_NAME, company_name + max_cname_length - 1);
-				free -= MIN_CI_SIZE;
-				free -= (int)strlen(company_name);
+				required += MIN_CI_SIZE;
+				required += strlen(company_name);
 			}
-			if (free >= 0) break;
+			if (packet.CanWriteToPacket(required)) break;
 
 			/* Try again, with slightly shorter strings. */
 			assert(max_cname_length > 0);
@@ -299,10 +297,10 @@ void ServerNetworkUDPSocketHandler::Receive_CLIENT_DETAIL_INFO(Packet *p, Networ
 /**
  * A client has requested the names of some NewGRFs.
  *
- * Replying this can be tricky as we have a limit of SEND_MTU bytes
+ * Replying this can be tricky as we have a limit of UDP_MTU bytes
  * in the reply packet and we can send up to 100 bytes per NewGRF
  * (GRF ID, MD5sum and NETWORK_GRF_NAME_LENGTH bytes for the name).
- * As SEND_MTU is _much_ less than 100 * NETWORK_MAX_GRF_COUNT, it
+ * As UDP_MTU is _much_ less than 100 * NETWORK_MAX_GRF_COUNT, it
  * could be that a packet overflows. To stop this we only reply
  * with the first N NewGRFs so that if the first N + 1 NewGRFs
  * would be sent, the packet overflows.
@@ -373,7 +371,7 @@ void ServerNetworkUDPSocketHandler::Receive_CLIENT_GET_NEWGRFS(Packet *p, Networ
 		 * The name could be an empty string, if so take the filename. */
 		size_t required_length = sizeof(info.ident.grfid) + sizeof(info.ident.md5sum) +
 				std::min(strlen(info.name) + 1, (size_t)NETWORK_GRF_NAME_LENGTH);
-		if (packet_len + required_length > SEND_MTU_SHORT - 4) { // 4 is 3 byte header + grf count in reply
+		if (packet_len + required_length > UDP_MTU_SHORT - 4) { // 4 is 3 byte header + grf count in reply
 			flush_response();
 		}
 		packet_len += required_length;

@@ -40,7 +40,6 @@
 
 /* This file handles all the client-commands */
 
-
 /** Read some packets, and when do use that data as initial load filter. */
 struct PacketReader : LoadFilter {
 	static const size_t CHUNK = 32 * 1024;  ///< 32 KiB chunks of memory.
@@ -65,34 +64,37 @@ struct PacketReader : LoadFilter {
 	}
 
 	/**
+	 * Simple wrapper around fwrite to be able to pass it to Packet's TransferOut.
+	 * @param destination The reader to add the data to.
+	 * @param source      The buffer to read data from.
+	 * @param amount      The number of bytes to copy.
+	 * @return The number of bytes that were copied.
+	 */
+	static inline ssize_t TransferOutMemCopy(PacketReader *destination, const char *source, size_t amount)
+	{
+		memcpy(destination->buf, source, amount);
+		destination->buf += amount;
+		destination->written_bytes += amount;
+		return amount;
+	}
+
+	/**
 	 * Add a packet to this buffer.
 	 * @param p The packet to add.
 	 */
-	void AddPacket(const Packet *p)
+	void AddPacket(Packet *p)
 	{
 		assert(this->read_bytes == 0);
-
-		size_t in_packet = p->size - p->pos;
-		size_t to_write  = std::min<size_t>(this->bufe - this->buf, in_packet);
-		const byte *pbuf = p->buffer + p->pos;
-
-		this->written_bytes += in_packet;
-		if (to_write != 0) {
-			memcpy(this->buf, pbuf, to_write);
-			this->buf += to_write;
-		}
+		p->TransferOutWithLimit(TransferOutMemCopy, this->bufe - this->buf, this);
 
 		/* Did everything fit in the current chunk, then we're done. */
-		if (to_write == in_packet) return;
+		if (p->RemainingBytesToTransfer() == 0) return;
 
 		/* Allocate a new chunk and add the remaining data. */
-		pbuf += to_write;
-		to_write   = in_packet - to_write;
 		this->blocks.push_back(this->buf = CallocT<byte>(CHUNK));
 		this->bufe = this->buf + CHUNK;
 
-		memcpy(this->buf, pbuf, to_write);
-		this->buf += to_write;
+		p->TransferOutWithLimit(TransferOutMemCopy, this->bufe - this->buf, this);
 	}
 
 	size_t Read(byte *rbuf, size_t size) override
@@ -409,7 +411,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendCompanyInformationQuery()
 	_network_join_status = NETWORK_JOIN_STATUS_GETTING_COMPANY_INFO;
 	SetWindowDirty(WC_NETWORK_STATUS_WINDOW, WN_NETWORK_STATUS_WINDOW_JOIN);
 
-	Packet *p = new Packet(PACKET_CLIENT_COMPANY_INFO);
+	Packet *p = new Packet(PACKET_CLIENT_COMPANY_INFO, SHRT_MAX);
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -421,12 +423,12 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendJoin()
 	_network_join_status = NETWORK_JOIN_STATUS_AUTHORIZING;
 	SetWindowDirty(WC_NETWORK_STATUS_WINDOW, WN_NETWORK_STATUS_WINDOW_JOIN);
 
-	Packet *p = new Packet(PACKET_CLIENT_JOIN);
+	Packet *p = new Packet(PACKET_CLIENT_JOIN, SHRT_MAX);
 	p->Send_string(_openttd_revision);
 	p->Send_uint32(_openttd_newgrf_version);
 	p->Send_string(_settings_client.network.client_name); // Client name
 	p->Send_uint8 (_network_join_as);     // PlayAs
-	p->Send_uint8 (NETLANG_ANY);          // Language
+	p->Send_uint8 (0); // Used to be language
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -434,7 +436,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendJoin()
 /** Tell the server we got all the NewGRFs. */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendNewGRFsOk()
 {
-	Packet *p = new Packet(PACKET_CLIENT_NEWGRFS_CHECKED);
+	Packet *p = new Packet(PACKET_CLIENT_NEWGRFS_CHECKED, SHRT_MAX);
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -445,7 +447,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendNewGRFsOk()
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendGamePassword(const char *password)
 {
-	Packet *p = new Packet(PACKET_CLIENT_GAME_PASSWORD);
+	Packet *p = new Packet(PACKET_CLIENT_GAME_PASSWORD, SHRT_MAX);
 	p->Send_string(GenerateCompanyPasswordHash(password, _password_server_id, _server_password_game_seed));
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -457,7 +459,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendGamePassword(const char *p
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendCompanyPassword(const char *password)
 {
-	Packet *p = new Packet(PACKET_CLIENT_COMPANY_PASSWORD);
+	Packet *p = new Packet(PACKET_CLIENT_COMPANY_PASSWORD, SHRT_MAX);
 	p->Send_string(GenerateCompanyPasswordHash(password, _password_server_id, _company_password_game_seed));
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -469,7 +471,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendCompanyPassword(const char
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendSettingsPassword(const char *password)
 {
-	Packet *p = new Packet(PACKET_CLIENT_SETTINGS_PASSWORD);
+	Packet *p = new Packet(PACKET_CLIENT_SETTINGS_PASSWORD, SHRT_MAX);
 	if (StrEmpty(password)) {
 		p->Send_string("");
 	} else {
@@ -484,7 +486,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendGetMap()
 {
 	my_client->status = STATUS_MAP_WAIT;
 
-	Packet *p = new Packet(PACKET_CLIENT_GETMAP);
+	Packet *p = new Packet(PACKET_CLIENT_GETMAP, SHRT_MAX);
 #if defined(WITH_ZSTD)
 	p->Send_bool(true);
 #else
@@ -499,7 +501,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendMapOk()
 {
 	my_client->status = STATUS_ACTIVE;
 
-	Packet *p = new Packet(PACKET_CLIENT_MAP_OK);
+	Packet *p = new Packet(PACKET_CLIENT_MAP_OK, SHRT_MAX);
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -507,7 +509,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendMapOk()
 /** Send an acknowledgement from the server's ticks. */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendAck()
 {
-	Packet *p = new Packet(PACKET_CLIENT_ACK);
+	Packet *p = new Packet(PACKET_CLIENT_ACK, SHRT_MAX);
 
 	p->Send_uint32(_frame_counter);
 	p->Send_uint8 (my_client->token);
@@ -521,7 +523,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendAck()
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendCommand(const CommandPacket *cp)
 {
-	Packet *p = new Packet(PACKET_CLIENT_COMMAND);
+	Packet *p = new Packet(PACKET_CLIENT_COMMAND, SHRT_MAX);
 	my_client->NetworkGameSocketHandler::SendCommand(p, cp);
 
 	my_client->SendPacket(p);
@@ -532,7 +534,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendCommand(const CommandPacke
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendChat(NetworkAction action, DestType type, int dest, const char *msg, NetworkTextMessageData data)
 {
 	if (!my_client) return NETWORK_RECV_STATUS_CONN_LOST;
-	Packet *p = new Packet(PACKET_CLIENT_CHAT);
+	Packet *p = new Packet(PACKET_CLIENT_CHAT, SHRT_MAX);
 
 	p->Send_uint8 (action);
 	p->Send_uint8 (type);
@@ -547,7 +549,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendChat(NetworkAction action,
 /** Send an error-packet over the network */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendError(NetworkErrorCode errorno)
 {
-	Packet *p = new Packet(PACKET_CLIENT_ERROR);
+	Packet *p = new Packet(PACKET_CLIENT_ERROR, SHRT_MAX);
 
 	p->Send_uint8(errorno);
 	my_client->SendPacket(p);
@@ -558,8 +560,8 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendError(NetworkErrorCode err
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendDesyncLog(const std::string &log)
 {
 	for (size_t offset = 0; offset < log.size();) {
-		Packet *p = new Packet(PACKET_CLIENT_DESYNC_LOG);
-		size_t size = std::min<size_t>(log.size() - offset, SHRT_MAX - 2 - p->size);
+		Packet *p = new Packet(PACKET_CLIENT_DESYNC_LOG, SHRT_MAX);
+		size_t size = std::min<size_t>(log.size() - offset, SHRT_MAX - 2 - p->Size());
 		p->Send_uint16(size);
 		p->Send_binary(log.data() + offset, size);
 		my_client->SendPacket(p);
@@ -569,13 +571,25 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendDesyncLog(const std::strin
 	return NETWORK_RECV_STATUS_OKAY;
 }
 
+/** Send an error-packet over the network */
+NetworkRecvStatus ClientNetworkGameSocketHandler::SendDesyncMessage(const char *msg)
+{
+	Packet *p = new Packet(PACKET_CLIENT_DESYNC_MSG, SHRT_MAX);
+	p->Send_uint32(_date);
+	p->Send_uint16(_date_fract);
+	p->Send_uint8(_tick_skip_counter);
+	p->Send_string(msg);
+	my_client->SendPacket(p);
+	return NETWORK_RECV_STATUS_OKAY;
+}
+
 /**
  * Tell the server that we like to change the password of the company.
  * @param password The new password.
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendSetPassword(const char *password)
 {
-	Packet *p = new Packet(PACKET_CLIENT_SET_PASSWORD);
+	Packet *p = new Packet(PACKET_CLIENT_SET_PASSWORD, SHRT_MAX);
 
 	p->Send_string(GenerateCompanyPasswordHash(password, _password_server_id, _company_password_game_seed));
 	my_client->SendPacket(p);
@@ -588,7 +602,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendSetPassword(const char *pa
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendSetName(const char *name)
 {
-	Packet *p = new Packet(PACKET_CLIENT_SET_NAME);
+	Packet *p = new Packet(PACKET_CLIENT_SET_NAME, SHRT_MAX);
 
 	p->Send_string(name);
 	my_client->SendPacket(p);
@@ -600,7 +614,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendSetName(const char *name)
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendQuit()
 {
-	Packet *p = new Packet(PACKET_CLIENT_QUIT);
+	Packet *p = new Packet(PACKET_CLIENT_QUIT, SHRT_MAX);
 
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -613,7 +627,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendQuit()
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendRCon(const char *pass, const char *command)
 {
-	Packet *p = new Packet(PACKET_CLIENT_RCON);
+	Packet *p = new Packet(PACKET_CLIENT_RCON, SHRT_MAX);
 	p->Send_string(GenerateCompanyPasswordHash(pass, _password_server_id, _rcon_password_game_seed));
 	p->Send_string(command);
 	my_client->SendPacket(p);
@@ -627,7 +641,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendRCon(const char *pass, con
  */
 NetworkRecvStatus ClientNetworkGameSocketHandler::SendMove(CompanyID company, const char *password)
 {
-	Packet *p = new Packet(PACKET_CLIENT_MOVE);
+	Packet *p = new Packet(PACKET_CLIENT_MOVE, SHRT_MAX);
 	p->Send_uint8(company);
 	p->Send_string(GenerateCompanyPasswordHash(password, _password_server_id, _company_password_game_seed));
 	my_client->SendPacket(p);
@@ -724,6 +738,10 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_CLIENT_INFO(Pac
 
 	if (this->status < STATUS_AUTHORIZED) return NETWORK_RECV_STATUS_MALFORMED_PACKET;
 	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
+	/* The server validates the name when receiving it from clients, so when it is wrong
+	 * here something went really wrong. In the best case the packet got malformed on its
+	 * way too us, in the worst case the server is broken or compromised. */
+	if (!NetworkIsValidClientName(name)) return NETWORK_RECV_STATUS_MALFORMED_PACKET;
 
 	ci = NetworkClientInfo::GetByClientID(client_id);
 	if (ci != nullptr) {
@@ -742,7 +760,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_CLIENT_INFO(Pac
 		ci->client_playas = playas;
 		strecpy(ci->client_name, name, lastof(ci->client_name));
 
-		SetWindowDirty(WC_CLIENT_LIST, 0);
+		InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 		return NETWORK_RECV_STATUS_OKAY;
 	}
@@ -761,7 +779,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_CLIENT_INFO(Pac
 
 	strecpy(ci->client_name, name, lastof(ci->client_name));
 
-	SetWindowDirty(WC_CLIENT_LIST, 0);
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -769,26 +787,27 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_CLIENT_INFO(Pac
 NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_ERROR(Packet *p)
 {
 	static const StringID network_error_strings[] = {
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_GENERAL
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_DESYNC
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_SAVEGAME_FAILED
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_CONNECTION_LOST
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_ILLEGAL_PACKET
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_NEWGRF_MISMATCH
-		STR_NETWORK_ERROR_SERVER_ERROR,      // NETWORK_ERROR_NOT_AUTHORIZED
-		STR_NETWORK_ERROR_SERVER_ERROR,      // NETWORK_ERROR_NOT_EXPECTED
-		STR_NETWORK_ERROR_WRONG_REVISION,    // NETWORK_ERROR_WRONG_REVISION
-		STR_NETWORK_ERROR_LOSTCONNECTION,    // NETWORK_ERROR_NAME_IN_USE
-		STR_NETWORK_ERROR_WRONG_PASSWORD,    // NETWORK_ERROR_WRONG_PASSWORD
-		STR_NETWORK_ERROR_SERVER_ERROR,      // NETWORK_ERROR_COMPANY_MISMATCH
-		STR_NETWORK_ERROR_KICKED,            // NETWORK_ERROR_KICKED
-		STR_NETWORK_ERROR_CHEATER,           // NETWORK_ERROR_CHEATER
-		STR_NETWORK_ERROR_SERVER_FULL,       // NETWORK_ERROR_FULL
-		STR_NETWORK_ERROR_TOO_MANY_COMMANDS, // NETWORK_ERROR_TOO_MANY_COMMANDS
-		STR_NETWORK_ERROR_TIMEOUT_PASSWORD,  // NETWORK_ERROR_TIMEOUT_PASSWORD
-		STR_NETWORK_ERROR_TIMEOUT_COMPUTER,  // NETWORK_ERROR_TIMEOUT_COMPUTER
-		STR_NETWORK_ERROR_TIMEOUT_MAP,       // NETWORK_ERROR_TIMEOUT_MAP
-		STR_NETWORK_ERROR_TIMEOUT_JOIN,      // NETWORK_ERROR_TIMEOUT_JOIN
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_GENERAL
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_DESYNC
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_SAVEGAME_FAILED
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_CONNECTION_LOST
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_ILLEGAL_PACKET
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_NEWGRF_MISMATCH
+		STR_NETWORK_ERROR_SERVER_ERROR,        // NETWORK_ERROR_NOT_AUTHORIZED
+		STR_NETWORK_ERROR_SERVER_ERROR,        // NETWORK_ERROR_NOT_EXPECTED
+		STR_NETWORK_ERROR_WRONG_REVISION,      // NETWORK_ERROR_WRONG_REVISION
+		STR_NETWORK_ERROR_LOSTCONNECTION,      // NETWORK_ERROR_NAME_IN_USE
+		STR_NETWORK_ERROR_WRONG_PASSWORD,      // NETWORK_ERROR_WRONG_PASSWORD
+		STR_NETWORK_ERROR_SERVER_ERROR,        // NETWORK_ERROR_COMPANY_MISMATCH
+		STR_NETWORK_ERROR_KICKED,              // NETWORK_ERROR_KICKED
+		STR_NETWORK_ERROR_CHEATER,             // NETWORK_ERROR_CHEATER
+		STR_NETWORK_ERROR_SERVER_FULL,         // NETWORK_ERROR_FULL
+		STR_NETWORK_ERROR_TOO_MANY_COMMANDS,   // NETWORK_ERROR_TOO_MANY_COMMANDS
+		STR_NETWORK_ERROR_TIMEOUT_PASSWORD,    // NETWORK_ERROR_TIMEOUT_PASSWORD
+		STR_NETWORK_ERROR_TIMEOUT_COMPUTER,    // NETWORK_ERROR_TIMEOUT_COMPUTER
+		STR_NETWORK_ERROR_TIMEOUT_MAP,         // NETWORK_ERROR_TIMEOUT_MAP
+		STR_NETWORK_ERROR_TIMEOUT_JOIN,        // NETWORK_ERROR_TIMEOUT_JOIN
+		STR_NETWORK_ERROR_INVALID_CLIENT_NAME, // NETWORK_ERROR_INVALID_CLIENT_NAME
 	};
 	static_assert(lengthof(network_error_strings) == NETWORK_ERROR_END);
 
@@ -1039,7 +1058,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_FRAME(Packet *p
 	}
 #endif
 	/* Receive the token. */
-	if (p->pos != p->size) this->token = p->Recv_uint8();
+	if (p->CanReadFromPacket(sizeof(uint8))) this->token = p->Recv_uint8();
 
 	DEBUG(net, 5, "Received FRAME %d", _frame_counter_server);
 
@@ -1157,7 +1176,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_ERROR_QUIT(Pack
 		delete ci;
 	}
 
-	SetWindowDirty(WC_CLIENT_LIST, 0);
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -1185,7 +1204,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_QUIT(Packet *p)
 		DEBUG(net, 0, "Unknown client (%d) is leaving the game", client_id);
 	}
 
-	SetWindowDirty(WC_CLIENT_LIST, 0);
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 	/* If we come here it means we could not locate the client.. strange :s */
 	return NETWORK_RECV_STATUS_OKAY;
@@ -1202,7 +1221,7 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::Receive_SERVER_JOIN(Packet *p)
 		NetworkTextMessage(NETWORK_ACTION_JOIN, CC_DEFAULT, false, ci->client_name);
 	}
 
-	SetWindowDirty(WC_CLIENT_LIST, 0);
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -1403,6 +1422,56 @@ void NetworkClientsToSpectators(CompanyID cid)
 }
 
 /**
+ * Check whether the given client name is deemed valid for use in network games.
+ * An empty name (null or '') is not valid as that is essentially no name at all.
+ * A name starting with white space is not valid for tab completion purposes.
+ * @param client_name The client name to check for validity.
+ * @return True iff the name is valid.
+ */
+bool NetworkIsValidClientName(const char *client_name)
+{
+	if (StrEmpty(client_name)) return false;
+	if (*client_name == ' ') return false;
+	return true;
+}
+
+/**
+ * Trim the given client name in place, i.e. remove leading and trailing spaces.
+ * After the trim check whether the client name is valid. A client name is valid
+ * whenever the name is not empty and does not start with spaces. This check is
+ * done via \c NetworkIsValidClientName.
+ * When the client name is valid, this function returns true.
+ * When the client name is not valid a GUI error message is shown telling the
+ * user to set the client name and this function returns false.
+ *
+ * This function is not suitable for ensuring a valid client name at the server
+ * as the error message will then be shown to the host instead of the client.
+ * @param client_name The client name to validate. It will be trimmed of leading
+ *                    and trailing spaces.
+ * @return True iff the client name is valid.
+ */
+bool NetworkValidateClientName(char *client_name)
+{
+	StrTrimInPlace(client_name);
+	if (NetworkIsValidClientName(client_name)) return true;
+
+	ShowErrorMessage(STR_NETWORK_ERROR_BAD_PLAYER_NAME, INVALID_STRING_ID, WL_ERROR);
+	return false;
+}
+
+/**
+ * Convenience method for NetworkValidateClientName on _settings_client.network.client_name.
+ * It trims the client name and checks whether it is empty. When it is empty
+ * an error message is shown to the GUI user.
+ * See \c NetworkValidateClientName(char*) for details about the functionality.
+ * @return True iff the client name is valid.
+ */
+bool NetworkValidateClientName()
+{
+	return NetworkValidateClientName(_settings_client.network.client_name);
+}
+
+/**
  * Send the server our name.
  */
 void NetworkUpdateClientName()
@@ -1410,6 +1479,11 @@ void NetworkUpdateClientName()
 	NetworkClientInfo *ci = NetworkClientInfo::GetByClientID(_network_own_client_id);
 
 	if (ci == nullptr) return;
+	/* There is no validation on string settings, it is actually a post change callback.
+	 * This method is called from that post change callback. So, when the client name is
+	 * changed via the console there is no easy way to prevent an invalid name. Though,
+	 * we can prevent it getting sent here. */
+	if (!NetworkValidateClientName()) return;
 
 	/* Don't change the name if it is the same as the old name */
 	if (strcmp(ci->client_name, _settings_client.network.client_name) != 0) {
@@ -1436,6 +1510,12 @@ void NetworkUpdateClientName()
 void NetworkClientSendChat(NetworkAction action, DestType type, int dest, const char *msg, NetworkTextMessageData data)
 {
 	MyClient::SendChat(action, type, dest, msg, data);
+}
+
+
+void NetworkClientSendDesyncMsg(const char *msg)
+{
+	MyClient::SendDesyncMessage(msg);
 }
 
 /**

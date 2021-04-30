@@ -62,7 +62,8 @@ struct PacketWriter : SaveFilter {
 	ServerNetworkGameSocketHandler *cs; ///< Socket we are associated with.
 	std::unique_ptr<Packet> current;    ///< The packet we're currently writing to.
 	size_t total_size;                  ///< Total size of the compressed savegame.
-	std::deque<std::unique_ptr<Packet>> packets; ///< Packet queue of the savegame; send these "slowly" to the client.
+	std::vector<std::unique_ptr<Packet>> packets; ///< Packet queue of the savegame; send these "slowly" to the client.
+	std::vector<std::unique_ptr<Packet>> prepend_packets; ///< Packet queue of the savegame; send these "slowly" to the client.
 	std::mutex mutex;                   ///< Mutex for making threaded saving safe.
 	std::condition_variable exit_sig;   ///< Signal for threaded destruction of this packet writer.
 
@@ -84,6 +85,7 @@ struct PacketWriter : SaveFilter {
 		/* This must all wait until the Destroy function is called. */
 
 		this->packets.clear();
+		this->prepend_packets.clear();
 		this->current.reset();
 	}
 
@@ -114,30 +116,28 @@ struct PacketWriter : SaveFilter {
 	}
 
 	/**
-	 * Checks whether there are packets.
-	 * It's not 100% threading safe, but this is only asked for when checking
-	 * whether there still is something to send. Then another call will be made
-	 * to actually get the Packet, which will be the only one popping packets
-	 * and thus eventually setting this on false.
+	 * Transfer all packets from here to the network's queue while holding
+	 * the lock on our mutex.
+	 * @param socket The network socket to write to.
+	 * @return True iff the last packet of the map has been sent.
 	 */
-	bool HasPackets()
+	bool TransferToNetworkQueue(ServerNetworkGameSocketHandler *socket)
 	{
 		std::lock_guard<std::mutex> lock(this->mutex);
 
-		return !this->packets.empty();
-	}
+		for (auto &p : this->prepend_packets) {
+			socket->SendPrependPacket(std::move(p));
+		}
+		bool last_packet = false;
+		for (auto &p : this->packets) {
+			if (p->GetPacketType() == PACKET_SERVER_MAP_DONE) last_packet = true;
+			socket->SendPacket(std::move(p));
+			
+		}
+		this->prepend_packets.clear();
+		this->packets.clear();
 
-	/**
-	 * Pop a single created packet from the queue with packets.
-	 */
-	std::unique_ptr<Packet> PopPacket()
-	{
-		std::lock_guard<std::mutex> lock(this->mutex);
-
-		if (this->packets.empty()) return nullptr;
-		std::unique_ptr<Packet> p = std::move(this->packets.front());
-		this->packets.pop_front();
-		return p;
+		return last_packet;
 	}
 
 	/** Append the current packet to the queue. */
@@ -153,7 +153,7 @@ struct PacketWriter : SaveFilter {
 	{
 		if (this->current == nullptr) return;
 
-		this->packets.push_front(std::move(this->current));
+		this->prepend_packets.push_back(std::move(this->current));
 	}
 
 	void Write(byte *buf, size_t size) override
@@ -161,20 +161,18 @@ struct PacketWriter : SaveFilter {
 		/* We want to abort the saving when the socket is closed. */
 		if (this->cs == nullptr) SlError(STR_NETWORK_ERROR_LOSTCONNECTION);
 
-		if (this->current == nullptr) this->current.reset(new Packet(PACKET_SERVER_MAP_DATA));
+		if (this->current == nullptr) this->current.reset(new Packet(PACKET_SERVER_MAP_DATA, SHRT_MAX));
 
 		std::lock_guard<std::mutex> lock(this->mutex);
 
 		byte *bufe = buf + size;
 		while (buf != bufe) {
-			size_t to_write = std::min<size_t>(SHRT_MAX - this->current->size, bufe - buf);
-			memcpy(this->current->buffer + this->current->size, buf, to_write);
-			this->current->size += (PacketSize)to_write;
-			buf += to_write;
+			size_t written = this->current->Send_bytes(buf, bufe);
+			buf += written;
 
-			if (this->current->size == SHRT_MAX) {
+			if (!this->current->CanWriteToPacket(1)) {
 				this->AppendQueue();
-				if (buf != bufe) this->current.reset(new Packet(PACKET_SERVER_MAP_DATA));
+				if (buf != bufe) this->current.reset(new Packet(PACKET_SERVER_MAP_DATA, SHRT_MAX));
 			}
 		}
 
@@ -192,11 +190,11 @@ struct PacketWriter : SaveFilter {
 		this->AppendQueue();
 
 		/* Add a packet stating that this is the end to the queue. */
-		this->current.reset(new Packet(PACKET_SERVER_MAP_DONE));
+		this->current.reset(new Packet(PACKET_SERVER_MAP_DONE, SHRT_MAX));
 		this->AppendQueue();
 
 		/* Fast-track the size to the client. */
-		this->current.reset(new Packet(PACKET_SERVER_MAP_SIZE));
+		this->current.reset(new Packet(PACKET_SERVER_MAP_SIZE, SHRT_MAX));
 		this->current->Send_uint32((uint32)this->total_size);
 		this->PrependQueue();
 	}
@@ -248,7 +246,7 @@ std::unique_ptr<Packet> ServerNetworkGameSocketHandler::ReceivePacket()
 	/* We can receive a packet, so try that and if needed account for
 	 * the amount of received data. */
 	std::unique_ptr<Packet> p = this->NetworkTCPSocketHandler::ReceivePacket();
-	if (p != nullptr) this->receive_limit -= p->size;
+	if (p != nullptr) this->receive_limit -= p->Size();
 	return p;
 }
 
@@ -298,13 +296,12 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 	extern byte _network_clients_connected;
 	_network_clients_connected--;
 
-	DeleteWindowById(WC_CLIENT_LIST_POPUP, this->client_id);
-	SetWindowDirty(WC_CLIENT_LIST, 0);
-
 	this->SendPackets(true);
 
 	delete this->GetInfo();
 	delete this;
+
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 	return status;
 }
@@ -359,7 +356,7 @@ static void NetworkHandleCommandQueue(NetworkClientSocket *cs);
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendClientInfo(NetworkClientInfo *ci)
 {
 	if (ci->client_id != INVALID_CLIENT_ID) {
-		Packet *p = new Packet(PACKET_SERVER_CLIENT_INFO);
+		Packet *p = new Packet(PACKET_SERVER_CLIENT_INFO, SHRT_MAX);
 		p->Send_uint32(ci->client_id);
 		p->Send_uint8 (ci->client_playas);
 		p->Send_string(ci->client_name);
@@ -406,7 +403,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendCompanyInfo()
 	Packet *p;
 
 	for (const Company *company : Company::Iterate()) {
-		p = new Packet(PACKET_SERVER_COMPANY_INFO);
+		p = new Packet(PACKET_SERVER_COMPANY_INFO, SHRT_MAX);
 
 		p->Send_uint8 (NETWORK_COMPANY_INFO_VERSION);
 		p->Send_bool  (true);
@@ -421,7 +418,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendCompanyInfo()
 		this->SendPacket(p);
 	}
 
-	p = new Packet(PACKET_SERVER_COMPANY_INFO);
+	p = new Packet(PACKET_SERVER_COMPANY_INFO, SHRT_MAX);
 
 	p->Send_uint8 (NETWORK_COMPANY_INFO_VERSION);
 	p->Send_bool  (false);
@@ -438,7 +435,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendCompanyInfo()
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendError(NetworkErrorCode error, const char *reason)
 {
 	char str[100];
-	Packet *p = new Packet(PACKET_SERVER_ERROR);
+	Packet *p = new Packet(PACKET_SERVER_ERROR, SHRT_MAX);
 
 	p->Send_uint8(error);
 	if (reason != nullptr) p->Send_string(reason);
@@ -484,8 +481,8 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendError(NetworkErrorCode err
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendDesyncLog(const std::string &log)
 {
 	for (size_t offset = 0; offset < log.size();) {
-		Packet *p = new Packet(PACKET_SERVER_DESYNC_LOG);
-		size_t size = std::min<size_t>(log.size() - offset, SHRT_MAX - 2 - p->size);
+		Packet *p = new Packet(PACKET_SERVER_DESYNC_LOG, SHRT_MAX);
+		size_t size = std::min<size_t>(log.size() - offset, SHRT_MAX - 2 - p->Size());
 		p->Send_uint16(size);
 		p->Send_binary(log.data() + offset, size);
 		this->SendPacket(p);
@@ -498,7 +495,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendDesyncLog(const std::strin
 /** Send the check for the NewGRFs. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendNewGRFCheck()
 {
-	Packet *p = new Packet(PACKET_SERVER_CHECK_NEWGRFS);
+	Packet *p = new Packet(PACKET_SERVER_CHECK_NEWGRFS, SHRT_MAX);
 	const GRFConfig *c;
 	uint grf_count = 0;
 
@@ -525,7 +522,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNeedGamePassword()
 	/* Reset 'lag' counters */
 	this->last_frame = this->last_frame_server = _frame_counter;
 
-	Packet *p = new Packet(PACKET_SERVER_NEED_GAME_PASSWORD);
+	Packet *p = new Packet(PACKET_SERVER_NEED_GAME_PASSWORD, SHRT_MAX);
 	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->server_hash_bits);
 	p->Send_string(_settings_client.network.network_id);
 	this->SendPacket(p);
@@ -542,7 +539,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNeedCompanyPassword()
 	/* Reset 'lag' counters */
 	this->last_frame = this->last_frame_server = _frame_counter;
 
-	Packet *p = new Packet(PACKET_SERVER_NEED_COMPANY_PASSWORD);
+	Packet *p = new Packet(PACKET_SERVER_NEED_COMPANY_PASSWORD, SHRT_MAX);
 	p->Send_uint32(_settings_game.game_creation.generation_seed);
 	p->Send_string(_settings_client.network.network_id);
 	this->SendPacket(p);
@@ -563,7 +560,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendWelcome()
 
 	_network_game_info.clients_on++;
 
-	p = new Packet(PACKET_SERVER_WELCOME);
+	p = new Packet(PACKET_SERVER_WELCOME, SHRT_MAX);
 	p->Send_uint32(this->client_id);
 	p->Send_uint32(_settings_game.game_creation.generation_seed);
 	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->server_hash_bits);
@@ -594,7 +591,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendWait()
 		if (new_cs->GetInfo()->join_date < this->GetInfo()->join_date || (new_cs->GetInfo()->join_date == this->GetInfo()->join_date && new_cs->client_id < this->client_id)) waiting++;
 	}
 
-	p = new Packet(PACKET_SERVER_WAIT);
+	p = new Packet(PACKET_SERVER_WAIT, SHRT_MAX);
 	p->Send_uint8(waiting);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -630,8 +627,6 @@ void ServerNetworkGameSocketHandler::CheckNextClientToSendMap(NetworkClientSocke
 /** This sends the map to the client */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 {
-	static uint sent_packets; // How many packets we did send successfully last time
-
 	if (this->status < STATUS_AUTHORIZED) {
 		/* Illegal call, return error and ignore the packet */
 		return this->SendError(NETWORK_ERROR_NOT_AUTHORIZED);
@@ -641,7 +636,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 		this->savegame = new PacketWriter(this);
 
 		/* Now send the _frame_counter and how many packets are coming */
-		Packet *p = new Packet(PACKET_SERVER_MAP_BEGIN);
+		Packet *p = new Packet(PACKET_SERVER_MAP_BEGIN, SHRT_MAX);
 		p->Send_uint32(_frame_counter);
 		this->SendPacket(p);
 
@@ -651,8 +646,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 		this->last_frame = _frame_counter;
 		this->last_frame_server = _frame_counter;
 
-		sent_packets = 4; // We start with trying 4 packets
-
 		/* Make a dump of the current game */
 		SaveModeFlags flags = SMF_NET_SERVER;
 		if (this->supports_zstd) flags |= SMF_ZSTD_OK;
@@ -660,25 +653,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 	}
 
 	if (this->status == STATUS_MAP) {
-		bool last_packet = false;
-		bool has_packets = true;
-
-		for (uint i = 0; i < sent_packets; i++) {
-			std::unique_ptr<Packet> p = this->savegame->PopPacket();
-			if (p == nullptr) {
-				has_packets = false;
-				break;
-			}
-			last_packet = p->buffer[2] == PACKET_SERVER_MAP_DONE;
-
-			this->SendPacket(std::move(p));
-
-			if (last_packet) {
-				/* There is no more data, so break the for */
-				break;
-			}
-		}
-
+		bool last_packet = this->savegame->TransferToNetworkQueue(this);
 		if (last_packet) {
 			/* Done reading, make sure saving is done as well */
 			this->savegame->Destroy();
@@ -690,25 +665,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
 
 			this->CheckNextClientToSendMap();
 		}
-
-		switch (this->SendPackets()) {
-			case SPS_CLOSED:
-				return NETWORK_RECV_STATUS_CONN_LOST;
-
-			case SPS_ALL_SENT:
-				/* All are sent, increase the sent_packets */
-				if (has_packets) sent_packets *= 2;
-				break;
-
-			case SPS_PARTLY_SENT:
-				/* Only a part is sent; leave the transmission state. */
-				break;
-
-			case SPS_NONE_SENT:
-				/* Not everything is sent, decrease the sent_packets */
-				if (sent_packets > 1) sent_packets /= 2;
-				break;
-		}
 	}
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -719,7 +675,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMap()
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendJoin(ClientID client_id)
 {
-	Packet *p = new Packet(PACKET_SERVER_JOIN);
+	Packet *p = new Packet(PACKET_SERVER_JOIN, SHRT_MAX);
 
 	p->Send_uint32(client_id);
 
@@ -730,7 +686,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendJoin(ClientID client_id)
 /** Tell the client that they may run to a particular frame. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendFrame()
 {
-	Packet *p = new Packet(PACKET_SERVER_FRAME);
+	Packet *p = new Packet(PACKET_SERVER_FRAME, SHRT_MAX);
 	p->Send_uint32(_frame_counter);
 	p->Send_uint32(_frame_counter_max);
 #ifdef ENABLE_NETWORK_SYNC_EVERY_FRAME
@@ -754,7 +710,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendFrame()
 /** Request the client to sync. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendSync()
 {
-	Packet *p = new Packet(PACKET_SERVER_SYNC);
+	Packet *p = new Packet(PACKET_SERVER_SYNC, SHRT_MAX);
 	p->Send_uint32(_frame_counter);
 	p->Send_uint32(_sync_seed_1);
 
@@ -772,7 +728,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendSync()
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendCommand(const CommandPacket *cp)
 {
-	Packet *p = new Packet(PACKET_SERVER_COMMAND);
+	Packet *p = new Packet(PACKET_SERVER_COMMAND, SHRT_MAX);
 
 	this->NetworkGameSocketHandler::SendCommand(p, cp);
 	p->Send_uint32(cp->frame);
@@ -794,7 +750,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendChat(NetworkAction action,
 {
 	if (this->status < STATUS_PRE_ACTIVE) return NETWORK_RECV_STATUS_OKAY;
 
-	Packet *p = new Packet(PACKET_SERVER_CHAT);
+	Packet *p = new Packet(PACKET_SERVER_CHAT, SHRT_MAX);
 
 	p->Send_uint8 (action);
 	p->Send_uint32(client_id);
@@ -813,7 +769,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendChat(NetworkAction action,
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendErrorQuit(ClientID client_id, NetworkErrorCode errorno)
 {
-	Packet *p = new Packet(PACKET_SERVER_ERROR_QUIT);
+	Packet *p = new Packet(PACKET_SERVER_ERROR_QUIT, SHRT_MAX);
 
 	p->Send_uint32(client_id);
 	p->Send_uint8 (errorno);
@@ -828,7 +784,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendErrorQuit(ClientID client_
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendQuit(ClientID client_id)
 {
-	Packet *p = new Packet(PACKET_SERVER_QUIT);
+	Packet *p = new Packet(PACKET_SERVER_QUIT, SHRT_MAX);
 
 	p->Send_uint32(client_id);
 
@@ -839,7 +795,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendQuit(ClientID client_id)
 /** Tell the client we're shutting down. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendShutdown()
 {
-	Packet *p = new Packet(PACKET_SERVER_SHUTDOWN);
+	Packet *p = new Packet(PACKET_SERVER_SHUTDOWN, SHRT_MAX);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -847,7 +803,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendShutdown()
 /** Tell the client we're starting a new game. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendNewGame()
 {
-	Packet *p = new Packet(PACKET_SERVER_NEWGAME);
+	Packet *p = new Packet(PACKET_SERVER_NEWGAME, SHRT_MAX);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -859,7 +815,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNewGame()
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendRConResult(uint16 colour, const char *command)
 {
-	Packet *p = new Packet(PACKET_SERVER_RCON);
+	Packet *p = new Packet(PACKET_SERVER_RCON, SHRT_MAX);
 
 	p->Send_uint16(colour);
 	p->Send_string(command);
@@ -874,7 +830,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendRConResult(uint16 colour, 
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendMove(ClientID client_id, CompanyID company_id)
 {
-	Packet *p = new Packet(PACKET_SERVER_MOVE);
+	Packet *p = new Packet(PACKET_SERVER_MOVE, SHRT_MAX);
 
 	p->Send_uint32(client_id);
 	p->Send_uint8(company_id);
@@ -885,7 +841,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendMove(ClientID client_id, C
 /** Send an update about the company password states. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendCompanyUpdate()
 {
-	Packet *p = new Packet(PACKET_SERVER_COMPANY_UPDATE);
+	Packet *p = new Packet(PACKET_SERVER_COMPANY_UPDATE, SHRT_MAX);
 
 	p->Send_uint16(_network_company_passworded);
 	this->SendPacket(p);
@@ -895,7 +851,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendCompanyUpdate()
 /** Send an update about the max company/spectator counts. */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendConfigUpdate()
 {
-	Packet *p = new Packet(PACKET_SERVER_CONFIG_UPDATE);
+	Packet *p = new Packet(PACKET_SERVER_CONFIG_UPDATE, SHRT_MAX);
 
 	p->Send_uint8(_settings_client.network.max_companies);
 	p->Send_uint8(_settings_client.network.max_spectators);
@@ -905,7 +861,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendConfigUpdate()
 
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendSettingsAccessUpdate(bool ok)
 {
-	Packet *p = new Packet(PACKET_SERVER_SETTINGS_ACCESS);
+	Packet *p = new Packet(PACKET_SERVER_SETTINGS_ACCESS, SHRT_MAX);
 	p->Send_bool(ok);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -952,7 +908,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 
 	char name[NETWORK_CLIENT_NAME_LENGTH];
 	CompanyID playas;
-	NetworkLanguage client_lang;
 	char client_revision[NETWORK_REVISION_LENGTH];
 
 	p->Recv_string(client_revision, sizeof(client_revision));
@@ -966,7 +921,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 
 	p->Recv_string(name, sizeof(name));
 	playas = (Owner)p->Recv_uint8();
-	client_lang = (NetworkLanguage)p->Recv_uint8();
 
 	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
 
@@ -989,8 +943,12 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 			break;
 	}
 
-	/* We need a valid name.. make it Player */
-	if (StrEmpty(name)) strecpy(name, "Player", lastof(name));
+	if (!NetworkIsValidClientName(name)) {
+		/* An invalid client name was given. However, the client ensures the name
+		 * is valid before it is sent over the network, so something went horribly
+		 * wrong. This is probably someone trying to troll us. */
+		return this->SendError(NETWORK_ERROR_INVALID_CLIENT_NAME);
+	}
 
 	if (!NetworkFindName(name, lastof(name))) { // Change name if duplicate
 		/* We could not create a name for this client */
@@ -1003,7 +961,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 	ci->join_date = _date;
 	strecpy(ci->client_name, name, lastof(ci->client_name));
 	ci->client_playas = playas;
-	ci->client_lang = client_lang;
 	DEBUG(desync, 1, "client: date{%08x; %02x; %02x}; client: %02x; company: %02x", _date, _date_fract, _tick_skip_counter, (int)ci->index, (int)ci->client_playas);
 
 	/* Make sure companies to which people try to join are not autocleaned */
@@ -1124,6 +1081,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MAP_OK(Packet *
 		this->GetClientName(client_name, lastof(client_name));
 
 		NetworkTextMessage(NETWORK_ACTION_JOIN, CC_DEFAULT, false, client_name, nullptr, this->client_id);
+		InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 		/* Mark the client as pre-active, and wait for an ACK
 		 *  so we know he is done loading and in sync with us */
@@ -1282,7 +1240,20 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_LOG(Pack
 	this->desync_log.resize(this->desync_log.size() + size);
 	p->Recv_binary(this->desync_log.data() + this->desync_log.size() - size, size);
 	DEBUG(net, 2, "Received %u bytes of client desync log", size);
-	this->receive_limit += p->size;
+	this->receive_limit += p->Size();
+	return NETWORK_RECV_STATUS_OKAY;
+}
+
+NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_MSG(Packet *p)
+{
+	Date date = p->Recv_uint32();
+	DateFract date_fract = p->Recv_uint16();
+	uint8 tick_skip_counter = p->Recv_uint8();
+	std::string msg;
+	p->Recv_string(msg);
+	DEBUG(desync, 0, "Client-id %d desync msg: %s", this->client_id, msg.c_str());
+	extern void LogRemoteDesyncMsg(Date date, DateFract date_fract, uint8 tick_skip_counter, uint32 src_id, std::string msg);
+	LogRemoteDesyncMsg(date, date_fract, tick_skip_counter, this->client_id, std::move(msg));
 	return NETWORK_RECV_STATUS_OKAY;
 }
 
@@ -1548,6 +1519,13 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_SET_NAME(Packet
 	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
 
 	if (ci != nullptr) {
+		if (!NetworkIsValidClientName(client_name)) {
+			/* An invalid client name was given. However, the client ensures the name
+			 * is valid before it is sent over the network, so something went horribly
+			 * wrong. This is probably someone trying to troll us. */
+			return this->SendError(NETWORK_ERROR_INVALID_CLIENT_NAME);
+		}
+
 		/* Display change */
 		if (NetworkFindName(client_name, lastof(client_name))) {
 			NetworkTextMessage(NETWORK_ACTION_NAME_CHANGE, CC_DEFAULT, false, ci->client_name, client_name);
@@ -1929,7 +1907,7 @@ void NetworkServer_Tick(bool send_frame)
 	for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
 		/* We allow a number of bytes per frame, but only to the burst amount
 		 * to be available for packet receiving at any particular time. */
-		cs->receive_limit = std::min<int>(cs->receive_limit + _settings_client.network.bytes_per_frame,
+		cs->receive_limit = std::min<size_t>(cs->receive_limit + _settings_client.network.bytes_per_frame,
 				_settings_client.network.bytes_per_frame_burst);
 
 		/* Check if the speed of the client is what we can expect from a client */
@@ -2174,6 +2152,8 @@ void NetworkServerDoMove(ClientID client_id, CompanyID company_id)
 
 	NetworkAction action = (company_id == COMPANY_SPECTATOR) ? NETWORK_ACTION_COMPANY_SPECTATOR : NETWORK_ACTION_COMPANY_JOIN;
 	NetworkServerSendChat(action, DESTTYPE_BROADCAST, 0, "", client_id, company_id + 1);
+
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 }
 
 /**

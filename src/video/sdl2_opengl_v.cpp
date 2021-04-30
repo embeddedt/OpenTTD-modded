@@ -78,6 +78,8 @@ const char *VideoDriver_SDL_OpenGL::Start(const StringList &param)
 		this->Stop();
 		return "Can't get pointer to screen buffer";
 	}
+	/* Main loop expects to start with the buffer unmapped. */
+	this->ReleaseVideoPointer();
 
 	return nullptr;
 }
@@ -121,7 +123,7 @@ const char *VideoDriver_SDL_OpenGL::AllocateContext()
 
 	ToggleVsync(_video_vsync);
 
-	return OpenGLBackend::Create(&GetOGLProcAddressCallback);
+	return OpenGLBackend::Create(&GetOGLProcAddressCallback, this->GetScreenSize());
 }
 
 void VideoDriver_SDL_OpenGL::PopulateSystemSprites()

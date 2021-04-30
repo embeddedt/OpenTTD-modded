@@ -619,7 +619,7 @@ class NIHIndustry : public NIHelper {
 	const void *GetInstance(uint index)const override    { return Industry::Get(index); }
 	const void *GetSpec(uint index) const override       { return GetIndustrySpec(Industry::Get(index)->type); }
 	void SetStringParameters(uint index) const override  { this->SetSimpleStringParameters(STR_INDUSTRY_NAME, index); }
-	uint32 GetGRFID(uint index) const override           { return (this->IsInspectable(index)) ? GetIndustrySpec(Industry::Get(index)->type)->grf_prop.grffile->grfid : 0; }
+	uint32 GetGRFID(uint index) const override           { return (!this->ShowExtraInfoOnly(index)) ? GetIndustrySpec(Industry::Get(index)->type)->grf_prop.grffile->grfid : 0; }
 
 	uint Resolve(uint index, uint var, uint param, GetVariableExtra *extra) const override
 	{
@@ -994,6 +994,10 @@ class NIHTown : public NIHelper {
 			seprintf(buffer, lastof(buffer), "    %u: %s", st->index, st->GetCachedName());
 			print(buffer);
 		}
+
+		seprintf(buffer, lastof(buffer), "  Growth rate: %u, Growth Counter: %u, T to Rebuild: %u, Growing: %u, Custom growth: %u",
+				t->growth_rate, t->grow_counter, t->time_until_rebuild, HasBit(t->flags, TOWN_IS_GROWING) ? 1 : 0,HasBit(t->flags, TOWN_CUSTOM_GROWTH) ? 1 : 0);
+		print(buffer);
 
 		if (t->have_ratings != 0) {
 			print("  Company ratings:");

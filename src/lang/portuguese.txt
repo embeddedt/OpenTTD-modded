@@ -1992,6 +1992,7 @@ STR_FACE_TIE                                                    :Gravata:
 STR_FACE_EARRING                                                :Brinco:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Mudar gravata ou brinco
 
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multi-jogador
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Nome do jogador:
@@ -2054,10 +2055,6 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}O nome d
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Definir palavra-chave
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Proteja o jogo com uma senha se não desejar que pessoas indesejadas se juntem
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Anunciado
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Escolher entre jogo público (internet) e privado (Área de Rede Local, LAN)
-STR_NETWORK_START_SERVER_UNADVERTISED                           :Não
-STR_NETWORK_START_SERVER_ADVERTISED                             :Sim
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} cliente{P "" s}
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}Máximo de clientes:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}Escolha o número máximo de clientes. Não necessitam estar todos presentes.
@@ -2071,46 +2068,6 @@ STR_NETWORK_START_SERVER_LANGUAGE_SPOKEN                        :{BLACK}Idioma f
 STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}Outros jogadores ficarão a conhecer o idioma utilizado no servidor.
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}Digite nome para o jogo de rede
-
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :Qualquer
-STR_NETWORK_LANG_ENGLISH                                        :Inglês
-STR_NETWORK_LANG_GERMAN                                         :Alemão
-STR_NETWORK_LANG_FRENCH                                         :Francês
-STR_NETWORK_LANG_BRAZILIAN                                      :Brasileiro
-STR_NETWORK_LANG_BULGARIAN                                      :Búlgaro
-STR_NETWORK_LANG_CHINESE                                        :Chinês
-STR_NETWORK_LANG_CZECH                                          :Checo
-STR_NETWORK_LANG_DANISH                                         :Dinamarquês
-STR_NETWORK_LANG_DUTCH                                          :Holandês
-STR_NETWORK_LANG_ESPERANTO                                      :Esperanto
-STR_NETWORK_LANG_FINNISH                                        :Finlandês
-STR_NETWORK_LANG_HUNGARIAN                                      :Húngaro
-STR_NETWORK_LANG_ICELANDIC                                      :Islandês
-STR_NETWORK_LANG_ITALIAN                                        :Italiano
-STR_NETWORK_LANG_JAPANESE                                       :Japonês
-STR_NETWORK_LANG_KOREAN                                         :Coreano
-STR_NETWORK_LANG_LITHUANIAN                                     :Lituano
-STR_NETWORK_LANG_NORWEGIAN                                      :Norueguês
-STR_NETWORK_LANG_POLISH                                         :Polaco
-STR_NETWORK_LANG_PORTUGUESE                                     :Português
-STR_NETWORK_LANG_ROMANIAN                                       :Romeno
-STR_NETWORK_LANG_RUSSIAN                                        :Russo
-STR_NETWORK_LANG_SLOVAK                                         :Eslovaco
-STR_NETWORK_LANG_SLOVENIAN                                      :Esloveno
-STR_NETWORK_LANG_SPANISH                                        :Espanhol
-STR_NETWORK_LANG_SWEDISH                                        :Sueco
-STR_NETWORK_LANG_TURKISH                                        :Turco
-STR_NETWORK_LANG_UKRAINIAN                                      :Ucraniano
-STR_NETWORK_LANG_AFRIKAANS                                      :Dialecto Africano Afrikaans
-STR_NETWORK_LANG_CROATIAN                                       :Croata
-STR_NETWORK_LANG_CATALAN                                        :Catalão
-STR_NETWORK_LANG_ESTONIAN                                       :Estónio
-STR_NETWORK_LANG_GALICIAN                                       :Galego
-STR_NETWORK_LANG_GREEK                                          :Grego
-STR_NETWORK_LANG_LATVIAN                                        :Letão
-############ End of leave-in-this-order
 
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}Sala de espera de jogo multi-jogador
@@ -2159,19 +2116,13 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}Desligar
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Servidor protegido. Introduza palavra-chave
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Empresa protegida. Introduza palavra-chave
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}Lista de clientes
 
 # Network company list added strings
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Lista de clientes
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :Assistir
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nova empresa
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :Expulsar
-STR_NETWORK_CLIENTLIST_BAN                                      :Banir
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :Falar com todos
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :Falar com a empresa
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :Mensagem privada
+
+
 
 STR_NETWORK_SERVER                                              :Servidor
 STR_NETWORK_CLIENT                                              :Cliente

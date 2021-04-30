@@ -1008,6 +1008,8 @@ STR_GAME_OPTIONS_VIDEO_ACCELERATION                             :{BLACK}Acelera�
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_TOOLTIP                     :{BLACK}Marque esta caixa para permitir que o OpenTTD tente usar a aceleração de hardware. Qualquer mudança nesta configuração só será aplicada após reiniciar o jogo.
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_RESTART                     :{WHITE}A configuração só terá efeito após reiniciar o jogo
 
+STR_GAME_OPTIONS_VIDEO_VSYNC                                    :{BLACK}VSync
+STR_GAME_OPTIONS_VIDEO_VSYNC_TOOLTIP                            :{BLACK}Marque esta caixa para habilitar o v-sync na tela. Qualquer mudança nesta configuração só será aplicada após reiniciar o jogo. Só funciona com a aceleração de hardware habilitada
 
 STR_GAME_OPTIONS_GUI_ZOOM_FRAME                                 :{BLACK}Tamanho da interface
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_TOOLTIP                      :{BLACK}Selecione o tamanho de elemento de interface a ser usado
@@ -1990,6 +1992,7 @@ STR_FACE_TIE                                                    :Gravata:
 STR_FACE_EARRING                                                :Brinco:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Alterar gravata ou brinco
 
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multi-jogador
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Nome:
@@ -2052,10 +2055,6 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}O nome d
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Definir senha
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Proteja o jogo com uma senha se não desejar que seja publicamente acessível
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :[BLACK}Publicado
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Selecione entre um jogo publicado (internet) ou não publicado (Rede de Área Local, LAN)
-STR_NETWORK_START_SERVER_UNADVERTISED                           :Não
-STR_NETWORK_START_SERVER_ADVERTISED                             :Sim
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} cliente{P "" s}
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}Num máx de clientes:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}Escolha o número máximo de clientes. Não é necessário estarem todos preenchidos
@@ -2069,46 +2068,6 @@ STR_NETWORK_START_SERVER_LANGUAGE_SPOKEN                        :{BLACK}Idioma f
 STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}Outros jogadores saberão o idioma utilizado no servidor.
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}Coloque o nome para o jogo em rede
-
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :Qualquer
-STR_NETWORK_LANG_ENGLISH                                        :Inglês
-STR_NETWORK_LANG_GERMAN                                         :Alemão
-STR_NETWORK_LANG_FRENCH                                         :Francês
-STR_NETWORK_LANG_BRAZILIAN                                      :Brasileiro
-STR_NETWORK_LANG_BULGARIAN                                      :Búlgaro
-STR_NETWORK_LANG_CHINESE                                        :Chinês
-STR_NETWORK_LANG_CZECH                                          :Checo
-STR_NETWORK_LANG_DANISH                                         :Dinamarquês
-STR_NETWORK_LANG_DUTCH                                          :Holandês
-STR_NETWORK_LANG_ESPERANTO                                      :Esperanto
-STR_NETWORK_LANG_FINNISH                                        :Finlandês
-STR_NETWORK_LANG_HUNGARIAN                                      :Húngaro
-STR_NETWORK_LANG_ICELANDIC                                      :Islandês
-STR_NETWORK_LANG_ITALIAN                                        :Italiano
-STR_NETWORK_LANG_JAPANESE                                       :Japonês
-STR_NETWORK_LANG_KOREAN                                         :Coreano
-STR_NETWORK_LANG_LITHUANIAN                                     :Lituano
-STR_NETWORK_LANG_NORWEGIAN                                      :Norueguês
-STR_NETWORK_LANG_POLISH                                         :Polandês
-STR_NETWORK_LANG_PORTUGUESE                                     :Português
-STR_NETWORK_LANG_ROMANIAN                                       :Romeno
-STR_NETWORK_LANG_RUSSIAN                                        :Russo
-STR_NETWORK_LANG_SLOVAK                                         :Eslovaco
-STR_NETWORK_LANG_SLOVENIAN                                      :Esloveno
-STR_NETWORK_LANG_SPANISH                                        :Espanhol
-STR_NETWORK_LANG_SWEDISH                                        :Sueco
-STR_NETWORK_LANG_TURKISH                                        :Turco
-STR_NETWORK_LANG_UKRAINIAN                                      :Ucraniano
-STR_NETWORK_LANG_AFRIKAANS                                      :Africano
-STR_NETWORK_LANG_CROATIAN                                       :Croata
-STR_NETWORK_LANG_CATALAN                                        :Catalão
-STR_NETWORK_LANG_ESTONIAN                                       :Estoniano
-STR_NETWORK_LANG_GALICIAN                                       :Galego
-STR_NETWORK_LANG_GREEK                                          :Grego
-STR_NETWORK_LANG_LATVIAN                                        :Letão
-############ End of leave-in-this-order
 
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}Sala de espera do jogo
@@ -2157,19 +2116,13 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}Desconec
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Servidor está protegido. Digite a senha
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Empresa está protegida. Digite a senha
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}Lista de clientes
 
 # Network company list added strings
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Lista de clientes
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :Assistir
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nova Companhia
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :Banir
-STR_NETWORK_CLIENTLIST_BAN                                      :Banir
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :Falar com todos
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :Falar com a empresa
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :Mensagem privada
+
+
 
 STR_NETWORK_SERVER                                              :Servidor
 STR_NETWORK_CLIENT                                              :Cliente

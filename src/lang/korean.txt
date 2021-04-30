@@ -1006,6 +1006,7 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :12개월마다
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}언어
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}사용할 언어를 선택하세요
+STR_GAME_OPTIONS_LANGUAGE_PERCENTAGE                            :{STRING} ({NUM}% 번역됨)
 
 STR_GAME_OPTIONS_FULLSCREEN                                     :{BLACK}전체화면
 STR_GAME_OPTIONS_FULLSCREEN_TOOLTIP                             :{BLACK}OpenTTD를 전체화면으로 플레이하려면 클릭하세요.
@@ -1298,7 +1299,7 @@ STR_CONFIG_SETTING_MULTIPINDTOWN_HELPTEXT                       :일반적으로
 STR_CONFIG_SETTING_SIGNALSIDE                                   :신호기 보이기: {STRING}
 STR_CONFIG_SETTING_SIGNALSIDE_HELPTEXT                          :선로의 어느 쪽에 신호기를 설치할 지 선택합니다.
 STR_CONFIG_SETTING_SIGNALSIDE_LEFT                              :왼쪽에
-STR_CONFIG_SETTING_SIGNALSIDE_DRIVING_SIDE                      :진행 방향에
+STR_CONFIG_SETTING_SIGNALSIDE_DRIVING_SIDE                      :자동차 통행 방향에
 STR_CONFIG_SETTING_SIGNALSIDE_RIGHT                             :오른쪽에
 STR_CONFIG_SETTING_SHOWFINANCES                                 :연말에 자동으로 재정 창을 띄우기: {STRING}
 STR_CONFIG_SETTING_SHOWFINANCES_HELPTEXT                        :이 설정을 켜면. 회사의 재정 상태를 확인하기 쉽도록 매년 말에 재정 창이 자동으로 뜹니다.
@@ -1426,7 +1427,7 @@ STR_CONFIG_SETTING_SHOW_PROGSIG_FEATURES_HELPTEXT               :신호기 프�
 STR_CONFIG_SETTING_SHOW_VEH_LIST_CARGO_FILTER                   :차량 목록에 화물 종류 필터 표시: {STRING}
 STR_CONFIG_SETTING_SHOW_VEH_LIST_CARGO_FILTER_HELPTEXT          :차량 목록에 화물 종류 필터를 표시합니다. 이 설정을 켜면, 차량 목록 창에 추가 필터 드롭다운이 표시됩니다.
 STR_CONFIG_SETTING_SHOW_ADV_LOADING_MODE_FEATURES               :고급 적재 모드 표시: {STRING}
-STR_CONFIG_SETTING_SHOW_ADV_LOADING_MODE_FEATURES_HELPTEXT      :고급 적재 모드(통과하며 싣기)를 표시합니다. 이 설정을 끄면, 일부 고급 적재 모드가 인터페이스에 표시되지 않습니다. 하지만 다른 플레이어까지 고급 적재 모드를 사용할 수 없도록 하지는 않습니다.
+STR_CONFIG_SETTING_SHOW_ADV_LOADING_MODE_FEATURES_HELPTEXT      :고급 적재 모드(차례로 나눠 싣기)를 표시합니다. 이 설정을 끄면, 일부 고급 적재 모드가 인터페이스에 표시되지 않습니다. 하지만 다른 플레이어까지 고급 적재 모드를 사용할 수 없도록 하지는 않습니다.
 STR_CONFIG_SETTING_DISABLE_TOP_VEH_LIST_MASS_ACTIONS            :전체 차량에 적용되는 작업 비활성화: {STRING}
 STR_CONFIG_SETTING_DISABLE_TOP_VEH_LIST_MASS_ACTIONS_HELPTEXT   :이 설정을 켜면, 모든 차량 또는 그룹에 속하지 않은 차량에 적용되는 차량기지로 보내기/운행 취소 버튼과 출발/정지 버튼을 비활성화합니다. 모든 차량에게 적용되는 작업을 실수로 실행하여 발생할 수 있는 부작용을 방지할 수 있습니다.
 STR_CONFIG_SETTING_SHOW_DEPOT_SELL_GUI                          :기지로 보내고 판매 기능 표시: {STRING}
@@ -1742,7 +1743,7 @@ STR_CONFIG_SETTING_AI_PROFILE_EASY                              :쉬움
 STR_CONFIG_SETTING_AI_PROFILE_MEDIUM                            :중간
 STR_CONFIG_SETTING_AI_PROFILE_HARD                              :어려움
 
-STR_CONFIG_SETTING_AI_IN_MULTIPLAYER                            :멀티플레이에서 컴퓨터 플레이어의 참여 허용: {STRING}
+STR_CONFIG_SETTING_AI_IN_MULTIPLAYER                            :멀티 플레이에서 컴퓨터 플레이어의 참여 허용: {STRING}
 STR_CONFIG_SETTING_AI_IN_MULTIPLAYER_HELPTEXT                   :멀티 플레이 게임에서 인공지능 컴퓨터 플레이어가 참여하는 것을 허용합니다.
 STR_CONFIG_SETTING_SCRIPT_MAX_OPCODES                           :게임 스크립트가 중지되기 직전에 계산할 수 있는 최대 횟수: {STRING}
 STR_CONFIG_SETTING_SCRIPT_MAX_OPCODES_HELPTEXT                  :게임 스크립트가 한 단계에서 계산할 수 있는 최대 계산 횟수를 설정합니다.
@@ -2019,38 +2020,38 @@ STR_CONFIG_SETTING_SHORT_PATH_SATURATION_HELPTEXT               :종종 두 역 
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY                  :속력 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_HELPTEXT         :속력를 표시할 때 선택한 단위를 사용하여 나타냅니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_IMPERIAL         :임페리얼법 (mph)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_IMPERIAL         :야드파운드법 (mph)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_METRIC           :미터법 (km/h)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_SI               :국제표준규격 (m/s)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_GAMEUNITS        :게임 단위 (칸/일)
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER                     :차량의 힘 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER_HELPTEXT            :출력할 차량의 힘 단위를 선택합니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER_IMPERIAL            :임페리얼법 (마력)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER_IMPERIAL            :야드파운드법 (마력)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER_METRIC              :미터법 (마력)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_POWER_SI                  :국제표준규격 (kW)
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT                    :무게 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT_HELPTEXT           :무게를 표시할 때 선택한 단위를 사용하여 나타냅니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT_IMPERIAL           :임페리얼법 (미국 톤)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT_IMPERIAL           :야드파운드법 (미국 톤)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT_METRIC             :미터법 (톤)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_WEIGHT_SI                 :국제표준규격 (kg)
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME                    :부피 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME_HELPTEXT           :부피를 표시할 때 선택한 단위를 사용하여 나타냅니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME_IMPERIAL           :임페리얼법 (갤런)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME_IMPERIAL           :야드파운드법 (갤런)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME_METRIC             :미터법 (리터)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VOLUME_SI                 :국제표준규격 (m³)
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE                     :견인 효과 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE_HELPTEXT            :견인 효과(견인력)를 표시할 때 선택한 단위를 사용하여 나타냅니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE_IMPERIAL            :임페리얼법 (파운드중)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE_IMPERIAL            :야드파운드법 (파운드중)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE_METRIC              :미터법 (kgf)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_FORCE_SI                  :국제표준규격 (kN)
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT                    :높이 단위: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_HELPTEXT           :높이를 표시할 때 선택한 단위를 사용하여 나타냅니다.
-STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :임페리얼법 (ft)
+STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :야드파운드법 (ft)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :미터법 (m)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :국제표준규격 (m)
 
@@ -2369,6 +2370,9 @@ STR_FACE_TIE                                                    :넥타이:
 STR_FACE_EARRING                                                :귀걸이:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}넥타이/귀걸이 변경
 
+STR_NETWORK_SERVER_VISIBILITY_PRIVATE                           :비공개
+STR_NETWORK_SERVER_VISIBILITY_PUBLIC                            :공개
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}멀티 플레이
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}플레이어 이름:
@@ -2431,10 +2435,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}멀티�
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}비밀번호 설정
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}서버에 공개적으로 접근하는 것을 막고 싶을 때 비밀번호를 걸어 보호합니다.
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}공개 여부
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}공개된 게임(인터넷)과 비공개된 게임(LAN) 중에서 선택하세요
-STR_NETWORK_START_SERVER_UNADVERTISED                           :아니요
-STR_NETWORK_START_SERVER_ADVERTISED                             :예
+STR_NETWORK_START_SERVER_VISIBILITY_LABEL                       :{BLACK}공개 여부
+STR_NETWORK_START_SERVER_VISIBILITY_TOOLTIP                     :{BLACK}서버 목록에 이 서버를 공개할 지 여부를 설정합니다
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM}명
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}최대 접속자 수:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}최대 접속자 수를 선택합니다. 모든 자리가 다 차 있을 필요는 없습니다
@@ -2449,51 +2451,11 @@ STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}서버�
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}네트워크 게임에서 사용할 이름을 입력하세요
 
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :모든 언어
-STR_NETWORK_LANG_ENGLISH                                        :영어
-STR_NETWORK_LANG_GERMAN                                         :독일어
-STR_NETWORK_LANG_FRENCH                                         :프랑스어
-STR_NETWORK_LANG_BRAZILIAN                                      :브라질어
-STR_NETWORK_LANG_BULGARIAN                                      :불가리아어
-STR_NETWORK_LANG_CHINESE                                        :중국어
-STR_NETWORK_LANG_CZECH                                          :체코어
-STR_NETWORK_LANG_DANISH                                         :덴마크어
-STR_NETWORK_LANG_DUTCH                                          :네덜란드어
-STR_NETWORK_LANG_ESPERANTO                                      :에스페란토
-STR_NETWORK_LANG_FINNISH                                        :핀란드어
-STR_NETWORK_LANG_HUNGARIAN                                      :헝가리어
-STR_NETWORK_LANG_ICELANDIC                                      :아이슬란드어
-STR_NETWORK_LANG_ITALIAN                                        :이탈리아어
-STR_NETWORK_LANG_JAPANESE                                       :일본어
-STR_NETWORK_LANG_KOREAN                                         :한국어
-STR_NETWORK_LANG_LITHUANIAN                                     :리투아니아어
-STR_NETWORK_LANG_NORWEGIAN                                      :노르웨이어
-STR_NETWORK_LANG_POLISH                                         :폴란드어
-STR_NETWORK_LANG_PORTUGUESE                                     :포르투갈어
-STR_NETWORK_LANG_ROMANIAN                                       :루마니아어
-STR_NETWORK_LANG_RUSSIAN                                        :러시아어
-STR_NETWORK_LANG_SLOVAK                                         :슬로바키아어
-STR_NETWORK_LANG_SLOVENIAN                                      :슬로베니아어
-STR_NETWORK_LANG_SPANISH                                        :스페인어
-STR_NETWORK_LANG_SWEDISH                                        :스웨덴어
-STR_NETWORK_LANG_TURKISH                                        :터키어
-STR_NETWORK_LANG_UKRAINIAN                                      :우크라이나어
-STR_NETWORK_LANG_AFRIKAANS                                      :아프리카어
-STR_NETWORK_LANG_CROATIAN                                       :크로아티아어
-STR_NETWORK_LANG_CATALAN                                        :카탈로니아어
-STR_NETWORK_LANG_ESTONIAN                                       :에스토니아어
-STR_NETWORK_LANG_GALICIAN                                       :갈리시아어
-STR_NETWORK_LANG_GREEK                                          :그리스어
-STR_NETWORK_LANG_LATVIAN                                        :라트비아어
-############ End of leave-in-this-order
-
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}멀티플레이 게임 대기실
 
 STR_NETWORK_GAME_LOBBY_PREPARE_TO_JOIN                          :{BLACK}참가 준비중: {ORANGE}{STRING}
-STR_NETWORK_GAME_LOBBY_COMPANY_LIST_TOOLTIP                     :{BLACK}이 게임에 있는 회사의 목록입니다. 다른 회사에 같이 참가하거나, 빈 자리가 있을 경우 새로운 회사로 시작할 수 있습니다
+STR_NETWORK_GAME_LOBBY_COMPANY_LIST_TOOLTIP                     :{BLACK}이 게임에 있는 회사의 목록입니다. 다른 회사에 같이 참여하거나, 빈 자리가 있을 경우 새로운 회사를 세워서 시작할 수 있습니다
 
 STR_NETWORK_GAME_LOBBY_COMPANY_INFO                             :{SILVER}회사 정보
 STR_NETWORK_GAME_LOBBY_COMPANY_NAME                             :{SILVER}회사 이름: {WHITE}{STRING}
@@ -2536,19 +2498,46 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}접속 �
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}서버 암호가 걸려있습니다. 암호를 입력하세요
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}회사 암호가 걸려있습니다. 암호를 입력하세요
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}접속자 목록
 
 # Network company list added strings
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :접속자 목록
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :관전
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :새 회사
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :추방
-STR_NETWORK_CLIENTLIST_BAN                                      :차단
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :모두에게 말하기
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :이 회사에게 말하기
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :귓속말하기
+STR_NETWORK_CLIENT_LIST_CAPTION                                 :{WHITE}멀티 플레이
+STR_NETWORK_CLIENT_LIST_SERVER                                  :{BLACK}서버
+STR_NETWORK_CLIENT_LIST_SERVER_NAME                             :{BLACK}이름
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_TOOLTIP                     :{BLACK}현재 플레이하고 있는 서버의 이름입니다
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_EDIT_TOOLTIP                :{BLACK}서버의 이름을 수정합니다
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_QUERY_CAPTION               :서버 이름
+STR_NETWORK_CLIENT_LIST_SERVER_VISIBILITY                       :{BLACK}공개 여부
+STR_NETWORK_CLIENT_LIST_SERVER_VISIBILITY_TOOLTIP               :{BLACK}서버 목록에 이 서버를 공개할 지 여부를 설정합니다
+STR_NETWORK_CLIENT_LIST_PLAYER                                  :{BLACK}플레이어
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME                             :{BLACK}이름
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_TOOLTIP                     :{BLACK}당신의 접속자 이름입니다
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_EDIT_TOOLTIP                :{BLACK}접속자 이름을 수정합니다
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_QUERY_CAPTION               :접속자 이름
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_TOOLTIP                    :{BLACK}관리자가 이 접속자에게 할 수 있는 기능입니다
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_TOOLTIP                   :{BLACK}관리자가 이 접속자에게 할 수 있는 기능입니다
+STR_NETWORK_CLIENT_LIST_JOIN_TOOLTIP                            :{BLACK}여기에 참여합니다
+STR_NETWORK_CLIENT_LIST_CHAT_CLIENT_TOOLTIP                     :{BLACK}이 플레이어에게 메시지를 보냅니다
+STR_NETWORK_CLIENT_LIST_CHAT_COMPANY_TOOLTIP                    :{BLACK}이 회사에 참여 중인 모든 플레이어에게 메시지를 보냅니다
+STR_NETWORK_CLIENT_LIST_CHAT_SPECTATOR_TOOLTIP                  :{BLACK}모든 관전자에게 메시지를 보냅니다
+STR_NETWORK_CLIENT_LIST_SPECTATORS                              :관전
+STR_NETWORK_CLIENT_LIST_NEW_COMPANY                             :(새 회사)
+STR_NETWORK_CLIENT_LIST_NEW_COMPANY_TOOLTIP                     :{BLACK}새 회사를 만듭니다
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_SELF_TOOLTIP                :{BLACK}당신입니다
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_HOST_TOOLTIP                :{BLACK}이 게임을 연 사람입니다
+
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_KICK                       :추방
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_BAN                        :차단
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_RESET                     :삭제
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_UNLOCK                    :비밀번호 초기화
+
+STR_NETWORK_CLIENT_LIST_ASK_CAPTION                             :{WHITE}관리자 기능
+STR_NETWORK_CLIENT_LIST_ASK_CLIENT_KICK                         :{YELLOW}'{STRING}' 플레이어를 정말로 추방하시겠습니까?
+STR_NETWORK_CLIENT_LIST_ASK_CLIENT_BAN                          :{YELLOW}'{STRING}' 플레이어를 정말로 차단하시겠습니까?
+STR_NETWORK_CLIENT_LIST_ASK_COMPANY_RESET                       :{YELLOW}'{COMPANY}' 회사를 정말로 삭제하시겠습니까?
+STR_NETWORK_CLIENT_LIST_ASK_COMPANY_UNLOCK                      :{YELLOW}'{COMPANY}' 회사의 비밀번호를 정말로 초기화하시겠습니까?
 
 STR_NETWORK_SERVER                                              :서버
 STR_NETWORK_CLIENT                                              :접속자
@@ -2559,11 +2548,11 @@ STR_COMPANY_PASSWORD_CANCEL                                     :{BLACK}입력�
 STR_COMPANY_PASSWORD_OK                                         :{BLACK}이 회사에 새 비밀번호 부여
 STR_COMPANY_PASSWORD_CAPTION                                    :{WHITE}회사 비밀번호
 STR_COMPANY_PASSWORD_MAKE_DEFAULT                               :{BLACK}회사 비밀번호 기본값으로 설정
-STR_COMPANY_PASSWORD_MAKE_DEFAULT_TOOLTIP                       :{BLACK}이 회사 비밀번호를 새 회사의 비밀번호 기본값으로 사용
+STR_COMPANY_PASSWORD_MAKE_DEFAULT_TOOLTIP                       :{BLACK}이 비밀번호를 새 회사의 비밀번호 기본값으로 사용합니다
 
 # Network company info join/password
 STR_COMPANY_VIEW_JOIN                                           :{BLACK}참여
-STR_COMPANY_VIEW_JOIN_TOOLTIP                                   :{BLACK}이 회사로 참가해서 플레이합니다
+STR_COMPANY_VIEW_JOIN_TOOLTIP                                   :{BLACK}이 회사에 참여해서 플레이합니다
 STR_COMPANY_VIEW_PASSWORD                                       :{BLACK}비밀번호
 STR_COMPANY_VIEW_PASSWORD_TOOLTIP                               :{BLACK}다른 참가자가 이 회사에 참여하여 플레이하지 못 하도록 암호로 보호합니다
 STR_COMPANY_VIEW_SET_PASSWORD                                   :{BLACK}회사 비밀번호 설정
@@ -2593,6 +2582,7 @@ STR_NETWORK_ERROR_SERVER_START                                  :{WHITE}서버�
 STR_NETWORK_ERROR_CLIENT_START                                  :{WHITE}접속할 수 없습니다
 STR_NETWORK_ERROR_TIMEOUT                                       :{WHITE}접속자 #{NUM}의 입력 시간이 초과되었습니다
 STR_NETWORK_ERROR_SERVER_ERROR                                  :{WHITE}프로토콜 오류가 발생되어 연결이 끊어졌습니다
+STR_NETWORK_ERROR_BAD_PLAYER_NAME                               :{WHITE}접속자 이름을 설정하지 않았습니다. 이름은 멀티플레이 창의 상단에서 설정할 수 있습니다.
 STR_NETWORK_ERROR_WRONG_REVISION                                :{WHITE}이 접속자의 게임 버전이 서버의 버전과 일치하지 않습니다
 STR_NETWORK_ERROR_WRONG_PASSWORD                                :{WHITE}잘못된 비밀번호입니다
 STR_NETWORK_ERROR_SERVER_FULL                                   :{WHITE}서버에 인원이 가득 찼습니다
@@ -2605,6 +2595,7 @@ STR_NETWORK_ERROR_TIMEOUT_PASSWORD                              :{WHITE}비밀�
 STR_NETWORK_ERROR_TIMEOUT_COMPUTER                              :{WHITE}사용자의 컴퓨터가 서버와 연결을 유지할 수 있을 만큼 빠르지 않습니다
 STR_NETWORK_ERROR_TIMEOUT_MAP                                   :{WHITE}지도 다운로드 시간을 초과하였습니다
 STR_NETWORK_ERROR_TIMEOUT_JOIN                                  :{WHITE}서버 접속 시간을 초과하였습니다
+STR_NETWORK_ERROR_INVALID_CLIENT_NAME                           :{WHITE}사용할 수 없는 이름입니다
 
 ############ Leave those lines in this order!!
 STR_NETWORK_ERROR_CLIENT_GENERAL                                :일반 오류
@@ -2627,6 +2618,7 @@ STR_NETWORK_ERROR_CLIENT_TIMEOUT_PASSWORD                       :제 시간에 �
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_COMPUTER                       :반응 시간 초과
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_MAP                            :지도 다운로드 시간 초과
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_JOIN                           :지도 생성 / 입장 시간 초과
+STR_NETWORK_ERROR_CLIENT_INVALID_CLIENT_NAME                    :유효하지 않은 클라이언트 이름
 ############ End of leave-in-this-order
 
 STR_NETWORK_ERROR_CLIENT_GUI_LOST_CONNECTION_CAPTION            :{WHITE}가능한 연결 손실
@@ -2655,7 +2647,7 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_JOIN                         :*** {STRING} �
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} 님이 관전을 시작하셨습니다
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} 님이 새로운 회사({2:NUM}번)를 창설하셨습니다
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} 님이 퇴장하셨습니다 (사유: {2:STRING})
-STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} 님의 이름이 {STRING}(으)로 바뀌었습니다
+STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} 님이 이름을 {STRING}(으)로 바꾸었습니다
 STR_NETWORK_MESSAGE_GIVE_MONEY_RECEIVE                          :*** {STRING} 님이 당신에게 {2:CURRENCY_LONG}만큼의 돈을 보내셨습니다
 STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** {1:STRING} 님에게 {2:CURRENCY_LONG}만큼의 돈을 보냈습니다
 STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {0:STRING} 님이 {1:STRING}에게 {2:CURRENCY_LONG}만큼의 돈을 보내셨습니다
@@ -3909,7 +3901,7 @@ STR_NEWGRF_LIST_MISSING                                         :{RED}파일 없
 
 # NewGRF 'it's broken' warnings
 STR_NEWGRF_BROKEN                                               :{WHITE}'{0:STRING}' NewGRF가 적용되는 과정에서 비동기화나 충돌이 일어날 수 있습니다
-STR_NEWGRF_BROKEN_POWERED_WAGON                                 :{WHITE}차고지 안에 있지 않은 '{1:ENGINE}'에 대한 동력 차량 상태가 바뀌었습니다
+STR_NEWGRF_BROKEN_POWERED_WAGON                                 :{WHITE}차고지 안에 있지 않은 '{1:ENGINE}' 동력 차량의 상태가 바뀌었습니다
 STR_NEWGRF_BROKEN_VEHICLE_LENGTH                                :{WHITE}'{1:ENGINE}'{G 1 "이" "가"} 차고지 안에 있지 않으면 차량 길이가 바뀝니다
 STR_NEWGRF_BROKEN_CAPACITY                                      :{WHITE}차량이 기지 안에 있지 않거나 개조가 불가능한 상태에서 '{1:ENGINE}'의 수송량이 변경되었습니다
 STR_BROKEN_VEHICLE_LENGTH                                       :{WHITE}'{1:COMPANY}'에 속한 열차 '{0:VEHICLE}'의 길이가 잘못된 값을 가지고 있습니다. NewGRF에 의한 문제로 보입니다. 게임이 비동기화 또는 충돌을 일으킬 수 있습니다.
@@ -4853,8 +4845,8 @@ STR_VEHICLE_DETAILS_AIRCRAFT_RENAME                             :{BLACK}항공�
 
 STR_VEHICLE_INFO_AGE_RUNNING_COST_YR                            :{BLACK}연령: {LTBLUE}{STRING}{BLACK}   유지비: {LTBLUE}{CURRENCY_LONG}/년
 
-STR_VEHICLE_LOAD_THROUGH_ABORTED_INSUFFICIENT_TRACK             :{WHITE}{VEHICLE}: {STATION}의 선로 길이가 충분하지 않아 통과하며 싣기가 중단되었습니다.
-STR_VEHICLE_LOAD_THROUGH_ABORTED_DEPOT                          :{WHITE}{VEHICLE}: {STATION}의 차량기지 때문에 통과하며 싣기가 중단되었습니다.
+STR_VEHICLE_LOAD_THROUGH_ABORTED_INSUFFICIENT_TRACK             :{WHITE}{VEHICLE}: {STATION}의 선로 길이가 충분하지 않아 차례로 나눠 싣기가 중단되었습니다.
+STR_VEHICLE_LOAD_THROUGH_ABORTED_DEPOT                          :{WHITE}{VEHICLE}: {STATION}의 차량기지 때문에 차례로 나눠 싣기가 중단되었습니다.
 
 STR_RUNNING                                                     :{LTBLUE}운행 중
 STR_NEED_REPAIR                                                 :{ORANGE}차량을 수리해야 합니다. 최고 속도가 {VELOCITY}로 감소하였습니다.
@@ -5185,7 +5177,7 @@ STR_ORDER_AUTO_REFIT_ANY                                        :이용 가능�
 STR_ORDER_STOP_LOCATION_NEAR_END                                :[가까운쪽]
 STR_ORDER_STOP_LOCATION_MIDDLE                                  :[중간]
 STR_ORDER_STOP_LOCATION_FAR_END                                 :[먼쪽]
-STR_ORDER_STOP_LOCATION_THROUGH                                 :[통과하며 싣기]
+STR_ORDER_STOP_LOCATION_THROUGH                                 :[차례로 나눠 싣기]
 
 STR_ORDER_OUT_OF_RANGE                                          :{RED} (다음 목적지가 제한 항속거리보다 멀리 있습니다)
 

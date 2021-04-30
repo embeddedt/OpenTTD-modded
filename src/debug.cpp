@@ -313,50 +313,93 @@ struct DesyncMsgLogEntry {
 	Date date;
 	DateFract date_fract;
 	uint8 tick_skip_counter;
+	uint32 src_id;
 	std::string msg;
 
 	DesyncMsgLogEntry() { }
 
 	DesyncMsgLogEntry(std::string msg)
-			: date(_date), date_fract(_date_fract), tick_skip_counter(_tick_skip_counter), msg(msg) { }
+			: date(_date), date_fract(_date_fract), tick_skip_counter(_tick_skip_counter), src_id(0), msg(msg) { }
 };
 
-static std::array<DesyncMsgLogEntry, 64> desync_msg_log;
-static unsigned int desync_msg_log_count = 0;
-static unsigned int desync_msg_log_next = 0;
+struct DesyncMsgLog {
+	std::array<DesyncMsgLogEntry, 128> log;
+	unsigned int count = 0;
+	unsigned int next = 0;
+
+	void Clear()
+	{
+		this->count = 0;
+		this->next = 0;
+	}
+
+	void LogMsg(DesyncMsgLogEntry entry)
+	{
+		this->log[this->next] = std::move(entry);
+		this->next = (this->next + 1) % this->log.size();
+		this->count++;
+	}
+
+	template <typename F>
+	char *Dump(char *buffer, const char *last, const char *prefix, F handler)
+	{
+		if (!this->count) return buffer;
+
+		const unsigned int count = std::min<unsigned int>(this->count, this->log.size());
+		unsigned int log_index = (this->next + this->log.size() - count) % this->log.size();
+		unsigned int display_num = this->count - count;
+
+		buffer += seprintf(buffer, last, "%s:\n Showing most recent %u of %u messages\n", prefix, count, this->count);
+
+		for (unsigned int i = 0 ; i < count; i++) {
+			const DesyncMsgLogEntry &entry = this->log[log_index];
+
+			buffer += handler(display_num, buffer, last, entry);
+			log_index = (log_index + 1) % this->log.size();
+			display_num++;
+		}
+		buffer += seprintf(buffer, last, "\n");
+		return buffer;
+	}
+};
+
+static DesyncMsgLog _desync_msg_log;
+static DesyncMsgLog _remote_desync_msg_log;
 
 void ClearDesyncMsgLog()
 {
-	desync_msg_log_count = 0;
-	desync_msg_log_next = 0;
+	_desync_msg_log.Clear();
 }
 
 char *DumpDesyncMsgLog(char *buffer, const char *last)
 {
-	if (!desync_msg_log_count) return buffer;
-
-	const unsigned int count = std::min<unsigned int>(desync_msg_log_count, desync_msg_log.size());
-	unsigned int log_index = (desync_msg_log_next + desync_msg_log.size() - count) % desync_msg_log.size();
-	unsigned int display_num = desync_msg_log_count - count;
-
-	buffer += seprintf(buffer, last, "Desync Msg Log:\n Showing most recent %u of %u messages\n", count, desync_msg_log_count);
-
-	for (unsigned int i = 0 ; i < count; i++) {
-		const DesyncMsgLogEntry &entry = desync_msg_log[log_index];
-
+	buffer = _desync_msg_log.Dump(buffer, last, "Desync Msg Log", [](int display_num, char *buffer, const char *last, const DesyncMsgLogEntry &entry) -> int {
 		YearMonthDay ymd;
 		ConvertDateToYMD(entry.date, &ymd);
-		buffer += seprintf(buffer, last, "%5u | %4i-%02i-%02i, %2i, %3i | %s\n", display_num, ymd.year, ymd.month + 1, ymd.day, entry.date_fract, entry.tick_skip_counter, entry.msg.c_str());
-		log_index = (log_index + 1) % desync_msg_log.size();
-		display_num++;
-	}
-	buffer += seprintf(buffer, last, "\n");
+		return seprintf(buffer, last, "%5u | %4i-%02i-%02i, %2i, %3i | %s\n", display_num, ymd.year, ymd.month + 1, ymd.day, entry.date_fract, entry.tick_skip_counter, entry.msg.c_str());
+	});
+	buffer = _remote_desync_msg_log.Dump(buffer, last, "Remote Client Desync Msg Log", [](int display_num, char *buffer, const char *last, const DesyncMsgLogEntry &entry) -> int {
+		YearMonthDay ymd;
+		ConvertDateToYMD(entry.date, &ymd);
+		return seprintf(buffer, last, "%5u | Client %5u | %4i-%02i-%02i, %2i, %3i | %s\n", display_num, entry.src_id, ymd.year, ymd.month + 1, ymd.day, entry.date_fract, entry.tick_skip_counter, entry.msg.c_str());
+	});
 	return buffer;
 }
 
 void LogDesyncMsg(std::string msg)
 {
-	desync_msg_log[desync_msg_log_next] = DesyncMsgLogEntry(std::move(msg));
-	desync_msg_log_next = (desync_msg_log_next + 1) % desync_msg_log.size();
-	desync_msg_log_count++;
+	if (_networking && !_network_server) {
+		NetworkClientSendDesyncMsg(msg.c_str());
+	}
+	_desync_msg_log.LogMsg(DesyncMsgLogEntry(std::move(msg)));
+}
+
+void LogRemoteDesyncMsg(Date date, DateFract date_fract, uint8 tick_skip_counter, uint32 src_id, std::string msg)
+{
+	DesyncMsgLogEntry entry(std::move(msg));
+	entry.date = date;
+	entry.date_fract = date_fract;
+	entry.tick_skip_counter = tick_skip_counter;
+	entry.src_id = src_id;
+	_remote_desync_msg_log.LogMsg(std::move(entry));
 }

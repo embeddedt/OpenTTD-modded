@@ -340,6 +340,7 @@ StringID GetNetworkErrorMsg(NetworkErrorCode err)
 		STR_NETWORK_ERROR_CLIENT_TIMEOUT_COMPUTER,
 		STR_NETWORK_ERROR_CLIENT_TIMEOUT_MAP,
 		STR_NETWORK_ERROR_CLIENT_TIMEOUT_JOIN,
+		STR_NETWORK_ERROR_CLIENT_INVALID_CLIENT_NAME,
 	};
 	static_assert(lengthof(network_error_strings) == NETWORK_ERROR_END);
 
@@ -473,6 +474,36 @@ static void CheckPauseOnJoin()
 }
 
 /**
+ * Converts a string to ip/port
+ *  Format: IP:port
+ *
+ * connection_string will be re-terminated to separate out the hostname, port will
+ * be set to the port strings given by the user, inside the memory area originally
+ * occupied by connection_string.
+ */
+void ParseConnectionString(const char **port, char *connection_string)
+{
+	bool ipv6 = (strchr(connection_string, ':') != strrchr(connection_string, ':'));
+	for (char *p = connection_string; *p != '\0'; p++) {
+		switch (*p) {
+			case '[':
+				ipv6 = true;
+				break;
+
+			case ']':
+				ipv6 = false;
+				break;
+
+			case ':':
+				if (ipv6) break;
+				*port = p + 1;
+				*p = '\0';
+				break;
+		}
+	}
+}
+
+/**
  * Converts a string to ip/port/company
  *  Format: IP:port#company
  *
@@ -480,11 +511,10 @@ static void CheckPauseOnJoin()
  * be set to the company and port strings given by the user, inside the memory area originally
  * occupied by connection_string.
  */
-void ParseConnectionString(const char **company, const char **port, char *connection_string)
+void ParseGameConnectionString(const char **company, const char **port, char *connection_string)
 {
 	bool ipv6 = (strchr(connection_string, ':') != strrchr(connection_string, ':'));
-	char *p;
-	for (p = connection_string; *p != '\0'; p++) {
+	for (char *p = connection_string; *p != '\0'; p++) {
 		switch (*p) {
 			case '[':
 				ipv6 = true;
@@ -518,9 +548,10 @@ void ParseConnectionString(const char **company, const char **port, char *connec
 	/* Register the login */
 	_network_clients_connected++;
 
-	SetWindowDirty(WC_CLIENT_LIST, 0);
 	ServerNetworkGameSocketHandler *cs = new ServerNetworkGameSocketHandler(s);
 	cs->client_address = address; // Save the IP of the client
+
+	InvalidateWindowData(WC_CLIENT_LIST, 0);
 }
 
 /**
@@ -622,7 +653,6 @@ void NetworkAddServer(const char *b)
 {
 	if (*b != '\0') {
 		const char *port = nullptr;
-		const char *company = nullptr;
 		char host[NETWORK_HOSTNAME_LENGTH];
 		uint16 rport;
 
@@ -631,7 +661,7 @@ void NetworkAddServer(const char *b)
 		strecpy(_settings_client.network.connect_to_ip, b, lastof(_settings_client.network.connect_to_ip));
 		rport = NETWORK_DEFAULT_PORT;
 
-		ParseConnectionString(&company, &port, host);
+		ParseConnectionString(&port, host);
 		if (port != nullptr) rport = atoi(port);
 
 		NetworkUDPQueryServer(NetworkAddress(host, rport), true);
@@ -694,6 +724,8 @@ void NetworkClientConnectGame(NetworkAddress address, CompanyID join_as, const c
 
 	if (address.GetPort() == 0) return;
 
+	if (!NetworkValidateClientName()) return;
+
 	strecpy(_settings_client.network.last_host, address.GetHostname(), lastof(_settings_client.network.last_host));
 	_settings_client.network.last_port = address.GetPort();
 	_network_join_as = join_as;
@@ -712,7 +744,7 @@ void NetworkClientConnectGame(NetworkAddress address, CompanyID join_as, const c
 static void NetworkInitGameInfo()
 {
 	if (StrEmpty(_settings_client.network.server_name)) {
-		seprintf(_settings_client.network.server_name, lastof(_settings_client.network.server_name), "Unnamed Server");
+		strecpy(_settings_client.network.server_name, "Unnamed Server", lastof(_settings_client.network.server_name));
 	}
 
 	/* The server is a client too */

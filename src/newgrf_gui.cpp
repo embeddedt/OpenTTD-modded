@@ -47,8 +47,8 @@ void ShowNewGRFError()
 	if (_game_mode == GM_MENU) return;
 
 	for (const GRFConfig *c = _grfconfig; c != nullptr; c = c->next) {
-		/* We only want to show fatal errors */
-		if (c->error == nullptr || c->error->severity != STR_NEWGRF_ERROR_MSG_FATAL) continue;
+		/* Only show Fatal and Error level messages */
+		if (c->error == nullptr || (c->error->severity != STR_NEWGRF_ERROR_MSG_FATAL && c->error->severity != STR_NEWGRF_ERROR_MSG_ERROR)) continue;
 
 		SetDParam   (0, c->error->message != STR_NULL ? c->error->message : STR_JUST_RAW_STRING);
 		SetDParamStr(1, c->error->custom_message.c_str());
@@ -57,7 +57,11 @@ void ShowNewGRFError()
 		for (uint i = 0; i < lengthof(c->error->param_value); i++) {
 			SetDParam(4 + i, c->error->param_value[i]);
 		}
-		ShowErrorMessage(STR_NEWGRF_ERROR_FATAL_POPUP, INVALID_STRING_ID, WL_CRITICAL);
+		if (c->error->severity == STR_NEWGRF_ERROR_MSG_FATAL) {
+			ShowErrorMessage(STR_NEWGRF_ERROR_FATAL_POPUP, INVALID_STRING_ID, WL_CRITICAL);
+		} else {
+			ShowErrorMessage(STR_NEWGRF_ERROR_POPUP, INVALID_STRING_ID, WL_ERROR);
+		}
 		break;
 	}
 }
@@ -1327,42 +1331,8 @@ struct NewGRFWindow : public Window, NewGRFScanCallback {
 	{
 		if (!this->editable) return ES_NOT_HANDLED;
 
-		switch (keycode) {
-			case WKC_UP:
-				/* scroll up by one */
-				if (this->avail_pos > 0) this->avail_pos--;
-				break;
+		if (this->vscroll2->UpdateListPositionOnKeyPress(this->avail_pos, keycode) == ES_NOT_HANDLED) return ES_NOT_HANDLED;
 
-			case WKC_DOWN:
-				/* scroll down by one */
-				if (this->avail_pos < (int)this->avails.size() - 1) this->avail_pos++;
-				break;
-
-			case WKC_PAGEUP:
-				/* scroll up a page */
-				this->avail_pos = (this->avail_pos < this->vscroll2->GetCapacity()) ? 0 : this->avail_pos - this->vscroll2->GetCapacity();
-				break;
-
-			case WKC_PAGEDOWN:
-				/* scroll down a page */
-				this->avail_pos = std::min(this->avail_pos + this->vscroll2->GetCapacity(), (int)this->avails.size() - 1);
-				break;
-
-			case WKC_HOME:
-				/* jump to beginning */
-				this->avail_pos = 0;
-				break;
-
-			case WKC_END:
-				/* jump to end */
-				this->avail_pos = (uint)this->avails.size() - 1;
-				break;
-
-			default:
-				return ES_NOT_HANDLED;
-		}
-
-		if (this->avails.size() == 0) this->avail_pos = -1;
 		if (this->avail_pos >= 0) {
 			this->active_sel = nullptr;
 			DeleteWindowByClass(WC_GRF_PARAMETERS);

@@ -1008,6 +1008,8 @@ STR_GAME_OPTIONS_VIDEO_ACCELERATION                             :{BLACK}Accelera
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_TOOLTIP                     :{BLACK}Seleccioneu aquesta opció per permetre que l'OpenTTD provi d'usar acceleració per maquinari. Si es canvia l'opció, s'aplicarà quan es reiniciï el programa.
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_RESTART                     :{WHITE}La configuració tindrà efecte quan es reiniciï el programa.
 
+STR_GAME_OPTIONS_VIDEO_VSYNC                                    :{BLACK}VSync
+STR_GAME_OPTIONS_VIDEO_VSYNC_TOOLTIP                            :{BLACK}Selecciona aquesta casella per activar la sincronització vertical de la pantalla. Els canvis s'aplicaran quan es reiniciï el programa. Només funciona si s'activa l'acceleració per maquinari.
 
 STR_GAME_OPTIONS_GUI_ZOOM_FRAME                                 :{BLACK}Mida de la interfície
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_TOOLTIP                      :{BLACK}Escull la mida dels elements de la interfície
@@ -1990,6 +1992,7 @@ STR_FACE_TIE                                                    :Corbata:
 STR_FACE_EARRING                                                :Arracades:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Canvia la corbata o les arracades
 
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multijugador
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Nom del jugador:
@@ -2052,10 +2055,6 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}El nom d
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Posa una contrasenya
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Protegeix la teva partida amb una contrasenya si no vols que sigui accessible a desconeguts
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Anunciat
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Escull entre una partida anunciada (internet) i una partida no anunciada (xarxa d'àrea local, LAN)
-STR_NETWORK_START_SERVER_UNADVERTISED                           :No
-STR_NETWORK_START_SERVER_ADVERTISED                             :Sí
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} client{P "" s}
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}Màxim nombre de clients:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}Tria el nombre màxim de clients. No és necessari omplir tots els llocs.
@@ -2069,46 +2068,6 @@ STR_NETWORK_START_SERVER_LANGUAGE_SPOKEN                        :{BLACK}Idioma p
 STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}Els altres jugadors sabran quin idioma es parla en aquest servidor.
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}Posa el nom de la partida en xarxa
-
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :Qualsevol
-STR_NETWORK_LANG_ENGLISH                                        :Anglès
-STR_NETWORK_LANG_GERMAN                                         :Alemany
-STR_NETWORK_LANG_FRENCH                                         :Francès
-STR_NETWORK_LANG_BRAZILIAN                                      :Brasiler
-STR_NETWORK_LANG_BULGARIAN                                      :Búlgar
-STR_NETWORK_LANG_CHINESE                                        :Xinès
-STR_NETWORK_LANG_CZECH                                          :Txec
-STR_NETWORK_LANG_DANISH                                         :Danès
-STR_NETWORK_LANG_DUTCH                                          :Holandès
-STR_NETWORK_LANG_ESPERANTO                                      :Esperanto
-STR_NETWORK_LANG_FINNISH                                        :Finès
-STR_NETWORK_LANG_HUNGARIAN                                      :Hongarès
-STR_NETWORK_LANG_ICELANDIC                                      :Islandès
-STR_NETWORK_LANG_ITALIAN                                        :Italià
-STR_NETWORK_LANG_JAPANESE                                       :Japonès
-STR_NETWORK_LANG_KOREAN                                         :Coreà
-STR_NETWORK_LANG_LITHUANIAN                                     :Lituà
-STR_NETWORK_LANG_NORWEGIAN                                      :Noruec
-STR_NETWORK_LANG_POLISH                                         :Polonès
-STR_NETWORK_LANG_PORTUGUESE                                     :Portuguès
-STR_NETWORK_LANG_ROMANIAN                                       :Romanès
-STR_NETWORK_LANG_RUSSIAN                                        :Rus
-STR_NETWORK_LANG_SLOVAK                                         :Eslovac
-STR_NETWORK_LANG_SLOVENIAN                                      :Eslovè
-STR_NETWORK_LANG_SPANISH                                        :Espanyol
-STR_NETWORK_LANG_SWEDISH                                        :Suec
-STR_NETWORK_LANG_TURKISH                                        :Turc
-STR_NETWORK_LANG_UKRAINIAN                                      :Ucraïnès
-STR_NETWORK_LANG_AFRIKAANS                                      :Afrikaans
-STR_NETWORK_LANG_CROATIAN                                       :Croat
-STR_NETWORK_LANG_CATALAN                                        :Català
-STR_NETWORK_LANG_ESTONIAN                                       :Estonià
-STR_NETWORK_LANG_GALICIAN                                       :Gallec
-STR_NETWORK_LANG_GREEK                                          :Grec
-STR_NETWORK_LANG_LATVIAN                                        :Letó
-############ End of leave-in-this-order
 
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}Lobby de partida multijugador
@@ -2157,19 +2116,13 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}Desconne
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Servidor protegit: escriviu-ne la contrasenya
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Companyia protegida: escriviu-ne la contrasenya
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}Llista de clients
 
 # Network company list added strings
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Llista de clients
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :Espectador
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nova companyia
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :Breu
-STR_NETWORK_CLIENTLIST_BAN                                      :Prohibit
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :Parla a tothom
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :Parla amb la companyia
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :Missatge Privat
+
+
 
 STR_NETWORK_SERVER                                              :Servidor
 STR_NETWORK_CLIENT                                              :Client

@@ -968,7 +968,7 @@ STR_GAME_OPTIONS_CURRENCY_MYR                                   :Malaysian Ringg
 STR_GAME_OPTIONS_ROAD_VEHICLES_DROPDOWN_LEFT                    :Drive on left
 STR_GAME_OPTIONS_ROAD_VEHICLES_DROPDOWN_RIGHT                   :Drive on right
 
-STR_GAME_OPTIONS_TOWN_NAMES_FRAME                               :{BLACK}Town names
+STR_GAME_OPTIONS_TOWN_NAMES_FRAME                               :{BLACK}Town names:
 STR_GAME_OPTIONS_TOWN_NAMES_DROPDOWN_TOOLTIP                    :{BLACK}Select style of town names
 
 ############ start of townname region
@@ -1008,6 +1008,7 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :Every 12 months
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Language
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Select the interface language to use
+STR_GAME_OPTIONS_LANGUAGE_PERCENTAGE                            :{RAW_STRING} ({NUM}% completed)
 
 STR_GAME_OPTIONS_FULLSCREEN                                     :{BLACK}Fullscreen
 STR_GAME_OPTIONS_FULLSCREEN_TOOLTIP                             :{BLACK}Check this box to play OpenTTD fullscreen mode
@@ -1644,9 +1645,9 @@ STR_CONFIG_SETTING_ADVANCED_VEHICLE_LISTS_HELPTEXT              :Enable usage of
 STR_CONFIG_SETTING_LOADING_INDICATORS                           :Use loading indicators: {STRING2}
 STR_CONFIG_SETTING_LOADING_INDICATORS_HELPTEXT                  :Select whether loading indicators are displayed above loading or unloading vehicles
 STR_CONFIG_SETTING_AUTO_TIMETABLE_BY_DEFAULT                    :Use automatic timetables by default: {STRING2}
-STR_CONFIG_SETTING_AUTO_TIMETABLE_BY_DEFAULT_HELPTEXT           :Choose whether automatic timetables should by automatically enabled for new vehicles
+STR_CONFIG_SETTING_AUTO_TIMETABLE_BY_DEFAULT_HELPTEXT           :Choose whether automatic timetables should be automatically enabled for new vehicles
 STR_CONFIG_SETTING_TIMETABLE_SEPARATION_BY_DEFAULT              :Use timetable to ensure vehicle separation by default: {STRING2}
-STR_CONFIG_SETTING_TIMETABLE_SEPARATION_BY_DEFAULT_HELPTEXT     :Choose whether to ensure separation of vehicles should by automatically enabled for new vehicles
+STR_CONFIG_SETTING_TIMETABLE_SEPARATION_BY_DEFAULT_HELPTEXT     :Choose whether to ensure separation of vehicles should be automatically enabled for new vehicles
 STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Show timetable in ticks rather than days: {STRING2}
 STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Show travel times in time tables in game ticks instead of days
 STR_CONFIG_SETTING_TIMETABLE_LEFTOVER_TICKS                     :Show leftover ticks in timetable: {STRING2}
@@ -2376,6 +2377,9 @@ STR_FACE_TIE                                                    :Tie:
 STR_FACE_EARRING                                                :Earring:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Change tie or earring
 
+STR_NETWORK_SERVER_VISIBILITY_PRIVATE                           :Private
+STR_NETWORK_SERVER_VISIBILITY_PUBLIC                            :Public
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Multiplayer
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Player name:
@@ -2438,10 +2442,8 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}The game
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Set password
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Protect your game with a password if you don't want it to be publicly accessible
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Advertised
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Choose between an advertised (internet) and a not advertised (Local Area Network, LAN) game
-STR_NETWORK_START_SERVER_UNADVERTISED                           :No
-STR_NETWORK_START_SERVER_ADVERTISED                             :Yes
+STR_NETWORK_START_SERVER_VISIBILITY_LABEL                       :{BLACK}Visibility
+STR_NETWORK_START_SERVER_VISIBILITY_TOOLTIP                     :{BLACK}Whether other people can see your server in the public listing
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} client{P "" s}
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}Maximum number of clients:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}Choose the maximum number of clients. Not all slots need to be filled
@@ -2455,46 +2457,6 @@ STR_NETWORK_START_SERVER_LANGUAGE_SPOKEN                        :{BLACK}Language
 STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}Other players will know which language is spoken on the server
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}Enter a name for the network game
-
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :Any
-STR_NETWORK_LANG_ENGLISH                                        :English
-STR_NETWORK_LANG_GERMAN                                         :German
-STR_NETWORK_LANG_FRENCH                                         :French
-STR_NETWORK_LANG_BRAZILIAN                                      :Brazilian
-STR_NETWORK_LANG_BULGARIAN                                      :Bulgarian
-STR_NETWORK_LANG_CHINESE                                        :Chinese
-STR_NETWORK_LANG_CZECH                                          :Czech
-STR_NETWORK_LANG_DANISH                                         :Danish
-STR_NETWORK_LANG_DUTCH                                          :Dutch
-STR_NETWORK_LANG_ESPERANTO                                      :Esperanto
-STR_NETWORK_LANG_FINNISH                                        :Finnish
-STR_NETWORK_LANG_HUNGARIAN                                      :Hungarian
-STR_NETWORK_LANG_ICELANDIC                                      :Icelandic
-STR_NETWORK_LANG_ITALIAN                                        :Italian
-STR_NETWORK_LANG_JAPANESE                                       :Japanese
-STR_NETWORK_LANG_KOREAN                                         :Korean
-STR_NETWORK_LANG_LITHUANIAN                                     :Lithuanian
-STR_NETWORK_LANG_NORWEGIAN                                      :Norwegian
-STR_NETWORK_LANG_POLISH                                         :Polish
-STR_NETWORK_LANG_PORTUGUESE                                     :Portuguese
-STR_NETWORK_LANG_ROMANIAN                                       :Romanian
-STR_NETWORK_LANG_RUSSIAN                                        :Russian
-STR_NETWORK_LANG_SLOVAK                                         :Slovak
-STR_NETWORK_LANG_SLOVENIAN                                      :Slovenian
-STR_NETWORK_LANG_SPANISH                                        :Spanish
-STR_NETWORK_LANG_SWEDISH                                        :Swedish
-STR_NETWORK_LANG_TURKISH                                        :Turkish
-STR_NETWORK_LANG_UKRAINIAN                                      :Ukrainian
-STR_NETWORK_LANG_AFRIKAANS                                      :Afrikaans
-STR_NETWORK_LANG_CROATIAN                                       :Croatian
-STR_NETWORK_LANG_CATALAN                                        :Catalan
-STR_NETWORK_LANG_ESTONIAN                                       :Estonian
-STR_NETWORK_LANG_GALICIAN                                       :Galician
-STR_NETWORK_LANG_GREEK                                          :Greek
-STR_NETWORK_LANG_LATVIAN                                        :Latvian
-############ End of leave-in-this-order
 
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}Multiplayer game lobby
@@ -2543,19 +2505,46 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}Disconne
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Server is protected. Enter password
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Company is protected. Enter password
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}Client list
 
 # Network company list added strings
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Client list
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :Spectate
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :New company
+STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Online players
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :Kick
-STR_NETWORK_CLIENTLIST_BAN                                      :Ban
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :Speak to all
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :Speak to company
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :Private message
+STR_NETWORK_CLIENT_LIST_CAPTION                                 :{WHITE}Multiplayer
+STR_NETWORK_CLIENT_LIST_SERVER                                  :{BLACK}Server
+STR_NETWORK_CLIENT_LIST_SERVER_NAME                             :{BLACK}Name
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_TOOLTIP                     :{BLACK}Name of the server you are playing on
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_EDIT_TOOLTIP                :{BLACK}Edit the name of your server
+STR_NETWORK_CLIENT_LIST_SERVER_NAME_QUERY_CAPTION               :Name of the server
+STR_NETWORK_CLIENT_LIST_SERVER_VISIBILITY                       :{BLACK}Visibility
+STR_NETWORK_CLIENT_LIST_SERVER_VISIBILITY_TOOLTIP               :{BLACK}Whether other people can see your server in the public listing
+STR_NETWORK_CLIENT_LIST_PLAYER                                  :{BLACK}Player
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME                             :{BLACK}Name
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_TOOLTIP                     :{BLACK}Your player name
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_EDIT_TOOLTIP                :{BLACK}Edit your player name
+STR_NETWORK_CLIENT_LIST_PLAYER_NAME_QUERY_CAPTION               :Your player name
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_TOOLTIP                    :{BLACK}Administrative actions to perform for this client
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_TOOLTIP                   :{BLACK}Administrative actions to perform for this company
+STR_NETWORK_CLIENT_LIST_JOIN_TOOLTIP                            :{BLACK}Join this company
+STR_NETWORK_CLIENT_LIST_CHAT_CLIENT_TOOLTIP                     :{BLACK}Send a message to this player
+STR_NETWORK_CLIENT_LIST_CHAT_COMPANY_TOOLTIP                    :{BLACK}Send a message to all players of this company
+STR_NETWORK_CLIENT_LIST_CHAT_SPECTATOR_TOOLTIP                  :{BLACK}Send a message to all spectators
+STR_NETWORK_CLIENT_LIST_SPECTATORS                              :Spectators
+STR_NETWORK_CLIENT_LIST_NEW_COMPANY                             :(New company)
+STR_NETWORK_CLIENT_LIST_NEW_COMPANY_TOOLTIP                     :{BLACK}Create a new company and join it
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_SELF_TOOLTIP                :{BLACK}This is you
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_HOST_TOOLTIP                :{BLACK}This is the host of the game
+
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_KICK                       :Kick
+STR_NETWORK_CLIENT_LIST_ADMIN_CLIENT_BAN                        :Ban
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_RESET                     :Delete
+STR_NETWORK_CLIENT_LIST_ADMIN_COMPANY_UNLOCK                    :Password unlock
+
+STR_NETWORK_CLIENT_LIST_ASK_CAPTION                             :{WHITE}Admin action
+STR_NETWORK_CLIENT_LIST_ASK_CLIENT_KICK                         :{YELLOW}Are you sure you want to kick player '{RAW_STRING}'?
+STR_NETWORK_CLIENT_LIST_ASK_CLIENT_BAN                          :{YELLOW}Are you sure you want to ban player '{RAW_STRING}'?
+STR_NETWORK_CLIENT_LIST_ASK_COMPANY_RESET                       :{YELLOW}Are you sure you want to delete company '{COMPANY}'?
+STR_NETWORK_CLIENT_LIST_ASK_COMPANY_UNLOCK                      :{YELLOW}Are you sure you want to reset the password of company '{COMPANY}'?
 
 STR_NETWORK_SERVER                                              :Server
 STR_NETWORK_CLIENT                                              :Client
@@ -2600,6 +2589,7 @@ STR_NETWORK_ERROR_SERVER_START                                  :{WHITE}Could no
 STR_NETWORK_ERROR_CLIENT_START                                  :{WHITE}Could not connect
 STR_NETWORK_ERROR_TIMEOUT                                       :{WHITE}Connection #{NUM} timed out
 STR_NETWORK_ERROR_SERVER_ERROR                                  :{WHITE}A protocol error was detected and the connection was closed
+STR_NETWORK_ERROR_BAD_PLAYER_NAME                               :{WHITE}Your player name has not been set. The name can be set at the top of the Multiplayer window
 STR_NETWORK_ERROR_WRONG_REVISION                                :{WHITE}The revision of this client does not match the server's revision
 STR_NETWORK_ERROR_WRONG_PASSWORD                                :{WHITE}Wrong password
 STR_NETWORK_ERROR_SERVER_FULL                                   :{WHITE}The server is full
@@ -2612,6 +2602,7 @@ STR_NETWORK_ERROR_TIMEOUT_PASSWORD                              :{WHITE}You took
 STR_NETWORK_ERROR_TIMEOUT_COMPUTER                              :{WHITE}Your computer is too slow to keep up with the server
 STR_NETWORK_ERROR_TIMEOUT_MAP                                   :{WHITE}Your computer took too long to download the map
 STR_NETWORK_ERROR_TIMEOUT_JOIN                                  :{WHITE}Your computer took too long to join the server
+STR_NETWORK_ERROR_INVALID_CLIENT_NAME                           :{WHITE}Your player name is not valid
 
 ############ Leave those lines in this order!!
 STR_NETWORK_ERROR_CLIENT_GENERAL                                :general error
@@ -2634,6 +2625,7 @@ STR_NETWORK_ERROR_CLIENT_TIMEOUT_PASSWORD                       :received no pas
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_COMPUTER                       :general timeout
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_MAP                            :downloading map took too long
 STR_NETWORK_ERROR_CLIENT_TIMEOUT_JOIN                           :processing map took too long
+STR_NETWORK_ERROR_CLIENT_INVALID_CLIENT_NAME                    :invalid client name
 ############ End of leave-in-this-order
 
 STR_NETWORK_ERROR_CLIENT_GUI_LOST_CONNECTION_CAPTION            :{WHITE}Possible connection loss
@@ -3874,6 +3866,7 @@ STR_NEWGRF_ERROR_MSG_WARNING                                    :{RED}Warning: {
 STR_NEWGRF_ERROR_MSG_ERROR                                      :{RED}Error: {SILVER}{RAW_STRING}
 STR_NEWGRF_ERROR_MSG_FATAL                                      :{RED}Fatal: {SILVER}{RAW_STRING}
 STR_NEWGRF_ERROR_FATAL_POPUP                                    :{WHITE}A fatal NewGRF error has occurred: {}{STRING7}
+STR_NEWGRF_ERROR_POPUP                                          :{WHITE}A NewGRF error has occurred: {}{STRING7}
 STR_NEWGRF_ERROR_VERSION_NUMBER                                 :{1:RAW_STRING} will not work with the TTDPatch version reported by OpenTTD
 STR_NEWGRF_ERROR_DOS_OR_WINDOWS                                 :{1:RAW_STRING} is for the {RAW_STRING} version of TTD
 STR_NEWGRF_ERROR_UNSET_SWITCH                                   :{1:RAW_STRING} is designed to be used with {RAW_STRING}

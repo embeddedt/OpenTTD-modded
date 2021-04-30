@@ -1007,6 +1007,8 @@ STR_GAME_OPTIONS_VIDEO_ACCELERATION                             :{BLACK}Hardware
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_TOOLTIP                     :{BLACK}Selecteer dit vakje om OpenTTD hardwareversnelling te laten gebruiken. De gewijzigde instelling wordt pas van kracht nadat het spel opnieuw is gestart.
 STR_GAME_OPTIONS_VIDEO_ACCELERATION_RESTART                     :{WHITE}De instelling wordt pas van kracht als het spel opnieuw is gestart
 
+STR_GAME_OPTIONS_VIDEO_VSYNC                                    :{BLACK}VSync
+STR_GAME_OPTIONS_VIDEO_VSYNC_TOOLTIP                            :{BLACK}Selecteer dit vakje om het scherm verticaal te synchroniseren. De wijziging gaat pas in nadat je het spel opnieuw hebt opgestart. Werkt alleen als hardwareversnelling is ingeschakeld
 
 STR_GAME_OPTIONS_GUI_ZOOM_FRAME                                 :{BLACK}Menupuntgrootte
 STR_GAME_OPTIONS_GUI_ZOOM_DROPDOWN_TOOLTIP                      :{BLACK}Kiest de grootte van bedieningselementen
@@ -1140,6 +1142,7 @@ STR_CONFIG_SETTING_TREE_CAPTION                                 :{WHITE}Instelli
 STR_CONFIG_SETTING_FILTER_TITLE                                 :{BLACK}Filtertekst:
 STR_CONFIG_SETTING_EXPAND_ALL                                   :{BLACK}Alles uitvouwen
 STR_CONFIG_SETTING_COLLAPSE_ALL                                 :{BLACK}Alles inklappen
+STR_CONFIG_SETTING_RESET_ALL                                    :{BLACK}Alle waarden terugstellen
 STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT            :(geen uitleg beschikbaar)
 STR_CONFIG_SETTING_DEFAULT_VALUE                                :{LTBLUE}Standaardwaarde: {ORANGE}{STRING}
 STR_CONFIG_SETTING_TYPE                                         :{LTBLUE}Instellingstype: {ORANGE}{STRING}
@@ -1148,6 +1151,8 @@ STR_CONFIG_SETTING_TYPE_GAME_MENU                               :Spelinstellinge
 STR_CONFIG_SETTING_TYPE_GAME_INGAME                             :Spelinstellingen (opgeslagen in bestand; alleen van invloed op huidig spel)
 STR_CONFIG_SETTING_TYPE_COMPANY_MENU                            :Bedrijfsinstellingen (opgeslagen in bestand; alleen van invloed op nieuwe spellen)
 STR_CONFIG_SETTING_TYPE_COMPANY_INGAME                          :Bedrijfsinstellingen (opgeslagen in bestand; alleen van invloed op huidig bedrijf)
+STR_CONFIG_SETTING_RESET_ALL_CONFIRMATION_DIALOG_CAPTION        :{WHITE}Voorzichtig!
+STR_CONFIG_SETTING_RESET_ALL_CONFIRMATION_DIALOG_TEXT           :{WHITE}Met deze actie herstel je alle spelinstellingen naar hun standaardwaarden.{}Weet je zeker dat je wilt doorgaan?
 
 STR_CONFIG_SETTING_RESTRICT_CATEGORY                            :{BLACK}Categorie:
 STR_CONFIG_SETTING_RESTRICT_TYPE                                :{BLACK}Type:
@@ -1986,6 +1991,7 @@ STR_FACE_TIE                                                    :Stropdas:
 STR_FACE_EARRING                                                :Oorbel:
 STR_FACE_TIE_EARRING_TOOLTIP                                    :{BLACK}Verander das of oorbel
 
+
 # Network server list
 STR_NETWORK_SERVER_LIST_CAPTION                                 :{WHITE}Netwerkspel
 STR_NETWORK_SERVER_LIST_PLAYER_NAME                             :{BLACK}Spelersnaam:
@@ -2048,10 +2054,6 @@ STR_NETWORK_START_SERVER_NEW_GAME_NAME_TOOLTIP                  :{BLACK}De speln
 STR_NETWORK_START_SERVER_SET_PASSWORD                           :{BLACK}Wachtwoord instellen
 STR_NETWORK_START_SERVER_PASSWORD_TOOLTIP                       :{BLACK}Beveilig je spel met een wachtwoord als je niet wilt dat dit algemeen toegankelijk is
 
-STR_NETWORK_START_SERVER_ADVERTISED_LABEL                       :{BLACK}Openbaar
-STR_NETWORK_START_SERVER_ADVERTISED_TOOLTIP                     :{BLACK}Kies tussen een openbaar (internet) en een niet-openbaar (Local Area Network, LAN) spel
-STR_NETWORK_START_SERVER_UNADVERTISED                           :Nee
-STR_NETWORK_START_SERVER_ADVERTISED                             :Ja
 STR_NETWORK_START_SERVER_CLIENTS_SELECT                         :{BLACK}{NUM} speler{P "" s}
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS                      :{BLACK}Maximumaantal spelers:
 STR_NETWORK_START_SERVER_NUMBER_OF_CLIENTS_TOOLTIP              :{BLACK}Kies het maximaal aantal toegestane spelers. Niet alle posities hoeven gebruikt te worden.
@@ -2065,46 +2067,6 @@ STR_NETWORK_START_SERVER_LANGUAGE_SPOKEN                        :{BLACK}Gesproke
 STR_NETWORK_START_SERVER_LANGUAGE_TOOLTIP                       :{BLACK}Andere spelers zullen weten welke taal er wordt gesproken op de server
 
 STR_NETWORK_START_SERVER_NEW_GAME_NAME_OSKTITLE                 :{BLACK}Geef de naam van het netwerkspel
-
-# Network game languages
-############ Leave those lines in this order!!
-STR_NETWORK_LANG_ANY                                            :Elke
-STR_NETWORK_LANG_ENGLISH                                        :Engels
-STR_NETWORK_LANG_GERMAN                                         :Duits
-STR_NETWORK_LANG_FRENCH                                         :Frans
-STR_NETWORK_LANG_BRAZILIAN                                      :Braziliaans
-STR_NETWORK_LANG_BULGARIAN                                      :Bulgaars
-STR_NETWORK_LANG_CHINESE                                        :Chinees
-STR_NETWORK_LANG_CZECH                                          :Tsjechisch
-STR_NETWORK_LANG_DANISH                                         :Deens
-STR_NETWORK_LANG_DUTCH                                          :Nederlands
-STR_NETWORK_LANG_ESPERANTO                                      :Esperanto
-STR_NETWORK_LANG_FINNISH                                        :Fins
-STR_NETWORK_LANG_HUNGARIAN                                      :Hongaars
-STR_NETWORK_LANG_ICELANDIC                                      :IJslands
-STR_NETWORK_LANG_ITALIAN                                        :Italiaans
-STR_NETWORK_LANG_JAPANESE                                       :Japans
-STR_NETWORK_LANG_KOREAN                                         :Koreaans
-STR_NETWORK_LANG_LITHUANIAN                                     :Litouws
-STR_NETWORK_LANG_NORWEGIAN                                      :Noors
-STR_NETWORK_LANG_POLISH                                         :Pools
-STR_NETWORK_LANG_PORTUGUESE                                     :Portugees
-STR_NETWORK_LANG_ROMANIAN                                       :Roemeens
-STR_NETWORK_LANG_RUSSIAN                                        :Russisch
-STR_NETWORK_LANG_SLOVAK                                         :Slowaaks
-STR_NETWORK_LANG_SLOVENIAN                                      :Sloveens
-STR_NETWORK_LANG_SPANISH                                        :Spaans
-STR_NETWORK_LANG_SWEDISH                                        :Zweeds
-STR_NETWORK_LANG_TURKISH                                        :Turks
-STR_NETWORK_LANG_UKRAINIAN                                      :Oekraïens
-STR_NETWORK_LANG_AFRIKAANS                                      :Afrikaans
-STR_NETWORK_LANG_CROATIAN                                       :Kroatisch
-STR_NETWORK_LANG_CATALAN                                        :Catalaans
-STR_NETWORK_LANG_ESTONIAN                                       :Estisch
-STR_NETWORK_LANG_GALICIAN                                       :Galiciaans
-STR_NETWORK_LANG_GREEK                                          :Grieks
-STR_NETWORK_LANG_LATVIAN                                        :Lets
-############ End of leave-in-this-order
 
 # Network game lobby
 STR_NETWORK_GAME_LOBBY_CAPTION                                  :{WHITE}Verzamelkamer voor netwerkspellen
@@ -2153,19 +2115,13 @@ STR_NETWORK_CONNECTION_DISCONNECT                               :{BLACK}Verbindi
 
 STR_NETWORK_NEED_GAME_PASSWORD_CAPTION                          :{WHITE}Server is beveiligd. Voer wachtwoord in
 STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}Bedrijf is beveiligd. Voer wachtwoord in
-STR_NETWORK_COMPANY_LIST_CLIENT_LIST_CAPTION                    :{WHITE}Spelerslijst
 
 # Network company list added strings
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Spelerslijst
-STR_NETWORK_COMPANY_LIST_SPECTATE                               :Toekijken
-STR_NETWORK_COMPANY_LIST_NEW_COMPANY                            :Nieuw bedrijf
 
 # Network client list
-STR_NETWORK_CLIENTLIST_KICK                                     :Uit het spel schoppen
-STR_NETWORK_CLIENTLIST_BAN                                      :Verbannen
-STR_NETWORK_CLIENTLIST_SPEAK_TO_ALL                             :Met iedereen praten
-STR_NETWORK_CLIENTLIST_SPEAK_TO_COMPANY                         :Met bedrijf praten
-STR_NETWORK_CLIENTLIST_SPEAK_TO_CLIENT                          :Privébericht
+
+
 
 STR_NETWORK_SERVER                                              :Server
 STR_NETWORK_CLIENT                                              :Speler
@@ -2533,7 +2489,7 @@ STR_WATERWAYS_TOOLBAR_BUILD_DOCK_TOOLTIP                        :{BLACK}Haven bo
 STR_WATERWAYS_TOOLBAR_BUOY_TOOLTIP                              :{BLACK}Boei plaatsen, deze kan gebruikt worden voor extra tussenstops. Shift schakelt tussen bouwen/inschatting van de kosten
 STR_WATERWAYS_TOOLBAR_BUILD_AQUEDUCT_TOOLTIP                    :{BLACK}Aquaduct bouwen. Shift schakelt tussen bouwen/inschatting van de kosten.
 STR_WATERWAYS_TOOLBAR_CREATE_LAKE_TOOLTIP                       :{BLACK}Hiermee plaats je watermassa's.{}Maakt een kanaal, tenzij je Ctrl vasthoudt op zeeniveau, dan overstroomt de omgeving.
-STR_WATERWAYS_TOOLBAR_CREATE_RIVER_TOOLTIP                      :{BLACK}Hiermee maak je rivieren
+STR_WATERWAYS_TOOLBAR_CREATE_RIVER_TOOLTIP                      :{BLACK}Hiermee maak je rivieren. Ctrl selecteert het gebied diagonaal
 
 # Ship depot construction window
 STR_DEPOT_BUILD_SHIP_CAPTION                                    :{WHITE}Richting van dok

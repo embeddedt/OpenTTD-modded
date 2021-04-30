@@ -1430,4 +1430,6 @@ void ClearVehicleTickCaches();
 void RemoveFromOtherVehicleTickCache(const Vehicle *v);
 void UpdateAllVehiclesIsDrawn();
 
+void ShiftVehicleDates(int interval);
+
 #endif /* VEHICLE_BASE_H */
