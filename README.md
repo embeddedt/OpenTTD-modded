@@ -14,6 +14,17 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 
 > **⚠️ Note:** OpenTTD-modded should load JGR-compatible and vanilla savegames without issue. I frequently merge JGR's branch into my own so you are not missing out on any JGR patches by using this "modpack". Make sure you backup your existing game before trying it here, though!
 
+### Additional patches included
+
+* [Huge airports](https://www.tt-forums.net/viewtopic.php?f=33&t=56933)
+* [@kiwitreekor's industry production graph](https://github.com/OpenTTD/OpenTTD/pull/7575)
+* Ability to change airplane taxiing speed
+* [Vehicle trip history](https://www.tt-forums.net/viewtopic.php?f=33&t=33411)
+* ["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)
+* Tweaks to road vehicle pathfinding
+* Servers which are "offline" can now be joined (allowing OpenTTD to be used with networks which don't support UDP). Please only use this if you know the server is online, otherwise the game will probably freeze.
+* Allow other players to build additional rails on others' tracks when infrastructure sharing is enabled, however, they **cannot remove anyone else's tracks**.
+
 ## JGR's Patchpack version 0.41.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
