@@ -1663,7 +1663,7 @@ struct IndustryProductionGraphWindow : BaseGraphWindow {
 			}
 
 			case WID_IP_MATRIX: {
-				uint row = this->vscroll->GetScrolledRowFromWidget(pt.y, this, WID_IP_MATRIX, 0, this->line_height);
+                                uint row = this->vscroll->GetScrolledRowFromWidget(pt.y, this, WID_IP_MATRIX);
 				if (row >= this->vscroll->GetCount()) return;
 
 				const Industry *i = Industry::Get(this->window_number);
