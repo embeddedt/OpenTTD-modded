@@ -22,7 +22,6 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * [Vehicle trip history](https://www.tt-forums.net/viewtopic.php?f=33&t=33411)
 * ["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)
 * Tweaks to road vehicle pathfinding
-* Servers which are "offline" can now be joined (allowing OpenTTD to be used with networks which don't support UDP). Please only use this if you know the server is online, otherwise the game will probably freeze.
 * Allow other players to build additional rails on others' tracks when infrastructure sharing is enabled, however, they **cannot remove anyone else's tracks**.
 
 ## JGR's Patchpack version 0.41.0

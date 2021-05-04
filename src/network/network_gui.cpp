@@ -762,10 +762,7 @@ public:
 				if (this->server != nullptr) {
 					seprintf(_settings_client.network.last_host, lastof(_settings_client.network.last_host), "%s", this->server->address.GetHostname());
 					_settings_client.network.last_port = this->server->address.GetPort();
-					if(this->server->online)
-						ShowNetworkLobbyWindow(this->server);
-					else
-						NetworkClientConnectGame(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port), COMPANY_NEW_COMPANY);
+					ShowNetworkLobbyWindow(this->server);
 				}
 				break;
 
