@@ -2783,8 +2783,8 @@ ini_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/ini_type.h
 string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
-network/network_content.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
+network/core/tcp_content_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_station_base.h
 core/pool_type.hpp
@@ -5183,8 +5183,8 @@ company_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
 newgrf_config.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
-network/core/tcp_content.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+network/core/tcp_content_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/fios_gui.cpp
 stdafx.h
@@ -7425,6 +7425,8 @@ os_abstraction.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
 packet.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
+../../string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 ../../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -7629,6 +7631,10 @@ packet.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
 ../../debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+tcp_content_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.cpp
 ../../stdafx.h
@@ -8029,8 +8035,6 @@ network_content.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/network_content_widget.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
-core/address.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
 network_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
 ../console_type.h
@@ -8603,6 +8607,8 @@ progress.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
 video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 textfile_gui.h
@@ -11567,6 +11573,8 @@ saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gamelog_internal.h
 ../fios.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
+../string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
 ../safeguards.h
@@ -11693,6 +11701,8 @@ saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../fios.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
+../string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
 newgrf_sl.h

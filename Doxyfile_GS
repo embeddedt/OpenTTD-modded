@@ -10,7 +10,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "OpenTTD GameScript API"
-PROJECT_NUMBER         = 20210502-stock_jgr-g882f3f70b2
+PROJECT_NUMBER         = 20210503-stock_jgr-g5a2368d531
 OUTPUT_DIRECTORY       = /__w/OpenTTD-modded/OpenTTD-modded/em_build/docs/gs-api/
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English

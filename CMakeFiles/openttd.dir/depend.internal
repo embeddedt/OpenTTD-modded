@@ -716,6 +716,7 @@ CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -2876,6 +2877,7 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -4221,8 +4223,6 @@ CMakeFiles/openttd.dir/src/company_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge.h
@@ -4283,10 +4283,8 @@ CMakeFiles/openttd.dir/src/company_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gui.h
@@ -4596,6 +4594,7 @@ CMakeFiles/openttd.dir/src/console_cmds.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_admin.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
@@ -5109,8 +5108,6 @@ CMakeFiles/openttd.dir/src/date.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_station_base.h
@@ -5167,10 +5164,8 @@ CMakeFiles/openttd.dir/src/date.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -6504,8 +6499,6 @@ CMakeFiles/openttd.dir/src/economy.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_scanner.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft.h
@@ -6590,10 +6583,8 @@ CMakeFiles/openttd.dir/src/economy.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -7444,8 +7435,6 @@ CMakeFiles/openttd.dir/src/error_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -7479,13 +7468,8 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -7553,6 +7537,7 @@ CMakeFiles/openttd.dir/src/fios.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
@@ -7632,6 +7617,7 @@ CMakeFiles/openttd.dir/src/fios_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -9141,8 +9127,6 @@ CMakeFiles/openttd.dir/src/genworld_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -9198,13 +9182,8 @@ CMakeFiles/openttd.dir/src/genworld_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
@@ -9276,8 +9255,6 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/base.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
@@ -9312,10 +9289,8 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -9401,8 +9376,6 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_func.h
@@ -9459,15 +9432,8 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
@@ -10405,8 +10371,6 @@ CMakeFiles/openttd.dir/src/heightmap.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bmp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge.h
@@ -10457,13 +10421,8 @@ CMakeFiles/openttd.dir/src/heightmap.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
@@ -10483,7 +10442,6 @@ CMakeFiles/openttd.dir/src/heightmap.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
@@ -11328,6 +11286,7 @@ CMakeFiles/openttd.dir/src/intro_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -11370,8 +11329,6 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
@@ -11434,13 +11391,8 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
@@ -12758,8 +12710,6 @@ CMakeFiles/openttd.dir/src/misc.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_gui.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_scanner.hpp
@@ -12836,10 +12786,8 @@ CMakeFiles/openttd.dir/src/misc.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -13044,8 +12992,6 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -13091,10 +13037,8 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc_cmd.cpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -13110,7 +13054,6 @@ CMakeFiles/openttd.dir/src/misc_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
@@ -13291,8 +13234,6 @@ CMakeFiles/openttd.dir/src/mixer.cpp.o
 CMakeFiles/openttd.dir/src/music.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_func.h
@@ -13330,15 +13271,8 @@ CMakeFiles/openttd.dir/src/music.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/music.cpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -13570,6 +13504,7 @@ CMakeFiles/openttd.dir/src/network/core/core.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
@@ -13589,6 +13524,7 @@ CMakeFiles/openttd.dir/src/network/core/core.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
@@ -13885,6 +13821,7 @@ CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
@@ -14067,8 +14004,7 @@ CMakeFiles/openttd.dir/src/network/core/udp.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/udp.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/udp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
@@ -14148,6 +14084,7 @@ CMakeFiles/openttd.dir/src/network/network.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_admin.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
@@ -14543,7 +14480,7 @@ CMakeFiles/openttd.dir/src/network/network_client.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
@@ -14769,6 +14706,7 @@ CMakeFiles/openttd.dir/src/network/network_content.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -14926,6 +14864,7 @@ CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content_gui.cpp
@@ -15086,6 +15025,7 @@ CMakeFiles/openttd.dir/src/network/network_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
@@ -15411,8 +15351,6 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
@@ -15489,13 +15427,8 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
@@ -16087,8 +16020,6 @@ CMakeFiles/openttd.dir/src/newgrf_config.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -16126,14 +16057,9 @@ CMakeFiles/openttd.dir/src/newgrf_config.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
@@ -16603,6 +16529,7 @@ CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -18527,7 +18454,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
@@ -18670,8 +18597,6 @@ CMakeFiles/openttd.dir/src/order_backup.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_map.h
@@ -18718,10 +18643,8 @@ CMakeFiles/openttd.dir/src/order_backup.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -19133,8 +19056,6 @@ CMakeFiles/openttd.dir/src/os/unix/crashlog_unix.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_type.h
 CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -19168,13 +19089,8 @@ CMakeFiles/openttd.dir/src/os/unix/unix.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -22113,8 +22029,6 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_gui.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_scanner.hpp
@@ -22213,14 +22127,9 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -22858,8 +22767,6 @@ CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_station_base.h
@@ -22913,13 +22820,8 @@ CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
@@ -22980,8 +22882,6 @@ CMakeFiles/openttd.dir/src/saveload/company_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -23014,13 +22914,8 @@ CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -23035,7 +22930,6 @@ CMakeFiles/openttd.dir/src/saveload/debug_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
@@ -23433,8 +23327,6 @@ CMakeFiles/openttd.dir/src/saveload/game_sl.cpp.o
  generated/script/api/script_window.hpp
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -23452,9 +23344,7 @@ CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
@@ -23468,13 +23358,8 @@ CMakeFiles/openttd.dir/src/saveload/gamelog_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -23869,8 +23754,6 @@ CMakeFiles/openttd.dir/src/saveload/linkgraph_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -23889,9 +23772,7 @@ CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
@@ -23907,13 +23788,8 @@ CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -23928,7 +23804,6 @@ CMakeFiles/openttd.dir/src/saveload/map_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
@@ -24001,7 +23876,7 @@ CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_listen.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
@@ -24055,8 +23930,6 @@ CMakeFiles/openttd.dir/src/saveload/misc_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -24075,9 +23948,7 @@ CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
@@ -24091,13 +23962,8 @@ CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
@@ -24486,8 +24352,6 @@ CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
@@ -24514,10 +24378,8 @@ CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallstack_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/tinystring_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/depot_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
@@ -24535,13 +24397,8 @@ CMakeFiles/openttd.dir/src/saveload/plans_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
@@ -24597,8 +24454,6 @@ CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/articulated_vehicles.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_base.h
@@ -24672,13 +24527,8 @@ CMakeFiles/openttd.dir/src/saveload/saveload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
@@ -24857,8 +24707,6 @@ CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/water_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
@@ -24878,9 +24726,7 @@ CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
@@ -24892,13 +24738,8 @@ CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
@@ -24914,7 +24755,6 @@ CMakeFiles/openttd.dir/src/saveload/signs_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/signs_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
@@ -32699,6 +32539,7 @@ CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
@@ -32875,8 +32716,6 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_config.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_instance.hpp
@@ -32971,14 +32810,9 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/music/music_driver.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -34324,8 +34158,6 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
@@ -34375,16 +34207,9 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/mixer.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.h
@@ -35704,6 +35529,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content.h
@@ -37512,8 +37338,6 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai_gui.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
@@ -37596,14 +37420,9 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gui.h
@@ -40347,7 +40166,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/packet.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
@@ -40613,8 +40432,6 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
@@ -40696,10 +40513,8 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h
@@ -41911,8 +41726,6 @@ CMakeFiles/openttd.dir/src/window.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/base.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/factory.hpp
@@ -41970,10 +41783,8 @@ CMakeFiles/openttd.dir/src/window.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/address.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_type.h

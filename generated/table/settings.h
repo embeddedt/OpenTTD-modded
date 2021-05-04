@@ -119,9 +119,6 @@ static size_t ConvertLandscape(const char *value);
 #define SDT_STR(base, var, type, flags, guiflags, def, str, strhelp, strval, proc, from, to, cat, startup, extver, patxname)\
 	SDT_GENERAL(#var, SDT_STRING, SL_STR, type, flags, guiflags, base, var, sizeof(((base*)8)->var), def, 0, 0, 0, nullptr, str, strhelp, strval, proc, nullptr, from, to, cat, startup, extver, patxname)
 
-#define SDT_CHR(base, var, flags, guiflags, def, str, strhelp, strval, proc, from, to, cat, startup, extver, patxname)\
-	SDT_GENERAL(#var, SDT_STRING, SL_VAR, SLE_CHAR, flags, guiflags, base, var, 1, def, 0, 0, 0, nullptr, str, strhelp, strval, proc, nullptr, from, to, cat, startup, extver, patxname)
-
 #define SDT_OMANY(base, var, type, flags, guiflags, def, max, full, str, strhelp, strval, proc, from, to, load, cat, startup, extver, patxname)\
 	SDT_GENERAL(#var, SDT_ONEOFMANY, SL_VAR, type, flags, guiflags, base, var, 1, def, 0, max, 0, full, str, strhelp, strval, proc, load, from, to, cat, startup, extver, patxname)
 
@@ -189,7 +186,7 @@ SDT_END()
 };
 static const SettingDesc _currency_settings[] = {
 SDT_VAR(CurrencySpec, rate, SLE_UINT16, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 1, 0, UINT16_MAX, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_ADVANCED, false, SlXvFeatureTest(), nullptr, nullptr),
-SDT_CHR(CurrencySpec, separator,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, ".",                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_BASIC, false, SlXvFeatureTest(), nullptr),
+SDT_STR(CurrencySpec, separator, SLE_STRBQ, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, ".",                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_BASIC, false, SlXvFeatureTest(), nullptr),
 SDT_VAR(CurrencySpec, to_euro, SLE_INT32, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 0, MIN_YEAR, MAX_YEAR, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_ADVANCED, false, SlXvFeatureTest(), nullptr, nullptr),
 SDT_STR(CurrencySpec, prefix, SLE_STRBQ, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, nullptr,                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_ADVANCED, false, SlXvFeatureTest(), nullptr),
 SDT_STR(CurrencySpec, suffix, SLE_STRBQ, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, " credits",                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SC_ADVANCED, false, SlXvFeatureTest(), nullptr),

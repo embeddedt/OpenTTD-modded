@@ -8,7 +8,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "OpenTTD Source"
-PROJECT_NUMBER         = 20210502-stock_jgr-g882f3f70b2
+PROJECT_NUMBER         = 20210503-stock_jgr-g5a2368d531
 PROJECT_BRIEF          =
 PROJECT_LOGO           =
 OUTPUT_DIRECTORY       = /__w/OpenTTD-modded/OpenTTD-modded/em_build/docs/source/
