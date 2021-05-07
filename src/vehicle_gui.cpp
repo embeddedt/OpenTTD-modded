@@ -747,8 +747,7 @@ struct RefitWindow : public Window {
 
 			/* Loop through all cargoes in the refit mask */
 			int current_index = 0;
-			const CargoSpec *cs;
-			FOR_ALL_SORTED_CARGOSPECS(cs) {
+			for (const auto &cs : _sorted_cargo_specs) {
 				CargoID cid = cs->Index();
 				/* Skip cargo type if it's not listed */
 				if (!HasBit(cmask, cid)) {
@@ -2533,8 +2532,7 @@ void DirtyVehicleListWindowForVehicle(const Vehicle *v)
 {
 	WindowClass cls = static_cast<WindowClass>(WC_TRAINS_LIST + v->type);
 	WindowClass cls2 = (v->type == VEH_TRAIN) ? WC_TRACE_RESTRICT_SLOTS : cls;
-	Window *w;
-	FOR_ALL_WINDOWS_FROM_BACK(w) {
+	for (Window *w : Window::IterateFromBack()) {
 		if (w->window_class == cls || w->window_class == cls2) {
 			BaseVehicleListWindow *listwin = static_cast<BaseVehicleListWindow *>(w);
 			uint max = std::min<uint>(listwin->vscroll->GetPosition() + listwin->vscroll->GetCapacity(), (uint)listwin->vehgroups.size());

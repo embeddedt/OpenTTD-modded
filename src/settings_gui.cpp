@@ -405,16 +405,6 @@ struct GameOptionsWindow : Window {
 				}
 				break;
 
-			case WID_GO_BASE_SFX_VOLUME:
-			case WID_GO_BASE_MUSIC_VOLUME:
-				size->width = ScaleGUITrad(67);
-				size->height = ScaleGUITrad(12);
-				resize->width = 0;
-				resize->height = 0;
-				fill->width = 0;
-				fill->height = 0;
-				break;
-
 			default: {
 				int selected;
 				DropDownList list = this->BuildDropDownList(widget, &selected);
@@ -533,7 +523,7 @@ struct GameOptionsWindow : Window {
 			case WID_GO_CURRENCY_DROPDOWN: // Currency
 				if (index == CURRENCY_CUSTOM) ShowCustCurrency();
 				this->opt->locale.currency = index;
-				ReInitAllWindows();
+				ReInitAllWindows(false);
 				break;
 
 			case WID_GO_AUTOSAVE_DROPDOWN: // Autosave options
@@ -548,7 +538,7 @@ struct GameOptionsWindow : Window {
 				ClearAllCachedNames();
 				UpdateAllVirtCoords();
 				CheckBlitter();
-				ReInitAllWindows();
+				ReInitAllWindows(false);
 				FlushDeparturesWindowTextCaches();
 				break;
 
@@ -577,7 +567,7 @@ struct GameOptionsWindow : Window {
 					UpdateCursorSize();
 					UpdateAllVirtCoords();
 					FixTitleGameZoom();
-					ReInitAllWindows();
+					ReInitAllWindows(true);
 					FlushDeparturesWindowTextCaches();
 				}
 				break;
@@ -592,6 +582,7 @@ struct GameOptionsWindow : Window {
 					ClearFontCache();
 					LoadStringWidthTable();
 					UpdateAllVirtCoords();
+					ReInitAllWindows(true);
 					FlushDeparturesWindowTextCaches();
 				}
 				break;
@@ -721,7 +712,7 @@ static const NWidgetPart _nested_game_options_widgets[] = {
 			NWidget(NWID_HORIZONTAL), SetPIP(0, 30, 7),
 				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_GO_BASE_SFX_DROPDOWN), SetMinimalSize(150, 12), SetDataTip(STR_BLACK_RAW_STRING, STR_GAME_OPTIONS_BASE_SFX_TOOLTIP),
 				NWidget(NWID_SPACER), SetMinimalSize(150, 12), SetFill(1, 0),
-				NWidget(WWT_EMPTY, COLOUR_GREY, WID_GO_BASE_SFX_VOLUME), SetMinimalSize(67, 12), SetMinimalTextLines(1, 0), SetDataTip(0x0, STR_MUSIC_TOOLTIP_DRAG_SLIDERS_TO_SET_MUSIC),
+				NWidget(WWT_EMPTY, COLOUR_GREY, WID_GO_BASE_SFX_VOLUME), SetMinimalSize(67, 12), SetFill(0, 0), SetDataTip(0x0, STR_MUSIC_TOOLTIP_DRAG_SLIDERS_TO_SET_MUSIC),
 			EndContainer(),
 			NWidget(WWT_TEXT, COLOUR_GREY, WID_GO_BASE_SFX_DESCRIPTION), SetMinimalSize(330, 0), SetDataTip(STR_EMPTY, STR_GAME_OPTIONS_BASE_SFX_DESCRIPTION_TOOLTIP), SetFill(1, 0), SetPadding(6, 0, 6, 0),
 			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE), SetPIP(7, 0, 7),
@@ -735,7 +726,7 @@ static const NWidgetPart _nested_game_options_widgets[] = {
 			NWidget(NWID_HORIZONTAL), SetPIP(0, 30, 7),
 				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_GO_BASE_MUSIC_DROPDOWN), SetMinimalSize(150, 12), SetDataTip(STR_BLACK_RAW_STRING, STR_GAME_OPTIONS_BASE_MUSIC_TOOLTIP),
 				NWidget(WWT_TEXT, COLOUR_GREY, WID_GO_BASE_MUSIC_STATUS), SetMinimalSize(150, 12), SetDataTip(STR_EMPTY, STR_NULL), SetFill(1, 0),
-				NWidget(WWT_EMPTY, COLOUR_GREY, WID_GO_BASE_MUSIC_VOLUME), SetMinimalSize(67, 12), SetMinimalTextLines(1, 0), SetDataTip(0x0, STR_MUSIC_TOOLTIP_DRAG_SLIDERS_TO_SET_MUSIC),
+				NWidget(WWT_EMPTY, COLOUR_GREY, WID_GO_BASE_MUSIC_VOLUME), SetMinimalSize(67, 12), SetFill(0, 0), SetDataTip(0x0, STR_MUSIC_TOOLTIP_DRAG_SLIDERS_TO_SET_MUSIC),
 			EndContainer(),
 			NWidget(WWT_TEXT, COLOUR_GREY, WID_GO_BASE_MUSIC_DESCRIPTION), SetMinimalSize(330, 0), SetDataTip(STR_EMPTY, STR_GAME_OPTIONS_BASE_MUSIC_DESCRIPTION_TOOLTIP), SetFill(1, 0), SetPadding(6, 0, 6, 0),
 			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE), SetPIP(7, 0, 7),

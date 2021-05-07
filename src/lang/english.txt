@@ -2282,6 +2282,7 @@ STR_CHEAT_INFLATION_COST_QUERY_CAPT                             :{WHITE}Change i
 STR_CHEAT_INFLATION_INCOME                                      :{LTBLUE}Change inflation income factor: {ORANGE}{DECIMAL}
 STR_CHEAT_INFLATION_INCOME_QUERY_CAPT                           :{WHITE}Change inflation income factor
 STR_CHEAT_STATION_RATING                                        :{LTBLUE}Stations ratings fixed at 100%: {ORANGE}{STRING1}
+STR_CHEAT_TOWN_RATING                                           :{LTBLUE}Town local authority ratings fixed at Outstanding: {ORANGE}{STRING1}
 
 # Livery window
 STR_LIVERY_CAPTION                                              :{WHITE}{COMPANY} - Colour Scheme
@@ -2654,7 +2655,7 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_JOIN                         :*** {RAW_STRING
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {RAW_STRING} has joined spectators
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {RAW_STRING} has started a new company (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {RAW_STRING} has left the game ({2:STRING})
-STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {RAW_STRING} has changed his/her name to {RAW_STRING}
+STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {RAW_STRING} has changed their name to {RAW_STRING}
 STR_NETWORK_MESSAGE_GIVE_MONEY_RECEIVE                          :*** {RAW_STRING} gave your company {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** You gave {1:RAW_STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {RAW_STRING} gave {2:CURRENCY_LONG} to {1:RAW_STRING}

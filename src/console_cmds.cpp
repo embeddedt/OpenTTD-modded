@@ -71,7 +71,7 @@ public:
 	/** Declare the file storage cache as being invalid, also clears all stored files. */
 	void InvalidateFileList()
 	{
-		this->Clear();
+		this->clear();
 		this->file_list_valid = false;
 	}
 
@@ -462,7 +462,7 @@ DEF_CONSOLE_CMD(ConListFiles)
 	}
 
 	_console_file_list.ValidateFileList(true);
-	for (uint i = 0; i < _console_file_list.Length(); i++) {
+	for (uint i = 0; i < _console_file_list.size(); i++) {
 		IConsolePrintF(CC_DEFAULT, "%d) %s", i, _console_file_list[i].title);
 	}
 
@@ -1514,7 +1514,7 @@ DEF_CONSOLE_CMD(ConScreenShot)
 	ScreenshotType type = SC_VIEWPORT;
 	uint32 width = 0;
 	uint32 height = 0;
-	const char *name = nullptr;
+	std::string name{};
 	uint32 arg_index = 1;
 
 	if (argc > arg_index) {

@@ -910,15 +910,17 @@ const char *GetCharAtPosition(const char *str, int x, FontSize start_fontsize)
 /**
  * Draw single character horizontally centered around (x,y)
  * @param c           Character (glyph) to draw
- * @param x           X position to draw character
- * @param y           Y position to draw character
+ * @param r           Rectangle to draw character within
  * @param colour      Colour to use, for details see _string_colourmap in
  *                    table/palettes.h or docs/ottd-colourtext-palette.png or the enum TextColour in gfx_type.h
  */
-void DrawCharCentered(WChar c, int x, int y, TextColour colour)
+void DrawCharCentered(WChar c, const Rect &r, TextColour colour)
 {
 	SetColourRemap(colour);
-	GfxMainBlitter(GetGlyph(FS_NORMAL, c), x - GetCharacterWidth(FS_NORMAL, c) / 2, y, BM_COLOUR_REMAP);
+	GfxMainBlitter(GetGlyph(FS_NORMAL, c),
+		CenterBounds(r.left, r.right, GetCharacterWidth(FS_NORMAL, c)),
+		CenterBounds(r.top, r.bottom, FONT_HEIGHT_NORMAL),
+		BM_COLOUR_REMAP);
 }
 
 /**
@@ -1311,7 +1313,7 @@ void LoadStringWidthTable(bool monospace)
 		}
 	}
 
-	ReInitAllWindows();
+	ReInitAllWindows(false);
 }
 
 /**
@@ -1561,8 +1563,7 @@ void DrawDirtyBlocks()
 
 	if (_whole_screen_dirty) {
 		RedrawScreenRect(0, 0, _screen.width, _screen.height);
-		Window *w;
-		FOR_ALL_WINDOWS_FROM_BACK(w) {
+		for (Window *w : Window::IterateFromBack()) {
 			w->flags &= ~(WF_DIRTY | WF_WIDGETS_DIRTY | WF_DRAG_DIRTIED);
 		}
 		_whole_screen_dirty = false;
@@ -1579,8 +1580,7 @@ void DrawDirtyBlocks()
 		DrawPixelInfo bk;
 		_cur_dpi = &bk;
 
-		Window *w;
-		FOR_ALL_WINDOWS_FROM_BACK(w) {
+		for (Window *w : Window::IterateFromBack()) {
 			w->flags &= ~WF_DRAG_DIRTIED;
 			if (!MayBeShown(w)) continue;
 
@@ -1640,8 +1640,7 @@ void DrawDirtyBlocks()
 						int right = vp->left + vp->width;
 						int bottom = vp->top + vp->height;
 						_dirty_viewport_occlusions.clear();
-						const Window *v;
-						FOR_ALL_WINDOWS_FROM_BACK_FROM(v, w->z_front) {
+						for (const Window *v : Window::IterateFromBack(w->z_front)) {
 							if (MayBeShown(v) &&
 									right > v->left &&
 									bottom > v->top &&
