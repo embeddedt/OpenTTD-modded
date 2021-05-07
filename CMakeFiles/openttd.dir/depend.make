@@ -9968,6 +9968,7 @@ CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/widgets/graph_widget.h
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/window_func.h
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/window_gui.h
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/window_type.h
+CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/zoom_func.h
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: ../src/zoom_type.h
 CMakeFiles/openttd.dir/src/graph_gui.cpp.o: generated/table/strings.h
 
@@ -11045,6 +11046,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/widgets/smallmap_widget.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/window_func.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/window_gui.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/window_type.h
+CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/zoom_func.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/zoom_type.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: generated/table/strings.h
 
@@ -34148,6 +34150,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/widgets/smallmap_widget.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/window_func.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/window_gui.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/window_type.h
+CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/zoom_func.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/zoom_type.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: generated/table/strings.h
 

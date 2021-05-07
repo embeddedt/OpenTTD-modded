@@ -9969,6 +9969,7 @@ CMakeFiles/openttd.dir/src/graph_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/ground_vehicle.cpp.o
@@ -11046,6 +11047,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/infrastructure.cpp.o
@@ -34149,6 +34151,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/sound.cpp.o

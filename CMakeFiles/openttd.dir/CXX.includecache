@@ -5135,6 +5135,8 @@ fileio_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
 string
 -
+vector
+-
 sys/types.h
 -
 dirent.h
@@ -5909,6 +5911,8 @@ currency.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/currency.h
 industry.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/industry.h
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 widgets/graph_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/graph_widget.h
 table/strings.h
@@ -6375,6 +6379,8 @@ clear_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/clear_map.h
 graph_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 bitset
@@ -7835,10 +7841,6 @@ core/address.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_chat_gui.cpp
-stdarg.h
--
-deque
--
 ../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../strings_func.h
@@ -7869,6 +7871,10 @@ network_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/network_chat_widget.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/table/strings.h
+stdarg.h
+-
+deque
+-
 ../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -11891,6 +11897,8 @@ saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 atomic
 -
+deque
+-
 string
 -
 emscripten.h
@@ -12751,8 +12759,6 @@ map
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_date.cpp
-time.h
--
 ../../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 script_date.hpp
@@ -12761,6 +12767,8 @@ script_date.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 ../../settings_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
+time.h
+-
 ../../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -14141,10 +14149,6 @@ vector
 /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_suspend.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel.cpp
-stdarg.h
--
-map
--
 ../stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../debug.h
@@ -14167,6 +14171,10 @@ sqstdaux.h
 -
 ../core/alloc_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
+stdarg.h
+-
+map
+-
 ../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -14777,6 +14785,8 @@ screenshot.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/screenshot.h
 guitimer_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 smallmap_colours.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/smallmap_colours.h
 smallmap_gui.h
@@ -18166,6 +18176,8 @@ mutex
 thread
 -
 vector
+-
+functional
 -
 ../3rdparty/mingw-std-threads/mingw.mutex.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
