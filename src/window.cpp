@@ -862,8 +862,7 @@ static void DispatchMouseWheelEvent(Window *w, NWidgetCore *nwid, int wheel)
 	if (nwid->type == NWID_VSCROLLBAR) {
 		NWidgetScrollbar *sb = static_cast<NWidgetScrollbar *>(nwid);
 		if (sb->GetCount() > sb->GetCapacity()) {
-			sb->UpdatePosition(wheel);
-			w->SetDirty();
+			if (sb->UpdatePosition(wheel)) w->SetDirty();
 		}
 		return;
 	}
@@ -871,8 +870,7 @@ static void DispatchMouseWheelEvent(Window *w, NWidgetCore *nwid, int wheel)
 	/* Scroll the widget attached to the scrollbar. */
 	Scrollbar *sb = (nwid->scrollbar_index >= 0 ? w->GetScrollbar(nwid->scrollbar_index) : nullptr);
 	if (sb != nullptr && sb->GetCount() > sb->GetCapacity()) {
-		sb->UpdatePosition(wheel);
-		w->SetDirty();
+		if (sb->UpdatePosition(wheel)) w->SetDirty();
 	}
 }
 
@@ -2123,10 +2121,7 @@ static void EnsureVisibleCaption(Window *w, int nx, int ny)
 	Rect caption_rect;
 	const NWidgetBase *caption = w->nested_root->GetWidgetOfType(WWT_CAPTION);
 	if (caption != nullptr) {
-		caption_rect.left   = caption->pos_x;
-		caption_rect.right  = caption->pos_x + caption->current_x;
-		caption_rect.top    = caption->pos_y;
-		caption_rect.bottom = caption->pos_y + caption->current_y;
+		caption_rect = caption->GetCurrentRect();
 
 		/* Make sure the window doesn't leave the screen */
 		nx = Clamp(nx, MIN_VISIBLE_TITLE_BAR - caption_rect.right, _screen.width - MIN_VISIBLE_TITLE_BAR - caption_rect.left);
@@ -2445,8 +2440,7 @@ static void HandleScrollbarScrolling(Window *w)
 	if (sb->disp_flags & ND_SCROLLBAR_BTN) {
 		if (_scroller_click_timeout == 1) {
 			_scroller_click_timeout = 3;
-			sb->UpdatePosition(rtl == HasBit(sb->disp_flags, NDB_SCROLLBAR_UP) ? 1 : -1);
-			w->SetDirty();
+			if (sb->UpdatePosition(rtl == HasBit(sb->disp_flags, NDB_SCROLLBAR_UP) ? 1 : -1)) w->SetDirty();
 		}
 		return;
 	}
@@ -2470,8 +2464,8 @@ static EventState HandleActiveWidget()
 		if (w->mouse_capture_widget >= 0) {
 			/* Abort if no button is clicked any more. */
 			if (!_left_button_down) {
+				w->SetWidgetDirty(w->mouse_capture_widget);
 				w->mouse_capture_widget = -1;
-				w->SetDirty();
 				return ES_HANDLED;
 			}
 

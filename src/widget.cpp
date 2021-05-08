@@ -108,6 +108,7 @@ static void ScrollbarClickPositioning(Window *w, NWidgetScrollbar *sb, int x, in
 	int pos;
 	int button_size;
 	bool rtl = false;
+	bool changed = false;
 
 	if (sb->type == NWID_HSCROLLBAR) {
 		pos = x;
@@ -122,7 +123,7 @@ static void ScrollbarClickPositioning(Window *w, NWidgetScrollbar *sb, int x, in
 		SetBit(sb->disp_flags, NDB_SCROLLBAR_UP);
 		if (_scroller_click_timeout <= 1) {
 			_scroller_click_timeout = 3;
-			sb->UpdatePosition(rtl ? 1 : -1);
+			changed = sb->UpdatePosition(rtl ? 1 : -1);
 		}
 		w->mouse_capture_widget = sb->index;
 	} else if (pos >= ma - button_size) {
@@ -131,16 +132,16 @@ static void ScrollbarClickPositioning(Window *w, NWidgetScrollbar *sb, int x, in
 
 		if (_scroller_click_timeout <= 1) {
 			_scroller_click_timeout = 3;
-			sb->UpdatePosition(rtl ? -1 : 1);
+			changed = sb->UpdatePosition(rtl ? -1 : 1);
 		}
 		w->mouse_capture_widget = sb->index;
 	} else {
 		Point pt = HandleScrollbarHittest(sb, mi, ma, sb->type == NWID_HSCROLLBAR);
 
 		if (pos < pt.x) {
-			sb->UpdatePosition(rtl ? 1 : -1, Scrollbar::SS_BIG);
+			changed = sb->UpdatePosition(rtl ? 1 : -1, Scrollbar::SS_BIG);
 		} else if (pos > pt.y) {
-			sb->UpdatePosition(rtl ? -1 : 1, Scrollbar::SS_BIG);
+			changed = sb->UpdatePosition(rtl ? -1 : 1, Scrollbar::SS_BIG);
 		} else {
 			_scrollbar_start_pos = pt.x - mi - button_size;
 			_scrollbar_size = ma - mi - button_size * 2;
@@ -149,7 +150,13 @@ static void ScrollbarClickPositioning(Window *w, NWidgetScrollbar *sb, int x, in
 		}
 	}
 
-	w->SetDirty();
+	if (changed) {
+		/* Position changed so refresh the window */
+		w->SetDirty();
+	} else {
+		/* No change so only refresh this scrollbar */
+		sb->SetDirty(w);
+	}
 }
 
 /**
@@ -2009,11 +2016,7 @@ void NWidgetBackground::Draw(const Window *w)
 
 	if (this->current_x == 0 || this->current_y == 0) return;
 
-	Rect r;
-	r.left = this->pos_x;
-	r.right = this->pos_x + this->current_x - 1;
-	r.top = this->pos_y;
-	r.bottom = this->pos_y + this->current_y - 1;
+	Rect r = this->GetCurrentRect();
 
 	const DrawPixelInfo *dpi = _cur_dpi;
 	if (dpi->left > r.right || dpi->left + dpi->width <= r.left || dpi->top > r.bottom || dpi->top + dpi->height <= r.top) return;
@@ -2292,11 +2295,7 @@ void NWidgetScrollbar::Draw(const Window *w)
 
 	if (this->current_x == 0 || this->current_y == 0) return;
 
-	Rect r;
-	r.left = this->pos_x;
-	r.right = this->pos_x + this->current_x - 1;
-	r.top = this->pos_y;
-	r.bottom = this->pos_y + this->current_y - 1;
+	Rect r = this->GetCurrentRect();
 
 	const DrawPixelInfo *dpi = _cur_dpi;
 	if (dpi->left > r.right || dpi->left + dpi->width <= r.left || dpi->top > r.bottom || dpi->top + dpi->height <= r.top) return;
@@ -2678,11 +2677,7 @@ void NWidgetLeaf::Draw(const Window *w)
 	DrawPixelInfo *old_dpi = _cur_dpi;
 	_cur_dpi = &new_dpi;
 
-	Rect r;
-	r.left = this->pos_x;
-	r.right = this->pos_x + this->current_x - 1;
-	r.top = this->pos_y;
-	r.bottom = this->pos_y + this->current_y - 1;
+	Rect r = this->GetCurrentRect();
 
 	bool clicked = this->IsLowered();
 	switch (this->type) {
