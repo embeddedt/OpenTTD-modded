@@ -9,7 +9,13 @@ Module['websocket'] = { url: function(host, port, proto) {
      * If you run your own server you can setup your own WebSocket proxy in
      * front of it and let people connect to your server via the proxy. You
      * are best to add another "if" statement as above for this. */
-    return null;
+    if (location.protocol === 'https:') {
+        /* Insecure WebSockets do not work over HTTPS, force secure ones */
+        return "wss://";
+    } else {
+        /* Use default */
+        return null;
+    }
 } };
 
 Module.preRun.push(function() {
