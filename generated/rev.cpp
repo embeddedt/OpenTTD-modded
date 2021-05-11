@@ -35,7 +35,7 @@ bool IsReleasedVersion()
  *
  * <modified> shows a "M", if the binary is made from modified source code.
  */
-const char _openttd_revision[] = "20210510-stock_jgr-gb5cc57e7f7";
+const char _openttd_revision[] = "20210511-stock_jgr-g1ca44f7852";
 
 /**
  * The text version of OpenTTD's build date.
@@ -53,7 +53,7 @@ const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGAC
 /**
  * The git revision hash of this version.
  */
-const char _openttd_revision_hash[] = "b5cc57e7f7c19a509b96824dba8309bb1755aa27";
+const char _openttd_revision_hash[] = "1ca44f78523ea823a962aa6978b18ccd4abdfe3d";
 
 /**
  * The year of this version.
