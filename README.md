@@ -4,6 +4,7 @@ This is my personal collection of patches applied to [JGR's Patch Pack](https://
 
 Prebuilt bundles are linked here:
 
+* Play in your browser: https://embeddedt.github.io/OpenTTD-modded/ 
 * Windows, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x64.zip
 * Windows, 32-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x86.zip
 * Linux, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-linux-generic.zip
@@ -23,6 +24,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * ["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)
 * Tweaks to road vehicle pathfinding
 * Allow other players to build additional rails on others' tracks when infrastructure sharing is enabled, however, they **cannot remove anyone else's tracks**.
+* Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 
 ## JGR's Patchpack version 0.41.1
 
