@@ -711,6 +711,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_WEBSITE,                             "WID_A_WEBSITE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_WEBSITE1,                            "WID_A_WEBSITE1");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_WEBSITE2,                            "WID_A_WEBSITE2");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_WEBSITE3,                            "WID_A_WEBSITE3");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_A_COPYRIGHT,                           "WID_A_COPYRIGHT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QS_CAPTION,                            "WID_QS_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_QS_TEXT,                               "WID_QS_TEXT");
