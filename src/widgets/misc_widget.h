@@ -25,8 +25,9 @@ enum ToolTipsWidgets {
 enum AboutWidgets {
 	WID_A_SCROLLING_TEXT, ///< The actually scrolling text.
 	WID_A_WEBSITE,        ///< URL of OpenTTD website.
-	WID_A_WEBSITE1,       ///< URL of patchpack thread.
-	WID_A_WEBSITE2,       ///< URL of patchpack github.
+	WID_A_WEBSITE1,       ///< URL of JGR's patchpack thread.
+	WID_A_WEBSITE2,       ///< URL of JGR's patchpack github.
+	WID_A_WEBSITE3,       ///< URL of embeddedt's patchpack github.
 	WID_A_COPYRIGHT,      ///< Copyright string
 };
 
