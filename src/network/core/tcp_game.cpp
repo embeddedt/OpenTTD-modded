@@ -25,7 +25,7 @@
  * @param s The socket to connect with.
  */
 NetworkGameSocketHandler::NetworkGameSocketHandler(SOCKET s) : info(nullptr), client_id(INVALID_CLIENT_ID),
-		last_frame(_frame_counter), last_frame_server(_frame_counter)
+		last_frame(_frame_counter), last_frame_server(_frame_counter), last_pkt_type(PACKET_END)
 {
 	this->sock = s;
 	this->last_packet = std::chrono::steady_clock::now();
@@ -67,6 +67,9 @@ NetworkRecvStatus NetworkGameSocketHandler::HandlePacket(Packet *p)
 	PacketGameType type = (PacketGameType)p->Recv_uint8();
 
 	this->last_packet = std::chrono::steady_clock::now();
+	this->last_pkt_type = type;
+
+	DEBUG(net, 3, "[tcp/game] received packet type %d from client %d, %s", type, this->client_id, this->GetDebugInfo().c_str());
 
 	switch (this->HasClientQuit() ? PACKET_END : type) {
 		case PACKET_SERVER_FULL:                  return this->Receive_SERVER_FULL(p);
@@ -207,3 +210,5 @@ NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_MOVE(Packet *p) { ret
 NetworkRecvStatus NetworkGameSocketHandler::Receive_CLIENT_MOVE(Packet *p) { return this->ReceiveInvalidPacket(PACKET_CLIENT_MOVE); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_COMPANY_UPDATE(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_COMPANY_UPDATE); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_CONFIG_UPDATE(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_CONFIG_UPDATE); }
+
+std::string NetworkGameSocketHandler::GetDebugInfo() const { return ""; }

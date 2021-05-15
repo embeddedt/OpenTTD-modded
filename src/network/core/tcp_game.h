@@ -548,6 +548,7 @@ public:
 	uint32 last_frame_server;    ///< Last frame the server has executed
 	CommandQueue incoming_queue; ///< The command-queue awaiting handling
 	std::chrono::steady_clock::time_point last_packet; ///< Time we received the last frame.
+	PacketGameType last_pkt_type;///< Last received packet type
 
 	NetworkRecvStatus CloseConnection(bool error = true) override;
 
@@ -581,6 +582,8 @@ public:
 
 	const char *ReceiveCommand(Packet *p, CommandPacket *cp);
 	void SendCommand(Packet *p, const CommandPacket *cp);
+
+	virtual std::string GetDebugInfo() const;
 };
 
 #endif /* NETWORK_CORE_TCP_GAME_H */

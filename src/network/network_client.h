@@ -86,11 +86,13 @@ public:
 	NetworkRecvStatus CloseConnection(NetworkRecvStatus status) override;
 	void ClientError(NetworkRecvStatus res);
 
+	std::string GetDebugInfo() const override;
+
 	static NetworkRecvStatus SendCompanyInformationQuery();
 
 	static NetworkRecvStatus SendJoin();
 	static NetworkRecvStatus SendCommand(const CommandPacket *cp);
-	static NetworkRecvStatus SendError(NetworkErrorCode errorno);
+	static NetworkRecvStatus SendError(NetworkErrorCode errorno, NetworkRecvStatus recvstatus = NETWORK_RECV_STATUS_OKAY);
 	static NetworkRecvStatus SendDesyncLog(const std::string &log);
 	static NetworkRecvStatus SendDesyncMessage(const char *msg);
 	static NetworkRecvStatus SendQuit();

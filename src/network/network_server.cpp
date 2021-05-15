@@ -132,7 +132,7 @@ struct PacketWriter : SaveFilter {
 		for (auto &p : this->packets) {
 			if (p->GetPacketType() == PACKET_SERVER_MAP_DONE) last_packet = true;
 			socket->SendPacket(std::move(p));
-			
+
 		}
 		this->prepend_packets.clear();
 		this->packets.clear();
@@ -1084,7 +1084,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MAP_OK(Packet *
 		InvalidateWindowData(WC_CLIENT_LIST, 0);
 
 		/* Mark the client as pre-active, and wait for an ACK
-		 *  so we know he is done loading and in sync with us */
+		 *  so we know it is done loading and in sync with us */
 		this->status = STATUS_PRE_ACTIVE;
 		NetworkHandleCommandQueue(this);
 		this->SendFrame();
@@ -1191,9 +1191,14 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 	char str[100];
 	char client_name[NETWORK_CLIENT_NAME_LENGTH];
 	NetworkErrorCode errorno = (NetworkErrorCode)p->Recv_uint8();
+	NetworkRecvStatus rx_status = p->CanReadFromPacket(1) ? (NetworkRecvStatus)p->Recv_uint8() : NETWORK_RECV_STATUS_OKAY;
+	int8 status = p->CanReadFromPacket(1) ? (int8)p->Recv_uint8() : -1;
+	PacketGameType last_pkt_type = p->CanReadFromPacket(1) ? (PacketGameType)p->Recv_uint8() : PACKET_END;
 
 	/* The client was never joined.. thank the client for the packet, but ignore it */
 	if (this->status < STATUS_DONE_MAP || this->HasClientQuit()) {
+		if (_debug_net_level >= 2) GetString(str, GetNetworkErrorMsg(errorno), lastof(str));
+		DEBUG(net, 2, "non-joined client %d reported an error and is closing its connection (%s) (%d, %d, %d)", this->client_id, str, rx_status, status, last_pkt_type);
 		return this->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
 	}
 
@@ -1202,7 +1207,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 	StringID strid = GetNetworkErrorMsg(errorno);
 	GetString(str, strid, lastof(str));
 
-	DEBUG(net, 2, "'%s' reported an error and is closing its connection (%s)", client_name, str);
+	DEBUG(net, 2, "'%s' reported an error and is closing its connection (%s) (%d, %d, %d)", client_name, str, rx_status, status, last_pkt_type);
 
 	NetworkTextMessage(NETWORK_ACTION_LEAVE, CC_DEFAULT, false, client_name, nullptr, strid);
 
@@ -1297,7 +1302,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ACK(Packet *p)
 		/* The client is not yet caught up? */
 		if (frame + DAY_TICKS < _frame_counter) return NETWORK_RECV_STATUS_OKAY;
 
-		/* Now he is! Unpause the game */
+		/* Now it is! Unpause the game */
 		this->status = STATUS_ACTIVE;
 		this->last_token_frame = _frame_counter;
 
@@ -1586,6 +1591,11 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MOVE(Packet *p)
 	/* if we get here we can move the client */
 	NetworkServerDoMove(this->client_id, company_id);
 	return NETWORK_RECV_STATUS_OKAY;
+}
+
+std::string ServerNetworkGameSocketHandler::GetDebugInfo() const
+{
+	return stdstr_fmt("status: %d", this->status);
 }
 
 /**
@@ -1958,14 +1968,14 @@ void NetworkServer_Tick(bool send_frame)
 
 			case NetworkClientSocket::STATUS_MAP_WAIT:
 				/* Send every two seconds a packet to the client, to make sure
-				 * he knows the server is still there; just someone else is
+				 * it knows the server is still there; just someone else is
 				 * still receiving the map. */
 				if (std::chrono::steady_clock::now() > cs->last_packet + std::chrono::seconds(2)) {
 					cs->SendWait();
 					/* We need to reset the timer, as otherwise we will be
 					 * spamming the client. Strictly speaking this variable
 					 * tracks when we last received a packet from the client,
-					 * but as he is waiting, he will not send us any till we
+					 * but as it is waiting, it will not send us any till we
 					 * start sending him data. */
 					cs->last_packet = std::chrono::steady_clock::now();
 				}

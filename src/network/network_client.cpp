@@ -223,8 +223,8 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
  */
 void ClientNetworkGameSocketHandler::ClientError(NetworkRecvStatus res)
 {
-	/* First, send a CLIENT_ERROR to the server, so he knows we are
-	 *  disconnection (and why!) */
+	/* First, send a CLIENT_ERROR to the server, so it knows we are
+	 *  disconnected (and why!) */
 	NetworkErrorCode errorno;
 
 	/* We just want to close the connection.. */
@@ -253,7 +253,7 @@ void ClientNetworkGameSocketHandler::ClientError(NetworkRecvStatus res)
 		this->CloseConnection(res);
 	} else {
 		/* This means we as client made a boo-boo. */
-		SendError(errorno);
+		SendError(errorno, res);
 
 		/* Close connection before we make an emergency save, as the save can
 		 * take a bit of time; better that the server doesn't stall while we
@@ -341,7 +341,7 @@ void ClientNetworkGameSocketHandler::ClientError(NetworkRecvStatus res)
 
 			/* If this is the first time we have a sync-frame, we
 			 *   need to let the server know that we are ready and at the same
-			 *   frame as he is.. so we can start playing! */
+			 *   frame as it is.. so we can start playing! */
 			if (_network_first_time) {
 				_network_first_time = false;
 				SendAck();
@@ -547,11 +547,14 @@ NetworkRecvStatus ClientNetworkGameSocketHandler::SendChat(NetworkAction action,
 }
 
 /** Send an error-packet over the network */
-NetworkRecvStatus ClientNetworkGameSocketHandler::SendError(NetworkErrorCode errorno)
+NetworkRecvStatus ClientNetworkGameSocketHandler::SendError(NetworkErrorCode errorno, NetworkRecvStatus recvstatus)
 {
 	Packet *p = new Packet(PACKET_CLIENT_ERROR, SHRT_MAX);
 
 	p->Send_uint8(errorno);
+	p->Send_uint8(recvstatus);
+	p->Send_uint8(my_client->status);
+	p->Send_uint8(my_client->last_pkt_type);
 	my_client->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -1359,6 +1362,11 @@ void ClientNetworkGameSocketHandler::CheckConnection()
 	ShowErrorMessage(STR_NETWORK_ERROR_CLIENT_GUI_LOST_CONNECTION_CAPTION, STR_NETWORK_ERROR_CLIENT_GUI_LOST_CONNECTION, WL_INFO);
 }
 
+std::string ClientNetworkGameSocketHandler::GetDebugInfo() const
+{
+	return stdstr_fmt("status: %d", this->status);
+}
+
 
 /** Is called after a client is connected to the server */
 void NetworkClient_Connected()
@@ -1528,7 +1536,7 @@ void NetworkClientSetCompanyPassword(const char *password)
 }
 
 /**
- * Tell whether the client has team members where he/she can chat to.
+ * Tell whether the client has team members who they can chat to.
  * @param cio client to check members of.
  * @return true if there is at least one team member.
  */
