@@ -4973,6 +4973,8 @@ core/tinystring_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/tinystring_type.hpp
 newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+3rdparty/cpp-btree/btree_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_func.h
 engine_type.h
@@ -7553,6 +7555,8 @@ string
 -
 functional
 -
+limits
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp.cpp
 ../../stdafx.h
@@ -8693,6 +8697,8 @@ vehicle_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_gui.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 engine_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
 industry.h
@@ -8773,6 +8779,8 @@ newgrf_cache_check.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
 ship.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
+scope_info.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9177,8 +9185,8 @@ vehicle_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
 newgrf_cache_check.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
-scope_info.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9199,6 +9207,8 @@ newgrf_storage.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
 newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+3rdparty/cpp-btree/btree_set.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_station.cpp
 stdafx.h
@@ -11509,6 +11519,8 @@ saveload_internal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_internal.h
 ../engine_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
+../engine_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/engine_func.h
 ../string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 vector
@@ -15857,6 +15869,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.h
 ../newgrf_roadtype.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadtype.h
+../newgrf_cargo.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cargo.h
 ../date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 ../timetable.h
@@ -17321,6 +17335,8 @@ core/random_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 newgrf_generic.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
+date_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/tree_land.h
@@ -17685,6 +17701,8 @@ base_consist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
 newgrf_cache_check.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
+landscape.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
 network/network.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
 list

@@ -2007,6 +2007,9 @@ public:
 		WID_NGRFI_MAINPANEL                          = ::WID_NGRFI_MAINPANEL,                          ///< Panel widget containing the actual data.
 		WID_NGRFI_SCROLLBAR                          = ::WID_NGRFI_SCROLLBAR,                          ///< Scrollbar.
 		WID_NGRFI_REFRESH                            = ::WID_NGRFI_REFRESH,                            ///< Refresh toggle.
+		WID_NGRFI_LOG_CONSOLE                        = ::WID_NGRFI_LOG_CONSOLE,                        ///< Log to console
+		WID_NGRFI_SPRITE_DUMP                        = ::WID_NGRFI_SPRITE_DUMP,                        ///< Dump current sprite group
+		WID_NGRFI_SPRITE_DUMP_SEL                    = ::WID_NGRFI_SPRITE_DUMP_SEL,                    ///< Selection widget for WID_NGRFI_SPRITE_DUMP
 	};
 
 	/** Widgets of the #SpriteAlignerWindow class. */

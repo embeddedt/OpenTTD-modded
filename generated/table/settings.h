@@ -374,7 +374,6 @@ static bool CheckYapfRailSignalPenalties(int32 p1);
 static bool ViewportMapShowTunnelModeChanged(int32 p1);
 static bool ViewportMapLandscapeModeChanged(int32 p1);
 static bool UpdateLinkgraphColours(int32 p1);
-static bool InvalidateAllVehicleImageCaches(int32 p1);
 static bool ClimateThresholdModeChanged(int32 p1);
 static bool UpdateClientName(int32 p1);
 static bool UpdateServerPassword(int32 p1);
@@ -1041,7 +1040,6 @@ SDTC_BOOL(       gui.show_depot_sell_gui,        SLF_NOT_IN_SAVE | SLF_NO_NETWOR
 SDTC_BOOL(       gui.open_vehicle_gui_clone_share,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE, STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_BOOL(       gui.show_newgrf_name,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_CONFIG_SETTING_SHOW_NEWGRF_NAME, STR_CONFIG_SETTING_SHOW_NEWGRF_NAME_HELPTEXT, STR_NULL, RedrawScreen, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr),
 SDTC_VAR(       gui.linkgraph_colours, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_MULTISTRING, 0,       0, 3, 0, STR_CONFIG_SETTING_LINKGRAPH_COLOURS, STR_CONFIG_SETTING_LINKGRAPH_COLOURS_HELPTEXT, STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREEN_TO_RED, UpdateLinkgraphColours, SL_MIN_VERSION, SL_MAX_VERSION,        SC_BASIC, false, SlXvFeatureTest(), nullptr, nullptr),
-SDTC_BOOL(       gui.disable_vehicle_image_update,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_CONFIG_SETTING_DISABLE_VEHICLE_IMAGE_UPDATE, STR_CONFIG_SETTING_DISABLE_VEHICLE_IMAGE_UPDATE_HELPTEXT, STR_NULL, InvalidateAllVehicleImageCaches, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_VAR(       gui.vehicle_names, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_MULTISTRING, 1,       0, 2, 0, STR_CONFIG_SETTING_VEHICLE_NAMES, STR_CONFIG_SETTING_VEHICLE_NAMES_HELPTEXT, STR_CONFIG_SETTING_VEHICLE_NAMES_TRADITIONAL, RedrawScreen, SL_MIN_VERSION, SL_MAX_VERSION,        SC_BASIC, false, SlXvFeatureTest(), nullptr, nullptr),
 SDTC_BOOL(       gui.shade_trees_on_slopes,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, true,                              STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES, STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES_HELPTEXT, STR_NULL, RedrawScreen, SL_MIN_VERSION, SL_MAX_VERSION,        SC_BASIC, false, SlXvFeatureTest(), nullptr),
 #ifdef DEDICATED
