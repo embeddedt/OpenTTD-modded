@@ -933,6 +933,49 @@ static void UpdateVehicleViewportHash(Vehicle *v, int x, int y)
 	}
 }
 
+struct ViewportHashDeferredItem {
+	Vehicle *v;
+	int new_hash;
+	int old_hash;
+};
+static std::vector<ViewportHashDeferredItem> _viewport_hash_deferred;
+
+static void UpdateVehicleViewportHashDeferred(Vehicle *v, int x, int y)
+{
+	int old_x = v->coord.left;
+	int old_y = v->coord.top;
+
+	int new_hash = (x == INVALID_COORD) ? INVALID_COORD : GEN_HASH(x, y);
+	int old_hash = (old_x == INVALID_COORD) ? INVALID_COORD : GEN_HASH(old_x, old_y);
+
+	if (new_hash != old_hash) {
+		_viewport_hash_deferred.push_back({ v, new_hash, old_hash });
+	}
+}
+
+static void ProcessDeferredUpdateVehicleViewportHashes()
+{
+	for (const ViewportHashDeferredItem &item : _viewport_hash_deferred) {
+		Vehicle *v = item.v;
+
+		/* remove from hash table? */
+		if (item.old_hash != INVALID_COORD) {
+			if (v->hash_viewport_next != nullptr) v->hash_viewport_next->hash_viewport_prev = v->hash_viewport_prev;
+			*v->hash_viewport_prev = v->hash_viewport_next;
+		}
+
+		/* insert into hash table? */
+		if (item.new_hash != INVALID_COORD) {
+			Vehicle **new_hash = &_vehicle_viewport_hash[item.new_hash];
+			v->hash_viewport_next = *new_hash;
+			if (v->hash_viewport_next != nullptr) v->hash_viewport_next->hash_viewport_prev = &v->hash_viewport_next;
+			v->hash_viewport_prev = new_hash;
+			*new_hash = v;
+		}
+	}
+	_viewport_hash_deferred.clear();
+}
+
 void ResetVehicleHash()
 {
 	for (Vehicle *v : Vehicle::Iterate()) { v->hash_tile_current = nullptr; }
@@ -1246,7 +1289,7 @@ static void RunVehicleDayProc()
 		if (v == nullptr) continue;
 
 		/* Call the 32-day callback if needed */
-		if ((v->day_counter & 0x1F) == 0 && v->HasEngineType()) {
+		if ((v->day_counter & 0x1F) == 0 && v->HasEngineType() && (Engine::Get(v->engine_type)->callbacks_used & SGCU_VEHICLE_32DAY_CALLBACK) != 0) {
 			uint16 callback = GetVehicleCallback(CBID_VEHICLE_32DAY_CALLBACK, 0, 0, v->engine_type, v);
 			if (callback != CALLBACK_FAILED) {
 				if (HasBit(callback, 0)) {
@@ -1729,9 +1772,11 @@ struct ViewportHashBound {
 	int xl, xu, yl, yu;
 };
 
-static ViewportHashBound GetViewportHashBound(int l, int r, int t, int b) {
-	int xl = (l - (70 * ZOOM_LVL_BASE)) >> (7 + ZOOM_LVL_SHIFT);
-	int xu = (r                       ) >> (7 + ZOOM_LVL_SHIFT);
+static const int VHB_BASE_MARGIN = 70;
+
+static ViewportHashBound GetViewportHashBound(int l, int r, int t, int b, int x_margin, int y_margin) {
+	int xl = (l - ((VHB_BASE_MARGIN + x_margin) * ZOOM_LVL_BASE)) >> (7 + ZOOM_LVL_SHIFT);
+	int xu = (r + (x_margin * ZOOM_LVL_BASE))                 >> (7 + ZOOM_LVL_SHIFT);
 	/* compare after shifting instead of before, so that lower bits don't affect comparison result */
 	if (xu - xl < (1 << 6)) {
 		xl &= 0x3F;
@@ -1742,8 +1787,8 @@ static ViewportHashBound GetViewportHashBound(int l, int r, int t, int b) {
 		xu = 0x3F;
 	}
 
-	int yl = (t - (70 * ZOOM_LVL_BASE)) >> (6 + ZOOM_LVL_SHIFT);
-	int yu = (b                       ) >> (6 + ZOOM_LVL_SHIFT);
+	int yl = (t - ((VHB_BASE_MARGIN + y_margin) * ZOOM_LVL_BASE)) >> (6 + ZOOM_LVL_SHIFT);
+	int yu = (b + (y_margin * ZOOM_LVL_BASE))                 >> (6 + ZOOM_LVL_SHIFT);
 	/* compare after shifting instead of before, so that lower bits don't affect comparison result */
 	if (yu - yl < (1 << 6)) {
 		yl = (yl & 0x3F) << 6;
@@ -1756,11 +1801,8 @@ static ViewportHashBound GetViewportHashBound(int l, int r, int t, int b) {
 	return { xl, xu, yl, yu };
 };
 
-/**
- * Add the vehicle sprites that should be drawn at a part of the screen.
- * @param dpi Rectangle being drawn.
- */
-void ViewportAddVehicles(DrawPixelInfo *dpi)
+template <bool update_vehicles>
+void ViewportAddVehiclesIntl(DrawPixelInfo *dpi)
 {
 	/* The bounding rectangle */
 	const int l = dpi->left;
@@ -1769,19 +1811,45 @@ void ViewportAddVehicles(DrawPixelInfo *dpi)
 	const int b = dpi->top + dpi->height;
 
 	/* The hash area to scan */
-	const ViewportHashBound vhb = GetViewportHashBound(l, r, t, b);
+	const ViewportHashBound vhb = GetViewportHashBound(l, r, t, b,
+			update_vehicles ? MAX_VEHICLE_PIXEL_X - VHB_BASE_MARGIN : 0, update_vehicles ? MAX_VEHICLE_PIXEL_Y - VHB_BASE_MARGIN : 0);
+
+	const int ul = l - (MAX_VEHICLE_PIXEL_X * ZOOM_LVL_BASE);
+	const int ur = r + (MAX_VEHICLE_PIXEL_X * ZOOM_LVL_BASE);
+	const int ut = t - (MAX_VEHICLE_PIXEL_Y * ZOOM_LVL_BASE);
+	const int ub = b + (MAX_VEHICLE_PIXEL_Y * ZOOM_LVL_BASE);
 
 	for (int y = vhb.yl;; y = (y + (1 << 6)) & (0x3F << 6)) {
 		for (int x = vhb.xl;; x = (x + 1) & 0x3F) {
 			const Vehicle *v = _vehicle_viewport_hash[x + y]; // already masked & 0xFFF
 
 			while (v != nullptr) {
-				if (v->IsDrawn() &&
-						l <= v->coord.right &&
-						t <= v->coord.bottom &&
-						r >= v->coord.left &&
-						b >= v->coord.top) {
-					DoDrawVehicle(v);
+				if (v->IsDrawn()) {
+					if (update_vehicles &&
+							HasBit(v->vcache.cached_veh_flags, VCF_IMAGE_REFRESH) &&
+							ul <= v->coord.right &&
+							ut <= v->coord.bottom &&
+							ur >= v->coord.left &&
+							ub >= v->coord.top) {
+						Vehicle *v_mutable = const_cast<Vehicle *>(v);
+						Direction current_direction = v_mutable->GetMapImageDirection();
+						switch (v->type) {
+							case VEH_TRAIN:       Train::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
+							case VEH_ROAD:  RoadVehicle::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
+							case VEH_SHIP:         Ship::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
+							case VEH_AIRCRAFT: Aircraft::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
+							default: break;
+						}
+						v_mutable->UpdateSpriteSeqBound();
+						v_mutable->UpdateViewportDeferred();
+					}
+
+					if (l <= v->coord.right &&
+							t <= v->coord.bottom &&
+							r >= v->coord.left &&
+							b >= v->coord.top) {
+						DoDrawVehicle(v);
+					}
 				}
 				v = v->hash_viewport_next;
 			}
@@ -1790,6 +1858,22 @@ void ViewportAddVehicles(DrawPixelInfo *dpi)
 		}
 
 		if (y == vhb.yu) break;
+	}
+
+	if (update_vehicles) ProcessDeferredUpdateVehicleViewportHashes();
+}
+
+/**
+ * Add the vehicle sprites that should be drawn at a part of the screen.
+ * @param dpi Rectangle being drawn.
+ * @param update_vehicles Whether to update vehicles around drawing rectangle.
+ */
+void ViewportAddVehicles(DrawPixelInfo *dpi, bool update_vehicles)
+{
+	if (update_vehicles) {
+		ViewportAddVehiclesIntl<true>(dpi);
+	} else {
+		ViewportAddVehiclesIntl<false>(dpi);
 	}
 }
 
@@ -1802,7 +1886,7 @@ void ViewportMapDrawVehicles(DrawPixelInfo *dpi, Viewport *vp)
 	const int b = vp->virtual_top + vp->virtual_height;
 
 	/* The hash area to scan */
-	const ViewportHashBound vhb = GetViewportHashBound(l, r, t, b);
+	const ViewportHashBound vhb = GetViewportHashBound(l, r, t, b, 0, 0);
 
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
 	for (int y = vhb.yl;; y = (y + (1 << 6)) & (0x3F << 6)) {
@@ -2530,6 +2614,21 @@ void Vehicle::UpdateViewport(bool dirty)
 			);
 		}
 	}
+}
+
+void Vehicle::UpdateViewportDeferred()
+{
+	Rect new_coord = ConvertRect<Rect16, Rect>(this->sprite_seq_bounds);
+
+	Point pt = RemapCoords(this->x_pos + this->x_offs, this->y_pos + this->y_offs, this->z_pos);
+	new_coord.left   += pt.x;
+	new_coord.top    += pt.y;
+	new_coord.right  += pt.x + 2 * ZOOM_LVL_BASE;
+	new_coord.bottom += pt.y + 2 * ZOOM_LVL_BASE;
+
+	UpdateVehicleViewportHashDeferred(this, new_coord.left, new_coord.top);
+
+	this->coord = new_coord;
 }
 
 /**

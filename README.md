@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Allow other players to build additional rails on others' tracks when infrastructure sharing is enabled, however, they **cannot remove anyone else's tracks**.
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 
-## JGR's Patchpack version 0.41.1
+## JGR's Patchpack version 0.41.2
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -49,6 +49,8 @@ The thread for this patchpack can be found [here](http://www.tt-forums.net/viewt
 See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
 
 See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on how to use some of the included features.
+
+See [installation.md](/installation.md) for instructions on how to install.
 
 (Nearly all of the patches which are listed below have been modified, fixed or extended in some way, and so are not the same as the originals which are linked).
 

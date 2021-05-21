@@ -271,6 +271,9 @@ static DrawPixelInfo _dpi_for_text;
 static ViewportDrawer _vd;
 
 static std::vector<Viewport *> _viewport_window_cache;
+static std::vector<Rect> _viewport_coverage_rects;
+std::vector<Rect> _viewport_vehicle_normal_redraw_rects;
+std::vector<Rect> _viewport_vehicle_map_redraw_rects;
 
 RouteStepsMap _vp_route_steps;
 RouteStepsMap _vp_route_steps_last_mark_dirty;
@@ -343,6 +346,33 @@ static Point MapXYZToViewport(const Viewport *vp, int x, int y, int z)
 	return p;
 }
 
+static void FillViewportCoverageRect()
+{
+	_viewport_coverage_rects.resize(_viewport_window_cache.size());
+	_viewport_vehicle_normal_redraw_rects.clear();
+	_viewport_vehicle_map_redraw_rects.clear();
+
+	for (uint i = 0; i < _viewport_window_cache.size(); i++) {
+		const Viewport *vp = _viewport_window_cache[i];
+		Rect &r = _viewport_coverage_rects[i];
+		r.left = vp->virtual_left;
+		r.top = vp->virtual_top;
+		r.right = vp->virtual_left + vp->virtual_width + (1 << vp->zoom) - 1;
+		r.bottom = vp->virtual_top + vp->virtual_height + (1 << vp->zoom) - 1;
+
+		if (vp->zoom >= ZOOM_LVL_DRAW_MAP) {
+			_viewport_vehicle_map_redraw_rects.push_back(r);
+		} else {
+			_viewport_vehicle_normal_redraw_rects.push_back({
+				r.left - (MAX_VEHICLE_PIXEL_X * ZOOM_LVL_BASE),
+				r.top - (MAX_VEHICLE_PIXEL_Y * ZOOM_LVL_BASE),
+				r.right + (MAX_VEHICLE_PIXEL_X * ZOOM_LVL_BASE),
+				r.bottom + (MAX_VEHICLE_PIXEL_Y * ZOOM_LVL_BASE),
+			});
+		}
+	}
+}
+
 void ClearViewportLandPixelCache(Viewport *vp)
 {
 	vp->land_pixel_cache.assign(vp->land_pixel_cache.size(), 0xD7);
@@ -376,6 +406,7 @@ void DeleteWindowViewport(Window *w)
 	delete w->viewport->overlay;
 	delete w->viewport;
 	w->viewport = nullptr;
+	FillViewportCoverageRect();
 }
 
 /**
@@ -439,6 +470,7 @@ void InitializeWindowViewport(Window *w, int x, int y,
 
 	w->viewport = vp;
 	_viewport_window_cache.push_back(vp);
+	FillViewportCoverageRect();
 }
 
 static Point _vp_move_offs;
@@ -699,6 +731,8 @@ static void SetViewportPosition(Window *w, int x, int y, bool force_update_overl
 			SCOPE_INFO_FMT([&], "DoSetViewportPosition: %d, %d, %d, %d, %d, %d, %s", left, top, width, height, _vp_move_offs.x, _vp_move_offs.y, scope_dumper().WindowInfo(w));
 			DoSetViewportPosition((Window *) w->z_front, left, top, width, height);
 			ClearViewportCache(w->viewport);
+			FillViewportCoverageRect();
+			w->viewport->update_vehicles = true;
 		}
 	}
 }
@@ -3278,7 +3312,7 @@ void ViewportDoDraw(Viewport *vp, int left, int top, int right, int bottom)
 	} else {
 		/* Classic rendering. */
 		ViewportAddLandscape();
-		ViewportAddVehicles(&_vd.dpi);
+		ViewportAddVehicles(&_vd.dpi, vp->update_vehicles);
 
 		ViewportAddKdtreeSigns(&_vd.dpi, false);
 
@@ -3493,6 +3527,8 @@ void UpdateViewportSizeZoom(Viewport *vp)
 		vp->land_pixel_cache.clear();
 		vp->land_pixel_cache.shrink_to_fit();
 	}
+	vp->update_vehicles = true;
+	FillViewportCoverageRect();
 }
 
 void UpdateActiveScrollingViewport(Window *w)
@@ -3611,9 +3647,16 @@ void MarkViewportDirty(Viewport * const vp, int left, int top, int right, int bo
  */
 void MarkAllViewportsDirty(int left, int top, int right, int bottom, ViewportMarkDirtyFlags flags)
 {
-	for (Viewport * const vp : _viewport_window_cache) {
-		if (flags & VMDF_NOT_MAP_MODE && vp->zoom >= ZOOM_LVL_DRAW_MAP) continue;
-		MarkViewportDirty(vp, left, top, right, bottom, flags);
+	for (uint i = 0; i < _viewport_window_cache.size(); i++) {
+		if (flags & VMDF_NOT_MAP_MODE && _viewport_window_cache[i]->zoom >= ZOOM_LVL_DRAW_MAP) continue;
+		const Rect &r = _viewport_coverage_rects[i];
+		if (left >= r.right ||
+				right <= r.left ||
+				top >= r.bottom ||
+				bottom <= r.top) {
+			continue;
+		}
+		MarkViewportDirty(_viewport_window_cache[i], left, top, right, bottom, flags);
 	}
 }
 

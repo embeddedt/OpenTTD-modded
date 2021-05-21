@@ -67,12 +67,28 @@ void NetworkTCPSocketHandler::SendPacket(std::unique_ptr<Packet> packet)
  * if the OS-network-buffer is full)
  * @param packet the packet to send
  */
-void NetworkTCPSocketHandler::SendPrependPacket(std::unique_ptr<Packet> packet)
+void NetworkTCPSocketHandler::SendPrependPacket(std::unique_ptr<Packet> packet, int queue_after_packet_type)
 {
 	assert(packet != nullptr);
 
 	packet->PrepareToSend();
 
+	if (queue_after_packet_type >= 0) {
+		for (auto iter = this->packet_queue.begin(); iter != this->packet_queue.end(); ++iter) {
+			if ((*iter)->GetPacketType() == queue_after_packet_type) {
+				++iter;
+				this->packet_queue.insert(iter, std::move(packet));
+				return;
+			}
+		}
+	}
+
+	/* The very first packet in the queue may be partially written out, so cannot be replaced.
+	 * If the queue is non-empty, swap packet with the first packet in the queue.
+	 * The insert the packet (either the incoming packet or the previous first packet) at the front. */
+	if (!this->packet_queue.empty()) {
+		packet.swap(this->packet_queue.front());
+	}
 	this->packet_queue.push_front(std::move(packet));
 }
 
@@ -118,6 +134,7 @@ SendPacketsState NetworkTCPSocketHandler::SendPackets(bool closing_down)
 		/* Is this packet sent? */
 		if (p->RemainingBytesToTransfer() == 0) {
 			/* Go to the next packet */
+			if (_debug_net_level >= 3) this->LogSentPacket(*p);
 			this->packet_queue.pop_front();
 		} else {
 			return SPS_PARTLY_SENT;
@@ -167,6 +184,7 @@ std::unique_ptr<Packet> NetworkTCPSocketHandler::ReceivePacket()
 
 		/* Parse the size in the received packet and if not valid, close the connection. */
 		if (!p->ParsePacketSize()) {
+			DEBUG(net, 0, "ParsePacketSize failed, possible packet stream corruption");
 			this->CloseConnection();
 			return nullptr;
 		}
@@ -199,6 +217,8 @@ std::unique_ptr<Packet> NetworkTCPSocketHandler::ReceivePacket()
 	/* Prepare for receiving a new packet */
 	return std::move(this->packet_recv);
 }
+
+void NetworkTCPSocketHandler::LogSentPacket(const Packet &pkt) {}
 
 /**
  * Check whether this socket can send or receive something.

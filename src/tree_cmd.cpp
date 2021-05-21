@@ -22,6 +22,7 @@
 #include "company_base.h"
 #include "core/random_func.hpp"
 #include "newgrf_generic.h"
+#include "date_func.h"
 
 #include "table/strings.h"
 #include "table/tree_land.h"
@@ -925,6 +926,23 @@ static void TileLoop_Trees(TileIndex tile)
 	MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
 }
 
+/**
+ * Decrement the tree tick counter.
+ * The interval is scaled by map size to allow for the same density regardless of size.
+ * Adjustment for map sizes below the standard 256 * 256 are handled earlier.
+ * @return number of trees to try to plant
+ */
+uint DecrementTreeCounter()
+{
+	uint scaled_map_size = ScaleByMapSize(1);
+	if (scaled_map_size >= 256) return scaled_map_size >> 8;
+
+	/* byte underflow */
+	byte old_trees_tick_ctr = _trees_tick_ctr;
+	_trees_tick_ctr -= scaled_map_size;
+	return old_trees_tick_ctr <= _trees_tick_ctr ? 1 : 0;
+}
+
 void OnTick_Trees()
 {
 	/* Don't spread trees if that's not allowed */
@@ -934,22 +952,32 @@ void OnTick_Trees()
 	TileIndex tile;
 	TreeType tree;
 
+	/* Skip some tree ticks for map sizes below 256 * 256. 64 * 64 is 16 times smaller, so
+	 * this is the maximum number of ticks that are skipped. Number of ticks to skip is
+	 * inversely proportional to map size, so that is handled to create a mask. */
+	int skip = ScaleByMapSize(16);
+	if (skip < 16 && (_tick_counter & (16 / skip - 1)) != 0) return;
+
 	/* place a tree at a random rainforest spot */
-	if (_settings_game.game_creation.landscape == LT_TROPIC &&
-			(r = Random(), tile = RandomTileSeed(r), GetTropicZone(tile) == TROPICZONE_RAINFOREST) &&
-			CanPlantTreesOnTile(tile, false) &&
-			(tree = GetRandomTreeType(tile, GB(r, 24, 8))) != TREE_INVALID) {
-		PlantTreesOnTile(tile, tree, 0, 0);
+	if (_settings_game.game_creation.landscape == LT_TROPIC) {
+		for (uint c = ScaleByMapSize(1); c > 0; c--) {
+			if ((r = Random(), tile = RandomTileSeed(r), GetTropicZone(tile) == TROPICZONE_RAINFOREST) &&
+				CanPlantTreesOnTile(tile, false) &&
+				(tree = GetRandomTreeType(tile, GB(r, 24, 8))) != TREE_INVALID) {
+				PlantTreesOnTile(tile, tree, 0, 0);
+			}
+		}
 	}
 
-	/* byte underflow */
-	if (--_trees_tick_ctr != 0 || _settings_game.construction.extra_tree_placement == ETP_SPREAD_RAINFOREST) return;
+	if (_settings_game.construction.extra_tree_placement == ETP_SPREAD_RAINFOREST) return;
 
-	/* place a tree at a random spot */
-	r = Random();
-	tile = RandomTileSeed(r);
-	if (CanPlantTreesOnTile(tile, false) && (tree = GetRandomTreeType(tile, GB(r, 24, 8))) != TREE_INVALID) {
-		PlantTreesOnTile(tile, tree, 0, 0);
+	for (uint ctr = DecrementTreeCounter(); ctr > 0; ctr--) {
+		/* place a tree at a random spot */
+		r = Random();
+		tile = RandomTileSeed(r);
+		if (CanPlantTreesOnTile(tile, false) && (tree = GetRandomTreeType(tile, GB(r, 24, 8))) != TREE_INVALID) {
+			PlantTreesOnTile(tile, tree, 0, 0);
+		}
 	}
 }
 
