@@ -3,14 +3,14 @@ The host system is: Linux - 5.4.0-1047-azure - x86_64
 Determining if the pthread_create exist passed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_471e0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_471e0.dir/build.make CMakeFiles/cmTC_471e0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_57b53/fast"
+/usr/bin/make -f CMakeFiles/cmTC_57b53.dir/build.make CMakeFiles/cmTC_57b53.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_471e0.dir/CheckSymbolExists.c.o
-/emsdk/upstream/emscripten/emcc    -o CMakeFiles/cmTC_471e0.dir/CheckSymbolExists.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_471e0.js
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_471e0.dir/link.txt --verbose=1
-/emsdk/upstream/emscripten/emcc     -rdynamic  @CMakeFiles/cmTC_471e0.dir/objects1.rsp  -o cmTC_471e0.js 
+Building C object CMakeFiles/cmTC_57b53.dir/CheckSymbolExists.c.o
+/emsdk/upstream/emscripten/emcc    -o CMakeFiles/cmTC_57b53.dir/CheckSymbolExists.c.o   -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_57b53.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_57b53.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/emcc     -rdynamic  @CMakeFiles/cmTC_57b53.dir/objects1.rsp  -o cmTC_57b53.js 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
 
 File /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
@@ -31,14 +31,14 @@ int main(int argc, char** argv)
 Performing C++ SOURCE FILE Test DEMANGLE_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_2bfa3/fast"
-/usr/bin/make -f CMakeFiles/cmTC_2bfa3.dir/build.make CMakeFiles/cmTC_2bfa3.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_97219/fast"
+/usr/bin/make -f CMakeFiles/cmTC_97219.dir/build.make CMakeFiles/cmTC_97219.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_2bfa3.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DDEMANGLE_FOUND   -std=c++17 -o CMakeFiles/cmTC_2bfa3.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_2bfa3.js
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_2bfa3.dir/link.txt --verbose=1
-/emsdk/upstream/emscripten/em++   -DDEMANGLE_FOUND   -rdynamic  @CMakeFiles/cmTC_2bfa3.dir/objects1.rsp  -o cmTC_2bfa3.js 
+Building CXX object CMakeFiles/cmTC_97219.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DDEMANGLE_FOUND   -std=c++17 -o CMakeFiles/cmTC_97219.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_97219.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_97219.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DDEMANGLE_FOUND   -rdynamic  @CMakeFiles/cmTC_97219.dir/objects1.rsp  -o cmTC_97219.js 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
 
 Source file was:
@@ -52,14 +52,14 @@ Source file was:
 Performing C++ SOURCE FILE Test SIGACTION_FOUND succeeded with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_74041/fast"
-/usr/bin/make -f CMakeFiles/cmTC_74041.dir/build.make CMakeFiles/cmTC_74041.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_9a6d7/fast"
+/usr/bin/make -f CMakeFiles/cmTC_9a6d7.dir/build.make CMakeFiles/cmTC_9a6d7.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_74041.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DSIGACTION_FOUND   -std=c++17 -o CMakeFiles/cmTC_74041.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_74041.js
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_74041.dir/link.txt --verbose=1
-/emsdk/upstream/emscripten/em++   -DSIGACTION_FOUND   -rdynamic  @CMakeFiles/cmTC_74041.dir/objects1.rsp  -o cmTC_74041.js 
+Building CXX object CMakeFiles/cmTC_9a6d7.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DSIGACTION_FOUND   -std=c++17 -o CMakeFiles/cmTC_9a6d7.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_9a6d7.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9a6d7.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DSIGACTION_FOUND   -rdynamic  @CMakeFiles/cmTC_9a6d7.dir/objects1.rsp  -o cmTC_9a6d7.js 
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
 
 Source file was:
