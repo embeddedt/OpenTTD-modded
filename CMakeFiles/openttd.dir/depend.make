@@ -1383,6 +1383,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/checksum_func.hpp
+CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -1470,6 +1471,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/road_map.h
@@ -1497,6 +1499,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o: ../src/station_func.h
@@ -1560,6 +1563,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -1615,6 +1619,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/road_map.h
@@ -1629,6 +1634,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o: ../src/station_map.h
@@ -2578,6 +2584,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/core/geometry_type.hpp
@@ -2591,6 +2598,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/driver.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/economy_type.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/landscape_type.h
@@ -2598,9 +2606,11 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/linkgraph/linkgraph_
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o: ../src/string_func.h
@@ -2620,15 +2630,19 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/blitter/common.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/geometry_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/core/math_func.hpp
+CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o: ../src/string_type.h
@@ -2647,6 +2661,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/core/geometry_type.hpp
@@ -2659,6 +2674,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/economy_type.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/landscape_type.h
@@ -2666,9 +2682,11 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/linkgraph/linkg
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o: ../src/string_func.h
@@ -2687,6 +2705,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/blitter/factory.hp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/geometry_type.hpp
@@ -2694,11 +2713,14 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/core/string_compare_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o: ../src/string_func.h
@@ -2714,15 +2736,20 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/blitter/base.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/blitter/common.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/alloc_type.hpp
+CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/geometry_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/core/math_func.hpp
+CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o: ../src/string_type.h
@@ -2740,6 +2767,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/core/geometry_type.hpp
@@ -2752,15 +2780,18 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/economy_type.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o: ../src/string_func.h
@@ -2779,6 +2810,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/blitter/factory.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/geometry_type.hpp
@@ -2786,10 +2818,13 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/core/string_compare_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o: ../src/string_func.h
@@ -2804,6 +2839,7 @@ CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/blitter/null.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/geometry_type.hpp
@@ -2811,10 +2847,13 @@ CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/core/string_compare_type.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/blitter/null.cpp.o: ../src/string_func.h
@@ -2852,6 +2891,7 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -2893,9 +2933,11 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/newgrf_config.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/newgrf_text.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o: ../src/string_func.h
@@ -4051,6 +4093,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -4145,6 +4188,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/road_map.h
@@ -4175,6 +4219,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/company_cmd.cpp.o: ../src/station_func.h
@@ -4963,6 +5008,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/core/geometry_type.hpp
@@ -5016,6 +5062,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/news_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/safeguards.h
@@ -5041,6 +5088,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/sound/sound_driver.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/crashlog.cpp.o: ../src/string_func.h
@@ -5893,6 +5941,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -5958,6 +6007,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/road_map.h
@@ -5974,6 +6024,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/depot_gui.cpp.o: ../src/station_map.h
@@ -7458,6 +7509,7 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/core/geometry_type.hpp
@@ -7490,10 +7542,13 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/newgrf_text.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/sound_type.h
+CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/spriteloader/sprite_file_type.hpp
+CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/fileio.cpp.o: ../src/string_type.h
@@ -7682,6 +7737,7 @@ CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/blitter/factory.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/core/geometry_type.hpp
@@ -7702,8 +7758,10 @@ CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/gfx_layout.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/fontcache.cpp.o: ../src/string_func.h
@@ -9279,6 +9337,7 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/core/geometry_type.hpp
@@ -9317,10 +9376,12 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/progress.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/gfx.cpp.o: ../src/string_func.h
@@ -9351,6 +9412,7 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o: generated/table/strings.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/geometry_type.hpp
@@ -9360,6 +9422,7 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/smallmap_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/core/smallvec_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/fontcache.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/gfx_layout.cpp
@@ -9368,8 +9431,10 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/os/macosx/string_osx.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/os/windows/string_uniscribe.h
+CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/gfx_layout.cpp.o: ../src/string_base.h
@@ -9409,6 +9474,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/core/geometry_type.hpp
@@ -9455,6 +9521,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/newgrf_text.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/road_map.h
@@ -9467,6 +9534,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/gfxinit.cpp.o: ../src/stdafx.h
@@ -10924,6 +10992,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -11002,6 +11071,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/road_map.h
@@ -11020,6 +11090,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/industry_gui.cpp.o: ../src/station_func.h
@@ -11370,6 +11441,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/core/geometry_type.hpp
@@ -11434,6 +11506,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/pathfinder/npf/aystar.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/pathfinder/npf/queue.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/road_map.h
@@ -11450,6 +11523,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/landscape.cpp.o: ../src/stdafx.h
@@ -11838,6 +11912,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -11899,6 +11974,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/os/macosx/osx_s
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/road_map.h
@@ -11914,6 +11990,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o: ../src/station_func.h
@@ -12445,6 +12522,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -12520,6 +12598,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/progress.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/road_map.h
@@ -12537,6 +12616,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/main_gui.cpp.o: ../src/station_func.h
@@ -13259,65 +13339,40 @@ CMakeFiles/openttd.dir/src/mixer.cpp.o: ../src/zoom_type.h
 
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/3rdparty/optional/optional.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/3rdparty/optional/ottd_optional.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/autoreplace_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/base_media_base.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/base_media_func.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/cargo_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/cargotype.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/company_base.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/geometry_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/mem_func.hpp
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/overflowsafe_type.hpp
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/pool_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/smallmap_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/core/smallvec_type.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/cpu.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/debug.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/economy_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/engine_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/fileio_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/fios.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/gfx_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/group.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/ini_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/landscape_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/linkgraph/linkgraph_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/livery.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/music.cpp
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/network/core/tcp_content_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/newgrf_config.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/newgrf_text.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/os/macosx/osx_stdafx.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/rail_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/road_type.h
+CMakeFiles/openttd.dir/src/music.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/safeguards.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/settings_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/string_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/strings_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/textfile_gui.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/textfile_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/tile_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/town_type.h
-CMakeFiles/openttd.dir/src/music.cpp.o: ../src/transport_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/vehicle_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/viewport_type.h
 CMakeFiles/openttd.dir/src/music.cpp.o: ../src/widget_type.h
@@ -14344,6 +14399,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -14401,6 +14457,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/road_map.h
@@ -14411,6 +14468,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/slope_func.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o: ../src/stdafx.h
@@ -15396,6 +15454,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/core/geometry_type.hpp
@@ -15489,6 +15548,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/road_func.h
@@ -15505,6 +15565,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/newgrf.cpp.o: ../src/station_func.h
@@ -15805,6 +15866,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/core/geometry_type.hpp
@@ -15844,6 +15906,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/settings_type.h
@@ -15851,6 +15914,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o: ../src/stdafx.h
@@ -16143,6 +16207,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -16167,7 +16232,6 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/economy_func.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/engine_base.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/engine_type.h
-CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/gfx_type.h
@@ -16224,6 +16288,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/road_map.h
@@ -16241,6 +16306,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/station_func.h
@@ -17153,6 +17219,7 @@ CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/core/geometry_type.hpp
@@ -17186,10 +17253,12 @@ CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/newgrf_storage.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o: ../src/string_func.h
@@ -17420,6 +17489,7 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/core/geometry_type.hpp
@@ -17441,7 +17511,6 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/direction_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/engine_base.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/engine_type.h
-CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/gfx_type.h
@@ -17472,6 +17541,7 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o: ../src/schdispatch.h
@@ -18415,6 +18485,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/checksum_func.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/core/geometry_type.hpp
@@ -18530,6 +18601,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/road_func.h
@@ -18569,6 +18641,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/sound/sound_driver.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/openttd.cpp.o: ../src/station_func.h
@@ -20667,6 +20740,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -20743,6 +20817,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/rail_cmd.cpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/road_map.h
@@ -20759,6 +20834,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/rail_cmd.cpp.o: ../src/station_map.h
@@ -20833,6 +20909,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -20900,6 +20977,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/rail_gui.cpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/road_map.h
@@ -20916,6 +20994,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/station_gui.h
@@ -20970,6 +21049,22 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/window_type.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/zoom_func.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: ../src/zoom_type.h
 CMakeFiles/openttd.dir/src/rail_gui.cpp.o: generated/table/strings.h
+
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/core/endian_func.hpp
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/core/endian_type.hpp
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/core/enum_type.hpp
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/cpu.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/fileio_func.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/fileio_type.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/random_access_file.cpp
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/random_access_file_type.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/safeguards.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/stdafx.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/string_func.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o: ../src/string_type.h
 
 CMakeFiles/openttd.dir/src/road.cpp.o: ../src/3rdparty/cpp-btree/btree.h
 CMakeFiles/openttd.dir/src/road.cpp.o: ../src/3rdparty/cpp-btree/btree_container.h
@@ -21719,6 +21814,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/checksum_func.hpp
+CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -21808,6 +21904,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/road_map.h
@@ -21840,6 +21937,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o: ../src/station_func.h
@@ -22111,6 +22209,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/core/geometry_type.hpp
@@ -22213,6 +22312,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/road_cmd.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/road_func.h
@@ -22253,6 +22353,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o: ../src/station_func.h
@@ -25963,6 +26064,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -25983,6 +26085,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/direction_func.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/direction_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/engine_type.h
+CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/group_type.h
@@ -26001,6 +26104,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/schdispatch.h
@@ -26009,6 +26113,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/stdafx.h
@@ -26266,6 +26371,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/road_func.h
@@ -26290,6 +26396,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/station_func.h
@@ -32818,6 +32925,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/core/geometry_type.hpp
@@ -32917,6 +33025,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/road_func.h
@@ -32958,6 +33067,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_func.h
@@ -33114,6 +33224,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -33178,6 +33289,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/road_func.h
@@ -33208,6 +33320,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/stdafx.h
@@ -33349,6 +33462,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/checksum_func.hpp
+CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -33442,6 +33556,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/pathfinder/yapf/yapf.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/road_map.h
@@ -33472,6 +33587,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/ship_cmd.cpp.o: ../src/station_func.h
@@ -33532,6 +33648,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -33572,6 +33689,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/schdispatch.h
@@ -33580,6 +33698,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/ship_gui.cpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/ship_gui.cpp.o: ../src/stdafx.h
@@ -34169,6 +34288,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/road_map.h
@@ -34188,6 +34308,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o: ../src/station_func.h
@@ -34241,7 +34362,6 @@ CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/3rdparty/cpp-btree/btree_map.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/3rdparty/cpp-btree/btree_set.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/3rdparty/optional/optional.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/3rdparty/optional/ottd_optional.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/autoreplace_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/base_consist.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/base_media_base.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/base_media_func.h
@@ -34249,11 +34369,11 @@ CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/cargo_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/cargopacket.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/cargotype.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/command_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/company_base.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/core/geometry_type.hpp
@@ -34276,33 +34396,28 @@ CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/engine_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/fileio_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/fios.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/gfx_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/ini_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/landscape.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/linkgraph/linkgraph_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/livery.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/map_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/map_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/misc/countedptr.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/mixer.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/network/core/tcp_content_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/newgrf_cache_check.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/newgrf_config.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/newgrf_sound.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/newgrf_text.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/order_base.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/schdispatch.h
@@ -34316,7 +34431,6 @@ CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/string_type.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/strings_type.h
-CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/texteff.hpp
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/textfile_gui.h
 CMakeFiles/openttd.dir/src/sound.cpp.o: ../src/textfile_type.h
@@ -34374,6 +34488,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/core/geometry_type.hpp
@@ -34392,6 +34507,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/direction_func.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/direction_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/engine_type.h
+CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/group_type.h
@@ -34409,6 +34525,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/order_func.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/order_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/schdispatch.h
@@ -34418,6 +34535,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/sprite.cpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/sprite.cpp.o: ../src/stdafx.h
@@ -34462,6 +34580,7 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/core/geometry_type.hpp
@@ -34476,7 +34595,6 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/driver.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/error.h
-CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/gfx_type.h
@@ -34486,12 +34604,14 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/scope_info.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spritecache.cpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spritecache.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spriteloader/grf.hpp
+CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/spritecache.cpp.o: ../src/string_func.h
@@ -34513,6 +34633,7 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/core/geometry_type.hpp
@@ -34525,7 +34646,6 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/economy_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/error.h
-CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/fileio_func.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/gfx_type.h
@@ -34535,10 +34655,12 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/linkgraph/linkgraph_ty
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/grf.cpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/grf.hpp
+CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/string_type.h
@@ -34548,6 +34670,17 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/town_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/transport_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: ../src/zoom_type.h
 CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o: generated/table/strings.h
+
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/core/endian_func.hpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/core/endian_type.hpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/core/enum_type.hpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/fileio_type.h
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/random_access_file_type.h
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/spriteloader/sprite_file.cpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/spriteloader/sprite_file_type.hpp
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o: ../src/stdafx.h
 
 CMakeFiles/openttd.dir/src/station.cpp.o: ../src/3rdparty/cpp-btree/btree.h
 CMakeFiles/openttd.dir/src/station.cpp.o: ../src/3rdparty/cpp-btree/btree_container.h
@@ -35471,6 +35604,7 @@ CMakeFiles/openttd.dir/src/strgen/strgen_base.cpp.o: ../src/table/strgen_tables.
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/geometry_type.hpp
@@ -35480,6 +35614,7 @@ CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/smallmap_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/core/smallvec_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/cpu.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/debug.h
+CMakeFiles/openttd.dir/src/string.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/fontcache.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/gfx_layout.h
@@ -35489,8 +35624,10 @@ CMakeFiles/openttd.dir/src/string.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/os/macosx/string_osx.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/os/windows/string_uniscribe.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/os/windows/win32.h
+CMakeFiles/openttd.dir/src/string.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/string.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/string.cpp.o: ../src/string.cpp
@@ -35641,6 +35778,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/road_func.h
@@ -35659,6 +35797,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/strings.cpp.o: ../src/station_func.h
@@ -36080,6 +36219,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/core/geometry_func.hpp
@@ -36146,6 +36286,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/road_map.h
@@ -36162,6 +36303,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/sortlist_type.
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o: ../src/station_map.h
@@ -36239,6 +36381,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/core/geometry_func.hpp
@@ -36303,6 +36446,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/road_map.h
@@ -36319,6 +36463,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/sortlist_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o: ../src/stdafx.h
@@ -36540,6 +36685,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/alloc_f
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/core/geometry_type.hpp
@@ -36603,6 +36749,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/road_map.h
@@ -36618,6 +36765,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/sortlist_typ
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o: ../src/station_map.h
@@ -37027,6 +37175,7 @@ CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -37040,8 +37189,10 @@ CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/fontcache.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/textfile_gui.cpp.o: ../src/string_func.h
@@ -37465,6 +37616,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/core/geometry_type.hpp
@@ -37550,6 +37702,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/rail_gui.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/road_gui.h
@@ -37583,6 +37736,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o: ../src/station_func.h
@@ -38073,6 +38227,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/core/geometry_type.hpp
@@ -38114,6 +38269,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/newgrf_townname.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/road_map.h
@@ -38124,6 +38280,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/slope_func.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/townname.cpp.o: ../src/stdafx.h
@@ -38536,6 +38693,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/checksum_func.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/core/geometry_type.hpp
@@ -38650,6 +38808,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/road_map.h
@@ -38682,6 +38841,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/train_cmd.cpp.o: ../src/station_func.h
@@ -39590,6 +39750,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/backup_type.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/core/geometry_type.hpp
@@ -39683,6 +39844,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/road_map.h
@@ -39715,6 +39877,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/sound_func.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/vehicle.cpp.o: ../src/station_func.h
@@ -39948,6 +40111,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/container_func.hpp
+CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/core/geometry_func.hpp
@@ -40018,6 +40182,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/pbs.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/road_map.h
@@ -40034,6 +40199,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/sortlist_type.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o: ../src/station_func.h
@@ -40239,6 +40405,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/core/geometry_type.hpp
@@ -40287,6 +40454,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/os/windows/win32.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/saveload/extended_ver_sl.h
@@ -40294,6 +40462,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/saveload/saveload.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o: ../src/string_func.h
@@ -40325,6 +40494,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/core/geometry_type.hpp
@@ -40338,6 +40508,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/driver.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/economy_type.h
+CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/landscape_type.h
@@ -40345,9 +40516,11 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/linkgraph/linkgraph_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/os/macosx/osx_stdafx.h
+CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/video/null_v.cpp.o: ../src/string_func.h
@@ -40374,6 +40547,7 @@ CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/core/geometry_func.hpp
@@ -40402,10 +40576,12 @@ CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/progress.h
+CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o: ../src/string_func.h
@@ -40434,6 +40610,7 @@ CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/core/geometry_func.hpp
@@ -40461,11 +40638,13 @@ CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/progress.h
+CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/rev.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/scope.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o: ../src/string_func.h
@@ -40491,6 +40670,7 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/company_type.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/core/geometry_type.hpp
@@ -40506,6 +40686,7 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/date_type.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/debug.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/driver.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/economy_type.h
+CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/fileio_type.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/fontcache.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/gfx_func.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/gfx_type.h
@@ -40517,8 +40698,10 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/openttd.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/progress.h
+CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/video/video_driver.cpp.o: ../src/string_func.h
@@ -40647,6 +40830,7 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/plans_type.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/rail.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/rail_map.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/road.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/road_func.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/road_map.h
@@ -40668,6 +40852,7 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/smallmap_gui.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/sprite.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/viewport.cpp.o: ../src/station_func.h
@@ -41853,6 +42038,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o: ../src/console_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/alloc_func.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/alloc_type.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/bitmath_func.hpp
+CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/enum_type.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/core/geometry_type.hpp
@@ -41916,6 +42102,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o: ../src/os/macosx/osx_stdafx.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/progress.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/querystring_gui.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/rail_type.h
+CMakeFiles/openttd.dir/src/window.cpp.o: ../src/random_access_file_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/road_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/safeguards.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/schdispatch.h
@@ -41936,6 +42123,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o: ../src/settings_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/sound_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/spritecache.h
+CMakeFiles/openttd.dir/src/window.cpp.o: ../src/spriteloader/sprite_file_type.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/spriteloader/spriteloader.hpp
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/window.cpp.o: ../src/statusbar_gui.h

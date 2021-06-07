@@ -6227,6 +6227,33 @@ src/rail_gui.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/rail_gui.cpp.s
 .PHONY : src/rail_gui.cpp.s
 
+src/random_access_file.o: src/random_access_file.cpp.o
+
+.PHONY : src/random_access_file.o
+
+# target to build an object file
+src/random_access_file.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/random_access_file.cpp.o
+.PHONY : src/random_access_file.cpp.o
+
+src/random_access_file.i: src/random_access_file.cpp.i
+
+.PHONY : src/random_access_file.i
+
+# target to preprocess a source file
+src/random_access_file.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/random_access_file.cpp.i
+.PHONY : src/random_access_file.cpp.i
+
+src/random_access_file.s: src/random_access_file.cpp.s
+
+.PHONY : src/random_access_file.s
+
+# target to generate assembly for a file
+src/random_access_file.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/random_access_file.cpp.s
+.PHONY : src/random_access_file.cpp.s
+
 src/road.o: src/road.cpp.o
 
 .PHONY : src/road.o
@@ -10169,6 +10196,33 @@ src/spriteloader/grf.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.s
 .PHONY : src/spriteloader/grf.cpp.s
 
+src/spriteloader/sprite_file.o: src/spriteloader/sprite_file.cpp.o
+
+.PHONY : src/spriteloader/sprite_file.o
+
+# target to build an object file
+src/spriteloader/sprite_file.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o
+.PHONY : src/spriteloader/sprite_file.cpp.o
+
+src/spriteloader/sprite_file.i: src/spriteloader/sprite_file.cpp.i
+
+.PHONY : src/spriteloader/sprite_file.i
+
+# target to preprocess a source file
+src/spriteloader/sprite_file.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.i
+.PHONY : src/spriteloader/sprite_file.cpp.i
+
+src/spriteloader/sprite_file.s: src/spriteloader/sprite_file.cpp.s
+
+.PHONY : src/spriteloader/sprite_file.s
+
+# target to generate assembly for a file
+src/spriteloader/sprite_file.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.s
+.PHONY : src/spriteloader/sprite_file.cpp.s
+
 src/station.o: src/station.cpp.o
 
 .PHONY : src/station.o
@@ -12547,6 +12601,9 @@ help:
 	@echo "... src/rail_gui.o"
 	@echo "... src/rail_gui.i"
 	@echo "... src/rail_gui.s"
+	@echo "... src/random_access_file.o"
+	@echo "... src/random_access_file.i"
+	@echo "... src/random_access_file.s"
 	@echo "... src/road.o"
 	@echo "... src/road.i"
 	@echo "... src/road.s"
@@ -12985,6 +13042,9 @@ help:
 	@echo "... src/spriteloader/grf.o"
 	@echo "... src/spriteloader/grf.i"
 	@echo "... src/spriteloader/grf.s"
+	@echo "... src/spriteloader/sprite_file.o"
+	@echo "... src/spriteloader/sprite_file.i"
+	@echo "... src/spriteloader/sprite_file.s"
 	@echo "... src/station.o"
 	@echo "... src/station.i"
 	@echo "... src/station.s"

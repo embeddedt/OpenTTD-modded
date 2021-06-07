@@ -1384,6 +1384,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -1471,6 +1472,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -1498,6 +1500,7 @@ CMakeFiles/openttd.dir/src/aircraft_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -1561,6 +1564,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -1616,6 +1620,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -1630,6 +1635,7 @@ CMakeFiles/openttd.dir/src/aircraft_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
@@ -2579,6 +2585,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2592,6 +2599,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
@@ -2599,9 +2607,11 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_anim.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2621,15 +2631,19 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_base.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
@@ -2648,6 +2662,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2660,6 +2675,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
@@ -2667,9 +2683,11 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_optimized.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2688,6 +2706,7 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2695,11 +2714,14 @@ CMakeFiles/openttd.dir/src/blitter/32bpp_simple.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2715,15 +2737,20 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_base.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/common.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
@@ -2741,6 +2768,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2753,15 +2781,18 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_optimized.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2780,6 +2811,7 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2787,10 +2819,13 @@ CMakeFiles/openttd.dir/src/blitter/8bpp_simple.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2805,6 +2840,7 @@ CMakeFiles/openttd.dir/src/blitter/null.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -2812,10 +2848,13 @@ CMakeFiles/openttd.dir/src/blitter/null.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -2853,6 +2892,7 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -2894,9 +2934,11 @@ CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -4052,6 +4094,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -4146,6 +4189,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -4176,6 +4220,7 @@ CMakeFiles/openttd.dir/src/company_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -4964,6 +5009,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -5017,6 +5063,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
@@ -5042,6 +5089,7 @@ CMakeFiles/openttd.dir/src/crashlog.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound/sound_driver.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -5894,6 +5942,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -5959,6 +6008,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -5975,6 +6025,7 @@ CMakeFiles/openttd.dir/src/depot_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
@@ -7459,6 +7510,7 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -7491,10 +7543,13 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
@@ -7683,6 +7738,7 @@ CMakeFiles/openttd.dir/src/fontcache.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -7703,8 +7759,10 @@ CMakeFiles/openttd.dir/src/fontcache.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_layout.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -9280,6 +9338,7 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -9318,10 +9377,12 @@ CMakeFiles/openttd.dir/src/gfx.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -9352,6 +9413,7 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -9361,6 +9423,7 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_layout.cpp
@@ -9369,8 +9432,10 @@ CMakeFiles/openttd.dir/src/gfx_layout.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/string_osx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/string_uniscribe.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_base.h
@@ -9410,6 +9475,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -9456,6 +9522,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -9468,6 +9535,7 @@ CMakeFiles/openttd.dir/src/gfxinit.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -10925,6 +10993,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -11003,6 +11072,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -11021,6 +11091,7 @@ CMakeFiles/openttd.dir/src/industry_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -11371,6 +11442,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -11435,6 +11507,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/aystar.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/queue.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -11451,6 +11524,7 @@ CMakeFiles/openttd.dir/src/landscape.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -11839,6 +11913,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -11900,6 +11975,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -11915,6 +11991,7 @@ CMakeFiles/openttd.dir/src/linkgraph/linkgraph_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -12446,6 +12523,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -12521,6 +12599,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -12538,6 +12617,7 @@ CMakeFiles/openttd.dir/src/main_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -13260,65 +13340,40 @@ CMakeFiles/openttd.dir/src/mixer.cpp.o
 CMakeFiles/openttd.dir/src/music.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_func.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/core/overflowsafe_type.hpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ini_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/music.cpp
- /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/transport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widget_type.h
@@ -14345,6 +14400,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -14402,6 +14458,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -14412,6 +14469,7 @@ CMakeFiles/openttd.dir/src/network/network_chat_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -15397,6 +15455,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -15490,6 +15549,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -15506,6 +15566,7 @@ CMakeFiles/openttd.dir/src/newgrf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -15806,6 +15867,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -15845,6 +15907,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
@@ -15852,6 +15915,7 @@ CMakeFiles/openttd.dir/src/newgrf_canal.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -16144,6 +16208,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -16168,7 +16233,6 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
@@ -16225,6 +16289,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -16242,6 +16307,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -17154,6 +17220,7 @@ CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -17187,10 +17254,12 @@ CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -17421,6 +17490,7 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -17442,7 +17512,6 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
@@ -17473,6 +17542,7 @@ CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -18416,6 +18486,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -18531,6 +18602,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -18570,6 +18642,7 @@ CMakeFiles/openttd.dir/src/openttd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -20668,6 +20741,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -20744,6 +20818,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_cmd.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -20760,6 +20835,7 @@ CMakeFiles/openttd.dir/src/rail_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
@@ -20834,6 +20910,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -20901,6 +20978,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -20917,6 +20995,7 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_gui.h
@@ -20971,6 +21050,22 @@ CMakeFiles/openttd.dir/src/rail_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
+CMakeFiles/openttd.dir/src/random_access_file.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file.cpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
 CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
@@ -21720,6 +21815,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -21809,6 +21905,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -21841,6 +21938,7 @@ CMakeFiles/openttd.dir/src/roadveh_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -22112,6 +22210,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -22214,6 +22313,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_cmd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -22254,6 +22354,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -25964,6 +26065,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -25984,6 +26086,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
@@ -26002,6 +26105,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -26010,6 +26114,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -26267,6 +26372,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -26291,6 +26397,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -32819,6 +32926,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -32918,6 +33026,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -32959,6 +33068,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -33115,6 +33225,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -33179,6 +33290,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -33209,6 +33321,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -33350,6 +33463,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -33443,6 +33557,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -33473,6 +33588,7 @@ CMakeFiles/openttd.dir/src/ship_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -33533,6 +33649,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -33573,6 +33690,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -33581,6 +33699,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -34170,6 +34289,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -34189,6 +34309,7 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -34242,7 +34363,6 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_func.h
@@ -34250,11 +34370,11 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/command_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -34277,33 +34397,28 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ini_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/livery.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/map_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/misc/countedptr.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/mixer.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -34317,7 +34432,6 @@ CMakeFiles/openttd.dir/src/sound.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/texteff.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_type.h
@@ -34375,6 +34489,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -34393,6 +34508,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
@@ -34410,6 +34526,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -34419,6 +34536,7 @@ CMakeFiles/openttd.dir/src/sprite.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -34463,6 +34581,7 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -34477,7 +34596,6 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
@@ -34487,12 +34605,14 @@ CMakeFiles/openttd.dir/src/spritecache.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -34514,6 +34634,7 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -34526,7 +34647,6 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
- /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
@@ -34536,10 +34656,12 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
@@ -34549,6 +34671,17 @@ CMakeFiles/openttd.dir/src/spriteloader/grf.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/transport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
+CMakeFiles/openttd.dir/src/spriteloader/sprite_file.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file.cpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 CMakeFiles/openttd.dir/src/station.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
@@ -35472,6 +35605,7 @@ CMakeFiles/openttd.dir/src/string.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -35481,6 +35615,7 @@ CMakeFiles/openttd.dir/src/string.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_layout.h
@@ -35490,8 +35625,10 @@ CMakeFiles/openttd.dir/src/string.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/string_osx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/string_uniscribe.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/win32.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string.cpp
@@ -35642,6 +35779,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
@@ -35660,6 +35798,7 @@ CMakeFiles/openttd.dir/src/strings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -36081,6 +36220,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -36147,6 +36287,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -36163,6 +36304,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_create.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
@@ -36240,6 +36382,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -36304,6 +36447,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -36320,6 +36464,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_gui_main.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -36541,6 +36686,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -36604,6 +36750,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -36619,6 +36766,7 @@ CMakeFiles/openttd.dir/src/tbtr_template_vehicle_func.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
@@ -37028,6 +37176,7 @@ CMakeFiles/openttd.dir/src/textfile_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -37041,8 +37190,10 @@ CMakeFiles/openttd.dir/src/textfile_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -37466,6 +37617,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -37551,6 +37703,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_gui.h
@@ -37584,6 +37737,7 @@ CMakeFiles/openttd.dir/src/toolbar_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -38074,6 +38228,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -38115,6 +38270,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -38125,6 +38281,7 @@ CMakeFiles/openttd.dir/src/townname.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -38537,6 +38694,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -38651,6 +38809,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -38683,6 +38842,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -39591,6 +39751,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -39684,6 +39845,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -39716,6 +39878,7 @@ CMakeFiles/openttd.dir/src/vehicle.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -39949,6 +40112,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -40019,6 +40183,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -40035,6 +40200,7 @@ CMakeFiles/openttd.dir/src/vehicle_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -40240,6 +40406,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -40288,6 +40455,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/win32.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/extended_ver_sl.h
@@ -40295,6 +40463,7 @@ CMakeFiles/openttd.dir/src/video/dedicated_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -40326,6 +40495,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -40339,6 +40509,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
@@ -40346,9 +40517,11 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -40375,6 +40548,7 @@ CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -40403,10 +40577,12 @@ CMakeFiles/openttd.dir/src/video/sdl2_default_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -40435,6 +40611,7 @@ CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
@@ -40462,11 +40639,13 @@ CMakeFiles/openttd.dir/src/video/sdl2_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -40492,6 +40671,7 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -40507,6 +40687,7 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fontcache.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
@@ -40518,8 +40699,10 @@ CMakeFiles/openttd.dir/src/video/video_driver.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
@@ -40648,6 +40831,7 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
@@ -40669,6 +40853,7 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
@@ -41854,6 +42039,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -41917,6 +42103,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/progress.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/querystring_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
@@ -41937,6 +42124,7 @@ CMakeFiles/openttd.dir/src/window.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/statusbar_gui.h

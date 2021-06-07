@@ -5103,6 +5103,8 @@ stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 fileio_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+spriteloader/spriteloader.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 fios.h
@@ -7251,8 +7253,8 @@ base_media_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_media_func.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
-fios.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/music/extmidi.cpp
 ../stdafx.h
@@ -8683,8 +8685,8 @@ window_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
 window_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
-fileio_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
 spritecache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
 string_func.h
@@ -9153,8 +9155,8 @@ vehicle_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_base.h
 sound_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/sound_func.h
-fileio_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 settings_type.h
@@ -10825,6 +10827,28 @@ tunnelbridge_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
 core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file.cpp
+stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
+debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+fileio_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
+fileio_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
+core/endian_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
+string
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
 
@@ -14847,8 +14871,8 @@ mixer.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/mixer.h
 newgrf_sound.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.h
-fios.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fios.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
 window_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
 vehicle_base.h
@@ -14925,8 +14949,8 @@ table/sprites.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.cpp
 stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
-fileio_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
+random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
 spriteloader/grf.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/grf.hpp
 gfx_func.h
@@ -14975,8 +14999,6 @@ spriteloader/spriteloader.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
 ../gfx_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
-../fileio_func.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/fileio_func.h
 ../debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 ../settings_type.h
@@ -15002,6 +15024,16 @@ grf.hpp
 spriteloader.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
 
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file.cpp
+../stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+sprite_file_type.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
+../random_access_file_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/random_access_file_type.h
+
 /__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/spriteloader.hpp
 ../core/alloc_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
@@ -15009,6 +15041,8 @@ spriteloader.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
 ../gfx_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
+sprite_file_type.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/spriteloader/sprite_file_type.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/station.cpp
 stdafx.h
