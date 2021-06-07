@@ -33,9 +33,6 @@
 
 #include "safeguards.h"
 
-/** Whether the given NewGRFs must get a palette remap from windows to DOS or not. */
-bool _palette_remap_grf[MAX_FILE_SLOTS];
-
 #include "table/landscape_sprite.h"
 
 /** Offsets for loading the different "replacement" sprites in the files. */
@@ -45,37 +42,30 @@ static const SpriteID * const _landscape_spriteindexes[] = {
 	_landscape_spriteindexes_toyland,
 };
 
-/** file index of first user-added GRF file */
-int _first_user_grf_file_index;
-int _opengfx_grf_file_index;
-int _progsig_grf_file_index;
-
 /**
  * Load an old fashioned GRF file.
  * @param filename   The name of the file to open.
  * @param load_index The offset of the first sprite.
- * @param file_index The Fio offset to load the file in.
- * @return The number of loaded sprites.
+ * @param needs_palette_remap Whether the colours in the GRF file need a palette remap.
  */
-static uint LoadGrfFile(const char *filename, uint load_index, int file_index)
+static SpriteFile &LoadGrfFile(const char *filename, uint load_index, bool needs_palette_remap)
 {
-	uint load_index_org = load_index;
 	uint sprite_id = 0;
 
-	FioOpenFile(file_index, filename, BASESET_DIR);
+	SpriteFile &file = OpenCachedSpriteFile(filename, BASESET_DIR, needs_palette_remap);
 
 	DEBUG(sprite, 2, "Reading grf-file '%s'", filename);
 
-	byte container_ver = GetGRFContainerVersion();
+	byte container_ver = file.GetContainerVersion();
 	if (container_ver == 0) usererror("Base grf '%s' is corrupt", filename);
-	ReadGRFSpriteOffsets(container_ver);
+	ReadGRFSpriteOffsets(file);
 	if (container_ver >= 2) {
 		/* Read compression. */
-		byte compression = FioReadByte();
+		byte compression = file.ReadByte();
 		if (compression != 0) usererror("Unsupported compression format");
 	}
 
-	while (LoadNextSprite(load_index, file_index, sprite_id, container_ver)) {
+	while (LoadNextSprite(load_index, file, sprite_id)) {
 		load_index++;
 		sprite_id++;
 		if (load_index >= MAX_SPRITES) {
@@ -84,31 +74,31 @@ static uint LoadGrfFile(const char *filename, uint load_index, int file_index)
 	}
 	DEBUG(sprite, 2, "Currently %i sprites are loaded", load_index);
 
-	return load_index - load_index_org;
+	return file;
 }
 
 /**
  * Load an old fashioned GRF file to replace already loaded sprites.
  * @param filename   The name of the file to open.
  * @param index_tbl  The offsets of each of the sprites.
- * @param file_index The Fio offset to load the file in.
+ * @param needs_palette_remap Whether the colours in the GRF file need a palette remap.
  * @return The number of loaded sprites.
  */
-static void LoadGrfFileIndexed(const char *filename, const SpriteID *index_tbl, int file_index)
+static void LoadGrfFileIndexed(const char *filename, const SpriteID *index_tbl, bool needs_palette_remap)
 {
 	uint start;
 	uint sprite_id = 0;
 
-	FioOpenFile(file_index, filename, BASESET_DIR);
+	SpriteFile &file = OpenCachedSpriteFile(filename, BASESET_DIR, needs_palette_remap);
 
 	DEBUG(sprite, 2, "Reading indexed grf-file '%s'", filename);
 
-	byte container_ver = GetGRFContainerVersion();
+	byte container_ver = file.GetContainerVersion();
 	if (container_ver == 0) usererror("Base grf '%s' is corrupt", filename);
-	ReadGRFSpriteOffsets(container_ver);
+	ReadGRFSpriteOffsets(file);
 	if (container_ver >= 2) {
 		/* Read compression. */
-		byte compression = FioReadByte();
+		byte compression = file.ReadByte();
 		if (compression != 0) usererror("Unsupported compression format");
 	}
 
@@ -116,7 +106,7 @@ static void LoadGrfFileIndexed(const char *filename, const SpriteID *index_tbl, 
 		uint end = *index_tbl++;
 
 		do {
-			bool b = LoadNextSprite(start, file_index, sprite_id, container_ver);
+			bool b = LoadNextSprite(start, file, sprite_id);
 			(void)b; // Unused without asserts
 			assert(b);
 			sprite_id++;
@@ -174,16 +164,13 @@ void CheckExternalFiles()
 /** Actually load the sprite tables. */
 static void LoadSpriteTables()
 {
-	memset(_palette_remap_grf, 0, sizeof(_palette_remap_grf));
-	uint i = FIRST_GRF_SLOT;
 	const GraphicsSet *used_set = BaseGraphics::GetUsedSet();
 
-	_palette_remap_grf[i] = (PAL_DOS != used_set->palette);
-	LoadGrfFile(used_set->files[GFT_BASE].filename, 0, i++);
+	LoadGrfFile(used_set->files[GFT_BASE].filename, 0, PAL_DOS != used_set->palette);
 
 	/* Progsignal sprites. */
-	_progsig_grf_file_index = i;
-	LoadGrfFile("progsignals.grf", SPR_PROGSIGNAL_BASE, i++);
+	SpriteFile &progsig_file = LoadGrfFile("progsignals.grf", SPR_PROGSIGNAL_BASE, false);
+	progsig_file.flags |= SFF_PROGSIG;
 
 	/* Fill duplicate programmable pre-signal graphics sprite block */
 	for (uint i = 0; i < PROGSIGNAL_SPRITE_COUNT; i++) {
@@ -191,7 +178,7 @@ static void LoadSpriteTables()
 	}
 
 	/* Tracerestrict sprites. */
-	LoadGrfFile("tracerestrict.grf", SPR_TRACERESTRICT_BASE, i++);
+	LoadGrfFile("tracerestrict.grf", SPR_TRACERESTRICT_BASE, false);
 
 	/* Fill duplicate original signal graphics sprite block */
 	for (uint i = 0; i < DUP_ORIGINAL_SIGNALS_SPRITE_COUNT; i++) {
@@ -204,8 +191,7 @@ static void LoadSpriteTables()
 	 * has a few sprites less. However, we do not care about those missing
 	 * sprites as they are not shown anyway (logos in intro game).
 	 */
-	_palette_remap_grf[i] = (PAL_DOS != used_set->palette);
-	LoadGrfFile(used_set->files[GFT_LOGOS].filename, 4793, i++);
+	LoadGrfFile(used_set->files[GFT_LOGOS].filename, 4793, PAL_DOS != used_set->palette);
 
 	/*
 	 * Load additional sprites for climates other than temperate.
@@ -213,18 +199,17 @@ static void LoadSpriteTables()
 	 * and the ground sprites.
 	 */
 	if (_settings_game.game_creation.landscape != LT_TEMPERATE) {
-		_palette_remap_grf[i] = (PAL_DOS != used_set->palette);
 		LoadGrfFileIndexed(
 			used_set->files[GFT_ARCTIC + _settings_game.game_creation.landscape - 1].filename,
 			_landscape_spriteindexes[_settings_game.game_creation.landscape - 1],
-			i++
+			PAL_DOS != used_set->palette
 		);
 	}
 
-	LoadGrfFile("innerhighlight.grf", SPR_ZONING_INNER_HIGHLIGHT_BASE, i++);
+	LoadGrfFile("innerhighlight.grf", SPR_ZONING_INNER_HIGHLIGHT_BASE, false);
 
 	/* Load route step graphics */
-	LoadGrfFile("route_step.grf", SPR_ROUTE_STEP_BASE, i++);
+	LoadGrfFile("route_step.grf", SPR_ROUTE_STEP_BASE, false);
 
 	/* Initialize the unicode to sprite mapping table */
 	InitializeUnicodeGlyphMap();
@@ -237,7 +222,8 @@ static void LoadSpriteTables()
 	GRFConfig *top = _grfconfig;
 
 	/* Default extra graphics */
-	GRFConfig *master = new GRFConfig("OPENTTD.GRF");
+	static const char *master_filename = "OPENTTD.GRF";
+	GRFConfig *master = new GRFConfig(master_filename);
 	master->palette |= GRFP_GRF_DOS;
 	FillGRFDetails(master, false, BASESET_DIR);
 	ClrBit(master->flags, GCF_INIT_ONLY);
@@ -261,27 +247,15 @@ static void LoadSpriteTables()
 	master->next = extra;
 	_grfconfig = master;
 
-	LoadNewGRF(SPR_NEWGRFS_BASE, i, 2);
+	LoadNewGRF(SPR_NEWGRFS_BASE, 2);
 
 	uint total_extra_graphics = SPR_NEWGRFS_BASE - SPR_OPENTTD_BASE;
-	_missing_extra_graphics = GetSpriteCountForSlot(i, SPR_OPENTTD_BASE, SPR_NEWGRFS_BASE);
+	_missing_extra_graphics = GetSpriteCountForFile(master_filename, SPR_OPENTTD_BASE, SPR_NEWGRFS_BASE);
 	DEBUG(sprite, 1, "%u extra sprites, %u from baseset, %u from fallback", total_extra_graphics, total_extra_graphics - _missing_extra_graphics, _missing_extra_graphics);
 
 	/* The original baseset extra graphics intentionally make use of the fallback graphics.
 	 * Let's say everything which provides less than 500 sprites misses the rest intentionally. */
 	if (500 + _missing_extra_graphics > total_extra_graphics) _missing_extra_graphics = 0;
-
-	_first_user_grf_file_index = i + 1;
-	_opengfx_grf_file_index = -1;
-	uint index = i;
-	for (GRFConfig *c = master; c != nullptr; c = c->next, index++) {
-		if (c->status == GCS_DISABLED || c->status == GCS_NOT_FOUND || HasBit(c->flags, GCF_INIT_ONLY)) continue;
-		if (c->ident.grfid == BSWAP32(0xFF4F4701)) {
-			/* Detect OpenGFX GRF ID */
-			_opengfx_grf_file_index = index;
-			break;
-		}
-	}
 
 	/* Free and remove the top element. */
 	delete extra;

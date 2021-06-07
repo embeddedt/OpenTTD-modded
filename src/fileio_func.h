@@ -15,18 +15,6 @@
 #include <string>
 #include <vector>
 
-void FioSeekTo(size_t pos, int mode);
-void FioSeekToFile(uint slot, size_t pos);
-size_t FioGetPos();
-const char *FioGetFilename(uint slot);
-byte FioReadByte();
-uint16 FioReadWord();
-uint32 FioReadDword();
-void FioCloseAll();
-void FioOpenFile(int slot, const std::string &filename, Subdirectory subdir, std::string *output_filename = nullptr);
-void FioReadBlock(void *ptr, size_t size);
-void FioSkipBytes(int n);
-
 void FioFCloseFile(FILE *f);
 FILE *FioFOpenFile(const std::string &filename, const char *mode, Subdirectory subdir, size_t *filesize = nullptr, std::string *output_filename = nullptr);
 bool FioCheckFileExists(const std::string &filename, Subdirectory subdir);

@@ -21,12 +21,12 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * [@kiwitreekor's industry production graph](https://github.com/OpenTTD/OpenTTD/pull/7575)
 * Ability to change airplane taxiing speed
 * [Vehicle trip history](https://www.tt-forums.net/viewtopic.php?f=33&t=33411)
-* ["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)
 * Tweaks to road vehicle pathfinding
 * Allow other players to build additional rails on others' tracks when infrastructure sharing is enabled, however, they **cannot remove anyone else's tracks**.
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
+* ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.41.2
+## JGR's Patchpack version 0.41.3
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 

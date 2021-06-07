@@ -215,11 +215,14 @@ public:
 	 * remain the best intermediate node, and thus the vehicle would still
 	 * go towards the red EOL signal.
 	 */
-	void PruneIntermediateNodeBranch()
+	void PruneIntermediateNodeBranch(Node *n)
 	{
-		while (Yapf().m_pBestIntermediateNode != nullptr && (Yapf().m_pBestIntermediateNode->m_segment->m_end_segment_reason & ESRB_CHOICE_FOLLOWS) == 0) {
-			Yapf().m_pBestIntermediateNode = Yapf().m_pBestIntermediateNode->m_parent;
+		bool intermediate_on_branch = false;
+		while (n != nullptr && (n->m_segment->m_end_segment_reason & ESRB_CHOICE_FOLLOWS) == 0) {
+			if (n == Yapf().m_pBestIntermediateNode) intermediate_on_branch = true;
+			n = n->m_parent;
 		}
+		if (intermediate_on_branch) Yapf().m_pBestIntermediateNode = n;
 	}
 
 	/**
@@ -257,9 +260,9 @@ public:
 			return;
 		}
 
-		if (m_max_search_nodes > 0 && (m_pBestIntermediateNode == nullptr || (m_pBestIntermediateNode->GetCostEstimate() - m_pBestIntermediateNode->GetCost()) > (n.GetCostEstimate() - n.GetCost()))) {
-			m_pBestIntermediateNode = &n;
-		}
+		/* The new node can be set as the best intermediate node only once we're
+		 * certain it will be finalized by being inserted into the open list. */
+		bool set_intermediate = m_max_search_nodes > 0 && (m_pBestIntermediateNode == nullptr || (m_pBestIntermediateNode->GetCostEstimate() - m_pBestIntermediateNode->GetCost()) > (n.GetCostEstimate() - n.GetCost()));
 
 		/* check new node against open list */
 		Node *openNode = m_nodes.FindOpenNode(n.GetKey());
@@ -272,6 +275,7 @@ public:
 				*openNode = n;
 				/* add the updated old node back to open list */
 				m_nodes.InsertOpenNode(*openNode);
+				if (set_intermediate) m_pBestIntermediateNode = openNode;
 			}
 			return;
 		}
@@ -297,6 +301,7 @@ public:
 		/* the new node is really new
 		 * add it to the open list */
 		m_nodes.InsertOpenNode(n);
+		if (set_intermediate) m_pBestIntermediateNode = &n;
 	}
 
 	const VehicleType * GetVehicle() const
