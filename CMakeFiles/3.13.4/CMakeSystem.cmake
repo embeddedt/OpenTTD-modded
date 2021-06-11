@@ -1,6 +1,6 @@
-set(CMAKE_HOST_SYSTEM "Linux-5.4.0-1047-azure")
+set(CMAKE_HOST_SYSTEM "Linux-5.8.0-1033-azure")
 set(CMAKE_HOST_SYSTEM_NAME "Linux")
-set(CMAKE_HOST_SYSTEM_VERSION "5.4.0-1047-azure")
+set(CMAKE_HOST_SYSTEM_VERSION "5.8.0-1033-azure")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")
 
 include("/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake")

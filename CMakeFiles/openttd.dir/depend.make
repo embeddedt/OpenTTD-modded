@@ -33073,6 +33073,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_base.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_func.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_map.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/station_type.h
+CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/statusbar_gui.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/story_type.h
 CMakeFiles/openttd.dir/src/settings.cpp.o: ../src/string_func.h

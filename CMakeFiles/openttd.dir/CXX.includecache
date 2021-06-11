@@ -14359,6 +14359,8 @@ viewport_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_func.h
 gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
+statusbar_gui.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/statusbar_gui.h
 void_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/void_map.h
 station_base.h
