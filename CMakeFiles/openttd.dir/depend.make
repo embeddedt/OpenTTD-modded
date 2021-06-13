@@ -26341,7 +26341,10 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/gfx_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/group.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/group_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/guitimer_func.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/industry.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/industry_map.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/industry_type.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/industrytype.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/landscape.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/landscape_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/linkgraph/linkgraph.h
@@ -26357,6 +26360,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/network/core/config.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/network/network.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf_airport.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf_animation_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf_class.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/newgrf_commons.h
@@ -26407,6 +26411,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/string_func.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/string_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/strings_type.h
+CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/subsidy_type.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/table/control_codes.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/table/darklight_colours.h
 CMakeFiles/openttd.dir/src/screenshot.cpp.o: ../src/table/heightmap_colours.h

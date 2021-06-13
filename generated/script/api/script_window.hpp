@@ -2423,6 +2423,8 @@ public:
 		WID_SC_TAKE_WORLD_ZOOM                       = ::WID_SC_TAKE_WORLD_ZOOM,                       ///< Button for taking a screenshot of the whole world at the current zoom level
 		WID_SC_TAKE_HEIGHTMAP                        = ::WID_SC_TAKE_HEIGHTMAP,                        ///< Button for taking a heightmap "screenshot"
 		WID_SC_TAKE_MINIMAP                          = ::WID_SC_TAKE_MINIMAP,                          ///< Button for taking a minimap screenshot
+		WID_SC_TAKE_TOPOGRAPHY                       = ::WID_SC_TAKE_TOPOGRAPHY,                       ///< Button for taking a topography screenshot
+		WID_SC_TAKE_INDUSTRY                         = ::WID_SC_TAKE_INDUSTRY,                         ///< Button for taking a industry screenshot
 	};
 
 	/* automatically generated from ../../widgets/settings_widget.h */

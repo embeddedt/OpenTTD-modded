@@ -26342,7 +26342,10 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/industry.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/industry_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/industry_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/industrytype.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/linkgraph/linkgraph.h
@@ -26358,6 +26361,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
@@ -26408,6 +26412,7 @@ CMakeFiles/openttd.dir/src/screenshot.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/darklight_colours.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/heightmap_colours.h

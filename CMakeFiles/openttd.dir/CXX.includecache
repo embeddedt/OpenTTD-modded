@@ -12397,6 +12397,10 @@ strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
 error.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
+industry.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/industry.h
+industrytype.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/industrytype.h
 textbuf_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/textbuf_gui.h
 window_gui.h

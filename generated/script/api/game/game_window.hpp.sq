@@ -1183,6 +1183,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SC_TAKE_WORLD_ZOOM,                    "WID_SC_TAKE_WORLD_ZOOM");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SC_TAKE_HEIGHTMAP,                     "WID_SC_TAKE_HEIGHTMAP");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SC_TAKE_MINIMAP,                       "WID_SC_TAKE_MINIMAP");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SC_TAKE_TOPOGRAPHY,                    "WID_SC_TAKE_TOPOGRAPHY");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_SC_TAKE_INDUSTRY,                      "WID_SC_TAKE_INDUSTRY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_BACKGROUND,                         "WID_GO_BACKGROUND");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_CURRENCY_DROPDOWN,                  "WID_GO_CURRENCY_DROPDOWN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_DISTANCE_DROPDOWN,                  "WID_GO_DISTANCE_DROPDOWN");
