@@ -7577,6 +7577,33 @@ src/saveload/tracerestrict_sl.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.s
 .PHONY : src/saveload/tracerestrict_sl.cpp.s
 
+src/saveload/train_speed_adaptation.o: src/saveload/train_speed_adaptation.cpp.o
+
+.PHONY : src/saveload/train_speed_adaptation.o
+
+# target to build an object file
+src/saveload/train_speed_adaptation.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.o
+.PHONY : src/saveload/train_speed_adaptation.cpp.o
+
+src/saveload/train_speed_adaptation.i: src/saveload/train_speed_adaptation.cpp.i
+
+.PHONY : src/saveload/train_speed_adaptation.i
+
+# target to preprocess a source file
+src/saveload/train_speed_adaptation.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.i
+.PHONY : src/saveload/train_speed_adaptation.cpp.i
+
+src/saveload/train_speed_adaptation.s: src/saveload/train_speed_adaptation.cpp.s
+
+.PHONY : src/saveload/train_speed_adaptation.s
+
+# target to generate assembly for a file
+src/saveload/train_speed_adaptation.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.s
+.PHONY : src/saveload/train_speed_adaptation.cpp.s
+
 src/saveload/tunnel_sl.o: src/saveload/tunnel_sl.cpp.o
 
 .PHONY : src/saveload/tunnel_sl.o
@@ -12751,6 +12778,9 @@ help:
 	@echo "... src/saveload/tracerestrict_sl.o"
 	@echo "... src/saveload/tracerestrict_sl.i"
 	@echo "... src/saveload/tracerestrict_sl.s"
+	@echo "... src/saveload/train_speed_adaptation.o"
+	@echo "... src/saveload/train_speed_adaptation.i"
+	@echo "... src/saveload/train_speed_adaptation.s"
 	@echo "... src/saveload/tunnel_sl.o"
 	@echo "... src/saveload/tunnel_sl.i"
 	@echo "... src/saveload/tunnel_sl.s"

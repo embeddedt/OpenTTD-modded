@@ -202,6 +202,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o"
   "CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o"
   "CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o"
+  "CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.o"
   "CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o"
   "CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o"
   "CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o"

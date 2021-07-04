@@ -194,6 +194,12 @@ public:
 		 *   - 0 = #ToolTipsWidgets
 		 */
 		WC_TOOLTIPS                                  = ::WC_TOOLTIPS,
+		
+		/**
+		* Station rating tooltip window; %Window numbers:
+		*   - 0 = #ToolTipsWidgets
+		*/
+		WC_STATION_RATING_TOOLTIP                    = ::WC_STATION_RATING_TOOLTIP,
 
 		/**
 		 * Query string window; %Window numbers:
@@ -669,6 +675,12 @@ public:
 		WC_PAYMENT_RATES                             = ::WC_PAYMENT_RATES,
 
 		/**
+		* Station cargo graph; %Window numbers:
+		*   - #StationID = #StationCargoWidgets
+		*/
+		WC_STATION_CARGO                             = ::WC_STATION_CARGO,
+
+		/**
 		 * Performance detail window; %Window numbers:
 		 *   - 0 = #PerformanceRatingDetailsWidgets
 		 */
@@ -1092,6 +1104,32 @@ public:
 		WID_BV_SHOW_HIDE                             = ::WID_BV_SHOW_HIDE,                             ///< Button to hide or show the selected engine.
 		WID_BV_BUILD_SEL                             = ::WID_BV_BUILD_SEL,                             ///< Build button.
 		WID_BV_RENAME                                = ::WID_BV_RENAME,                                ///< Rename button.
+
+		WID_BV_CAPTION_LOCO                          = ::WID_BV_CAPTION_LOCO,                          ///< Caption of locomotive half of the window.
+		WID_BV_SORT_ASSENDING_DESCENDING_LOCO        = ::WID_BV_SORT_ASSENDING_DESCENDING_LOCO,        ///< Sort direction.
+		WID_BV_SORT_DROPDOWN_LOCO                    = ::WID_BV_SORT_DROPDOWN_LOCO,                    ///< Criteria of sorting dropdown.
+		WID_BV_CARGO_FILTER_DROPDOWN_LOCO            = ::WID_BV_CARGO_FILTER_DROPDOWN_LOCO,            ///< Cargo filter dropdown.
+		WID_BV_SHOW_HIDDEN_LOCOS                     = ::WID_BV_SHOW_HIDDEN_LOCOS,                     ///< Toggle whether to display the hidden locomotives.
+		WID_BV_LIST_LOCO                             = ::WID_BV_LIST_LOCO,                             ///< List of vehicles.
+		WID_BV_SCROLLBAR_LOCO                        = ::WID_BV_SCROLLBAR_LOCO,                        ///< Scrollbar of list.
+		WID_BV_PANEL_LOCO                            = ::WID_BV_PANEL_LOCO,                            ///< Button panel.
+		WID_BV_SHOW_HIDE_LOCO                        = ::WID_BV_SHOW_HIDE_LOCO,                        ///< Button to hide or show the selected locomotives.
+		WID_BV_BUILD_LOCO                            = ::WID_BV_BUILD_LOCO,                            ///< Build panel.
+		WID_BV_BUILD_SEL_LOCO                        = ::WID_BV_BUILD_SEL_LOCO,                        ///< Build button.
+		WID_BV_RENAME_LOCO                           = ::WID_BV_RENAME_LOCO,                           ///< Rename button.
+
+		WID_BV_CAPTION_WAGON                         = ::WID_BV_CAPTION_WAGON,                         ///< Caption of wagon half of the window.
+		WID_BV_SORT_ASSENDING_DESCENDING_WAGON       = ::WID_BV_SORT_ASSENDING_DESCENDING_WAGON,       ///< Sort direction.
+		WID_BV_SORT_DROPDOWN_WAGON                   = ::WID_BV_SORT_DROPDOWN_WAGON,                   ///< Criteria of sorting dropdown.
+		WID_BV_CARGO_FILTER_DROPDOWN_WAGON           = ::WID_BV_CARGO_FILTER_DROPDOWN_WAGON,           ///< Cargo filter dropdown.
+		WID_BV_SHOW_HIDDEN_WAGONS                    = ::WID_BV_SHOW_HIDDEN_WAGONS,                    ///< Toggle whether to display the hidden wagons.
+		WID_BV_LIST_WAGON                            = ::WID_BV_LIST_WAGON,                            ///< List of vehicles.
+		WID_BV_SCROLLBAR_WAGON                       = ::WID_BV_SCROLLBAR_WAGON,                       ///< Scrollbar of list.
+		WID_BV_PANEL_WAGON                           = ::WID_BV_PANEL_WAGON,                           ///< Button panel.
+		WID_BV_SHOW_HIDE_WAGON                       = ::WID_BV_SHOW_HIDE_WAGON,                       ///< Button to hide or show the selected wagons.
+		WID_BV_BUILD_WAGON                           = ::WID_BV_BUILD_WAGON,                           ///< Build panel.
+		WID_BV_BUILD_SEL_WAGON                       = ::WID_BV_BUILD_SEL_WAGON,                       ///< Build button.
+		WID_BV_RENAME_WAGON                          = ::WID_BV_RENAME_WAGON,                          ///< Rename button.
 	};
 
 	/* automatically generated from ../../widgets/cheat_widget.h */
@@ -1580,6 +1618,22 @@ public:
 		WID_CPR_DISABLE_CARGOES                      = ::WID_CPR_DISABLE_CARGOES,                      ///< Disable cargoes button.
 		WID_CPR_MATRIX                               = ::WID_CPR_MATRIX,                               ///< Cargo list.
 		WID_CPR_MATRIX_SCROLLBAR                     = ::WID_CPR_MATRIX_SCROLLBAR,                     ///< Cargo list scrollbar.
+		WID_CPR_DAYS                                 = ::WID_CPR_DAYS,                                 ///< Days in transit mode.
+		WID_CPR_SPEED                                = ::WID_CPR_SPEED,                                ///< Speed mode.
+	};
+
+	/** Widget of the #StationCargoGraphWindow class. */
+	enum StationCargoWidgets {
+		WID_SCG_CAPTION                              = ::WID_SCG_CAPTION,                              ///< Window title
+		WID_SCG_BACKGROUND                           = ::WID_SCG_BACKGROUND,                           ///< Background of the window.
+		WID_SCG_HEADER                               = ::WID_SCG_HEADER,                               ///< Header.
+		WID_SCG_GRAPH                                = ::WID_SCG_GRAPH,                                ///< Graph itself.
+		WID_SCG_RESIZE                               = ::WID_SCG_RESIZE,                               ///< Resize button.
+		WID_SCG_FOOTER                               = ::WID_SCG_FOOTER,                               ///< Footer.
+		WID_SCG_ENABLE_CARGOES                       = ::WID_SCG_ENABLE_CARGOES,                       ///< Enable cargoes button.
+		WID_SCG_DISABLE_CARGOES                      = ::WID_SCG_DISABLE_CARGOES,                      ///< Disable cargoes button.
+		WID_SCG_MATRIX                               = ::WID_SCG_MATRIX,                               ///< Cargo list.
+		WID_SCG_MATRIX_SCROLLBAR                     = ::WID_SCG_MATRIX_SCROLLBAR,                     ///< Cargo list scrollbar.
 	};
 
 	/** Widget of the #CompanyLeagueWindow class. */
@@ -2560,6 +2614,7 @@ public:
 		WID_SV_PLANES                                = ::WID_SV_PLANES,                                ///< List of scheduled planes button.
 		WID_SV_CATCHMENT                             = ::WID_SV_CATCHMENT,                             ///< Toggle catchment area highlight.
 		WID_SV_DEPARTURES                            = ::WID_SV_DEPARTURES,                            ///< Departures button.
+		WID_SV_HISTORY                               = ::WID_SV_HISTORY,                               ///< Cargo history button.
 	};
 
 	/** Widgets of the #CompanyStationsWindow class. */
@@ -2639,6 +2694,7 @@ public:
 	/** Widgets of the #ScenarioEditorLandscapeGenerationWindow class. */
 	enum EditorTerraformToolbarWidgets {
 		WID_ETT_SHOW_PLACE_DESERT                    = ::WID_ETT_SHOW_PLACE_DESERT,                    ///< Should the place desert button be shown?
+		WID_ETT_SHOW_PUBLIC_ROADS                    = ::WID_ETT_SHOW_PUBLIC_ROADS,                    ///< Should the public roads button be shown?
 		WID_ETT_START                                = ::WID_ETT_START,                                ///< Used for iterations.
 		WID_ETT_DOTS                                 = ::WID_ETT_DOTS,                                 ///< Invisible widget for rendering the terraform size on.
 		WID_ETT_BUTTONS_START                        = ::WID_ETT_BUTTONS_START,                        ///< Start of pushable buttons.
@@ -2655,6 +2711,7 @@ public:
 		WID_ETT_DECREASE_SIZE                        = ::WID_ETT_DECREASE_SIZE,                        ///< Downwards arrow button to decrease terraforming size.
 		WID_ETT_NEW_SCENARIO                         = ::WID_ETT_NEW_SCENARIO,                         ///< Button for generating a new scenario.
 		WID_ETT_RESET_LANDSCAPE                      = ::WID_ETT_RESET_LANDSCAPE,                      ///< Button for removing all company-owned property.
+		WID_ETT_PUBLIC_ROADS                         = ::WID_ETT_PUBLIC_ROADS,                         ///< Button for creating public roads.
 	};
 
 	/* automatically generated from ../../widgets/timetable_widget.h */

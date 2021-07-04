@@ -3957,6 +3957,7 @@ CMakeFiles/openttd.dir/src/command.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/settings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/signal_type.h
@@ -10046,6 +10047,7 @@ CMakeFiles/openttd.dir/src/graph_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_map.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/unit_conversion.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/water_map.h
@@ -10192,6 +10194,7 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/base_station_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
@@ -10238,6 +10241,7 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_cmd.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/house.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/house_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/industry_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
@@ -10250,6 +10254,7 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
@@ -10260,6 +10265,7 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_townname.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_backup.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
@@ -10284,11 +10290,15 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/sortlist_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sprite.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/station_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/sprites.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle.h
@@ -10299,7 +10309,11 @@ CMakeFiles/openttd.dir/src/group_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tilearea_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/timetable.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/town.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/town_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/townname_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/townname_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
@@ -14276,6 +14290,8 @@ CMakeFiles/openttd.dir/src/network/network_admin.cpp.o
  ../src/widgets/viewport_widget.h
  ../src/widgets/waypoint_widget.h
  ../src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
@@ -14302,6 +14318,7 @@ CMakeFiles/openttd.dir/src/network/network_admin.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/crashlog.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
@@ -14370,6 +14387,7 @@ CMakeFiles/openttd.dir/src/network/network_admin.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/control_codes.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/textfile_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/transport_type.h
@@ -19290,6 +19308,8 @@ CMakeFiles/openttd.dir/src/osk_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/pathfinder/npf/aystar.cpp.o
+ ../src/core/math_func.hpp
+ ../src/core/mem_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
@@ -21079,13 +21099,17 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cmd_helper.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/command_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/command_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/company_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/company_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/company_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
@@ -21095,6 +21119,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/multimap.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/overflowsafe_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/pool_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallmap_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallstack_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
@@ -21117,6 +21142,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/ground_vehicle.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/house.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/house_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/industry_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/landscape.h
@@ -21128,6 +21154,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
@@ -21141,6 +21168,8 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/aystar.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/npf/queue.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/rail_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road.cpp
@@ -21163,6 +21192,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/subsidy_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/table/sprites.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/texteff.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_cmd.h
@@ -21170,6 +21200,8 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tilearea_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/timetable.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/town.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/town_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
@@ -21178,6 +21210,7 @@ CMakeFiles/openttd.dir/src/road.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_gui.h
@@ -24799,6 +24832,7 @@ CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
@@ -24837,6 +24871,7 @@ CMakeFiles/openttd.dir/src/saveload/signal_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/extended_ver_sl.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_buffer.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/signal_sl.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
@@ -25614,6 +25649,20 @@ CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/water_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
+CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/os/macosx/osx_stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/extended_ver_sl.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/train_speed_adaptation.cpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/train_speed_adaptation.h
 CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
@@ -32976,6 +33025,7 @@ CMakeFiles/openttd.dir/src/settings.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/goal_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ground_vehicle.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
@@ -35066,6 +35116,8 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cmd_helper.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/command_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/command_type.h
@@ -35105,6 +35157,7 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
@@ -35124,6 +35177,8 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cargo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
@@ -35196,6 +35251,7 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/departures_widget.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/misc_widget.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/station_widget.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
@@ -36939,6 +36995,8 @@ CMakeFiles/openttd.dir/src/terraform_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargo_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargopacket.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/cheat_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/clear_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/cmd_helper.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/command_func.h
@@ -38877,6 +38935,7 @@ CMakeFiles/openttd.dir/src/train_cmd.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/train.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/train_cmd.cpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/train_speed_adaptation.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/transparency.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/transport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory.h
@@ -40511,6 +40570,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/smallvec_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/string_compare_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/crashlog.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/date_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/driver.h
@@ -40533,6 +40593,7 @@ CMakeFiles/openttd.dir/src/video/null_v.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/town_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/transport_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/video/null_v.cpp

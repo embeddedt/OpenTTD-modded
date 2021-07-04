@@ -268,6 +268,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tbtr_template_veh_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/tbtr_template_veh_sl.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/town_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/town_sl.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tracerestrict_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/tracerestrict_sl.cpp.o"
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/train_speed_adaptation.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/train_speed_adaptation.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/tunnel_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/vehicle_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/vehicle_sl.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/waypoint_sl.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/saveload/waypoint_sl.cpp.o"
