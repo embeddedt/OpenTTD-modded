@@ -39,6 +39,8 @@ YearMonthDay _game_load_cur_date_ymd;
 DateFract _game_load_date_fract;
 uint8 _game_load_tick_skip_counter;
 
+extern void ClearOutOfDateSignalSpeedRestrictions();
+
 /**
  * Set the date.
  * @param date  New date
@@ -184,6 +186,7 @@ extern void CompaniesMonthlyLoop();
 extern void EnginesMonthlyLoop();
 extern void TownsMonthlyLoop();
 extern void IndustryMonthlyLoop();
+extern void StationDailyLoop();
 extern void StationMonthlyLoop();
 extern void SubsidyMonthlyLoop();
 
@@ -276,11 +279,13 @@ static void OnNewDay()
 
 	DisasterDailyLoop();
 	IndustryDailyLoop();
+	StationDailyLoop();
 
 	if (!_settings_time.time_in_minutes || _settings_client.gui.date_with_time > 0) {
 		SetWindowWidgetDirty(WC_STATUS_BAR, 0, WID_S_LEFT);
 	}
 	EnginesDailyLoop();
+	ClearOutOfDateSignalSpeedRestrictions();
 
 	/* Refresh after possible snowline change */
 	SetWindowClassesDirty(WC_TOWN_VIEW);

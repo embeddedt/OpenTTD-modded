@@ -405,6 +405,33 @@ void Station::GetTileArea(TileArea *ta, StationType type) const
 }
 
 /**
+ * Update the cargo history.
+ */
+void Station::UpdateCargoHistory()
+{
+	uint storage_offset = 0;
+	bool update_window = false;
+	for (const CargoSpec *cs : CargoSpec::Iterate()) {
+		uint amount = this->goods[cs->Index()].cargo.TotalCount();
+		if (!HasBit(this->station_cargo_history_cargoes, cs->Index())) {
+			if (amount == 0) {
+				/* No cargo present, and no history stored for this cargo, no work to do */
+				continue;
+			} else {
+				if (this->station_cargo_history_cargoes == 0) update_window = true;
+				SetBit(this->station_cargo_history_cargoes, cs->Index());
+				this->station_cargo_history.emplace(this->station_cargo_history.begin() + storage_offset);
+			}
+		}
+		this->station_cargo_history[storage_offset][this->station_cargo_history_offset] = static_cast<uint16>(std::clamp<uint>(amount, (uint)0, (uint)UINT16_MAX));
+		storage_offset++;
+	}
+	this->station_cargo_history_offset++;
+	if (this->station_cargo_history_offset == MAX_STATION_CARGO_HISTORY_DAYS) this->station_cargo_history_offset = 0;
+	if (update_window) InvalidateWindowData(WC_STATION_VIEW, this->index, -1);
+}
+
+/**
  * Update the virtual coords needed to draw the station sign.
  */
 void Station::UpdateVirtCoord()
@@ -3803,6 +3830,136 @@ static void TruncateCargo(const CargoSpec *cs, GoodsEntry *ge, uint amount = UIN
 	}
 }
 
+bool GetNewGrfRating(const Station *st, const CargoSpec *cs, const GoodsEntry *ge, int *new_grf_rating)
+{
+	*new_grf_rating = 0;
+	bool is_using_newgrf_rating = false;
+
+	/* Perform custom station rating. If it succeeds the speed, days in transit and
+	 * waiting cargo ratings must not be executed. */
+
+	/* NewGRFs expect last speed to be 0xFF when no vehicle has arrived yet. */
+	uint last_speed = ge->HasVehicleEverTriedLoading() && ge->IsSupplyAllowed() ? ge->last_speed : 0xFF;
+
+	uint32 var18 = std::min<uint>(ge->time_since_pickup, 0xFFu)
+		| (std::min<uint>(ge->max_waiting_cargo, 0xFFFFu) << 8)
+		| (std::min<uint>(last_speed, 0xFFu) << 24);
+	/* Convert to the 'old' vehicle types */
+	uint32 var10 = (ge->last_vehicle_type == VEH_INVALID) ? 0x0 : (ge->last_vehicle_type + 0x10);
+	uint16 callback = GetCargoCallback(CBID_CARGO_STATION_RATING_CALC, var10, var18, cs);
+	if (callback != CALLBACK_FAILED) {
+		is_using_newgrf_rating = true;
+		*new_grf_rating = GB(callback, 0, 14);
+
+		/* Simulate a 15 bit signed value */
+		if (HasBit(callback, 14)) *new_grf_rating -= 0x4000;
+	}
+
+	return is_using_newgrf_rating;
+}
+
+int GetSpeedRating(const GoodsEntry *ge)
+{
+	const int b = ge->last_speed - 85;
+
+	return (b >= 0) ? (b >> 2) : 0;
+}
+
+int GetWaitTimeRating(const CargoSpec *cs, const GoodsEntry *ge)
+{
+	int rating = 0;
+
+	uint wait_time = ge->time_since_pickup;
+
+	if (_settings_game.station.cargo_class_rating_wait_time) {
+		if (cs->classes & CC_PASSENGERS) {
+			wait_time *= 3;
+		} else if (cs->classes & CC_REFRIGERATED) {
+			wait_time *= 2;
+		} else if (cs->classes & (CC_MAIL | CC_ARMOURED | CC_EXPRESS)) {
+			wait_time += (wait_time >> 1);
+		} else if (cs->classes & (CC_BULK | CC_LIQUID)) {
+			wait_time >>= 2;
+		}
+	}
+
+	if (ge->last_vehicle_type == VEH_SHIP) wait_time >>= 2;
+	if (wait_time <= 21) rating += 25;
+	if (wait_time <= 12) rating += 25;
+	if (wait_time <= 6) rating += 45;
+	if (wait_time <= 3) rating += 35;
+
+	return rating;
+}
+
+int GetWaitingCargoRating(const Station *st, const GoodsEntry *ge)
+{
+	int rating = -90;
+
+	uint normalised_max_waiting_cargo = ge->max_waiting_cargo;
+
+	if (_settings_game.station.station_size_rating_cargo_amount) {
+		normalised_max_waiting_cargo *= 8;
+		if (st->station_tiles > 1) normalised_max_waiting_cargo /= st->station_tiles;
+	}
+
+	if (normalised_max_waiting_cargo <= 1500) rating += 55;
+	if (normalised_max_waiting_cargo <= 1000) rating += 35;
+	if (normalised_max_waiting_cargo <= 600) rating += 10;
+	if (normalised_max_waiting_cargo <= 300) rating += 20;
+	if (normalised_max_waiting_cargo <= 100) rating += 10;
+
+	return rating;
+}
+
+int GetStatueRating(const Station *st)
+{
+	return Company::IsValidID(st->owner) && HasBit(st->town->statues, st->owner) ? 26 : 0;
+}
+
+int GetVehicleAgeRating(const GoodsEntry *ge)
+{
+	int rating = 0;
+
+	const byte age = ge->last_age;
+
+	if (age < 30) rating += 10;
+	if (age < 20) rating += 10;
+	if (age < 10) rating += 13;
+
+	return rating;
+}
+
+int GetTargetRating(const Station *st, const CargoSpec *cs, const GoodsEntry *ge)
+{
+	bool skip = false;
+	int rating = 0;
+
+	if (_extra_cheats.station_rating.value) {
+		rating = 255;
+		skip = true;
+	} else if (HasBit(cs->callback_mask, CBM_CARGO_STATION_RATING_CALC)) {
+
+		int new_grf_rating;
+
+		if (GetNewGrfRating(st, cs, ge, &new_grf_rating)) {
+			skip = true;
+			rating += new_grf_rating;
+		}
+	}
+
+	if (!skip) {
+		rating += GetSpeedRating(ge);
+		rating += GetWaitTimeRating(cs, ge);
+		rating += GetWaitingCargoRating(st, ge);
+	}
+
+	rating += GetStatueRating(st);
+	rating += GetVehicleAgeRating(ge);
+
+	return Clamp(rating, 0, 255);
+}
+
 static void UpdateStationRating(Station *st)
 {
 	bool waiting_changed = false;
@@ -3812,6 +3969,7 @@ static void UpdateStationRating(Station *st)
 
 	for (const CargoSpec *cs : CargoSpec::Iterate()) {
 		GoodsEntry *ge = &st->goods[cs->Index()];
+
 		/* Slowly increase the rating back to his original level in the case we
 		 *  didn't deliver cargo yet to this station. This happens when a bribe
 		 *  failed while you didn't moved that cargo yet to a station. */
@@ -3822,6 +3980,7 @@ static void UpdateStationRating(Station *st)
 		/* Only change the rating if we are moving this cargo */
 		if (ge->HasRating()) {
 			byte_inc_sat(&ge->time_since_pickup);
+
 			if (ge->time_since_pickup == 255 && _settings_game.order.selectgoods) {
 				ClrBit(ge->status, GoodsEntry::GES_RATING);
 				ge->last_speed = 0;
@@ -3830,95 +3989,28 @@ static void UpdateStationRating(Station *st)
 				continue;
 			}
 
-			bool skip = false;
-			int rating = 0;
-			uint waiting = ge->cargo.AvailableCount();
-
-			/* num_dests is at least 1 if there is any cargo as
-			 * INVALID_STATION is also a destination.
-			 */
-			uint num_dests = (uint)ge->cargo.Packets()->MapSize();
-
-			/* Average amount of cargo per next hop, but prefer solitary stations
-			 * with only one or two next hops. They are allowed to have more
-			 * cargo waiting per next hop.
-			 * With manual cargo distribution waiting_avg = waiting / 2 as then
-			 * INVALID_STATION is the only destination.
-			 */
-			uint waiting_avg = waiting / (num_dests + 1);
-
-			if (_extra_cheats.station_rating.value) {
-				ge->rating = rating = 255;
-				skip = true;
-			} else if (HasBit(cs->callback_mask, CBM_CARGO_STATION_RATING_CALC)) {
-				/* Perform custom station rating. If it succeeds the speed, days in transit and
-				 * waiting cargo ratings must not be executed. */
-
-				/* NewGRFs expect last speed to be 0xFF when no vehicle has arrived yet. */
-				uint last_speed = ge->HasVehicleEverTriedLoading() && ge->IsSupplyAllowed() ? ge->last_speed : 0xFF;
-
-				uint32 var18 = std::min<uint>(ge->time_since_pickup, 0xFFu)
-					| (std::min<uint>(ge->max_waiting_cargo, 0xFFFFu) << 8)
-					| (std::min<uint>(last_speed, 0xFFu) << 24);
-				/* Convert to the 'old' vehicle types */
-				uint32 var10 = (ge->last_vehicle_type == VEH_INVALID) ? 0x0 : (ge->last_vehicle_type + 0x10);
-				uint16 callback = GetCargoCallback(CBID_CARGO_STATION_RATING_CALC, var10, var18, cs);
-				if (callback != CALLBACK_FAILED) {
-					skip = true;
-					rating = GB(callback, 0, 14);
-
-					/* Simulate a 15 bit signed value */
-					if (HasBit(callback, 14)) rating -= 0x4000;
-				}
-			}
-
-			if (!skip) {
-				int b = ge->last_speed - 85;
-				if (b >= 0) rating += b >> 2;
-
-				uint waittime = ge->time_since_pickup;
-				if (_settings_game.station.cargo_class_rating_wait_time) {
-					if (cs->classes & CC_PASSENGERS) {
-						waittime *= 3;
-					} else if (cs->classes & CC_REFRIGERATED) {
-						waittime *= 2;
-					} else if (cs->classes & (CC_MAIL | CC_ARMOURED | CC_EXPRESS)) {
-						waittime += (waittime >> 1);
-					} else if (cs->classes & (CC_BULK | CC_LIQUID)) {
-						waittime >>= 2;
-					}
-				}
-				if (ge->last_vehicle_type == VEH_SHIP) waittime >>= 2;
-				if (waittime <= 21) rating += 25;
-				if (waittime <= 12) rating += 25;
-				if (waittime <= 6) rating += 45;
-				if (waittime <= 3) rating += 35;
-
-				rating -= 90;
-				uint normalised_max_waiting_cargo = ge->max_waiting_cargo;
-				if (_settings_game.station.station_size_rating_cargo_amount) {
-					normalised_max_waiting_cargo *= 8;
-					if (st->station_tiles > 1) normalised_max_waiting_cargo /= st->station_tiles;
-				}
-				if (normalised_max_waiting_cargo <= 1500) rating += 55;
-				if (normalised_max_waiting_cargo <= 1000) rating += 35;
-				if (normalised_max_waiting_cargo <= 600) rating += 10;
-				if (normalised_max_waiting_cargo <= 300) rating += 20;
-				if (normalised_max_waiting_cargo <= 100) rating += 10;
-			}
-
-			if (Company::IsValidID(st->owner) && HasBit(st->town->statues, st->owner)) rating += 26;
-
-			byte age = ge->last_age;
-			if (age < 3) rating += 10;
-			if (age < 2) rating += 10;
-			if (age < 1) rating += 13;
-
 			{
-				int or_ = ge->rating; // old rating
+				int rating = GetTargetRating(st, cs, ge);
+
+				uint waiting = ge->cargo.AvailableCount();
+
+				/* num_dests is at least 1 if there is any cargo as
+				 * INVALID_STATION is also a destination.
+				 */
+				const uint num_dests = (uint)ge->cargo.Packets()->MapSize();
+
+				/* Average amount of cargo per next hop, but prefer solitary stations
+				 * with only one or two next hops. They are allowed to have more
+				 * cargo waiting per next hop.
+				 * With manual cargo distribution waiting_avg = waiting / 2 as then
+				 * INVALID_STATION is the only destination.
+				 */
+				const uint waiting_avg = waiting / (num_dests + 1);
+
+				const int old_rating = ge->rating; // old rating
 
 				/* only modify rating in steps of -2, -1, 0, 1 or 2 */
-				ge->rating = rating = or_ + Clamp(Clamp(rating, 0, 255) - or_, -2, 2);
+				ge->rating = rating = old_rating + Clamp(rating - old_rating, -2, 2);
 
 				/* if rating is <= 64 and more than 100 items waiting on average per destination,
 				 * remove some random amount of goods from the station */
@@ -3977,6 +4069,7 @@ static void UpdateStationRating(Station *st)
 	}
 
 	StationID index = st->index;
+
 	if (waiting_changed) {
 		SetWindowDirty(WC_STATION_VIEW, index); // update whole window
 	} else {
@@ -4207,6 +4300,18 @@ void OnTick_Station()
 			TriggerStationAnimation(st, st->xy, SAT_250_TICKS);
 			if (Station::IsExpected(st)) AirportAnimationTrigger(Station::From(st), AAT_STATION_250_TICKS);
 		}
+	}
+}
+
+/** Daily loop for stations. */
+void StationDailyLoop()
+{
+	// Only record cargo history every second day.
+	if (_date % 2 != 0) {
+		for (Station *st : Station::Iterate()) {
+			st->UpdateCargoHistory();
+		}
+		InvalidateWindowClassesData(WC_STATION_CARGO);
 	}
 }
 

@@ -155,6 +155,8 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_WATER_FLOODING,         XSCF_NULL,                2,   2, "water_flooding",            nullptr, nullptr, nullptr        },
 	{ XSLFI_MORE_HOUSES,            XSCF_NULL,                2,   2, "more_houses",               nullptr, nullptr, nullptr        },
 	{ XSLFI_CUSTOM_TOWN_ZONE,       XSCF_IGNORABLE_UNKNOWN,   1,   1, "custom_town_zone",          nullptr, nullptr, nullptr        },
+	{ XSLFI_STATION_CARGO_HISTORY,  XSCF_NULL,                1,   1, "station_cargo_history",     nullptr, nullptr, nullptr        },
+	{ XSLFI_TRAIN_SPEED_ADAPTATION, XSCF_NULL,                1,   1, "train_speed_adaptation",    nullptr, nullptr, "TSAS"         },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };
 
@@ -650,9 +652,9 @@ static void loadVL(const SlxiSubChunkInfo *info, uint32 length)
 
 static uint32 saveVL(const SlxiSubChunkInfo *info, bool dry_run)
 {
-	size_t length = strlen(_openttd_revision);
+	const size_t length = strlen(_openttd_revision);
 	if (!dry_run) MemoryDumper::GetCurrent()->CopyBytes(reinterpret_cast<const byte *>(_openttd_revision), length);
-	return length;
+	return static_cast<uint32>(length);
 }
 
 static void loadLC(const SlxiSubChunkInfo *info, uint32 length)

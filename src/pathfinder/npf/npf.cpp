@@ -25,8 +25,6 @@
 static const uint NPF_HASH_BITS = 12; ///< The size of the hash used in pathfinding. Just changing this value should be sufficient to change the hash size. Should be an even value.
 /* Do no change below values */
 static const uint NPF_HASH_SIZE = 1 << NPF_HASH_BITS;
-static const uint NPF_HASH_HALFBITS = NPF_HASH_BITS / 2;
-static const uint NPF_HASH_HALFMASK = (1 << NPF_HASH_HALFBITS) - 1;
 
 /** Meant to be stored in AyStar.targetdata */
 struct NPFFindStationOrTileData {
@@ -129,24 +127,6 @@ static uint NPFDistanceTrack(TileIndex t0, TileIndex t1)
 	/* Don't factor out NPF_TILE_LENGTH below, this will round values and lose
 	 * precision */
 	return diagTracks * NPF_TILE_LENGTH + straightTracks * NPF_TILE_LENGTH * STRAIGHT_TRACK_LENGTH;
-}
-
-/**
- * Calculates a hash value for use in the NPF.
- * @param key1 The TileIndex of the tile to hash
- * @param key2 The Trackdir of the track on the tile.
- *
- * @todo Think of a better hash.
- */
-static uint NPFHash(uint key1, uint key2)
-{
-	/* TODO: think of a better hash? */
-	uint part1 = TileX(key1) & NPF_HASH_HALFMASK;
-	uint part2 = TileY(key1) & NPF_HASH_HALFMASK;
-
-	assert(IsValidTrackdir((Trackdir)key2));
-	assert(IsValidTile(key1));
-	return ((part1 << NPF_HASH_HALFBITS | part2) + (NPF_HASH_SIZE * key2 / TRACKDIR_END)) % NPF_HASH_SIZE;
 }
 
 static int32 NPFCalcZero(AyStar *as, AyStarNode *current, OpenListNode *parent)
@@ -1129,7 +1109,7 @@ void InitializeNPF()
 	static bool first_init = true;
 	if (first_init) {
 		first_init = false;
-		_npf_aystar.Init(NPFHash, NPF_HASH_SIZE);
+		_npf_aystar.Init(NPF_HASH_SIZE);
 	} else {
 		_npf_aystar.Clear();
 	}

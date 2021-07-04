@@ -2917,25 +2917,28 @@ static inline TileIndex ViewportMapGetMostSignificantTileType(const Viewport * c
 
 /** Get the colour of a tile, can be 32bpp RGB or 8bpp palette index. */
 template <bool is_32bpp, bool show_slope>
-uint32 ViewportMapGetColour(const Viewport * const vp, uint x, uint y, const uint colour_index)
+uint32 ViewportMapGetColour(const Viewport * const vp, int x, int y, const uint colour_index)
 {
-	if (!(IsInsideMM(x, TILE_SIZE, MapMaxX() * TILE_SIZE - 1) &&
-		  IsInsideMM(y, TILE_SIZE, MapMaxY() * TILE_SIZE - 1)))
-		return 0;
+	if (x >= static_cast<int>(MapMaxX() * TILE_SIZE) || y >= static_cast<int>(MapMaxY() * TILE_SIZE)) return 0;
 
 	/* Very approximative but fast way to get the tile when taking Z into account. */
-	const TileIndex tile_tmp = TileVirtXY(x, y);
-	const uint z = TileHeight(tile_tmp) * 4;
+	const TileIndex tile_tmp = TileVirtXY(std::max(0, x), std::max(0, y));
+	const int z = TileHeight(tile_tmp) * 4;
+	if (x + z < 0 || y + z < 0 || static_cast<uint>(x + z) >= MapSizeX() << 4) {
+		/* Wrapping of tile X coordinate causes a graphic glitch below south west border. */
+		return 0;
+	}
 	TileIndex tile = TileVirtXY(x + z, y + z);
 	if (tile >= MapSize()) return 0;
-	if (_settings_game.construction.freeform_edges) {
-		/* tile_tmp and tile must be from the same side,
-		 * otherwise it's an approximation erroneous case
-		 * that leads to a graphic glitch below south west border.
-		 */
-		if (TileX(tile_tmp) > (MapSizeX() - (MapSizeX() / 8)))
-			if ((TileX(tile_tmp) < (MapSizeX() / 2)) != (TileX(tile) < (MapSizeX() / 2)))
-				return 0;
+	const int z2 = TileHeight(tile) * 4;
+	if (unlikely(z2 != z)) {
+		const int approx_z = (z + z2) / 2;
+		if (x + approx_z < 0 || y + approx_z < 0 || static_cast<uint>(x + approx_z) >= MapSizeX() << 4) {
+			/* Wrapping of tile X coordinate causes a graphic glitch below south west border. */
+			return 0;
+		}
+		tile = TileVirtXY(x + approx_z, y + approx_z);
+		if (tile >= MapSize()) return 0;
 	}
 	TileType tile_type = MP_VOID;
 	tile = ViewportMapGetMostSignificantTileType(vp, tile, &tile_type);
@@ -3041,7 +3044,7 @@ static void ViewportMapDrawBridgeTunnel(Viewport * const vp, const TunnelBridgeT
 	}
 
 	TileIndexDiff delta = TileOffsByDiagDir(GetTunnelBridgeDirection(tile));
-	for (; tile != tbtm->to_tile; tile += delta) { // For each tile
+	for (tile += delta; tile != tbtm->to_tile; tile += delta) { // For each tile
 		const Point pt = RemapCoords(TileX(tile) * TILE_SIZE, TileY(tile) * TILE_SIZE, z);
 		const int x = UnScaleByZoomLower(pt.x - _vd.dpi.left, _vd.dpi.zoom);
 		if (IsInsideMM(x, 0, w)) {

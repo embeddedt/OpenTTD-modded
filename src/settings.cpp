@@ -73,6 +73,7 @@
 #include "viewport_func.h"
 #include "gui.h"
 #include "statusbar_gui.h"
+#include "graph_gui.h"
 
 #include "void_map.h"
 #include "station_base.h"
@@ -1523,6 +1524,33 @@ static bool ClimateThresholdModeChanged(int32 p1)
 	return true;
 }
 
+static bool VelocityUnitsChanged(int32 p1) {
+	InvalidateWindowClassesData(WC_PAYMENT_RATES);
+	MarkWholeScreenDirty();
+	return true;
+}
+
+static bool ChangeTrackTypeSortMode(int32 p1) {
+	extern void SortRailTypes();
+	SortRailTypes();
+	MarkWholeScreenDirty();
+	return true;
+}
+
+static bool PublicRoadsSettingChange(int32 p1) {
+	InvalidateWindowClassesData(WC_SCEN_LAND_GEN);
+	return true;
+}
+
+static bool TrainSpeedAdaptationChanged(int32 p1) {
+	extern void ClearAllSignalSpeedRestrictions();
+	ClearAllSignalSpeedRestrictions();
+	for (Train *t : Train::Iterate()) {
+		t->signal_speed_restriction = 0;
+	}
+	return true;
+}
+
 /** Checks if any settings are set to incorrect values, and sets them to correct values in that case. */
 static void ValidateSettings()
 {
@@ -1773,7 +1801,12 @@ static bool ImprovedBreakdownsSettingChanged(int32 p1)
 
 static bool DayLengthChanged(int32 p1)
 {
+	const DateTicksScaled old_scaled_date_ticks = _scaled_date_ticks;
 	SetScaledTickVariables();
+
+	extern void AdjustAllSignalSpeedRestrictionTickValues(DateTicksScaled delta);
+	AdjustAllSignalSpeedRestrictionTickValues(_scaled_date_ticks - old_scaled_date_ticks);
+
 	MarkWholeScreenDirty();
 	return true;
 }
@@ -2340,6 +2373,8 @@ CommandCost CmdChangeSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 		int32 oldval = (int32)ReadValue(var, sd->save.conv);
 		int32 newval = (int32)p2;
 
+		SCOPE_INFO_FMT([=], "CmdChangeSetting: %s, %d -> %d", sd->desc.name, oldval, newval);
+
 		Write_ValidateSetting(var, sd, newval);
 		newval = (int32)ReadValue(var, sd->save.conv);
 
@@ -2364,6 +2399,14 @@ CommandCost CmdChangeSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 	return CommandCost();
 }
 
+const char *GetSettingNameByIndex(uint32 idx)
+{
+	const SettingDesc *sd = GetSettingDescription(idx);
+	if (sd == nullptr) return nullptr;
+
+	return sd->desc.name;
+}
+
 /**
  * Change one of the per-company settings.
  * @param tile unused
@@ -2385,6 +2428,8 @@ CommandCost CmdChangeCompanySetting(TileIndex tile, DoCommandFlag flags, uint32 
 		int32 oldval = (int32)ReadValue(var, sd->save.conv);
 		int32 newval = (int32)p2;
 
+		SCOPE_INFO_FMT([=], "CmdChangeCompanySetting: %s, %d -> %d", sd->desc.name, oldval, newval);
+
 		Write_ValidateSetting(var, sd, newval);
 		newval = (int32)ReadValue(var, sd->save.conv);
 
@@ -2399,6 +2444,13 @@ CommandCost CmdChangeCompanySetting(TileIndex tile, DoCommandFlag flags, uint32 
 	}
 
 	return CommandCost();
+}
+
+const char *GetCompanySettingNameByIndex(uint32 idx)
+{
+	if (idx >= lengthof(_company_settings)) return nullptr;
+
+	return _company_settings[idx].desc.name;
 }
 
 /**

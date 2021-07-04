@@ -1758,6 +1758,7 @@ static SettingsContainer &GetSettingsTree()
 				construction->Add(new SettingEntry("gui.quick_goto"));
 				construction->Add(new SettingEntry("gui.default_rail_type"));
 				construction->Add(new SettingEntry("gui.default_road_type"));
+				construction->Add(new SettingEntry("gui.demolish_confirm_mode"));
 			}
 
 			SettingsPage *departureboards = interface->Add(new SettingsPage(STR_CONFIG_SETTING_INTERFACE_DEPARTUREBOARDS));
@@ -1837,9 +1838,12 @@ static SettingsContainer &GetSettingsTree()
 			interface->Add(new SettingEntry("gui.show_adv_load_mode_features"));
 			interface->Add(new SettingEntry("gui.disable_top_veh_list_mass_actions"));
 			interface->Add(new SettingEntry("gui.adv_sig_bridge_tun_modes"));
+			interface->Add(new SettingEntry("gui.sort_track_types_by_speed"));
 			interface->Add(new SettingEntry("gui.show_depot_sell_gui"));
 			interface->Add(new SettingEntry("gui.open_vehicle_gui_clone_share"));
 			interface->Add(new SettingEntry("gui.vehicle_names"));
+			interface->Add(new SettingEntry("gui.station_rating_tooltip_mode"));
+			interface->Add(new SettingEntry("gui.dual_pane_train_purchase_window"));
 		}
 
 		SettingsPage *advisors = main->Add(new SettingsPage(STR_CONFIG_SETTING_ADVISORS));
@@ -1921,6 +1925,7 @@ static SettingsContainer &GetSettingsTree()
 				physics->Add(new SettingEntry("vehicle.train_braking_model"));
 				physics->Add(new SettingEntry("vehicle.train_slope_steepness"));
 				physics->Add(new SettingEntry("vehicle.wagon_speed_limits"));
+				physics->Add(new SettingEntry("vehicle.train_speed_adaptation"));
 				physics->Add(new SettingEntry("vehicle.freight_trains"));
 				physics->Add(new SettingEntry("vehicle.roadveh_acceleration_model"));
 				physics->Add(new SettingEntry("vehicle.roadveh_slope_steepness"));
@@ -1929,6 +1934,7 @@ static SettingsContainer &GetSettingsTree()
 				physics->Add(new SettingEntry("vehicle.plane_taxi_speed"));
 				physics->Add(new SettingEntry("vehicle.ship_collision_avoidance"));
 				physics->Add(new SettingEntry("vehicle.roadveh_articulated_overtaking"));
+				physics->Add(new SettingEntry("vehicle.slow_road_vehicles_in_curves"));
 			}
 
 			SettingsPage *routing = vehicles->Add(new SettingsPage(STR_CONFIG_SETTING_VEHICLES_ROUTING));
@@ -2003,6 +2009,16 @@ static SettingsContainer &GetSettingsTree()
 
 		SettingsPage *genworld = main->Add(new SettingsPage(STR_CONFIG_SETTING_GENWORLD));
 		{
+			SettingsPage *rivers = genworld->Add(new SettingsPage(STR_CONFIG_SETTING_GENWORLD_RIVERS_LAKES));
+			{
+				rivers->Add(new SettingEntry("game_creation.amount_of_rivers"));
+				rivers->Add(new SettingEntry("game_creation.min_river_length"));
+				rivers->Add(new SettingEntry("game_creation.river_route_random"));
+				rivers->Add(new SettingEntry("game_creation.rivers_top_of_hill"));
+				rivers->Add(new SettingEntry("game_creation.river_tropics_width"));
+				rivers->Add(new SettingEntry("game_creation.lake_size"));
+				rivers->Add(new SettingEntry("game_creation.lakes_allowed_in_deserts"));
+			}
 			genworld->Add(new SettingEntry("game_creation.landscape"));
 			genworld->Add(new SettingEntry("game_creation.land_generator"));
 			genworld->Add(new SettingEntry("difficulty.terrain_type"));
@@ -2016,17 +2032,6 @@ static SettingsContainer &GetSettingsTree()
 			genworld->Add(new ConditionallyHiddenSettingEntry("game_creation.snow_line_height", snow_line_height_hide));
 			genworld->Add(new ConditionallyHiddenSettingEntry("game_creation.desert_coverage", coverage_hide));
 			genworld->Add(new ConditionallyHiddenSettingEntry("game_creation.rainforest_line_height", rainforest_line_height_hide));
-			genworld->Add(new SettingEntry("game_creation.amount_of_rivers"));
-			SettingsPage *rivers = genworld->Add(new SettingsPage(STR_CONFIG_SETTING_GENWORLD_RIVERS_LAKES));
-			{
-				rivers->Add(new SettingEntry("game_creation.amount_of_rivers"));
-				rivers->Add(new SettingEntry("game_creation.min_river_length"));
-				rivers->Add(new SettingEntry("game_creation.river_route_random"));
-				rivers->Add(new SettingEntry("game_creation.rivers_top_of_hill"));
-				rivers->Add(new SettingEntry("game_creation.river_tropics_width"));
-				rivers->Add(new SettingEntry("game_creation.lake_size"));
-				rivers->Add(new SettingEntry("game_creation.lakes_allowed_in_deserts"));
-			}
 			genworld->Add(new SettingEntry("game_creation.amount_of_rocks"));
 			genworld->Add(new SettingEntry("game_creation.height_affects_rocks"));
 			genworld->Add(new SettingEntry("game_creation.tree_placer"));
@@ -2035,6 +2040,8 @@ static SettingsContainer &GetSettingsTree()
 			genworld->Add(new SettingEntry("economy.initial_city_size"));
 			genworld->Add(new SettingEntry("economy.town_layout"));
 			genworld->Add(new SettingEntry("economy.town_min_distance"));
+			genworld->Add(new SettingEntry("economy.max_town_heightlevel"));
+			genworld->Add(new SettingEntry("game_creation.build_public_roads"));
 			genworld->Add(new SettingEntry("difficulty.industry_density"));
 			genworld->Add(new SettingEntry("gui.pause_on_newgame"));
 			genworld->Add(new SettingEntry("game_creation.ending_year"));
@@ -2054,9 +2061,6 @@ static SettingsContainer &GetSettingsTree()
 
 			SettingsPage *towns = environment->Add(new SettingsPage(STR_CONFIG_SETTING_ENVIRONMENT_TOWNS));
 			{
-				towns->Add(new SettingEntry("economy.town_growth_rate"));
-				towns->Add(new SettingEntry("economy.town_growth_cargo_transported"));
-				towns->Add(new SettingEntry("economy.town_zone_calc_mode"));
 				SettingsPage *town_zone = towns->Add(new SettingsPage(STR_CONFIG_SETTING_TOWN_ZONES));
 				{
 					town_zone->hide_callback = []() -> bool {
@@ -2073,6 +2077,9 @@ static SettingsContainer &GetSettingsTree()
 					town_zone->Add(new SettingEntry("economy.city_zone_3_mult"));
 					town_zone->Add(new SettingEntry("economy.city_zone_4_mult"));
 				}
+				towns->Add(new SettingEntry("economy.town_growth_rate"));
+				towns->Add(new SettingEntry("economy.town_growth_cargo_transported"));
+				towns->Add(new SettingEntry("economy.town_zone_calc_mode"));
 				towns->Add(new SettingEntry("economy.allow_town_roads"));
 				towns->Add(new SettingEntry("economy.allow_town_level_crossings"));
 				towns->Add(new SettingEntry("economy.found_town"));

@@ -1206,13 +1206,17 @@ static CommandCost DoClearTunnel(TileIndex tile, DoCommandFlag flags)
 		if (ret.Failed()) return ret;
 	}
 
-	if (GetTunnelBridgeTransportType(tile) == TRANSPORT_RAIL && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && HasTunnelReservation(tile)) {
+	if (GetTunnelBridgeTransportType(tile) == TRANSPORT_RAIL && _settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
 		DiagDirection dir = GetTunnelBridgeDirection(tile);
 		Track track = DiagDirToDiagTrack(dir);
-		CommandCost ret = CheckTrainReservationPreventsTrackModification(tile, track);
-		if (ret.Failed()) return ret;
-		ret = CheckTrainReservationPreventsTrackModification(endtile, track);
-		if (ret.Failed()) return ret;
+		if (HasTunnelReservation(tile)) {
+			CommandCost ret = CheckTrainReservationPreventsTrackModification(tile, track);
+			if (ret.Failed()) return ret;
+		}
+		if (HasTunnelReservation(endtile)) {
+			ret = CheckTrainReservationPreventsTrackModification(endtile, track);
+			if (ret.Failed()) return ret;
+		}
 	}
 
 	/* checks if the owner is town then decrease town rating by RATING_TUNNEL_BRIDGE_DOWN_STEP until
@@ -1805,7 +1809,7 @@ static void DrawBridgeSignalOnMiddlePart(const TileInfo *ti, TileIndex bridge_st
 				sprite += SPR_ORIGINAL_SIGNALS_BASE + (position << 1);
 			} else {
 				/* All other signals are picked from add on sprites. */
-				sprite += SPR_SIGNALS_BASE + ((int)SIGTYPE_NORMAL - 1) * 16 + variant * 64 + (position << 1);
+				sprite += SPR_SIGNALS_BASE + (variant * 64) + (position << 1) - 16;
 			}
 
 			AddSortableSpriteToDraw(sprite, PAL_NONE, x, y, 1, 1, TILE_HEIGHT, z, false, 0, 0, BB_Z_SEPARATOR);

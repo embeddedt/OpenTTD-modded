@@ -439,6 +439,9 @@ static void ShutdownGame()
 	FreeSignalPrograms();
 	FreeSignalDependencies();
 
+	extern void ClearAllSignalSpeedRestrictions();
+	ClearAllSignalSpeedRestrictions();
+
 	ClearZoningCaches();
 	ClearOrderDestinationRefcountMap();
 
@@ -1696,7 +1699,8 @@ void CheckCaches(bool force_check, std::function<void(const char *)> log)
 		}
 		UpdateStationDockingTiles(st);
 		if (ta.tile != st->docking_station.tile || ta.w != st->docking_station.w || ta.h != st->docking_station.h) {
-			CCLOG("station docking mismatch: station %i, company %i", st->index, (int)st->owner);
+			CCLOG("station docking mismatch: station %i, company %i, prev: (%X, %u, %u), recalc: (%X, %u, %u)",
+					st->index, (int)st->owner, ta.tile, ta.w, ta.h, st->docking_station.tile, st->docking_station.w, st->docking_station.h);
 		}
 		TILE_AREA_LOOP(tile, ta) {
 			if (docking_tiles[tile] != IsDockingTile(tile)) {

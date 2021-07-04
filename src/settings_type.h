@@ -216,11 +216,15 @@ struct GUISettings : public TimeSettings {
 	bool   show_adv_load_mode_features;      ///< enable advanced loading mode features in UI
 	bool   disable_top_veh_list_mass_actions;     ///< disable mass actions buttons for non-group vehicle lists
 	bool   adv_sig_bridge_tun_modes;         ///< Enable advanced modes for signals on bridges/tunnels.
+	bool   sort_track_types_by_speed;        ///< Sorts track types by compatibility first, and speed next, instead of newGRF slot
 	bool   show_depot_sell_gui;              ///< Show go to depot and sell in UI
 	bool   open_vehicle_gui_clone_share;     ///< Open vehicle GUI when share-cloning vehicle from depot GUI
 	uint8  linkgraph_colours;                ///< linkgraph overlay colours
 	uint8  vehicle_names;                    ///< Vehicle naming scheme
 	bool   shade_trees_on_slopes;            ///< Shade trees on slopes
+	uint8  station_rating_tooltip_mode;      ///< Station rating tooltip mode
+	uint8  demolish_confirm_mode;            ///< Demolition confirmation mode
+	bool   dual_pane_train_purchase_window;  ///< Dual pane train purchase window
 
 	uint16 console_backlog_timeout;          ///< the minimum amount of time items should be in the console backlog before they will be removed in ~3 seconds granularity.
 	uint16 console_backlog_length;           ///< the minimum amount of items in the console backlog before items will be removed.
@@ -386,6 +390,7 @@ struct GameCreationSettings {
 	bool   lakes_allowed_in_deserts;         ///< are lakes allowed in deserts?
 	uint8  amount_of_rocks;                  ///< the amount of rocks
 	uint8  height_affects_rocks;             ///< the affect that map height has on rocks
+	uint8  build_public_roads;               ///< build public roads connecting towns
 };
 
 /** Settings related to construction in-game */
@@ -569,6 +574,8 @@ struct VehicleSettings {
 	uint8  train_slope_steepness;            ///< Steepness of hills for trains when using realistic acceleration
 	uint8  roadveh_slope_steepness;          ///< Steepness of hills for road vehicles when using realistic acceleration
 	bool   wagon_speed_limits;               ///< enable wagon speed limits
+	bool   train_speed_adaptation;           ///< Faster trains slow down when behind slower trains
+	bool   slow_road_vehicles_in_curves;     ///< Road vehicles slow down in curves.
 	bool   disable_elrails;                  ///< when true, the elrails are disabled
 	UnitID max_trains;                       ///< max trains in game per company
 	UnitID max_roadveh;                      ///< max trucks in game per company
@@ -631,6 +638,7 @@ struct EconomySettings {
 	TownCargoGenMode town_cargogen_mode;     ///< algorithm for generating cargo from houses, @see TownCargoGenMode
 	bool   allow_town_roads;                 ///< towns are allowed to build roads (always allowed when generating world / in SE)
 	uint16  town_min_distance;               ///< minimum distance between towns
+	uint8  max_town_heightlevel;             ///< maximum height level for towns
 	TownFounding found_town;                 ///< town founding.
 	bool   station_noise_level;              ///< build new airports when the town noise level is still within accepted limits
 	uint16 town_noise_population[3];         ///< population to base decision on noise evaluation (@see town_council_tolerance)
