@@ -1896,7 +1896,9 @@ void DisplayLocomotiveSortDropDown(Window *w, int selected)
 {
 	uint32 hidden_mask = 0;
 	/* Disable sorting by tractive effort when the original acceleration model for trains is being used. */
-	SetBit(hidden_mask, 4); // tractive effort
+	if (_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL) {
+		SetBit(hidden_mask, 4); // tractive effort
+	}
 	ShowDropDownMenu(w, _sort_listing_loco, selected, WID_BV_SORT_DROPDOWN_LOCO, 0, hidden_mask);
 }
 
@@ -2622,7 +2624,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 			case WID_BV_SORT_DROPDOWN_LOCO: {
 				if (this->loco.sort_criteria != index) {
 					this->loco.sort_criteria = static_cast<byte>(index);
-					_last_sort_criteria_wagon = this->loco.sort_criteria;
+					_last_sort_criteria_loco = this->loco.sort_criteria;
 					this->loco.eng_list.ForceRebuild();
 				}
 				break;
@@ -2631,7 +2633,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 			case WID_BV_CARGO_FILTER_DROPDOWN_LOCO: { // Select a cargo filter criteria
 				if (this->loco.cargo_filter_criteria != index) {
 					this->loco.cargo_filter_criteria = static_cast<byte>(index);
-					_last_filter_criteria_wagon = this->loco.cargo_filter[this->loco.cargo_filter_criteria];
+					_last_filter_criteria_loco = this->loco.cargo_filter[this->loco.cargo_filter_criteria];
 					/* deactivate filter if criteria is 'Show All', activate it otherwise */
 					this->loco.eng_list.SetFilterState(this->loco.cargo_filter[this->loco.cargo_filter_criteria] != CF_ANY);
 					this->loco.eng_list.ForceRebuild();
