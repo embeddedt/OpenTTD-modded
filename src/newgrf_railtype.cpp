@@ -10,6 +10,7 @@
 #include "stdafx.h"
 #include "debug.h"
 #include "newgrf_railtype.h"
+#include "newgrf_newsignals.h"
 #include "date_func.h"
 #include "depot_base.h"
 #include "town.h"
@@ -114,6 +115,31 @@ SpriteID GetCustomRailSprite(const RailtypeInfo *rti, TileIndex tile, RailTypeSp
 	return group->GetResult();
 }
 
+inline uint8 RemapAspect(uint8 aspect, uint8 extra_aspects)
+{
+	if (likely(extra_aspects == 0 || _extra_aspects == 0)) return std::min<uint8>(aspect, 1);
+	if (aspect == 0) return 0;
+	if (aspect >= extra_aspects + 1) return 1;
+	return aspect + 1;
+}
+
+static PalSpriteID GetRailTypeCustomSignalSprite(const RailtypeInfo *rti, TileIndex tile, SignalType type, SignalVariant var, uint8 aspect, bool gui, bool restricted)
+{
+	if (rti->group[RTSG_SIGNALS] == nullptr) return { 0, PAL_NONE };
+	if (type == SIGTYPE_PROG && !HasBit(rti->ctrl_flags, RTCF_PROGSIG)) return { 0, PAL_NONE };
+
+	uint32 param1 = gui ? 0x10 : 0x00;
+	uint32 param2 = (type << 16) | (var << 8) | RemapAspect(aspect, rti->signal_extra_aspects);
+	if (restricted && HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG)) SetBit(param2, 24);
+	RailTypeResolverObject object(rti, tile, TCX_NORMAL, RTSG_SIGNALS, param1, param2);
+
+	const SpriteGroup *group = object.Resolve();
+	if (group == nullptr || group->GetNumResults() == 0) return { 0, PAL_NONE };
+
+	PaletteID pal = HasBit(rti->ctrl_flags, RTCF_RECOLOUR_ENABLED) ? GB(GetRegister(0x100), 0, 24) : PAL_NONE;
+	return { group->GetResult(), pal };
+}
+
 /**
  * Get the sprite to draw for a given signal.
  * @param rti The rail type data (spec).
@@ -124,20 +150,27 @@ SpriteID GetCustomRailSprite(const RailtypeInfo *rti, TileIndex tile, RailTypeSp
  * @param gui Is the sprite being used on the map or in the GUI?
  * @return The sprite to draw.
  */
-SpriteID GetCustomSignalSprite(const RailtypeInfo *rti, TileIndex tile, SignalType type, SignalVariant var, SignalState state, bool gui, bool restricted)
+CustomSignalSpriteResult GetCustomSignalSprite(const RailtypeInfo *rti, TileIndex tile, SignalType type, SignalVariant var, uint8 aspect, bool gui, bool restricted)
 {
-	if (rti->group[RTSG_SIGNALS] == nullptr) return 0;
-	if (type == SIGTYPE_PROG && !HasBit(rti->ctrl_flags, RTCF_PROGSIG)) return 0;
+	PalSpriteID spr = GetRailTypeCustomSignalSprite(rti, tile, type, var, aspect, gui, restricted);
+	if (spr.sprite != 0) return { spr, HasBit(rti->ctrl_flags, RTCF_PROGSIG) };
 
-	uint32 param1 = gui ? 0x10 : 0x00;
-	uint32 param2 = (type << 16) | (var << 8) | state;
-	if (restricted && HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG)) SetBit(param2, 24);
-	RailTypeResolverObject object(rti, tile, TCX_NORMAL, RTSG_SIGNALS, param1, param2);
+	for (const GRFFile *grf : _new_signals_grfs) {
+		if (type == SIGTYPE_PROG && !HasBit(grf->new_signal_ctrl_flags, NSCF_PROGSIG)) continue;
 
-	const SpriteGroup *group = object.Resolve();
-	if (group == nullptr || group->GetNumResults() == 0) return 0;
+		uint32 param1 = gui ? 0x10 : 0x00;
+		uint32 param2 = (type << 16) | (var << 8) | RemapAspect(aspect, grf->new_signal_extra_aspects);
+		if (restricted && HasBit(grf->new_signal_ctrl_flags, NSCF_RESTRICTEDSIG)) SetBit(param2, 24);
+		NewSignalsResolverObject object(grf, tile, TCX_NORMAL, param1, param2);
 
-	return group->GetResult();
+		const SpriteGroup *group = object.Resolve();
+		if (group != nullptr && group->GetNumResults() != 0) {
+			PaletteID pal = HasBit(grf->new_signal_ctrl_flags, NSCF_RECOLOUR_ENABLED) ? GB(GetRegister(0x100), 0, 24) : PAL_NONE;
+			return { { group->GetResult(), pal }, HasBit(grf->new_signal_ctrl_flags, NSCF_RESTRICTEDSIG) };
+		}
+	}
+
+	return { { 0, PAL_NONE }, false };
 }
 
 /**

@@ -464,6 +464,8 @@ static void ShutdownGame()
 	_game_load_date_fract = 0;
 	_game_load_tick_skip_counter = 0;
 	_game_load_time = 0;
+	_extra_station_names_used = 0;
+	_extra_aspects = 0;
 	_loadgame_DBGL_data.clear();
 	_loadgame_DBGC_data.clear();
 }
@@ -731,7 +733,7 @@ int openttd_main(int argc, char *argv[])
 			videodriver = "dedicated";
 			blitter = "null";
 			dedicated = true;
-			SetDebugString("net=6");
+			SetDebugString("net=3");
 			if (mgo.opt != nullptr) {
 				const char *port = nullptr;
 				ParseConnectionString(&port, mgo.opt);
@@ -1254,7 +1256,11 @@ void SwitchToMode(SwitchMode new_mode)
 				}
 				/* Update the local company for a loaded game. It is either always
 				 * a company or in the case of a dedicated server a spectator */
-				SetLocalCompany(_network_dedicated ? COMPANY_SPECTATOR : GetDefaultLocalCompany());
+				if (_network_server && !_network_dedicated) {
+					NetworkServerDoMove(CLIENT_ID_SERVER, GetDefaultLocalCompany());
+				} else {
+					SetLocalCompany(_network_dedicated ? COMPANY_SPECTATOR : GetDefaultLocalCompany());
+				}
 				if (_ctrl_pressed && !_network_dedicated) {
 					DoCommandP(0, PM_PAUSED_NORMAL, 1, CMD_PAUSE);
 				}
@@ -1859,6 +1865,7 @@ void StateGameLoop()
 			UpdateStateChecksum(c->money);
 		}
 	}
+	if (_extra_aspects > 0) FlushDeferredAspectUpdates();
 
 	assert(IsLocalCompany());
 }
@@ -1958,6 +1965,8 @@ void GameLoop()
 
 	/* Check for UDP stuff */
 	if (_network_available) NetworkBackgroundLoop();
+
+	DebugSendRemoteMessages();
 
 	if (_networking && !HasModalProgress()) {
 		/* Multiplayer */

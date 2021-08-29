@@ -998,7 +998,13 @@ static bool UpdateConsists(int32 p1)
 			if (t->lookahead != nullptr) SetBit(t->lookahead->flags, TRLF_APPLY_ADVISORY);
 		}
 	}
+
+	extern void AfterLoadTemplateVehiclesUpdateProperties();
+	AfterLoadTemplateVehiclesUpdateProperties();
+
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE, 0);
+	SetWindowClassesDirty(WC_TEMPLATEGUI_MAIN);
+	SetWindowClassesDirty(WC_CREATE_TEMPLATE);
 	return true;
 }
 
@@ -1101,10 +1107,15 @@ static bool TrainAccelerationModelChanged(int32 p1)
 		}
 	}
 
+	extern void AfterLoadTemplateVehiclesUpdateProperties();
+	AfterLoadTemplateVehiclesUpdateProperties();
+
 	/* These windows show acceleration values only when realistic acceleration is on. They must be redrawn after a setting change. */
 	SetWindowClassesDirty(WC_ENGINE_PREVIEW);
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE, 0);
 	SetWindowClassesDirty(WC_VEHICLE_DETAILS);
+	SetWindowClassesDirty(WC_TEMPLATEGUI_MAIN);
+	SetWindowClassesDirty(WC_CREATE_TEMPLATE);
 
 	return true;
 }
@@ -1189,6 +1200,7 @@ static bool TrainBrakingModelChanged(int32 p1)
 		}
 	}
 
+	UpdateExtraAspectsVariable();
 	UpdateAllBlockSignals();
 
 	InvalidateWindowData(WC_BUILD_SIGNAL, 0);
@@ -1347,6 +1359,12 @@ static bool SpriteZoomMinChanged(int32 p1) {
 static bool InvalidateSettingsWindow(int32 p1)
 {
 	InvalidateWindowClassesData(WC_GAME_OPTIONS);
+	return true;
+}
+
+static bool DeveloperModeChanged(int32 p1)
+{
+	DebugReconsiderSendRemoteMessages();
 	return true;
 }
 
@@ -2238,6 +2256,7 @@ void LoadFromConfig(bool startup)
 		HandleOldDiffCustom(false);
 
 		ValidateSettings();
+		DebugReconsiderSendRemoteMessages();
 
 		PostZoningModeChange();
 

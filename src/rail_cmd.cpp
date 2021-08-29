@@ -71,7 +71,7 @@ void ResetRailTypes()
 		{0,0,0,0,0,0,0,0,{}},
 		{0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0},
-		0, RAILTYPES_NONE, RAILTYPES_NONE, RAILTYPES_NONE, 0, 0, 0, RTFB_NONE, 0, 0, 0, 0, 0, 0,
+		0, RAILTYPES_NONE, RAILTYPES_NONE, RAILTYPES_NONE, 0, 0, 0, RTFB_NONE, 0, 0, 0, 0, 0, 0, 0,
 		RailTypeLabelList(), 0, 0, RAILTYPES_NONE, RAILTYPES_NONE, 0,
 		{}, {} };
 	for (; i < lengthof(_railtypes);          i++) _railtypes[i] = empty_railtype;
@@ -114,10 +114,18 @@ void ResolveRailTypeGUISprites(RailtypeInfo *rti)
 
 	for (SignalType type = SIGTYPE_NORMAL; type < SIGTYPE_END; type = (SignalType)(type + 1)) {
 		for (SignalVariant var = SIG_ELECTRIC; var <= SIG_SEMAPHORE; var = (SignalVariant)(var + 1)) {
-			SpriteID red   = GetCustomSignalSprite(rti, INVALID_TILE, type, var, SIGNAL_STATE_RED, true);
-			SpriteID green = GetCustomSignalSprite(rti, INVALID_TILE, type, var, SIGNAL_STATE_GREEN, true);
-			rti->gui_sprites.signals[type][var][0] = (red != 0)   ? red + SIGNAL_TO_SOUTH   : _signal_lookup[var][type];
-			rti->gui_sprites.signals[type][var][1] = (green != 0) ? green + SIGNAL_TO_SOUTH : _signal_lookup[var][type] + 1;
+			PalSpriteID red   = GetCustomSignalSprite(rti, INVALID_TILE, type, var, 0, true).sprite;
+			PalSpriteID green = GetCustomSignalSprite(rti, INVALID_TILE, type, var, 255, true).sprite;
+			if (red.sprite != 0) {
+				rti->gui_sprites.signals[type][var][0] = { red.sprite + SIGNAL_TO_SOUTH, red.pal };
+			} else {
+				rti->gui_sprites.signals[type][var][0] = { _signal_lookup[var][type], PAL_NONE };
+			}
+			if (green.sprite != 0) {
+				rti->gui_sprites.signals[type][var][1] = { green.sprite + SIGNAL_TO_SOUTH, green.pal };
+			} else {
+				rti->gui_sprites.signals[type][var][1] = { _signal_lookup[var][type] + 1, PAL_NONE };
+			}
 		}
 	}
 }
@@ -1388,6 +1396,10 @@ static void SetupBridgeTunnelSignalSimulation(TileIndex entrance, TileIndex exit
 	SetTunnelBridgeSignalSimulationEntrance(entrance);
 	SetTunnelBridgeEntranceSignalState(entrance, SIGNAL_STATE_GREEN);
 	SetTunnelBridgeSignalSimulationExit(exit);
+	if (_extra_aspects > 0) {
+		SetTunnelBridgeEntranceSignalAspect(entrance, 0);
+		UpdateAspectDeferred(entrance, GetTunnelBridgeEntranceTrackdir(entrance));
+	}
 }
 
 static void ReReserveTrainPath(Train *v)
@@ -1500,6 +1512,10 @@ CommandCost CmdBuildSingleSignal(TileIndex tile, DoCommandFlag flags, uint32 p1,
 			SetTunnelBridgeSignalSimulationEntrance(t);
 			SetTunnelBridgeEntranceSignalState(t, SIGNAL_STATE_GREEN);
 			SetTunnelBridgeSignalSimulationExit(t);
+			if (_extra_aspects > 0) {
+				SetTunnelBridgeEntranceSignalAspect(t, 0);
+				UpdateAspectDeferred(t, GetTunnelBridgeEntranceTrackdir(t));
+			}
 		};
 
 		if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
@@ -2669,15 +2685,33 @@ static const int SIGNAL_DIRTY_RIGHT  = 14 * ZOOM_LVL_BASE;
 static const int SIGNAL_DIRTY_TOP    = 30 * ZOOM_LVL_BASE;
 static const int SIGNAL_DIRTY_BOTTOM =  5 * ZOOM_LVL_BASE;
 
-void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, SignalState condition, SignalOffsets image, uint pos, SignalType type, SignalVariant variant, bool show_restricted)
+void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, SignalState condition, SignalOffsets image, uint pos, SignalType type,
+		SignalVariant variant, bool show_restricted, bool exit_signal = false)
 {
 	uint x, y;
 	GetSignalXY(tile, pos, x, y);
 
-	SpriteID sprite = GetCustomSignalSprite(rti, tile, type, variant, condition, false, show_restricted);
+	uint8 aspect;
+	if (condition == SIGNAL_STATE_GREEN) {
+		aspect = 1;
+		if (_extra_aspects > 0) {
+			if (IsPlainRailTile(tile)) {
+				aspect = GetSignalAspect(tile, track);
+			} else if (IsTunnelBridgeWithSignalSimulation(tile)) {
+				aspect = exit_signal? GetTunnelBridgeExitSignalAspect(tile) : GetTunnelBridgeEntranceSignalAspect(tile);
+			}
+		}
+	} else {
+		aspect = 0;
+	}
+
+	const CustomSignalSpriteResult result = GetCustomSignalSprite(rti, tile, type, variant, aspect, false, show_restricted);
+	SpriteID sprite = result.sprite.sprite;
+	PaletteID pal = PAL_NONE;
 	bool is_custom_sprite = (sprite != 0);
 	if (sprite != 0) {
 		sprite += image;
+		pal = result.sprite.pal;
 	} else if (type == SIGTYPE_PROG) {
 		if (variant == SIG_SEMAPHORE) {
 			sprite = SPR_PROGSIGNAL_BASE + image * 2 + condition;
@@ -2696,7 +2730,7 @@ void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, Sign
 		is_custom_sprite = file != nullptr && (file->flags & SFF_USERGRF) && !(file->flags & SFF_OGFX);
 	}
 
-	if (is_custom_sprite && show_restricted && _settings_client.gui.show_restricted_signal_default && !HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG)) {
+	if (is_custom_sprite && show_restricted && _settings_client.gui.show_restricted_signal_default && !result.restricted_valid) {
 		/* Use duplicate sprite block, instead of GRF-specified signals */
 		if (type == SIGTYPE_PROG) {
 			if (variant == SIG_SEMAPHORE) {
@@ -2708,6 +2742,7 @@ void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, Sign
 			sprite = (type == SIGTYPE_NORMAL && variant == SIG_ELECTRIC) ? SPR_DUP_ORIGINAL_SIGNALS_BASE : SPR_DUP_SIGNALS_BASE - 16;
 			sprite += type * 16 + variant * 64 + image * 2 + condition + (IsSignalSpritePBS(type) ? 64 : 0);
 		}
+		pal = PAL_NONE;
 		is_custom_sprite = false;
 	}
 
@@ -2722,7 +2757,7 @@ void DrawSingleSignal(TileIndex tile, const RailtypeInfo *rti, Track track, Sign
 			AddSortableSpriteToDraw(sprite, SPR_TRACERESTRICT_BASE + 1, x, y, 1, 1, BB_HEIGHT_UNDER_BRIDGE, GetSaveSlopeZ(x, y, track));
 		}
 	} else {
-		AddSortableSpriteToDraw(sprite, PAL_NONE, x, y, 1, 1, BB_HEIGHT_UNDER_BRIDGE, GetSaveSlopeZ(x, y, track));
+		AddSortableSpriteToDraw(sprite, pal, x, y, 1, 1, BB_HEIGHT_UNDER_BRIDGE, GetSaveSlopeZ(x, y, track));
 	}
 	const Sprite *sp = GetSprite(sprite, ST_NORMAL);
 	if (sp->x_offs < -SIGNAL_DIRTY_LEFT || sp->x_offs + sp->width > SIGNAL_DIRTY_RIGHT || sp->y_offs < -SIGNAL_DIRTY_TOP || sp->y_offs + sp->height > SIGNAL_DIRTY_BOTTOM) {
@@ -3365,9 +3400,27 @@ static void DrawTile_Track(TileInfo *ti, DrawTileProcParams params)
 
 		if (HasBit(_display_opt, DO_FULL_DETAIL)) DrawTrackDetails(ti, rti, GetRailGroundType(ti->tile));
 
-		if (HasRailCatenaryDrawn(GetRailType(ti->tile), GetTileSecondaryRailTypeIfValid(ti->tile))) DrawRailCatenary(ti);
+		const RailType secondary_railtype = GetTileSecondaryRailTypeIfValid(ti->tile);
 
-		if (HasSignals(ti->tile)) DrawSignals(ti->tile, rails, rti);
+		if (HasRailCatenaryDrawn(GetRailType(ti->tile), secondary_railtype)) DrawRailCatenary(ti);
+
+		if (HasSignals(ti->tile)) {
+			if (rails == TRACK_BIT_VERT) {
+				const RailtypeInfo *rti2 = GetRailTypeInfo(secondary_railtype);
+				if (IsSignalPresent(ti->tile, 2)) DrawSingleSignal(ti->tile, rti,   TRACK_LEFT, GetSingleSignalState(ti->tile, 2), SIGNAL_TO_NORTH, 0);
+				if (IsSignalPresent(ti->tile, 3)) DrawSingleSignal(ti->tile, rti,   TRACK_LEFT, GetSingleSignalState(ti->tile, 3), SIGNAL_TO_SOUTH, 1);
+				if (IsSignalPresent(ti->tile, 0)) DrawSingleSignal(ti->tile, rti2, TRACK_RIGHT, GetSingleSignalState(ti->tile, 0), SIGNAL_TO_NORTH, 2);
+				if (IsSignalPresent(ti->tile, 1)) DrawSingleSignal(ti->tile, rti2, TRACK_RIGHT, GetSingleSignalState(ti->tile, 1), SIGNAL_TO_SOUTH, 3);
+			} else if (rails == TRACK_BIT_HORZ) {
+				const RailtypeInfo *rti2 = GetRailTypeInfo(secondary_railtype);
+				if (IsSignalPresent(ti->tile, 3)) DrawSingleSignal(ti->tile, rti,  TRACK_UPPER, GetSingleSignalState(ti->tile, 3), SIGNAL_TO_WEST, 4);
+				if (IsSignalPresent(ti->tile, 2)) DrawSingleSignal(ti->tile, rti,  TRACK_UPPER, GetSingleSignalState(ti->tile, 2), SIGNAL_TO_EAST, 5);
+				if (IsSignalPresent(ti->tile, 1)) DrawSingleSignal(ti->tile, rti2, TRACK_LOWER, GetSingleSignalState(ti->tile, 1), SIGNAL_TO_WEST, 6);
+				if (IsSignalPresent(ti->tile, 0)) DrawSingleSignal(ti->tile, rti2, TRACK_LOWER, GetSingleSignalState(ti->tile, 0), SIGNAL_TO_EAST, 7);
+			} else {
+				DrawSignals(ti->tile, rails, rti);
+			}
+		}
 	} else {
 		/* draw depot */
 		const DrawTileSprites *dts;

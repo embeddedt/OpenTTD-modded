@@ -29,6 +29,7 @@
 #include "scope_info.h"
 #include "core/random_func.hpp"
 #include "settings_func.h"
+#include "signal_func.h"
 #include <array>
 
 #include "table/strings.h"
@@ -215,6 +216,7 @@ CommandProc CmdIssueTemplateReplacement;
 CommandProc CmdDeleteTemplateReplacement;
 
 CommandProc CmdCloneVehicle;
+CommandProc CmdCloneVehicleFromTemplate;
 CommandProc CmdStartStopVehicle;
 CommandProc CmdMassStartStopVehicle;
 CommandProc CmdAutoreplaceVehicle;
@@ -450,6 +452,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdDeleteTemplateReplacement,          CMD_ALL_TILES, CMDT_VEHICLE_MANAGEMENT    ), // CMD_DELETE_TEMPLATE_REPLACEMENT
 
 	DEF_CMD(CmdCloneVehicle,                         CMD_NO_TEST, CMDT_VEHICLE_CONSTRUCTION  ), // CMD_CLONE_VEHICLE; NewGRF callbacks influence building and refitting making it impossible to correctly estimate the cost
+	DEF_CMD(CmdCloneVehicleFromTemplate,             CMD_NO_TEST, CMDT_VEHICLE_CONSTRUCTION  ), // CMD_CLONE_VEHICLE_FROM_TEMPLATE; NewGRF callbacks influence building and refitting making it impossible to correctly estimate the cost
 	DEF_CMD(CmdStartStopVehicle,                               0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_START_STOP_VEHICLE
 	DEF_CMD(CmdMassStartStopVehicle,                           0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_MASS_START_STOP
 	DEF_CMD(CmdAutoreplaceVehicle,                             0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_AUTOREPLACE_VEHICLE
@@ -1085,6 +1088,7 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 		/* It could happen we removed rail, thus gained money, and deleted something else.
 		 * So make sure the signal buffer is empty even in this case */
 		UpdateSignalsInBuffer();
+		if (_extra_aspects > 0) FlushDeferredAspectUpdates();
 		SetDParam(0, _additional_cash_required);
 		return_dcpi(CommandCost(STR_ERROR_NOT_ENOUGH_CASH_REQUIRES_CURRENCY));
 	}
@@ -1099,6 +1103,7 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 
 	/* update signals if needed */
 	UpdateSignalsInBuffer();
+	if (_extra_aspects > 0) FlushDeferredAspectUpdates();
 
 	return_dcpi(res2);
 }

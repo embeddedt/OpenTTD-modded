@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.42.0
+## JGR's Patchpack version 0.42.3
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -180,6 +180,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to show a company-coloured mark next to vehicles in vehicle list windows, if their owner does not match the list owner.
 * Add a waiting cargo history graph for stations.
 * Add a tooltip to show station rating details (controlled by a setting).
+* [Allow NewGRFs to supply additional station name strings](https://github.com/JGRennison/OpenTTD-patches/wiki/GRF-features#extra-station-names).
 
 #### Towns
 

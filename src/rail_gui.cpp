@@ -331,6 +331,10 @@ static void ToggleRailButton_Remove(Window *w)
 	w->SetWidgetDirty(WID_RAT_REMOVE);
 	_remove_button_clicked = w->IsWidgetLowered(WID_RAT_REMOVE);
 	SetSelectionRed(_remove_button_clicked);
+	if (_remove_button_clicked && _trace_restrict_button) {
+		_trace_restrict_button = false;
+		InvalidateWindowData(WC_BUILD_SIGNAL, 0);
+	}
 }
 
 /**
@@ -1790,17 +1794,17 @@ private:
 	 * @param widget_index index of this widget in the window
 	 * @param image        the sprite to draw
 	 */
-	void DrawSignalSprite(byte widget_index, SpriteID image) const
+	void DrawSignalSprite(byte widget_index, PalSpriteID image) const
 	{
 		Point offset;
-		Dimension sprite_size = GetSpriteSize(image, &offset);
+		Dimension sprite_size = GetSpriteSize(image.sprite, &offset);
 		const NWidgetBase *widget = this->GetWidget<NWidgetBase>(widget_index);
 		int x = widget->pos_x - offset.x +
 				(widget->current_x - sprite_size.width + offset.x) / 2;  // centered
 		int y = widget->pos_y - sig_sprite_bottom_offset + WD_IMGBTN_TOP +
 				(widget->current_y - WD_IMGBTN_TOP - WD_IMGBTN_BOTTOM + sig_sprite_size.height) / 2; // aligned to bottom
 
-		DrawSprite(image, PAL_NONE,
+		DrawSprite(image.sprite, image.pal,
 				x + this->IsWidgetLowered(widget_index),
 				y + this->IsWidgetLowered(widget_index));
 	}
@@ -1818,6 +1822,18 @@ private:
 		this->GetWidget<NWidgetStacked>(WID_BS_SEMAPHORE_PROG_SEL)->SetDisplayedPlane(show_progsig ? 0 : SZSP_NONE);
 		this->GetWidget<NWidgetStacked>(WID_BS_ELECTRIC_PROG_SEL)->SetDisplayedPlane(show_progsig ? 0 : SZSP_NONE);
 		this->GetWidget<NWidgetStacked>(WID_BS_PROGRAM_SEL)->SetDisplayedPlane(show_progsig ? 0 : 1);
+		this->SetWidgetDisabledState(WID_BS_PROGRAM, !show_progsig);
+		this->SetWidgetsDisabledState(!show_progsig, WID_BS_SEMAPHORE_PROG, WID_BS_ELECTRIC_PROG, WIDGET_LIST_END);
+		this->SetWidgetsDisabledState(!this->presig_ui_shown, WID_BS_SEMAPHORE_ENTRY, WID_BS_ELECTRIC_ENTRY, WID_BS_SEMAPHORE_EXIT,
+				WID_BS_ELECTRIC_EXIT, WID_BS_SEMAPHORE_COMBO, WID_BS_ELECTRIC_COMBO, WIDGET_LIST_END);
+	}
+
+	void ClearRemoveState()
+	{
+		if (_remove_button_clicked) {
+			Window *w = FindWindowById(WC_BUILD_TOOLBAR, TRANSPORT_RAIL);
+			if (w != nullptr) ToggleRailButton_Remove(w);
+		}
 	}
 
 public:
@@ -1847,7 +1863,7 @@ public:
 			for (uint variant = SIG_ELECTRIC; variant <= SIG_SEMAPHORE; variant++) {
 				for (uint lowered = 0; lowered < 2; lowered++) {
 					Point offset;
-					Dimension sprite_size = GetSpriteSize(rti->gui_sprites.signals[type][variant][lowered], &offset);
+					Dimension sprite_size = GetSpriteSize(rti->gui_sprites.signals[type][variant][lowered].sprite, &offset);
 					this->sig_sprite_bottom_offset = std::max<int>(this->sig_sprite_bottom_offset, sprite_size.height);
 					this->sig_sprite_size.width = std::max<int>(this->sig_sprite_size.width, sprite_size.width - offset.x);
 					this->sig_sprite_size.height = std::max<int>(this->sig_sprite_size.height, sprite_size.height - offset.y);
@@ -1882,7 +1898,7 @@ public:
 			/* Extract signal from widget number. */
 			SignalType type = TypeForClick((widget - WID_BS_SEMAPHORE_NORM) % SIGTYPE_END);
 			int var = SIG_SEMAPHORE - (widget - WID_BS_SEMAPHORE_NORM) / SIGTYPE_END; // SignalVariant order is reversed compared to the widgets.
-			SpriteID sprite = GetRailTypeInfo(_cur_railtype)->gui_sprites.signals[type][var][this->IsWidgetLowered(widget)];
+			PalSpriteID sprite = GetRailTypeInfo(_cur_railtype)->gui_sprites.signals[type][var][this->IsWidgetLowered(widget)];
 
 			this->DrawSignalSprite(widget, sprite);
 		}
@@ -1928,10 +1944,7 @@ public:
 				_cur_signal_variant = widget >= WID_BS_ELECTRIC_NORM ? SIG_ELECTRIC : SIG_SEMAPHORE;
 
 				/* If 'remove' button of rail build toolbar is active, disable it. */
-				if (_remove_button_clicked) {
-					Window *w = FindWindowById(WC_BUILD_TOOLBAR, TRANSPORT_RAIL);
-					if (w != nullptr) ToggleRailButton_Remove(w);
-				}
+				ClearRemoveState();
 				break;
 
 			case WID_BS_CONVERT:
@@ -1947,6 +1960,7 @@ public:
 				if (_trace_restrict_button) {
 					_convert_signal_button = false;
 					_program_signal_button = false;
+					ClearRemoveState();
 				}
 				break;
 
@@ -2000,7 +2014,31 @@ public:
 			this->ReInit();
 		}
 	}
+
+	static HotkeyList hotkeys;
 };
+
+static Hotkey signaltoolbar_hotkeys[] = {
+	Hotkey('N', "routing_restriction", WID_BS_TRACE_RESTRICT),
+	Hotkey('K', "convert", WID_BS_CONVERT),
+	Hotkey((uint16)0, "program_signal", WID_BS_PROGRAM),
+	Hotkey((uint16)0, "semaphore_normal", WID_BS_SEMAPHORE_NORM),
+	Hotkey((uint16)0, "semaphore_entry", WID_BS_SEMAPHORE_ENTRY),
+	Hotkey((uint16)0, "semaphore_exit", WID_BS_SEMAPHORE_EXIT),
+	Hotkey((uint16)0, "semaphore_combo", WID_BS_SEMAPHORE_COMBO),
+	Hotkey((uint16)0, "semaphore_prog", WID_BS_SEMAPHORE_PROG),
+	Hotkey((uint16)0, "semaphore_pbs", WID_BS_SEMAPHORE_PBS),
+	Hotkey((uint16)0, "semaphore_pbs_oneway", WID_BS_SEMAPHORE_PBS_OWAY),
+	Hotkey('G', "signal_normal", WID_BS_ELECTRIC_NORM),
+	Hotkey((uint16)0, "signal_entry", WID_BS_ELECTRIC_ENTRY),
+	Hotkey((uint16)0, "signal_exit", WID_BS_ELECTRIC_EXIT),
+	Hotkey((uint16)0, "signal_combo", WID_BS_ELECTRIC_COMBO),
+	Hotkey((uint16)0, "signal_prog", WID_BS_ELECTRIC_PROG),
+	Hotkey('H', "signal_pbs", WID_BS_ELECTRIC_PBS),
+	Hotkey('J', "signal_pbs_oneway", WID_BS_ELECTRIC_PBS_OWAY),
+	HOTKEY_LIST_END
+};
+HotkeyList BuildSignalWindow::hotkeys("signaltoolbar", signaltoolbar_hotkeys);
 
 /** Nested widget definition of the build signal window */
 static const NWidgetPart _nested_signal_builder_widgets[] = {
@@ -2067,7 +2105,8 @@ static WindowDesc _signal_builder_desc(
 	WDP_AUTO, "build_signal", 0, 0,
 	WC_BUILD_SIGNAL, WC_BUILD_TOOLBAR,
 	WDF_CONSTRUCTION,
-	_nested_signal_builder_widgets, lengthof(_nested_signal_builder_widgets)
+	_nested_signal_builder_widgets, lengthof(_nested_signal_builder_widgets),
+	&BuildSignalWindow::hotkeys
 );
 
 /**

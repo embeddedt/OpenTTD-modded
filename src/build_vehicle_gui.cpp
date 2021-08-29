@@ -710,7 +710,7 @@ static int DrawRailWagonPurchaseInfo(int left, int right, int y, EngineID engine
 	/* Wagon weight - (including cargo) */
 	uint weight = e->GetDisplayWeight();
 	SetDParam(0, weight);
-	uint cargo_weight = (e->CanCarryCargo() ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
+	uint cargo_weight = ((e->CanCarryCargo() && te.cargo < NUM_CARGO) ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
 	SetDParam(1, cargo_weight + weight);
 	DrawString(left, right, y, STR_PURCHASE_INFO_WEIGHT_CWEIGHT);
 	y += FONT_HEIGHT_NORMAL;
@@ -804,7 +804,7 @@ static int DrawRoadVehPurchaseInfo(int left, int right, int y, EngineID engine_n
 		/* Road vehicle weight - (including cargo) */
 		int16 weight = e->GetDisplayWeight();
 		SetDParam(0, weight);
-		uint cargo_weight = (e->CanCarryCargo() ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
+		uint cargo_weight = ((e->CanCarryCargo() && te.cargo < NUM_CARGO) ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
 		SetDParam(1, cargo_weight + weight);
 		DrawString(left, right, y, STR_PURCHASE_INFO_WEIGHT_CWEIGHT);
 		y += FONT_HEIGHT_NORMAL;
@@ -1380,7 +1380,26 @@ struct BuildVehicleWindow : BuildVehicleWindowBase {
 			return;
 		}
 
-		if (!this->listview_mode) {
+		if (this->virtual_train_mode) {
+			if (cargo != CT_INVALID && cargo != e->GetDefaultCargoType()) {
+				SavedRandomSeeds saved_seeds;
+				SaveRandomSeeds(&saved_seeds);
+				StringID err;
+				Train *t = CmdBuildVirtualRailVehicle(this->sel_engine, err, 0);
+				if (t != nullptr) {
+					const CommandCost ret = CmdRefitVehicle(0, DC_QUERY_COST, t->index, cargo | (1 << 16), nullptr);
+					this->te.cost          = ret.GetCost();
+					this->te.capacity      = _returned_refit_capacity;
+					this->te.mail_capacity = _returned_mail_refit_capacity;
+					this->te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+					delete t;
+					RestoreRandomSeeds(saved_seeds);
+					return;
+				} else {
+					RestoreRandomSeeds(saved_seeds);
+				}
+			}
+		} else if (!this->listview_mode) {
 			/* Query for cost and refitted capacity */
 			CommandCost ret = DoCommand(this->window_number, this->sel_engine | (cargo << 24), 0, DC_QUERY_COST, GetCmdBuildVeh(this->vehicle_type), nullptr);
 			if (ret.Succeeded()) {
@@ -2141,7 +2160,26 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 			return;
 		}
 
-		if (!this->listview_mode) {
+		if (this->virtual_train_mode) {
+			if (cargo != CT_INVALID && cargo != e->GetDefaultCargoType()) {
+				SavedRandomSeeds saved_seeds;
+				SaveRandomSeeds(&saved_seeds);
+				StringID err;
+				Train *t = CmdBuildVirtualRailVehicle(state.sel_engine, err, 0);
+				if (t != nullptr) {
+					const CommandCost ret = CmdRefitVehicle(0, DC_QUERY_COST, t->index, cargo | (1 << 16), nullptr);
+					state.te.cost          = ret.GetCost();
+					state.te.capacity      = _returned_refit_capacity;
+					state.te.mail_capacity = _returned_mail_refit_capacity;
+					state.te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+					delete t;
+					RestoreRandomSeeds(saved_seeds);
+					return;
+				} else {
+					RestoreRandomSeeds(saved_seeds);
+				}
+			}
+		} else if (!this->listview_mode) {
 			/* Query for cost and refitted capacity */
 			const CommandCost ret = DoCommand(this->window_number, state.sel_engine | (cargo << 24), 0, DC_QUERY_COST, GetCmdBuildVeh(this->vehicle_type), nullptr);
 			if (ret.Succeeded()) {
@@ -2274,7 +2312,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 			case WID_BV_LIST_LOCO: {
 				const uint i = this->loco.vscroll->GetScrolledRowFromWidget(pt.y, this, WID_BV_LIST_LOCO);
 				const size_t num_items = this->loco.eng_list.size();
-				this->loco.sel_engine = (i < num_items) ? this->loco.eng_list[i] : INVALID_ENGINE;
+				this->SelectEngine(this->loco, (i < num_items) ? this->loco.eng_list[i] : INVALID_ENGINE);
 				this->SetDirty();
 
 				if (_ctrl_pressed) {
@@ -2341,7 +2379,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 			case WID_BV_LIST_WAGON: {
 				const uint i = this->wagon.vscroll->GetScrolledRowFromWidget(pt.y, this, WID_BV_LIST_WAGON);
 				const size_t num_items = this->wagon.eng_list.size();
-				this->wagon.sel_engine = (i < num_items) ? this->wagon.eng_list[i] : INVALID_ENGINE;
+				this->SelectEngine(this->wagon, (i < num_items) ? this->wagon.eng_list[i] : INVALID_ENGINE);
 				this->SetDirty();
 
 				if (_ctrl_pressed) {

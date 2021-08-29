@@ -2521,6 +2521,13 @@ void VehicleEnterDepot(Vehicle *v)
 			return;
 		}
 
+		/* Test whether we are heading for this depot. If not, do nothing. */
+		if ((v->current_order.GetDepotExtraFlags() & ODEFB_SPECIFIC) &&
+				(v->type == VEH_AIRCRAFT ? v->current_order.GetDestination() != GetStationIndex(v->tile) : v->dest_tile != v->tile)) {
+			/* We are heading for another depot, keep driving. */
+			return;
+		}
+
 		if (v->current_order.GetDepotActionType() & ODATFB_SELL) {
 			_vehicles_to_sell.insert(v->index);
 			return;
@@ -3617,6 +3624,10 @@ CommandCost Vehicle::SendToDepot(DoCommandFlag flags, DepotCommand command, Tile
 				IsInfraTileUsageAllowed(this->type, this->owner, specific_depot))) {
 			return_cmd_error(no_depot[this->type]);
 		}
+		if ((this->type == VEH_ROAD && (GetPresentRoadTypes(tile) & RoadVehicle::From(this)->compatible_roadtypes) == 0) ||
+				(this->type == VEH_TRAIN && !HasBit(Train::From(this)->compatible_railtypes, GetRailType(tile)))) {
+			return_cmd_error(no_depot[this->type]);
+		}
 		location = specific_depot;
 		destination = (this->type == VEH_AIRCRAFT) ? GetStationIndex(specific_depot) : GetDepotIndex(specific_depot);
 		reverse = false;
@@ -3638,6 +3649,9 @@ CommandCost Vehicle::SendToDepot(DoCommandFlag flags, DepotCommand command, Tile
 			this->current_order.SetDepotActionType(ODATFB_HALT | ODATFB_SELL);
 		} else if (!(command & DEPOT_SERVICE)) {
 			this->current_order.SetDepotActionType(ODATFB_HALT);
+		}
+		if (command & DEPOT_SPECIFIC) {
+			this->current_order.SetDepotExtraFlags(ODEFB_SPECIFIC);
 		}
 		SetWindowWidgetDirty(WC_VEHICLE_VIEW, this->index, WID_VV_START_STOP);
 

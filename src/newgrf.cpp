@@ -33,6 +33,7 @@
 #include "newgrf_airporttiles.h"
 #include "newgrf_airport.h"
 #include "newgrf_object.h"
+#include "newgrf_newsignals.h"
 #include "rev.h"
 #include "fios.h"
 #include "strings_func.h"
@@ -2886,6 +2887,19 @@ static ChangeInfoResult GlobalVarChangeInfo(uint gvid, int numinfo, int prop, co
 				break;
 			}
 
+			case A0RPI_GLOBALVAR_EXTRA_STATION_NAMES: {
+				if (MappedPropertyLengthMismatch(buf, 4, mapping_entry)) break;
+				uint16 str = buf->ReadWord();
+				uint16 flags = buf->ReadWord();
+				if (_extra_station_names_used < MAX_EXTRA_STATION_NAMES) {
+					ExtraStationNameInfo &info = _extra_station_names[_extra_station_names_used];
+					AddStringForMapping(str, &info.str);
+					info.flags = flags;
+					_extra_station_names_used++;
+				}
+				break;
+			}
+
 			default:
 				ret = HandleAction0PropertyDefault(buf, prop);
 				break;
@@ -2952,6 +2966,10 @@ static ChangeInfoResult GlobalVarReserveInfo(uint gvid, int numinfo, int prop, c
 				while (buf->ReadByte() != 0) {
 					buf->ReadString();
 				}
+				break;
+
+			case A0RPI_GLOBALVAR_EXTRA_STATION_NAMES:
+				buf->Skip(buf->ReadExtendedByte());
 				break;
 
 			default:
@@ -4042,6 +4060,49 @@ static ChangeInfoResult AirportChangeInfo(uint airport, int numinfo, int prop, c
 }
 
 /**
+ * Define properties for signals
+ * @param id Local ID (unused).
+ * @param numinfo Number of subsequent IDs to change the property for.
+ * @param prop The property to change.
+ * @param buf The property value.
+ * @return ChangeInfoResult.
+ */
+static ChangeInfoResult SignalsChangeInfo(uint id, int numinfo, int prop, const GRFFilePropertyRemapEntry *mapping_entry, ByteReader *buf)
+{
+	/* Properties which are handled per item */
+	ChangeInfoResult ret = CIR_SUCCESS;
+	for (int i = 0; i < numinfo; i++) {
+		switch (prop) {
+			case A0RPI_SIGNALS_ENABLE_PROGRAMMABLE_SIGNALS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(_cur.grffile->new_signal_ctrl_flags, NSCF_PROGSIG, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
+			case A0RPI_SIGNALS_ENABLE_RESTRICTED_SIGNALS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(_cur.grffile->new_signal_ctrl_flags, NSCF_RESTRICTEDSIG, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
+			case A0RPI_SIGNALS_ENABLE_SIGNAL_RECOLOUR:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(_cur.grffile->new_signal_ctrl_flags, NSCF_RECOLOUR_ENABLED, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
+			case A0RPI_SIGNALS_EXTRA_ASPECTS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				_cur.grffile->new_signal_extra_aspects = std::min<byte>(buf->ReadByte(), NEW_SIGNALS_MAX_EXTRA_ASPECT);
+				break;
+
+			default:
+				ret = HandleAction0PropertyDefault(buf, prop);
+				break;
+		}
+	}
+
+	return ret;
+}
+
+/**
  * Ignore properties for objects
  * @param prop The property to ignore.
  * @param buf The property value.
@@ -4365,6 +4426,16 @@ static ChangeInfoResult RailTypeChangeInfo(uint id, int numinfo, int prop, const
 				SB(rti->ctrl_flags, RTCF_NOREALISTICBRAKING, 1, (buf->ReadByte() != 0 ? 1 : 0));
 				break;
 
+			case A0RPI_RAILTYPE_ENABLE_SIGNAL_RECOLOUR:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				SB(rti->ctrl_flags, RTCF_RECOLOUR_ENABLED, 1, (buf->ReadByte() != 0 ? 1 : 0));
+				break;
+
+			case A0RPI_RAILTYPE_EXTRA_ASPECTS:
+				if (MappedPropertyLengthMismatch(buf, 1, mapping_entry)) break;
+				rti->signal_extra_aspects = std::min<byte>(buf->ReadByte(), NEW_SIGNALS_MAX_EXTRA_ASPECT);
+				break;
+
 			default:
 				ret = HandleAction0PropertyDefault(buf, prop);
 				break;
@@ -4448,6 +4519,8 @@ static ChangeInfoResult RailTypeReserveInfo(uint id, int numinfo, int prop, cons
 			case A0RPI_RAILTYPE_ENABLE_PROGRAMMABLE_SIGNALS:
 			case A0RPI_RAILTYPE_ENABLE_RESTRICTED_SIGNALS:
 			case A0RPI_RAILTYPE_DISABLE_REALISTIC_BRAKING:
+			case A0RPI_RAILTYPE_ENABLE_SIGNAL_RECOLOUR:
+			case A0RPI_RAILTYPE_EXTRA_ASPECTS:
 				buf->Skip(buf->ReadExtendedByte());
 				break;
 
@@ -4869,7 +4942,7 @@ static void FeatureChangeInfo(ByteReader *buf)
 		/* GSF_CARGOES */       nullptr, // Cargo is handled during reservation
 		/* GSF_SOUNDFX */       SoundEffectChangeInfo,
 		/* GSF_AIRPORTS */      AirportChangeInfo,
-		/* GSF_SIGNALS */       nullptr,
+		/* GSF_SIGNALS */       SignalsChangeInfo,
 		/* GSF_OBJECTS */       ObjectChangeInfo,
 		/* GSF_RAILTYPES */     RailTypeChangeInfo,
 		/* GSF_AIRPORTTILES */  AirportTilesChangeInfo,
@@ -5284,6 +5357,7 @@ static void NewSpriteGroup(ByteReader *buf)
 				case GSF_RAILTYPES:
 				case GSF_ROADTYPES:
 				case GSF_TRAMTYPES:
+				case GSF_SIGNALS:
 				{
 					byte num_loaded  = type;
 					byte num_loading = buf->ReadByte();
@@ -5772,6 +5846,39 @@ static void CargoMapSpriteGroup(ByteReader *buf, uint8 idcount)
 	}
 }
 
+static void SignalsMapSpriteGroup(ByteReader *buf, uint8 idcount)
+{
+	uint8 *ids = AllocaM(uint8, idcount);
+	for (uint i = 0; i < idcount; i++) {
+		ids[i] = buf->ReadByte();
+	}
+
+	/* Skip the cargo type section, we only care about the default group */
+	uint8 cidcount = buf->ReadByte();
+	buf->Skip(cidcount * 3);
+
+	uint16 groupid = buf->ReadWord();
+	if (!IsValidGroupID(groupid, "SignalsMapSpriteGroup")) return;
+
+	for (uint i = 0; i < idcount; i++) {
+		uint8 id = ids[i];
+
+		switch (id) {
+			case NSA3ID_CUSTOM_SIGNALS:
+				_cur.grffile->new_signals_group = _cur.spritegroups[groupid];
+				if (!HasBit(_cur.grffile->new_signal_ctrl_flags, NSCF_GROUPSET)) {
+					SetBit(_cur.grffile->new_signal_ctrl_flags, NSCF_GROUPSET);
+					_new_signals_grfs.push_back(_cur.grffile);
+				}
+				break;
+
+			default:
+				grfmsg(1, "SignalsMapSpriteGroup: ID not implemented: %d", id);
+			break;
+		}
+	}
+}
+
 static void ObjectMapSpriteGroup(ByteReader *buf, uint8 idcount)
 {
 	if (_cur.grffile->objectspec == nullptr) {
@@ -6032,6 +6139,10 @@ static void FeatureMapSpriteGroup(ByteReader *buf)
 		case GSF_AIRPORTS:
 			AirportMapSpriteGroup(buf, idcount);
 			return;
+
+		case GSF_SIGNALS:
+			SignalsMapSpriteGroup(buf, idcount);
+			break;
 
 		case GSF_OBJECTS:
 			ObjectMapSpriteGroup(buf, idcount);
@@ -8379,7 +8490,15 @@ static const GRFFeatureInfo _grf_feature_list[] = {
 	GRFFeatureInfo("action0_railtype_programmable_signals", 1),
 	GRFFeatureInfo("action0_railtype_restricted_signals", 1),
 	GRFFeatureInfo("action0_railtype_disable_realistic_braking", 1),
+	GRFFeatureInfo("action0_railtype_recolour", 1),
+	GRFFeatureInfo("action0_railtype_extra_aspects", 1),
 	GRFFeatureInfo("action0_roadtype_extra_flags", 1),
+	GRFFeatureInfo("action0_global_extra_station_names", 1),
+	GRFFeatureInfo("action0_signals_programmable_signals", 1),
+	GRFFeatureInfo("action0_signals_restricted_signals", 1),
+	GRFFeatureInfo("action0_signals_recolour", 1),
+	GRFFeatureInfo("action0_signals_extra_aspects", 1),
+	GRFFeatureInfo("action3_signals_custom_signal_sprites", 1),
 	GRFFeatureInfo(),
 };
 
@@ -8499,8 +8618,15 @@ static const GRFPropertyMapDefinition _grf_action0_remappable_properties[] = {
 	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_ENABLE_PROGRAMMABLE_SIGNALS, "railtype_enable_programmable_signals"),
 	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_ENABLE_RESTRICTED_SIGNALS, "railtype_enable_restricted_signals"),
 	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_DISABLE_REALISTIC_BRAKING, "railtype_disable_realistic_braking"),
+	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_ENABLE_SIGNAL_RECOLOUR, "railtype_enable_signal_recolour"),
+	GRFPropertyMapDefinition(GSF_RAILTYPES, A0RPI_RAILTYPE_EXTRA_ASPECTS, "railtype_extra_aspects"),
 	GRFPropertyMapDefinition(GSF_ROADTYPES, A0RPI_ROADTYPE_EXTRA_FLAGS, "roadtype_extra_flags"),
 	GRFPropertyMapDefinition(GSF_TRAMTYPES, A0RPI_ROADTYPE_EXTRA_FLAGS, "roadtype_extra_flags"),
+	GRFPropertyMapDefinition(GSF_GLOBALVAR, A0RPI_GLOBALVAR_EXTRA_STATION_NAMES, "global_extra_station_names"),
+	GRFPropertyMapDefinition(GSF_SIGNALS, A0RPI_SIGNALS_ENABLE_PROGRAMMABLE_SIGNALS, "signals_enable_programmable_signals"),
+	GRFPropertyMapDefinition(GSF_SIGNALS, A0RPI_SIGNALS_ENABLE_RESTRICTED_SIGNALS, "signals_enable_restricted_signals"),
+	GRFPropertyMapDefinition(GSF_SIGNALS, A0RPI_SIGNALS_ENABLE_SIGNAL_RECOLOUR, "signals_enable_signal_recolour"),
+	GRFPropertyMapDefinition(GSF_SIGNALS, A0RPI_SIGNALS_EXTRA_ASPECTS, "signals_extra_aspects"),
 	GRFPropertyMapDefinition(),
 };
 
@@ -9121,6 +9247,7 @@ static void ResetNewGRF()
 
 	_grf_files.clear();
 	_cur.grffile   = nullptr;
+	_new_signals_grfs.clear();
 }
 
 /** Clear all NewGRF errors */
@@ -9294,6 +9421,10 @@ GRFFile::GRFFile(const GRFConfig *config)
 	/* Initialise local settings to defaults */
 	this->traininfo_vehicle_pitch = 0;
 	this->traininfo_vehicle_width = TRAININFO_DEFAULT_VEHICLE_WIDTH;
+
+	this->new_signals_group = nullptr;
+	this->new_signal_ctrl_flags = 0;
+	this->new_signal_extra_aspects = 0;
 
 	/* Mark price_base_multipliers as 'not set' */
 	for (Price i = PR_BEGIN; i < PR_END; i++) {

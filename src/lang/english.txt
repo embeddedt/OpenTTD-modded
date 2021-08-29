@@ -3016,6 +3016,7 @@ STR_TRACE_RESTRICT_COUNTER_OP                                   :Counter operati
 STR_TRACE_RESTRICT_PF_PENALTY_CONTROL                           :Penalty config
 STR_TRACE_RESTRICT_SLOT_ACQUIRE_WAIT                            :Acquire or wait
 STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE                             :Try to acquire
+STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE_ON_RES                      :Try to acquire (on reserve)
 STR_TRACE_RESTRICT_SLOT_RELEASE_FRONT                           :Release (front)
 STR_TRACE_RESTRICT_SLOT_RELEASE_BACK                            :Release (back)
 STR_TRACE_RESTRICT_SLOT_PBS_RES_END_ACQUIRE_WAIT                :PBS end: Acquire or wait
@@ -3023,6 +3024,7 @@ STR_TRACE_RESTRICT_SLOT_PBS_RES_END_TRY_ACQUIRE                 :PBS end: Try to
 STR_TRACE_RESTRICT_SLOT_PBS_RES_END_RELEASE                     :PBS end: Release
 STR_TRACE_RESTRICT_SLOT_ACQUIRE_WAIT_ITEM                       :Acquire slot: {STRING1}{BLACK}{STRING}, or wait at PBS signal
 STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE_ITEM                        :Try to acquire slot: {STRING1}{BLACK}{STRING}, or continue anyway
+STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE_ITEM_RES_ONLY               :Try to acquire (on PBS reserve) slot: {STRING1}{BLACK}{STRING}, or continue anyway
 STR_TRACE_RESTRICT_SLOT_RELEASE_FRONT_ITEM                      :Release slot: {STRING1}{BLACK}{STRING} (front of train)
 STR_TRACE_RESTRICT_SLOT_RELEASE_BACK_ITEM                       :Release slot: {STRING1}{BLACK}{STRING} (back of train)
 STR_TRACE_RESTRICT_SLOT_PBS_RES_END_ACQUIRE_WAIT_ITEM           :PBS reservation ending here: Acquire slot: {STRING1}{BLACK}{STRING}, or wait at start
@@ -4962,6 +4964,7 @@ STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE                  :{BLACK}Weight: 
 STR_VEHICLE_INFO_TRAIN_LENGTH                                   :{BLACK}Train length {LTBLUE}{DECIMAL} tile{P "" s} {STRING4}
 STR_VEHICLE_INFO_WEIGHT_RATIOS                                  :{BLACK}Power / weight: {LTBLUE}{POWER_WEIGHT_RATIO} {BLACK} Max. T.E / weight: {LTBLUE}{FORCE_WEIGHT_RATIO}
 STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS                        :{BLACK}Full weight: {LTBLUE}{WEIGHT_SHORT} {STRING2}
+STR_VEHICLE_INFO_MAX_SPEED_LOADED                               :{BLACK}Max. speed (full): {LTBLUE}{VELOCITY}
 
 STR_VEHICLE_INFO_PROFIT_THIS_YEAR_LAST_YEAR                     :{BLACK}Profit this year: {LTBLUE}{CURRENCY_LONG} (last year: {CURRENCY_LONG})
 STR_VEHICLE_INFO_PROFIT_THIS_YEAR_LAST_YEAR_LIFETIME            :{STRING2} (lifetime: {CURRENCY_LONG})
@@ -6711,12 +6714,10 @@ STR_TMPL_GROUP_INFO                                             :{BLACK}Group In
 STR_TMPL_TEMPLATE_INFO                                          :{BLACK}Template Info: {ORANGE}
 STR_TMPL_RPL_START                                              :{BLACK}Start replacing
 STR_TMPL_RPL_STOP                                               :{BLACK}Stop replacing
-STR_TMPL_TRAIN_OVR_VALUE                                        :{TINY_FONT}{BLACK}Train Value: {CURRENCY_SHORT}
-STR_TMPL_TEMPLATE_OVR_VALUE                                     :{TINY_FONT}{BLACK}Buying Cost: {GOLD}{CURRENCY_LONG}
-STR_TMPL_TEMPLATE_OVR_VALUE_nogold                              :{TINY_FONT}{BLACK}Buying Cost: {CURRENCY_LONG}
-STR_TMPL_TEMPLATE_OVR_VALUE_nogoldandcurrency                   :{TINY_FONT}{BLACK}Buying Cost:
-STR_TMPL_TEMPLATE_OVR_VALUE_notinyfont                          :{BLACK}Buying Cost: {GOLD}{CURRENCY_LONG}
-STR_TMPL_TEMPLATE_OVR_VALUE_notinyfontandblack                  :Buying Cost: {GOLD}{CURRENCY_LONG}
+STR_TMPL_TEMPLATE_OVR_VALUE                                     :{BLACK}Buying Cost: {GOLD}{CURRENCY_LONG}
+STR_TMPL_TEMPLATE_OVR_VALUE_LTBLUE                              :{BLACK}Buying Cost: {LTBLUE}{CURRENCY_LONG}
+STR_TMPL_TEMPLATE_OVR_RUNNING_COST                              :{BLACK}Estimated Running Cost: {LTBLUE}{CURRENCY_LONG}
+STR_TMPL_TEMPLATE_OVR_MULTIPLE                                  :{BLACK}{STRING1}{BLACK} {STRING1}
 STR_TMPL_WARNING_FREE_WAGON                                     :{RED}Free Chain: not runnable!
 STR_TMPL_WARNING_VEH_UNAVAILABLE                                :{RED}Train not buildable: vehicle unavailable!
 STR_TMPL_GROUP_USES_TEMPLATE                                    :{BLACK}Template in use: {NUM}
