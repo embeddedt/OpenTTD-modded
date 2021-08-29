@@ -29,24 +29,51 @@ jobs:
       shell: powershell
       run: |
         attrib -r "c:\vcpkg\.git\*.*" /s
-    - name: Prepare vcpkg (with cache)
-      uses: lukka/run-vcpkg@v6
+    - name: Prepare cache key
+      id: key
+      shell: powershell
+      run: |
+        # Work around caching failure with GNU tar
+        New-Item -Type Junction -Path vcpkg -Target c:\vcpkg
+        Write-Output "::set-output name=image::$env:ImageOS-$env:ImageVersion"
+    - name: Enable vcpkg cache
+      uses: actions/cache@v2
       with:
-        vcpkgDirectory: 'c:/vcpkg'
-        doNotUpdateVcpkg: true
-        vcpkgArguments: 'liblzma libpng lzo zlib'
-        vcpkgTriplet: '${{ matrix.arch }}-windows-static'
+        path: vcpkg/installed
+        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-0 # Increase the number whenever dependencies are modified
+        restore-keys: |
+          ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}
+    - name: Prepare vcpkg
+      shell: bash
+      run: |
+        vcpkg install --triplet=${{ matrix.arch }}-windows-static \
+          liblzma \
+          libpng \
+          lzo \
+          zlib \
+          # EOF
 
     - name: Install MSVC problem matcher
       uses: ammaraskar/msvc-problem-matcher@master
-
-    - name: Build (without installer)
-      uses: lukka/run-cmake@v3
+    - name: Configure developer command prompt for ${{ matrix.arch }}
+      uses: ilammy/msvc-dev-cmd@v1
       with:
-        cmakeListsOrSettingsJson: CMakeListsTxtAdvanced
-        useVcpkgToolchainFile: true
-        buildDirectory: '${{ github.workspace }}/generic_build'
-        cmakeAppendedArgs: ' -GNinja -DCMAKE_BUILD_TYPE=RelWithDebInfo'
+        arch: ${{ matrix.arch }}
+    - name: Build
+      shell: bash
+      run: |
+        mkdir generic_build
+        cd generic_build
+        echo "::group::CMake"
+        cmake .. \
+          -GNinja \
+          -DVCPKG_TARGET_TRIPLET=${{ matrix.arch }}-windows-static \
+          -DCMAKE_TOOLCHAIN_FILE="c:\vcpkg\scripts\buildsystems\vcpkg.cmake" \
+          # EOF
+        echo "::endgroup::"
+        echo "::group::Build"
+        cmake --build .
+        echo "::endgroup::"
 
     - name: Create bundles
       shell: bash
