@@ -1189,6 +1189,8 @@ bitmap_type.h
 ../src/bitmap_type.h
 core/endian_type.hpp
 ../src/core/endian_type.hpp
+strings_type.h
+../src/strings_type.h
 map
 -
 vector
@@ -3465,6 +3467,8 @@ core/random_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 settings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_func.h
+signal_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
 array
 -
 table/strings.h
@@ -4271,8 +4275,14 @@ settings_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
 date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
+thread.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
 array
 -
+mutex
+-
+3rdparty/mingw-std-threads/mingw.mutex.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
 os/windows/win32.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/os/windows/win32.h
 time.h
@@ -4557,6 +4567,8 @@ order_backup.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/order_backup.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+tbtr_template_vehicle.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle.h
 widgets/depot_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/depot_widget.h
 table/strings.h
@@ -7841,12 +7853,6 @@ network_server.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
 ../game/game.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/game/game.hpp
-../thread.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
-mutex
--
-../3rdparty/mingw-std-threads/mingw.mutex.h
-/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
 ../safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -8359,6 +8365,8 @@ newgrf_airport.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
 newgrf_object.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 rev.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rev.h
 fios.h
@@ -9024,6 +9032,24 @@ newgrf_industries.h
 core/random_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.cpp
+stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+map_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
+safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+newgrf_commons.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+newgrf_spritegroup.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
+
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp
 stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -9121,6 +9147,8 @@ debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 newgrf_railtype.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 depot_base.h
@@ -11411,6 +11439,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile.h
 ../company_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/company_func.h
+../infrastructure_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
 saveload_internal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_internal.h
 signal.h
@@ -14697,6 +14727,12 @@ error.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
 infrastructure_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
+tunnelbridge.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge.h
+bridge_signal_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/bridge_signal_map.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -15193,6 +15229,8 @@ bitmap_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/bitmap_type.h
 core/endian_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
+strings_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
 map
 -
 vector
@@ -15313,6 +15351,8 @@ table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 3rdparty/cpp-btree/btree_set.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
+bitset
+-
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 table/station_land.h
@@ -17901,6 +17941,8 @@ tbtr_template_vehicle.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle.h
 tbtr_template_vehicle_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_vehicle_func.h
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 sstream
 -
 iomanip

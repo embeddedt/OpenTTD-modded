@@ -355,6 +355,7 @@ static bool ChangeTimetableInTicksMode(int32 p1);
 static bool UpdateTimeSettings(int32 p1);
 static bool ChangeTimeOverrideMode(int32 p1);
 static bool InvalidateCompanyLiveryWindow(int32 p1);
+static bool DeveloperModeChanged(int32 p1);
 static bool InvalidateNewGRFChangeWindows(int32 p1);
 static bool InvalidateIndustryViewWindow(int32 p1);
 static bool InvalidateAISettingsWindow(int32 p1);
@@ -1063,7 +1064,7 @@ SDTC_BOOL(       gui.show_date_in_logs,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_
 SDTC_BOOL(       gui.show_date_in_logs,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr),
 #endif
 SDTC_VAR(       gui.settings_restriction_mode, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 0,       0, 2, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr, nullptr),
-SDTC_VAR(       gui.developer, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 1,       0, 2, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr, nullptr),
+SDTC_VAR(       gui.developer, SLE_UINT8, SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, 1,       0, 2, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, DeveloperModeChanged, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr, nullptr),
 SDTC_BOOL(       gui.newgrf_developer_tools,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, InvalidateNewGRFChangeWindows, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_BOOL(       gui.ai_developer_tools,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, InvalidateAISettingsWindow, SL_MIN_VERSION, SL_MAX_VERSION,        SC_EXPERT, false, SlXvFeatureTest(), nullptr),
 SDTC_BOOL(       gui.scenario_developer,        SLF_NOT_IN_SAVE | SLF_NO_NETWORK_SYNC, SGF_NONE, false,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, InvalidateNewGRFChangeWindows, SL_MIN_VERSION, SL_MAX_VERSION,        SC_ADVANCED, false, SlXvFeatureTest(), nullptr),

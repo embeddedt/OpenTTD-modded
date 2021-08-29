@@ -5228,6 +5228,33 @@ src/newgrf_industrytiles.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.s
 .PHONY : src/newgrf_industrytiles.cpp.s
 
+src/newgrf_newsignals.o: src/newgrf_newsignals.cpp.o
+
+.PHONY : src/newgrf_newsignals.o
+
+# target to build an object file
+src/newgrf_newsignals.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newsignals.cpp.o
+.PHONY : src/newgrf_newsignals.cpp.o
+
+src/newgrf_newsignals.i: src/newgrf_newsignals.cpp.i
+
+.PHONY : src/newgrf_newsignals.i
+
+# target to preprocess a source file
+src/newgrf_newsignals.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newsignals.cpp.i
+.PHONY : src/newgrf_newsignals.cpp.i
+
+src/newgrf_newsignals.s: src/newgrf_newsignals.cpp.s
+
+.PHONY : src/newgrf_newsignals.s
+
+# target to generate assembly for a file
+src/newgrf_newsignals.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newsignals.cpp.s
+.PHONY : src/newgrf_newsignals.cpp.s
+
 src/newgrf_object.o: src/newgrf_object.cpp.o
 
 .PHONY : src/newgrf_object.o
@@ -12517,6 +12544,9 @@ help:
 	@echo "... src/newgrf_industrytiles.o"
 	@echo "... src/newgrf_industrytiles.i"
 	@echo "... src/newgrf_industrytiles.s"
+	@echo "... src/newgrf_newsignals.o"
+	@echo "... src/newgrf_newsignals.i"
+	@echo "... src/newgrf_newsignals.s"
 	@echo "... src/newgrf_object.o"
 	@echo "... src/newgrf_object.i"
 	@echo "... src/newgrf_object.s"

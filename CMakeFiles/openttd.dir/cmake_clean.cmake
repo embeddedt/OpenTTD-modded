@@ -316,6 +316,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/openttd.dir/src/newgrf_house.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o"
+  "CMakeFiles/openttd.dir/src/newgrf_newsignals.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_object.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o"

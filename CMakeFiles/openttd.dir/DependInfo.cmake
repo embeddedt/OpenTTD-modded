@@ -181,6 +181,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_house.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_house.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industries.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_industries.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.o"
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_newsignals.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_object.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_profiling.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o"
