@@ -25,6 +25,7 @@ file(REMOVE_RECURSE
   "../../baseset/orig_extra.grf"
   "../../baseset/innerhighlight.grf"
   "../../baseset/progsignals.grf"
+  "../../baseset/extra_signals.grf"
   "../../baseset/route_step.grf"
   "../../baseset/tracerestrict.grf"
   "../../baseset/openttd.32.bmp"

@@ -68,6 +68,7 @@ media/baseset/CMakeFiles/baseset_files: baseset/opntitle.dat
 media/baseset/CMakeFiles/baseset_files: baseset/orig_extra.grf
 media/baseset/CMakeFiles/baseset_files: baseset/innerhighlight.grf
 media/baseset/CMakeFiles/baseset_files: baseset/progsignals.grf
+media/baseset/CMakeFiles/baseset_files: baseset/extra_signals.grf
 media/baseset/CMakeFiles/baseset_files: baseset/route_step.grf
 media/baseset/CMakeFiles/baseset_files: baseset/tracerestrict.grf
 media/baseset/CMakeFiles/baseset_files: baseset/openttd.32.bmp
@@ -813,16 +814,20 @@ baseset/progsignals.grf: ../media/baseset/progsignals.grf
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Copying progsignals.grf baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/progsignals.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/progsignals.grf
 
+baseset/extra_signals.grf: ../media/baseset/extra_signals.grf
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Copying extra_signals.grf baseset file"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/extra_signals.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/extra_signals.grf
+
 baseset/route_step.grf: ../media/baseset/route_step.grf
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Copying route_step.grf baseset file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Copying route_step.grf baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/route_step.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/route_step.grf
 
 baseset/tracerestrict.grf: ../media/baseset/tracerestrict.grf
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Copying tracerestrict.grf baseset file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Copying tracerestrict.grf baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/tracerestrict.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/tracerestrict.grf
 
 baseset/openttd.32.bmp: ../media/openttd.32.bmp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Copying openttd.32.bmp baseset file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Copying openttd.32.bmp baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/../openttd.32.bmp /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/openttd.32.bmp
 
 baseset_files: media/baseset/CMakeFiles/baseset_files
@@ -841,6 +846,7 @@ baseset_files: baseset/opntitle.dat
 baseset_files: baseset/orig_extra.grf
 baseset_files: baseset/innerhighlight.grf
 baseset_files: baseset/progsignals.grf
+baseset_files: baseset/extra_signals.grf
 baseset_files: baseset/route_step.grf
 baseset_files: baseset/tracerestrict.grf
 baseset_files: baseset/openttd.32.bmp

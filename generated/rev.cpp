@@ -35,7 +35,9 @@ bool IsReleasedVersion()
  *
  * <modified> shows a "M", if the binary is made from modified source code.
  */
-const char _openttd_revision[] = "20210829-stock_jgr-g8f7e63a238";
+const char _openttd_revision[] = "20210912-stock_jgr-gac1a6681d0";
+
+const char _openttd_release_version[] = "0.43.0";
 
 /**
  * The text version of OpenTTD's build date.
@@ -53,7 +55,7 @@ const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGAC
 /**
  * The git revision hash of this version.
  */
-const char _openttd_revision_hash[] = "8f7e63a238a55a9fde4cbba177cad681a75d4fa9";
+const char _openttd_revision_hash[] = "ac1a6681d0988a846ecac77701cba9739d69dea0";
 
 /**
  * The year of this version.
@@ -76,6 +78,13 @@ const byte _openttd_revision_modified = 0;
  * and the version is likely a beta, release candidate, or real release.
  */
 const byte _openttd_revision_tagged = 0;
+
+/**
+ * To check compatibility of BaNaNaS content, this version string is used.
+ * It should never contain things like "beta", but only the release version
+ * we are compatible with.
+ */
+const char _openttd_content_version[] = "12.0";
 
 /**
  * The NewGRF revision of OTTD:

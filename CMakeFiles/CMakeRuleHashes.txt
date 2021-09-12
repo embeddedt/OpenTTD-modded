@@ -27,6 +27,7 @@ ef7cd4b07dd202901e6857c9ea2340ae ai/stationlist/info.nut
 6970dc52b18c46bbc87dc2d7b0939e0f ai/stationlist/main.nut
 6cb0d8fa7d7ac1973395517710dec063 ai/stationlist/result.txt
 35fa0d2e82c8a65d6ad811502edec4c9 ai/stationlist/test.sav
+464c772e03e64ce88283c2e8dba7c152 baseset/extra_signals.grf
 1c24c2fbb3d43258d418ca028c08f856 baseset/innerhighlight.grf
 6448a4f9d4d323209c2c07c21c1e8c25 baseset/openttd.32.bmp
 114491d97cf4bf301ab63d5561abe150 baseset/openttd.grf

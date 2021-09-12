@@ -1143,6 +1143,8 @@ track_type.h
 ../src/track_type.h
 tile_type.h
 ../src/tile_type.h
+zoom_type.h
+../src/zoom_type.h
 
 ../src/slope_func.h
 core/math_func.hpp
@@ -8025,6 +8027,8 @@ core/tcp_content.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_content.h
 core/tcp_http.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.h
+../3rdparty/cpp-btree/btree_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content_gui.cpp
 ../stdafx.h
@@ -11367,6 +11371,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_base.h
 ../roadstop_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/roadstop_base.h
+../tunnelbridge.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge.h
 ../tunnelbridge_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_map.h
 ../pathfinder/yapf/yapf_cache.h
@@ -14565,6 +14571,8 @@ iterator
 -
 set
 -
+cmath
+-
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 video/video_driver.hpp
@@ -14695,6 +14703,8 @@ spritecache.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/spritecache.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+ship.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -14761,6 +14771,8 @@ track_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
 tile_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
+zoom_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/signs.cpp
 stdafx.h
@@ -15435,6 +15447,8 @@ zoning.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoning.h
 newgrf_debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
+roadveh.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/roadveh.h
 widgets/station_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/station_widget.h
 table/strings.h

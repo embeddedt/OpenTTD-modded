@@ -653,6 +653,9 @@ CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o
  ../src/widgets/viewport_widget.h
  ../src/widgets/waypoint_widget.h
  ../src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
@@ -2876,6 +2879,9 @@ CMakeFiles/openttd.dir/src/bmp.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 CMakeFiles/openttd.dir/src/bootstrap_gui.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.condition_variable.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.mutex.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.shared_mutex.h
@@ -7572,6 +7578,9 @@ CMakeFiles/openttd.dir/src/fileio.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 CMakeFiles/openttd.dir/src/fios.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/ottd_optional.h
@@ -7645,6 +7654,9 @@ CMakeFiles/openttd.dir/src/fios.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
  generated/table/strings.h
 CMakeFiles/openttd.dir/src/fios_gui.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/autoreplace_type.h
@@ -11351,6 +11363,9 @@ CMakeFiles/openttd.dir/src/ini_load.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
 CMakeFiles/openttd.dir/src/intro_gui.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/mingw-std-threads/mingw.thread.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
@@ -14131,6 +14146,9 @@ CMakeFiles/openttd.dir/src/network/core/udp.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 CMakeFiles/openttd.dir/src/network/network.cpp.o
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
@@ -14767,6 +14785,9 @@ CMakeFiles/openttd.dir/src/network/network_content.cpp.o
  ../src/widgets/viewport_widget.h
  ../src/widgets/waypoint_widget.h
  ../src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
@@ -14928,6 +14949,9 @@ CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.o
  ../src/widgets/viewport_widget.h
  ../src/widgets/waypoint_widget.h
  ../src/window_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ai/ai.hpp
@@ -22489,6 +22513,7 @@ CMakeFiles/openttd.dir/src/saveload/afterload.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/triphistory.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tunnelbridge_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_func.h
@@ -22770,6 +22795,7 @@ CMakeFiles/openttd.dir/src/saveload/bridge_signal_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/tile_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/track_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_type.h
 CMakeFiles/openttd.dir/src/saveload/cargomonitor_sl.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
@@ -32804,6 +32830,9 @@ CMakeFiles/openttd.dir/src/script/script_instance.cpp.o
 CMakeFiles/openttd.dir/src/script/script_scanner.cpp.o
  ../src/3rdparty/squirrel/include/squirrel.h
  ../src/string_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_container.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
@@ -33816,6 +33845,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/ship_gui.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
@@ -33845,6 +33875,7 @@ CMakeFiles/openttd.dir/src/ship_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/water_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widget_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
@@ -35221,11 +35252,13 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/direction_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/economy_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/engine_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/fileio_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/graph_gui.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/ground_vehicle.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/group.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/group_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
@@ -35250,6 +35283,10 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_properties.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
@@ -35263,6 +35300,7 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/road_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/roadveh.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
@@ -35321,6 +35359,7 @@ CMakeFiles/openttd.dir/src/station_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/dropdown_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/misc_widget.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/station_widget.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/vehicle_widget.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_gui.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/window_type.h

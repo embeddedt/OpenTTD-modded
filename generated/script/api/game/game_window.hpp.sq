@@ -1156,6 +1156,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_PROG,                     "WID_BS_SEMAPHORE_PROG");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_PBS,                      "WID_BS_SEMAPHORE_PBS");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_PBS_OWAY,                 "WID_BS_SEMAPHORE_PBS_OWAY");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_NO_ENTRY,                 "WID_BS_SEMAPHORE_NO_ENTRY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_NORM,                      "WID_BS_ELECTRIC_NORM");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_ENTRY,                     "WID_BS_ELECTRIC_ENTRY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_EXIT,                      "WID_BS_ELECTRIC_EXIT");
@@ -1163,6 +1164,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_PROG,                      "WID_BS_ELECTRIC_PROG");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_PBS,                       "WID_BS_ELECTRIC_PBS");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_PBS_OWAY,                  "WID_BS_ELECTRIC_PBS_OWAY");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_NO_ENTRY,                  "WID_BS_ELECTRIC_NO_ENTRY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_CONVERT,                            "WID_BS_CONVERT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_TRACE_RESTRICT,                     "WID_BS_TRACE_RESTRICT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_PROGRAM,                            "WID_BS_PROGRAM");
@@ -1177,6 +1179,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_COMBO_SEL,                 "WID_BS_ELECTRIC_COMBO_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_PROG_SEL,                 "WID_BS_SEMAPHORE_PROG_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_PROG_SEL,                  "WID_BS_ELECTRIC_PROG_SEL");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_SEMAPHORE_NOEN_SEL,                 "WID_BS_SEMAPHORE_NOEN_SEL");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_ELECTRIC_NOEN_SEL,                  "WID_BS_ELECTRIC_NOEN_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BS_PROGRAM_SEL,                        "WID_BS_PROGRAM_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BRAD_DEPOT_NE,                         "WID_BRAD_DEPOT_NE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_BRAD_DEPOT_SE,                         "WID_BRAD_DEPOT_SE");
