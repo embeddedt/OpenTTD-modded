@@ -47,6 +47,7 @@ enum RailTypeCtrlFlags {
 	RTCF_RESTRICTEDSIG          = 1,                          ///< Custom signal sprite flag enabled for restricted signals.
 	RTCF_NOREALISTICBRAKING     = 2,                          ///< Realistic braking disabled for this track type
 	RTCF_RECOLOUR_ENABLED       = 3,                          ///< Recolour sprites enabled
+	RTCF_NOENTRYSIG             = 4,                          ///< Custom signal sprites enabled for no-entry signals.
 };
 
 struct SpriteGroup;
@@ -478,6 +479,7 @@ static inline Money SignalMaintenanceCost(uint32 num)
 }
 
 void MarkSingleSignalDirty(TileIndex tile, Trackdir td);
+void MarkSingleSignalDirtyAtZ(TileIndex tile, Trackdir td, uint z);
 
 void DrawTrainDepotSprite(int x, int y, int image, RailType railtype);
 int TicksToLeaveDepot(const Train *v);

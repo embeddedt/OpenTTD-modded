@@ -37,6 +37,8 @@ bool IsReleasedVersion()
  */
 const char _openttd_revision[] = "${REV_VERSION}";
 
+const char _openttd_release_version[] = "${REV_RELEASE}";
+
 /**
  * The text version of OpenTTD's build date.
  * Updating the build date in this file is the safest as it generally gets
@@ -76,6 +78,13 @@ const byte _openttd_revision_modified = ${REV_MODIFIED};
  * and the version is likely a beta, release candidate, or real release.
  */
 const byte _openttd_revision_tagged = ${REV_ISTAG};
+
+/**
+ * To check compatibility of BaNaNaS content, this version string is used.
+ * It should never contain things like "beta", but only the release version
+ * we are compatible with.
+ */
+const char _openttd_content_version[] = "12.0";
 
 /**
  * The NewGRF revision of OTTD:

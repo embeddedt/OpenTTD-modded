@@ -339,6 +339,20 @@ void Ship::UpdateDeltaXY()
 	}
 }
 
+int Ship::GetEffectiveMaxSpeed() const
+{
+	int max_speed = this->vcache.cached_max_speed;
+
+	if (this->critical_breakdown_count == 0) return max_speed;
+
+	for (uint i = 0; i < this->critical_breakdown_count; i++) {
+		max_speed = std::min(max_speed - (max_speed / 3) + 1, max_speed);
+	}
+
+	/* clamp speed to be no less than lower of 5mph and 1/8 of base speed */
+	return std::max<uint16>(max_speed, std::min<uint16>(10, (this->vcache.cached_max_speed + 7) >> 3));
+}
+
 /**
  * Test-procedure for HasVehicleOnPos to check for any ships which are visible and not stopped by the player.
  */
@@ -352,7 +366,7 @@ static bool CheckShipLeaveDepot(Ship *v)
 	if (!v->IsChainInDepot()) return false;
 
 	if (v->current_order.IsWaitTimetabled()) {
-		v->HandleWaiting(false);
+		v->HandleWaiting(false, true);
 	}
 	if (v->current_order.IsType(OT_WAITING)) {
 		return true;
@@ -420,12 +434,26 @@ static bool CheckShipLeaveDepot(Ship *v)
 	return false;
 }
 
+static inline void UpdateShipSpeed(Vehicle *v, uint speed)
+{
+	if (v->cur_speed == speed) return;
+
+	v->cur_speed = speed;
+
+	/* updates statusbar only if speed have changed to save CPU time */
+	SetWindowWidgetDirty(WC_VEHICLE_VIEW, v->index, WID_VV_START_STOP);
+
+	if (HasBit(v->vcache.cached_veh_flags, VCF_REDRAW_ON_SPEED_CHANGE)) {
+		v->InvalidateImageCacheOfChain();
+	}
+}
+
 static bool ShipAccelerate(Vehicle *v)
 {
 	uint spd;
 	byte t;
 
-	spd = std::min<uint>(v->cur_speed + 1, v->vcache.cached_max_speed);
+	spd = std::min<uint>(v->cur_speed + 1, Ship::From(v)->GetEffectiveMaxSpeed());
 	spd = std::min<uint>(spd, v->current_order.GetMaxSpeed() * 2);
 
 	if (v->breakdown_ctr == 1 && v->breakdown_type == BREAKDOWN_LOW_POWER && v->cur_speed > (v->breakdown_severity * ShipVehInfo(v->engine_type)->max_speed) >> 8) {
@@ -440,11 +468,7 @@ static bool ShipAccelerate(Vehicle *v)
 		spd = std::min<uint>(spd, v->breakdown_severity);
 	}
 
-	/* updates statusbar only if speed have changed to save CPU time */
-	if (spd != v->cur_speed) {
-		v->cur_speed = spd;
-		SetWindowWidgetDirty(WC_VEHICLE_VIEW, v->index, WID_VV_START_STOP);
-	}
+	UpdateShipSpeed(v, spd);
 
 	/* Convert direction-independent speed into direction-dependent speed. (old movement method) */
 	spd = v->GetOldAdvanceSpeed(spd);
@@ -626,7 +650,7 @@ static bool HandleSpeedOnAqueduct(Ship *v, TileIndex tile, TileIndex ramp)
 	if (IsValidTile(scc.search_tile) &&
 			(HasVehicleOnPos(ramp, VEH_SHIP, &scc, FindShipOnTile) ||
 			HasVehicleOnPos(GetOtherTunnelBridgeEnd(ramp), VEH_SHIP, &scc, FindShipOnTile))) {
-		v->cur_speed /= 4;
+		UpdateShipSpeed(v, v->cur_speed / 4);
 	}
 	return false;
 }
@@ -688,7 +712,7 @@ static void CheckDistanceBetweenShips(TileIndex tile, Ship *v, TrackBits tracks,
 	if (found) {
 
 		/* Speed adjustment related to distance. */
-		v->cur_speed /= scc.search_tile == tile ? 8 : 2;
+		UpdateShipSpeed(v, v->cur_speed / (scc.search_tile == tile ? 8 : 2));
 
 		/* Clean none wanted trackbits, including pathfinder track, TRACK_BIT_WORMHOLE and no 90 degree turns. */
 		if (IsDiagonalTrack(track)) {
@@ -756,10 +780,7 @@ static bool ShipMoveUpDownOnLock(Ship *v)
 	int dz = ShipTestUpDownOnLock(v);
 	if (dz == 0) return false;
 
-	if (v->cur_speed != 0) {
-		v->cur_speed = 0;
-		SetWindowWidgetDirty(WC_VEHICLE_VIEW, v->index, WID_VV_START_STOP);
-	}
+	UpdateShipSpeed(v, 0);
 
 	if ((v->tick_counter & 7) == 0) {
 		v->z_pos += dz;
@@ -931,7 +952,7 @@ static void ShipController(Ship *v)
 
 				default:
 					/* Stop for rotation */
-					v->cur_speed = 0;
+					UpdateShipSpeed(v, 0);
 					v->direction = new_direction;
 					/* Remember our current location to avoid movement glitch */
 					v->rotation_x_pos = v->x_pos;
@@ -971,7 +992,7 @@ reverse_direction:
 	/* Remember our current location to avoid movement glitch */
 	v->rotation_x_pos = v->x_pos;
 	v->rotation_y_pos = v->y_pos;
-	v->cur_speed = 0;
+	UpdateShipSpeed(v, 0);
 	v->path.clear();
 	goto getout;
 }

@@ -72,7 +72,7 @@ enum ConsistChangeFlags {
 DECLARE_ENUM_AS_BIT_SET(ConsistChangeFlags)
 
 enum RealisticBrakingConstants {
-	RBC_BRAKE_FORCE_PER_LENGTH      = 1600,      ///< Additional force-based brake force per unit of train length
+	RBC_BRAKE_FORCE_PER_LENGTH      = 2400,      ///< Additional force-based brake force per unit of train length
 	RBC_BRAKE_POWER_PER_LENGTH      = 15000,     ///< Additional power-based brake force per unit of train length (excludes maglevs)
 };
 
@@ -473,6 +473,14 @@ protected: // These functions should not be called outside acceleration code.
 	}
 };
 
+struct TrainDecelerationStats {
+	int deceleration_x2;
+	int uncapped_deceleration_x2;
+	int z_pos;
+	const Train *t;
+
+	TrainDecelerationStats(const Train *t);
+};
 
 CommandCost CmdMoveRailVehicle(TileIndex, DoCommandFlag , uint32, uint32, const char *);
 CommandCost CmdMoveVirtualRailVehicle(TileIndex, DoCommandFlag, uint32, uint32, const char*);

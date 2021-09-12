@@ -127,6 +127,7 @@ static PalSpriteID GetRailTypeCustomSignalSprite(const RailtypeInfo *rti, TileIn
 {
 	if (rti->group[RTSG_SIGNALS] == nullptr) return { 0, PAL_NONE };
 	if (type == SIGTYPE_PROG && !HasBit(rti->ctrl_flags, RTCF_PROGSIG)) return { 0, PAL_NONE };
+	if (type == SIGTYPE_NO_ENTRY && !HasBit(rti->ctrl_flags, RTCF_NOENTRYSIG)) return { 0, PAL_NONE };
 
 	uint32 param1 = gui ? 0x10 : 0x00;
 	uint32 param2 = (type << 16) | (var << 8) | RemapAspect(aspect, rti->signal_extra_aspects);
@@ -153,10 +154,11 @@ static PalSpriteID GetRailTypeCustomSignalSprite(const RailtypeInfo *rti, TileIn
 CustomSignalSpriteResult GetCustomSignalSprite(const RailtypeInfo *rti, TileIndex tile, SignalType type, SignalVariant var, uint8 aspect, bool gui, bool restricted)
 {
 	PalSpriteID spr = GetRailTypeCustomSignalSprite(rti, tile, type, var, aspect, gui, restricted);
-	if (spr.sprite != 0) return { spr, HasBit(rti->ctrl_flags, RTCF_PROGSIG) };
+	if (spr.sprite != 0) return { spr, HasBit(rti->ctrl_flags, RTCF_RESTRICTEDSIG) };
 
 	for (const GRFFile *grf : _new_signals_grfs) {
 		if (type == SIGTYPE_PROG && !HasBit(grf->new_signal_ctrl_flags, NSCF_PROGSIG)) continue;
+		if (type == SIGTYPE_NO_ENTRY && !HasBit(grf->new_signal_ctrl_flags, NSCF_NOENTRYSIG)) continue;
 
 		uint32 param1 = gui ? 0x10 : 0x00;
 		uint32 param2 = (type << 16) | (var << 8) | RemapAspect(aspect, grf->new_signal_extra_aspects);

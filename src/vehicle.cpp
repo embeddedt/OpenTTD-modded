@@ -194,6 +194,8 @@ void VehicleServiceInDepot(Vehicle *v)
 		}
 	} else if (v->type == VEH_ROAD) {
 		RoadVehicle::From(v)->critical_breakdown_count = 0;
+	} else if (v->type == VEH_SHIP) {
+		Ship::From(v)->critical_breakdown_count = 0;
 	}
 	v->vehstatus &= ~VS_AIRCRAFT_BROKEN;
 	SetWindowDirty(WC_VEHICLE_DETAILS, v->index); // ensure that last service date and reliability are updated
@@ -231,7 +233,8 @@ bool Vehicle::NeedsServicing() const
 			(this->reliability >= this->GetEngine()->reliability * (100 - this->service_interval) / 100) :
 			(this->date_of_last_service + this->service_interval >= _date))
 			&& !(this->type == VEH_TRAIN && HasBit(Train::From(this)->flags, VRF_NEED_REPAIR))
-			&& !(this->type == VEH_ROAD && RoadVehicle::From(this)->critical_breakdown_count > 0)) {
+			&& !(this->type == VEH_ROAD && RoadVehicle::From(this)->critical_breakdown_count > 0)
+			&& !(this->type == VEH_SHIP && Ship::From(this)->critical_breakdown_count > 0)) {
 		return false;
 	}
 
@@ -1832,12 +1835,11 @@ void ViewportAddVehiclesIntl(DrawPixelInfo *dpi)
 							ur >= v->coord.left &&
 							ub >= v->coord.top) {
 						Vehicle *v_mutable = const_cast<Vehicle *>(v);
-						Direction current_direction = v_mutable->GetMapImageDirection();
 						switch (v->type) {
-							case VEH_TRAIN:       Train::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
-							case VEH_ROAD:  RoadVehicle::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
-							case VEH_SHIP:         Ship::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
-							case VEH_AIRCRAFT: Aircraft::From(v_mutable)->UpdateImageState(current_direction, v_mutable->sprite_seq); break;
+							case VEH_TRAIN:       Train::From(v_mutable)->UpdateImageStateUsingMapDirection(v_mutable->sprite_seq); break;
+							case VEH_ROAD:  RoadVehicle::From(v_mutable)->UpdateImageStateUsingMapDirection(v_mutable->sprite_seq); break;
+							case VEH_SHIP:         Ship::From(v_mutable)->UpdateImageStateUsingMapDirection(v_mutable->sprite_seq); break;
+							case VEH_AIRCRAFT: Aircraft::From(v_mutable)->UpdateImageStateUsingMapDirection(v_mutable->sprite_seq); break;
 							default: break;
 						}
 						v_mutable->UpdateSpriteSeqBound();
@@ -2248,6 +2250,10 @@ bool Vehicle::HandleBreakdown()
 							if (this->type == VEH_ROAD) {
 								if (RoadVehicle::From(this)->critical_breakdown_count != 255) {
 									RoadVehicle::From(this)->critical_breakdown_count++;
+								}
+							} else if (this->type == VEH_SHIP) {
+								if (Ship::From(this)->critical_breakdown_count != 255) {
+									Ship::From(this)->critical_breakdown_count++;
 								}
 							}
 						}
@@ -3518,8 +3524,9 @@ void Vehicle::HandleLoading(bool mode)
  * Handle the waiting time everywhere else as in stations (basically in depot but, eventually, also elsewhere ?)
  * Function is called when order's wait_time is defined.
  * @param stop_waiting should we stop waiting (or definitely avoid) even if there is still time left to wait ?
+ * @param process_orders whether to call ProcessOrders when exiting a waiting order
  */
-void Vehicle::HandleWaiting(bool stop_waiting)
+void Vehicle::HandleWaiting(bool stop_waiting, bool process_orders)
 {
 	switch (this->current_order.GetType()) {
 		case OT_WAITING: {
@@ -3534,7 +3541,7 @@ void Vehicle::HandleWaiting(bool stop_waiting)
 			this->IncrementImplicitOrderIndex();
 			this->current_order.MakeDummy();
 			if (this->type == VEH_TRAIN) Train::From(this)->force_proceed = TFP_NONE;
-
+			if (process_orders) ProcessOrders(this);
 			break;
 		}
 

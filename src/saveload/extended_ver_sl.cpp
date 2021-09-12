@@ -85,8 +85,8 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_DEPARTURE_BOARDS,       XSCF_IGNORABLE_UNKNOWN,   1,   1, "departure_boards",          nullptr, nullptr, nullptr        },
 	{ XSLFI_TIMETABLES_START_TICKS, XSCF_NULL,                2,   2, "timetable_start_ticks",     nullptr, nullptr, nullptr        },
 	{ XSLFI_TOWN_CARGO_ADJ,         XSCF_IGNORABLE_UNKNOWN,   2,   2, "town_cargo_adj",            nullptr, nullptr, nullptr        },
-	{ XSLFI_SIG_TUNNEL_BRIDGE,      XSCF_NULL,                8,   8, "signal_tunnel_bridge",      nullptr, nullptr, "XBSS"      },
-	{ XSLFI_IMPROVED_BREAKDOWNS,    XSCF_NULL,                7,   7, "improved_breakdowns",       nullptr, nullptr, nullptr        },
+	{ XSLFI_SIG_TUNNEL_BRIDGE,      XSCF_NULL,                9,   9, "signal_tunnel_bridge",      nullptr, nullptr, "XBSS"      },
+	{ XSLFI_IMPROVED_BREAKDOWNS,    XSCF_NULL,                8,   8, "improved_breakdowns",       nullptr, nullptr, nullptr        },
 	{ XSLFI_CONSIST_BREAKDOWN_FLAG, XSCF_NULL,                1,   1, "consist_breakdown_flag",    nullptr, nullptr, nullptr        },
 	{ XSLFI_TT_WAIT_IN_DEPOT,       XSCF_NULL,                1,   1, "tt_wait_in_depot",          nullptr, nullptr, nullptr        },
 	{ XSLFI_AUTO_TIMETABLE,         XSCF_NULL,                5,   5, "auto_timetables",           nullptr, nullptr, nullptr        },
@@ -159,6 +159,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_TRAIN_SPEED_ADAPTATION, XSCF_NULL,                1,   1, "train_speed_adaptation",    nullptr, nullptr, "TSAS"         },
 	{ XSLFI_EXTRA_STATION_NAMES,    XSCF_NULL,                1,   1, "extra_station_names",       nullptr, nullptr, nullptr        },
 	{ XSLFI_DEPOT_ORDER_EXTRA_FLAGS,XSCF_IGNORABLE_UNKNOWN,   1,   1, "depot_order_extra_flags",   nullptr, nullptr, nullptr        },
+	{ XSLFI_EXTRA_SIGNAL_TYPES,     XSCF_NULL,                1,   1, "extra_signal_types",        nullptr, nullptr, nullptr        },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };
 
