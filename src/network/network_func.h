@@ -22,8 +22,8 @@
 #include "../gfx_type.h"
 #include "../openttd.h"
 #include "../company_type.h"
+#include "../string_type.h"
 
-extern NetworkServerGameInfo _network_game_info;
 extern NetworkCompanyState *_network_company_states;
 
 extern ClientID _network_own_client_id;
@@ -45,14 +45,14 @@ void NetworkReboot();
 void NetworkDisconnect(bool blocking = false, bool close_admins = true);
 void NetworkGameLoop();
 void NetworkBackgroundLoop();
-void ParseConnectionString(const char **port, char *connection_string);
-void ParseGameConnectionString(const char **company, const char **port, char *connection_string);
-void NetworkStartDebugLog(const char *hostname, uint16 port);
+std::string_view ParseFullConnectionString(const std::string &connection_string, uint16 &port, CompanyID *company_id = nullptr);
+void NetworkStartDebugLog(const std::string &connection_string);
 void NetworkPopulateCompanyStats(NetworkCompanyStats *stats);
 
 void NetworkUpdateClientInfo(ClientID client_id);
 void NetworkClientsToSpectators(CompanyID cid);
-void NetworkClientConnectGame(const char *hostname, uint16 port, CompanyID join_as, const char *join_server_password = nullptr, const char *join_company_password = nullptr);
+bool NetworkClientConnectGame(const std::string &connection_string, CompanyID default_company, const char *join_server_password = nullptr, const char *join_company_password = nullptr);
+void NetworkClientJoinGame();
 void NetworkClientRequestMove(CompanyID company, const char *pass = "");
 void NetworkClientSendRcon(const char *password, const char *command);
 void NetworkClientSendSettingsPassword(const char *password);
@@ -70,6 +70,7 @@ void NetworkServerDailyLoop();
 void NetworkServerMonthlyLoop();
 void NetworkServerYearlyLoop();
 void NetworkServerSendConfigUpdate();
+void NetworkServerUpdateGameInfo();
 void NetworkServerShowStatusToConsole();
 bool NetworkServerStart();
 void NetworkServerNewCompany(const Company *company, NetworkClientInfo *ci);
@@ -85,7 +86,7 @@ uint NetworkServerKickOrBanIP(ClientID client_id, bool ban, const char *reason);
 uint NetworkServerKickOrBanIP(const char *ip, bool ban, const char *reason);
 
 void NetworkInitChatMessage();
-void CDECL NetworkAddChatMessage(TextColour colour, uint duration, const char *message, ...) WARN_FORMAT(3, 4);
+void CDECL NetworkAddChatMessage(TextColour colour, uint duration, const std::string &message);
 void NetworkUndrawChatMessage();
 void NetworkChatMessageLoop();
 

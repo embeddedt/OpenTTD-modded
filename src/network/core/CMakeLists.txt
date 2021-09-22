@@ -4,9 +4,11 @@ add_files(
     config.h
     core.cpp
     core.h
-    game.h
+    game_info.cpp
+    game_info.h
     host.cpp
     host.h
+    os_abstraction.cpp
     os_abstraction.h
     packet.cpp
     packet.h

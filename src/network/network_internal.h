@@ -14,6 +14,9 @@
 #include "core/tcp_game.h"
 
 #include "../command_type.h"
+#include "../date_type.h"
+
+static const uint32 FIND_SERVER_EXTENDED_TOKEN = 0x2A49582A;
 
 #ifdef RANDOM_DEBUG
 /**
@@ -91,14 +94,13 @@ extern uint8 _network_reconnect;
 
 extern CompanyMask _network_company_passworded;
 
-void NetworkTCPQueryServer(NetworkAddress address);
+void NetworkQueryServer(const std::string &connection_string);
+void NetworkQueryLobbyServer(const std::string &connection_string);
 
 void GetBindAddresses(NetworkAddressList *addresses, uint16 port);
-void NetworkAddServer(const char *b);
+struct NetworkGameList *NetworkAddServer(const std::string &connection_string, bool manually = true);
 void NetworkRebuildHostList();
 void UpdateNetworkGameWindow();
-
-bool IsNetworkCompatibleVersion(const char *version, bool extended = false);
 
 /* From network_command.cpp */
 /**
@@ -118,11 +120,14 @@ void NetworkExecuteLocalCommandQueue();
 void NetworkFreeLocalCommandQueue();
 void NetworkSyncCommandQueue(NetworkClientSocket *cs);
 
-void NetworkError(StringID error_string);
+void ShowNetworkError(StringID error_string);
 void NetworkTextMessage(NetworkAction action, TextColour colour, bool self_send, const char *name, const char *str = "", NetworkTextMessageData data = NetworkTextMessageData());
 uint NetworkCalculateLag(const NetworkClientSocket *cs);
 StringID GetNetworkErrorMsg(NetworkErrorCode err);
 bool NetworkFindName(char *new_name, const char *last);
 const char *GenerateCompanyPasswordHash(const char *password, const char *password_server_id, uint32 password_game_seed);
+
+NetworkAddress ParseConnectionString(const std::string &connection_string, uint16 default_port);
+std::string NormalizeConnectionString(const std::string &connection_string, uint16 default_port);
 
 #endif /* NETWORK_INTERNAL_H */

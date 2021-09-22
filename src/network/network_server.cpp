@@ -10,6 +10,7 @@
 #include "../stdafx.h"
 #include "../strings_func.h"
 #include "../date_func.h"
+#include "core/game_info.h"
 #include "network_admin.h"
 #include "network_server.h"
 #include "network_udp.h"
@@ -252,7 +253,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 	 */
 	if (this->sock == INVALID_SOCKET) return status;
 
-	if (status != NETWORK_RECV_STATUS_CONN_LOST && status != NETWORK_RECV_STATUS_SERVER_ERROR && !this->HasClientQuit() && this->status >= STATUS_AUTHORIZED) {
+	if (status != NETWORK_RECV_STATUS_CLIENT_QUIT && status != NETWORK_RECV_STATUS_SERVER_ERROR && !this->HasClientQuit() && this->status >= STATUS_AUTHORIZED) {
 		/* We did not receive a leave message from this client... */
 		char client_name[NETWORK_CLIENT_NAME_LENGTH];
 
@@ -279,7 +280,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 	}
 
 	NetworkAdminClientError(this->client_id, NETWORK_ERROR_CONNECTION_LOST);
-	DEBUG(net, 1, "Closed client connection %d", this->client_id);
+	DEBUG(net, 3, "Closed client connection %d", this->client_id);
 
 	/* We just lost one client :( */
 	if (this->status >= STATUS_AUTHORIZED) _network_game_info.clients_on--;
@@ -320,7 +321,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 			if (cs->status == STATUS_CLOSE_PENDING) {
 				SendPacketsState send_state = cs->SendPackets(true);
 				if (send_state == SPS_CLOSED) {
-					cs->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+					cs->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 				} else if (send_state != SPS_PARTLY_SENT && send_state != SPS_NONE_SENT) {
 					ShutdownSocket(cs->sock, true, false, 2);
 				}
@@ -353,6 +354,27 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendClientInfo(NetworkClientIn
 
 		this->SendPacket(p);
 	}
+	return NETWORK_RECV_STATUS_OKAY;
+}
+
+/** Send the client information about the server. */
+NetworkRecvStatus ServerNetworkGameSocketHandler::SendGameInfo()
+{
+	Packet *p = new Packet(PACKET_SERVER_GAME_INFO, SHRT_MAX);
+	SerializeNetworkGameInfo(p, GetCurrentNetworkServerGameInfo());
+
+	this->SendPacket(p);
+
+	return NETWORK_RECV_STATUS_OKAY;
+}
+
+NetworkRecvStatus ServerNetworkGameSocketHandler::SendGameInfoExtended(PacketGameType reply_type, uint16 flags, uint16 version)
+{
+	Packet *p = new Packet(reply_type, SHRT_MAX);
+	SerializeNetworkGameInfoExtended(p, GetCurrentNetworkServerGameInfo(), flags, version);
+
+	this->SendPacket(p);
+
 	return NETWORK_RECV_STATUS_OKAY;
 }
 
@@ -440,7 +462,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendError(NetworkErrorCode err
 
 		this->GetClientName(client_name, lastof(client_name));
 
-		DEBUG(net, 1, "'%s' made an error and has been disconnected. Reason: '%s'", client_name, str);
+		DEBUG(net, 1, "'%s' made an error and has been disconnected: %s", client_name, str);
 
 		if (error == NETWORK_ERROR_KICKED && reason != nullptr) {
 			NetworkTextMessage(NETWORK_ACTION_KICKED, CC_DEFAULT, false, client_name, reason, strid);
@@ -461,7 +483,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendError(NetworkErrorCode err
 
 		NetworkAdminClientError(this->client_id, error);
 	} else {
-		DEBUG(net, 1, "Client %d made an error and has been disconnected. Reason: '%s'", this->client_id, str);
+		DEBUG(net, 1, "Client %d made an error and has been disconnected: %s", this->client_id, str);
 	}
 
 	/* The client made a mistake, so drop his connection now! */
@@ -495,7 +517,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNewGRFCheck()
 
 	p->Send_uint32 (grf_count);
 	for (c = _grfconfig; c != nullptr; c = c->next) {
-		if (!HasBit(c->flags, GCF_STATIC)) this->SendGRFIdentifier(p, &c->ident);
+		if (!HasBit(c->flags, GCF_STATIC)) SerializeGRFIdentifier(p, &c->ident);
 	}
 
 	this->SendPacket(p);
@@ -864,6 +886,18 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendSettingsAccessUpdate(bool 
  *   DEF_SERVER_RECEIVE_COMMAND has parameter: NetworkClientSocket *cs, Packet *p
  ************/
 
+NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_GAME_INFO(Packet *p)
+{
+	if (p->CanReadFromPacket(9) && p->Recv_uint32() == FIND_SERVER_EXTENDED_TOKEN) {
+		PacketGameType reply_type = (PacketGameType)p->Recv_uint8();
+		uint16 flags = p->Recv_uint16();
+		uint16 version = p->Recv_uint16();
+		return this->SendGameInfoExtended(reply_type, flags, version);
+	} else {
+		return this->SendGameInfo();
+	}
+}
+
 NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_COMPANY_INFO(Packet *p)
 {
 	return this->SendCompanyInfo();
@@ -913,7 +947,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 	p->Recv_string(name, sizeof(name));
 	playas = (Owner)p->Recv_uint8();
 
-	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
+	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CLIENT_QUIT;
 
 	/* join another company does not affect these values */
 	switch (playas) {
@@ -1126,7 +1160,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_COMMAND(Packet 
 	CommandPacket cp;
 	const char *err = this->ReceiveCommand(p, &cp);
 
-	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
+	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CLIENT_QUIT;
 
 	NetworkClientInfo *ci = this->GetInfo();
 
@@ -1191,7 +1225,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 	if (this->status < STATUS_DONE_MAP || this->HasClientQuit()) {
 		if (_debug_net_level >= 2) GetString(str, GetNetworkErrorMsg(errorno), lastof(str));
 		DEBUG(net, 2, "non-joined client %d reported an error and is closing its connection (%s) (%d, %d, %d)", this->client_id, str, rx_status, status, last_pkt_type);
-		return this->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+		return this->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 	}
 
 	this->GetClientName(client_name, lastof(client_name));
@@ -1199,7 +1233,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 	StringID strid = GetNetworkErrorMsg(errorno);
 	GetString(str, strid, lastof(str));
 
-	DEBUG(net, 2, "'%s' reported an error and is closing its connection (%s) (%d, %d, %d)", client_name, str, rx_status, status, last_pkt_type);
+	DEBUG(net, 1, "'%s' reported an error and is closing its connection (%s) (%d, %d, %d)", client_name, str, rx_status, status, last_pkt_type);
 
 	NetworkTextMessage(NETWORK_ACTION_LEAVE, CC_DEFAULT, false, client_name, nullptr, strid);
 
@@ -1228,7 +1262,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 			return NETWORK_RECV_STATUS_OKAY;
 		}
 	}
-	return this->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+	return this->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 }
 
 NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_LOG(Packet *p)
@@ -1262,7 +1296,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_QUIT(Packet *p)
 
 	/* The client was never joined.. thank the client for the packet, but ignore it */
 	if (this->status < STATUS_DONE_MAP || this->HasClientQuit()) {
-		return this->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+		return this->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 	}
 
 	this->GetClientName(client_name, lastof(client_name));
@@ -1277,7 +1311,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_QUIT(Packet *p)
 
 	NetworkAdminClientQuit(this->client_id);
 
-	return this->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+	return this->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 }
 
 NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ACK(Packet *p)
@@ -1430,7 +1464,7 @@ void NetworkServerSendChat(NetworkAction action, DestType desttype, int dest, co
 			break;
 		}
 		default:
-			DEBUG(net, 0, "[server] received unknown chat destination type %d. Doing broadcast instead", desttype);
+			DEBUG(net, 1, "Received unknown chat destination type %d; doing broadcast instead", desttype);
 			FALLTHROUGH;
 
 		case DESTTYPE_BROADCAST:
@@ -1513,7 +1547,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_SET_NAME(Packet
 	p->Recv_string(client_name, sizeof(client_name));
 	ci = this->GetInfo();
 
-	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CONN_LOST;
+	if (this->HasClientQuit()) return NETWORK_RECV_STATUS_CLIENT_QUIT;
 
 	if (ci != nullptr) {
 		if (!NetworkIsValidClientName(client_name)) {
@@ -1554,7 +1588,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
 		return NETWORK_RECV_STATUS_OKAY;
 	}
 
-	DEBUG(net, 0, "[rcon] client-id %d executed: '%s'", this->client_id, command);
+	DEBUG(net, 3, "[rcon] Client-id %d executed: %s", this->client_id, command);
 
 	_redirect_console_to_client = this->client_id;
 	IConsoleCmdExec(command);
@@ -1579,7 +1613,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MOVE(Packet *p)
 
 		/* Incorrect password sent, return! */
 		if (strcmp(password, _network_company_states[company_id].password) != 0) {
-			DEBUG(net, 2, "[move] wrong password from client-id #%d for company #%d", this->client_id, company_id + 1);
+			DEBUG(net, 2, "Wrong password from client-id #%d for company #%d", this->client_id, company_id + 1);
 			return NETWORK_RECV_STATUS_OKAY;
 		}
 	}
@@ -1726,7 +1760,7 @@ void NetworkUpdateClientInfo(ClientID client_id)
 static void NetworkCheckRestartMap()
 {
 	if (_settings_client.network.restart_game_year != 0 && _cur_year >= _settings_client.network.restart_game_year) {
-		DEBUG(net, 0, "Auto-restarting map. Year %d reached", _cur_year);
+		DEBUG(net, 3, "Auto-restarting map: year %d reached", _cur_year);
 
 		_settings_newgame.game_creation.generation_seed = GENERATE_NEW_SEED;
 		switch(_file_to_saveload.abstract_ftype) {
@@ -2124,6 +2158,12 @@ void NetworkServerSendConfigUpdate()
 	for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
 		if (cs->status >= NetworkClientSocket::STATUS_PRE_ACTIVE) cs->SendConfigUpdate();
 	}
+}
+
+/** Update the server's NetworkServerGameInfo due to changes in settings. */
+void NetworkServerUpdateGameInfo()
+{
+	if (_network_server) FillStaticNetworkServerGameInfo();
 }
 
 /**

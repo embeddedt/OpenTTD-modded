@@ -34,6 +34,7 @@
 #include "../gfx_func.h"
 #include "../error.h"
 #include "../core/checksum_func.hpp"
+#include <charconv>
 
 #include "../safeguards.h"
 
@@ -56,7 +57,6 @@ bool _network_available;  ///< is network mode available?
 bool _network_dedicated;  ///< are we a dedicated server?
 bool _is_network_server;  ///< Does this client wants to be a network-server?
 bool _network_settings_access; ///< Can this client change server settings?
-NetworkServerGameInfo _network_game_info; ///< Information about our game.
 NetworkCompanyState *_network_company_states = nullptr; ///< Statistics about some companies.
 ClientID _network_own_client_id;      ///< Our client identifier.
 ClientID _redirect_console_to_client; ///< If not invalid, redirect the console output to a client.
@@ -288,7 +288,7 @@ void NetworkTextMessage(NetworkAction action, TextColour colour, bool self_send,
 
 	DEBUG(desync, 1, "msg: date{%08x; %02x; %02x}; %s", _date, _date_fract, _tick_skip_counter, message);
 	IConsolePrintF(colour, "%s", message);
-	NetworkAddChatMessage((TextColour)colour, _settings_client.gui.network_chat_timeout, "%s", message);
+	NetworkAddChatMessage((TextColour)colour, _settings_client.gui.network_chat_timeout, message);
 }
 
 /* Calculate the frame-lag of a client */
@@ -307,7 +307,7 @@ uint NetworkCalculateLag(const NetworkClientSocket *cs)
 
 /* There was a non-recoverable error, drop back to the main menu with a nice
  *  error */
-void NetworkError(StringID error_string)
+void ShowNetworkError(StringID error_string)
 {
 	_switch_mode = SM_MENU;
 	ShowErrorMessage(error_string, INVALID_STRING_ID, WL_CRITICAL);
@@ -477,68 +477,99 @@ static void CheckPauseOnJoin()
 }
 
 /**
- * Converts a string to ip/port
- *  Format: IP:port
- *
- * connection_string will be re-terminated to separate out the hostname, port will
- * be set to the port strings given by the user, inside the memory area originally
- * occupied by connection_string.
- */
-void ParseConnectionString(const char **port, char *connection_string)
-{
-	bool ipv6 = (strchr(connection_string, ':') != strrchr(connection_string, ':'));
-	for (char *p = connection_string; *p != '\0'; p++) {
-		switch (*p) {
-			case '[':
-				ipv6 = true;
-				break;
-
-			case ']':
-				ipv6 = false;
-				break;
-
-			case ':':
-				if (ipv6) break;
-				*port = p + 1;
-				*p = '\0';
-				break;
-		}
-	}
-}
-
-/**
  * Converts a string to ip/port/company
  *  Format: IP:port#company
  *
- * connection_string will be re-terminated to separate out the hostname, and company and port will
- * be set to the company and port strings given by the user, inside the memory area originally
- * occupied by connection_string.
+ * Returns the IP part as a string view into the passed string. This view is
+ * valid as long the passed connection string is valid. If there is no port
+ * present in the connection string, the port reference will not be touched.
+ * When there is no company ID present in the connection string or company_id
+ * is nullptr, then company ID will not be touched.
+ *
+ * @param connection_string The string with the connection data.
+ * @param port              The port reference to set.
+ * @param company_id        The company ID to set, if available.
+ * @return A std::string_view into the connection string with the (IP) address part.
  */
-void ParseGameConnectionString(const char **company, const char **port, char *connection_string)
+std::string_view ParseFullConnectionString(const std::string &connection_string, uint16 &port, CompanyID *company_id)
 {
-	bool ipv6 = (strchr(connection_string, ':') != strrchr(connection_string, ':'));
-	for (char *p = connection_string; *p != '\0'; p++) {
-		switch (*p) {
-			case '[':
-				ipv6 = true;
-				break;
+	std::string_view ip = connection_string;
+	if (company_id != nullptr) {
+		size_t offset = ip.find_last_of('#');
+		if (offset != std::string::npos) {
+			std::string_view company_string = ip.substr(offset + 1);
+			ip = ip.substr(0, offset);
 
-			case ']':
-				ipv6 = false;
-				break;
-
-			case '#':
-				*company = p + 1;
-				*p = '\0';
-				break;
-
-			case ':':
-				if (ipv6) break;
-				*port = p + 1;
-				*p = '\0';
-				break;
+			uint8 company_value;
+			auto [_, err] = std::from_chars(company_string.data(), company_string.data() + company_string.size(), company_value);
+			if (err == std::errc()) {
+				if (company_value != COMPANY_NEW_COMPANY && company_value != COMPANY_SPECTATOR) {
+					if (company_value > MAX_COMPANIES || company_value == 0) {
+						*company_id = COMPANY_SPECTATOR;
+					} else {
+						/* "#1" means the first company, which has index 0. */
+						*company_id = (CompanyID)(company_value - 1);
+					}
+				} else {
+					*company_id = (CompanyID)company_value;
+				}
+			}
 		}
 	}
+
+	size_t port_offset = ip.find_last_of(':');
+	size_t ipv6_close = ip.find_last_of(']');
+	if (port_offset != std::string::npos && (ipv6_close == std::string::npos || ipv6_close < port_offset)) {
+		std::string_view port_string = ip.substr(port_offset + 1);
+		ip = ip.substr(0, port_offset);
+		std::from_chars(port_string.data(), port_string.data() + port_string.size(), port);
+	}
+	return ip;
+}
+
+/**
+ * Normalize a connection string. That is, ensure there is a port in the string.
+ * @param connection_string The connection string to normalize.
+ * @param default_port The port to use if none is given.
+ * @return The normalized connection string.
+ */
+std::string NormalizeConnectionString(const std::string &connection_string, uint16 default_port)
+{
+	uint16 port = default_port;
+	std::string_view ip = ParseFullConnectionString(connection_string, port);
+	return std::string(ip) + ":" + std::to_string(port);
+}
+
+/**
+ * Convert a string containing either "hostname" or "hostname:ip" to a
+ * NetworkAddress.
+ *
+ * @param connection_string The string to parse.
+ * @param default_port The default port to set port to if not in connection_string.
+ * @return A valid NetworkAddress of the parsed information.
+ */
+NetworkAddress ParseConnectionString(const std::string &connection_string, uint16 default_port)
+{
+	uint16 port = default_port;
+	std::string_view ip = ParseFullConnectionString(connection_string, port);
+	return NetworkAddress(ip, port);
+}
+
+/**
+ * Convert a string containing either "hostname" or "hostname:ip" to a
+ * NetworkAddress, where the string can be postfixed with "#company" to
+ * indicate the requested company.
+ *
+ * @param connection_string The string to parse.
+ * @param default_port The default port to set port to if not in connection_string.
+ * @param company Pointer to the company variable to set iff indicted.
+ * @return A valid NetworkAddress of the parsed information.
+ */
+static NetworkAddress ParseGameConnectionString(const std::string &connection_string, uint16 default_port, CompanyID *company)
+{
+	uint16 port = default_port;
+	std::string_view ip = ParseFullConnectionString(connection_string, port, company);
+	return NetworkAddress(ip, port);
 }
 
 /**
@@ -580,13 +611,13 @@ void NetworkClose(bool close_admins)
 		}
 
 		for (NetworkClientSocket *cs : NetworkClientSocket::Iterate()) {
-			cs->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+			cs->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 		}
 		ServerNetworkGameSocketHandler::CloseListeners();
 		ServerNetworkAdminSocketHandler::CloseListeners();
 	} else if (MyClient::my_client != nullptr) {
 		MyClient::SendQuit();
-		MyClient::my_client->CloseConnection(NETWORK_RECV_STATUS_CONN_LOST);
+		MyClient::my_client->CloseConnection(NETWORK_RECV_STATUS_CLIENT_QUIT);
 	}
 
 	TCPConnecter::KillAll();
@@ -618,57 +649,104 @@ static void NetworkInitialize(bool close_admins = true)
 	_last_sync_tick_skip_counter = 0;
 }
 
-/** Non blocking connection create to query servers */
+/** Non blocking connection to query servers for their game info. */
 class TCPQueryConnecter : TCPConnecter {
+private:
+	std::string connection_string;
+
 public:
-	TCPQueryConnecter(const NetworkAddress &address) : TCPConnecter(address) {}
+	TCPQueryConnecter(const std::string &connection_string) : TCPConnecter(connection_string, NETWORK_DEFAULT_PORT), connection_string(connection_string) {}
 
 	void OnFailure() override
 	{
-		NetworkDisconnect();
+		NetworkGameList *item = NetworkGameListAddItem(connection_string);
+		item->online = false;
+
+		UpdateNetworkGameWindow();
 	}
 
 	void OnConnect(SOCKET s) override
 	{
 		_networking = true;
-		new ClientNetworkGameSocketHandler(s);
-		MyClient::SendCompanyInformationQuery();
+		new ClientNetworkGameSocketHandler(s, this->connection_string);
+		MyClient::SendInformationQuery(false);
 	}
 };
 
-/* Query a server to fetch his game-info
- *  If game_info is true, only the gameinfo is fetched,
- *   else only the client_info is fetched */
-void NetworkTCPQueryServer(NetworkAddress address)
+/**
+ * Query a server to fetch the game-info.
+ * @param connection_string the address to query.
+ */
+void NetworkQueryServer(const std::string &connection_string)
 {
 	if (!_network_available) return;
 
-	NetworkDisconnect();
 	NetworkInitialize();
 
-	new TCPQueryConnecter(address);
+	new TCPQueryConnecter(connection_string);
 }
 
-/* Validates an address entered as a string and adds the server to
- * the list. If you use this function, the games will be marked
- * as manually added. */
-void NetworkAddServer(const char *b)
-{
-	if (*b != '\0') {
-		const char *port = nullptr;
-		char host[NETWORK_HOSTNAME_LENGTH];
-		uint16 rport;
+/** Non blocking connection to query servers for their game and company info. */
+class TCPLobbyQueryConnecter : TCPConnecter {
+private:
+	std::string connection_string;
 
-		strecpy(host, b, lastof(host));
+public:
+	TCPLobbyQueryConnecter(const std::string &connection_string) : TCPConnecter(connection_string, NETWORK_DEFAULT_PORT), connection_string(connection_string) {}
 
-		strecpy(_settings_client.network.connect_to_ip, b, lastof(_settings_client.network.connect_to_ip));
-		rport = NETWORK_DEFAULT_PORT;
+	void OnFailure() override
+	{
+		DeleteWindowById(WC_NETWORK_WINDOW, WN_NETWORK_WINDOW_LOBBY);
 
-		ParseConnectionString(&port, host);
-		if (port != nullptr) rport = atoi(port);
-
-		NetworkUDPQueryServer(NetworkAddress(host, rport), true);
+		ShowErrorMessage(STR_NETWORK_ERROR_NOCONNECTION, INVALID_STRING_ID, WL_ERROR);
 	}
+
+	void OnConnect(SOCKET s) override
+	{
+		_networking = true;
+		new ClientNetworkGameSocketHandler(s, this->connection_string);
+		MyClient::SendInformationQuery(true);
+	}
+};
+
+/**
+ * Query a server to fetch his game-info for the lobby.
+ * @param connection_string the address to query.
+ */
+void NetworkQueryLobbyServer(const std::string &connection_string)
+{
+	if (!_network_available) return;
+
+	NetworkInitialize();
+
+	new TCPLobbyQueryConnecter(connection_string);
+}
+
+/**
+ * Validates an address entered as a string and adds the server to
+ * the list. If you use this function, the games will be marked
+ * as manually added.
+ * @param connection_string The IP:port of the server to add.
+ * @return The entry on the game list.
+ */
+NetworkGameList *NetworkAddServer(const std::string &connection_string, bool manually)
+{
+	if (connection_string.empty()) return nullptr;
+
+	/* Ensure the item already exists in the list */
+	NetworkGameList *item = NetworkGameListAddItem(connection_string);
+	if (item->info.server_name.empty()) {
+		ClearGRFConfigList(&item->info.grfconfig);
+		item->info.server_name = connection_string;
+
+		UpdateNetworkGameWindow();
+
+		NetworkQueryServer(connection_string);
+	}
+
+	if (manually) item->manually = true;
+
+	return item;
 }
 
 /**
@@ -696,52 +774,91 @@ void NetworkRebuildHostList()
 	_network_host_list.clear();
 
 	for (NetworkGameList *item = _network_game_list; item != nullptr; item = item->next) {
-		if (item->manually) _network_host_list.emplace_back(NetworkAddressDumper().GetAddressAsString(&(item->address), false));
+		if (item->manually) _network_host_list.emplace_back(item->connection_string);
 	}
 }
 
 /** Non blocking connection create to actually connect to servers */
 class TCPClientConnecter : TCPConnecter {
+private:
+	std::string connection_string;
+
 public:
-	TCPClientConnecter(const NetworkAddress &address) : TCPConnecter(address) {}
+	TCPClientConnecter(const std::string &connection_string) : TCPConnecter(connection_string, NETWORK_DEFAULT_PORT), connection_string(connection_string) {}
 
 	void OnFailure() override
 	{
-		NetworkError(STR_NETWORK_ERROR_NOCONNECTION);
+		ShowNetworkError(STR_NETWORK_ERROR_NOCONNECTION);
 	}
 
 	void OnConnect(SOCKET s) override
 	{
 		_networking = true;
-		new ClientNetworkGameSocketHandler(s);
+		new ClientNetworkGameSocketHandler(s, this->connection_string);
 		IConsoleCmdExec("exec scripts/on_client.scr 0");
 		NetworkClient_Connected();
 	}
 };
 
-
-/* Used by clients, to connect to a server */
-void NetworkClientConnectGame(const char *hostname, uint16 port, CompanyID join_as, const char *join_server_password, const char *join_company_password)
+/**
+ * Join a client to the server at with the given connection string.
+ * The default for the passwords is \c nullptr. When the server or company needs a
+ * password and none is given, the user is asked to enter the password in the GUI.
+ * This function will return false whenever some information required to join is not
+ * correct such as the company number or the client's name, or when there is not
+ * networking avalabile at all. If the function returns false the connection with
+ * the existing server is not disconnected.
+ * It will return true when it starts the actual join process, i.e. when it
+ * actually shows the join status window.
+ *
+ * @param connection_string     The IP address, port and company number to join as.
+ * @param default_company       The company number to join as when none is given.
+ * @param join_server_password  The password for the server.
+ * @param join_company_password The password for the company.
+ * @return Whether the join has started.
+ */
+bool NetworkClientConnectGame(const std::string &connection_string, CompanyID default_company, const char *join_server_password, const char *join_company_password)
 {
-	if (!_network_available) return;
+	CompanyID join_as = default_company;
+	std::string resolved_connection_string = ParseGameConnectionString(connection_string, NETWORK_DEFAULT_PORT, &join_as).GetAddressAsString(false);
 
-	if (port == 0) return;
+	if (!_network_available) return false;
+	if (!NetworkValidateClientName()) return false;
 
-	if (!NetworkValidateClientName()) return;
+	_network_join.connection_string = resolved_connection_string;
+	_network_join.company = join_as;
+	_network_join.server_password = join_server_password;
+	_network_join.company_password = join_company_password;
 
-	strecpy(_settings_client.network.last_host, hostname, lastof(_settings_client.network.last_host));
-	_settings_client.network.last_port = port;
-	_network_join_as = join_as;
-	_network_join_server_password = join_server_password;
-	_network_join_company_password = join_company_password;
+	if (_game_mode == GM_MENU) {
+		/* From the menu we can immediately continue with the actual join. */
+		NetworkClientJoinGame();
+	} else {
+		/* When already playing a game, first go back to the main menu. This
+		 * disconnects the user from the current game, meaning we can safely
+		 * load in the new. After all, there is little point in continueing to
+		 * play on a server if we are connecting to another one.
+		 */
+		_switch_mode = SM_JOIN_GAME;
+	}
+	return true;
+}
 
+/**
+ * Actually perform the joining to the server. Use #NetworkClientConnectGame
+ * when you want to connect to a specific server/company. This function
+ * assumes _network_join is already fully set up.
+ */
+void NetworkClientJoinGame()
+{
 	NetworkDisconnect();
 	NetworkInitialize();
 
+	strecpy(_settings_client.network.last_joined, _network_join.connection_string.c_str(), lastof(_settings_client.network.last_joined));
 	_network_join_status = NETWORK_JOIN_STATUS_CONNECTING;
 	ShowJoinStatusWindow();
 
-	new TCPClientConnecter(NetworkAddress(hostname, port));
+	new TCPClientConnecter(_network_join.connection_string);
 }
 
 static void NetworkInitGameInfo()
@@ -750,6 +867,7 @@ static void NetworkInitGameInfo()
 		strecpy(_settings_client.network.server_name, "Unnamed Server", lastof(_settings_client.network.server_name));
 	}
 
+	FillStaticNetworkServerGameInfo();
 	/* The server is a client too */
 	_network_game_info.clients_on = _network_dedicated ? 0 : 1;
 
@@ -771,13 +889,13 @@ static void CheckClientAndServerName()
 {
 	static const char *fallback_client_name = "Unnamed Client";
 	if (StrEmpty(_settings_client.network.client_name) || strcmp(_settings_client.network.client_name, fallback_client_name) == 0) {
-		DEBUG(net, 0, "No \"client_name\" has been set, using \"%s\" instead. Please set this now using the \"name <new name>\" command.", fallback_client_name);
+		DEBUG(net, 1, "No \"client_name\" has been set, using \"%s\" instead. Please set this now using the \"name <new name>\" command", fallback_client_name);
 		strecpy(_settings_client.network.client_name, fallback_client_name, lastof(_settings_client.network.client_name));
 	}
 
 	static const char *fallback_server_name = "Unnamed Server";
 	if (StrEmpty(_settings_client.network.server_name) || strcmp(_settings_client.network.server_name, fallback_server_name) == 0) {
-		DEBUG(net, 0, "No \"server_name\" has been set, using \"%s\" instead. Please set this now using the \"server_name <new name>\" command.", fallback_server_name);
+		DEBUG(net, 1, "No \"server_name\" has been set, using \"%s\" instead. Please set this now using the \"server_name <new name>\" command", fallback_server_name);
 		strecpy(_settings_client.network.server_name, fallback_server_name, lastof(_settings_client.network.server_name));
 	}
 }
@@ -795,17 +913,17 @@ bool NetworkServerStart()
 
 	NetworkDisconnect(false, false);
 	NetworkInitialize(false);
-	DEBUG(net, 1, "starting listeners for clients");
+	DEBUG(net, 5, "Starting listeners for clients");
 	if (!ServerNetworkGameSocketHandler::Listen(_settings_client.network.server_port)) return false;
 
 	/* Only listen for admins when the password isn't empty. */
 	if (!StrEmpty(_settings_client.network.admin_password)) {
-		DEBUG(net, 1, "starting listeners for admins");
+		DEBUG(net, 5, "Starting listeners for admins");
 		if (!ServerNetworkAdminSocketHandler::Listen(_settings_client.network.server_admin_port)) return false;
 	}
 
 	/* Try to start UDP-server */
-	DEBUG(net, 1, "starting listeners for incoming server queries");
+	DEBUG(net, 5, "Starting listeners for incoming server queries");
 	NetworkUDPServerListen();
 
 	_network_company_states = CallocT<NetworkCompanyState>(MAX_COMPANIES);
@@ -957,7 +1075,7 @@ void NetworkGameLoop()
 		static bool check_sync_state = false;
 		static uint32 sync_state[2];
 		if (f == nullptr && next_date == 0) {
-			DEBUG(net, 0, "Cannot open commands.log");
+			DEBUG(desync, 0, "Cannot open commands.log");
 			next_date = 1;
 		}
 
@@ -1038,16 +1156,16 @@ void NetworkGameLoop()
 				/* A message that is not very important to the log playback, but part of the log. */
 #ifndef DEBUG_FAILED_DUMP_COMMANDS
 			} else if (strncmp(p, "cmdf: ", 6) == 0) {
-				DEBUG(net, 0, "Skipping replay of failed command: %s", p + 6);
+				DEBUG(desync, 0, "Skipping replay of failed command: %s", p + 6);
 #endif
 			} else {
 				/* Can't parse a line; what's wrong here? */
-				DEBUG(net, 0, "trying to parse: %s", p);
+				DEBUG(desync, 0, "Trying to parse: %s", p);
 				NOT_REACHED();
 			}
 		}
 		if (f != nullptr && feof(f)) {
-			DEBUG(net, 0, "End of commands.log");
+			DEBUG(desync, 0, "End of commands.log");
 			fclose(f);
 			f = nullptr;
 		}
@@ -1126,28 +1244,36 @@ static void NetworkGenerateServerId()
 	seprintf(_settings_client.network.network_id, lastof(_settings_client.network.network_id), "%s", hex_output);
 }
 
-void NetworkStartDebugLog(const char *hostname, uint16 port)
-{
-	extern SOCKET _debug_socket;  // Comes from debug.c
+class TCPNetworkDebugConnecter : TCPConnecter {
+private:
+	std::string connection_string;
 
-	DEBUG(net, 0, "Redirecting DEBUG() to %s:%d", hostname, port);
+public:
+	TCPNetworkDebugConnecter(const std::string &connection_string) : TCPConnecter(connection_string, NETWORK_DEFAULT_DEBUGLOG_PORT), connection_string(connection_string) {}
 
-	NetworkAddress address(hostname, port);
-	SOCKET s = address.Connect();
-	if (s == INVALID_SOCKET) {
-		DEBUG(net, 0, "Failed to open socket for redirection DEBUG()");
-		return;
+	void OnFailure() override
+	{
+		DEBUG(net, 0, "Failed to open connection to %s for redirecting DEBUG()", this->connection_string.c_str());
 	}
 
-	_debug_socket = s;
+	void OnConnect(SOCKET s) override
+	{
+		DEBUG(net, 3, "Redirecting DEBUG() to %s", this->connection_string.c_str());
 
-	DEBUG(net, 0, "DEBUG() is now redirected");
+		extern SOCKET _debug_socket;
+		_debug_socket = s;
+	}
+};
+
+void NetworkStartDebugLog(const std::string &connection_string)
+{
+	new TCPNetworkDebugConnecter(connection_string);
 }
 
 /** This tries to launch the network for a given OS */
 void NetworkStartUp()
 {
-	DEBUG(net, 3, "[core] starting network...");
+	DEBUG(net, 3, "Starting network");
 
 	/* Network is available */
 	_network_available = NetworkCoreInitialize();
@@ -1157,10 +1283,10 @@ void NetworkStartUp()
 	/* Generate an server id when there is none yet */
 	if (StrEmpty(_settings_client.network.network_id)) NetworkGenerateServerId();
 
-	memset(&_network_game_info, 0, sizeof(_network_game_info));
+	_network_game_info = {};
 
 	NetworkInitialize();
-	DEBUG(net, 3, "[core] network online, multiplayer available");
+	DEBUG(net, 3, "Network online, multiplayer available");
 	NetworkFindBroadcastIPs(&_broadcast_list);
 }
 
@@ -1170,28 +1296,19 @@ void NetworkShutDown()
 	NetworkDisconnect(true);
 	NetworkUDPClose();
 
-	DEBUG(net, 3, "[core] shutting down network");
+	DEBUG(net, 3, "Shutting down network");
 
 	_network_available = false;
 
 	NetworkCoreShutdown();
 }
 
-/**
- * Checks whether the given version string is compatible with our version.
- * @param other the version string to compare to
- */
-bool IsNetworkCompatibleVersion(const char *other, bool extended)
-{
-	return strncmp(_openttd_revision, other, (extended ? NETWORK_LONG_REVISION_LENGTH : NETWORK_REVISION_LENGTH) - 1) == 0;
-}
-
 #ifdef __EMSCRIPTEN__
 extern "C" {
 
-void CDECL em_openttd_add_server(const char *host, int port)
+void CDECL em_openttd_add_server(const char *connection_string)
 {
-	NetworkUDPQueryServer(NetworkAddress(host, port), true);
+	NetworkAddServer(connection_string, false);
 }
 
 }

@@ -286,8 +286,10 @@ protected:
 	/** Sort servers by name. */
 	static bool NGameNameSorter(NetworkGameList * const &a, NetworkGameList * const &b)
 	{
-		int r = strnatcmp(a->info.server_name, b->info.server_name, true); // Sort by name (natural sorting).
-		return r == 0 ? a->address.CompareTo(b->address) < 0: r < 0;
+		int r = strnatcmp(a->info.server_name.c_str(), b->info.server_name.c_str(), true); // Sort by name (natural sorting).
+		if (r == 0) r = a->connection_string.compare(b->connection_string);
+
+		return r < 0;
 	}
 
 	/**
@@ -337,7 +339,7 @@ protected:
 	static bool NGameAllowedSorter(NetworkGameList * const &a, NetworkGameList * const &b)
 	{
 		/* The servers we do not know anything about (the ones that did not reply) should be at the bottom) */
-		int r = StrEmpty(a->info.server_revision) - StrEmpty(b->info.server_revision);
+		int r = a->info.server_revision.empty() - b->info.server_revision.empty();
 
 		/* Reverse default as we are interested in version-compatible clients first */
 		if (r == 0) r = b->info.version_compatible - a->info.version_compatible;
@@ -374,7 +376,7 @@ protected:
 		assert((*item) != nullptr);
 
 		sf.ResetState();
-		sf.AddLine((*item)->info.server_name);
+		sf.AddLine((*item)->info.server_name.c_str());
 		return sf.GetState();
 	}
 
@@ -489,9 +491,8 @@ public:
 		EM_ASM(if (window["openttd_server_list"]) openttd_server_list());
 #endif
 
-		this->last_joined = NetworkGameListAddItem(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port));
+		this->last_joined = NetworkAddServer(_settings_client.network.last_joined, false);
 		this->server = this->last_joined;
-		if (this->last_joined != nullptr) NetworkUDPQueryServer(this->last_joined->address);
 
 		this->requery_timer.SetInterval(MILLISECONDS_PER_TICK);
 
@@ -648,7 +649,7 @@ public:
 			DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, y, STR_NETWORK_SERVER_LIST_CLIENTS);
 			y += FONT_HEIGHT_NORMAL;
 
-			SetDParam(0, STR_CHEAT_SWITCH_CLIMATE_TEMPERATE_LANDSCAPE + sel->info.map_set);
+			SetDParam(0, STR_CHEAT_SWITCH_CLIMATE_TEMPERATE_LANDSCAPE + sel->info.landscape);
 			DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, y, STR_NETWORK_SERVER_LIST_LANDSCAPE); // landscape
 			y += FONT_HEIGHT_NORMAL;
 
@@ -661,9 +662,7 @@ public:
 			DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, y, STR_NETWORK_SERVER_LIST_SERVER_VERSION); // server version
 			y += FONT_HEIGHT_NORMAL;
 
-			char network_addr_buffer[NETWORK_HOSTNAME_LENGTH + 6 + 7];
-			sel->address.GetAddressAsString(network_addr_buffer, lastof(network_addr_buffer));
-			SetDParamStr(0, network_addr_buffer);
+			SetDParamStr(0, sel->connection_string.c_str());
 			DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, y, STR_NETWORK_SERVER_LIST_SERVER_ADDRESS); // server address
 			y += FONT_HEIGHT_NORMAL;
 
@@ -752,7 +751,7 @@ public:
 				ShowQueryString(
 					STR_JUST_RAW_STRING,
 					STR_NETWORK_SERVER_LIST_ENTER_IP,
-					NETWORK_HOSTNAME_LENGTH,  // maximum number of characters including '\0'
+					NETWORK_HOSTNAME_PORT_LENGTH,  // maximum number of characters including '\0'
 					this, CS_ALPHANUMERAL, QSF_ACCEPT_UNCHANGED);
 				break;
 
@@ -762,14 +761,12 @@ public:
 
 			case WID_NG_JOIN: // Join Game
 				if (this->server != nullptr) {
-					seprintf(_settings_client.network.last_host, lastof(_settings_client.network.last_host), "%s", this->server->address.GetHostname());
-					_settings_client.network.last_port = this->server->address.GetPort();
 					ShowNetworkLobbyWindow(this->server);
 				}
 				break;
 
 			case WID_NG_REFRESH: // Refresh
-				if (this->server != nullptr) NetworkUDPQueryServer(this->server->address);
+				if (this->server != nullptr) NetworkQueryServer(this->server->connection_string);
 				break;
 
 			case WID_NG_NEWGRF: // NewGRF Settings
@@ -844,7 +841,11 @@ public:
 
 	void OnQueryTextFinished(char *str) override
 	{
-		if (!StrEmpty(str)) NetworkAddServer(str);
+		if (!StrEmpty(str)) {
+			strecpy(_settings_client.network.connect_to_ip, str, lastof(_settings_client.network.connect_to_ip));
+			NetworkAddServer(str);
+			NetworkRebuildHostList();
+		}
 	}
 
 	void OnResize() override
@@ -987,7 +988,7 @@ void ShowNetworkGameWindow()
 		first = false;
 		/* Add all servers from the config file to our list. */
 		for (const auto &iter : _network_host_list) {
-			NetworkAddServer(iter.c_str());
+			NetworkAddServer(iter);
 		}
 	}
 
@@ -1486,22 +1487,22 @@ struct NetworkLobbyWindow : public Window {
 
 			case WID_NL_JOIN:     // Join company
 				/* Button can be clicked only when it is enabled. */
-				NetworkClientConnectGame(_settings_client.network.last_host, _settings_client.network.last_port, this->company);
+				NetworkClientConnectGame(this->server->connection_string, this->company);
 				break;
 
 			case WID_NL_NEW:      // New company
-				NetworkClientConnectGame(_settings_client.network.last_host, _settings_client.network.last_port, COMPANY_NEW_COMPANY);
+				NetworkClientConnectGame(this->server->connection_string, COMPANY_NEW_COMPANY);
 				break;
 
 			case WID_NL_SPECTATE: // Spectate game
-				NetworkClientConnectGame(_settings_client.network.last_host, _settings_client.network.last_port, COMPANY_SPECTATOR);
+				NetworkClientConnectGame(this->server->connection_string, COMPANY_SPECTATOR);
 				break;
 
 			case WID_NL_REFRESH:  // Refresh
-				NetworkTCPQueryServer(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port)); // company info
-				NetworkUDPQueryServer(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port)); // general data
 				/* Clear the information so removed companies don't remain */
 				for (auto &company : this->company_info) company = {};
+
+				NetworkQueryLobbyServer(this->server->connection_string);
 				break;
 		}
 	}
@@ -1569,8 +1570,9 @@ static void ShowNetworkLobbyWindow(NetworkGameList *ngl)
 	DeleteWindowById(WC_NETWORK_WINDOW, WN_NETWORK_WINDOW_START);
 	DeleteWindowById(WC_NETWORK_WINDOW, WN_NETWORK_WINDOW_GAME);
 
-	NetworkTCPQueryServer(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port)); // company info
-	NetworkUDPQueryServer(NetworkAddress(_settings_client.network.last_host, _settings_client.network.last_port)); // general data
+	strecpy(_settings_client.network.last_joined, ngl->connection_string.c_str(), lastof(_settings_client.network.last_joined));
+
+	NetworkQueryLobbyServer(ngl->connection_string);
 
 	new NetworkLobbyWindow(&_network_lobby_window_desc, ngl);
 }
@@ -1584,6 +1586,16 @@ NetworkCompanyInfo *GetLobbyCompanyInfo(CompanyID company)
 {
 	NetworkLobbyWindow *lobby = dynamic_cast<NetworkLobbyWindow*>(FindWindowById(WC_NETWORK_WINDOW, WN_NETWORK_WINDOW_LOBBY));
 	return (lobby != nullptr && company < MAX_COMPANIES) ? &lobby->company_info[company] : nullptr;
+}
+
+/**
+ * Get the game information for the lobby.
+ * @return the game info struct to write the (downloaded) data to.
+ */
+NetworkGameList *GetLobbyGameInfo()
+{
+	NetworkLobbyWindow *lobby = dynamic_cast<NetworkLobbyWindow *>(FindWindowById(WC_NETWORK_WINDOW, WN_NETWORK_WINDOW_LOBBY));
+	return lobby != nullptr ? lobby->server : nullptr;
 }
 
 /* The window below gives information about the connected clients
