@@ -5601,6 +5601,8 @@ thread.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/thread.h
 tgp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tgp.h
+signal_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 

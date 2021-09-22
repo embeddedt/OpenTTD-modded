@@ -9168,6 +9168,8 @@ CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/script/script_scanner.hpp
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/script/script_suspend.hpp
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/script/squirrel.hpp
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/settings_type.h
+CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/signal_func.h
+CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/signal_type.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/slope_func.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/slope_type.h
 CMakeFiles/openttd.dir/src/genworld.cpp.o: ../src/sound_type.h

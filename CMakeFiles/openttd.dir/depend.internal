@@ -9169,6 +9169,8 @@ CMakeFiles/openttd.dir/src/genworld.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/script/script_suspend.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/script/squirrel.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/settings_type.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/signal_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/slope_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/sound_type.h
