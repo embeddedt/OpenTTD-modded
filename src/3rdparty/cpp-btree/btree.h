@@ -724,6 +724,11 @@ class btree_node {
   void operator=(const btree_node&);
 };
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#endif /* _MSC_VER */
+
 template <typename Node, typename Reference, typename Pointer>
 struct btree_iterator {
   typedef typename Node::key_type key_type;
@@ -826,6 +831,10 @@ struct btree_iterator {
   int position;
 };
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic pop
+#endif /* _MSC_VER */
+
 // Dispatch helper class for using btree::internal_locate with plain compare.
 struct btree_internal_locate_plain_compare {
   template <typename K, typename T, typename Iter>
@@ -917,8 +926,7 @@ class btree : public Params::key_compare {
   typedef std::reverse_iterator<iterator> reverse_iterator;
 
   typedef typename Params::allocator_type allocator_type;
-  typedef typename allocator_type::template rebind<char>::other
-    internal_allocator_type;
+  using internal_allocator_type = typename std::allocator_traits<allocator_type>::template rebind_alloc<char>;
 
  public:
   // Default constructor.

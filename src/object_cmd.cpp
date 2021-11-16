@@ -32,6 +32,7 @@
 #include "date_func.h"
 #include "newgrf_debug.h"
 #include "vehicle_func.h"
+#include "station_func.h"
 
 #include "table/strings.h"
 #include "table/object_land.h"
@@ -122,7 +123,9 @@ void BuildObject(ObjectType type, TileIndex tile, CompanyID owner, Town *town, u
 			Company::Get(owner)->infrastructure.water++;
 			DirtyCompanyInfrastructureWindows(owner);
 		}
+		bool remove = IsDockingTile(t);
 		MakeObject(t, owner, o->index, wc, Random());
+		if (remove) RemoveDockingTile(t);
 		MarkTileDirtyByTile(t, VMDF_NOT_MAP_MODE);
 	}
 
@@ -204,7 +207,7 @@ static CommandCost ClearTile_Object(TileIndex tile, DoCommandFlag flags);
  */
 CommandCost CmdBuildObject(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
-	CommandCost cost(EXPENSES_PROPERTY);
+	CommandCost cost(EXPENSES_CONSTRUCTION);
 
 	ObjectType type = (ObjectType)GB(p1, 0, 16);
 	if (type >= NUM_OBJECTS) return CMD_ERROR;
@@ -372,7 +375,7 @@ CommandCost CmdBuildObject(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 	}
 
 	if (flags & DC_EXEC) {
-		BuildObject(type, tile, _current_company, nullptr, view);
+		BuildObject(type, tile, _current_company == OWNER_DEITY ? OWNER_NONE : _current_company, nullptr, view);
 
 		/* Make sure the HQ starts at the right size. */
 		if (type == OBJECT_HQ) UpdateCompanyHQ(tile, hq_score);
@@ -670,7 +673,7 @@ static CommandCost ClearTile_Object(TileIndex tile, DoCommandFlag flags)
 			}
 
 			/* cost of relocating company is 1% of company value */
-			cost = CommandCost(EXPENSES_PROPERTY, CalculateCompanyValue(c) / 100);
+			cost = CommandCost(EXPENSES_CONSTRUCTION, CalculateCompanyValue(c) / 100);
 			break;
 		}
 

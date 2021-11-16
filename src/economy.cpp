@@ -55,6 +55,8 @@
 #include "tbtr_template_vehicle_func.h"
 #include "scope_info.h"
 #include "pathfinder/yapf/yapf_cache.h"
+#include "debug_desync.h"
+#include "event_logs.h"
 
 #include "table/strings.h"
 #include "table/pricebase.h"
@@ -321,7 +323,7 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 		for (const Company *c : Company::Iterate()) {
 			for (i = 0; i < 4; i++) {
 				if (c->share_owners[i] == old_owner) {
-					/* Sell his shares */
+					/* Sell its shares */
 					CommandCost res = DoCommand(0, c->index, 0, DC_EXEC | DC_BANKRUPT, CMD_SELL_SHARE_IN_COMPANY);
 					/* Because we are in a DoCommand, we can't just execute another one and
 					 *  expect the money to be removed. We need to do it ourself! */
@@ -352,7 +354,7 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 	}
 
 	/* Temporarily increase the company's money, to be sure that
-	 * removing his/her property doesn't fail because of lack of money.
+	 * removing their property doesn't fail because of lack of money.
 	 * Not too drastically though, because it could overflow */
 	if (new_owner == INVALID_OWNER) {
 		Company::Get(old_owner)->money = UINT64_MAX >> 2; // jackpot ;p
@@ -589,6 +591,12 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 	cur_company.Restore();
 
+	if (new_owner != INVALID_OWNER) {
+		AppendSpecialEventsLogEntry(stdstr_fmt("Company merge: old: %u, new %u", old_owner, new_owner));
+	} else {
+		AppendSpecialEventsLogEntry(stdstr_fmt("Company deletion: old: %u", old_owner));
+	}
+
 	RegisterGameEvents(new_owner != INVALID_OWNER ? GEF_COMPANY_MERGE : GEF_COMPANY_DELETE);
 
 	MarkWholeScreenDirty();
@@ -627,8 +635,7 @@ static void CompanyCheckBankrupt(Company *c)
 
 		/* Warn about bankruptcy after 3 months */
 		case 4: {
-			CompanyNewsInformation *cni = MallocT<CompanyNewsInformation>(1);
-			cni->FillData(c);
+			CompanyNewsInformation *cni = new CompanyNewsInformation(c);
 			SetDParam(0, STR_NEWS_COMPANY_IN_TROUBLE_TITLE);
 			SetDParam(1, STR_NEWS_COMPANY_IN_TROUBLE_DESCRIPTION);
 			SetDParamStr(2, cni->company_name);
@@ -1594,9 +1601,8 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 	bool check_order = (v->First()->current_order.GetLoadType() == OLFB_CARGO_TYPE_LOAD);
 	if (is_auto_refit) {
 		/* Get a refittable cargo type with waiting cargo for next_station or INVALID_STATION. */
-		CargoID cid;
 		new_cid = v_start->cargo_type;
-		FOR_EACH_SET_CARGO_ID(cid, refit_mask) {
+		for (CargoID cid : SetCargoBitIterator(refit_mask)) {
 			if (check_order && v->First()->current_order.GetCargoLoadType(cid) == OLFB_NO_LOAD) continue;
 			if (st->goods[cid].cargo.HasCargoFor(next_station.Get(cid))) {
 				/* Try to find out if auto-refitting would succeed. In case the refit is allowed,
@@ -2259,8 +2265,7 @@ static void DoAcquireCompany(Company *c)
 
 	DEBUG(desync, 1, "buy_company: date{%08x; %02x; %02x}, buyer: %u, bought: %u", _date, _date_fract, _tick_skip_counter, (uint) _current_company, (uint) ci);
 
-	CompanyNewsInformation *cni = MallocT<CompanyNewsInformation>(1);
-	cni->FillData(c, Company::Get(_current_company));
+	CompanyNewsInformation *cni = new CompanyNewsInformation(c, Company::Get(_current_company));
 
 	SetDParam(0, STR_NEWS_COMPANY_MERGER_TITLE);
 	SetDParam(1, c->bankrupt_value == 0 ? STR_NEWS_MERGER_TAKEOVER_TITLE : STR_NEWS_COMPANY_MERGER_DESCRIPTION);
@@ -2283,6 +2288,8 @@ static void DoAcquireCompany(Company *c)
 
 	if (c->is_ai) AI::Stop(c->index);
 
+	c->bankrupt_asked = 0;
+
 	DeleteCompanyWindows(ci);
 	InvalidateWindowClassesData(WC_TRAINS_LIST, 0);
 	InvalidateWindowClassesData(WC_TRACE_RESTRICT_SLOTS, 0);
@@ -2293,8 +2300,7 @@ static void DoAcquireCompany(Company *c)
 
 	delete c;
 
-	extern void CheckCaches(bool force_check, std::function<void(const char *)> log);
-	CheckCaches(true, nullptr);
+	CheckCaches(true, nullptr, CHECK_CACHE_ALL | CHECK_CACHE_EMIT_LOG);
 }
 
 extern int GetAmountOwnedBy(const Company *c, Owner owner);
@@ -2426,6 +2432,31 @@ CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 		DoAcquireCompany(c);
 	}
 	return cost;
+}
+
+/**
+ * Decline to buy up another company.
+ * When a competing company is gone bankrupt you get the chance to purchase
+ * that company, actively decline the offer.
+ * @param tile unused
+ * @param flags type of operation
+ * @param p1 company to buy up
+ * @param p2 unused
+ * @param text unused
+ * @return the cost of this operation or an error
+ */
+CommandCost CmdDeclineBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	CompanyID target_company = (CompanyID)p1;
+	Company *c = Company::GetIfValid(target_company);
+	if (c == nullptr) return CommandCost();
+
+	if (flags & DC_EXEC) {
+		if (c->bankrupt_last_asked == _current_company) {
+			c->bankrupt_timeout = 0;
+		}
+	}
+	return CommandCost();
 }
 
 uint ScaleQuantity(uint amount, int scale_factor)

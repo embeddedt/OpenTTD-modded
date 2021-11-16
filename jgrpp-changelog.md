@@ -2,6 +2,39 @@
 
 * * *
 
+### v0.44.0 (2021-11-10)
+* Fix crash on non-GCC/clang compilers.
+* Fix custom signal NewGRFs never showing semaphore signals as having a routing restriction program attached.
+* Fix compilation issues on some platforms.
+* Bump trunk base from commit 9edb75ec0b4ecfb2803728d129b353d1d224beaf to commit 48c1c7f221cd51fbe4fda3771eaed09edacef997.
+
+### v0.44-rc1 (2021-11-03)
+* Merge OpenTTD 12.0, including new networking, savegames and configs.
+* Bump trunk base from commit 8fa53f543a5929bdbb12c8776ae9577594f9eba7 to commit 9edb75ec0b4ecfb2803728d129b353d1d224beaf.
+
+### v0.43.2 (2021-10-29)
+* Fix crash when using the ignore signals button to sent a train the wrong-way on a signalled tunnel or bridge.
+* Fix multiplayer desync when using "perfect" tree placement mode in arctic climate.
+* Fix aircraft shadows being drawn facing the wrong direction.
+* Fix timetabled 0 wait times not being shown for stations/depots in the timetable window.
+* Add settings for minimum contiguous landmass size for town and city placement.
+* Add current day and current month routing restriction conditionals.
+* Add current day and current month conditional orders.
+* Company bankruptcy:
+  * When declining to buy a company, ask the next company immediately instead of after the time period expires.
+  * Do not wait for companies which have no connected clients to buy a company.
+  * Add console command to offer a company for sale.
+* Add Korean translations by TELK.
+
+### v0.43.1 (2021-10-04)
+* Fix multi-aspect signal graphics not being immediately enabled for newly generated maps.
+* Fix premature PBS reservations with using reverse at waypoint orders with timetabled wait times.
+* Fix incorrect font heights when using custom fonts on MacOS.
+* Fix crash when trying to place multitile objects at map edge.
+* Routing restrictions:
+  * The reverse behind signal pathfinder now takes into account the train length to avoid reversing sidings which are too short.
+* Add sort by maximum speed (fully loaded) to train list window.
+
 ### v0.43.0 (2021-09-12)
 * Fix reversing a train inside a depot disrupting the PBS reservation of another train heading into the depot.
 * Fix ships being drawn with the wrong image direction after rotating in place in some circumstances.

@@ -224,7 +224,7 @@ bool Packet::CanReadFromPacket(size_t bytes_to_read, bool close_connection)
 
 	/* Check if variable is within packet-size */
 	if (this->pos + bytes_to_read > this->Size()) {
-		if (close_connection) this->cs->NetworkSocketHandler::CloseConnection();
+		if (close_connection) this->cs->NetworkSocketHandler::MarkClosed();
 		return false;
 	}
 
@@ -374,36 +374,6 @@ uint64 Packet::Recv_uint64()
 }
 
 /**
- * Reads a string till it finds a '\0' in the stream.
- * @param buffer The buffer to put the data into.
- * @param size   The size of the buffer.
- * @param settings The string validation settings.
- */
-void Packet::Recv_string(char *buffer, size_t size, StringValidationSettings settings)
-{
-	PacketSize pos;
-	char *bufp = buffer;
-	const char *last = buffer + size - 1;
-
-	/* Don't allow reading from a closed socket */
-	if (cs->HasClientQuit()) return;
-
-	pos = this->pos;
-	while (--size > 0 && pos < this->Size() && (*buffer++ = this->buffer[pos++]) != '\0') {}
-
-	if (size == 0 || pos == this->Size()) {
-		*buffer = '\0';
-		/* If size was sooner to zero then the string in the stream
-		 *  skip till the \0, so than packet can be read out correctly for the rest */
-		while (pos < this->Size() && this->buffer[pos] != '\0') pos++;
-		pos++;
-	}
-	this->pos = pos;
-
-	str_validate(bufp, last, settings);
-}
-
-/**
  * Reads characters (bytes) from the packet until it finds a '\0', or reaches a
  * maximum of \c length characters.
  * When the '\0' has not been reached in the first \c length read characters,
@@ -429,7 +399,7 @@ std::string Packet::Recv_string(size_t length, StringValidationSettings settings
 		while (this->Recv_uint8() != '\0') {}
 	}
 
-	return str_validate(str, settings);
+	return StrMakeValid(str, settings);
 }
 
 /**
@@ -453,8 +423,8 @@ void Packet::Recv_string(std::string &buffer, StringValidationSettings settings)
 
 	size_t length = ttd_strnlen((const char *)(this->buffer.data() + this->pos), this->Size() - this->pos - 1);
 	buffer.assign((const char *)(this->buffer.data() + this->pos), length);
-	this->pos += (uint)length + 1;
-	str_validate_inplace(buffer, settings);
+	this->pos += (PacketSize)length + 1;
+	StrMakeValidInPlace(buffer, settings);
 }
 
 /**

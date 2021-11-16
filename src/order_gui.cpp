@@ -102,7 +102,7 @@ private:
 	void InitMaxWidgetWidth()
 	{
 		this->max_cargo_name_width = 0;
-		for (int i = 0; i < _sorted_standard_cargo_specs_size; i++) {
+		for (int i = 0; i < (int)_sorted_standard_cargo_specs.size(); i++) {
 			SetDParam(0, _sorted_cargo_specs[i]->name);
 			this->max_cargo_name_width = std::max(this->max_cargo_name_width, GetStringBoundingBox(STR_JUST_STRING).width);
 		}
@@ -118,7 +118,7 @@ private:
 	{
 		StringID tooltip = STR_CARGO_TYPE_LOAD_ORDERS_DROP_TOOLTIP + this->variant;
 		const Order *order = this->vehicle->GetOrder(this->order_id);
-		for (int i = 0; i < _sorted_standard_cargo_specs_size; i++) {
+		for (int i = 0; i < (int)_sorted_standard_cargo_specs.size(); i++) {
 			const CargoSpec *cs = _sorted_cargo_specs[i];
 			const CargoID cargo_id = cs->Index();
 			uint8 order_type = (this->variant == CTOWV_LOAD) ? (uint8) order->GetCargoLoadTypeRaw(cargo_id) : (uint8) order->GetCargoUnloadTypeRaw(cargo_id);
@@ -170,7 +170,7 @@ public:
 		this->CreateNestedTree(desc);
 		this->GetWidget<NWidgetCore>(WID_CTO_CAPTION)->SetDataTip(STR_CARGO_TYPE_ORDERS_LOAD_CAPTION + this->variant, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS);
 		this->GetWidget<NWidgetCore>(WID_CTO_HEADER)->SetDataTip(STR_CARGO_TYPE_ORDERS_LOAD_TITLE + this->variant, STR_NULL);
-		this->GetWidget<NWidgetStacked>(WID_CTO_SELECT)->SetDisplayedPlane((_sorted_standard_cargo_specs_size >= 32) ? 0 : SZSP_NONE);
+		this->GetWidget<NWidgetStacked>(WID_CTO_SELECT)->SetDisplayedPlane((_sorted_standard_cargo_specs.size() >= 32) ? 0 : SZSP_NONE);
 		this->InitDropdownSelectedTypes();
 		this->FinishInitNested(v->index);
 
@@ -262,7 +262,7 @@ public:
 		} else if (widget == WID_CTO_SET_TO_ALL_DROPDOWN) {
 			ModifyOrder(this->vehicle, this->order_id, mof | (action_type << 4) | (CT_INVALID << 20));
 
-			for (int i = 0; i < _sorted_standard_cargo_specs_size; i++) {
+			for (int i = 0; i < (int)_sorted_standard_cargo_specs.size(); i++) {
 				const CargoSpec *cs = _sorted_cargo_specs[i];
 				const CargoID cargo_id = cs->Index();
 				if (action_type != this->GetOrderActionTypeForCargo(cargo_id)) {
@@ -337,12 +337,12 @@ static NWidgetBase *MakeCargoTypeOrdersRows(int *biggest_index, bool right)
 
 	NWidgetVertical *ver = new NWidgetVertical;
 
-	const bool dual_column = (_sorted_standard_cargo_specs_size >= 32);
+	const bool dual_column = (_sorted_standard_cargo_specs.size() >= 32);
 	if (right && !dual_column) return ver;
 
 	const int increment = dual_column ? 2 : 1;
 
-	for (int i = (right ? 1 : 0); i < _sorted_standard_cargo_specs_size; i += increment) {
+	for (int i = (right ? 1 : 0); i < (int)_sorted_standard_cargo_specs.size(); i += increment) {
 		/* Cargo row */
 		NWidgetBackground *panel = new NWidgetBackground(WWT_PANEL, COLOUR_GREY, WID_CTO_CARGO_ROW_FIRST + i);
 		ver->Add(panel);
@@ -757,6 +757,8 @@ static const StringID _order_time_date_dropdown[] = {
 	STR_TRACE_RESTRICT_TIME_MINUTE,
 	STR_TRACE_RESTRICT_TIME_HOUR,
 	STR_TRACE_RESTRICT_TIME_HOUR_MINUTE,
+	STR_TRACE_RESTRICT_TIME_DAY,
+	STR_TRACE_RESTRICT_TIME_MONTH,
 	INVALID_STRING_ID
 };
 
@@ -837,7 +839,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 			if (timetable) {
 				SetDParam(3, STR_EMPTY);
 
-				if (order->GetWaitTime() > 0) {
+				if (order->GetWaitTime() > 0 || order->IsWaitTimetabled()) {
 					SetDParam(7, order->IsWaitTimetabled() ? STR_TIMETABLE_STAY_FOR : STR_TIMETABLE_STAY_FOR_ESTIMATED);
 					SetTimetableParams(8, order->GetWaitTime());
 				}
@@ -890,7 +892,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 			}
 
 			if (timetable) {
-				if (order->GetWaitTime() > 0) {
+				if (order->GetWaitTime() > 0 || order->IsWaitTimetabled()) {
 					SetDParam(7, order->IsWaitTimetabled() ? STR_TIMETABLE_STAY_FOR : STR_TIMETABLE_STAY_FOR_ESTIMATED);
 					SetTimetableParams(8, order->GetWaitTime());
 				}
@@ -2419,7 +2421,7 @@ public:
 
 			case WID_O_COND_TIME_DATE: {
 				ShowDropDownMenu(this, _order_time_date_dropdown, this->vehicle->GetOrder(this->OrderGetSel())->GetConditionValue(),
-						WID_O_COND_TIME_DATE, 0, 0, UINT_MAX);
+						WID_O_COND_TIME_DATE, _settings_game.game_time.time_in_minutes ? 0 : 7, 0, UINT_MAX);
 				break;
 			}
 
@@ -2443,7 +2445,7 @@ public:
 			case WID_O_COND_AUX_CARGO: {
 				uint value = this->vehicle->GetOrder(this->OrderGetSel())->GetConditionValue();
 				DropDownList list;
-				for (size_t i = 0; i < _sorted_standard_cargo_specs_size; ++i) {
+				for (size_t i = 0; i < _sorted_standard_cargo_specs.size(); ++i) {
 					const CargoSpec *cs = _sorted_cargo_specs[i];
 					list.emplace_back(new DropDownListStringItem(cs->name, cs->Index(), false));
 				}
@@ -2477,7 +2479,6 @@ public:
 								_order_conditional_variable[i] == OCV_COUNTER_VALUE) && !_settings_client.gui.show_adv_tracerestrict_features) {
 							continue;
 						}
-						if (_order_conditional_variable[i] == OCV_TIME_DATE && !_settings_game.game_time.time_in_minutes) continue;
 					}
 					list.emplace_back(new DropDownListStringItem(STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE + _order_conditional_variable[i], _order_conditional_variable[i], false));
 				}

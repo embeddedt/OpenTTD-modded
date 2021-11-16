@@ -29,9 +29,6 @@
 #include <functional>
 #include <algorithm>
 
-typedef Pool<BaseStation, StationID, 32, 64000> StationPool;
-extern StationPool _station_pool;
-
 static const byte INITIAL_STATION_RATING = 175;
 
 static const uint MAX_EXTRA_STATION_NAMES = 1024;
@@ -938,6 +935,9 @@ void RebuildStationKdtree();
 template<typename Func>
 void ForAllStationsAroundTiles(const TileArea &ta, Func func)
 {
+	/* There are no stations, so we will never find anything. */
+	if (Station::GetNumItems() == 0) return;
+
 	/* Not using, or don't have a nearby stations list, so we need to scan. */
 	btree::btree_set<StationID> seen_stations;
 

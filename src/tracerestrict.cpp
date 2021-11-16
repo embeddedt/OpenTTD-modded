@@ -1037,7 +1037,7 @@ void SetTraceRestrictValueDefault(TraceRestrictItem &item, TraceRestrictValueTyp
 
 		case TRVT_CARGO_ID:
 			assert(_standard_cargo_mask != 0);
-			SetTraceRestrictValue(item, FindFirstBit64(_standard_cargo_mask));
+			SetTraceRestrictValue(item, FindFirstBit(_standard_cargo_mask));
 			SetTraceRestrictAuxField(item, 0);
 			break;
 
@@ -1712,6 +1712,12 @@ int GetTraceRestrictTimeDateValue(TraceRestrictTimeDateValueField type)
 
 		case TRTDVF_HOUR_MINUTE:
 			return (MINUTES_HOUR(minutes) * 100) + MINUTES_MINUTE(minutes);
+
+		case TRTDVF_DAY:
+			return _cur_date_ymd.day;
+
+		case TRTDVF_MONTH:
+			return _cur_date_ymd.month + 1;
 
 		default:
 			return 0;

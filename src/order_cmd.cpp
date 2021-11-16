@@ -1363,7 +1363,7 @@ static void CancelLoadingDueToDeletedOrder(Vehicle *v)
 
 	assert(v->current_order.IsType(OT_LOADING));
 	/* NON-stop flag is misused to see if a train is in a station that is
-	 * on his order list or not */
+	 * on its order list or not */
 	v->current_order.SetNonStopType(ONSF_STOP_EVERYWHERE);
 	/* When full loading, "cancel" that order so the vehicle doesn't
 	 * stay indefinitely at this station anymore. */
@@ -1472,10 +1472,10 @@ CommandCost CmdSkipToOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 		v->ClearSeparation();
 		if (HasBit(v->vehicle_flags, VF_TIMETABLE_SEPARATION)) ClrBit(v->vehicle_flags, VF_TIMETABLE_STARTED);
-	}
 
-	/* We have an aircraft/ship, they have a mini-schedule, so update them all */
-	if (v->type == VEH_AIRCRAFT || v->type == VEH_SHIP) DirtyVehicleListWindowForVehicle(v);
+		/* We have an aircraft/ship, they have a mini-schedule, so update them all */
+		if (v->type == VEH_AIRCRAFT || v->type == VEH_SHIP) DirtyVehicleListWindowForVehicle(v);
+	}
 
 	return CommandCost();
 }

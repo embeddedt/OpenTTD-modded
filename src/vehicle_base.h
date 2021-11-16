@@ -26,6 +26,7 @@
 #include "newgrf_cache_check.h"
 #include "landscape.h"
 #include "network/network.h"
+#include "saveload/saveload_common.h"
 #include <list>
 #include <map>
 #include <unordered_map>
@@ -232,14 +233,18 @@ typedef Pool<Vehicle, VehicleID, 512, 0xFF000> VehiclePool;
 extern VehiclePool _vehicle_pool;
 
 /* Some declarations of functions, so we can make them friendly */
-struct SaveLoad;
 struct GroundVehicleCache;
-extern const SaveLoad *GetVehicleDescription(VehicleType vt);
+extern SaveLoadTable GetVehicleDescription(VehicleType vt);
 struct LoadgameState;
 extern bool LoadOldVehicle(LoadgameState *ls, int num);
 extern void FixOldVehicles();
 
 struct GRFFile;
+
+namespace upstream_sl {
+	class SlVehicleCommon;
+	class SlVehicleDisaster;
+}
 
 /** %Vehicle data structure. */
 struct Vehicle : VehiclePool::PoolItem<&_vehicle_pool>, BaseVehicle, BaseConsist {
@@ -254,10 +259,13 @@ private:
 	Vehicle *previous_shared;           ///< NOSAVE: pointer to the previous vehicle in the shared order chain
 
 public:
-	friend const SaveLoad *GetVehicleDescription(VehicleType vt); ///< So we can use private/protected variables in the saveload code
+	friend SaveLoadTable GetVehicleDescription(VehicleType vt); ///< So we can use private/protected variables in the saveload code
 	friend void FixOldVehicles();
 	friend void AfterLoadVehicles(bool part_of_load);             ///< So we can set the #previous and #first pointers while loading
 	friend bool LoadOldVehicle(LoadgameState *ls, int num);       ///< So we can set the proper next pointer while loading
+
+	friend upstream_sl::SlVehicleCommon;
+	friend upstream_sl::SlVehicleDisaster;
 
 	static void PreCleanPool();
 
@@ -1390,7 +1398,7 @@ public:
 
 	inline void UpdateImageStateUsingMapDirection(VehicleSpriteSeq &seq)
 	{
-		this->UpdateImageState(this->GetMapImageDirection(), seq);
+		this->UpdateImageState(((T *)this)->GetMapImageDirection(), seq);
 	}
 
 private:

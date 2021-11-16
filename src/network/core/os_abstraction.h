@@ -124,6 +124,13 @@ typedef unsigned long in_addr_t;
 #		undef FD_SETSIZE
 #		define FD_SETSIZE 64
 #   endif
+
+/* Haiku says it supports FD_SETSIZE fds, but it really only supports 512. */
+#   if defined(__HAIKU__)
+#		undef FD_SETSIZE
+#		define FD_SETSIZE 512
+#   endif
+
 #endif /* UNIX */
 
 /* OS/2 stuff */
@@ -208,6 +215,7 @@ static inline socklen_t FixAddrLenForEmscripten(struct sockaddr_storage &address
 bool SetNonBlocking(SOCKET d);
 bool SetBlocking(SOCKET d);
 bool SetNoDelay(SOCKET d);
+bool SetReusePort(SOCKET d);
 bool ShutdownSocket(SOCKET d, bool read, bool write, uint linger_timeout);
 NetworkError GetSocketError(SOCKET d);
 

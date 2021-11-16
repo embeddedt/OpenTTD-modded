@@ -37,6 +37,8 @@
 #include "zoning.h"
 #include "tbtr_template_vehicle_func.h"
 #include "widgets/statusbar_widget.h"
+#include "core/backup_type.hpp"
+#include "debug_desync.h"
 
 #include "table/strings.h"
 
@@ -391,8 +393,7 @@ set_name:;
 		MarkWholeScreenDirty();
 
 		if (c->is_ai) {
-			CompanyNewsInformation *cni = MallocT<CompanyNewsInformation>(1);
-			cni->FillData(c);
+			CompanyNewsInformation *cni = new CompanyNewsInformation(c);
 			SetDParam(0, STR_NEWS_COMPANY_LAUNCH_TITLE);
 			SetDParam(1, STR_NEWS_COMPANY_LAUNCH_DESCRIPTION);
 			SetDParamStr(2, cni->company_name);
@@ -706,12 +707,18 @@ static void HandleBankruptcyTakeover(Company *c)
 	}
 
 	SetBit(c->bankrupt_asked, best->index);
+	c->bankrupt_last_asked = best->index;
 
 	c->bankrupt_timeout = TAKE_OVER_TIMEOUT;
 	if (best->is_ai) {
 		AI::NewEvent(best->index, new ScriptEventCompanyAskMerger(c->index, ClampToI32(c->bankrupt_value)));
 	} else if (IsInteractiveCompany(best->index)) {
 		ShowBuyCompanyDialog(c->index);
+	} else if (!_networking || (_network_server && !NetworkCompanyHasClients(best->index))) {
+		/* This company can never accept the offer as there are no clients connected, decline the offer on the company's behalf */
+		Backup<CompanyID> cur_company(_current_company, best->index, FILE_LINE);
+		DoCommandP(0, c->index, 0, CMD_DECLINE_BUY_COMPANY);
+		cur_company.Restore();
 	}
 }
 
@@ -774,21 +781,19 @@ void CompaniesYearlyLoop()
  * @param c the current company.
  * @param other the other company (use \c nullptr if not relevant).
  */
-void CompanyNewsInformation::FillData(const Company *c, const Company *other)
+CompanyNewsInformation::CompanyNewsInformation(const Company *c, const Company *other)
 {
 	SetDParam(0, c->index);
-	GetString(this->company_name, STR_COMPANY_NAME, lastof(this->company_name));
+	this->company_name = GetString(STR_COMPANY_NAME);
 
-	if (other == nullptr) {
-		*this->other_company_name = '\0';
-	} else {
+	if (other != nullptr) {
 		SetDParam(0, other->index);
-		GetString(this->other_company_name, STR_COMPANY_NAME, lastof(this->other_company_name));
+		this->other_company_name = GetString(STR_COMPANY_NAME);
 		c = other;
 	}
 
 	SetDParam(0, c->index);
-	GetString(this->president_name, STR_PRESIDENT_NAME_MANAGER, lastof(this->president_name));
+	this->president_name = GetString(STR_PRESIDENT_NAME_MANAGER);
 
 	this->colour = c->colour;
 	this->face = c->face;
@@ -862,7 +867,7 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			if (client_id == _network_own_client_id) {
 				assert(_local_company == COMPANY_SPECTATOR);
 				SetLocalCompany(c->index);
-				if (!StrEmpty(_settings_client.network.default_company_pass)) {
+				if (!_settings_client.network.default_company_pass.empty()) {
 					NetworkChangeCompanyPassword(_local_company, _settings_client.network.default_company_pass);
 				}
 
@@ -913,8 +918,7 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 			/* Delete any open window of the company */
 			DeleteCompanyWindows(c->index);
-			CompanyNewsInformation *cni = MallocT<CompanyNewsInformation>(1);
-			cni->FillData(c);
+			CompanyNewsInformation *cni = new CompanyNewsInformation(c);
 
 			/* Show the bankrupt news */
 			SetDParam(0, STR_NEWS_COMPANY_BANKRUPT_TITLE);
@@ -937,8 +941,19 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 			InvalidateWindowData(WC_CLIENT_LIST, 0);
 			InvalidateWindowClassesData(WC_DEPARTURES_BOARD, 0);
 
-			extern void CheckCaches(bool force_check, std::function<void(const char *)> log);
-			CheckCaches(true, nullptr);
+			CheckCaches(true, nullptr, CHECK_CACHE_ALL | CHECK_CACHE_EMIT_LOG);
+			break;
+		}
+
+		case CCA_SALE: {
+			Company *c = Company::GetIfValid(company_id);
+			if (c == nullptr) return CMD_ERROR;
+
+			if (!(flags & DC_EXEC)) return CommandCost();
+
+			c->bankrupt_value = CalculateCompanyValue(c, false);
+			c->bankrupt_asked = 1 << c->index; // Don't ask the owner
+			c->bankrupt_timeout = 0;
 			break;
 		}
 

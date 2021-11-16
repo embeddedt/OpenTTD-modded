@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.43.0
+## JGR's Patchpack version 0.44.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -411,7 +411,7 @@ Both 'stable' and 'nightly' versions are available for download:
 - most people should choose the 'stable' version, as this has been more extensively tested
 - the 'nightly' version includes the latest changes and features, but may sometimes be less reliable
 
-On some platforms OpenTTD will also be available via your OS package manager or a similar service.
+OpenTTD is also available for free on [Steam](https://store.steampowered.com/app/1536610/OpenTTD/), [GOG.com](https://www.gog.com/game/openttd), and the [Microsoft Store](https://www.microsoft.com/p/openttd-official/9ncjg5rvrr1c). On some platforms OpenTTD will be available via your OS package manager or a similar service.
 
 
 ## 1.2) OpenTTD gameplay manual

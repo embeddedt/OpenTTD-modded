@@ -20,6 +20,9 @@
 #include "os_abstraction.h"
 #include "../../string_func.h"
 #include <mutex>
+#if defined(__MINGW32__)
+#include "../../3rdparty/mingw-std-threads/mingw.mutex.h"
+#endif
 
 #include "../../safeguards.h"
 
@@ -174,6 +177,23 @@ bool SetNoDelay(SOCKET d)
 	int flags = 1;
 	/* The (const char*) cast is needed for windows */
 	return setsockopt(d, IPPROTO_TCP, TCP_NODELAY, (const char *)&flags, sizeof(flags)) == 0;
+#endif
+}
+
+/**
+ * Try to set the socket to reuse ports.
+ * @param d The socket to reuse ports on.
+ * @return True if disabling the delaying succeeded, otherwise false.
+ */
+bool SetReusePort(SOCKET d)
+{
+#ifdef _WIN32
+	/* Windows has no SO_REUSEPORT, but for our usecases SO_REUSEADDR does the same job. */
+	int reuse_port = 1;
+	return setsockopt(d, SOL_SOCKET, SO_REUSEADDR, (const char *)&reuse_port, sizeof(reuse_port)) == 0;
+#else
+	int reuse_port = 1;
+	return setsockopt(d, SOL_SOCKET, SO_REUSEPORT, &reuse_port, sizeof(reuse_port)) == 0;
 #endif
 }
 

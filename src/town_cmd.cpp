@@ -114,13 +114,17 @@ Town::~Town()
 	 * and remove from list of sorted towns */
 	DeleteWindowById(WC_TOWN_VIEW, this->index);
 
-	/* Check no industry is related to us. */
 #ifdef WITH_ASSERT
-	for (const Industry *i : Industry::Iterate()) assert(i->town != this);
+	/* Check no industry is related to us. */
+	for (const Industry *i : Industry::Iterate()) {
+		assert(i->town != this);
+	}
 
 	/* ... and no object is related to us. */
-	for (const Object *o : Object::Iterate()) assert(o->town != this);
-#endif
+	for (const Object *o : Object::Iterate()) {
+		assert(o->town != this);
+	}
+#endif /* WITH_ASSERT */
 
 	/* Check no tile is related to us. */
 	for (TileIndex tile = 0; tile < MapSize(); ++tile) {
@@ -2108,7 +2112,7 @@ static void DoCreateTown(Town *t, TileIndex tile, uint32 townnameparts, TownSize
  * @param tile tile to check
  * @return error value or zero cost
  */
-static CommandCost TownCanBePlacedHere(TileIndex tile)
+static CommandCost TownCanBePlacedHere(TileIndex tile, bool city)
 {
 	/* Check if too close to the edge of map */
 	if (DistanceFromEdge(tile) < 12) {
@@ -2128,6 +2132,17 @@ static CommandCost TownCanBePlacedHere(TileIndex tile)
 	/* Can only build on clear flat areas, possibly with trees. */
 	if ((!IsTileType(tile, MP_CLEAR) && !IsTileType(tile, MP_TREES)) || !IsTileFlat(tile)) {
 		return_cmd_error(STR_ERROR_SITE_UNSUITABLE);
+	}
+
+	uint min_land_area = city ? _settings_game.economy.min_city_land_area : _settings_game.economy.min_town_land_area;
+	if (min_land_area > 0) {
+		if (!EnoughContiguousTilesMatchingCondition(tile, min_land_area, [](TileIndex t, void *data) -> bool {
+			if (!HasTileWaterClass(t) || GetWaterClass(t) == WATER_CLASS_INVALID) return true;
+			if (IsCoastTile(t) && !IsSlopeWithOneCornerRaised(GetTileSlope(t))) return true;
+			return false;
+		}, nullptr)) {
+			return_cmd_error(STR_ERROR_SITE_UNSUITABLE);
+		}
 	}
 
 	return CommandCost(EXPENSES_OTHER);
@@ -2197,7 +2212,7 @@ CommandCost CmdFoundTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 	if (!Town::CanAllocateItem()) return_cmd_error(STR_ERROR_TOO_MANY_TOWNS);
 
 	if (!random) {
-		CommandCost ret = TownCanBePlacedHere(tile);
+		CommandCost ret = TownCanBePlacedHere(tile, city);
 		if (ret.Failed()) return ret;
 	}
 
@@ -2259,15 +2274,13 @@ CommandCost CmdFoundTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 				SetDParam(0, t->index);
 				AddTileNewsItem(STR_NEWS_NEW_TOWN_UNSPONSORED, NT_INDUSTRY_OPEN, tile);
 			} else {
-				char company_name[MAX_LENGTH_COMPANY_NAME_CHARS * MAX_CHAR_LENGTH];
 				SetDParam(0, _current_company);
-				GetString(company_name, STR_COMPANY_NAME, lastof(company_name));
+				NewsStringData *company_name = new NewsStringData(GetString(STR_COMPANY_NAME));
 
-				char *cn = stredup(company_name);
-				SetDParamStr(0, cn);
+				SetDParamStr(0, company_name->string);
 				SetDParam(1, t->index);
 
-				AddTileNewsItem(STR_NEWS_NEW_TOWN, NT_INDUSTRY_OPEN, tile, cn);
+				AddTileNewsItem(STR_NEWS_NEW_TOWN, NT_INDUSTRY_OPEN, tile, company_name);
 			}
 			AI::BroadcastNewEvent(new ScriptEventTownFounded(t->index));
 			Game::NewEvent(new ScriptEventTownFounded(t->index));
@@ -2408,7 +2421,7 @@ static Town *CreateRandomTown(uint attempts, uint32 townnameparts, TownSize size
 		}
 
 		/* Make sure town can be placed here */
-		if (TownCanBePlacedHere(tile).Failed()) continue;
+		if (TownCanBePlacedHere(tile, city).Failed()) continue;
 
 		/* Allocate a town struct */
 		Town *t = new Town(tile);
@@ -2420,8 +2433,7 @@ static Town *CreateRandomTown(uint attempts, uint32 townnameparts, TownSize size
 		if (t->cache.population > 0) return t;
 
 		Backup<CompanyID> cur_company(_current_company, OWNER_TOWN, FILE_LINE);
-		CommandCost rc = DoCommand(t->xy, t->index, 0, DC_EXEC, CMD_DELETE_TOWN);
-		(void)rc; // assert only
+		[[maybe_unused]] CommandCost rc = DoCommand(t->xy, t->index, 0, DC_EXEC, CMD_DELETE_TOWN);
 		cur_company.Restore();
 		assert(rc.Succeeded());
 
@@ -2542,8 +2554,7 @@ HouseZonesBits GetTownRadiusGroup(const Town *t, TileIndex tile)
  */
 static inline void ClearMakeHouseTile(TileIndex tile, Town *t, byte counter, byte stage, HouseID type, byte random_bits)
 {
-	CommandCost cc = DoCommand(tile, 0, 0, DC_EXEC | DC_AUTO | DC_NO_WATER | DC_TOWN, CMD_LANDSCAPE_CLEAR);
-	(void)cc; // assert only
+	[[maybe_unused]] CommandCost cc = DoCommand(tile, 0, 0, DC_EXEC | DC_AUTO | DC_NO_WATER | DC_TOWN, CMD_LANDSCAPE_CLEAR);
 	assert(cc.Succeeded());
 
 	IncreaseBuildingCount(t, type);
@@ -3339,27 +3350,27 @@ CommandCost CmdDeleteTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 	 * these do not directly have an owner so we need to check adjacent
 	 * tiles. This won't work correctly in the same loop if the adjacent
 	 * tile was already deleted earlier in the loop. */
-	for (TileIndex tile = 0; tile < MapSize(); ++tile) {
-		if (IsTileType(tile, MP_TUNNELBRIDGE) && TestTownOwnsBridge(tile, t)) {
-			CommandCost ret = DoCommand(tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
+	for (TileIndex current_tile = 0; current_tile < MapSize(); ++current_tile) {
+		if (IsTileType(current_tile, MP_TUNNELBRIDGE) && TestTownOwnsBridge(current_tile, t)) {
+			CommandCost ret = DoCommand(current_tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
 			if (ret.Failed()) return ret;
 		}
 	}
 
 	/* Check all remaining tiles for town ownership. */
-	for (TileIndex tile = 0; tile < MapSize(); ++tile) {
+	for (TileIndex current_tile = 0; current_tile < MapSize(); ++current_tile) {
 		bool try_clear = false;
-		switch (GetTileType(tile)) {
+		switch (GetTileType(current_tile)) {
 			case MP_ROAD:
-				try_clear = HasTownOwnedRoad(tile) && GetTownIndex(tile) == t->index;
+				try_clear = HasTownOwnedRoad(current_tile) && GetTownIndex(current_tile) == t->index;
 				break;
 
 			case MP_HOUSE:
-				try_clear = GetTownIndex(tile) == t->index;
+				try_clear = GetTownIndex(current_tile) == t->index;
 				break;
 
 			case MP_INDUSTRY:
-				try_clear = Industry::GetByTile(tile)->town == t;
+				try_clear = Industry::GetByTile(current_tile)->town == t;
 				break;
 
 			case MP_OBJECT:
@@ -3367,7 +3378,7 @@ CommandCost CmdDeleteTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 					/* No towns will be left, remove it! */
 					try_clear = true;
 				} else {
-					Object *o = Object::GetByTile(tile);
+					Object *o = Object::GetByTile(current_tile);
 					if (o->town == t) {
 						if (o->type == OBJECT_STATUE) {
 							/* Statue... always remove. */
@@ -3384,7 +3395,7 @@ CommandCost CmdDeleteTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 				break;
 		}
 		if (try_clear) {
-			CommandCost ret = DoCommand(tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
+			CommandCost ret = DoCommand(current_tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
 			if (ret.Failed()) return ret;
 		}
 	}
@@ -3439,15 +3450,13 @@ static CommandCost TownActionRoadRebuild(Town *t, DoCommandFlag flags)
 	if (flags & DC_EXEC) {
 		t->road_build_months = 6;
 
-		char company_name[MAX_LENGTH_COMPANY_NAME_CHARS * MAX_CHAR_LENGTH];
 		SetDParam(0, _current_company);
-		GetString(company_name, STR_COMPANY_NAME, lastof(company_name));
+		NewsStringData *company_name = new NewsStringData(GetString(STR_COMPANY_NAME));
 
-		char *cn = stredup(company_name);
 		SetDParam(0, t->index);
-		SetDParamStr(1, cn);
+		SetDParamStr(1, company_name->string);
 
-		AddNewsItem(STR_NEWS_ROAD_REBUILDING, NT_GENERAL, NF_NORMAL, NR_TOWN, t->index, NR_NONE, UINT32_MAX, cn);
+		AddNewsItem(STR_NEWS_ROAD_REBUILDING, NT_GENERAL, NF_NORMAL, NR_TOWN, t->index, NR_NONE, UINT32_MAX, company_name);
 		AI::BroadcastNewEvent(new ScriptEventRoadReconstruction((ScriptCompany::CompanyID)(Owner)_current_company, t->index));
 		Game::NewEvent(new ScriptEventRoadReconstruction((ScriptCompany::CompanyID)(Owner)_current_company, t->index));
 	}
@@ -3584,8 +3593,7 @@ static CommandCost TownActionBuyRights(Town *t, DoCommandFlag flags)
 		SetWindowClassesDirty(WC_STATION_VIEW);
 
 		/* Spawn news message */
-		CompanyNewsInformation *cni = MallocT<CompanyNewsInformation>(1);
-		cni->FillData(Company::Get(_current_company));
+		CompanyNewsInformation *cni = new CompanyNewsInformation(Company::Get(_current_company));
 		SetDParam(0, STR_NEWS_EXCLUSIVE_RIGHTS_TITLE);
 		SetDParam(1, STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION);
 		SetDParam(2, t->index);
@@ -4104,8 +4112,7 @@ void UpdateAllTownRatings()
 			if (Company::IsValidID(_local_company) && HasBit(t->have_ratings, _local_company) && t->ratings[_local_company] <= 0) {
 				ZoningTownAuthorityRatingChange();
 			}
-			uint8 c;
-			FOR_EACH_SET_BIT(c, t->have_ratings) {
+			for (uint8 c : SetBitIterator(t->have_ratings)) {
 				t->ratings[c] = RATING_MAXIMUM;
 			}
 			if (t->have_ratings != 0) {

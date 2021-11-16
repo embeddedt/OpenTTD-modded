@@ -419,6 +419,7 @@ bool VideoDriver_SDL_Base::CreateMainSurface(uint w, uint h, bool resize)
 
 bool VideoDriver_SDL_Base::ClaimMousePointer()
 {
+	/* Emscripten never claims the pointer, so we do not need to change the cursor visibility. */
 #ifndef __EMSCRIPTEN__
 	SDL_ShowCursor(0);
 #endif
@@ -790,7 +791,7 @@ bool VideoDriver_SDL_Base::PollEvent()
 				// mouse entered the window, enable cursor
 				_cursor.in_window = true;
 #ifdef __EMSCRIPTEN__
-				// ensure pointer lock will not occur
+				/* Ensure pointer lock will not occur. */
 				SDL_SetRelativeMouseMode(SDL_FALSE);
 #endif
 			} else if (ev.window.event == SDL_WINDOWEVENT_LEAVE) {
@@ -902,7 +903,7 @@ void VideoDriver_SDL_Base::Stop()
 void VideoDriver_SDL_Base::InputLoop()
 {
 	uint32 mod = SDL_GetModState();
-	const Uint8 *keys = SDL_GetKeyboardState(NULL);
+	const Uint8 *keys = SDL_GetKeyboardState(nullptr);
 
 	bool old_ctrl_pressed = _ctrl_pressed;
 	bool old_shift_pressed = _shift_pressed;

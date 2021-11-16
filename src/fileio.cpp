@@ -79,10 +79,22 @@ static bool IsValidSearchPath(Searchpath sp)
 	return sp < _searchpaths.size() && !_searchpaths[sp].empty();
 }
 
-static void FillValidSearchPaths()
+static void FillValidSearchPaths(bool only_local_path)
 {
 	_valid_searchpaths.clear();
 	for (Searchpath sp = SP_FIRST_DIR; sp < NUM_SEARCHPATHS; sp++) {
+		if (only_local_path) {
+			switch (sp) {
+				case SP_WORKING_DIR:      // Can be influence by "-c" option.
+				case SP_BINARY_DIR:       // Most likely contains all the language files.
+				case SP_AUTODOWNLOAD_DIR: // Otherwise we cannot download in-game content.
+					break;
+
+				default:
+					continue;
+			}
+		}
+
 		if (IsValidSearchPath(sp)) _valid_searchpaths.emplace_back(sp);
 	}
 }
@@ -535,9 +547,6 @@ bool TarScanner::AddFile(const std::string &filename, size_t basepath_length, co
 		switch (th.typeflag) {
 			case '\0':
 			case '0': { // regular file
-				/* Ignore empty files */
-				if (skip == 0) break;
-
 				if (strlen(name) == 0) break;
 
 				/* Store this entry in the list */
@@ -819,7 +828,7 @@ static std::string GetHomeDir()
 	find_directory(B_USER_SETTINGS_DIRECTORY, &path);
 	return std::string(path.Path());
 #else
-	const char *home_env = getenv("HOME"); // Stack var, shouldn't be freed
+	const char *home_env = std::getenv("HOME"); // Stack var, shouldn't be freed
 	if (home_env != nullptr) return std::string(home_env);
 
 	const struct passwd *pw = getpwuid(getuid());
@@ -837,7 +846,7 @@ void DetermineBasePaths(const char *exe)
 	std::string tmp;
 	const std::string homedir = GetHomeDir();
 #ifdef USE_XDG
-	const char *xdg_data_home = getenv("XDG_DATA_HOME");
+	const char *xdg_data_home = std::getenv("XDG_DATA_HOME");
 	if (xdg_data_home != nullptr) {
 		tmp = xdg_data_home;
 		tmp += PATHSEP;
@@ -958,16 +967,17 @@ std::string _personal_dir;
  * fill all other paths (save dir, autosave dir etc) and
  * make the save and scenario directories.
  * @param exe the path from the current path to the executable
+ * @param only_local_path Whether we shouldn't fill searchpaths with global folders.
  */
-void DeterminePaths(const char *exe)
+void DeterminePaths(const char *exe, bool only_local_path)
 {
 	DetermineBasePaths(exe);
-	FillValidSearchPaths();
+	FillValidSearchPaths(only_local_path);
 
 #ifdef USE_XDG
 	std::string config_home;
 	const std::string homedir = GetHomeDir();
-	const char *xdg_config_home = getenv("XDG_CONFIG_HOME");
+	const char *xdg_config_home = std::getenv("XDG_CONFIG_HOME");
 	if (xdg_config_home != nullptr) {
 		config_home = xdg_config_home;
 		config_home += PATHSEP;
@@ -1023,12 +1033,23 @@ void DeterminePaths(const char *exe)
 	_hotkeys_file = config_dir + "hotkeys.cfg";
 	extern std::string _windows_file;
 	_windows_file = config_dir + "windows.cfg";
+	extern std::string _private_file;
+	_private_file = config_dir + "private.cfg";
+	extern std::string _secrets_file;
+	_secrets_file = config_dir + "secrets.cfg";
 
 #ifdef USE_XDG
 	if (config_dir == config_home) {
 		/* We are using the XDG configuration home for the config file,
 		 * then store the rest in the XDG data home folder. */
 		_personal_dir = _searchpaths[SP_PERSONAL_DIR_XDG];
+		if (only_local_path) {
+			/* In case of XDG and we only want local paths and we detected that
+			 * the user either manually indicated the XDG path or didn't use
+			 * "-c" option, we change the working-dir to the XDG personal-dir,
+			 * as this is most likely what the user is expecting. */
+			_searchpaths[SP_WORKING_DIR] = _searchpaths[SP_PERSONAL_DIR_XDG];
+		}
 	} else
 #endif
 	{
@@ -1053,8 +1074,9 @@ void DeterminePaths(const char *exe)
 
 	/* If we have network we make a directory for the autodownloading of content */
 	_searchpaths[SP_AUTODOWNLOAD_DIR] = _personal_dir + "content_download" PATHSEP;
+	DEBUG(misc, 4, "%s added as search path", _searchpaths[SP_AUTODOWNLOAD_DIR].c_str());
 	FioCreateDirectory(_searchpaths[SP_AUTODOWNLOAD_DIR]);
-	FillValidSearchPaths();
+	FillValidSearchPaths(only_local_path);
 
 	/* Create the directory for each of the types of content */
 	const Subdirectory dirs[] = { SCENARIO_DIR, HEIGHTMAP_DIR, BASESET_DIR, NEWGRF_DIR, AI_DIR, AI_LIBRARY_DIR, GAME_DIR, GAME_LIBRARY_DIR };

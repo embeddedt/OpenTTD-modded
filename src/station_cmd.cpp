@@ -560,17 +560,17 @@ static void ShowRejectOrAcceptNews(const Station *st, uint num_items, CargoID *c
 
 /**
  * Get the cargo types being produced around the tile (in a rectangle).
- * @param tile Northtile of area
+ * @param north_tile Northern most tile of area
  * @param w X extent of the area
  * @param h Y extent of the area
  * @param rad Search radius in addition to the given area
  */
-CargoArray GetProductionAroundTiles(TileIndex tile, int w, int h, int rad)
+CargoArray GetProductionAroundTiles(TileIndex north_tile, int w, int h, int rad)
 {
 	CargoArray produced;
 
 	btree::btree_set<IndustryID> industries;
-	TileArea ta = TileArea(tile, w, h).Expand(rad);
+	TileArea ta = TileArea(north_tile, w, h).Expand(rad);
 
 	/* Loop over all tiles to get the produced cargo of
 	 * everything except industries */
@@ -630,19 +630,19 @@ CargoArray GetProductionAroundRect(Rect rect) {
 
 /**
  * Get the acceptance of cargoes around the tile in 1/8.
- * @param tile Center of the search area
+ * @param center_tile Center of the search area
  * @param w X extent of area
  * @param h Y extent of area
  * @param rad Search radius in addition to given area
  * @param always_accepted bitmask of cargo accepted by houses and headquarters; can be nullptr
  * @param ind Industry associated with neutral station (e.g. oil rig) or nullptr
  */
-CargoArray GetAcceptanceAroundTiles(TileIndex tile, int w, int h, int rad, CargoTypes *always_accepted)
+CargoArray GetAcceptanceAroundTiles(TileIndex center_tile, int w, int h, int rad, CargoTypes *always_accepted)
 {
 	CargoArray acceptance;
 	if (always_accepted != nullptr) *always_accepted = 0;
 
-	TileArea ta = TileArea(tile, w, h).Expand(rad);
+	TileArea ta = TileArea(center_tile, w, h).Expand(rad);
 
 	for (TileIndex tile : ta) {
 		/* Ignore industry if it has a neutral station. */
@@ -2708,7 +2708,7 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 		InvalidateWindowData(WC_STATION_VIEW, st->index, -1);
 
 		if (_settings_game.economy.station_noise_level) {
-			SetWindowDirty(WC_TOWN_VIEW, st->town->index);
+			SetWindowDirty(WC_TOWN_VIEW, nearest->index);
 		}
 	}
 
@@ -2750,6 +2750,10 @@ static CommandCost RemoveAirport(TileIndex tile, DoCommandFlag flags)
 		Town *nearest = AirportGetNearestTown(as, it, dist);
 		nearest->noise_reached -= GetAirportNoiseLevelForDistance(as, dist);
 
+		if (_settings_game.economy.station_noise_level) {
+			SetWindowDirty(WC_TOWN_VIEW, nearest->index);
+		}
+
 		for (TileIndex tile_cur : st->airport) {
 			DeleteAnimatedTile(tile_cur);
 			DoClearSquare(tile_cur);
@@ -2765,10 +2769,6 @@ static CommandCost RemoveAirport(TileIndex tile, DoCommandFlag flags)
 		st->facilities &= ~FACIL_AIRPORT;
 
 		InvalidateWindowData(WC_STATION_VIEW, st->index, -1);
-
-		if (_settings_game.economy.station_noise_level) {
-			SetWindowDirty(WC_TOWN_VIEW, st->town->index);
-		}
 
 		Company::Get(st->owner)->infrastructure.airport--;
 
@@ -2970,23 +2970,15 @@ void ClearDockingTilesCheckingNeighbours(TileIndex tile)
 /**
  * Check if a dock tile can be docked from the given direction.
  * @param t Tile index of dock.
- * @param d DiagDirection adjacent to dock being tested.
+ * @param d DiagDirection adjacent to dock being tested. (unused)
  * @return True iff the dock can be docked from the given direction.
  */
 bool IsValidDockingDirectionForDock(TileIndex t, DiagDirection d)
 {
 	assert(IsDockTile(t));
 
-	/** Bitmap of valid directions for each dock tile part. */
-	static const uint8 _valid_docking_tile[] = {
-		0, 0, 0, 0,                        // No docking against the slope part.
-		1 << DIAGDIR_NE | 1 << DIAGDIR_SW, // Docking permitted at the end
-		1 << DIAGDIR_NW | 1 << DIAGDIR_SE, // of the flat piers.
-	};
-
 	StationGfx gfx = GetStationGfx(t);
-	assert(gfx < lengthof(_valid_docking_tile));
-	return HasBit(_valid_docking_tile[gfx], d);
+	return gfx >= GFX_DOCK_BASE_WATER_PART;
 }
 
 /**
@@ -3058,19 +3050,24 @@ static CommandCost RemoveDock(TileIndex tile, DoCommandFlag flags)
 		ClearDockingTilesCheckingNeighbours(tile1);
 		ClearDockingTilesCheckingNeighbours(tile2);
 
-		/* All ships that were going to our station, can't go to it anymore.
-		 * Just clear the order, then automatically the next appropriate order
-		 * will be selected and in case of no appropriate order it will just
-		 * wander around the world. */
-		if (!(st->facilities & FACIL_DOCK)) {
-			for (Ship *s : Ship::Iterate()) {
-				if (s->current_order.IsType(OT_LOADING) && s->current_order.GetDestination() == st->index) {
-					s->LeaveStation();
-				}
+		for (Ship *s : Ship::Iterate()) {
+			/* Find all ships going to our dock. */
+			if (s->current_order.GetDestination() != st->index) {
+				continue;
+			}
 
-				if (s->current_order.IsType(OT_GOTO_STATION) && s->current_order.GetDestination() == st->index) {
-					s->SetDestTile(s->GetOrderStationLocation(st->index));
-				}
+			/* Find ships that are marked as "loading" but are no longer on a
+			 * docking tile. Force them to leave the station (as they were loading
+			 * on the removed dock). */
+			if (s->current_order.IsType(OT_LOADING) && !(IsDockingTile(s->tile) && IsShipDestinationTile(s->tile, st->index))) {
+				s->LeaveStation();
+			}
+
+			/* If we no longer have a dock, mark the order as invalid and send
+			 * the ship to the next order (or, if there is none, make it
+			 * wander the world). */
+			if (s->current_order.IsType(OT_GOTO_STATION) && !(st->facilities & FACIL_DOCK)) {
+				s->SetDestTile(s->GetOrderStationLocation(st->index));
 			}
 		}
 	}
@@ -3333,8 +3330,7 @@ draw_default_foundation:
 			/* Sprite layout which needs preprocessing */
 			bool separate_ground = HasBit(statspec->flags, SSF_SEPARATE_GROUND);
 			uint32 var10_values = layout->PrepareLayout(total_offset, rti->fallback_railtype, 0, 0, separate_ground);
-			uint8 var10;
-			FOR_EACH_SET_BIT(var10, var10_values) {
+			for (uint8 var10 : SetBitIterator(var10_values)) {
 				uint32 var10_relocation = GetCustomStationRelocation(statspec, st, ti->tile, INVALID_RAILTYPE, var10);
 				layout->ProcessRegisters(var10, var10_relocation, separate_ground);
 			}
@@ -4003,7 +3999,7 @@ static void UpdateStationRating(Station *st)
 	for (const CargoSpec *cs : CargoSpec::Iterate()) {
 		GoodsEntry *ge = &st->goods[cs->Index()];
 
-		/* Slowly increase the rating back to his original level in the case we
+		/* Slowly increase the rating back to its original level in the case we
 		 *  didn't deliver cargo yet to this station. This happens when a bribe
 		 *  failed while you didn't moved that cargo yet to a station. */
 		if (!ge->HasRating() && ge->rating < INITIAL_STATION_RATING) {
@@ -4195,7 +4191,11 @@ void DeleteStaleLinks(Station *from)
 						auto res = _delete_stale_links_vehicle_cache.insert(v->index);
 						// Only run LinkRefresher if vehicle was not already in the cache
 						if (res.second) {
-							LinkRefresher::Run(v, false); // Don't allow merging. Otherwise lg might get deleted.
+							/* Do not refresh links of vehicles that have been stopped in depot for a long time. */
+							if (!v->IsStoppedInDepot() || static_cast<uint>(_date - v->date_of_last_service) <=
+									LinkGraph::STALE_LINK_DEPOT_TIMEOUT) {
+								LinkRefresher::Run(v, false); // Don't allow merging. Otherwise lg might get deleted.
+							}
 						}
 						if (edge.LastUpdate() == _date) {
 							updated = true;

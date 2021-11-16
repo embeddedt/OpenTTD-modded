@@ -14,8 +14,10 @@
 #include "crashlog.h"
 #include <system_error>
 #include <thread>
+#include <mutex>
 #if defined(__MINGW32__)
 #include "3rdparty/mingw-std-threads/mingw.thread.h"
+#include "3rdparty/mingw-std-threads/mingw.mutex.h"
 #endif
 
 /**
@@ -97,7 +99,17 @@ inline bool StartNewThread(std::thread *thr, const char *name, TFn&& _Fx, TArgs&
 {
 #ifndef NO_THREADS
 	try {
+		static std::mutex thread_startup_mutex;
+		std::lock_guard<std::mutex> lock(thread_startup_mutex);
+
 		std::thread t([] (const char *name, TFn&& F, TArgs&&... A) {
+				/* Delay starting the thread till the main thread is finished
+				 * with the administration. This prevent race-conditions on
+				 * startup. */
+				{
+					std::lock_guard<std::mutex> lock(thread_startup_mutex);
+				}
+
 				SetCurrentThreadName(name);
 				PerThreadSetup();
 				CrashLog::InitThread();

@@ -45,6 +45,7 @@
 #include "core/checksum_func.hpp"
 #include "debug_settings.h"
 #include "train_speed_adaptation.h"
+#include "event_logs.h"
 
 #include "table/strings.h"
 #include "table/train_cmd.h"
@@ -263,6 +264,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 	this->tcache.cached_num_engines = 0;
 
 	bool train_can_tilt = true;
+	int min_curve_speed_mod = INT_MAX;
 
 	for (Train *u = this; u != nullptr; u = u->Next()) {
 		const RailVehicleInfo *rvi_u = RailVehInfo(u->engine_type);
@@ -302,6 +304,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 		const RailVehicleInfo *rvi_u = &e_u->u.rail;
 
 		if (!HasBit(e_u->info.misc_flags, EF_RAIL_TILTS)) train_can_tilt = false;
+		min_curve_speed_mod = std::min(min_curve_speed_mod, u->GetCurveSpeedModifier());
 
 		/* Cache wagon override sprite group. nullptr is returned if there is none */
 		u->tcache.cached_override = GetWagonOverrideSpriteSet(u->engine_type, u->cargo_type, u->gcache.first_engine);
@@ -388,6 +391,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 	/* store consist weight/max speed in cache */
 	this->vcache.cached_max_speed = max_speed;
 	this->tcache.cached_tflags = (train_can_tilt ? TCF_TILT : TCF_NONE);
+	this->tcache.cached_curve_speed_mod = min_curve_speed_mod;
 	this->tcache.cached_max_curve_speed = this->GetCurveSpeedLimit();
 
 	/* recalculate cached weights and power too (we do this *after* the rest, so it is known which wagons are powered and need extra weight added) */
@@ -415,6 +419,7 @@ void Train::ConsistChanged(ConsistChangeFlags allowed_changes)
 			u->tcache.cached_deceleration = 0;
 			u->tcache.cached_uncapped_decel = 0;
 			u->tcache.cached_tflags = TCF_NONE;
+			u->tcache.cached_curve_speed_mod = 0;
 			u->tcache.cached_max_curve_speed = 0;
 		}
 	}
@@ -665,6 +670,11 @@ int Train::GetCurveSpeedLimit() const
 			/* Apply max_speed bonus of 20% for a tilting train */
 			max_speed += max_speed / 5;
 		}
+
+		/* Apply max_speed modifier (cached value is fixed-point binary with 8 fractional bits)
+		 * and clamp the result to an acceptable range. */
+		max_speed += (max_speed * this->tcache.cached_curve_speed_mod) / 256;
+		max_speed = Clamp(max_speed, 2, absolute_max_speed);
 	}
 
 	return max_speed;
@@ -2215,7 +2225,7 @@ CommandCost CmdSellRailWagon(DoCommandFlag flags, Vehicle *t, uint16 data, uint3
 	}
 
 	CommandCost cost(EXPENSES_NEW_VEHICLES);
-	for (Train *t = sell_head; t != nullptr; t = t->Next()) cost.AddCost(-t->value);
+	for (Train *part = sell_head; part != nullptr; part = part->Next()) cost.AddCost(-part->value);
 
 	/* do it? */
 	if (flags & DC_EXEC) {
@@ -3397,7 +3407,7 @@ static void UpdateAspectFromBridgeMiddleSignalChange(TileIndex entrance, TileInd
 
 static void HandleLastTunnelBridgeSignals(TileIndex tile, TileIndex end, DiagDirection dir, bool free)
 {
-	if (IsBridge(end) && _m[end].m2 != 0) {
+	if (IsBridge(end) && _m[end].m2 != 0 && IsTunnelBridgeSignalSimulationEntrance(end)) {
 		/* Clearing last bridge signal. */
 		int signal_offset = GetAndClearLastBridgeEntranceSetSignalIndex(end);
 		if (signal_offset) {
@@ -3423,7 +3433,7 @@ static void HandleLastTunnelBridgeSignals(TileIndex tile, TileIndex end, DiagDir
 
 		if (IsTunnelBridgeSignalSimulationEntrance(end)) SetTunnelBridgeEntranceSignalGreen(end);
 		if (IsTunnelBridgeSignalSimulationEntrance(tile)) SetTunnelBridgeEntranceSignalGreen(tile);
-	} else if (IsTunnel(end) && _extra_aspects > 0) {
+	} else if (IsTunnel(end) && _extra_aspects > 0 && IsTunnelBridgeSignalSimulationEntrance(end)) {
 		uint signal_count = GetTunnelBridgeLength(tile, end) / GetTunnelBridgeSignalSimulationSpacing(end);
 		if (signal_count > 0) UpdateEntranceAspectFromMiddleSignalChange(end, signal_count - 1);
 	}
@@ -5875,8 +5885,7 @@ static void DeleteLastWagon(Train *v)
 
 		/* It is important that these two are the first in the loop, as reservation cannot deal with every trackbit combination */
 		assert(TRACK_BEGIN == TRACK_X && TRACK_Y == TRACK_BEGIN + 1);
-		Track t;
-		FOR_EACH_SET_TRACK(t, remaining_trackbits) TryReserveRailTrack(tile, t);
+		for (Track t : SetTrackBitIterator(remaining_trackbits)) TryReserveRailTrack(tile, t);
 	}
 
 	/* check if the wagon was on a road/rail-crossing */
@@ -6460,7 +6469,7 @@ Trackdir Train::GetVehicleTrackdir() const
 	}
 
 	if (this->track == TRACK_BIT_WORMHOLE) {
-		/* Train in tunnel or on bridge, so just use his direction and make an educated guess
+		/* Train in tunnel or on bridge, so just use its direction and make an educated guess
 		 * given the track bits on the tunnel/bridge head tile.
 		 * If a reachable track piece is reserved, use that, otherwise use the first reachable track piece.
 		 */

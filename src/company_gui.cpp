@@ -838,11 +838,11 @@ public:
 
 			case WID_SCL_PRI_COL_DROPDOWN: {
 				this->square = GetSpriteSize(SPR_SQUARE);
-				int padding = this->square.width + NWidgetScrollbar::GetVerticalDimension().width + 10;
+				int string_padding = this->square.width + NWidgetScrollbar::GetVerticalDimension().width + 10;
 				for (const StringID *id = _colour_dropdown; id != endof(_colour_dropdown); id++) {
-					size->width = std::max(size->width, GetStringBoundingBox(*id).width + padding);
+					size->width = std::max(size->width, GetStringBoundingBox(*id).width + string_padding);
 				}
-				size->width = std::max(size->width, GetStringBoundingBox(STR_COLOUR_DEFAULT).width + padding);
+				size->width = std::max(size->width, GetStringBoundingBox(STR_COLOUR_DEFAULT).width + string_padding);
 				break;
 			}
 		}
@@ -2789,6 +2789,14 @@ struct BuyCompanyWindow : Window {
 	BuyCompanyWindow(WindowDesc *desc, WindowNumber window_number) : Window(desc)
 	{
 		this->InitNested(window_number);
+	}
+
+	~BuyCompanyWindow()
+	{
+		const Company *c = Company::GetIfValid((CompanyID)this->window_number);
+		if (c != nullptr && HasBit(c->bankrupt_asked, _current_company)) {
+			DoCommandP(0, this->window_number, 0, CMD_DECLINE_BUY_COMPANY);
+		}
 	}
 
 	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override

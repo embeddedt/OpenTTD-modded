@@ -67,6 +67,7 @@
 #include "../animated_tile.h"
 #include "../company_func.h"
 #include "../infrastructure_func.h"
+#include "../event_logs.h"
 
 
 #include "saveload_internal.h"
@@ -189,7 +190,7 @@ static void UpdateExclusiveRights()
 	 *     Build an array town_blocked[ town_id ][ company_id ]
 	 *     that stores if at least one station in that town is blocked for a company
 	 * 2.) Go through that array, if you find a town that is not blocked for
-	 *     one company, but for all others, then give him exclusivity.
+	 *     one company, but for all others, then give it exclusivity.
 	 */
 }
 
@@ -435,8 +436,8 @@ static void CDECL HandleSavegameLoadCrash(int signum)
 			"or older version.\n"
 			"It will load a NewGRF with the same GRF ID as the missing NewGRF.\n"
 			"This means that if the author makes incompatible NewGRFs with the\n"
-			"same GRF ID OpenTTD cannot magically do the right thing. In most\n"
-			"cases OpenTTD will load the savegame and not crash, but this is an\n"
+			"same GRF ID, OpenTTD cannot magically do the right thing. In most\n"
+			"cases, OpenTTD will load the savegame and not crash, but this is an\n"
 			"exception.\n"
 			"Please load the savegame with the appropriate NewGRFs installed.\n"
 			"The missing/compatible NewGRFs are:\n");
@@ -444,9 +445,11 @@ static void CDECL HandleSavegameLoadCrash(int signum)
 		for (const GRFConfig *c = _grfconfig; c != nullptr; c = c->next) {
 			if (HasBit(c->flags, GCF_COMPATIBLE)) {
 				const GRFIdentifier *replaced = GetOverriddenIdentifier(c);
-				char buf[40];
-				md5sumToString(buf, lastof(buf), replaced->md5sum);
-				p += seprintf(p, lastof(buffer), "NewGRF %08X (checksum %s) not found.\n  Loaded NewGRF \"%s\" with same GRF ID instead.\n", BSWAP32(c->ident.grfid), buf, c->filename);
+				char original_md5[40];
+				char replaced_md5[40];
+				md5sumToString(original_md5, lastof(original_md5), c->original_md5sum);
+				md5sumToString(replaced_md5, lastof(replaced_md5), replaced->md5sum);
+				p += seprintf(p, lastof(buffer), "NewGRF %08X (checksum %s) not found.\n  Loaded NewGRF \"%s\" (checksum %s) with same GRF ID instead.\n", BSWAP32(c->ident.grfid), original_md5, c->filename, replaced_md5);
 			}
 			if (c->status == GCS_NOT_FOUND) {
 				char buf[40];
@@ -823,7 +826,7 @@ bool AfterLoadGame()
 	if (IsSavegameVersionBefore(SLV_6, 1)) _settings_game.pf.forbid_90_deg = false;
 	if (IsSavegameVersionBefore(SLV_21))   _settings_game.vehicle.train_acceleration_model = 0;
 	if (IsSavegameVersionBefore(SLV_90))   _settings_game.vehicle.plane_speed = 4;
-	if (IsSavegameVersionBefore(SLV_95))   _settings_game.vehicle.dynamic_engines = 0;
+	if (IsSavegameVersionBefore(SLV_95))   _settings_game.vehicle.dynamic_engines = false;
 	if (IsSavegameVersionBefore(SLV_96))   _settings_game.economy.station_noise_level = false;
 	if (IsSavegameVersionBefore(SLV_133)) {
 		_settings_game.vehicle.train_slope_steepness = 3;
@@ -1748,7 +1751,7 @@ bool AfterLoadGame()
 		c->avail_roadtypes = GetCompanyRoadTypes(c->index);
 	}
 
-	if (!IsSavegameVersionBefore(SLV_27)) AfterLoadStations();
+	AfterLoadStations();
 
 	/* Time starts at 0 instead of 1920.
 	 * Account for this in older games by adding an offset */
@@ -3772,10 +3775,11 @@ bool AfterLoadGame()
 		}
 	}
 
-	if (IsSavegameVersionUntil(SLV_ENDING_YEAR) || !SlXvIsFeaturePresent(XSLFI_MULTIPLE_DOCKS, 2) || !SlXvIsFeaturePresent(XSLFI_DOCKING_CACHE_VER, 1)) {
+	if (IsSavegameVersionUntil(SLV_ENDING_YEAR) || !SlXvIsFeaturePresent(XSLFI_MULTIPLE_DOCKS, 2) || !SlXvIsFeaturePresent(XSLFI_DOCKING_CACHE_VER, 3)) {
 		/* Update station docking tiles. Was only needed for pre-SLV_MULTITLE_DOCKS
 		 * savegames, but a bug in docking tiles touched all savegames between
 		 * SLV_MULTITILE_DOCKS and SLV_ENDING_YEAR. */
+		/* Placing objects on docking tiles was not updating adjacent station's docking tiles. */
 		for (Station *st : Station::Iterate()) {
 			if (st->ship_station.tile != INVALID_TILE) UpdateStationDockingTiles(st);
 		}
@@ -4059,6 +4063,7 @@ bool AfterLoadGame()
 void ReloadNewGRFData()
 {
 	RegisterGameEvents(GEF_RELOAD_NEWGRF);
+	AppendSpecialEventsLogEntry("NewGRF reload");
 
 	RailTypeLabel rail_type_label_map[RAILTYPE_END];
 	for (RailType rt = RAILTYPE_BEGIN; rt != RAILTYPE_END; rt++) {

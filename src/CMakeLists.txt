@@ -118,6 +118,7 @@ add_files(
     date_type.h
     debug.cpp
     debug.h
+    debug_desync.h
     debug_settings.h
     dedicated.cpp
     departures.cpp
@@ -156,6 +157,8 @@ add_files(
     engine_type.h
     error.h
     error_gui.cpp
+    event_logs.cpp
+    event_logs.h
     fileio.cpp
     fileio_func.h
     fileio_type.h
@@ -331,6 +334,7 @@ add_files(
     rail_cmd.cpp
     rail_gui.cpp
     rail_gui.h
+    rail_gui_type.h
     rail_map.h
     rail_type.h
     random_access_file.cpp
@@ -517,6 +521,7 @@ add_files(
     viewport_type.h
     void_cmd.cpp
     void_map.h
+    walltime_func.h
     water.h
     water_cmd.cpp
     water_map.h

@@ -379,11 +379,14 @@ public:
 				const Group *g = Group::GetIfValid(this->sel_group);
 				if (g != nullptr) {
 					remove_wagon = HasBit(g->flags, GroupFlags::GF_REPLACE_WAGON_REMOVAL);
+					SetDParam(0, STR_GROUP_NAME);
+					SetDParam(1, sel_group);
 				} else {
 					const Company *c = Company::Get(_local_company);
 					remove_wagon = c->settings.renew_keep_length;
+					SetDParam(0, STR_GROUP_DEFAULT_TRAINS + this->window_number);
 				}
-				SetDParam(0, remove_wagon ? STR_CONFIG_SETTING_ON : STR_CONFIG_SETTING_OFF);
+				SetDParam(2, remove_wagon ? STR_CONFIG_SETTING_ON : STR_CONFIG_SETTING_OFF);
 				break;
 			}
 
@@ -541,7 +544,7 @@ public:
 					DoCommandP(0, this->sel_group | (GroupFlags::GF_REPLACE_WAGON_REMOVAL << 16), (HasBit(g->flags, GroupFlags::GF_REPLACE_WAGON_REMOVAL) ? 0 : 1) | (_ctrl_pressed << 1), CMD_SET_GROUP_FLAG);
 				} else {
 					// toggle renew_keep_length
-					DoCommandP(0, GetCompanySettingIndex("company.renew_keep_length"), Company::Get(_local_company)->settings.renew_keep_length ? 0 : 1, CMD_CHANGE_COMPANY_SETTING);
+					DoCommandP(0, 0, Company::Get(_local_company)->settings.renew_keep_length ? 0 : 1, CMD_CHANGE_COMPANY_SETTING, nullptr, "company.renew_keep_length");
 				}
 				break;
 			}
@@ -575,6 +578,16 @@ public:
 				size_t engine_count = this->engines[click_side].size();
 
 				EngineID e = engine_count > i ? this->engines[click_side][i] : INVALID_ENGINE;
+
+				/* If Ctrl is pressed on the left side and we don't have any engines of the selected type, stop autoreplacing.
+				 * This is most common when we have finished autoreplacing the engine and want to remove it from the list. */
+				if (click_side == 0 && _ctrl_pressed && e != INVALID_ENGINE &&
+					(GetGroupNumEngines(_local_company, sel_group, e) == 0 || GetGroupNumEngines(_local_company, ALL_GROUP, e) == 0)) {
+						EngineID veh_from = e;
+						DoCommandP(0, this->sel_group << 16, veh_from + (INVALID_ENGINE << 16), CMD_SET_AUTOREPLACE);
+						break;
+				}
+
 				if (e == this->sel_engine[click_side]) break; // we clicked the one we already selected
 				this->sel_engine[click_side] = e;
 				if (click_side == 0) {
@@ -640,6 +653,20 @@ public:
 				this->ReplaceClick_StartReplace(index != 0);
 				break;
 		}
+	}
+
+	bool OnTooltip(Point pt, int widget, TooltipCloseCondition close_cond) override
+	{
+		if (widget != WID_RV_TRAIN_WAGONREMOVE_TOGGLE) return false;
+
+		if (Group::IsValidID(this->sel_group)) {
+			uint64 params[1];
+			params[0] = STR_REPLACE_REMOVE_WAGON_HELP;
+			GuiShowTooltips(this, STR_REPLACE_REMOVE_WAGON_GROUP_HELP, 1, params, close_cond);
+		} else {
+			GuiShowTooltips(this, STR_REPLACE_REMOVE_WAGON_HELP, 0, nullptr, close_cond);
+		}
+		return true;
 	}
 
 	void OnResize() override
