@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /__w/OpenTTD-modded/OpenTTD-modded/em_build
 include CMakeFiles/find_version.dir/progress.make
 
 CMakeFiles/find_version:
-	cd /__w/OpenTTD-modded/OpenTTD-modded && /usr/bin/cmake -DFIND_VERSION_BINARY_DIR=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated -DCPACK_BINARY_DIR=/__w/OpenTTD-modded/OpenTTD-modded/em_build -DREV_MAJOR=1 -DREV_MINOR=12 -DREV_BUILD=0 -DCONFIGURE_DEFINES="NDEBUG WITH_DEMANGLE WITH_SIGACTION TTD_ENDIAN=TTD_LITTLE_ENDIAN UNIX WITH_PNG WITH_ZLIB WITH_SDL2 WITH_PERSONAL_DIR NO_THREADS WITH_ASSERT"  -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/FindVersion.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded && /usr/bin/cmake -DFIND_VERSION_BINARY_DIR=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated -DCPACK_BINARY_DIR=/__w/OpenTTD-modded/OpenTTD-modded/em_build -DREV_MAJOR=13 -DREV_MINOR=0 -DCONFIGURE_DEFINES="NDEBUG WITH_DEMANGLE WITH_SIGACTION TTD_ENDIAN=TTD_LITTLE_ENDIAN UNIX WITH_PNG WITH_ZLIB WITH_SDL2 WITH_PERSONAL_DIR NO_THREADS WITH_ASSERT"  -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/FindVersion.cmake
 
 find_version: CMakeFiles/find_version
 find_version: CMakeFiles/find_version.dir/build.make

@@ -24,6 +24,8 @@ void SQGSMarine_Register(Squirrel *engine)
 	SQGSMarine.DefSQConst(engine, ScriptMarine::BT_DOCK,                           "BT_DOCK");
 	SQGSMarine.DefSQConst(engine, ScriptMarine::BT_DEPOT,                          "BT_DEPOT");
 	SQGSMarine.DefSQConst(engine, ScriptMarine::BT_BUOY,                           "BT_BUOY");
+	SQGSMarine.DefSQConst(engine, ScriptMarine::BT_LOCK,                           "BT_LOCK");
+	SQGSMarine.DefSQConst(engine, ScriptMarine::BT_CANAL,                          "BT_CANAL");
 
 	ScriptError::RegisterErrorMap(STR_ERROR_MUST_BE_BUILT_ON_WATER, ScriptMarine::ERR_MARINE_MUST_BE_BUILT_ON_WATER);
 

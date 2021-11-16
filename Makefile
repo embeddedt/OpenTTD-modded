@@ -407,7 +407,7 @@ table_settings: cmake_check_build_system
 
 # fast build rule for target.
 table_settings/fast:
-	$(MAKE) -f src/table/CMakeFiles/table_settings.dir/build.make src/table/CMakeFiles/table_settings.dir/build
+	$(MAKE) -f src/table/settings/CMakeFiles/table_settings.dir/build.make src/table/settings/CMakeFiles/table_settings.dir/build
 .PHONY : table_settings/fast
 
 #=============================================================================
@@ -2744,6 +2744,33 @@ src/error_gui.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/error_gui.cpp.s
 .PHONY : src/error_gui.cpp.s
 
+src/event_logs.o: src/event_logs.cpp.o
+
+.PHONY : src/event_logs.o
+
+# target to build an object file
+src/event_logs.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/event_logs.cpp.o
+.PHONY : src/event_logs.cpp.o
+
+src/event_logs.i: src/event_logs.cpp.i
+
+.PHONY : src/event_logs.i
+
+# target to preprocess a source file
+src/event_logs.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/event_logs.cpp.i
+.PHONY : src/event_logs.cpp.i
+
+src/event_logs.s: src/event_logs.cpp.s
+
+.PHONY : src/event_logs.s
+
+# target to generate assembly for a file
+src/event_logs.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/event_logs.cpp.s
+.PHONY : src/event_logs.cpp.s
+
 src/fileio.o: src/fileio.cpp.o
 
 .PHONY : src/fileio.o
@@ -4283,6 +4310,33 @@ src/network/core/address.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/address.cpp.s
 .PHONY : src/network/core/address.cpp.s
 
+src/network/core/config.o: src/network/core/config.cpp.o
+
+.PHONY : src/network/core/config.o
+
+# target to build an object file
+src/network/core/config.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/config.cpp.o
+.PHONY : src/network/core/config.cpp.o
+
+src/network/core/config.i: src/network/core/config.cpp.i
+
+.PHONY : src/network/core/config.i
+
+# target to preprocess a source file
+src/network/core/config.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/config.cpp.i
+.PHONY : src/network/core/config.cpp.i
+
+src/network/core/config.s: src/network/core/config.cpp.s
+
+.PHONY : src/network/core/config.s
+
+# target to generate assembly for a file
+src/network/core/config.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/config.cpp.s
+.PHONY : src/network/core/config.cpp.s
+
 src/network/core/core.o: src/network/core/core.cpp.o
 
 .PHONY : src/network/core/core.o
@@ -4310,6 +4364,33 @@ src/network/core/core.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/core.cpp.s
 .PHONY : src/network/core/core.cpp.s
 
+src/network/core/game_info.o: src/network/core/game_info.cpp.o
+
+.PHONY : src/network/core/game_info.o
+
+# target to build an object file
+src/network/core/game_info.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/game_info.cpp.o
+.PHONY : src/network/core/game_info.cpp.o
+
+src/network/core/game_info.i: src/network/core/game_info.cpp.i
+
+.PHONY : src/network/core/game_info.i
+
+# target to preprocess a source file
+src/network/core/game_info.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/game_info.cpp.i
+.PHONY : src/network/core/game_info.cpp.i
+
+src/network/core/game_info.s: src/network/core/game_info.cpp.s
+
+.PHONY : src/network/core/game_info.s
+
+# target to generate assembly for a file
+src/network/core/game_info.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/game_info.cpp.s
+.PHONY : src/network/core/game_info.cpp.s
+
 src/network/core/host.o: src/network/core/host.cpp.o
 
 .PHONY : src/network/core/host.o
@@ -4336,6 +4417,33 @@ src/network/core/host.s: src/network/core/host.cpp.s
 src/network/core/host.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/host.cpp.s
 .PHONY : src/network/core/host.cpp.s
+
+src/network/core/os_abstraction.o: src/network/core/os_abstraction.cpp.o
+
+.PHONY : src/network/core/os_abstraction.o
+
+# target to build an object file
+src/network/core/os_abstraction.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/os_abstraction.cpp.o
+.PHONY : src/network/core/os_abstraction.cpp.o
+
+src/network/core/os_abstraction.i: src/network/core/os_abstraction.cpp.i
+
+.PHONY : src/network/core/os_abstraction.i
+
+# target to preprocess a source file
+src/network/core/os_abstraction.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/os_abstraction.cpp.i
+.PHONY : src/network/core/os_abstraction.cpp.i
+
+src/network/core/os_abstraction.s: src/network/core/os_abstraction.cpp.s
+
+.PHONY : src/network/core/os_abstraction.s
+
+# target to generate assembly for a file
+src/network/core/os_abstraction.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/os_abstraction.cpp.s
+.PHONY : src/network/core/os_abstraction.cpp.s
 
 src/network/core/packet.o: src/network/core/packet.cpp.o
 
@@ -4472,6 +4580,33 @@ src/network/core/tcp_content.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_content.cpp.s
 .PHONY : src/network/core/tcp_content.cpp.s
 
+src/network/core/tcp_coordinator.o: src/network/core/tcp_coordinator.cpp.o
+
+.PHONY : src/network/core/tcp_coordinator.o
+
+# target to build an object file
+src/network/core/tcp_coordinator.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_coordinator.cpp.o
+.PHONY : src/network/core/tcp_coordinator.cpp.o
+
+src/network/core/tcp_coordinator.i: src/network/core/tcp_coordinator.cpp.i
+
+.PHONY : src/network/core/tcp_coordinator.i
+
+# target to preprocess a source file
+src/network/core/tcp_coordinator.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_coordinator.cpp.i
+.PHONY : src/network/core/tcp_coordinator.cpp.i
+
+src/network/core/tcp_coordinator.s: src/network/core/tcp_coordinator.cpp.s
+
+.PHONY : src/network/core/tcp_coordinator.s
+
+# target to generate assembly for a file
+src/network/core/tcp_coordinator.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_coordinator.cpp.s
+.PHONY : src/network/core/tcp_coordinator.cpp.s
+
 src/network/core/tcp_game.o: src/network/core/tcp_game.cpp.o
 
 .PHONY : src/network/core/tcp_game.o
@@ -4525,6 +4660,60 @@ src/network/core/tcp_http.s: src/network/core/tcp_http.cpp.s
 src/network/core/tcp_http.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.s
 .PHONY : src/network/core/tcp_http.cpp.s
+
+src/network/core/tcp_stun.o: src/network/core/tcp_stun.cpp.o
+
+.PHONY : src/network/core/tcp_stun.o
+
+# target to build an object file
+src/network/core/tcp_stun.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_stun.cpp.o
+.PHONY : src/network/core/tcp_stun.cpp.o
+
+src/network/core/tcp_stun.i: src/network/core/tcp_stun.cpp.i
+
+.PHONY : src/network/core/tcp_stun.i
+
+# target to preprocess a source file
+src/network/core/tcp_stun.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_stun.cpp.i
+.PHONY : src/network/core/tcp_stun.cpp.i
+
+src/network/core/tcp_stun.s: src/network/core/tcp_stun.cpp.s
+
+.PHONY : src/network/core/tcp_stun.s
+
+# target to generate assembly for a file
+src/network/core/tcp_stun.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_stun.cpp.s
+.PHONY : src/network/core/tcp_stun.cpp.s
+
+src/network/core/tcp_turn.o: src/network/core/tcp_turn.cpp.o
+
+.PHONY : src/network/core/tcp_turn.o
+
+# target to build an object file
+src/network/core/tcp_turn.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_turn.cpp.o
+.PHONY : src/network/core/tcp_turn.cpp.o
+
+src/network/core/tcp_turn.i: src/network/core/tcp_turn.cpp.i
+
+.PHONY : src/network/core/tcp_turn.i
+
+# target to preprocess a source file
+src/network/core/tcp_turn.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_turn.cpp.i
+.PHONY : src/network/core/tcp_turn.cpp.i
+
+src/network/core/tcp_turn.s: src/network/core/tcp_turn.cpp.s
+
+.PHONY : src/network/core/tcp_turn.s
+
+# target to generate assembly for a file
+src/network/core/tcp_turn.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_turn.cpp.s
+.PHONY : src/network/core/tcp_turn.cpp.s
 
 src/network/core/udp.o: src/network/core/udp.cpp.o
 
@@ -4742,6 +4931,33 @@ src/network/network_content_gui.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_content_gui.cpp.s
 .PHONY : src/network/network_content_gui.cpp.s
 
+src/network/network_coordinator.o: src/network/network_coordinator.cpp.o
+
+.PHONY : src/network/network_coordinator.o
+
+# target to build an object file
+src/network/network_coordinator.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_coordinator.cpp.o
+.PHONY : src/network/network_coordinator.cpp.o
+
+src/network/network_coordinator.i: src/network/network_coordinator.cpp.i
+
+.PHONY : src/network/network_coordinator.i
+
+# target to preprocess a source file
+src/network/network_coordinator.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_coordinator.cpp.i
+.PHONY : src/network/network_coordinator.cpp.i
+
+src/network/network_coordinator.s: src/network/network_coordinator.cpp.s
+
+.PHONY : src/network/network_coordinator.s
+
+# target to generate assembly for a file
+src/network/network_coordinator.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_coordinator.cpp.s
+.PHONY : src/network/network_coordinator.cpp.s
+
 src/network/network_gamelist.o: src/network/network_gamelist.cpp.o
 
 .PHONY : src/network/network_gamelist.o
@@ -4796,6 +5012,33 @@ src/network/network_gui.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_gui.cpp.s
 .PHONY : src/network/network_gui.cpp.s
 
+src/network/network_query.o: src/network/network_query.cpp.o
+
+.PHONY : src/network/network_query.o
+
+# target to build an object file
+src/network/network_query.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_query.cpp.o
+.PHONY : src/network/network_query.cpp.o
+
+src/network/network_query.i: src/network/network_query.cpp.i
+
+.PHONY : src/network/network_query.i
+
+# target to preprocess a source file
+src/network/network_query.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_query.cpp.i
+.PHONY : src/network/network_query.cpp.i
+
+src/network/network_query.s: src/network/network_query.cpp.s
+
+.PHONY : src/network/network_query.s
+
+# target to generate assembly for a file
+src/network/network_query.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_query.cpp.s
+.PHONY : src/network/network_query.cpp.s
+
 src/network/network_server.o: src/network/network_server.cpp.o
 
 .PHONY : src/network/network_server.o
@@ -4822,6 +5065,60 @@ src/network/network_server.s: src/network/network_server.cpp.s
 src/network/network_server.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_server.cpp.s
 .PHONY : src/network/network_server.cpp.s
+
+src/network/network_stun.o: src/network/network_stun.cpp.o
+
+.PHONY : src/network/network_stun.o
+
+# target to build an object file
+src/network/network_stun.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_stun.cpp.o
+.PHONY : src/network/network_stun.cpp.o
+
+src/network/network_stun.i: src/network/network_stun.cpp.i
+
+.PHONY : src/network/network_stun.i
+
+# target to preprocess a source file
+src/network/network_stun.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_stun.cpp.i
+.PHONY : src/network/network_stun.cpp.i
+
+src/network/network_stun.s: src/network/network_stun.cpp.s
+
+.PHONY : src/network/network_stun.s
+
+# target to generate assembly for a file
+src/network/network_stun.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_stun.cpp.s
+.PHONY : src/network/network_stun.cpp.s
+
+src/network/network_turn.o: src/network/network_turn.cpp.o
+
+.PHONY : src/network/network_turn.o
+
+# target to build an object file
+src/network/network_turn.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_turn.cpp.o
+.PHONY : src/network/network_turn.cpp.o
+
+src/network/network_turn.i: src/network/network_turn.cpp.i
+
+.PHONY : src/network/network_turn.i
+
+# target to preprocess a source file
+src/network/network_turn.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_turn.cpp.i
+.PHONY : src/network/network_turn.cpp.i
+
+src/network/network_turn.s: src/network/network_turn.cpp.s
+
+.PHONY : src/network/network_turn.s
+
+# target to generate assembly for a file
+src/network/network_turn.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/network_turn.cpp.s
+.PHONY : src/network/network_turn.cpp.s
 
 src/network/network_udp.o: src/network/network_udp.cpp.o
 
@@ -7658,6 +7955,870 @@ src/saveload/tunnel_sl.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/tunnel_sl.cpp.s
 .PHONY : src/saveload/tunnel_sl.cpp.s
 
+src/saveload/upstream/ai_sl.o: src/saveload/upstream/ai_sl.cpp.o
+
+.PHONY : src/saveload/upstream/ai_sl.o
+
+# target to build an object file
+src/saveload/upstream/ai_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/ai_sl.cpp.o
+.PHONY : src/saveload/upstream/ai_sl.cpp.o
+
+src/saveload/upstream/ai_sl.i: src/saveload/upstream/ai_sl.cpp.i
+
+.PHONY : src/saveload/upstream/ai_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/ai_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/ai_sl.cpp.i
+.PHONY : src/saveload/upstream/ai_sl.cpp.i
+
+src/saveload/upstream/ai_sl.s: src/saveload/upstream/ai_sl.cpp.s
+
+.PHONY : src/saveload/upstream/ai_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/ai_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/ai_sl.cpp.s
+.PHONY : src/saveload/upstream/ai_sl.cpp.s
+
+src/saveload/upstream/airport_sl.o: src/saveload/upstream/airport_sl.cpp.o
+
+.PHONY : src/saveload/upstream/airport_sl.o
+
+# target to build an object file
+src/saveload/upstream/airport_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/airport_sl.cpp.o
+.PHONY : src/saveload/upstream/airport_sl.cpp.o
+
+src/saveload/upstream/airport_sl.i: src/saveload/upstream/airport_sl.cpp.i
+
+.PHONY : src/saveload/upstream/airport_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/airport_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/airport_sl.cpp.i
+.PHONY : src/saveload/upstream/airport_sl.cpp.i
+
+src/saveload/upstream/airport_sl.s: src/saveload/upstream/airport_sl.cpp.s
+
+.PHONY : src/saveload/upstream/airport_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/airport_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/airport_sl.cpp.s
+.PHONY : src/saveload/upstream/airport_sl.cpp.s
+
+src/saveload/upstream/animated_tile_sl.o: src/saveload/upstream/animated_tile_sl.cpp.o
+
+.PHONY : src/saveload/upstream/animated_tile_sl.o
+
+# target to build an object file
+src/saveload/upstream/animated_tile_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/animated_tile_sl.cpp.o
+.PHONY : src/saveload/upstream/animated_tile_sl.cpp.o
+
+src/saveload/upstream/animated_tile_sl.i: src/saveload/upstream/animated_tile_sl.cpp.i
+
+.PHONY : src/saveload/upstream/animated_tile_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/animated_tile_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/animated_tile_sl.cpp.i
+.PHONY : src/saveload/upstream/animated_tile_sl.cpp.i
+
+src/saveload/upstream/animated_tile_sl.s: src/saveload/upstream/animated_tile_sl.cpp.s
+
+.PHONY : src/saveload/upstream/animated_tile_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/animated_tile_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/animated_tile_sl.cpp.s
+.PHONY : src/saveload/upstream/animated_tile_sl.cpp.s
+
+src/saveload/upstream/autoreplace_sl.o: src/saveload/upstream/autoreplace_sl.cpp.o
+
+.PHONY : src/saveload/upstream/autoreplace_sl.o
+
+# target to build an object file
+src/saveload/upstream/autoreplace_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/autoreplace_sl.cpp.o
+.PHONY : src/saveload/upstream/autoreplace_sl.cpp.o
+
+src/saveload/upstream/autoreplace_sl.i: src/saveload/upstream/autoreplace_sl.cpp.i
+
+.PHONY : src/saveload/upstream/autoreplace_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/autoreplace_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/autoreplace_sl.cpp.i
+.PHONY : src/saveload/upstream/autoreplace_sl.cpp.i
+
+src/saveload/upstream/autoreplace_sl.s: src/saveload/upstream/autoreplace_sl.cpp.s
+
+.PHONY : src/saveload/upstream/autoreplace_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/autoreplace_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/autoreplace_sl.cpp.s
+.PHONY : src/saveload/upstream/autoreplace_sl.cpp.s
+
+src/saveload/upstream/cargomonitor_sl.o: src/saveload/upstream/cargomonitor_sl.cpp.o
+
+.PHONY : src/saveload/upstream/cargomonitor_sl.o
+
+# target to build an object file
+src/saveload/upstream/cargomonitor_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargomonitor_sl.cpp.o
+.PHONY : src/saveload/upstream/cargomonitor_sl.cpp.o
+
+src/saveload/upstream/cargomonitor_sl.i: src/saveload/upstream/cargomonitor_sl.cpp.i
+
+.PHONY : src/saveload/upstream/cargomonitor_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/cargomonitor_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargomonitor_sl.cpp.i
+.PHONY : src/saveload/upstream/cargomonitor_sl.cpp.i
+
+src/saveload/upstream/cargomonitor_sl.s: src/saveload/upstream/cargomonitor_sl.cpp.s
+
+.PHONY : src/saveload/upstream/cargomonitor_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/cargomonitor_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargomonitor_sl.cpp.s
+.PHONY : src/saveload/upstream/cargomonitor_sl.cpp.s
+
+src/saveload/upstream/cargopacket_sl.o: src/saveload/upstream/cargopacket_sl.cpp.o
+
+.PHONY : src/saveload/upstream/cargopacket_sl.o
+
+# target to build an object file
+src/saveload/upstream/cargopacket_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargopacket_sl.cpp.o
+.PHONY : src/saveload/upstream/cargopacket_sl.cpp.o
+
+src/saveload/upstream/cargopacket_sl.i: src/saveload/upstream/cargopacket_sl.cpp.i
+
+.PHONY : src/saveload/upstream/cargopacket_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/cargopacket_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargopacket_sl.cpp.i
+.PHONY : src/saveload/upstream/cargopacket_sl.cpp.i
+
+src/saveload/upstream/cargopacket_sl.s: src/saveload/upstream/cargopacket_sl.cpp.s
+
+.PHONY : src/saveload/upstream/cargopacket_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/cargopacket_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cargopacket_sl.cpp.s
+.PHONY : src/saveload/upstream/cargopacket_sl.cpp.s
+
+src/saveload/upstream/cheat_sl.o: src/saveload/upstream/cheat_sl.cpp.o
+
+.PHONY : src/saveload/upstream/cheat_sl.o
+
+# target to build an object file
+src/saveload/upstream/cheat_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cheat_sl.cpp.o
+.PHONY : src/saveload/upstream/cheat_sl.cpp.o
+
+src/saveload/upstream/cheat_sl.i: src/saveload/upstream/cheat_sl.cpp.i
+
+.PHONY : src/saveload/upstream/cheat_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/cheat_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cheat_sl.cpp.i
+.PHONY : src/saveload/upstream/cheat_sl.cpp.i
+
+src/saveload/upstream/cheat_sl.s: src/saveload/upstream/cheat_sl.cpp.s
+
+.PHONY : src/saveload/upstream/cheat_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/cheat_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/cheat_sl.cpp.s
+.PHONY : src/saveload/upstream/cheat_sl.cpp.s
+
+src/saveload/upstream/company_sl.o: src/saveload/upstream/company_sl.cpp.o
+
+.PHONY : src/saveload/upstream/company_sl.o
+
+# target to build an object file
+src/saveload/upstream/company_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/company_sl.cpp.o
+.PHONY : src/saveload/upstream/company_sl.cpp.o
+
+src/saveload/upstream/company_sl.i: src/saveload/upstream/company_sl.cpp.i
+
+.PHONY : src/saveload/upstream/company_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/company_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/company_sl.cpp.i
+.PHONY : src/saveload/upstream/company_sl.cpp.i
+
+src/saveload/upstream/company_sl.s: src/saveload/upstream/company_sl.cpp.s
+
+.PHONY : src/saveload/upstream/company_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/company_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/company_sl.cpp.s
+.PHONY : src/saveload/upstream/company_sl.cpp.s
+
+src/saveload/upstream/depot_sl.o: src/saveload/upstream/depot_sl.cpp.o
+
+.PHONY : src/saveload/upstream/depot_sl.o
+
+# target to build an object file
+src/saveload/upstream/depot_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/depot_sl.cpp.o
+.PHONY : src/saveload/upstream/depot_sl.cpp.o
+
+src/saveload/upstream/depot_sl.i: src/saveload/upstream/depot_sl.cpp.i
+
+.PHONY : src/saveload/upstream/depot_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/depot_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/depot_sl.cpp.i
+.PHONY : src/saveload/upstream/depot_sl.cpp.i
+
+src/saveload/upstream/depot_sl.s: src/saveload/upstream/depot_sl.cpp.s
+
+.PHONY : src/saveload/upstream/depot_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/depot_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/depot_sl.cpp.s
+.PHONY : src/saveload/upstream/depot_sl.cpp.s
+
+src/saveload/upstream/economy_sl.o: src/saveload/upstream/economy_sl.cpp.o
+
+.PHONY : src/saveload/upstream/economy_sl.o
+
+# target to build an object file
+src/saveload/upstream/economy_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/economy_sl.cpp.o
+.PHONY : src/saveload/upstream/economy_sl.cpp.o
+
+src/saveload/upstream/economy_sl.i: src/saveload/upstream/economy_sl.cpp.i
+
+.PHONY : src/saveload/upstream/economy_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/economy_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/economy_sl.cpp.i
+.PHONY : src/saveload/upstream/economy_sl.cpp.i
+
+src/saveload/upstream/economy_sl.s: src/saveload/upstream/economy_sl.cpp.s
+
+.PHONY : src/saveload/upstream/economy_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/economy_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/economy_sl.cpp.s
+.PHONY : src/saveload/upstream/economy_sl.cpp.s
+
+src/saveload/upstream/engine_sl.o: src/saveload/upstream/engine_sl.cpp.o
+
+.PHONY : src/saveload/upstream/engine_sl.o
+
+# target to build an object file
+src/saveload/upstream/engine_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/engine_sl.cpp.o
+.PHONY : src/saveload/upstream/engine_sl.cpp.o
+
+src/saveload/upstream/engine_sl.i: src/saveload/upstream/engine_sl.cpp.i
+
+.PHONY : src/saveload/upstream/engine_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/engine_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/engine_sl.cpp.i
+.PHONY : src/saveload/upstream/engine_sl.cpp.i
+
+src/saveload/upstream/engine_sl.s: src/saveload/upstream/engine_sl.cpp.s
+
+.PHONY : src/saveload/upstream/engine_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/engine_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/engine_sl.cpp.s
+.PHONY : src/saveload/upstream/engine_sl.cpp.s
+
+src/saveload/upstream/game_sl.o: src/saveload/upstream/game_sl.cpp.o
+
+.PHONY : src/saveload/upstream/game_sl.o
+
+# target to build an object file
+src/saveload/upstream/game_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/game_sl.cpp.o
+.PHONY : src/saveload/upstream/game_sl.cpp.o
+
+src/saveload/upstream/game_sl.i: src/saveload/upstream/game_sl.cpp.i
+
+.PHONY : src/saveload/upstream/game_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/game_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/game_sl.cpp.i
+.PHONY : src/saveload/upstream/game_sl.cpp.i
+
+src/saveload/upstream/game_sl.s: src/saveload/upstream/game_sl.cpp.s
+
+.PHONY : src/saveload/upstream/game_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/game_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/game_sl.cpp.s
+.PHONY : src/saveload/upstream/game_sl.cpp.s
+
+src/saveload/upstream/gamelog_sl.o: src/saveload/upstream/gamelog_sl.cpp.o
+
+.PHONY : src/saveload/upstream/gamelog_sl.o
+
+# target to build an object file
+src/saveload/upstream/gamelog_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/gamelog_sl.cpp.o
+.PHONY : src/saveload/upstream/gamelog_sl.cpp.o
+
+src/saveload/upstream/gamelog_sl.i: src/saveload/upstream/gamelog_sl.cpp.i
+
+.PHONY : src/saveload/upstream/gamelog_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/gamelog_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/gamelog_sl.cpp.i
+.PHONY : src/saveload/upstream/gamelog_sl.cpp.i
+
+src/saveload/upstream/gamelog_sl.s: src/saveload/upstream/gamelog_sl.cpp.s
+
+.PHONY : src/saveload/upstream/gamelog_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/gamelog_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/gamelog_sl.cpp.s
+.PHONY : src/saveload/upstream/gamelog_sl.cpp.s
+
+src/saveload/upstream/goal_sl.o: src/saveload/upstream/goal_sl.cpp.o
+
+.PHONY : src/saveload/upstream/goal_sl.o
+
+# target to build an object file
+src/saveload/upstream/goal_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/goal_sl.cpp.o
+.PHONY : src/saveload/upstream/goal_sl.cpp.o
+
+src/saveload/upstream/goal_sl.i: src/saveload/upstream/goal_sl.cpp.i
+
+.PHONY : src/saveload/upstream/goal_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/goal_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/goal_sl.cpp.i
+.PHONY : src/saveload/upstream/goal_sl.cpp.i
+
+src/saveload/upstream/goal_sl.s: src/saveload/upstream/goal_sl.cpp.s
+
+.PHONY : src/saveload/upstream/goal_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/goal_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/goal_sl.cpp.s
+.PHONY : src/saveload/upstream/goal_sl.cpp.s
+
+src/saveload/upstream/group_sl.o: src/saveload/upstream/group_sl.cpp.o
+
+.PHONY : src/saveload/upstream/group_sl.o
+
+# target to build an object file
+src/saveload/upstream/group_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/group_sl.cpp.o
+.PHONY : src/saveload/upstream/group_sl.cpp.o
+
+src/saveload/upstream/group_sl.i: src/saveload/upstream/group_sl.cpp.i
+
+.PHONY : src/saveload/upstream/group_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/group_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/group_sl.cpp.i
+.PHONY : src/saveload/upstream/group_sl.cpp.i
+
+src/saveload/upstream/group_sl.s: src/saveload/upstream/group_sl.cpp.s
+
+.PHONY : src/saveload/upstream/group_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/group_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/group_sl.cpp.s
+.PHONY : src/saveload/upstream/group_sl.cpp.s
+
+src/saveload/upstream/industry_sl.o: src/saveload/upstream/industry_sl.cpp.o
+
+.PHONY : src/saveload/upstream/industry_sl.o
+
+# target to build an object file
+src/saveload/upstream/industry_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/industry_sl.cpp.o
+.PHONY : src/saveload/upstream/industry_sl.cpp.o
+
+src/saveload/upstream/industry_sl.i: src/saveload/upstream/industry_sl.cpp.i
+
+.PHONY : src/saveload/upstream/industry_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/industry_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/industry_sl.cpp.i
+.PHONY : src/saveload/upstream/industry_sl.cpp.i
+
+src/saveload/upstream/industry_sl.s: src/saveload/upstream/industry_sl.cpp.s
+
+.PHONY : src/saveload/upstream/industry_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/industry_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/industry_sl.cpp.s
+.PHONY : src/saveload/upstream/industry_sl.cpp.s
+
+src/saveload/upstream/labelmaps_sl.o: src/saveload/upstream/labelmaps_sl.cpp.o
+
+.PHONY : src/saveload/upstream/labelmaps_sl.o
+
+# target to build an object file
+src/saveload/upstream/labelmaps_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/labelmaps_sl.cpp.o
+.PHONY : src/saveload/upstream/labelmaps_sl.cpp.o
+
+src/saveload/upstream/labelmaps_sl.i: src/saveload/upstream/labelmaps_sl.cpp.i
+
+.PHONY : src/saveload/upstream/labelmaps_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/labelmaps_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/labelmaps_sl.cpp.i
+.PHONY : src/saveload/upstream/labelmaps_sl.cpp.i
+
+src/saveload/upstream/labelmaps_sl.s: src/saveload/upstream/labelmaps_sl.cpp.s
+
+.PHONY : src/saveload/upstream/labelmaps_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/labelmaps_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/labelmaps_sl.cpp.s
+.PHONY : src/saveload/upstream/labelmaps_sl.cpp.s
+
+src/saveload/upstream/linkgraph_sl.o: src/saveload/upstream/linkgraph_sl.cpp.o
+
+.PHONY : src/saveload/upstream/linkgraph_sl.o
+
+# target to build an object file
+src/saveload/upstream/linkgraph_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/linkgraph_sl.cpp.o
+.PHONY : src/saveload/upstream/linkgraph_sl.cpp.o
+
+src/saveload/upstream/linkgraph_sl.i: src/saveload/upstream/linkgraph_sl.cpp.i
+
+.PHONY : src/saveload/upstream/linkgraph_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/linkgraph_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/linkgraph_sl.cpp.i
+.PHONY : src/saveload/upstream/linkgraph_sl.cpp.i
+
+src/saveload/upstream/linkgraph_sl.s: src/saveload/upstream/linkgraph_sl.cpp.s
+
+.PHONY : src/saveload/upstream/linkgraph_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/linkgraph_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/linkgraph_sl.cpp.s
+.PHONY : src/saveload/upstream/linkgraph_sl.cpp.s
+
+src/saveload/upstream/map_sl.o: src/saveload/upstream/map_sl.cpp.o
+
+.PHONY : src/saveload/upstream/map_sl.o
+
+# target to build an object file
+src/saveload/upstream/map_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/map_sl.cpp.o
+.PHONY : src/saveload/upstream/map_sl.cpp.o
+
+src/saveload/upstream/map_sl.i: src/saveload/upstream/map_sl.cpp.i
+
+.PHONY : src/saveload/upstream/map_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/map_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/map_sl.cpp.i
+.PHONY : src/saveload/upstream/map_sl.cpp.i
+
+src/saveload/upstream/map_sl.s: src/saveload/upstream/map_sl.cpp.s
+
+.PHONY : src/saveload/upstream/map_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/map_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/map_sl.cpp.s
+.PHONY : src/saveload/upstream/map_sl.cpp.s
+
+src/saveload/upstream/misc_sl.o: src/saveload/upstream/misc_sl.cpp.o
+
+.PHONY : src/saveload/upstream/misc_sl.o
+
+# target to build an object file
+src/saveload/upstream/misc_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/misc_sl.cpp.o
+.PHONY : src/saveload/upstream/misc_sl.cpp.o
+
+src/saveload/upstream/misc_sl.i: src/saveload/upstream/misc_sl.cpp.i
+
+.PHONY : src/saveload/upstream/misc_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/misc_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/misc_sl.cpp.i
+.PHONY : src/saveload/upstream/misc_sl.cpp.i
+
+src/saveload/upstream/misc_sl.s: src/saveload/upstream/misc_sl.cpp.s
+
+.PHONY : src/saveload/upstream/misc_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/misc_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/misc_sl.cpp.s
+.PHONY : src/saveload/upstream/misc_sl.cpp.s
+
+src/saveload/upstream/newgrf_sl.o: src/saveload/upstream/newgrf_sl.cpp.o
+
+.PHONY : src/saveload/upstream/newgrf_sl.o
+
+# target to build an object file
+src/saveload/upstream/newgrf_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/newgrf_sl.cpp.o
+.PHONY : src/saveload/upstream/newgrf_sl.cpp.o
+
+src/saveload/upstream/newgrf_sl.i: src/saveload/upstream/newgrf_sl.cpp.i
+
+.PHONY : src/saveload/upstream/newgrf_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/newgrf_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/newgrf_sl.cpp.i
+.PHONY : src/saveload/upstream/newgrf_sl.cpp.i
+
+src/saveload/upstream/newgrf_sl.s: src/saveload/upstream/newgrf_sl.cpp.s
+
+.PHONY : src/saveload/upstream/newgrf_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/newgrf_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/newgrf_sl.cpp.s
+.PHONY : src/saveload/upstream/newgrf_sl.cpp.s
+
+src/saveload/upstream/object_sl.o: src/saveload/upstream/object_sl.cpp.o
+
+.PHONY : src/saveload/upstream/object_sl.o
+
+# target to build an object file
+src/saveload/upstream/object_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/object_sl.cpp.o
+.PHONY : src/saveload/upstream/object_sl.cpp.o
+
+src/saveload/upstream/object_sl.i: src/saveload/upstream/object_sl.cpp.i
+
+.PHONY : src/saveload/upstream/object_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/object_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/object_sl.cpp.i
+.PHONY : src/saveload/upstream/object_sl.cpp.i
+
+src/saveload/upstream/object_sl.s: src/saveload/upstream/object_sl.cpp.s
+
+.PHONY : src/saveload/upstream/object_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/object_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/object_sl.cpp.s
+.PHONY : src/saveload/upstream/object_sl.cpp.s
+
+src/saveload/upstream/order_sl.o: src/saveload/upstream/order_sl.cpp.o
+
+.PHONY : src/saveload/upstream/order_sl.o
+
+# target to build an object file
+src/saveload/upstream/order_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/order_sl.cpp.o
+.PHONY : src/saveload/upstream/order_sl.cpp.o
+
+src/saveload/upstream/order_sl.i: src/saveload/upstream/order_sl.cpp.i
+
+.PHONY : src/saveload/upstream/order_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/order_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/order_sl.cpp.i
+.PHONY : src/saveload/upstream/order_sl.cpp.i
+
+src/saveload/upstream/order_sl.s: src/saveload/upstream/order_sl.cpp.s
+
+.PHONY : src/saveload/upstream/order_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/order_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/order_sl.cpp.s
+.PHONY : src/saveload/upstream/order_sl.cpp.s
+
+src/saveload/upstream/saveload.o: src/saveload/upstream/saveload.cpp.o
+
+.PHONY : src/saveload/upstream/saveload.o
+
+# target to build an object file
+src/saveload/upstream/saveload.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/saveload.cpp.o
+.PHONY : src/saveload/upstream/saveload.cpp.o
+
+src/saveload/upstream/saveload.i: src/saveload/upstream/saveload.cpp.i
+
+.PHONY : src/saveload/upstream/saveload.i
+
+# target to preprocess a source file
+src/saveload/upstream/saveload.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/saveload.cpp.i
+.PHONY : src/saveload/upstream/saveload.cpp.i
+
+src/saveload/upstream/saveload.s: src/saveload/upstream/saveload.cpp.s
+
+.PHONY : src/saveload/upstream/saveload.s
+
+# target to generate assembly for a file
+src/saveload/upstream/saveload.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/saveload.cpp.s
+.PHONY : src/saveload/upstream/saveload.cpp.s
+
+src/saveload/upstream/settings_sl.o: src/saveload/upstream/settings_sl.cpp.o
+
+.PHONY : src/saveload/upstream/settings_sl.o
+
+# target to build an object file
+src/saveload/upstream/settings_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/settings_sl.cpp.o
+.PHONY : src/saveload/upstream/settings_sl.cpp.o
+
+src/saveload/upstream/settings_sl.i: src/saveload/upstream/settings_sl.cpp.i
+
+.PHONY : src/saveload/upstream/settings_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/settings_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/settings_sl.cpp.i
+.PHONY : src/saveload/upstream/settings_sl.cpp.i
+
+src/saveload/upstream/settings_sl.s: src/saveload/upstream/settings_sl.cpp.s
+
+.PHONY : src/saveload/upstream/settings_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/settings_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/settings_sl.cpp.s
+.PHONY : src/saveload/upstream/settings_sl.cpp.s
+
+src/saveload/upstream/signs_sl.o: src/saveload/upstream/signs_sl.cpp.o
+
+.PHONY : src/saveload/upstream/signs_sl.o
+
+# target to build an object file
+src/saveload/upstream/signs_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/signs_sl.cpp.o
+.PHONY : src/saveload/upstream/signs_sl.cpp.o
+
+src/saveload/upstream/signs_sl.i: src/saveload/upstream/signs_sl.cpp.i
+
+.PHONY : src/saveload/upstream/signs_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/signs_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/signs_sl.cpp.i
+.PHONY : src/saveload/upstream/signs_sl.cpp.i
+
+src/saveload/upstream/signs_sl.s: src/saveload/upstream/signs_sl.cpp.s
+
+.PHONY : src/saveload/upstream/signs_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/signs_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/signs_sl.cpp.s
+.PHONY : src/saveload/upstream/signs_sl.cpp.s
+
+src/saveload/upstream/station_sl.o: src/saveload/upstream/station_sl.cpp.o
+
+.PHONY : src/saveload/upstream/station_sl.o
+
+# target to build an object file
+src/saveload/upstream/station_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/station_sl.cpp.o
+.PHONY : src/saveload/upstream/station_sl.cpp.o
+
+src/saveload/upstream/station_sl.i: src/saveload/upstream/station_sl.cpp.i
+
+.PHONY : src/saveload/upstream/station_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/station_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/station_sl.cpp.i
+.PHONY : src/saveload/upstream/station_sl.cpp.i
+
+src/saveload/upstream/station_sl.s: src/saveload/upstream/station_sl.cpp.s
+
+.PHONY : src/saveload/upstream/station_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/station_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/station_sl.cpp.s
+.PHONY : src/saveload/upstream/station_sl.cpp.s
+
+src/saveload/upstream/storage_sl.o: src/saveload/upstream/storage_sl.cpp.o
+
+.PHONY : src/saveload/upstream/storage_sl.o
+
+# target to build an object file
+src/saveload/upstream/storage_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/storage_sl.cpp.o
+.PHONY : src/saveload/upstream/storage_sl.cpp.o
+
+src/saveload/upstream/storage_sl.i: src/saveload/upstream/storage_sl.cpp.i
+
+.PHONY : src/saveload/upstream/storage_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/storage_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/storage_sl.cpp.i
+.PHONY : src/saveload/upstream/storage_sl.cpp.i
+
+src/saveload/upstream/storage_sl.s: src/saveload/upstream/storage_sl.cpp.s
+
+.PHONY : src/saveload/upstream/storage_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/storage_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/storage_sl.cpp.s
+.PHONY : src/saveload/upstream/storage_sl.cpp.s
+
+src/saveload/upstream/story_sl.o: src/saveload/upstream/story_sl.cpp.o
+
+.PHONY : src/saveload/upstream/story_sl.o
+
+# target to build an object file
+src/saveload/upstream/story_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/story_sl.cpp.o
+.PHONY : src/saveload/upstream/story_sl.cpp.o
+
+src/saveload/upstream/story_sl.i: src/saveload/upstream/story_sl.cpp.i
+
+.PHONY : src/saveload/upstream/story_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/story_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/story_sl.cpp.i
+.PHONY : src/saveload/upstream/story_sl.cpp.i
+
+src/saveload/upstream/story_sl.s: src/saveload/upstream/story_sl.cpp.s
+
+.PHONY : src/saveload/upstream/story_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/story_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/story_sl.cpp.s
+.PHONY : src/saveload/upstream/story_sl.cpp.s
+
+src/saveload/upstream/subsidy_sl.o: src/saveload/upstream/subsidy_sl.cpp.o
+
+.PHONY : src/saveload/upstream/subsidy_sl.o
+
+# target to build an object file
+src/saveload/upstream/subsidy_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/subsidy_sl.cpp.o
+.PHONY : src/saveload/upstream/subsidy_sl.cpp.o
+
+src/saveload/upstream/subsidy_sl.i: src/saveload/upstream/subsidy_sl.cpp.i
+
+.PHONY : src/saveload/upstream/subsidy_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/subsidy_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/subsidy_sl.cpp.i
+.PHONY : src/saveload/upstream/subsidy_sl.cpp.i
+
+src/saveload/upstream/subsidy_sl.s: src/saveload/upstream/subsidy_sl.cpp.s
+
+.PHONY : src/saveload/upstream/subsidy_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/subsidy_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/subsidy_sl.cpp.s
+.PHONY : src/saveload/upstream/subsidy_sl.cpp.s
+
+src/saveload/upstream/town_sl.o: src/saveload/upstream/town_sl.cpp.o
+
+.PHONY : src/saveload/upstream/town_sl.o
+
+# target to build an object file
+src/saveload/upstream/town_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/town_sl.cpp.o
+.PHONY : src/saveload/upstream/town_sl.cpp.o
+
+src/saveload/upstream/town_sl.i: src/saveload/upstream/town_sl.cpp.i
+
+.PHONY : src/saveload/upstream/town_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/town_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/town_sl.cpp.i
+.PHONY : src/saveload/upstream/town_sl.cpp.i
+
+src/saveload/upstream/town_sl.s: src/saveload/upstream/town_sl.cpp.s
+
+.PHONY : src/saveload/upstream/town_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/town_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/town_sl.cpp.s
+.PHONY : src/saveload/upstream/town_sl.cpp.s
+
+src/saveload/upstream/vehicle_sl.o: src/saveload/upstream/vehicle_sl.cpp.o
+
+.PHONY : src/saveload/upstream/vehicle_sl.o
+
+# target to build an object file
+src/saveload/upstream/vehicle_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/vehicle_sl.cpp.o
+.PHONY : src/saveload/upstream/vehicle_sl.cpp.o
+
+src/saveload/upstream/vehicle_sl.i: src/saveload/upstream/vehicle_sl.cpp.i
+
+.PHONY : src/saveload/upstream/vehicle_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/vehicle_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/vehicle_sl.cpp.i
+.PHONY : src/saveload/upstream/vehicle_sl.cpp.i
+
+src/saveload/upstream/vehicle_sl.s: src/saveload/upstream/vehicle_sl.cpp.s
+
+.PHONY : src/saveload/upstream/vehicle_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/vehicle_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/vehicle_sl.cpp.s
+.PHONY : src/saveload/upstream/vehicle_sl.cpp.s
+
 src/saveload/vehicle_sl.o: src/saveload/vehicle_sl.cpp.o
 
 .PHONY : src/saveload/vehicle_sl.o
@@ -8846,6 +10007,33 @@ src/script/api/script_marine.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_marine.cpp.s
 .PHONY : src/script/api/script_marine.cpp.s
 
+src/script/api/script_newgrf.o: src/script/api/script_newgrf.cpp.o
+
+.PHONY : src/script/api/script_newgrf.o
+
+# target to build an object file
+src/script/api/script_newgrf.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_newgrf.cpp.o
+.PHONY : src/script/api/script_newgrf.cpp.o
+
+src/script/api/script_newgrf.i: src/script/api/script_newgrf.cpp.i
+
+.PHONY : src/script/api/script_newgrf.i
+
+# target to preprocess a source file
+src/script/api/script_newgrf.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_newgrf.cpp.i
+.PHONY : src/script/api/script_newgrf.cpp.i
+
+src/script/api/script_newgrf.s: src/script/api/script_newgrf.cpp.s
+
+.PHONY : src/script/api/script_newgrf.s
+
+# target to generate assembly for a file
+src/script/api/script_newgrf.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_newgrf.cpp.s
+.PHONY : src/script/api/script_newgrf.cpp.s
+
 src/script/api/script_news.o: src/script/api/script_news.cpp.o
 
 .PHONY : src/script/api/script_news.o
@@ -8899,6 +10087,60 @@ src/script/api/script_object.s: src/script/api/script_object.cpp.s
 src/script/api/script_object.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_object.cpp.s
 .PHONY : src/script/api/script_object.cpp.s
+
+src/script/api/script_objecttype.o: src/script/api/script_objecttype.cpp.o
+
+.PHONY : src/script/api/script_objecttype.o
+
+# target to build an object file
+src/script/api/script_objecttype.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttype.cpp.o
+.PHONY : src/script/api/script_objecttype.cpp.o
+
+src/script/api/script_objecttype.i: src/script/api/script_objecttype.cpp.i
+
+.PHONY : src/script/api/script_objecttype.i
+
+# target to preprocess a source file
+src/script/api/script_objecttype.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttype.cpp.i
+.PHONY : src/script/api/script_objecttype.cpp.i
+
+src/script/api/script_objecttype.s: src/script/api/script_objecttype.cpp.s
+
+.PHONY : src/script/api/script_objecttype.s
+
+# target to generate assembly for a file
+src/script/api/script_objecttype.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttype.cpp.s
+.PHONY : src/script/api/script_objecttype.cpp.s
+
+src/script/api/script_objecttypelist.o: src/script/api/script_objecttypelist.cpp.o
+
+.PHONY : src/script/api/script_objecttypelist.o
+
+# target to build an object file
+src/script/api/script_objecttypelist.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttypelist.cpp.o
+.PHONY : src/script/api/script_objecttypelist.cpp.o
+
+src/script/api/script_objecttypelist.i: src/script/api/script_objecttypelist.cpp.i
+
+.PHONY : src/script/api/script_objecttypelist.i
+
+# target to preprocess a source file
+src/script/api/script_objecttypelist.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttypelist.cpp.i
+.PHONY : src/script/api/script_objecttypelist.cpp.i
+
+src/script/api/script_objecttypelist.s: src/script/api/script_objecttypelist.cpp.s
+
+.PHONY : src/script/api/script_objecttypelist.s
+
+# target to generate assembly for a file
+src/script/api/script_objecttypelist.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_objecttypelist.cpp.s
+.PHONY : src/script/api/script_objecttypelist.cpp.s
 
 src/script/api/script_order.o: src/script/api/script_order.cpp.o
 
@@ -12268,6 +13510,9 @@ help:
 	@echo "... src/error_gui.o"
 	@echo "... src/error_gui.i"
 	@echo "... src/error_gui.s"
+	@echo "... src/event_logs.o"
+	@echo "... src/event_logs.i"
+	@echo "... src/event_logs.s"
 	@echo "... src/fileio.o"
 	@echo "... src/fileio.i"
 	@echo "... src/fileio.s"
@@ -12439,12 +13684,21 @@ help:
 	@echo "... src/network/core/address.o"
 	@echo "... src/network/core/address.i"
 	@echo "... src/network/core/address.s"
+	@echo "... src/network/core/config.o"
+	@echo "... src/network/core/config.i"
+	@echo "... src/network/core/config.s"
 	@echo "... src/network/core/core.o"
 	@echo "... src/network/core/core.i"
 	@echo "... src/network/core/core.s"
+	@echo "... src/network/core/game_info.o"
+	@echo "... src/network/core/game_info.i"
+	@echo "... src/network/core/game_info.s"
 	@echo "... src/network/core/host.o"
 	@echo "... src/network/core/host.i"
 	@echo "... src/network/core/host.s"
+	@echo "... src/network/core/os_abstraction.o"
+	@echo "... src/network/core/os_abstraction.i"
+	@echo "... src/network/core/os_abstraction.s"
 	@echo "... src/network/core/packet.o"
 	@echo "... src/network/core/packet.i"
 	@echo "... src/network/core/packet.s"
@@ -12460,12 +13714,21 @@ help:
 	@echo "... src/network/core/tcp_content.o"
 	@echo "... src/network/core/tcp_content.i"
 	@echo "... src/network/core/tcp_content.s"
+	@echo "... src/network/core/tcp_coordinator.o"
+	@echo "... src/network/core/tcp_coordinator.i"
+	@echo "... src/network/core/tcp_coordinator.s"
 	@echo "... src/network/core/tcp_game.o"
 	@echo "... src/network/core/tcp_game.i"
 	@echo "... src/network/core/tcp_game.s"
 	@echo "... src/network/core/tcp_http.o"
 	@echo "... src/network/core/tcp_http.i"
 	@echo "... src/network/core/tcp_http.s"
+	@echo "... src/network/core/tcp_stun.o"
+	@echo "... src/network/core/tcp_stun.i"
+	@echo "... src/network/core/tcp_stun.s"
+	@echo "... src/network/core/tcp_turn.o"
+	@echo "... src/network/core/tcp_turn.i"
+	@echo "... src/network/core/tcp_turn.s"
 	@echo "... src/network/core/udp.o"
 	@echo "... src/network/core/udp.i"
 	@echo "... src/network/core/udp.s"
@@ -12490,15 +13753,27 @@ help:
 	@echo "... src/network/network_content_gui.o"
 	@echo "... src/network/network_content_gui.i"
 	@echo "... src/network/network_content_gui.s"
+	@echo "... src/network/network_coordinator.o"
+	@echo "... src/network/network_coordinator.i"
+	@echo "... src/network/network_coordinator.s"
 	@echo "... src/network/network_gamelist.o"
 	@echo "... src/network/network_gamelist.i"
 	@echo "... src/network/network_gamelist.s"
 	@echo "... src/network/network_gui.o"
 	@echo "... src/network/network_gui.i"
 	@echo "... src/network/network_gui.s"
+	@echo "... src/network/network_query.o"
+	@echo "... src/network/network_query.i"
+	@echo "... src/network/network_query.s"
 	@echo "... src/network/network_server.o"
 	@echo "... src/network/network_server.i"
 	@echo "... src/network/network_server.s"
+	@echo "... src/network/network_stun.o"
+	@echo "... src/network/network_stun.i"
+	@echo "... src/network/network_stun.s"
+	@echo "... src/network/network_turn.o"
+	@echo "... src/network/network_turn.i"
+	@echo "... src/network/network_turn.s"
 	@echo "... src/network/network_udp.o"
 	@echo "... src/network/network_udp.i"
 	@echo "... src/network/network_udp.s"
@@ -12814,6 +14089,102 @@ help:
 	@echo "... src/saveload/tunnel_sl.o"
 	@echo "... src/saveload/tunnel_sl.i"
 	@echo "... src/saveload/tunnel_sl.s"
+	@echo "... src/saveload/upstream/ai_sl.o"
+	@echo "... src/saveload/upstream/ai_sl.i"
+	@echo "... src/saveload/upstream/ai_sl.s"
+	@echo "... src/saveload/upstream/airport_sl.o"
+	@echo "... src/saveload/upstream/airport_sl.i"
+	@echo "... src/saveload/upstream/airport_sl.s"
+	@echo "... src/saveload/upstream/animated_tile_sl.o"
+	@echo "... src/saveload/upstream/animated_tile_sl.i"
+	@echo "... src/saveload/upstream/animated_tile_sl.s"
+	@echo "... src/saveload/upstream/autoreplace_sl.o"
+	@echo "... src/saveload/upstream/autoreplace_sl.i"
+	@echo "... src/saveload/upstream/autoreplace_sl.s"
+	@echo "... src/saveload/upstream/cargomonitor_sl.o"
+	@echo "... src/saveload/upstream/cargomonitor_sl.i"
+	@echo "... src/saveload/upstream/cargomonitor_sl.s"
+	@echo "... src/saveload/upstream/cargopacket_sl.o"
+	@echo "... src/saveload/upstream/cargopacket_sl.i"
+	@echo "... src/saveload/upstream/cargopacket_sl.s"
+	@echo "... src/saveload/upstream/cheat_sl.o"
+	@echo "... src/saveload/upstream/cheat_sl.i"
+	@echo "... src/saveload/upstream/cheat_sl.s"
+	@echo "... src/saveload/upstream/company_sl.o"
+	@echo "... src/saveload/upstream/company_sl.i"
+	@echo "... src/saveload/upstream/company_sl.s"
+	@echo "... src/saveload/upstream/depot_sl.o"
+	@echo "... src/saveload/upstream/depot_sl.i"
+	@echo "... src/saveload/upstream/depot_sl.s"
+	@echo "... src/saveload/upstream/economy_sl.o"
+	@echo "... src/saveload/upstream/economy_sl.i"
+	@echo "... src/saveload/upstream/economy_sl.s"
+	@echo "... src/saveload/upstream/engine_sl.o"
+	@echo "... src/saveload/upstream/engine_sl.i"
+	@echo "... src/saveload/upstream/engine_sl.s"
+	@echo "... src/saveload/upstream/game_sl.o"
+	@echo "... src/saveload/upstream/game_sl.i"
+	@echo "... src/saveload/upstream/game_sl.s"
+	@echo "... src/saveload/upstream/gamelog_sl.o"
+	@echo "... src/saveload/upstream/gamelog_sl.i"
+	@echo "... src/saveload/upstream/gamelog_sl.s"
+	@echo "... src/saveload/upstream/goal_sl.o"
+	@echo "... src/saveload/upstream/goal_sl.i"
+	@echo "... src/saveload/upstream/goal_sl.s"
+	@echo "... src/saveload/upstream/group_sl.o"
+	@echo "... src/saveload/upstream/group_sl.i"
+	@echo "... src/saveload/upstream/group_sl.s"
+	@echo "... src/saveload/upstream/industry_sl.o"
+	@echo "... src/saveload/upstream/industry_sl.i"
+	@echo "... src/saveload/upstream/industry_sl.s"
+	@echo "... src/saveload/upstream/labelmaps_sl.o"
+	@echo "... src/saveload/upstream/labelmaps_sl.i"
+	@echo "... src/saveload/upstream/labelmaps_sl.s"
+	@echo "... src/saveload/upstream/linkgraph_sl.o"
+	@echo "... src/saveload/upstream/linkgraph_sl.i"
+	@echo "... src/saveload/upstream/linkgraph_sl.s"
+	@echo "... src/saveload/upstream/map_sl.o"
+	@echo "... src/saveload/upstream/map_sl.i"
+	@echo "... src/saveload/upstream/map_sl.s"
+	@echo "... src/saveload/upstream/misc_sl.o"
+	@echo "... src/saveload/upstream/misc_sl.i"
+	@echo "... src/saveload/upstream/misc_sl.s"
+	@echo "... src/saveload/upstream/newgrf_sl.o"
+	@echo "... src/saveload/upstream/newgrf_sl.i"
+	@echo "... src/saveload/upstream/newgrf_sl.s"
+	@echo "... src/saveload/upstream/object_sl.o"
+	@echo "... src/saveload/upstream/object_sl.i"
+	@echo "... src/saveload/upstream/object_sl.s"
+	@echo "... src/saveload/upstream/order_sl.o"
+	@echo "... src/saveload/upstream/order_sl.i"
+	@echo "... src/saveload/upstream/order_sl.s"
+	@echo "... src/saveload/upstream/saveload.o"
+	@echo "... src/saveload/upstream/saveload.i"
+	@echo "... src/saveload/upstream/saveload.s"
+	@echo "... src/saveload/upstream/settings_sl.o"
+	@echo "... src/saveload/upstream/settings_sl.i"
+	@echo "... src/saveload/upstream/settings_sl.s"
+	@echo "... src/saveload/upstream/signs_sl.o"
+	@echo "... src/saveload/upstream/signs_sl.i"
+	@echo "... src/saveload/upstream/signs_sl.s"
+	@echo "... src/saveload/upstream/station_sl.o"
+	@echo "... src/saveload/upstream/station_sl.i"
+	@echo "... src/saveload/upstream/station_sl.s"
+	@echo "... src/saveload/upstream/storage_sl.o"
+	@echo "... src/saveload/upstream/storage_sl.i"
+	@echo "... src/saveload/upstream/storage_sl.s"
+	@echo "... src/saveload/upstream/story_sl.o"
+	@echo "... src/saveload/upstream/story_sl.i"
+	@echo "... src/saveload/upstream/story_sl.s"
+	@echo "... src/saveload/upstream/subsidy_sl.o"
+	@echo "... src/saveload/upstream/subsidy_sl.i"
+	@echo "... src/saveload/upstream/subsidy_sl.s"
+	@echo "... src/saveload/upstream/town_sl.o"
+	@echo "... src/saveload/upstream/town_sl.i"
+	@echo "... src/saveload/upstream/town_sl.s"
+	@echo "... src/saveload/upstream/vehicle_sl.o"
+	@echo "... src/saveload/upstream/vehicle_sl.i"
+	@echo "... src/saveload/upstream/vehicle_sl.s"
 	@echo "... src/saveload/vehicle_sl.o"
 	@echo "... src/saveload/vehicle_sl.i"
 	@echo "... src/saveload/vehicle_sl.s"
@@ -12946,12 +14317,21 @@ help:
 	@echo "... src/script/api/script_marine.o"
 	@echo "... src/script/api/script_marine.i"
 	@echo "... src/script/api/script_marine.s"
+	@echo "... src/script/api/script_newgrf.o"
+	@echo "... src/script/api/script_newgrf.i"
+	@echo "... src/script/api/script_newgrf.s"
 	@echo "... src/script/api/script_news.o"
 	@echo "... src/script/api/script_news.i"
 	@echo "... src/script/api/script_news.s"
 	@echo "... src/script/api/script_object.o"
 	@echo "... src/script/api/script_object.i"
 	@echo "... src/script/api/script_object.s"
+	@echo "... src/script/api/script_objecttype.o"
+	@echo "... src/script/api/script_objecttype.i"
+	@echo "... src/script/api/script_objecttype.s"
+	@echo "... src/script/api/script_objecttypelist.o"
+	@echo "... src/script/api/script_objecttypelist.i"
+	@echo "... src/script/api/script_objecttypelist.s"
 	@echo "... src/script/api/script_order.o"
 	@echo "... src/script/api/script_order.i"
 	@echo "... src/script/api/script_order.s"

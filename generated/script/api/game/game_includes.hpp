@@ -42,7 +42,10 @@
 #include "game_log.hpp.sq"
 #include "game_map.hpp.sq"
 #include "game_marine.hpp.sq"
+#include "game_newgrf.hpp.sq"
 #include "game_news.hpp.sq"
+#include "game_objecttype.hpp.sq"
+#include "game_objecttypelist.hpp.sq"
 #include "game_order.hpp.sq"
 #include "game_priorityqueue.hpp.sq"
 #include "game_rail.hpp.sq"
@@ -137,7 +140,11 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSLog_Register(engine);
 	SQGSMap_Register(engine);
 	SQGSMarine_Register(engine);
+	SQGSNewGRF_Register(engine);
+	SQGSNewGRFList_Register(engine);
 	SQGSNews_Register(engine);
+	SQGSObjectType_Register(engine);
+	SQGSObjectTypeList_Register(engine);
 	SQGSOrder_Register(engine);
 	SQGSPriorityQueue_Register(engine);
 	SQGSRail_Register(engine);

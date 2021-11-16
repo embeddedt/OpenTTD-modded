@@ -90,8 +90,11 @@ src/script/api/CMakeFiles/script_template: src/script/api/template_list.hpp.sq.t
 src/script/api/CMakeFiles/script_template: src/script/api/template_log.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_map.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_marine.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_template: src/script/api/template_newgrf.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_news.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_object.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_template: src/script/api/template_objecttype.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_template: src/script/api/template_objecttypelist.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_order.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_priorityqueue.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_template: src/script/api/template_rail.hpp.sq.timestamp
@@ -382,220 +385,241 @@ src/script/api/template_marine.hpp.sq.timestamp: ../src/script/api/script_marine
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_marine.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_marine.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_marine.hpp.sq.timestamp
 
+src/script/api/template_newgrf.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/template_newgrf.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/template_newgrf.hpp.sq.timestamp: ../src/script/api/script_newgrf.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Generating template/template_newgrf.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_newgrf.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_newgrf.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_newgrf.hpp.sq.timestamp
+
 src/script/api/template_news.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_news.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_news.hpp.sq.timestamp: ../src/script/api/script_news.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Generating template/template_news.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Generating template/template_news.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_news.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_news.hpp.sq.timestamp
 
 src/script/api/template_object.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_object.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_object.hpp.sq.timestamp: ../src/script/api/script_object.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Generating template/template_object.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Generating template/template_object.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_object.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_object.hpp.sq.timestamp
+
+src/script/api/template_objecttype.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/template_objecttype.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/template_objecttype.hpp.sq.timestamp: ../src/script/api/script_objecttype.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Generating template/template_objecttype.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_objecttype.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttype.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_objecttype.hpp.sq.timestamp
+
+src/script/api/template_objecttypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/template_objecttypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/template_objecttypelist.hpp.sq.timestamp: ../src/script/api/script_objecttypelist.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Generating template/template_objecttypelist.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_objecttypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttypelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_objecttypelist.hpp.sq.timestamp
 
 src/script/api/template_order.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_order.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_order.hpp.sq.timestamp: ../src/script/api/script_order.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Generating template/template_order.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Generating template/template_order.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_order.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_order.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_order.hpp.sq.timestamp
 
 src/script/api/template_priorityqueue.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_priorityqueue.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_priorityqueue.hpp.sq.timestamp: ../src/script/api/script_priorityqueue.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Generating template/template_priorityqueue.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Generating template/template_priorityqueue.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_priorityqueue.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_priorityqueue.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_priorityqueue.hpp.sq.timestamp
 
 src/script/api/template_rail.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_rail.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_rail.hpp.sq.timestamp: ../src/script/api/script_rail.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Generating template/template_rail.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Generating template/template_rail.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_rail.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_rail.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_rail.hpp.sq.timestamp
 
 src/script/api/template_railtypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_railtypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_railtypelist.hpp.sq.timestamp: ../src/script/api/script_railtypelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Generating template/template_railtypelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Generating template/template_railtypelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_railtypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_railtypelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_railtypelist.hpp.sq.timestamp
 
 src/script/api/template_road.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_road.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_road.hpp.sq.timestamp: ../src/script/api/script_road.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Generating template/template_road.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Generating template/template_road.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_road.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_road.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_road.hpp.sq.timestamp
 
 src/script/api/template_roadtypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_roadtypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_roadtypelist.hpp.sq.timestamp: ../src/script/api/script_roadtypelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Generating template/template_roadtypelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Generating template/template_roadtypelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_roadtypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_roadtypelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_roadtypelist.hpp.sq.timestamp
 
 src/script/api/template_sign.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_sign.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_sign.hpp.sq.timestamp: ../src/script/api/script_sign.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Generating template/template_sign.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Generating template/template_sign.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_sign.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_sign.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_sign.hpp.sq.timestamp
 
 src/script/api/template_signlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_signlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_signlist.hpp.sq.timestamp: ../src/script/api/script_signlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Generating template/template_signlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Generating template/template_signlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_signlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_signlist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_signlist.hpp.sq.timestamp
 
 src/script/api/template_station.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_station.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_station.hpp.sq.timestamp: ../src/script/api/script_station.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Generating template/template_station.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Generating template/template_station.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_station.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_station.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_station.hpp.sq.timestamp
 
 src/script/api/template_stationlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_stationlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_stationlist.hpp.sq.timestamp: ../src/script/api/script_stationlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Generating template/template_stationlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Generating template/template_stationlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_stationlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_stationlist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_stationlist.hpp.sq.timestamp
 
 src/script/api/template_story_page.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_story_page.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_story_page.hpp.sq.timestamp: ../src/script/api/script_story_page.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Generating template/template_story_page.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Generating template/template_story_page.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_story_page.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_story_page.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_story_page.hpp.sq.timestamp
 
 src/script/api/template_storypageelementlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_storypageelementlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_storypageelementlist.hpp.sq.timestamp: ../src/script/api/script_storypageelementlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Generating template/template_storypageelementlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Generating template/template_storypageelementlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_storypageelementlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypageelementlist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_storypageelementlist.hpp.sq.timestamp
 
 src/script/api/template_storypagelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_storypagelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_storypagelist.hpp.sq.timestamp: ../src/script/api/script_storypagelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Generating template/template_storypagelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Generating template/template_storypagelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_storypagelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypagelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_storypagelist.hpp.sq.timestamp
 
 src/script/api/template_subsidy.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_subsidy.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_subsidy.hpp.sq.timestamp: ../src/script/api/script_subsidy.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Generating template/template_subsidy.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Generating template/template_subsidy.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_subsidy.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidy.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_subsidy.hpp.sq.timestamp
 
 src/script/api/template_subsidylist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_subsidylist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_subsidylist.hpp.sq.timestamp: ../src/script/api/script_subsidylist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Generating template/template_subsidylist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Generating template/template_subsidylist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_subsidylist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidylist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_subsidylist.hpp.sq.timestamp
 
 src/script/api/template_testmode.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_testmode.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_testmode.hpp.sq.timestamp: ../src/script/api/script_testmode.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Generating template/template_testmode.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Generating template/template_testmode.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_testmode.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_testmode.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_testmode.hpp.sq.timestamp
 
 src/script/api/template_text.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_text.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_text.hpp.sq.timestamp: ../src/script/api/script_text.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Generating template/template_text.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Generating template/template_text.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_text.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_text.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_text.hpp.sq.timestamp
 
 src/script/api/template_tile.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_tile.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_tile.hpp.sq.timestamp: ../src/script/api/script_tile.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Generating template/template_tile.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Generating template/template_tile.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_tile.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tile.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_tile.hpp.sq.timestamp
 
 src/script/api/template_tilelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_tilelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_tilelist.hpp.sq.timestamp: ../src/script/api/script_tilelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Generating template/template_tilelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Generating template/template_tilelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_tilelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tilelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_tilelist.hpp.sq.timestamp
 
 src/script/api/template_town.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_town.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_town.hpp.sq.timestamp: ../src/script/api/script_town.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Generating template/template_town.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Generating template/template_town.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_town.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_town.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_town.hpp.sq.timestamp
 
 src/script/api/template_townlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_townlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_townlist.hpp.sq.timestamp: ../src/script/api/script_townlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Generating template/template_townlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Generating template/template_townlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_townlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_townlist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_townlist.hpp.sq.timestamp
 
 src/script/api/template_tunnel.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_tunnel.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_tunnel.hpp.sq.timestamp: ../src/script/api/script_tunnel.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Generating template/template_tunnel.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Generating template/template_tunnel.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_tunnel.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tunnel.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_tunnel.hpp.sq.timestamp
 
 src/script/api/template_types.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_types.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_types.hpp.sq.timestamp: ../src/script/api/script_types.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Generating template/template_types.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Generating template/template_types.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_types.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_types.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_types.hpp.sq.timestamp
 
 src/script/api/template_vehicle.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_vehicle.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_vehicle.hpp.sq.timestamp: ../src/script/api/script_vehicle.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Generating template/template_vehicle.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Generating template/template_vehicle.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_vehicle.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehicle.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_vehicle.hpp.sq.timestamp
 
 src/script/api/template_vehiclelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_vehiclelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_vehiclelist.hpp.sq.timestamp: ../src/script/api/script_vehiclelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Generating template/template_vehiclelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Generating template/template_vehiclelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_vehiclelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehiclelist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_vehiclelist.hpp.sq.timestamp
 
 src/script/api/template_viewport.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_viewport.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_viewport.hpp.sq.timestamp: ../src/script/api/script_viewport.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Generating template/template_viewport.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Generating template/template_viewport.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_viewport.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_viewport.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_viewport.hpp.sq.timestamp
 
 src/script/api/template_waypoint.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_waypoint.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_waypoint.hpp.sq.timestamp: ../src/script/api/script_waypoint.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Generating template/template_waypoint.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Generating template/template_waypoint.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_waypoint.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypoint.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_waypoint.hpp.sq.timestamp
 
 src/script/api/template_waypointlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_waypointlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_waypointlist.hpp.sq.timestamp: ../src/script/api/script_waypointlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Generating template/template_waypointlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Generating template/template_waypointlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_waypointlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypointlist.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_waypointlist.hpp.sq.timestamp
 
 src/script/api/template_window.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/template_window.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/template_window.hpp.sq.timestamp: generated/script/api/script_window.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Generating template/template_window.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Generating template/template_window.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/template/template_window.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/script_window.hpp -DAPIUC=Template -DAPILC=template -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/template_window.hpp.sq.timestamp
 
@@ -637,8 +661,11 @@ script_template: src/script/api/template_list.hpp.sq.timestamp
 script_template: src/script/api/template_log.hpp.sq.timestamp
 script_template: src/script/api/template_map.hpp.sq.timestamp
 script_template: src/script/api/template_marine.hpp.sq.timestamp
+script_template: src/script/api/template_newgrf.hpp.sq.timestamp
 script_template: src/script/api/template_news.hpp.sq.timestamp
 script_template: src/script/api/template_object.hpp.sq.timestamp
+script_template: src/script/api/template_objecttype.hpp.sq.timestamp
+script_template: src/script/api/template_objecttypelist.hpp.sq.timestamp
 script_template: src/script/api/template_order.hpp.sq.timestamp
 script_template: src/script/api/template_priorityqueue.hpp.sq.timestamp
 script_template: src/script/api/template_rail.hpp.sq.timestamp

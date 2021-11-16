@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptAdmin to be used as Squirrel parameter */
-	template <> inline ScriptAdmin *GetParam(ForceType<ScriptAdmin *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptAdmin *)instance; }
-	template <> inline ScriptAdmin &GetParam(ForceType<ScriptAdmin &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptAdmin *)instance; }
-	template <> inline const ScriptAdmin *GetParam(ForceType<const ScriptAdmin *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptAdmin *)instance; }
-	template <> inline const ScriptAdmin &GetParam(ForceType<const ScriptAdmin &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptAdmin *)instance; }
+	template <> inline ScriptAdmin *GetParam(ForceType<ScriptAdmin *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAdmin *)instance; }
+	template <> inline ScriptAdmin &GetParam(ForceType<ScriptAdmin &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAdmin *)instance; }
+	template <> inline const ScriptAdmin *GetParam(ForceType<const ScriptAdmin *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAdmin *)instance; }
+	template <> inline const ScriptAdmin &GetParam(ForceType<const ScriptAdmin &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAdmin *)instance; }
 	template <> inline int Return<ScriptAdmin *>(HSQUIRRELVM vm, ScriptAdmin *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Admin", res, nullptr, DefSQDestructorCallback<ScriptAdmin>, true); return 1; }
 } // namespace SQConvert

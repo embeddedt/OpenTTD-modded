@@ -21,9 +21,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptGoal::QuestionButton>(HSQUIRRELVM vm, ScriptGoal::QuestionButton res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptGoal to be used as Squirrel parameter */
-	template <> inline ScriptGoal *GetParam(ForceType<ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptGoal *)instance; }
-	template <> inline ScriptGoal &GetParam(ForceType<ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptGoal *)instance; }
-	template <> inline const ScriptGoal *GetParam(ForceType<const ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptGoal *)instance; }
-	template <> inline const ScriptGoal &GetParam(ForceType<const ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptGoal *)instance; }
+	template <> inline ScriptGoal *GetParam(ForceType<ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; }
+	template <> inline ScriptGoal &GetParam(ForceType<ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; }
+	template <> inline const ScriptGoal *GetParam(ForceType<const ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; }
+	template <> inline const ScriptGoal &GetParam(ForceType<const ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; }
 	template <> inline int Return<ScriptGoal *>(HSQUIRRELVM vm, ScriptGoal *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Goal", res, nullptr, DefSQDestructorCallback<ScriptGoal>, true); return 1; }
 } // namespace SQConvert

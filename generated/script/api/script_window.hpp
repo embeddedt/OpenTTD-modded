@@ -108,7 +108,6 @@ public:
 		WN_CONFIRM_POPUP_QUERY_BOOTSTRAP             = ::WN_CONFIRM_POPUP_QUERY_BOOTSTRAP,             ///< Query popup confirm for bootstrap.
 
 		WN_NETWORK_WINDOW_GAME                       = ::WN_NETWORK_WINDOW_GAME,                       ///< Network game window.
-		WN_NETWORK_WINDOW_LOBBY                      = ::WN_NETWORK_WINDOW_LOBBY,                      ///< Network lobby window.
 		WN_NETWORK_WINDOW_CONTENT_LIST               = ::WN_NETWORK_WINDOW_CONTENT_LIST,               ///< Network content list.
 		WN_NETWORK_WINDOW_START                      = ::WN_NETWORK_WINDOW_START,                      ///< Network start server.
 
@@ -582,7 +581,6 @@ public:
 		/**
 		 * Network window; %Window numbers:
 		 *   - #WN_NETWORK_WINDOW_GAME = #NetworkGameWidgets
-		 *   - #WN_NETWORK_WINDOW_LOBBY = #NetworkLobbyWidgets
 		 *   - #WN_NETWORK_WINDOW_CONTENT_LIST = #NetworkContentListWidgets
 		 *   - #WN_NETWORK_WINDOW_START = #NetworkStartServerWidgets
 		 */
@@ -600,6 +598,12 @@ public:
 		 *   - #WN_NETWORK_STATUS_WINDOW_CONTENT_DOWNLOAD = #NetworkContentDownloadStatusWidgets
 		 */
 		WC_NETWORK_STATUS_WINDOW                     = ::WC_NETWORK_STATUS_WINDOW,
+
+		/**
+		 * Network ask relay window; %Window numbers:
+		 *   - 0 - #NetworkAskRelayWidgets
+		 */
+		WC_NETWORK_ASK_RELAY                         = ::WC_NETWORK_ASK_RELAY,
 
 		/**
 		 * Chatbox; %Window numbers:
@@ -1991,10 +1995,6 @@ public:
 		WID_NSS_COMPANIES_BTND                       = ::WID_NSS_COMPANIES_BTND,                       ///< 'Max companies' downarrow.
 		WID_NSS_COMPANIES_TXT                        = ::WID_NSS_COMPANIES_TXT,                        ///< 'Max companies' text.
 		WID_NSS_COMPANIES_BTNU                       = ::WID_NSS_COMPANIES_BTNU,                       ///< 'Max companies' uparrow.
-		WID_NSS_SPECTATORS_LABEL                     = ::WID_NSS_SPECTATORS_LABEL,                     ///< Label for 'max spectators'.
-		WID_NSS_SPECTATORS_BTND                      = ::WID_NSS_SPECTATORS_BTND,                      ///< 'Max spectators' downarrow.
-		WID_NSS_SPECTATORS_TXT                       = ::WID_NSS_SPECTATORS_TXT,                       ///< 'Max spectators' text.
-		WID_NSS_SPECTATORS_BTNU                      = ::WID_NSS_SPECTATORS_BTNU,                      ///< 'Max spectators' uparrow.
 
 		WID_NSS_GENERATE_GAME                        = ::WID_NSS_GENERATE_GAME,                        ///< New game button.
 		WID_NSS_LOAD_GAME                            = ::WID_NSS_LOAD_GAME,                            ///< Load game button.
@@ -2004,21 +2004,6 @@ public:
 		WID_NSS_CANCEL                               = ::WID_NSS_CANCEL,                               ///< 'Cancel' button.
 	};
 
-	/** Widgets of the #NetworkLobbyWindow class. */
-	enum NetworkLobbyWidgets {
-		WID_NL_BACKGROUND                            = ::WID_NL_BACKGROUND,                            ///< Background of the window.
-		WID_NL_TEXT                                  = ::WID_NL_TEXT,                                  ///< Heading text.
-		WID_NL_HEADER                                = ::WID_NL_HEADER,                                ///< Header above list of companies.
-		WID_NL_MATRIX                                = ::WID_NL_MATRIX,                                ///< List of companies.
-		WID_NL_SCROLLBAR                             = ::WID_NL_SCROLLBAR,                             ///< Scroll bar.
-		WID_NL_DETAILS                               = ::WID_NL_DETAILS,                               ///< Company details.
-		WID_NL_JOIN                                  = ::WID_NL_JOIN,                                  ///< 'Join company' button.
-		WID_NL_NEW                                   = ::WID_NL_NEW,                                   ///< 'New company' button.
-		WID_NL_SPECTATE                              = ::WID_NL_SPECTATE,                              ///< 'Spectate game' button.
-		WID_NL_REFRESH                               = ::WID_NL_REFRESH,                               ///< 'Refresh server' button.
-		WID_NL_CANCEL                                = ::WID_NL_CANCEL,                                ///< 'Cancel' button.
-	};
-
 	/** Widgets of the #NetworkClientListWindow class. */
 	enum ClientListWidgets {
 		WID_CL_PANEL                                 = ::WID_CL_PANEL,                                 ///< Panel of the window.
@@ -2026,11 +2011,14 @@ public:
 		WID_CL_SERVER_NAME                           = ::WID_CL_SERVER_NAME,                           ///< Server name.
 		WID_CL_SERVER_NAME_EDIT                      = ::WID_CL_SERVER_NAME_EDIT,                      ///< Edit button for server name.
 		WID_CL_SERVER_VISIBILITY                     = ::WID_CL_SERVER_VISIBILITY,                     ///< Server visibility.
+		WID_CL_SERVER_INVITE_CODE                    = ::WID_CL_SERVER_INVITE_CODE,                    ///< Invite code for this server.
+		WID_CL_SERVER_CONNECTION_TYPE                = ::WID_CL_SERVER_CONNECTION_TYPE,                ///< The type of connection the Game Coordinator detected for this server.
 		WID_CL_CLIENT_NAME                           = ::WID_CL_CLIENT_NAME,                           ///< Client name.
 		WID_CL_CLIENT_NAME_EDIT                      = ::WID_CL_CLIENT_NAME_EDIT,                      ///< Edit button for client name.
 		WID_CL_MATRIX                                = ::WID_CL_MATRIX,                                ///< Company/client list.
 		WID_CL_SCROLLBAR                             = ::WID_CL_SCROLLBAR,                             ///< Scrollbar for company/client list.
 		WID_CL_COMPANY_JOIN                          = ::WID_CL_COMPANY_JOIN,                          ///< Used for QueryWindow when a company has a password.
+		WID_CL_CLIENT_COMPANY_COUNT                  = ::WID_CL_CLIENT_COMPANY_COUNT,                  ///< Count of clients and companies.
 	};
 
 	/** Widgets of the #NetworkJoinStatusWindow class. */
@@ -2048,6 +2036,15 @@ public:
 		WID_NCP_WARNING                              = ::WID_NCP_WARNING,                              ///< Warning text about password security
 		WID_NCP_CANCEL                               = ::WID_NCP_CANCEL,                               ///< Close the window without changing anything.
 		WID_NCP_OK                                   = ::WID_NCP_OK,                                   ///< Safe the password etc.
+	};
+
+	/** Widgets of the #NetworkAskRelayWindow class. */
+	enum NetworkAskRelayWidgets {
+		WID_NAR_CAPTION                              = ::WID_NAR_CAPTION,                              ///< Caption of the window.
+		WID_NAR_TEXT                                 = ::WID_NAR_TEXT,                                 ///< Text in the window.
+		WID_NAR_NO                                   = ::WID_NAR_NO,                                   ///< "No" button.
+		WID_NAR_YES_ONCE                             = ::WID_NAR_YES_ONCE,                             ///< "Yes, once" button.
+		WID_NAR_YES_ALWAYS                           = ::WID_NAR_YES_ALWAYS,                           ///< "Yes, always" button.
 	};
 
 	/* automatically generated from ../../widgets/newgrf_debug_widget.h */
@@ -2375,6 +2372,8 @@ public:
 
 	/** Widgets of the #BuildSignalWindow class. */
 	enum BuildSignalWidgets {
+		WID_BS_CAPTION                               = ::WID_BS_CAPTION,                               ///< Caption for the Signal Selection window.
+		WID_BS_TOGGLE_SIZE                           = ::WID_BS_TOGGLE_SIZE,                           ///< Toggle showing advanced signal types.
 		WID_BS_SEMAPHORE_NORM                        = ::WID_BS_SEMAPHORE_NORM,                        ///< Build a semaphore normal block signal
 		WID_BS_SEMAPHORE_ENTRY                       = ::WID_BS_SEMAPHORE_ENTRY,                       ///< Build a semaphore entry block signal
 		WID_BS_SEMAPHORE_EXIT                        = ::WID_BS_SEMAPHORE_EXIT,                        ///< Build a semaphore exit block signal
@@ -2397,6 +2396,9 @@ public:
 		WID_BS_DRAG_SIGNALS_DENSITY_LABEL            = ::WID_BS_DRAG_SIGNALS_DENSITY_LABEL,            ///< The current signal density.
 		WID_BS_DRAG_SIGNALS_DENSITY_DECREASE         = ::WID_BS_DRAG_SIGNALS_DENSITY_DECREASE,         ///< Decrease the signal density.
 		WID_BS_DRAG_SIGNALS_DENSITY_INCREASE         = ::WID_BS_DRAG_SIGNALS_DENSITY_INCREASE,         ///< Increase the signal density.
+		WID_BS_TOGGLE_SIZE_SEL                       = ::WID_BS_TOGGLE_SIZE_SEL,                       ///< NWID_SELECTION for WID_BS_TOGGLE_SIZE
+		WID_BS_SEMAPHORE_NORM_SEL                    = ::WID_BS_SEMAPHORE_NORM_SEL,                    ///< NWID_SELECTION for WID_BS_SEMAPHORE_NORM
+		WID_BS_ELECTRIC_NORM_SEL                     = ::WID_BS_ELECTRIC_NORM_SEL,                     ///< NWID_SELECTION for WID_BS_ELECTRIC_NORM
 		WID_BS_SEMAPHORE_ENTRY_SEL                   = ::WID_BS_SEMAPHORE_ENTRY_SEL,                   ///< NWID_SELECTION for WID_BS_SEMAPHORE_ENTRY
 		WID_BS_ELECTRIC_ENTRY_SEL                    = ::WID_BS_ELECTRIC_ENTRY_SEL,                    ///< NWID_SELECTION for WID_BS_ELECTRIC_ENTRY
 		WID_BS_SEMAPHORE_EXIT_SEL                    = ::WID_BS_SEMAPHORE_EXIT_SEL,                    ///< NWID_SELECTION for WID_BS_SEMAPHORE_EXIT
@@ -2984,7 +2986,10 @@ public:
 	/** Widgets of the #VehicleListWindow class. */
 	enum VehicleListWidgets {
 		WID_VL_LIST                                  = ::WID_VL_LIST,                                  ///< List of the vehicles, this must be first, see: DirtyVehicleListWindowForVehicle
-		WID_VL_CAPTION                               = ::WID_VL_CAPTION,                               ///< Caption of window.
+		WID_VL_CAPTION                               = ::WID_VL_CAPTION,                               ///< Caption of window (for non shared orders windows).
+		WID_VL_CAPTION_SHARED_ORDERS                 = ::WID_VL_CAPTION_SHARED_ORDERS,                 ///< Caption of window (for shared orders windows).
+		WID_VL_CAPTION_SELECTION                     = ::WID_VL_CAPTION_SELECTION,                     ///< Selection for caption.
+		WID_VL_ORDER_VIEW                            = ::WID_VL_ORDER_VIEW,                            ///< Button to open order window (for shared orders windows).
 		WID_VL_GROUP_ORDER                           = ::WID_VL_GROUP_ORDER,                           ///< Group order.
 		WID_VL_GROUP_BY_PULLDOWN                     = ::WID_VL_GROUP_BY_PULLDOWN,                     ///< Group by dropdown list.
 		WID_VL_SORT_ORDER                            = ::WID_VL_SORT_ORDER,                            ///< Sort order.

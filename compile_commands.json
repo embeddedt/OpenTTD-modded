@@ -191,6 +191,11 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/script/api/script_newgrf.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_newgrf.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_newgrf.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/script/api/script_news.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.cpp"
 },
@@ -198,6 +203,16 @@
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/script/api/script_object.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/script/api/script_objecttype.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttype.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttype.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/script/api/script_objecttypelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttypelist.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttypelist.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -661,13 +676,28 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/config.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/config.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/core.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/core.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/game_info.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game_info.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/game_info.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/host.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/host.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/host.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/os_abstraction.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/os_abstraction.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -696,6 +726,11 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/tcp_coordinator.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_coordinator.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_coordinator.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_game.cpp"
 },
@@ -703,6 +738,16 @@
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_http.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/tcp_stun.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_stun.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_stun.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/core/tcp_turn.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_turn.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/core/tcp_turn.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -746,6 +791,11 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_coordinator.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_coordinator.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_coordinator.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_gamelist.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gamelist.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_gamelist.cpp"
 },
@@ -756,8 +806,23 @@
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_query.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_query.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_query.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_server.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_stun.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_stun.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_stun.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/network/network_turn.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_turn.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_turn.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -803,6 +868,166 @@
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/pathfinder/yapf/yapf_ship.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_ship.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/yapf/yapf_ship.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/ai_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/ai_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/ai_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/airport_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/airport_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/airport_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/animated_tile_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/animated_tile_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/animated_tile_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/autoreplace_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/autoreplace_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/autoreplace_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/cargomonitor_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cargomonitor_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cargomonitor_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/cargopacket_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cargopacket_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cargopacket_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/cheat_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cheat_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/cheat_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/company_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/company_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/company_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/depot_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/depot_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/depot_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/economy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/economy_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/economy_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/engine_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/engine_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/engine_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/game_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/game_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/game_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/gamelog_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/gamelog_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/gamelog_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/goal_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/goal_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/goal_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/group_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/group_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/group_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/industry_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/industry_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/industry_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/labelmaps_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/labelmaps_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/labelmaps_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/linkgraph_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/linkgraph_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/linkgraph_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/map_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/map_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/map_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/misc_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/misc_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/misc_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/newgrf_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/newgrf_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/newgrf_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/object_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/object_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/object_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/order_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/order_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/order_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/saveload.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/saveload.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/saveload.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/settings_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/settings_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/settings_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/signs_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/signs_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/signs_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/station_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/station_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/station_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/storage_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/storage_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/storage_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/story_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/story_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/story_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/subsidy_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/subsidy_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/subsidy_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/town_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/town_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/town_sl.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/saveload/upstream/vehicle_sl.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/vehicle_sl.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/upstream/vehicle_sl.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
@@ -1333,6 +1558,11 @@
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
   "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/error_gui.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/error_gui.cpp",
   "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/error_gui.cpp"
+},
+{
+  "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",
+  "command": "/emsdk/upstream/emscripten/em++  -DGLOBAL_DATA_DIR=\\\"/usr/local/share/games/openttd\\\" -DNO_THREADS -DPERSONAL_DIR=\\\".openttd\\\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB @CMakeFiles/openttd.dir/includes_CXX.rsp   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17 -o CMakeFiles/openttd.dir/src/event_logs.cpp.o -c /__w/OpenTTD-modded/OpenTTD-modded/src/event_logs.cpp",
+  "file": "/__w/OpenTTD-modded/OpenTTD-modded/src/event_logs.cpp"
 },
 {
   "directory": "/__w/OpenTTD-modded/OpenTTD-modded/em_build",

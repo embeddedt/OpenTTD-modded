@@ -15,18 +15,18 @@ namespace SQConvert {
 	template <> inline int Return<ScriptEvent::ScriptEventType>(HSQUIRRELVM vm, ScriptEvent::ScriptEventType res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptEvent to be used as Squirrel parameter */
-	template <> inline ScriptEvent *GetParam(ForceType<ScriptEvent *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptEvent *)instance; }
-	template <> inline ScriptEvent &GetParam(ForceType<ScriptEvent &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptEvent *)instance; }
-	template <> inline const ScriptEvent *GetParam(ForceType<const ScriptEvent *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptEvent *)instance; }
-	template <> inline const ScriptEvent &GetParam(ForceType<const ScriptEvent &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptEvent *)instance; }
+	template <> inline ScriptEvent *GetParam(ForceType<ScriptEvent *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEvent *)instance; }
+	template <> inline ScriptEvent &GetParam(ForceType<ScriptEvent &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEvent *)instance; }
+	template <> inline const ScriptEvent *GetParam(ForceType<const ScriptEvent *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEvent *)instance; }
+	template <> inline const ScriptEvent &GetParam(ForceType<const ScriptEvent &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEvent *)instance; }
 	template <> inline int Return<ScriptEvent *>(HSQUIRRELVM vm, ScriptEvent *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } Squirrel::CreateClassInstanceVM(vm, "Event", res, nullptr, DefSQDestructorCallback<ScriptEvent>, true); return 1; }
 } // namespace SQConvert
 
 namespace SQConvert {
 	/* Allow ScriptEventController to be used as Squirrel parameter */
-	template <> inline ScriptEventController *GetParam(ForceType<ScriptEventController *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptEventController *)instance; }
-	template <> inline ScriptEventController &GetParam(ForceType<ScriptEventController &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptEventController *)instance; }
-	template <> inline const ScriptEventController *GetParam(ForceType<const ScriptEventController *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptEventController *)instance; }
-	template <> inline const ScriptEventController &GetParam(ForceType<const ScriptEventController &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptEventController *)instance; }
+	template <> inline ScriptEventController *GetParam(ForceType<ScriptEventController *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEventController *)instance; }
+	template <> inline ScriptEventController &GetParam(ForceType<ScriptEventController &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEventController *)instance; }
+	template <> inline const ScriptEventController *GetParam(ForceType<const ScriptEventController *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEventController *)instance; }
+	template <> inline const ScriptEventController &GetParam(ForceType<const ScriptEventController &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEventController *)instance; }
 	template <> inline int Return<ScriptEventController *>(HSQUIRRELVM vm, ScriptEventController *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "EventController", res, nullptr, DefSQDestructorCallback<ScriptEventController>, true); return 1; }
 } // namespace SQConvert

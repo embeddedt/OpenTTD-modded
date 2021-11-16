@@ -11,10 +11,10 @@
 
 namespace SQConvert {
 	/* Allow ScriptText to be used as Squirrel parameter */
-	template <> inline ScriptText *GetParam(ForceType<ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptText *)instance; }
-	template <> inline ScriptText &GetParam(ForceType<ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptText *)instance; }
-	template <> inline const ScriptText *GetParam(ForceType<const ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptText *)instance; }
-	template <> inline const ScriptText &GetParam(ForceType<const ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptText *)instance; }
+	template <> inline ScriptText *GetParam(ForceType<ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; }
+	template <> inline ScriptText &GetParam(ForceType<ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; }
+	template <> inline const ScriptText *GetParam(ForceType<const ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; }
+	template <> inline const ScriptText &GetParam(ForceType<const ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; }
 
 	template <> inline Text *GetParam(ForceType<Text *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) {
 		if (sq_gettype(vm, index) == OT_INSTANCE) {

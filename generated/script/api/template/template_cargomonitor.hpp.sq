@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptCargoMonitor to be used as Squirrel parameter */
-	template <> inline ScriptCargoMonitor *GetParam(ForceType<ScriptCargoMonitor *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptCargoMonitor *)instance; }
-	template <> inline ScriptCargoMonitor &GetParam(ForceType<ScriptCargoMonitor &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptCargoMonitor *)instance; }
-	template <> inline const ScriptCargoMonitor *GetParam(ForceType<const ScriptCargoMonitor *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptCargoMonitor *)instance; }
-	template <> inline const ScriptCargoMonitor &GetParam(ForceType<const ScriptCargoMonitor &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptCargoMonitor *)instance; }
+	template <> inline ScriptCargoMonitor *GetParam(ForceType<ScriptCargoMonitor *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCargoMonitor *)instance; }
+	template <> inline ScriptCargoMonitor &GetParam(ForceType<ScriptCargoMonitor &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCargoMonitor *)instance; }
+	template <> inline const ScriptCargoMonitor *GetParam(ForceType<const ScriptCargoMonitor *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCargoMonitor *)instance; }
+	template <> inline const ScriptCargoMonitor &GetParam(ForceType<const ScriptCargoMonitor &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCargoMonitor *)instance; }
 	template <> inline int Return<ScriptCargoMonitor *>(HSQUIRRELVM vm, ScriptCargoMonitor *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "CargoMonitor", res, nullptr, DefSQDestructorCallback<ScriptCargoMonitor>, true); return 1; }
 } // namespace SQConvert

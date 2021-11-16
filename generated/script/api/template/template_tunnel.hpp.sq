@@ -15,9 +15,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptTunnel::ErrorMessages>(HSQUIRRELVM vm, ScriptTunnel::ErrorMessages res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptTunnel to be used as Squirrel parameter */
-	template <> inline ScriptTunnel *GetParam(ForceType<ScriptTunnel *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptTunnel *)instance; }
-	template <> inline ScriptTunnel &GetParam(ForceType<ScriptTunnel &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptTunnel *)instance; }
-	template <> inline const ScriptTunnel *GetParam(ForceType<const ScriptTunnel *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptTunnel *)instance; }
-	template <> inline const ScriptTunnel &GetParam(ForceType<const ScriptTunnel &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptTunnel *)instance; }
+	template <> inline ScriptTunnel *GetParam(ForceType<ScriptTunnel *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTunnel *)instance; }
+	template <> inline ScriptTunnel &GetParam(ForceType<ScriptTunnel &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTunnel *)instance; }
+	template <> inline const ScriptTunnel *GetParam(ForceType<const ScriptTunnel *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTunnel *)instance; }
+	template <> inline const ScriptTunnel &GetParam(ForceType<const ScriptTunnel &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTunnel *)instance; }
 	template <> inline int Return<ScriptTunnel *>(HSQUIRRELVM vm, ScriptTunnel *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Tunnel", res, nullptr, DefSQDestructorCallback<ScriptTunnel>, true); return 1; }
 } // namespace SQConvert

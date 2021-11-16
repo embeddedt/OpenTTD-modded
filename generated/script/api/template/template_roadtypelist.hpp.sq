@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptRoadTypeList to be used as Squirrel parameter */
-	template <> inline ScriptRoadTypeList *GetParam(ForceType<ScriptRoadTypeList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptRoadTypeList *)instance; }
-	template <> inline ScriptRoadTypeList &GetParam(ForceType<ScriptRoadTypeList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptRoadTypeList *)instance; }
-	template <> inline const ScriptRoadTypeList *GetParam(ForceType<const ScriptRoadTypeList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptRoadTypeList *)instance; }
-	template <> inline const ScriptRoadTypeList &GetParam(ForceType<const ScriptRoadTypeList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptRoadTypeList *)instance; }
+	template <> inline ScriptRoadTypeList *GetParam(ForceType<ScriptRoadTypeList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRoadTypeList *)instance; }
+	template <> inline ScriptRoadTypeList &GetParam(ForceType<ScriptRoadTypeList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRoadTypeList *)instance; }
+	template <> inline const ScriptRoadTypeList *GetParam(ForceType<const ScriptRoadTypeList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRoadTypeList *)instance; }
+	template <> inline const ScriptRoadTypeList &GetParam(ForceType<const ScriptRoadTypeList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRoadTypeList *)instance; }
 	template <> inline int Return<ScriptRoadTypeList *>(HSQUIRRELVM vm, ScriptRoadTypeList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "RoadTypeList", res, nullptr, DefSQDestructorCallback<ScriptRoadTypeList>, true); return 1; }
 } // namespace SQConvert

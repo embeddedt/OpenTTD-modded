@@ -35,9 +35,9 @@ bool IsReleasedVersion()
  *
  * <modified> shows a "M", if the binary is made from modified source code.
  */
-const char _openttd_revision[] = "20210922-stock_jgr-g23abfa1e2e";
+const char _openttd_revision[] = "20211115-stock_jgr-g6dc545f56f";
 
-const char _openttd_release_version[] = "0.43.0";
+const char _openttd_release_version[] = "0.44.0";
 
 /**
  * The text version of OpenTTD's build date.
@@ -55,7 +55,7 @@ const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGAC
 /**
  * The git revision hash of this version.
  */
-const char _openttd_revision_hash[] = "23abfa1e2eb9b15daf9ecfe13284c63d2f3bbc85";
+const char _openttd_revision_hash[] = "6dc545f56fb62b2c4c21f9212ddc60d3b60c44e2";
 
 /**
  * The year of this version.
@@ -89,15 +89,18 @@ const char _openttd_content_version[] = "12.0";
 /**
  * The NewGRF revision of OTTD:
  * bits  meaning.
- * 28-31 major version
- * 24-27 minor version
- * 20-23 build
+ * 24-31 major version + 16
+ * 20-23 minor version
  *    19 1 if it is a release, 0 if it is not.
  *  0-18 used to be the SVN revision, now just last revision before switch to git
  *
  * The 19th bit is there so the development/betas/alpha, etc. leading to a
  * final release will always have a lower version number than the released
  * version, thus making comparisons on specific revisions easy.
+ *
+ * The + 16 for the major version is because we went from 1.11.0 to 12.0, dropping
+ * the "patch" part of the version. To make sure "1.11.0" is smaller than "12.0", we
+ * have to adjust the major by 16.
  */
 /** 0 removed */
-const uint32 _openttd_newgrf_version = 1 << 28 | 12 << 24 | 0 << 20 | 0 << 19 | 28004;
+const uint32 _openttd_newgrf_version = (13 + 16) << 24 | 0 << 20 | 0 << 19 | 28004;

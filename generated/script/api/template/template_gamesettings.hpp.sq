@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptGameSettings to be used as Squirrel parameter */
-	template <> inline ScriptGameSettings *GetParam(ForceType<ScriptGameSettings *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptGameSettings *)instance; }
-	template <> inline ScriptGameSettings &GetParam(ForceType<ScriptGameSettings &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptGameSettings *)instance; }
-	template <> inline const ScriptGameSettings *GetParam(ForceType<const ScriptGameSettings *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptGameSettings *)instance; }
-	template <> inline const ScriptGameSettings &GetParam(ForceType<const ScriptGameSettings &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptGameSettings *)instance; }
+	template <> inline ScriptGameSettings *GetParam(ForceType<ScriptGameSettings *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGameSettings *)instance; }
+	template <> inline ScriptGameSettings &GetParam(ForceType<ScriptGameSettings &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGameSettings *)instance; }
+	template <> inline const ScriptGameSettings *GetParam(ForceType<const ScriptGameSettings *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGameSettings *)instance; }
+	template <> inline const ScriptGameSettings &GetParam(ForceType<const ScriptGameSettings &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGameSettings *)instance; }
 	template <> inline int Return<ScriptGameSettings *>(HSQUIRRELVM vm, ScriptGameSettings *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "GameSettings", res, nullptr, DefSQDestructorCallback<ScriptGameSettings>, true); return 1; }
 } // namespace SQConvert

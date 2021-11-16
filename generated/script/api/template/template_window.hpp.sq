@@ -155,14 +155,14 @@ namespace SQConvert {
 	template <> inline int Return<ScriptWindow::NetworkGameWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkGameWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::NetworkStartServerWidgets GetParam(ForceType<ScriptWindow::NetworkStartServerWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NetworkStartServerWidgets)tmp; }
 	template <> inline int Return<ScriptWindow::NetworkStartServerWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkStartServerWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptWindow::NetworkLobbyWidgets GetParam(ForceType<ScriptWindow::NetworkLobbyWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NetworkLobbyWidgets)tmp; }
-	template <> inline int Return<ScriptWindow::NetworkLobbyWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkLobbyWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::ClientListWidgets GetParam(ForceType<ScriptWindow::ClientListWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::ClientListWidgets)tmp; }
 	template <> inline int Return<ScriptWindow::ClientListWidgets>(HSQUIRRELVM vm, ScriptWindow::ClientListWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::NetworkJoinStatusWidgets GetParam(ForceType<ScriptWindow::NetworkJoinStatusWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NetworkJoinStatusWidgets)tmp; }
 	template <> inline int Return<ScriptWindow::NetworkJoinStatusWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkJoinStatusWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::NetworkCompanyPasswordWidgets GetParam(ForceType<ScriptWindow::NetworkCompanyPasswordWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NetworkCompanyPasswordWidgets)tmp; }
 	template <> inline int Return<ScriptWindow::NetworkCompanyPasswordWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkCompanyPasswordWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> inline ScriptWindow::NetworkAskRelayWidgets GetParam(ForceType<ScriptWindow::NetworkAskRelayWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NetworkAskRelayWidgets)tmp; }
+	template <> inline int Return<ScriptWindow::NetworkAskRelayWidgets>(HSQUIRRELVM vm, ScriptWindow::NetworkAskRelayWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::NewGRFInspectWidgets GetParam(ForceType<ScriptWindow::NewGRFInspectWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::NewGRFInspectWidgets)tmp; }
 	template <> inline int Return<ScriptWindow::NewGRFInspectWidgets>(HSQUIRRELVM vm, ScriptWindow::NewGRFInspectWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 	template <> inline ScriptWindow::SpriteAlignerWidgets GetParam(ForceType<ScriptWindow::SpriteAlignerWidgets>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptWindow::SpriteAlignerWidgets)tmp; }
@@ -271,9 +271,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptWindow::WaypointWidgets>(HSQUIRRELVM vm, ScriptWindow::WaypointWidgets res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptWindow to be used as Squirrel parameter */
-	template <> inline ScriptWindow *GetParam(ForceType<ScriptWindow *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptWindow *)instance; }
-	template <> inline ScriptWindow &GetParam(ForceType<ScriptWindow &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptWindow *)instance; }
-	template <> inline const ScriptWindow *GetParam(ForceType<const ScriptWindow *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptWindow *)instance; }
-	template <> inline const ScriptWindow &GetParam(ForceType<const ScriptWindow &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptWindow *)instance; }
+	template <> inline ScriptWindow *GetParam(ForceType<ScriptWindow *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWindow *)instance; }
+	template <> inline ScriptWindow &GetParam(ForceType<ScriptWindow &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWindow *)instance; }
+	template <> inline const ScriptWindow *GetParam(ForceType<const ScriptWindow *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWindow *)instance; }
+	template <> inline const ScriptWindow &GetParam(ForceType<const ScriptWindow &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWindow *)instance; }
 	template <> inline int Return<ScriptWindow *>(HSQUIRRELVM vm, ScriptWindow *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Window", res, nullptr, DefSQDestructorCallback<ScriptWindow>, true); return 1; }
 } // namespace SQConvert

@@ -190,7 +190,7 @@ Module['FS_createPath']('/', 'game', true, true);
     }
   
    }
-   loadPackage({"files": [{"filename": "/baseset/orig_dos.obg", "start": 0, "end": 5655, "audio": 0}, {"filename": "/baseset/openttd.32.bmp", "start": 5655, "end": 7759, "audio": 0}, {"filename": "/baseset/tracerestrict.grf", "start": 7759, "end": 8285, "audio": 0}, {"filename": "/baseset/opntitle.dat", "start": 8285, "end": 146995, "audio": 0}, {"filename": "/baseset/route_step.grf", "start": 146995, "end": 147250, "audio": 0}, {"filename": "/baseset/progsignals.grf", "start": 147250, "end": 150453, "audio": 0}, {"filename": "/baseset/no_sound.obs", "start": 150453, "end": 154043, "audio": 0}, {"filename": "/baseset/orig_win.obs", "start": 154043, "end": 159409, "audio": 0}, {"filename": "/baseset/orig_dos_de.obg", "start": 159409, "end": 165664, "audio": 0}, {"filename": "/baseset/orig_win.obg", "start": 165664, "end": 171475, "audio": 0}, {"filename": "/baseset/innerhighlight.grf", "start": 171475, "end": 179208, "audio": 0}, {"filename": "/baseset/extra_signals.grf", "start": 179208, "end": 180779, "audio": 0}, {"filename": "/baseset/orig_extra.grf", "start": 180779, "end": 509455, "audio": 0}, {"filename": "/baseset/no_music.obm", "start": 509455, "end": 513453, "audio": 0}, {"filename": "/baseset/orig_dos.obm", "start": 513453, "end": 518046, "audio": 0}, {"filename": "/baseset/openttd.grf", "start": 518046, "end": 1028681, "audio": 0}, {"filename": "/baseset/orig_dos.obs", "start": 1028681, "end": 1033697, "audio": 0}, {"filename": "/baseset/orig_win.obm", "start": 1033697, "end": 1041622, "audio": 0}, {"filename": "/baseset/orig_tto.obm", "start": 1041622, "end": 1046776, "audio": 0}, {"filename": "/lang/english.lng", "start": 1046776, "end": 1242959, "audio": 0}, {"filename": "/ai/compat_1.11.nut", "start": 1242959, "end": 1243590, "audio": 0}, {"filename": "/ai/compat_1.6.nut", "start": 1243590, "end": 1244620, "audio": 0}, {"filename": "/ai/compat_1.0.nut", "start": 1244620, "end": 1250089, "audio": 0}, {"filename": "/ai/compat_1.1.nut", "start": 1250089, "end": 1253654, "audio": 0}, {"filename": "/ai/compat_1.10.nut", "start": 1253654, "end": 1254285, "audio": 0}, {"filename": "/ai/compat_1.9.nut", "start": 1254285, "end": 1254915, "audio": 0}, {"filename": "/ai/compat_1.5.nut", "start": 1254915, "end": 1255945, "audio": 0}, {"filename": "/ai/compat_1.7.nut", "start": 1255945, "end": 1256975, "audio": 0}, {"filename": "/ai/compat_1.3.nut", "start": 1256975, "end": 1258005, "audio": 0}, {"filename": "/ai/compat_1.2.nut", "start": 1258005, "end": 1259035, "audio": 0}, {"filename": "/ai/compat_1.4.nut", "start": 1259035, "end": 1260065, "audio": 0}, {"filename": "/ai/compat_0.7.nut", "start": 1260065, "end": 1272281, "audio": 0}, {"filename": "/ai/compat_1.12.nut", "start": 1272281, "end": 1272862, "audio": 0}, {"filename": "/ai/compat_1.8.nut", "start": 1272862, "end": 1273892, "audio": 0}, {"filename": "/game/compat_1.11.nut", "start": 1273892, "end": 1274523, "audio": 0}, {"filename": "/game/compat_1.6.nut", "start": 1274523, "end": 1275595, "audio": 0}, {"filename": "/game/compat_brgs.nut", "start": 1275595, "end": 1275932, "audio": 0}, {"filename": "/game/compat_1.10.nut", "start": 1275932, "end": 1276823, "audio": 0}, {"filename": "/game/compat_1.9.nut", "start": 1276823, "end": 1277713, "audio": 0}, {"filename": "/game/compat_1.5.nut", "start": 1277713, "end": 1278785, "audio": 0}, {"filename": "/game/compat_1.7.nut", "start": 1278785, "end": 1279857, "audio": 0}, {"filename": "/game/compat_1.3.nut", "start": 1279857, "end": 1281533, "audio": 0}, {"filename": "/game/compat_1.2.nut", "start": 1281533, "end": 1283209, "audio": 0}, {"filename": "/game/compat_1.4.nut", "start": 1283209, "end": 1284487, "audio": 0}, {"filename": "/game/compat_1.12.nut", "start": 1284487, "end": 1285068, "audio": 0}, {"filename": "/game/compat_1.8.nut", "start": 1285068, "end": 1286140, "audio": 0}], "remote_package_size": 1286140, "package_uuid": "984c2670-a783-4837-864f-be4c33bf4c3b"});
+   loadPackage({"files": [{"filename": "/baseset/route_step.grf", "start": 0, "end": 255, "audio": 0}, {"filename": "/baseset/orig_dos_de.obg", "start": 255, "end": 6510, "audio": 0}, {"filename": "/baseset/orig_tto.obm", "start": 6510, "end": 11951, "audio": 0}, {"filename": "/baseset/tracerestrict.grf", "start": 11951, "end": 12477, "audio": 0}, {"filename": "/baseset/opntitle.dat", "start": 12477, "end": 151187, "audio": 0}, {"filename": "/baseset/orig_dos.obg", "start": 151187, "end": 156842, "audio": 0}, {"filename": "/baseset/extra_signals.grf", "start": 156842, "end": 158413, "audio": 0}, {"filename": "/baseset/no_sound.obs", "start": 158413, "end": 162021, "audio": 0}, {"filename": "/baseset/innerhighlight.grf", "start": 162021, "end": 169754, "audio": 0}, {"filename": "/baseset/orig_win.obg", "start": 169754, "end": 175565, "audio": 0}, {"filename": "/baseset/progsignals.grf", "start": 175565, "end": 178768, "audio": 0}, {"filename": "/baseset/orig_win.obm", "start": 178768, "end": 186693, "audio": 0}, {"filename": "/baseset/orig_extra.grf", "start": 186693, "end": 515369, "audio": 0}, {"filename": "/baseset/openttd.grf", "start": 515369, "end": 1026004, "audio": 0}, {"filename": "/baseset/openttd.32.bmp", "start": 1026004, "end": 1028108, "audio": 0}, {"filename": "/baseset/no_music.obm", "start": 1028108, "end": 1032124, "audio": 0}, {"filename": "/baseset/orig_win.obs", "start": 1032124, "end": 1037681, "audio": 0}, {"filename": "/baseset/orig_dos.obm", "start": 1037681, "end": 1042421, "audio": 0}, {"filename": "/baseset/orig_dos.obs", "start": 1042421, "end": 1047437, "audio": 0}, {"filename": "/lang/english.lng", "start": 1047437, "end": 1244451, "audio": 0}, {"filename": "/ai/compat_1.0.nut", "start": 1244451, "end": 1249920, "audio": 0}, {"filename": "/ai/compat_1.4.nut", "start": 1249920, "end": 1250950, "audio": 0}, {"filename": "/ai/compat_1.8.nut", "start": 1250950, "end": 1251980, "audio": 0}, {"filename": "/ai/compat_1.11.nut", "start": 1251980, "end": 1252611, "audio": 0}, {"filename": "/ai/compat_1.2.nut", "start": 1252611, "end": 1253641, "audio": 0}, {"filename": "/ai/compat_1.7.nut", "start": 1253641, "end": 1254671, "audio": 0}, {"filename": "/ai/compat_13.nut", "start": 1254671, "end": 1255252, "audio": 0}, {"filename": "/ai/compat_1.3.nut", "start": 1255252, "end": 1256282, "audio": 0}, {"filename": "/ai/compat_0.7.nut", "start": 1256282, "end": 1268498, "audio": 0}, {"filename": "/ai/compat_1.1.nut", "start": 1268498, "end": 1272063, "audio": 0}, {"filename": "/ai/compat_1.6.nut", "start": 1272063, "end": 1273093, "audio": 0}, {"filename": "/ai/compat_1.9.nut", "start": 1273093, "end": 1273723, "audio": 0}, {"filename": "/ai/compat_12.nut", "start": 1273723, "end": 1274352, "audio": 0}, {"filename": "/ai/compat_1.5.nut", "start": 1274352, "end": 1275382, "audio": 0}, {"filename": "/ai/compat_1.10.nut", "start": 1275382, "end": 1276013, "audio": 0}, {"filename": "/game/compat_1.4.nut", "start": 1276013, "end": 1277291, "audio": 0}, {"filename": "/game/compat_brgs.nut", "start": 1277291, "end": 1277628, "audio": 0}, {"filename": "/game/compat_1.8.nut", "start": 1277628, "end": 1278700, "audio": 0}, {"filename": "/game/compat_1.11.nut", "start": 1278700, "end": 1279331, "audio": 0}, {"filename": "/game/compat_1.2.nut", "start": 1279331, "end": 1281007, "audio": 0}, {"filename": "/game/compat_1.7.nut", "start": 1281007, "end": 1282079, "audio": 0}, {"filename": "/game/compat_13.nut", "start": 1282079, "end": 1282660, "audio": 0}, {"filename": "/game/compat_1.3.nut", "start": 1282660, "end": 1284336, "audio": 0}, {"filename": "/game/compat_1.6.nut", "start": 1284336, "end": 1285408, "audio": 0}, {"filename": "/game/compat_1.9.nut", "start": 1285408, "end": 1286298, "audio": 0}, {"filename": "/game/compat_12.nut", "start": 1286298, "end": 1286927, "audio": 0}, {"filename": "/game/compat_1.5.nut", "start": 1286927, "end": 1287999, "audio": 0}, {"filename": "/game/compat_1.10.nut", "start": 1287999, "end": 1288890, "audio": 0}], "remote_package_size": 1288890, "package_uuid": "79e6d8d2-eebf-411d-8ac2-e531791f35a2"});
   
   })();
   
@@ -209,11 +209,13 @@ Module['websocket'] = { url: function(host, port, proto) {
      * If you run your own server you can setup your own WebSocket proxy in
      * front of it and let people connect to your server via the proxy. You
      * are best to add another "if" statement as above for this. */
+
     if (location.protocol === 'https:') {
-        /* Insecure WebSockets do not work over HTTPS, force secure ones */
-        return "wss://";
+        /* Insecure WebSockets do not work over HTTPS, so we force
+         * secure ones. */
+        return 'wss://';
     } else {
-        /* Use default */
+        /* Use the default provided by Emscripten. */
         return null;
     }
 } };
@@ -271,10 +273,14 @@ Module.preRun.push(function() {
     }
 
     window.openttd_server_list = function() {
-        add_server = Module.cwrap("em_openttd_add_server", null, ["string", "number"]);
+        add_server = Module.cwrap("em_openttd_add_server", null, ["string"]);
 
-        /* Add servers that support WebSocket here. Example:
-         *  add_server("localhost", 3979); */
+        /* Add servers that support WebSocket here. Examples:
+         *  add_server("localhost");
+         *  add_server("localhost:3979");
+         *  add_server("127.0.0.1:3979");
+         *  add_server("[::1]:3979");
+         */
     }
 
     var leftButtonDown = false;
@@ -1890,34 +1896,34 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  148589: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 153476: function() {if (window["openttd_server_list"]) openttd_server_list()},  
- 163391: function($0, $1) {if(window["openttd_open_url"]) window.openttd_open_url($0, $1)},  
- 218412: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 231478: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 231525: function() {if (window["openttd_exit"]) openttd_exit()},  
- 440669: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 531753: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 531800: function() {if (window["openttd_abort"]) openttd_abort()},  
- 836666: function($0) {var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return allocate(intArrayFromString(reply), 'i8', ALLOC_NORMAL);},  
- 875628: function($0, $1, $2) {var w = $0; var h = $1; var pixels = $2; if (!Module['SDL2']) Module['SDL2'] = {}; var SDL2 = Module['SDL2']; if (SDL2.ctxCanvas !== Module['canvas']) { SDL2.ctx = Module['createContext'](Module['canvas'], false, true); SDL2.ctxCanvas = Module['canvas']; } if (SDL2.w !== w || SDL2.h !== h || SDL2.imageCtx !== SDL2.ctx) { SDL2.image = SDL2.ctx.createImageData(w, h); SDL2.w = w; SDL2.h = h; SDL2.imageCtx = SDL2.ctx; } var data = SDL2.image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = 0xff; src++; dst += 4; } } else { if (SDL2.data32Data !== data) { SDL2.data32 = new Int32Array(data.buffer); SDL2.data8 = new Uint8Array(data.buffer); } var data32 = SDL2.data32; num = data32.length; data32.set(HEAP32.subarray(src, src + num)); var data8 = SDL2.data8; var i = 3; var j = i + 4*num; if (num % 8 == 0) { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; } } else { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; } } } SDL2.ctx.putImageData(SDL2.image, 0, 0); return 0;},  
- 877107: function($0, $1, $2, $3, $4) {var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = (val >> 24) & 0xff; src++; dst += 4; } } else { var data32 = new Int32Array(data.buffer); num = data32.length; data32.set(HEAP32.subarray(src, src + num)); } ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf;},  
- 878096: function($0) {if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } return 0;},  
- 878189: function() {if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; }},  
- 879414: function() {return screen.width;},  
- 879441: function() {return screen.height;},  
- 879469: function() {return window.innerWidth;},  
- 879501: function() {return window.innerHeight;},  
- 879579: function($0) {if (typeof setWindowTitle !== 'undefined') { setWindowTitle(UTF8ToString($0)); } return 0;},  
- 879713: function() {if (typeof(AudioContext) !== 'undefined') { return 1; } else if (typeof(webkitAudioContext) !== 'undefined') { return 1; } return 0;},  
- 879879: function() {if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return 1; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return 1; } return 0;},  
- 880105: function($0) {if(typeof(Module['SDL2']) === 'undefined') { Module['SDL2'] = {}; } var SDL2 = Module['SDL2']; if (!$0) { SDL2.audio = {}; } else { SDL2.capture = {}; } if (!SDL2.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL2.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL2.audioContext = new webkitAudioContext(); } if (SDL2.audioContext) { autoResumeAudioContext(SDL2.audioContext); } } return SDL2.audioContext === undefined ? -1 : 0;},  
- 880658: function() {var SDL2 = Module['SDL2']; return SDL2.audioContext.sampleRate;},  
- 880728: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; var have_microphone = function(stream) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); SDL2.capture.silenceTimer = undefined; } SDL2.capture.mediaStreamNode = SDL2.audioContext.createMediaStreamSource(stream); SDL2.capture.scriptProcessorNode = SDL2.audioContext.createScriptProcessor($1, $0, 1); SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL2 === undefined) || (SDL2.capture === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL2.capture.currentCaptureBuffer = audioProcessingEvent.inputBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.mediaStreamNode.connect(SDL2.capture.scriptProcessorNode); SDL2.capture.scriptProcessorNode.connect(SDL2.audioContext.destination); SDL2.capture.stream = stream; }; var no_microphone = function(error) { }; SDL2.capture.silenceBuffer = SDL2.audioContext.createBuffer($0, $1, SDL2.audioContext.sampleRate); SDL2.capture.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL2.capture.currentCaptureBuffer = SDL2.capture.silenceBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.silenceTimer = setTimeout(silence_callback, ($1 / SDL2.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); }},  
- 882380: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; SDL2.audio.scriptProcessorNode = SDL2.audioContext['createScriptProcessor']($1, 0, $0); SDL2.audio.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL2 === undefined) || (SDL2.audio === undefined)) { return; } SDL2.audio.currentOutputBuffer = e['outputBuffer']; dynCall('vi', $2, [$3]); }; SDL2.audio.scriptProcessorNode['connect'](SDL2.audioContext['destination']);},  
- 882790: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.capture.currentCaptureBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.capture.currentCaptureBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio capture buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } }},  
- 883395: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.audio.currentOutputBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.audio.currentOutputBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio output buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[$0 + ((j*numChannels + c) << 2) >> 2]; } }},  
- 883875: function($0) {var SDL2 = Module['SDL2']; if ($0) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); } if (SDL2.capture.stream !== undefined) { var tracks = SDL2.capture.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL2.capture.stream.removeTrack(tracks[i]); } SDL2.capture.stream = undefined; } if (SDL2.capture.scriptProcessorNode !== undefined) { SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL2.capture.scriptProcessorNode.disconnect(); SDL2.capture.scriptProcessorNode = undefined; } if (SDL2.capture.mediaStreamNode !== undefined) { SDL2.capture.mediaStreamNode.disconnect(); SDL2.capture.mediaStreamNode = undefined; } if (SDL2.capture.silenceBuffer !== undefined) { SDL2.capture.silenceBuffer = undefined } SDL2.capture = undefined; } else { if (SDL2.audio.scriptProcessorNode != undefined) { SDL2.audio.scriptProcessorNode.disconnect(); SDL2.audio.scriptProcessorNode = undefined; } SDL2.audio = undefined; } if ((SDL2.audioContext !== undefined) && (SDL2.audio === undefined) && (SDL2.capture === undefined)) { SDL2.audioContext.close(); SDL2.audioContext = undefined; }}
+  151625: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 157524: function() {if (window["openttd_server_list"]) openttd_server_list()},  
+ 166431: function($0, $1) {if(window["openttd_open_url"]) window.openttd_open_url($0, $1)},  
+ 262115: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 274430: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 274477: function() {if (window["openttd_exit"]) openttd_exit()},  
+ 489741: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 583817: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 583864: function() {if (window["openttd_abort"]) openttd_abort()},  
+ 917002: function($0) {var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return allocate(intArrayFromString(reply), 'i8', ALLOC_NORMAL);},  
+ 955964: function($0, $1, $2) {var w = $0; var h = $1; var pixels = $2; if (!Module['SDL2']) Module['SDL2'] = {}; var SDL2 = Module['SDL2']; if (SDL2.ctxCanvas !== Module['canvas']) { SDL2.ctx = Module['createContext'](Module['canvas'], false, true); SDL2.ctxCanvas = Module['canvas']; } if (SDL2.w !== w || SDL2.h !== h || SDL2.imageCtx !== SDL2.ctx) { SDL2.image = SDL2.ctx.createImageData(w, h); SDL2.w = w; SDL2.h = h; SDL2.imageCtx = SDL2.ctx; } var data = SDL2.image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = 0xff; src++; dst += 4; } } else { if (SDL2.data32Data !== data) { SDL2.data32 = new Int32Array(data.buffer); SDL2.data8 = new Uint8Array(data.buffer); } var data32 = SDL2.data32; num = data32.length; data32.set(HEAP32.subarray(src, src + num)); var data8 = SDL2.data8; var i = 3; var j = i + 4*num; if (num % 8 == 0) { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; } } else { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; } } } SDL2.ctx.putImageData(SDL2.image, 0, 0); return 0;},  
+ 957443: function($0, $1, $2, $3, $4) {var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = (val >> 24) & 0xff; src++; dst += 4; } } else { var data32 = new Int32Array(data.buffer); num = data32.length; data32.set(HEAP32.subarray(src, src + num)); } ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf;},  
+ 958432: function($0) {if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } return 0;},  
+ 958525: function() {if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; }},  
+ 959750: function() {return screen.width;},  
+ 959777: function() {return screen.height;},  
+ 959805: function() {return window.innerWidth;},  
+ 959837: function() {return window.innerHeight;},  
+ 959915: function($0) {if (typeof setWindowTitle !== 'undefined') { setWindowTitle(UTF8ToString($0)); } return 0;},  
+ 960049: function() {if (typeof(AudioContext) !== 'undefined') { return 1; } else if (typeof(webkitAudioContext) !== 'undefined') { return 1; } return 0;},  
+ 960215: function() {if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return 1; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return 1; } return 0;},  
+ 960441: function($0) {if(typeof(Module['SDL2']) === 'undefined') { Module['SDL2'] = {}; } var SDL2 = Module['SDL2']; if (!$0) { SDL2.audio = {}; } else { SDL2.capture = {}; } if (!SDL2.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL2.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL2.audioContext = new webkitAudioContext(); } if (SDL2.audioContext) { autoResumeAudioContext(SDL2.audioContext); } } return SDL2.audioContext === undefined ? -1 : 0;},  
+ 960994: function() {var SDL2 = Module['SDL2']; return SDL2.audioContext.sampleRate;},  
+ 961064: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; var have_microphone = function(stream) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); SDL2.capture.silenceTimer = undefined; } SDL2.capture.mediaStreamNode = SDL2.audioContext.createMediaStreamSource(stream); SDL2.capture.scriptProcessorNode = SDL2.audioContext.createScriptProcessor($1, $0, 1); SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL2 === undefined) || (SDL2.capture === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL2.capture.currentCaptureBuffer = audioProcessingEvent.inputBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.mediaStreamNode.connect(SDL2.capture.scriptProcessorNode); SDL2.capture.scriptProcessorNode.connect(SDL2.audioContext.destination); SDL2.capture.stream = stream; }; var no_microphone = function(error) { }; SDL2.capture.silenceBuffer = SDL2.audioContext.createBuffer($0, $1, SDL2.audioContext.sampleRate); SDL2.capture.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL2.capture.currentCaptureBuffer = SDL2.capture.silenceBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.silenceTimer = setTimeout(silence_callback, ($1 / SDL2.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); }},  
+ 962716: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; SDL2.audio.scriptProcessorNode = SDL2.audioContext['createScriptProcessor']($1, 0, $0); SDL2.audio.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL2 === undefined) || (SDL2.audio === undefined)) { return; } SDL2.audio.currentOutputBuffer = e['outputBuffer']; dynCall('vi', $2, [$3]); }; SDL2.audio.scriptProcessorNode['connect'](SDL2.audioContext['destination']);},  
+ 963126: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.capture.currentCaptureBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.capture.currentCaptureBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio capture buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } }},  
+ 963731: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.audio.currentOutputBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.audio.currentOutputBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio output buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[$0 + ((j*numChannels + c) << 2) >> 2]; } }},  
+ 964211: function($0) {var SDL2 = Module['SDL2']; if ($0) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); } if (SDL2.capture.stream !== undefined) { var tracks = SDL2.capture.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL2.capture.stream.removeTrack(tracks[i]); } SDL2.capture.stream = undefined; } if (SDL2.capture.scriptProcessorNode !== undefined) { SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL2.capture.scriptProcessorNode.disconnect(); SDL2.capture.scriptProcessorNode = undefined; } if (SDL2.capture.mediaStreamNode !== undefined) { SDL2.capture.mediaStreamNode.disconnect(); SDL2.capture.mediaStreamNode = undefined; } if (SDL2.capture.silenceBuffer !== undefined) { SDL2.capture.silenceBuffer = undefined } SDL2.capture = undefined; } else { if (SDL2.audio.scriptProcessorNode != undefined) { SDL2.audio.scriptProcessorNode.disconnect(); SDL2.audio.scriptProcessorNode = undefined; } SDL2.audio = undefined; } if ((SDL2.audioContext !== undefined) && (SDL2.audio === undefined) && (SDL2.capture === undefined)) { SDL2.audioContext.close(); SDL2.audioContext = undefined; }}
 };
 
 
@@ -2515,38 +2521,6 @@ var ASM_CONSTS = {
   function ___gmtime_r(a0,a1
   ) {
   return _gmtime_r(a0,a1);
-  }
-
-  function _localtime_r(time, tmPtr) {
-      _tzset();
-      var date = new Date(HEAP32[((time)>>2)]*1000);
-      HEAP32[((tmPtr)>>2)]=date.getSeconds();
-      HEAP32[(((tmPtr)+(4))>>2)]=date.getMinutes();
-      HEAP32[(((tmPtr)+(8))>>2)]=date.getHours();
-      HEAP32[(((tmPtr)+(12))>>2)]=date.getDate();
-      HEAP32[(((tmPtr)+(16))>>2)]=date.getMonth();
-      HEAP32[(((tmPtr)+(20))>>2)]=date.getFullYear()-1900;
-      HEAP32[(((tmPtr)+(24))>>2)]=date.getDay();
-  
-      var start = new Date(date.getFullYear(), 0, 1);
-      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)]=yday;
-      HEAP32[(((tmPtr)+(36))>>2)]=-(date.getTimezoneOffset() * 60);
-  
-      // Attention: DST is in December in South, and some regions don't have DST at all.
-      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-      var winterOffset = start.getTimezoneOffset();
-      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset))|0;
-      HEAP32[(((tmPtr)+(32))>>2)]=dst;
-  
-      var zonePtr = HEAP32[(((__get_tzname())+(dst ? 4 : 0))>>2)];
-      HEAP32[(((tmPtr)+(40))>>2)]=zonePtr;
-  
-      return tmPtr;
-    }
-  function ___localtime_r(a0,a1
-  ) {
-  return _localtime_r(a0,a1);
   }
 
 
@@ -11277,6 +11251,7 @@ var ASM_CONSTS = {
       return 0;
     }
 
+
   function _kill(pid, sig) {
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/kill.html
       // Makes no sense in a single-process environment.
@@ -11288,6 +11263,34 @@ var ASM_CONSTS = {
 
   function _llvm_eh_typeid_for(type) {
       return type;
+    }
+
+  function _localtime_r(time, tmPtr) {
+      _tzset();
+      var date = new Date(HEAP32[((time)>>2)]*1000);
+      HEAP32[((tmPtr)>>2)]=date.getSeconds();
+      HEAP32[(((tmPtr)+(4))>>2)]=date.getMinutes();
+      HEAP32[(((tmPtr)+(8))>>2)]=date.getHours();
+      HEAP32[(((tmPtr)+(12))>>2)]=date.getDate();
+      HEAP32[(((tmPtr)+(16))>>2)]=date.getMonth();
+      HEAP32[(((tmPtr)+(20))>>2)]=date.getFullYear()-1900;
+      HEAP32[(((tmPtr)+(24))>>2)]=date.getDay();
+  
+      var start = new Date(date.getFullYear(), 0, 1);
+      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
+      HEAP32[(((tmPtr)+(28))>>2)]=yday;
+      HEAP32[(((tmPtr)+(36))>>2)]=-(date.getTimezoneOffset() * 60);
+  
+      // Attention: DST is in December in South, and some regions don't have DST at all.
+      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
+      var winterOffset = start.getTimezoneOffset();
+      var dst = (summerOffset != winterOffset && date.getTimezoneOffset() == Math.min(winterOffset, summerOffset))|0;
+      HEAP32[(((tmPtr)+(32))>>2)]=dst;
+  
+      var zonePtr = HEAP32[(((__get_tzname())+(dst ? 4 : 0))>>2)];
+      HEAP32[(((tmPtr)+(40))>>2)]=zonePtr;
+  
+      return tmPtr;
     }
 
   function _pthread_join() {
@@ -11970,7 +11973,6 @@ var asmLibraryArg = {
   "__cxa_throw": ___cxa_throw,
   "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions,
   "__gmtime_r": ___gmtime_r,
-  "__localtime_r": ___localtime_r,
   "__resumeException": ___resumeException,
   "__sys__newselect": ___sys__newselect,
   "__sys_access": ___sys_access,
@@ -12233,6 +12235,7 @@ var asmLibraryArg = {
   "getnameinfo": _getnameinfo,
   "getpwuid": _getpwuid,
   "gettimeofday": _gettimeofday,
+  "gmtime_r": _gmtime_r,
   "invoke_diii": invoke_diii,
   "invoke_fiii": invoke_fiii,
   "invoke_i": invoke_i,
@@ -12248,6 +12251,7 @@ var asmLibraryArg = {
   "invoke_iiiiiiiiiii": invoke_iiiiiiiiiii,
   "invoke_iiiiiiiiiiii": invoke_iiiiiiiiiiii,
   "invoke_iiiiiiiiiiiii": invoke_iiiiiiiiiiiii,
+  "invoke_iiiiiiiiiiiiiiiiii": invoke_iiiiiiiiiiiiiiiiii,
   "invoke_iiiiiiiiij": invoke_iiiiiiiiij,
   "invoke_iiiiiij": invoke_iiiiiij,
   "invoke_iiiiiijii": invoke_iiiiiijii,
@@ -12303,7 +12307,7 @@ var asmLibraryArg = {
   "invoke_viiiiiijji": invoke_viiiiiijji,
   "invoke_viiiiijii": invoke_viiiiijii,
   "invoke_viiiiji": invoke_viiiiji,
-  "invoke_viiiijii": invoke_viiiijii,
+  "invoke_viiiijiii": invoke_viiiijiii,
   "invoke_viiiijiiii": invoke_viiiijiiii,
   "invoke_viiiijiiiiii": invoke_viiiijiiiiii,
   "invoke_viiij": invoke_viiij,
@@ -12320,6 +12324,7 @@ var asmLibraryArg = {
   "invoke_vijjjjj": invoke_vijjjjj,
   "kill": _kill,
   "llvm_eh_typeid_for": _llvm_eh_typeid_for,
+  "localtime_r": _localtime_r,
   "pthread_join": _pthread_join,
   "setTempRet0": _setTempRet0,
   "sigaction": _sigaction,
@@ -12347,10 +12352,10 @@ var _free = Module["_free"] = createExportWrapper("free");
 var _memset = Module["_memset"] = createExportWrapper("memset");
 
 /** @type {function(...*):?} */
-var _realloc = Module["_realloc"] = createExportWrapper("realloc");
+var _strstr = Module["_strstr"] = createExportWrapper("strstr");
 
 /** @type {function(...*):?} */
-var _strstr = Module["_strstr"] = createExportWrapper("strstr");
+var _realloc = Module["_realloc"] = createExportWrapper("realloc");
 
 /** @type {function(...*):?} */
 var ___errno_location = Module["___errno_location"] = createExportWrapper("__errno_location");
@@ -12494,6 +12499,9 @@ var dynCall_jiiiij = Module["dynCall_jiiiij"] = createExportWrapper("dynCall_jii
 var dynCall_jiiij = Module["dynCall_jiiij"] = createExportWrapper("dynCall_jiiij");
 
 /** @type {function(...*):?} */
+var dynCall_iiij = Module["dynCall_iiij"] = createExportWrapper("dynCall_iiij");
+
+/** @type {function(...*):?} */
 var dynCall_viji = Module["dynCall_viji"] = createExportWrapper("dynCall_viji");
 
 /** @type {function(...*):?} */
@@ -12506,10 +12514,10 @@ var dynCall_iiijjjiji = Module["dynCall_iiijjjiji"] = createExportWrapper("dynCa
 var dynCall_iiiiiijii = Module["dynCall_iiiiiijii"] = createExportWrapper("dynCall_iiiiiijii");
 
 /** @type {function(...*):?} */
-var dynCall_iiij = Module["dynCall_iiij"] = createExportWrapper("dynCall_iiij");
+var dynCall_jijjjj = Module["dynCall_jijjjj"] = createExportWrapper("dynCall_jijjjj");
 
 /** @type {function(...*):?} */
-var dynCall_jijjjj = Module["dynCall_jijjjj"] = createExportWrapper("dynCall_jijjjj");
+var dynCall_iiiij = Module["dynCall_iiiij"] = createExportWrapper("dynCall_iiiij");
 
 /** @type {function(...*):?} */
 var dynCall_jiiiii = Module["dynCall_jiiiii"] = createExportWrapper("dynCall_jiiiii");
@@ -12548,9 +12556,6 @@ var dynCall_iiijj = Module["dynCall_iiijj"] = createExportWrapper("dynCall_iiijj
 var dynCall_iijiiiii = Module["dynCall_iijiiiii"] = createExportWrapper("dynCall_iijiiiii");
 
 /** @type {function(...*):?} */
-var dynCall_iiiij = Module["dynCall_iiiij"] = createExportWrapper("dynCall_iiiij");
-
-/** @type {function(...*):?} */
 var dynCall_j = Module["dynCall_j"] = createExportWrapper("dynCall_j");
 
 /** @type {function(...*):?} */
@@ -12575,16 +12580,16 @@ var dynCall_viiijii = Module["dynCall_viiijii"] = createExportWrapper("dynCall_v
 var dynCall_viiiijiiii = Module["dynCall_viiiijiiii"] = createExportWrapper("dynCall_viiiijiiii");
 
 /** @type {function(...*):?} */
-var dynCall_viiiijii = Module["dynCall_viiiijii"] = createExportWrapper("dynCall_viiiijii");
+var dynCall_viiiijiii = Module["dynCall_viiiijiii"] = createExportWrapper("dynCall_viiiijiii");
 
 /** @type {function(...*):?} */
 var dynCall_viiiiijii = Module["dynCall_viiiiijii"] = createExportWrapper("dynCall_viiiiijii");
 
 /** @type {function(...*):?} */
-var dynCall_iiijiiii = Module["dynCall_iiijiiii"] = createExportWrapper("dynCall_iiijiiii");
+var dynCall_iiiijiiiii = Module["dynCall_iiiijiiiii"] = createExportWrapper("dynCall_iiiijiiiii");
 
 /** @type {function(...*):?} */
-var dynCall_iiiijiiiii = Module["dynCall_iiiijiiiii"] = createExportWrapper("dynCall_iiiijiiiii");
+var dynCall_iiijiiii = Module["dynCall_iiijiiii"] = createExportWrapper("dynCall_iiijiiii");
 
 /** @type {function(...*):?} */
 var dynCall_jj = Module["dynCall_jj"] = createExportWrapper("dynCall_jj");
@@ -12787,17 +12792,6 @@ function invoke_viiiii(index,a1,a2,a3,a4,a5) {
   }
 }
 
-function invoke_iiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
-  var sp = stackSave();
-  try {
-    return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   var sp = stackSave();
   try {
@@ -12809,10 +12803,10 @@ function invoke_viiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   }
 }
 
-function invoke_iiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+function invoke_iiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   var sp = stackSave();
   try {
-    return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8);
+    return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -12824,6 +12818,17 @@ function invoke_viiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   var sp = stackSave();
   try {
     wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+  var sp = stackSave();
+  try {
+    return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -12879,6 +12884,17 @@ function invoke_iiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
   var sp = stackSave();
   try {
     return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiiiiiiiiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17) {
+  var sp = stackSave();
+  try {
+    return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16,a17);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13150,6 +13166,17 @@ function invoke_jiiij(index,a1,a2,a3,a4,a5) {
   }
 }
 
+function invoke_iiij(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiij(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_viji(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
@@ -13205,10 +13232,10 @@ function invoke_iiiiiijii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   }
 }
 
-function invoke_iiij(index,a1,a2,a3,a4) {
+function invoke_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   var sp = stackSave();
   try {
-    return dynCall_iiij(index,a1,a2,a3,a4);
+    return dynCall_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13216,10 +13243,10 @@ function invoke_iiij(index,a1,a2,a3,a4) {
   }
 }
 
-function invoke_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
+function invoke_iiiij(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
-    return dynCall_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9);
+    return dynCall_iiiij(index,a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13370,17 +13397,6 @@ function invoke_iijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   }
 }
 
-function invoke_iiiij(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return dynCall_iiiij(index,a1,a2,a3,a4,a5);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_jijii(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
@@ -13458,10 +13474,10 @@ function invoke_viiiiijii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   }
 }
 
-function invoke_viiiijii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+function invoke_viiiijiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   var sp = stackSave();
   try {
-    dynCall_viiiijii(index,a1,a2,a3,a4,a5,a6,a7,a8);
+    dynCall_viiiijiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13480,10 +13496,10 @@ function invoke_viiiiji(index,a1,a2,a3,a4,a5,a6,a7) {
   }
 }
 
-function invoke_iiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+function invoke_iiiijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
   var sp = stackSave();
   try {
-    return dynCall_iiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8);
+    return dynCall_iiiijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13491,10 +13507,10 @@ function invoke_iiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   }
 }
 
-function invoke_iiiijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
+function invoke_iiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   var sp = stackSave();
   try {
-    return dynCall_iiiijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10);
+    return dynCall_iiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;

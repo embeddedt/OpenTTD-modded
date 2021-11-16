@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptLog to be used as Squirrel parameter */
-	template <> inline ScriptLog *GetParam(ForceType<ScriptLog *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptLog *)instance; }
-	template <> inline ScriptLog &GetParam(ForceType<ScriptLog &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptLog *)instance; }
-	template <> inline const ScriptLog *GetParam(ForceType<const ScriptLog *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptLog *)instance; }
-	template <> inline const ScriptLog &GetParam(ForceType<const ScriptLog &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptLog *)instance; }
+	template <> inline ScriptLog *GetParam(ForceType<ScriptLog *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptLog *)instance; }
+	template <> inline ScriptLog &GetParam(ForceType<ScriptLog &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptLog *)instance; }
+	template <> inline const ScriptLog *GetParam(ForceType<const ScriptLog *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptLog *)instance; }
+	template <> inline const ScriptLog &GetParam(ForceType<const ScriptLog &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptLog *)instance; }
 	template <> inline int Return<ScriptLog *>(HSQUIRRELVM vm, ScriptLog *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Log", res, nullptr, DefSQDestructorCallback<ScriptLog>, true); return 1; }
 } // namespace SQConvert

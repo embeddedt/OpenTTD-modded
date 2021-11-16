@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptPriorityQueue to be used as Squirrel parameter */
-	template <> inline ScriptPriorityQueue *GetParam(ForceType<ScriptPriorityQueue *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptPriorityQueue *)instance; }
-	template <> inline ScriptPriorityQueue &GetParam(ForceType<ScriptPriorityQueue &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptPriorityQueue *)instance; }
-	template <> inline const ScriptPriorityQueue *GetParam(ForceType<const ScriptPriorityQueue *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptPriorityQueue *)instance; }
-	template <> inline const ScriptPriorityQueue &GetParam(ForceType<const ScriptPriorityQueue &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptPriorityQueue *)instance; }
+	template <> inline ScriptPriorityQueue *GetParam(ForceType<ScriptPriorityQueue *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptPriorityQueue *)instance; }
+	template <> inline ScriptPriorityQueue &GetParam(ForceType<ScriptPriorityQueue &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptPriorityQueue *)instance; }
+	template <> inline const ScriptPriorityQueue *GetParam(ForceType<const ScriptPriorityQueue *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptPriorityQueue *)instance; }
+	template <> inline const ScriptPriorityQueue &GetParam(ForceType<const ScriptPriorityQueue &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptPriorityQueue *)instance; }
 	template <> inline int Return<ScriptPriorityQueue *>(HSQUIRRELVM vm, ScriptPriorityQueue *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "PriorityQueue", res, nullptr, DefSQDestructorCallback<ScriptPriorityQueue>, true); return 1; }
 } // namespace SQConvert

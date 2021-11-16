@@ -1,5 +1,5 @@
 # Hashes of file build rules.
-b4e3403e5da9bfa5ddd8e4b22b08533d CMakeFiles/find_version
+7197dfb1fe37c57354c57a4466203ea8 CMakeFiles/find_version
 7b5c09d01b7ace0cc878d6309b108a3e CMakeFiles/regression
 7b5c09d01b7ace0cc878d6309b108a3e CMakeFiles/regression_files
 00d68048a1a13dae75c8f9c58510b190 CMakeFiles/regression_regression
@@ -9,7 +9,6 @@ b4e3403e5da9bfa5ddd8e4b22b08533d CMakeFiles/find_version
 59122b9515ca9c0a14ebdbfcc108df09 ai/compat_1.1.nut
 b8e65ec6b1b8d0f1e6c9a15776bbb4c5 ai/compat_1.10.nut
 c1dc73f8388b898ed27e5160f9c311db ai/compat_1.11.nut
-1803d1cc836eda710befa064c1bcb7b1 ai/compat_1.12.nut
 b39c04990d3128e69e4b11a5fc68a9e1 ai/compat_1.2.nut
 177d45333689c1888059e04b69b143a5 ai/compat_1.3.nut
 127be89e848ddebaad47d412608139dd ai/compat_1.4.nut
@@ -18,6 +17,8 @@ f94d815c7cee848a6e6beddd252280c8 ai/compat_1.5.nut
 4b85c9d0e6d00a63fbfb07b22b6b7963 ai/compat_1.7.nut
 50d94c4b482257f6d32cc8981ae6719f ai/compat_1.8.nut
 fff079d9da04b6aeb3073ff210ee8b71 ai/compat_1.9.nut
+75ddb0c468539b4698d5a631371f135f ai/compat_12.nut
+c247ad3763ea49711e9c16e815d50e15 ai/compat_13.nut
 3d75f5e93e67c2a05174cde34fbc8f1f ai/regression/info.nut
 7bcec8f36e8f2456c6ddf9362817edb6 ai/regression/main.nut
 18f5355793c8a61c74bb38b9dade7aba ai/regression/require.nut
@@ -39,7 +40,6 @@ c729b532a596491775e1e60579a31a02 baseset/route_step.grf
 5f54fcd7dc9a6f14f95a7c8b01eb6252 bin/CMakeFiles/binfiles_files
 36588e470786a9649a7e59195b1f6da5 game/compat_1.10.nut
 7ec9fe002aacf0a439d7f9bff0ef2152 game/compat_1.11.nut
-2b551629855165a7fde8ae7e10de86ea game/compat_1.12.nut
 c50b24539089902d0609186f5806dc01 game/compat_1.2.nut
 2f905d432a914aab5e4f1da44746f0fa game/compat_1.3.nut
 0a8f968add04dea711315ee825d33448 game/compat_1.4.nut
@@ -48,6 +48,8 @@ c50b24539089902d0609186f5806dc01 game/compat_1.2.nut
 72f9e25997d03a79fa2bc60f12789dbd game/compat_1.7.nut
 80c9c194374c55df8373aec8057e4f72 game/compat_1.8.nut
 11def806ebb921534d7835737b7dbfea game/compat_1.9.nut
+821e0f9a879c35c42bf8544c8861d8b3 game/compat_12.nut
+5fca8f74fd8283c17b8a54edaea5e4dc game/compat_13.nut
 91c5212aea5019bdf031fb0b8f9ec3c9 game/compat_brgs.nut
 a67a6a243a630d4ece2dc32e09c621dd lang/afrikaans.lng
 721d6b765f1a8c74aeb86f5a930feb9a lang/arabic_egypt.lng
@@ -182,7 +184,7 @@ ccb6101c1196e9845923edef24cdcef2 src/script/api/ai_game.hpp.sq.timestamp
 961b1fbc2caf126db20c7101e3f606ee src/script/api/ai_goal.hpp.sq.timestamp
 a15d58d957d2815203857c29601418e7 src/script/api/ai_group.hpp.sq.timestamp
 d766e5d0a767a63862d480bade275c30 src/script/api/ai_grouplist.hpp.sq.timestamp
-fb61d52c4c694243efe7c08e39e18cdb src/script/api/ai_includes.hpp.timestamp
+542eac9793bfe02a6e58f744400d6d2c src/script/api/ai_includes.hpp.timestamp
 bf9364ae932bba9ffd9d1bacef814609 src/script/api/ai_industry.hpp.sq.timestamp
 e37b48e7c085f53baad03165e152f930 src/script/api/ai_industrylist.hpp.sq.timestamp
 8d6e96e83c0fd45de633acbae27a3705 src/script/api/ai_industrytype.hpp.sq.timestamp
@@ -193,8 +195,11 @@ adca913b6e517b014bca9ab0770ad20e src/script/api/ai_list.hpp.sq.timestamp
 33c2b472f3be863ef2a87c58b52c42bb src/script/api/ai_log.hpp.sq.timestamp
 c06e0da9edc7289be52ddea3c441b849 src/script/api/ai_map.hpp.sq.timestamp
 ba959245eb08ae033236fc8e3dc126fd src/script/api/ai_marine.hpp.sq.timestamp
+d36836d49d02da6bc0c0eabb90296191 src/script/api/ai_newgrf.hpp.sq.timestamp
 8a95470308d2c471c68eb8bca97738e3 src/script/api/ai_news.hpp.sq.timestamp
 afce7af5c4bffc320b7ff597496eded6 src/script/api/ai_object.hpp.sq.timestamp
+d1bf53c8a90f763176a76f7166644c60 src/script/api/ai_objecttype.hpp.sq.timestamp
+a49f6edbb1b87a3276a8f9d67ff46d83 src/script/api/ai_objecttypelist.hpp.sq.timestamp
 0b017bb1615aba5334f1bf32b6df7a76 src/script/api/ai_order.hpp.sq.timestamp
 48baf566a5eeed80b4a92bd628287406 src/script/api/ai_priorityqueue.hpp.sq.timestamp
 9941c24e4f082949d554b7acc1be8f11 src/script/api/ai_rail.hpp.sq.timestamp
@@ -251,7 +256,7 @@ b429a96f9e2477dbf85f7e2bc1e0c99c src/script/api/game_gamesettings.hpp.sq.timesta
 8acb20f21b765f13ce7288bdd779e525 src/script/api/game_goal.hpp.sq.timestamp
 652164b64b167c02c838bc072a851e73 src/script/api/game_group.hpp.sq.timestamp
 9681d621425fda9fab12cd88a2173873 src/script/api/game_grouplist.hpp.sq.timestamp
-2a83b81b62dca4571734a50cecb63efb src/script/api/game_includes.hpp.timestamp
+97c29a3e900d7a86e85bb7b0d8d8c468 src/script/api/game_includes.hpp.timestamp
 ee9b7f8bd52768042331eacbbf42bc63 src/script/api/game_industry.hpp.sq.timestamp
 f67b51b3bfe1836c8cc20a74f3fa72f2 src/script/api/game_industrylist.hpp.sq.timestamp
 4f409ed938a021d6cf6e71d531f76265 src/script/api/game_industrytype.hpp.sq.timestamp
@@ -262,8 +267,11 @@ d93b6be91f9f71cc7f4e193b280038f3 src/script/api/game_list.hpp.sq.timestamp
 4b50aafc46f15e7ba81003080527d3c4 src/script/api/game_log.hpp.sq.timestamp
 63fced463593afbdd465b8d2c12d0e52 src/script/api/game_map.hpp.sq.timestamp
 837cba4400a0f3fa463d835d12fba601 src/script/api/game_marine.hpp.sq.timestamp
+95f5e305239c607c68004d438258b1c7 src/script/api/game_newgrf.hpp.sq.timestamp
 a731aca609494f64d96a2f7ca84f298a src/script/api/game_news.hpp.sq.timestamp
 01c451047b98b139d2be9147dfc328ae src/script/api/game_object.hpp.sq.timestamp
+abf024de0757fd9598a20dd11b658d0d src/script/api/game_objecttype.hpp.sq.timestamp
+0017f8dd2959e8bcc49f39c78d0c440a src/script/api/game_objecttypelist.hpp.sq.timestamp
 ecc6a001f108774eb9709ad3e72c2945 src/script/api/game_order.hpp.sq.timestamp
 4f34005998a37359a0124cc50b7c9323 src/script/api/game_priorityqueue.hpp.sq.timestamp
 8973b3efc0f12063ec297620ce6a5d9b src/script/api/game_rail.hpp.sq.timestamp
@@ -331,8 +339,11 @@ eacacd5a7b6b3773205930a0cb693bd4 src/script/api/template_list.hpp.sq.timestamp
 bd835eac0f964619b3ec6f024ff7c201 src/script/api/template_log.hpp.sq.timestamp
 784d3de2078f38eada6383195b0d3b24 src/script/api/template_map.hpp.sq.timestamp
 830ae3ef4ad8d32d9e05c05bb1c79e09 src/script/api/template_marine.hpp.sq.timestamp
+62c60f46191410066683f6b4447d6003 src/script/api/template_newgrf.hpp.sq.timestamp
 b740e84a3abda8a90abb4e78dc0ae20f src/script/api/template_news.hpp.sq.timestamp
 1bed25bed0525b522bd70877bdb20793 src/script/api/template_object.hpp.sq.timestamp
+7b223827a5a7202f56223f080c813342 src/script/api/template_objecttype.hpp.sq.timestamp
+9c881e815358d7ed9b0cb31972931521 src/script/api/template_objecttypelist.hpp.sq.timestamp
 158d08566ae2e3bb46ef59b8186e361e src/script/api/template_order.hpp.sq.timestamp
 e2317f3796a289acd5f3397e655f2bb7 src/script/api/template_priorityqueue.hpp.sq.timestamp
 750fdb970c53cc3c9fbcdeabefb8ef8a src/script/api/template_rail.hpp.sq.timestamp
@@ -362,5 +373,5 @@ b037d39b886a582d0144154a806e12e0 src/script/api/template_viewport.hpp.sq.timesta
 a55fdb2fb98d18c7766c108a692168b4 src/script/api/template_waypoint.hpp.sq.timestamp
 1e0c99545c643492c1b52771047d4697 src/script/api/template_waypointlist.hpp.sq.timestamp
 d80df0a051f3ae307c6675587e1ca118 src/script/api/template_window.hpp.sq.timestamp
-4b61cbd2fdf64507ba88c6e0059c0863 src/table/CMakeFiles/table_settings
-f37ddea4172608a530cd83ba69216a49 src/table/settings.h.timestamp
+194e239f834172819d0fab59efa16d6b src/table/settings/CMakeFiles/table_settings
+615d95a220ae75ef89e83e385a4c6bd9 src/table/settings/settings.h.timestamp

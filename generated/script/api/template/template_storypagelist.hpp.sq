@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptStoryPageList to be used as Squirrel parameter */
-	template <> inline ScriptStoryPageList *GetParam(ForceType<ScriptStoryPageList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptStoryPageList *)instance; }
-	template <> inline ScriptStoryPageList &GetParam(ForceType<ScriptStoryPageList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptStoryPageList *)instance; }
-	template <> inline const ScriptStoryPageList *GetParam(ForceType<const ScriptStoryPageList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptStoryPageList *)instance; }
-	template <> inline const ScriptStoryPageList &GetParam(ForceType<const ScriptStoryPageList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptStoryPageList *)instance; }
+	template <> inline ScriptStoryPageList *GetParam(ForceType<ScriptStoryPageList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptStoryPageList *)instance; }
+	template <> inline ScriptStoryPageList &GetParam(ForceType<ScriptStoryPageList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptStoryPageList *)instance; }
+	template <> inline const ScriptStoryPageList *GetParam(ForceType<const ScriptStoryPageList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptStoryPageList *)instance; }
+	template <> inline const ScriptStoryPageList &GetParam(ForceType<const ScriptStoryPageList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptStoryPageList *)instance; }
 	template <> inline int Return<ScriptStoryPageList *>(HSQUIRRELVM vm, ScriptStoryPageList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "StoryPageList", res, nullptr, DefSQDestructorCallback<ScriptStoryPageList>, true); return 1; }
 } // namespace SQConvert

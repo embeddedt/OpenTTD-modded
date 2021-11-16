@@ -37,6 +37,9 @@
 #include "ai_log.hpp.sq"
 #include "ai_map.hpp.sq"
 #include "ai_marine.hpp.sq"
+#include "ai_newgrf.hpp.sq"
+#include "ai_objecttype.hpp.sq"
+#include "ai_objecttypelist.hpp.sq"
 #include "ai_order.hpp.sq"
 #include "ai_priorityqueue.hpp.sq"
 #include "ai_rail.hpp.sq"
@@ -123,6 +126,10 @@ void SQAI_RegisterAll(Squirrel *engine)
 	SQAILog_Register(engine);
 	SQAIMap_Register(engine);
 	SQAIMarine_Register(engine);
+	SQAINewGRF_Register(engine);
+	SQAINewGRFList_Register(engine);
+	SQAIObjectType_Register(engine);
+	SQAIObjectTypeList_Register(engine);
 	SQAIOrder_Register(engine);
 	SQAIPriorityQueue_Register(engine);
 	SQAIRail_Register(engine);

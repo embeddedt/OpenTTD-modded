@@ -15,9 +15,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptSign::ErrorMessages>(HSQUIRRELVM vm, ScriptSign::ErrorMessages res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptSign to be used as Squirrel parameter */
-	template <> inline ScriptSign *GetParam(ForceType<ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptSign *)instance; }
-	template <> inline ScriptSign &GetParam(ForceType<ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptSign *)instance; }
-	template <> inline const ScriptSign *GetParam(ForceType<const ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptSign *)instance; }
-	template <> inline const ScriptSign &GetParam(ForceType<const ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptSign *)instance; }
+	template <> inline ScriptSign *GetParam(ForceType<ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; }
+	template <> inline ScriptSign &GetParam(ForceType<ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; }
+	template <> inline const ScriptSign *GetParam(ForceType<const ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; }
+	template <> inline const ScriptSign &GetParam(ForceType<const ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; }
 	template <> inline int Return<ScriptSign *>(HSQUIRRELVM vm, ScriptSign *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Sign", res, nullptr, DefSQDestructorCallback<ScriptSign>, true); return 1; }
 } // namespace SQConvert

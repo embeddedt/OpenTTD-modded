@@ -1,0 +1,28 @@
+/*
+ * This file is part of OpenTTD.
+ * OpenTTD is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2.
+ * OpenTTD is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
+
+#include "../script_objecttype.hpp"
+#include "../template/template_objecttype.hpp.sq"
+
+
+template <> const char *GetClassName<ScriptObjectType, ST_GS>() { return "GSObjectType"; }
+
+void SQGSObjectType_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptObjectType, ST_GS> SQGSObjectType("GSObjectType");
+	SQGSObjectType.PreRegister(engine);
+	SQGSObjectType.AddConstructor<void (ScriptObjectType::*)(), 1>(engine, "x");
+
+	SQGSObjectType.DefSQStaticMethod(engine, &ScriptObjectType::IsValidObjectType, "IsValidObjectType", 2, ".i");
+	SQGSObjectType.DefSQStaticMethod(engine, &ScriptObjectType::GetName,           "GetName",           2, ".i");
+	SQGSObjectType.DefSQStaticMethod(engine, &ScriptObjectType::GetViews,          "GetViews",          2, ".i");
+	SQGSObjectType.DefSQStaticMethod(engine, &ScriptObjectType::BuildObject,       "BuildObject",       4, ".iii");
+
+	SQGSObjectType.PostRegister(engine);
+}

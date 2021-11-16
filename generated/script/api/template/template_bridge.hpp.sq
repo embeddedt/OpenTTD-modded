@@ -15,9 +15,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptBridge::ErrorMessages>(HSQUIRRELVM vm, ScriptBridge::ErrorMessages res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptBridge to be used as Squirrel parameter */
-	template <> inline ScriptBridge *GetParam(ForceType<ScriptBridge *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptBridge *)instance; }
-	template <> inline ScriptBridge &GetParam(ForceType<ScriptBridge &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptBridge *)instance; }
-	template <> inline const ScriptBridge *GetParam(ForceType<const ScriptBridge *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptBridge *)instance; }
-	template <> inline const ScriptBridge &GetParam(ForceType<const ScriptBridge &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptBridge *)instance; }
+	template <> inline ScriptBridge *GetParam(ForceType<ScriptBridge *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptBridge *)instance; }
+	template <> inline ScriptBridge &GetParam(ForceType<ScriptBridge &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptBridge *)instance; }
+	template <> inline const ScriptBridge *GetParam(ForceType<const ScriptBridge *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptBridge *)instance; }
+	template <> inline const ScriptBridge &GetParam(ForceType<const ScriptBridge &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptBridge *)instance; }
 	template <> inline int Return<ScriptBridge *>(HSQUIRRELVM vm, ScriptBridge *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Bridge", res, nullptr, DefSQDestructorCallback<ScriptBridge>, true); return 1; }
 } // namespace SQConvert

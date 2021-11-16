@@ -17,9 +17,9 @@ namespace SQConvert {
 	template <> inline int Return<ScriptMarine::BuildType>(HSQUIRRELVM vm, ScriptMarine::BuildType res) { sq_pushinteger(vm, (int32)res); return 1; }
 
 	/* Allow ScriptMarine to be used as Squirrel parameter */
-	template <> inline ScriptMarine *GetParam(ForceType<ScriptMarine *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptMarine *)instance; }
-	template <> inline ScriptMarine &GetParam(ForceType<ScriptMarine &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptMarine *)instance; }
-	template <> inline const ScriptMarine *GetParam(ForceType<const ScriptMarine *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return  (ScriptMarine *)instance; }
-	template <> inline const ScriptMarine &GetParam(ForceType<const ScriptMarine &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, 0); return *(ScriptMarine *)instance; }
+	template <> inline ScriptMarine *GetParam(ForceType<ScriptMarine *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptMarine *)instance; }
+	template <> inline ScriptMarine &GetParam(ForceType<ScriptMarine &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptMarine *)instance; }
+	template <> inline const ScriptMarine *GetParam(ForceType<const ScriptMarine *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptMarine *)instance; }
+	template <> inline const ScriptMarine &GetParam(ForceType<const ScriptMarine &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptMarine *)instance; }
 	template <> inline int Return<ScriptMarine *>(HSQUIRRELVM vm, ScriptMarine *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Marine", res, nullptr, DefSQDestructorCallback<ScriptMarine>, true); return 1; }
 } // namespace SQConvert

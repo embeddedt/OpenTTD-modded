@@ -90,8 +90,11 @@ src/script/api/CMakeFiles/script_game: src/script/api/game_list.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_log.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_map.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_marine.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_game: src/script/api/game_newgrf.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_news.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_object.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_game: src/script/api/game_objecttype.hpp.sq.timestamp
+src/script/api/CMakeFiles/script_game: src/script/api/game_objecttypelist.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_order.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_priorityqueue.hpp.sq.timestamp
 src/script/api/CMakeFiles/script_game: src/script/api/game_rail.hpp.sq.timestamp
@@ -382,220 +385,241 @@ src/script/api/game_marine.hpp.sq.timestamp: ../src/script/api/script_marine.hpp
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_marine.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_marine.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_marine.hpp.sq.timestamp
 
+src/script/api/game_newgrf.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/game_newgrf.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/game_newgrf.hpp.sq.timestamp: ../src/script/api/script_newgrf.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Generating game/game_newgrf.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_newgrf.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_newgrf.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_newgrf.hpp.sq.timestamp
+
 src/script/api/game_news.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_news.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_news.hpp.sq.timestamp: ../src/script/api/script_news.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Generating game/game_news.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Generating game/game_news.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_news.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_news.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_news.hpp.sq.timestamp
 
 src/script/api/game_object.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_object.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_object.hpp.sq.timestamp: ../src/script/api/script_object.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Generating game/game_object.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Generating game/game_object.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_object.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_object.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_object.hpp.sq.timestamp
+
+src/script/api/game_objecttype.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/game_objecttype.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/game_objecttype.hpp.sq.timestamp: ../src/script/api/script_objecttype.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Generating game/game_objecttype.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_objecttype.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttype.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_objecttype.hpp.sq.timestamp
+
+src/script/api/game_objecttypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
+src/script/api/game_objecttypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
+src/script/api/game_objecttypelist.hpp.sq.timestamp: ../src/script/api/script_objecttypelist.hpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Generating game/game_objecttypelist.hpp.sq"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_objecttypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_objecttypelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_objecttypelist.hpp.sq.timestamp
 
 src/script/api/game_order.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_order.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_order.hpp.sq.timestamp: ../src/script/api/script_order.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Generating game/game_order.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Generating game/game_order.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_order.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_order.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_order.hpp.sq.timestamp
 
 src/script/api/game_priorityqueue.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_priorityqueue.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_priorityqueue.hpp.sq.timestamp: ../src/script/api/script_priorityqueue.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Generating game/game_priorityqueue.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Generating game/game_priorityqueue.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_priorityqueue.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_priorityqueue.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_priorityqueue.hpp.sq.timestamp
 
 src/script/api/game_rail.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_rail.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_rail.hpp.sq.timestamp: ../src/script/api/script_rail.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Generating game/game_rail.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Generating game/game_rail.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_rail.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_rail.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_rail.hpp.sq.timestamp
 
 src/script/api/game_railtypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_railtypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_railtypelist.hpp.sq.timestamp: ../src/script/api/script_railtypelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Generating game/game_railtypelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Generating game/game_railtypelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_railtypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_railtypelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_railtypelist.hpp.sq.timestamp
 
 src/script/api/game_road.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_road.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_road.hpp.sq.timestamp: ../src/script/api/script_road.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Generating game/game_road.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Generating game/game_road.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_road.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_road.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_road.hpp.sq.timestamp
 
 src/script/api/game_roadtypelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_roadtypelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_roadtypelist.hpp.sq.timestamp: ../src/script/api/script_roadtypelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Generating game/game_roadtypelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Generating game/game_roadtypelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_roadtypelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_roadtypelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_roadtypelist.hpp.sq.timestamp
 
 src/script/api/game_sign.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_sign.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_sign.hpp.sq.timestamp: ../src/script/api/script_sign.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Generating game/game_sign.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Generating game/game_sign.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_sign.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_sign.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_sign.hpp.sq.timestamp
 
 src/script/api/game_signlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_signlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_signlist.hpp.sq.timestamp: ../src/script/api/script_signlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Generating game/game_signlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Generating game/game_signlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_signlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_signlist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_signlist.hpp.sq.timestamp
 
 src/script/api/game_station.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_station.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_station.hpp.sq.timestamp: ../src/script/api/script_station.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Generating game/game_station.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Generating game/game_station.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_station.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_station.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_station.hpp.sq.timestamp
 
 src/script/api/game_stationlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_stationlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_stationlist.hpp.sq.timestamp: ../src/script/api/script_stationlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Generating game/game_stationlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Generating game/game_stationlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_stationlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_stationlist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_stationlist.hpp.sq.timestamp
 
 src/script/api/game_story_page.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_story_page.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_story_page.hpp.sq.timestamp: ../src/script/api/script_story_page.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Generating game/game_story_page.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Generating game/game_story_page.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_story_page.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_story_page.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_story_page.hpp.sq.timestamp
 
 src/script/api/game_storypageelementlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_storypageelementlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_storypageelementlist.hpp.sq.timestamp: ../src/script/api/script_storypageelementlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Generating game/game_storypageelementlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Generating game/game_storypageelementlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_storypageelementlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypageelementlist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_storypageelementlist.hpp.sq.timestamp
 
 src/script/api/game_storypagelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_storypagelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_storypagelist.hpp.sq.timestamp: ../src/script/api/script_storypagelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Generating game/game_storypagelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Generating game/game_storypagelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_storypagelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_storypagelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_storypagelist.hpp.sq.timestamp
 
 src/script/api/game_subsidy.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_subsidy.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_subsidy.hpp.sq.timestamp: ../src/script/api/script_subsidy.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Generating game/game_subsidy.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Generating game/game_subsidy.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_subsidy.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidy.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_subsidy.hpp.sq.timestamp
 
 src/script/api/game_subsidylist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_subsidylist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_subsidylist.hpp.sq.timestamp: ../src/script/api/script_subsidylist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Generating game/game_subsidylist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Generating game/game_subsidylist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_subsidylist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_subsidylist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_subsidylist.hpp.sq.timestamp
 
 src/script/api/game_testmode.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_testmode.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_testmode.hpp.sq.timestamp: ../src/script/api/script_testmode.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Generating game/game_testmode.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Generating game/game_testmode.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_testmode.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_testmode.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_testmode.hpp.sq.timestamp
 
 src/script/api/game_text.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_text.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_text.hpp.sq.timestamp: ../src/script/api/script_text.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Generating game/game_text.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Generating game/game_text.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_text.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_text.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_text.hpp.sq.timestamp
 
 src/script/api/game_tile.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_tile.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_tile.hpp.sq.timestamp: ../src/script/api/script_tile.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Generating game/game_tile.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Generating game/game_tile.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_tile.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tile.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_tile.hpp.sq.timestamp
 
 src/script/api/game_tilelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_tilelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_tilelist.hpp.sq.timestamp: ../src/script/api/script_tilelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Generating game/game_tilelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Generating game/game_tilelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_tilelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tilelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_tilelist.hpp.sq.timestamp
 
 src/script/api/game_town.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_town.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_town.hpp.sq.timestamp: ../src/script/api/script_town.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Generating game/game_town.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Generating game/game_town.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_town.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_town.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_town.hpp.sq.timestamp
 
 src/script/api/game_townlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_townlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_townlist.hpp.sq.timestamp: ../src/script/api/script_townlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Generating game/game_townlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Generating game/game_townlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_townlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_townlist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_townlist.hpp.sq.timestamp
 
 src/script/api/game_tunnel.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_tunnel.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_tunnel.hpp.sq.timestamp: ../src/script/api/script_tunnel.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Generating game/game_tunnel.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Generating game/game_tunnel.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_tunnel.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_tunnel.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_tunnel.hpp.sq.timestamp
 
 src/script/api/game_types.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_types.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_types.hpp.sq.timestamp: ../src/script/api/script_types.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Generating game/game_types.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Generating game/game_types.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_types.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_types.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_types.hpp.sq.timestamp
 
 src/script/api/game_vehicle.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_vehicle.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_vehicle.hpp.sq.timestamp: ../src/script/api/script_vehicle.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Generating game/game_vehicle.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Generating game/game_vehicle.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_vehicle.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehicle.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_vehicle.hpp.sq.timestamp
 
 src/script/api/game_vehiclelist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_vehiclelist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_vehiclelist.hpp.sq.timestamp: ../src/script/api/script_vehiclelist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Generating game/game_vehiclelist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Generating game/game_vehiclelist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_vehiclelist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_vehiclelist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_vehiclelist.hpp.sq.timestamp
 
 src/script/api/game_viewport.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_viewport.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_viewport.hpp.sq.timestamp: ../src/script/api/script_viewport.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Generating game/game_viewport.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Generating game/game_viewport.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_viewport.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_viewport.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_viewport.hpp.sq.timestamp
 
 src/script/api/game_waypoint.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_waypoint.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_waypoint.hpp.sq.timestamp: ../src/script/api/script_waypoint.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Generating game/game_waypoint.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Generating game/game_waypoint.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_waypoint.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypoint.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_waypoint.hpp.sq.timestamp
 
 src/script/api/game_waypointlist.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_waypointlist.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_waypointlist.hpp.sq.timestamp: ../src/script/api/script_waypointlist.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Generating game/game_waypointlist.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Generating game/game_waypointlist.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_waypointlist.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_waypointlist.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_waypointlist.hpp.sq.timestamp
 
 src/script/api/game_window.hpp.sq.timestamp: ../src/script/api/squirrel_export.hpp.sq.in
 src/script/api/game_window.hpp.sq.timestamp: ../cmake/scripts/SquirrelExport.cmake
 src/script/api/game_window.hpp.sq.timestamp: generated/script/api/script_window.hpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Generating game/game_window.hpp.sq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Generating game/game_window.hpp.sq"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -DSCRIPT_API_SOURCE_FILE=/__w/OpenTTD-modded/OpenTTD-modded/src/script/api/squirrel_export.hpp.sq.in -DSCRIPT_API_BINARY_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/game/game_window.hpp.sq -DSCRIPT_API_FILE=/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/script/api/script_window.hpp -DAPIUC=GS -DAPILC=game -P /__w/OpenTTD-modded/OpenTTD-modded/cmake/scripts/SquirrelExport.cmake
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api && /usr/bin/cmake -E touch /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/api/game_window.hpp.sq.timestamp
 
@@ -637,8 +661,11 @@ script_game: src/script/api/game_list.hpp.sq.timestamp
 script_game: src/script/api/game_log.hpp.sq.timestamp
 script_game: src/script/api/game_map.hpp.sq.timestamp
 script_game: src/script/api/game_marine.hpp.sq.timestamp
+script_game: src/script/api/game_newgrf.hpp.sq.timestamp
 script_game: src/script/api/game_news.hpp.sq.timestamp
 script_game: src/script/api/game_object.hpp.sq.timestamp
+script_game: src/script/api/game_objecttype.hpp.sq.timestamp
+script_game: src/script/api/game_objecttypelist.hpp.sq.timestamp
 script_game: src/script/api/game_order.hpp.sq.timestamp
 script_game: src/script/api/game_priorityqueue.hpp.sq.timestamp
 script_game: src/script/api/game_rail.hpp.sq.timestamp
