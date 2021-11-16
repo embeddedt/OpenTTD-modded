@@ -3963,6 +3963,14 @@ bool AfterLoadGame()
 		UpdateAllBlockSignals();
 	}
 
+	if (!SlXvIsFeaturePresent(XSLFI_REALISTIC_TRAIN_BRAKING, 5) && _settings_game.vehicle.train_braking_model == TBM_REALISTIC) {
+		for (Train *t : Train::Iterate()) {
+			if (t->lookahead != nullptr) {
+				t->lookahead->SetNextExtendPosition();
+			}
+		}
+	}
+
 	if (SlXvIsFeatureMissing(XSLFI_INFLATION_FIXED_DATES)) {
 		_settings_game.economy.inflation_fixed_dates = !IsSavegameVersionBefore(SLV_GS_INDUSTRY_CONTROL);
 	}
@@ -3988,6 +3996,14 @@ bool AfterLoadGame()
 		for (TileIndex t = 0; t < map_size; t++) {
 			if (IsTileType(t, MP_WATER)) {
 				SetNonFloodingWaterTile(t, false);
+			}
+		}
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_TRACE_RESTRICT_TUNBRIDGE)) {
+		for (TileIndex t = 0; t < map_size; t++) {
+			if (IsTileType(t, MP_TUNNELBRIDGE) && GetTunnelBridgeTransportType(t) == TRANSPORT_RAIL && IsTunnelBridgeWithSignalSimulation(t)) {
+				SetTunnelBridgeRestrictedSignal(t, false);
 			}
 		}
 	}

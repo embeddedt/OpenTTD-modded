@@ -263,6 +263,8 @@ static const StringID _direction_value_str[] = {
 	STR_TRACE_RESTRICT_DIRECTION_SE,
 	STR_TRACE_RESTRICT_DIRECTION_SW,
 	STR_TRACE_RESTRICT_DIRECTION_NW,
+	STR_TRACE_RESTRICT_DIRECTION_TUNBRIDGE_ENTRANCE,
+	STR_TRACE_RESTRICT_DIRECTION_TUNBRIDGE_EXIT,
 	INVALID_STRING_ID
 };
 static const uint _direction_value_val[] = {
@@ -272,6 +274,8 @@ static const uint _direction_value_val[] = {
 	TRNTSV_SE,
 	TRNTSV_SW,
 	TRNTSV_NW,
+	TRDTSV_TUNBRIDGE_ENTER,
+	TRDTSV_TUNBRIDGE_EXIT,
 };
 
 /** value drop down list for direction type strings and values */
@@ -1125,7 +1129,9 @@ static void DrawInstructionString(const TraceRestrictProgram *prog, TraceRestric
 					break;
 
 				case TRVT_DIRECTION:
-					if (GetTraceRestrictValue(item) >= TRDTSV_FRONT) {
+					if (GetTraceRestrictValue(item) >= TRDTSV_TUNBRIDGE_ENTER) {
+						instruction_string = STR_TRACE_RESTRICT_CONDITIONAL_ENTRY_SIGNAL_TYPE;
+					} else if (GetTraceRestrictValue(item) >= TRDTSV_FRONT) {
 						instruction_string = STR_TRACE_RESTRICT_CONDITIONAL_ENTRY_SIGNAL_FACE;
 					} else {
 						instruction_string = STR_TRACE_RESTRICT_CONDITIONAL_ENTRY_DIRECTION;
@@ -2093,7 +2099,7 @@ public:
 	 */
 	void OnPlaceObjectSignal(Point pt, TileIndex source_tile, int widget, int error_message)
 	{
-		if (!IsPlainRailTile(source_tile)) {
+		if (!IsPlainRailTile(source_tile) && !IsRailTunnelBridgeTile(source_tile)) {
 			ShowErrorMessage(error_message, STR_ERROR_THERE_IS_NO_RAILROAD_TRACK, WL_INFO);
 			return;
 		}
@@ -2112,14 +2118,26 @@ public:
 			return;
 		}
 
-		if (!HasTrack(source_tile, source_track)) {
-			ShowErrorMessage(error_message, STR_ERROR_THERE_IS_NO_RAILROAD_TRACK, WL_INFO);
-			return;
-		}
+		if (IsTileType(source_tile, MP_RAILWAY)) {
+			if (!HasTrack(source_tile, source_track)) {
+				ShowErrorMessage(error_message, STR_ERROR_THERE_IS_NO_RAILROAD_TRACK, WL_INFO);
+				return;
+			}
 
-		if (!HasSignalOnTrack(source_tile, source_track)) {
-			ShowErrorMessage(error_message, STR_ERROR_THERE_ARE_NO_SIGNALS, WL_INFO);
-			return;
+			if (!HasSignalOnTrack(source_tile, source_track)) {
+				ShowErrorMessage(error_message, STR_ERROR_THERE_ARE_NO_SIGNALS, WL_INFO);
+				return;
+			}
+		} else {
+			if (!HasTrack(GetTunnelBridgeTrackBits(source_tile), source_track)) {
+				ShowErrorMessage(error_message, STR_ERROR_THERE_IS_NO_RAILROAD_TRACK, WL_INFO);
+				return;
+			}
+
+			if (!IsTunnelBridgeWithSignalSimulation(source_tile) || !HasTrack(GetAcrossTunnelBridgeTrackBits(source_tile), source_track)) {
+				ShowErrorMessage(error_message, STR_ERROR_THERE_ARE_NO_SIGNALS, WL_INFO);
+				return;
+			}
 		}
 
 		switch (widget) {

@@ -726,7 +726,9 @@ class btree_node {
 
 #ifndef _MSC_VER
 #pragma GCC diagnostic push
+#if (__GNUC__ >= 9) || (defined __clang_major__ && __clang_major__ >= 10)
 #pragma GCC diagnostic ignored "-Wdeprecated-copy"
+#endif
 #endif /* _MSC_VER */
 
 template <typename Node, typename Reference, typename Pointer>
