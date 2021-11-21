@@ -1201,6 +1201,16 @@ void Train::UpdateAcceleration()
 	}
 }
 
+bool Train::ConsistNeedsRepair() const
+{
+	if (!HasBit(this->flags, VRF_CONSIST_BREAKDOWN)) return false;
+
+	for (const Train *u = this; u != nullptr; u = u->Next()) {
+		if (HasBit(u->flags, VRF_NEED_REPAIR)) return true;
+	}
+	return false;
+}
+
 /**
  * Get the width of a train vehicle image in the GUI.
  * @param offset Additional offset for positioning the sprite; set to nullptr if not needed
@@ -2593,20 +2603,34 @@ void UpdateLevelCrossing(TileIndex tile, bool sound, bool force_close)
 
 	const bool adjacent_crossings = _settings_game.vehicle.adjacent_crossings;
 	if (adjacent_crossings) {
-		for (TileIndex t = tile; !forced_state && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, dir)) {
+		for (TileIndex t = tile; !forced_state && t < MapSize() && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, dir)) {
 			forced_state |= CheckLevelCrossing(t);
 		}
-		for (TileIndex t = TileAddByDiagDir(tile, reverse_dir); !forced_state && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, reverse_dir)) {
+		for (TileIndex t = TileAddByDiagDir(tile, reverse_dir); !forced_state && t < MapSize() && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, reverse_dir)) {
 			forced_state |= CheckLevelCrossing(t);
 		}
 	}
 
 	UpdateLevelCrossingTile(tile, sound, adjacent_crossings || force_close, forced_state);
-	for (TileIndex t = TileAddByDiagDir(tile, dir); IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, dir)) {
+	for (TileIndex t = TileAddByDiagDir(tile, dir); t < MapSize() && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, dir)) {
 		UpdateLevelCrossingTile(t, sound, adjacent_crossings, forced_state);
 	}
-	for (TileIndex t = TileAddByDiagDir(tile, reverse_dir); IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, reverse_dir)) {
+	for (TileIndex t = TileAddByDiagDir(tile, reverse_dir); t < MapSize() && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == axis; t = TileAddByDiagDir(t, reverse_dir)) {
 		UpdateLevelCrossingTile(t, sound, adjacent_crossings, forced_state);
+	}
+}
+
+void MarkDirtyAdjacentLevelCrossingTilesOnAddRemove(TileIndex tile, Axis road_axis)
+{
+	if (!(_settings_game.vehicle.safer_crossings && _settings_game.vehicle.adjacent_crossings)) return;
+
+	const DiagDirection dir1 = AxisToDiagDir(road_axis);
+	const DiagDirection dir2 = ReverseDiagDir(dir1);
+	for (DiagDirection dir : { dir1, dir2 }) {
+		const TileIndex t = TileAddByDiagDir(tile, dir);
+		if (t < MapSize() && IsLevelCrossingTile(t) && GetCrossingRoadAxis(t) == road_axis) {
+			MarkTileDirtyByTile(t, VMDF_NOT_MAP_MODE);
+		}
 	}
 }
 
@@ -6382,7 +6406,30 @@ static bool TrainLocoHandler(Train *v, bool mode)
 	}
 
 	if (v->current_order.IsType(OT_LEAVESTATION)) {
+		StationID station_id = v->current_order.GetDestination();
 		v->current_order.Free();
+
+		bool may_reverse = ProcessOrders(v);
+
+		if (IsRailStationTile(v->tile) && GetStationIndex(v->tile) == station_id) {
+			if (v->current_order.IsType(OT_GOTO_STATION) && v->current_order.GetDestination() == station_id &&
+					!(v->current_order.GetNonStopType() & ONSF_NO_STOP_AT_DESTINATION_STATION)) {
+				v->last_station_visited = station_id;
+				v->BeginLoading();
+				return true;
+			}
+		}
+
+		v->PlayLeaveStationSound();
+
+		if (may_reverse && CheckReverseTrain(v)) {
+			v->wait_counter = 0;
+			v->cur_speed = 0;
+			v->subspeed = 0;
+			ClrBit(v->flags, VRF_LEAVING_STATION);
+			ReverseTrainDirection(v);
+		}
+
 		SetWindowWidgetDirty(WC_VEHICLE_VIEW, v->index, WID_VV_START_STOP);
 		return true;
 	}
@@ -6458,6 +6505,16 @@ Money Train::GetRunningCost() const
 
 		cost += GetPrice(e->u.rail.running_cost_class, cost_factor, e->GetGRF());
 	} while ((v = v->GetNextVehicle()) != nullptr);
+
+	if (this->cur_speed == 0) {
+		if (this->IsInDepot()) {
+			/* running costs if in depot */
+			cost = CeilDivT<Money>(cost, _settings_game.difficulty.vehicle_costs_in_depot);
+		} else {
+			/* running costs if stopped */
+			cost = CeilDivT<Money>(cost, _settings_game.difficulty.vehicle_costs_when_stopped);
+		}
+	}
 
 	return cost;
 }

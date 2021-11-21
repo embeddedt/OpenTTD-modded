@@ -1266,6 +1266,14 @@ STR_CONFIG_SETTING_INTEREST_RATE_HELPTEXT                       :Loan interest r
 STR_CONFIG_SETTING_RUNNING_COSTS                                :Running costs: {STRING2}
 STR_CONFIG_SETTING_RUNNING_COSTS_HELPTEXT                       :Set level of maintenance and running costs of vehicles and infrastructure
 
+STR_CONFIG_SETTING_RUNNING_COSTS_IN_DEPOT                       :Running costs of Vehicles in Depot: {STRING2}
+STR_CONFIG_SETTING_RUNNING_COSTS_IN_DEPOT_HELPTEXT              :Set level of maintenance and running costs of vehicles while waiting in depots (not stopped)
+STR_CONFIG_SETTING_RUNNING_COSTS_IN_DEPOT_VALUE                 :1 / {COMMA}
+
+STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED                   :Running costs of Stationary Vehicles: {STRING2}
+STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED_HELPTEXT          :Set level of maintenance and running costs of vehicles while stationary and not in a depot
+STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED_VALUE             :1 / {COMMA}
+
 STR_CONFIG_SETTING_CONSTRUCTION_SPEED                           :Construction speed: {STRING2}
 STR_CONFIG_SETTING_CONSTRUCTION_SPEED_HELPTEXT                  :Limit the amount of construction actions for AIs
 
@@ -1643,8 +1651,8 @@ STR_CONFIG_SETTING_LAKE_SIZE                                    :Size of lakes: 
 STR_CONFIG_SETTING_LAKE_SIZE_HELPTEXT                           :Controls the size of lakes that are generated along rivers.
 STR_CONFIG_SETTING_LAKE_SIZE_VALUE                              :{NUM}
 STR_CONFIG_SETTING_LAKE_SIZE_ZERO                               :No lakes
-STR_CONFIG_SETTING_LAKES_ALLOWED_IN_DESERTS                     :Lakes can be generated in sub-tropic climate deserts: {STRING}
-STR_CONFIG_SETTING_LAKES_ALLOWED_IN_DESERTS_HELPTEXT            :Choose whether the lakes that spawn along rivers are allowed in deserts.
+STR_CONFIG_SETTING_LAKES_ALLOWED_IN_DESERTS                     :Lakes and rivers can be generated in sub-tropic climate deserts: {STRING}
+STR_CONFIG_SETTING_LAKES_ALLOWED_IN_DESERTS_HELPTEXT            :Choose whether lakes and rivers are allowed to spawn in sub-tropic climate deserts.
 STR_CONFIG_SETTING_RIVER_AMOUNT                                 :River amount: {STRING2}
 STR_CONFIG_SETTING_RIVER_AMOUNT_HELPTEXT                        :Choose how many rivers to generate
 STR_CONFIG_SETTING_ROCKS_AMOUNT                                 :Size of rocky patches: {STRING}
