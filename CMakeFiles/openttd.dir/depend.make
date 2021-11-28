@@ -17390,6 +17390,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/station_map.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/station_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/stdafx.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/string_func.h
+CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/string_func_extra.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/string_type.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/strings_func.h
 CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o: ../src/strings_type.h
@@ -31332,6 +31333,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/bitmath_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/endian_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/endian_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/enum_type.hpp
+CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/geometry_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/geometry_type.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/math_func.hpp
 CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o: ../src/core/mem_func.hpp

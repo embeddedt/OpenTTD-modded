@@ -17391,6 +17391,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/string_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/strings_type.h
@@ -31333,6 +31334,7 @@ CMakeFiles/openttd.dir/src/schdispatch_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/endian_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/enum_type.hpp
+ /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/math_func.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/core/mem_func.hpp

@@ -13667,6 +13667,8 @@ viewport_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/viewport_func.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+core/geometry_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_func.hpp
 vector
 -
 algorithm
@@ -17367,6 +17369,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
 ../aircraft.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft.h
+../string_func_extra.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/object_land.h
 
