@@ -187,6 +187,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_config.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug_gui.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o"
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_extension.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_gui.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_house.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_house.cpp.o"

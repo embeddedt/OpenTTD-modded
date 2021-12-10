@@ -357,6 +357,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/openttd.dir/src/newgrf_config.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_engine.cpp.o"
+  "CMakeFiles/openttd.dir/src/newgrf_extension.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_generic.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_gui.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_house.cpp.o"

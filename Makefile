@@ -5390,6 +5390,33 @@ src/newgrf_engine.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_engine.cpp.s
 .PHONY : src/newgrf_engine.cpp.s
 
+src/newgrf_extension.o: src/newgrf_extension.cpp.o
+
+.PHONY : src/newgrf_extension.o
+
+# target to build an object file
+src/newgrf_extension.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_extension.cpp.o
+.PHONY : src/newgrf_extension.cpp.o
+
+src/newgrf_extension.i: src/newgrf_extension.cpp.i
+
+.PHONY : src/newgrf_extension.i
+
+# target to preprocess a source file
+src/newgrf_extension.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_extension.cpp.i
+.PHONY : src/newgrf_extension.cpp.i
+
+src/newgrf_extension.s: src/newgrf_extension.cpp.s
+
+.PHONY : src/newgrf_extension.s
+
+# target to generate assembly for a file
+src/newgrf_extension.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_extension.cpp.s
+.PHONY : src/newgrf_extension.cpp.s
+
 src/newgrf_generic.o: src/newgrf_generic.cpp.o
 
 .PHONY : src/newgrf_generic.o
@@ -13804,6 +13831,9 @@ help:
 	@echo "... src/newgrf_engine.o"
 	@echo "... src/newgrf_engine.i"
 	@echo "... src/newgrf_engine.s"
+	@echo "... src/newgrf_extension.o"
+	@echo "... src/newgrf_extension.i"
+	@echo "... src/newgrf_extension.s"
 	@echo "... src/newgrf_generic.o"
 	@echo "... src/newgrf_generic.i"
 	@echo "... src/newgrf_generic.s"
