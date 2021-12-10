@@ -57,6 +57,8 @@ enum IndustryDensity {
 	ID_NORMAL,    ///< Normal amount of industries at game start.
 	ID_HIGH,      ///< Many industries at game start.
 
+	ID_CUSTOM,    ///< Custom number of industries.
+
 	ID_END,       ///< Number of industry density settings.
 };
 
@@ -259,6 +261,7 @@ struct GUISettings : public TimeSettings {
 	bool   newgrf_show_old_versions;         ///< whether to show old versions in the NewGRF list
 	uint8  newgrf_default_palette;           ///< default palette to use for NewGRFs without action 14 palette information
 	bool   console_show_unlisted;            ///< whether to show unlisted console commands
+	bool   newgrf_disable_big_gui;           ///< whether to disable "big GUI" NewGRFs
 
 	/**
 	 * Returns true when the user has sufficient privileges to edit newgrfs on a running game
@@ -407,6 +410,7 @@ struct GameCreationSettings {
 	uint8  amount_of_rocks;                  ///< the amount of rocks
 	uint8  height_affects_rocks;             ///< the affect that map height has on rocks
 	uint8  build_public_roads;               ///< build public roads connecting towns
+	uint16 custom_industry_number;           ///< manually entered number of industries
 };
 
 /** Settings related to construction in-game */

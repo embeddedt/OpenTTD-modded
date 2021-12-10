@@ -20,6 +20,7 @@
 #include "tile_cmd.h"
 #include "town.h"
 #include "water.h"
+#include "clear_func.h"
 #include "newgrf_animation_base.h"
 
 #include "safeguards.h"
@@ -417,7 +418,7 @@ uint16 GetObjectCallback(CallbackID callback, uint32 param1, uint32 param2, cons
  * @param group The group of sprites to draw.
  * @param spec  Object spec to draw.
  */
-static void DrawTileLayout(const TileInfo *ti, const TileLayoutSpriteGroup *group, const ObjectSpec *spec)
+static void DrawTileLayout(TileInfo *ti, const TileLayoutSpriteGroup *group, const ObjectSpec *spec, int building_z_offset)
 {
 	const DrawTileSprites *dts = group->ProcessRegisters(nullptr);
 	PaletteID palette = ((spec->flags & OBJECT_FLAG_2CC_COLOUR) ? SPR_2CCMAP_BASE : PALETTE_RECOLOUR_START) + Object::GetByTile(ti->tile)->colour;
@@ -425,7 +426,30 @@ static void DrawTileLayout(const TileInfo *ti, const TileLayoutSpriteGroup *grou
 	SpriteID image = dts->ground.sprite;
 	PaletteID pal  = dts->ground.pal;
 
-	if (GB(image, 0, SPRITE_WIDTH) != 0) {
+	if (spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) {
+		if (IsTileOnWater(ti->tile) && GetObjectGroundType(ti->tile) != OBJECT_GROUND_SHORE) {
+			DrawWaterClassGround(ti);
+		} else {
+			switch (GetObjectGroundType(ti->tile)) {
+				case OBJECT_GROUND_GRASS:
+					DrawClearLandTile(ti, GetObjectGroundDensity(ti->tile));
+					break;
+
+				case OBJECT_GROUND_SNOW_DESERT:
+					DrawGroundSprite(GetSpriteIDForSnowDesert(ti->tileh, GetObjectGroundDensity(ti->tile)), PAL_NONE);
+					break;
+
+				case OBJECT_GROUND_SHORE:
+					DrawShoreTile(ti->tileh);
+					break;
+
+				default:
+					/* This should never be reached, just draw a black sprite to make the problem clear without being unnecessarily punitive */
+					DrawGroundSprite(SPR_FLAT_BARE_LAND + SlopeToSpriteOffset(ti->tileh), PALETTE_ALL_BLACK);
+					break;
+			}
+		}
+	} else if (GB(image, 0, SPRITE_WIDTH) != 0) {
 		/* If the ground sprite is the default flat water sprite, draw also canal/river borders
 		 * Do not do this if the tile's WaterClass is 'land'. */
 		if ((image == SPR_FLAT_WATER_TILE || spec->flags & OBJECT_FLAG_DRAW_WATER) && IsTileOnWater(ti->tile)) {
@@ -435,7 +459,9 @@ static void DrawTileLayout(const TileInfo *ti, const TileLayoutSpriteGroup *grou
 		}
 	}
 
+	if (building_z_offset) ti->z += building_z_offset;
 	DrawNewGRFTileSeq(ti, dts, TO_STRUCTURES, 0, palette);
+	if (building_z_offset) ti->z -= building_z_offset;
 }
 
 /**
@@ -443,7 +469,7 @@ static void DrawTileLayout(const TileInfo *ti, const TileLayoutSpriteGroup *grou
  * @param ti   Information about the tile to draw on.
  * @param spec Object spec to draw.
  */
-void DrawNewObjectTile(TileInfo *ti, const ObjectSpec *spec)
+void DrawNewObjectTile(TileInfo *ti, const ObjectSpec *spec, int building_z_offset)
 {
 	Object *o = Object::GetByTile(ti->tile);
 	ObjectResolverObject object(spec, o, ti->tile);
@@ -451,7 +477,7 @@ void DrawNewObjectTile(TileInfo *ti, const ObjectSpec *spec)
 	const SpriteGroup *group = object.Resolve();
 	if (group == nullptr || group->type != SGT_TILELAYOUT) return;
 
-	DrawTileLayout(ti, (const TileLayoutSpriteGroup *)group, spec);
+	DrawTileLayout(ti, (const TileLayoutSpriteGroup *)group, spec, building_z_offset);
 }
 
 /**
@@ -565,4 +591,9 @@ void TriggerObjectAnimation(Object *o, ObjectAnimationTrigger trigger, const Obj
 	for (TileIndex tile : o->location) {
 		TriggerObjectTileAnimation(o, tile, trigger, spec);
 	}
+}
+
+void DumpObjectSpriteGroup(const ObjectSpec *spec, std::function<void(const char *)> print)
+{
+	DumpSpriteGroup(spec->grf_prop.spritegroup[0], std::move(print));
 }

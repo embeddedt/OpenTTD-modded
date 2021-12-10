@@ -17,12 +17,12 @@
 #include "network/network_content.h"
 #include "screenshot.h"
 #include "string_func.h"
+#include "string_func_extra.h"
 #include "strings_func.h"
 #include "tar_type.h"
 #include <sys/stat.h>
 #include <functional>
 #include "3rdparty/optional/ottd_optional.h"
-#include <charconv>
 
 #ifndef _WIN32
 # include <unistd.h>
@@ -780,7 +780,7 @@ FiosNumberedSaveName::FiosNumberedSaveName(const std::string &prefix) : prefix(p
 		_savegame_sort_order = order;
 
 		std::string_view name = list.begin()->title;
-		std::from_chars(name.data() + this->prefix.size(), name.data() + name.size(), this->number);
+		IntFromChars(name.data() + this->prefix.size(), name.data() + name.size(), this->number);
 	}
 }
 
@@ -791,7 +791,12 @@ FiosNumberedSaveName::FiosNumberedSaveName(const std::string &prefix) : prefix(p
 std::string FiosNumberedSaveName::Filename()
 {
 	if (++this->number >= _settings_client.gui.max_num_autosaves) this->number = 0;
-	return stdstr_fmt("%s%u.sav", this->prefix.c_str(), this->number);
+	return this->FilenameUsingNumber(this->number, "");
+}
+
+std::string FiosNumberedSaveName::FilenameUsingNumber(int num, const char *suffix) const
+{
+	return stdstr_fmt("%s%u%s.sav", this->prefix.c_str(), num, suffix);
 }
 
 /**

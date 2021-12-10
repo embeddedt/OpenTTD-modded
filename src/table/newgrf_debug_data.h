@@ -15,6 +15,7 @@
 #include "../timetable.h"
 #include "../ship.h"
 #include "../aircraft.h"
+#include "../object_map.h"
 #include "../string_func_extra.h"
 
 /* Helper for filling property tables */
@@ -509,7 +510,8 @@ static const NIVariable _niv_house[] = {
 };
 
 class NIHHouse : public NIHelper {
-	bool IsInspectable(uint index) const override        { return HouseSpec::Get(GetHouseType(index))->grf_prop.grffile != nullptr; }
+	bool IsInspectable(uint index) const override        { return true; }
+	bool ShowExtraInfoOnly(uint index) const override    { return HouseSpec::Get(GetHouseType(index))->grf_prop.grffile == nullptr; }
 	uint GetParent(uint index) const override            { return GetInspectWindowNumber(GSF_FAKE_TOWNS, GetTownIndex(index)); }
 	const void *GetInstance(uint index)const override    { return nullptr; }
 	const void *GetSpec(uint index) const override       { return HouseSpec::Get(GetHouseType(index)); }
@@ -835,6 +837,7 @@ static const NIVariable _niv_objects[] = {
 
 class NIHObject : public NIHelper {
 	bool IsInspectable(uint index) const override        { return ObjectSpec::GetByTile(index)->grf_prop.grffile != nullptr; }
+	bool ShowSpriteDumpButton(uint index) const override { return true; }
 	uint GetParent(uint index) const override            { return GetInspectWindowNumber(GSF_FAKE_TOWNS, Object::GetByTile(index)->town->index); }
 	const void *GetInstance(uint index)const override    { return Object::GetByTile(index); }
 	const void *GetSpec(uint index) const override       { return ObjectSpec::GetByTile(index); }
@@ -853,9 +856,61 @@ class NIHObject : public NIHelper {
 		output.print("Debug Info:");
 		const ObjectSpec *spec = ObjectSpec::GetByTile(index);
 		if (spec) {
+			ObjectID id = GetObjectIndex(index);
+			const Object *obj = Object::Get(id);
+			uint class_id = ObjectClass::Get(spec->cls_id)->global_id;
+			seprintf(buffer, lastof(buffer), "  index: %u, type ID: %u, class ID: %c%c%c%c", id, GetObjectType(index), class_id >> 24, class_id >> 16, class_id >> 8, class_id);
+			output.print(buffer);
+			seprintf(buffer, lastof(buffer), "  view: %u, colour: %u, effective foundation: %u", obj->view, obj->colour, !GetObjectHasNoEffectiveFoundation(index));
+			output.print(buffer);
+			if (spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) {
+				seprintf(buffer, lastof(buffer), "  ground type: %u, density: %u, counter: %u, water class: %u", GetObjectGroundType(index), GetObjectGroundDensity(index), GetObjectGroundCounter(index), GetWaterClass(index));
+				output.print(buffer);
+			}
 			seprintf(buffer, lastof(buffer), "  animation: frames: %u, status: %u, speed: %u, triggers: 0x%X", spec->animation.frames, spec->animation.status, spec->animation.speed, spec->animation.triggers);
 			output.print(buffer);
+			seprintf(buffer, lastof(buffer), "  size: %ux%u, height: %u, views: %u", GB(spec->size, 4, 4), GB(spec->size, 0, 4), spec->height, spec->views);
+			output.print(buffer);
+
+			output.register_next_line_click_flag_toggle(1);
+			seprintf(buffer, lastof(buffer), "  [%c] flags: 0x%X", output.flags & 1 ? '-' : '+', spec->flags);
+			output.print(buffer);
+			if (output.flags & 1) {
+				auto print = [&](const char *name) {
+					seprintf(buffer, lastof(buffer), "    %s", name);
+					output.print(buffer);
+				};
+				auto check_flag = [&](ObjectFlags flag, const char *name) {
+					if (spec->flags & flag) print(name);
+				};
+				auto check_ctrl_flag = [&](ObjectCtrlFlags flag, const char *name) {
+					if (spec->ctrl_flags & flag) print(name);
+				};
+				check_flag(OBJECT_FLAG_ONLY_IN_SCENEDIT,   "OBJECT_FLAG_ONLY_IN_SCENEDIT");
+				check_flag(OBJECT_FLAG_CANNOT_REMOVE,      "OBJECT_FLAG_CANNOT_REMOVE");
+				check_flag(OBJECT_FLAG_AUTOREMOVE,         "OBJECT_FLAG_AUTOREMOVE");
+				check_flag(OBJECT_FLAG_BUILT_ON_WATER,     "OBJECT_FLAG_BUILT_ON_WATER");
+				check_flag(OBJECT_FLAG_CLEAR_INCOME,       "OBJECT_FLAG_CLEAR_INCOME");
+				check_flag(OBJECT_FLAG_HAS_NO_FOUNDATION,  "OBJECT_FLAG_HAS_NO_FOUNDATION");
+				check_flag(OBJECT_FLAG_ANIMATION,          "OBJECT_FLAG_ANIMATION");
+				check_flag(OBJECT_FLAG_ONLY_IN_GAME,       "OBJECT_FLAG_ONLY_IN_GAME");
+				check_flag(OBJECT_FLAG_2CC_COLOUR,         "OBJECT_FLAG_2CC_COLOUR");
+				check_flag(OBJECT_FLAG_NOT_ON_LAND,        "OBJECT_FLAG_NOT_ON_LAND");
+				check_flag(OBJECT_FLAG_DRAW_WATER,         "OBJECT_FLAG_DRAW_WATER");
+				check_flag(OBJECT_FLAG_ALLOW_UNDER_BRIDGE, "OBJECT_FLAG_ALLOW_UNDER_BRIDGE");
+				check_flag(OBJECT_FLAG_ANIM_RANDOM_BITS,   "OBJECT_FLAG_ANIM_RANDOM_BITS");
+				check_flag(OBJECT_FLAG_SCALE_BY_WATER,     "OBJECT_FLAG_SCALE_BY_WATER");
+				check_ctrl_flag(OBJECT_CTRL_FLAG_USE_LAND_GROUND, "OBJECT_CTRL_FLAG_USE_LAND_GROUND");
+				check_ctrl_flag(OBJECT_CTRL_FLAG_EDGE_FOUNDATION, "OBJECT_CTRL_FLAG_EDGE_FOUNDATION");
+				check_ctrl_flag(OBJECT_CTRL_FLAG_FLOOD_RESISTANT, "OBJECT_CTRL_FLAG_FLOOD_RESISTANT");
+			}
 		}
+	}
+
+	/* virtual */ void SpriteDump(uint index, std::function<void(const char *)> print) const override
+	{
+		extern void DumpObjectSpriteGroup(const ObjectSpec *spec, std::function<void(const char *)> print);
+		DumpObjectSpriteGroup(ObjectSpec::GetByTile(index), std::move(print));
 	}
 };
 

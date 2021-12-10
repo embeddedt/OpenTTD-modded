@@ -825,10 +825,12 @@ CommandCost CmdBuildSingleRail(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 						Company::Get(_current_company)->infrastructure.rail[railtype] += LEVELCROSSING_TRACKBIT_FACTOR;
 						DirtyCompanyInfrastructureWindows(_current_company);
 						if (num_new_road_pieces > 0 && Company::IsValidID(road_owner)) {
+							assert(roadtype_road != INVALID_ROADTYPE);
 							Company::Get(road_owner)->infrastructure.road[roadtype_road] += num_new_road_pieces;
 							DirtyCompanyInfrastructureWindows(road_owner);
 						}
 						if (num_new_tram_pieces > 0 && Company::IsValidID(tram_owner)) {
+							assert(roadtype_tram != INVALID_ROADTYPE);
 							Company::Get(tram_owner)->infrastructure.road[roadtype_tram] += num_new_tram_pieces;
 							DirtyCompanyInfrastructureWindows(tram_owner);
 						}
@@ -971,18 +973,17 @@ CommandCost CmdRemoveSingleRail(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 
 			cost.AddCost(RailClearCost(GetTileRailTypeByTrackBit(tile, trackbit)));
 
-			/* Charge extra to remove signals on the track, if they are there */
-			if (HasSignalOnTrack(tile, track)) {
-				if (flags & DC_EXEC) CheckRemoveSignal(tile, track);
-				cost.AddCost(DoCommand(tile, track, 0, flags, CMD_REMOVE_SIGNALS));
-			}
-
 			if (HasReservedTracks(tile, trackbit)) {
 				v = GetTrainForReservation(tile, track);
 				if (v != nullptr) {
 					CommandCost ret = CheckTrainReservationPreventsTrackModification(v);
 					if (ret.Failed()) return ret;
 				}
+			}
+
+			/* Charge extra to remove signals on the track, if they are there */
+			if (HasSignalOnTrack(tile, track)) {
+				cost.AddCost(DoCommand(tile, track, 0, flags, CMD_REMOVE_SIGNALS));
 			}
 
 			if (flags & DC_EXEC) {

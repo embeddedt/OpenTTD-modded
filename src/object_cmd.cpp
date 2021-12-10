@@ -72,6 +72,40 @@ void InitializeObjects()
 }
 
 /**
+ * Set the object has no effective foundation flag for this tile.
+ * Set tileh to SLOPE_ELEVATED if not known, it will be redetermined if required.
+ */
+void SetShouldObjectHaveNoFoundation(TileIndex tile, Slope tileh, ObjectType type, const ObjectSpec *spec)
+{
+	if (type == OBJECT_OWNED_LAND) {
+		SetObjectHasNoEffectiveFoundation(tile, true);
+		return;
+	}
+
+	if (((spec->flags & OBJECT_FLAG_HAS_NO_FOUNDATION) == 0) && (spec->ctrl_flags & OBJECT_CTRL_FLAG_EDGE_FOUNDATION)) {
+		if (tileh == SLOPE_ELEVATED) tileh = GetTileSlope(tile);
+
+		if (IsSteepSlope(tileh)) {
+			SetObjectHasNoEffectiveFoundation(tile, false);
+			return;
+		}
+
+		if (tileh == SLOPE_FLAT) {
+			SetObjectHasNoEffectiveFoundation(tile, true);
+			return;
+		}
+
+		uint8 flags = spec->edge_foundation[Object::GetByTile(tile)->view];
+		DiagDirection edge = (DiagDirection)GB(flags, 0, 2);
+		Slope incline = InclinedSlope(edge);
+
+		SetObjectHasNoEffectiveFoundation(tile, !(IsOddParity(incline & tileh) || (flags & OBJECT_EF_FLAG_FOUNDATION_LOWER && !(tileh & incline))));
+	} else {
+		SetObjectHasNoEffectiveFoundation(tile, false);
+	}
+}
+
+/**
  * Actually build the object.
  * @param type  The type of object to build.
  * @param tile  The tile to build the northern tile of the object on.
@@ -126,6 +160,10 @@ void BuildObject(ObjectType type, TileIndex tile, CompanyID owner, Town *town, u
 		bool remove = IsDockingTile(t);
 		MakeObject(t, owner, o->index, wc, Random());
 		if (remove) RemoveDockingTile(t);
+		if ((spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) && wc == WATER_CLASS_INVALID) {
+			SetObjectGroundTypeDensity(t, OBJECT_GROUND_GRASS, 0);
+		}
+		SetShouldObjectHaveNoFoundation(t, SLOPE_ELEVATED, type, spec);
 		MarkTileDirtyByTile(t, VMDF_NOT_MAP_MODE);
 	}
 
@@ -514,13 +552,34 @@ static Foundation GetFoundation_Object(TileIndex tile, Slope tileh);
 
 static void DrawTile_Object(TileInfo *ti, DrawTileProcParams params)
 {
-	ObjectType type = GetObjectType(ti->tile);
+	const Object *obj = Object::GetByTile(ti->tile);
+	ObjectType type = obj->type;
 	const ObjectSpec *spec = ObjectSpec::Get(type);
 
-	/* Fall back for when the object doesn't exist anymore. */
-	if (!spec->enabled) type = OBJECT_TRANSMITTER;
+	int building_z_offset = 0;
 
-	if ((spec->flags & OBJECT_FLAG_HAS_NO_FOUNDATION) == 0) DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
+	/* Fall back for when the object doesn't exist anymore. */
+	if (!spec->enabled) {
+		type = OBJECT_TRANSMITTER;
+	} else if ((spec->flags & OBJECT_FLAG_HAS_NO_FOUNDATION) == 0) {
+		if (spec->ctrl_flags & OBJECT_CTRL_FLAG_EDGE_FOUNDATION) {
+			uint8 flags = spec->edge_foundation[obj->view];
+			DiagDirection edge = (DiagDirection)GB(flags, 0, 2);
+			Slope incline = InclinedSlope(edge);
+			if (IsSteepSlope(ti->tileh) || IsOddParity(incline & ti->tileh)) {
+				/* Steep slope, or odd number of matching bits indicating that edge is not level */
+				DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
+			} else if (flags & OBJECT_EF_FLAG_FOUNDATION_LOWER && !(ti->tileh & incline)) {
+				/* The edge is the lower edge of an inclined slope */
+				DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
+			} else if (flags & OBJECT_EF_FLAG_ADJUST_Z && ti->tileh & incline) {
+				/* The edge is elevated relative to the lowest tile height, adjust z */
+				building_z_offset = TILE_HEIGHT;
+			}
+		} else {
+			DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
+		}
+	}
 
 	if (type < NEW_OBJECT_OFFSET) {
 		const DrawTileSprites *dts = nullptr;
@@ -561,7 +620,7 @@ static void DrawTile_Object(TileInfo *ti, DrawTileProcParams params)
 			}
 		}
 	} else {
-		DrawNewObjectTile(ti, spec);
+		DrawNewObjectTile(ti, spec, building_z_offset);
 	}
 
 	DrawBridgeMiddle(ti);
@@ -581,7 +640,7 @@ static int GetSlopePixelZ_Object(TileIndex tile, uint x, uint y)
 
 static Foundation GetFoundation_Object(TileIndex tile, Slope tileh)
 {
-	return IsObjectType(tile, OBJECT_OWNED_LAND) ? FOUNDATION_NONE : FlatteningFoundation(tileh);
+	return GetObjectHasNoEffectiveFoundation(tile) ? FOUNDATION_NONE : FlatteningFoundation(tileh);
 }
 
 /**
@@ -658,7 +717,7 @@ static CommandCost ClearTile_Object(TileIndex tile, DoCommandFlag flags)
 			/* Removing with the cheat costs more in TTDPatch / the specs. */
 			cost.MultiplyCost(25);
 		}
-	} else if ((spec->flags & (OBJECT_FLAG_BUILT_ON_WATER | OBJECT_FLAG_NOT_ON_LAND)) != 0) {
+	} else if ((spec->flags & (OBJECT_FLAG_BUILT_ON_WATER | OBJECT_FLAG_NOT_ON_LAND)) != 0 || (spec->ctrl_flags & OBJECT_CTRL_FLAG_FLOOD_RESISTANT) != 0) {
 		/* Water can't remove objects that are buildable on water. */
 		return CMD_ERROR;
 	}
@@ -740,6 +799,84 @@ static void GetTileDesc_Object(TileIndex tile, TileDesc *td)
 	}
 }
 
+/** Convert to or from snowy tiles. */
+static void TileLoopObjectGroundAlps(TileIndex tile)
+{
+	int k;
+	if ((int)TileHeight(tile) < GetSnowLine() - 1) {
+		/* Fast path to avoid needing to check all 4 corners */
+		k = -1;
+	} else {
+		k = GetTileZ(tile) - GetSnowLine() + 1;
+	}
+
+	if (k < 0) {
+		/* Below the snow line, do nothing if no snow. */
+		if (GetObjectGroundType(tile) != OBJECT_GROUND_SNOW_DESERT) return;
+	} else {
+		/* At or above the snow line, make snow tile if needed. */
+		if (GetObjectGroundType(tile) != OBJECT_GROUND_SNOW_DESERT) {
+			SetObjectGroundTypeDensity(tile, OBJECT_GROUND_SNOW_DESERT, 0);
+			MarkTileDirtyByTile(tile);
+			return;
+		}
+	}
+	/* Update snow density. */
+	uint current_density = GetObjectGroundDensity(tile);
+	uint req_density = (k < 0) ? 0u : std::min<uint>(k, 3u);
+
+	if (current_density < req_density) {
+		SetObjectGroundDensity(tile, current_density + 1);
+	} else if (current_density > req_density) {
+		SetObjectGroundDensity(tile, current_density - 1);
+	} else {
+		/* Density at the required level. */
+		if (k >= 0) return;
+		SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 3);
+	}
+	MarkTileDirtyByTile(tile);
+}
+
+/**
+ * Tests if at least one surrounding tile is non-desert
+ * @param tile tile to check
+ * @return does this tile have at least one non-desert tile around?
+ */
+static inline bool NeighbourIsNormal(TileIndex tile)
+{
+	for (DiagDirection dir = DIAGDIR_BEGIN; dir < DIAGDIR_END; dir++) {
+		TileIndex t = tile + TileOffsByDiagDir(dir);
+		if (!IsValidTile(t)) continue;
+		if (GetTropicZone(t) != TROPICZONE_DESERT) return true;
+		if (HasTileWaterClass(t) && GetWaterClass(t) == WATER_CLASS_SEA) return true;
+	}
+	return false;
+}
+
+static void TileLoopObjectGroundDesert(TileIndex tile)
+{
+	/* Current desert level - 0 if it is not desert */
+	uint current = 0;
+	if (GetObjectGroundType(tile) == OBJECT_GROUND_SNOW_DESERT) current = GetObjectGroundDensity(tile);
+
+	/* Expected desert level - 0 if it shouldn't be desert */
+	uint expected = 0;
+	if (GetTropicZone(tile) == TROPICZONE_DESERT) {
+		expected = NeighbourIsNormal(tile) ? 1 : 3;
+	}
+
+	if (current == expected) return;
+
+	if (expected == 0) {
+		SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 3);
+	} else {
+		/* Transition from clear to desert is not smooth (after clearing desert tile) */
+		SetObjectGroundTypeDensity(tile, OBJECT_GROUND_SNOW_DESERT, expected);
+	}
+
+	MarkTileDirtyByTile(tile);
+}
+
 static void TileLoop_Object(TileIndex tile)
 {
 	const ObjectSpec *spec = ObjectSpec::GetByTile(tile);
@@ -749,7 +886,33 @@ static void TileLoop_Object(TileIndex tile)
 		if (o->location.tile == tile) TriggerObjectAnimation(o, OAT_256_TICKS, spec);
 	}
 
-	if (IsTileOnWater(tile)) TileLoop_Water(tile);
+	if (IsTileOnWater(tile)) {
+		TileLoop_Water(tile);
+	} else if (spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) {
+		if (GetObjectGroundType(tile) == OBJECT_GROUND_SHORE) {
+			TileLoop_Water(tile);
+		} else {
+			switch (_settings_game.game_creation.landscape) {
+				case LT_TROPIC: TileLoopObjectGroundDesert(tile); break;
+				case LT_ARCTIC: TileLoopObjectGroundAlps(tile);   break;
+			}
+		}
+
+		if (GetObjectGroundType(tile) == OBJECT_GROUND_GRASS && GetObjectGroundDensity(tile) != 3) {
+			if (_game_mode != GM_EDITOR) {
+				if (GetObjectGroundCounter(tile) < 7) {
+					AddObjectGroundCounter(tile, 1);
+				} else {
+					SetObjectGroundCounter(tile, 0);
+					SetObjectGroundDensity(tile, GetObjectGroundDensity(tile) + 1);
+					MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
+				}
+			} else {
+				SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 3);
+				MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
+			}
+		}
+	}
 
 	if (!IsObjectType(tile, OBJECT_HQ)) return;
 
@@ -962,6 +1125,16 @@ static void ChangeTileOwner_Object(TileIndex tile, Owner old_owner, Owner new_ow
 	}
 }
 
+static int GetObjectEffectiveZ(TileIndex tile, const ObjectSpec *spec, int z, Slope tileh)
+{
+	if ((spec->ctrl_flags & OBJECT_CTRL_FLAG_EDGE_FOUNDATION) && !(spec->flags & OBJECT_FLAG_HAS_NO_FOUNDATION)) {
+		uint8 flags = spec->edge_foundation[Object::GetByTile(tile)->view];
+		DiagDirection edge = (DiagDirection)GB(flags, 0, 2);
+		if (!(flags & OBJECT_EF_FLAG_FOUNDATION_LOWER) && !(tileh & InclinedSlope(edge))) return z;
+	}
+	return z + GetSlopeMaxZ(tileh);
+}
+
 static CommandCost TerraformTile_Object(TileIndex tile, DoCommandFlag flags, int z_new, Slope tileh_new)
 {
 	ObjectType type = GetObjectType(tile);
@@ -971,16 +1144,24 @@ static CommandCost TerraformTile_Object(TileIndex tile, DoCommandFlag flags, int
 		CommandCost ret = CheckTileOwnership(tile);
 		if (ret.Succeeded()) return CommandCost();
 	} else if (AutoslopeEnabled() && type != OBJECT_TRANSMITTER && type != OBJECT_LIGHTHOUSE) {
+		const ObjectSpec *spec = ObjectSpec::Get(type);
+
+		if (flags & DC_EXEC) {
+			SetShouldObjectHaveNoFoundation(tile, tileh_new, type, spec);
+			if (GetObjectGroundType(tile) == OBJECT_GROUND_SHORE) SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 0);
+		}
+
 		/* Behaviour:
 		 *  - Both new and old slope must not be steep.
 		 *  - TileMaxZ must not be changed.
 		 *  - Allow autoslope by default.
 		 *  - Disallow autoslope if callback succeeds and returns non-zero.
 		 */
-		Slope tileh_old = GetTileSlope(tile);
-		/* TileMaxZ must not be changed. Slopes must not be steep. */
-		if (!IsSteepSlope(tileh_old) && !IsSteepSlope(tileh_new) && (GetTileMaxZ(tile) == z_new + GetSlopeMaxZ(tileh_new))) {
-			const ObjectSpec *spec = ObjectSpec::Get(type);
+		int z_old;
+		Slope tileh_old = GetTileSlope(tile, &z_old);
+
+		/* Object height must not be changed. Slopes must not be steep. */
+		if (!IsSteepSlope(tileh_old) && !IsSteepSlope(tileh_new) && (GetObjectEffectiveZ(tile, spec, z_old, tileh_old) == GetObjectEffectiveZ(tile, spec, z_new, tileh_new))) {
 
 			/* Call callback 'disable autosloping for objects'. */
 			if (HasBit(spec->callback_mask, CBM_OBJ_AUTOSLOPE)) {

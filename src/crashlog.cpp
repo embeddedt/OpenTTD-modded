@@ -32,6 +32,7 @@
 #include "thread.h"
 #include "debug_desync.h"
 #include "event_logs.h"
+#include "scope.h"
 
 #include "ai/ai_info.hpp"
 #include "game/game.hpp"
@@ -689,33 +690,75 @@ bool CrashLog::WriteScreenshot(char *filename, const char *filename_last, const 
 	return res;
 }
 
+#ifdef DEDICATED
+static bool CopyAutosave(const std::string &old_name, const std::string &new_name)
+{
+	FILE *old_fh = FioFOpenFile(old_name, "rb", AUTOSAVE_DIR);
+	if (old_fh == nullptr) return false;
+	auto guard1 = scope_guard([=]() {
+		FioFCloseFile(old_fh);
+	});
+	FILE *new_fh = FioFOpenFile(new_name, "wb", AUTOSAVE_DIR);
+	if (new_fh == nullptr) return false;
+	auto guard2 = scope_guard([=]() {
+		FioFCloseFile(new_fh);
+	});
+
+	char buffer[4096 * 4];
+	size_t length;
+	do {
+		length = fread(buffer, 1, lengthof(buffer), old_fh);
+		if (fwrite(buffer, 1, length, new_fh) != length) {
+			return false;
+		}
+	} while (length == lengthof(buffer));
+	return true;
+}
+#endif
+
 /**
  * Makes the crash log, writes it to a file and then subsequently tries
  * to make a crash dump and crash savegame. It uses DEBUG to write
  * information like paths to the console.
  * @return true when everything is made successfully.
  */
-bool CrashLog::MakeCrashLog()
+bool CrashLog::MakeCrashLog(char *buffer, const char *last)
 {
 	/* Don't keep looping logging crashes. */
 	static bool crashlogged = false;
 	if (crashlogged) return false;
 	crashlogged = true;
 
+	char *name_buffer_date = this->name_buffer + seprintf(this->name_buffer, lastof(this->name_buffer), "crash-");
+	time_t cur_time = time(nullptr);
+	strftime(name_buffer_date, lastof(this->name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
+
+#ifdef DEDICATED
+	if (!_settings_client.gui.keep_all_autosave) {
+		extern FiosNumberedSaveName &GetAutoSaveFiosNumberedSaveName();
+		FiosNumberedSaveName &autosave = GetAutoSaveFiosNumberedSaveName();
+		int num = autosave.GetLastNumber();
+		if (num >= 0) {
+			std::string old_file = autosave.FilenameUsingNumber(num, "");
+			char save_suffix[MAX_PATH];
+			seprintf(save_suffix, lastof(save_suffix), "-(%s)", this->name_buffer);
+			std::string new_file = autosave.FilenameUsingNumber(num, save_suffix);
+			if (CopyAutosave(old_file, new_file)) {
+				printf("Saving copy of last autosave: %s -> %s\n\n", old_file.c_str(), new_file.c_str());
+			}
+		}
+	}
+#endif
+
 	if (!VideoDriver::EmergencyAcquireGameLock(20, 2)) {
 		printf("Failed to acquire gamelock before filling crash log\n\n");
 	}
 
 	char filename[MAX_PATH];
-	char buffer[65536 * 4];
 	bool ret = true;
 
-	char *name_buffer_date = this->name_buffer + seprintf(this->name_buffer, lastof(this->name_buffer), "crash-");
-	time_t cur_time = time(nullptr);
-	strftime(name_buffer_date, lastof(this->name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
-
 	printf("Crash encountered, generating crash log...\n");
-	this->FillCrashLog(buffer, lastof(buffer));
+	this->FillCrashLog(buffer, last);
 	printf("%s\n", buffer);
 	printf("Crash log generated.\n\n");
 
@@ -751,6 +794,12 @@ bool CrashLog::MakeCrashLog()
 	return ret;
 }
 
+bool CrashLog::MakeCrashLogWithStackBuffer()
+{
+	char buffer[65536 * 4];
+	return this->MakeCrashLog(buffer, lastof(buffer));
+}
+
 /**
  * Makes a desync crash log, writes it to a file and then subsequently tries
  * to make a crash savegame. It uses DEBUG to write
@@ -760,7 +809,14 @@ bool CrashLog::MakeCrashLog()
 bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info) const
 {
 	char filename[MAX_PATH];
-	char buffer[65536 * 2];
+
+	const size_t length = 65536 * 16;
+	char * const buffer = MallocT<char>(length);
+	auto guard = scope_guard([=]() {
+		free(buffer);
+	});
+	const char * const last = buffer + length - 1;
+
 	bool ret = true;
 
 	const char *mode = _network_server ? "server" : "client";
@@ -771,13 +827,13 @@ bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_ou
 	strftime(name_buffer_date, lastof(name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
 
 	printf("Desync encountered (%s), generating desync log...\n", mode);
-	char *b = this->FillDesyncCrashLog(buffer, lastof(buffer), info);
+	char *b = this->FillDesyncCrashLog(buffer, last, info);
 
 	if (log_out) log_out->assign(buffer);
 
 	if (log_in && !log_in->empty()) {
-		b = strecpy(b, "\n", lastof(buffer), true);
-		b = strecpy(b, log_in->c_str(), lastof(buffer), true);
+		b = strecpy(b, "\n", last, true);
+		b = strecpy(b, log_in->c_str(), last, true);
 	}
 
 	bool bret = this->WriteCrashLog(buffer, filename, lastof(filename), name_buffer, info.log_file);
@@ -824,7 +880,14 @@ bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_ou
 bool CrashLog::MakeInconsistencyLog(const InconsistencyExtraInfo &info) const
 {
 	char filename[MAX_PATH];
-	char buffer[65536 * 2];
+
+	const size_t length = 65536 * 16;
+	char * const buffer = MallocT<char>(length);
+	auto guard = scope_guard([=]() {
+		free(buffer);
+	});
+	const char * const last = buffer + length - 1;
+
 	bool ret = true;
 
 	char name_buffer[64];
@@ -833,7 +896,7 @@ bool CrashLog::MakeInconsistencyLog(const InconsistencyExtraInfo &info) const
 	strftime(name_buffer_date, lastof(name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
 
 	printf("Inconsistency encountered, generating diagnostics log...\n");
-	this->FillInconsistencyLog(buffer, lastof(buffer), info);
+	this->FillInconsistencyLog(buffer, last, info);
 
 	bool bret = this->WriteCrashLog(buffer, filename, lastof(filename), name_buffer);
 	if (bret) {
