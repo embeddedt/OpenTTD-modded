@@ -1037,6 +1037,14 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :Every month
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :Every 3 months
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :Every 6 months
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :Every 12 months
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM_LABEL      :Custom interval (days)
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM_LABEL   :Custom interval (real-time minutes)
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM            :Every {COMMA}{NBSP}days
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM_SINGULAR   :Every day
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM         :Every {COMMA} real-time minutes
+
+STR_GAME_OPTIONS_AUTOSAVE_DAYS_QUERY_CAPT                       :{WHITE}Autosave interval in days
+STR_GAME_OPTIONS_AUTOSAVE_MINUTES_QUERY_CAPT                    :{WHITE}Autosave interval in real-time minutes
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Language
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Select the interface language to use
@@ -1791,6 +1799,12 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :Closes a window
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Autosave: {STRING2}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Select interval between automatic game saves
+
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS                         :Custom autosave interval in days: {STRING2}
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS_HELPTEXT                :Set custom days interval between automatic game saves
+
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES                      :Custom autosave interval in real-time minutes: {STRING2}
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES_HELPTEXT             :Set custom real-time minutes of game time interval between automatic game saves
 
 STR_CONFIG_SETTING_AUTOSAVE_ON_NETWORK_DISCONNECT               :Autosave on network disconnection: {STRING2}
 STR_CONFIG_SETTING_AUTOSAVE_ON_NETWORK_DISCONNECT_HELPTEXT      :When enabled, multiplayer clients automatically save the game when disconnected from the server
@@ -7131,6 +7145,10 @@ STR_SCHDISPATCH_DELAY_CAPTION_DAY                               :{BLACK}Delay (d
 STR_SCHDISPATCH_DELAY_CAPTION_TICKS                             :{BLACK}Delay (ticks)
 STR_SCHDISPATCH_RESET_LAST_DISPATCH                             :{BLACK}Reset Last Dispatched
 STR_SCHDISPATCH_RESET_LAST_DISPATCH_TOOLTIP                     :{BLACK}Reset when a vehicle was last dispatched from the schedule.
+STR_SCHDISPATCH_CLEAR                                           :{BLACK}Clear Departure Slots
+STR_SCHDISPATCH_CLEAR_TOOLTIP                                   :{BLACK}Clear all departure slots from the schedule.
+STR_SCHDISPATCH_MANAGE                                          :{BLACK}Manage Schedule
+STR_SCHDISPATCH_MANAGE_TOOLTIP                                  :{STRING}{}{}{STRING}
 
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_PAST                     :{BLACK}Last departure at {DATE_WALLCLOCK_TINY}.
 STR_SCHDISPATCH_SUMMARY_LAST_DEPARTURE_FUTURE                   :{BLACK}Last departure has not left yet, it will depart at {DATE_WALLCLOCK_TINY}.

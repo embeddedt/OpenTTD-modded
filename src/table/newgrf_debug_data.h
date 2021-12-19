@@ -369,6 +369,9 @@ class NIHVehicle : public NIHelper {
 						ymd.year, ymd.month + 1, ymd.day, e->age, e->info.base_life, e->duration_phase_1, e->duration_phase_2, e->duration_phase_3,
 						e->duration_phase_1 + e->duration_phase_2 + e->duration_phase_3);
 				output.print(buffer);
+				seprintf(buffer, lastof(buffer), "    Cargo type: %u, Refit mask: 0x" OTTD_PRINTFHEX64 ", Cargo age period: %u",
+						e->info.cargo_type, e->info.refit_mask, e->info.cargo_age_period);
+				output.print(buffer);
 				if (e->type == VEH_TRAIN) {
 					const RailtypeInfo *rti = GetRailTypeInfo(e->u.rail.railtype);
 					seprintf(buffer, lastof(buffer), "    Railtype: %u (0x" OTTD_PRINTFHEX64 "), Compatible: 0x" OTTD_PRINTFHEX64 ", Powered: 0x" OTTD_PRINTFHEX64 ", All compatible: 0x" OTTD_PRINTFHEX64,
@@ -871,6 +874,19 @@ class NIHObject : public NIHelper {
 			output.print(buffer);
 			seprintf(buffer, lastof(buffer), "  size: %ux%u, height: %u, views: %u", GB(spec->size, 4, 4), GB(spec->size, 0, 4), spec->height, spec->views);
 			output.print(buffer);
+
+			{
+				YearMonthDay ymd;
+				ConvertDateToYMD(spec->introduction_date, &ymd);
+				char *b = buffer + seprintf(buffer, lastof(buffer), " intro: %4i-%02i-%02i",
+						ymd.year, ymd.month + 1, ymd.day);
+				if (spec->end_of_life_date < MAX_DAY) {
+					ConvertDateToYMD(spec->end_of_life_date, &ymd);
+					seprintf(b, lastof(buffer), ", end of life: %4i-%02i-%02i",
+							ymd.year, ymd.month + 1, ymd.day);
+				}
+				output.print(buffer);
+			}
 
 			output.register_next_line_click_flag_toggle(1);
 			seprintf(buffer, lastof(buffer), "  [%c] flags: 0x%X", output.flags & 1 ? '-' : '+', spec->flags);
