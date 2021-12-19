@@ -38965,6 +38965,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/saveload/extended_ver_sl.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/saveload/saveload_common.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/saveload/saveload_types.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/schdispatch.h
+CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/scope.h
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/script/api/script_client.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/script/api/script_company.hpp
 CMakeFiles/openttd.dir/src/settings_gui.cpp.o: ../src/script/api/script_date.hpp

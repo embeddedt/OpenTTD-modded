@@ -38966,6 +38966,7 @@ CMakeFiles/openttd.dir/src/settings_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_common.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_types.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_client.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_company.hpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/script/api/script_date.hpp

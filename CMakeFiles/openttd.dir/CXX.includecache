@@ -15905,6 +15905,8 @@ video/video_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/video/video_driver.hpp
 music/music_driver.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/music/music_driver.hpp
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 vector
 -
 functional

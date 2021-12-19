@@ -168,7 +168,7 @@ static_assert(_locale_currencies.size() == CURRENCY_END);
 static constexpr std::initializer_list<const char*> _locale_units{"imperial", "metric", "si", "gameunits"};
 static constexpr std::initializer_list<const char*> _town_names{"english", "french", "german", "american", "latin", "silly", "swedish", "dutch", "finnish", "polish", "slovak", "norwegian", "hungarian", "austrian", "romanian", "czech", "swiss", "danish", "turkish", "italian", "catalan"};
 static constexpr std::initializer_list<const char*> _climates{"temperate", "arctic", "tropic", "toyland"};
-static constexpr std::initializer_list<const char*> _autosave_interval{"off", "monthly", "quarterly", "half year", "yearly"};
+static constexpr std::initializer_list<const char*> _autosave_interval{"off", "monthly", "quarterly", "half year", "yearly", "custom_days", "custom_realtime_minutes"};
 static constexpr std::initializer_list<const char*> _roadsides{"left", "right"};
 static constexpr std::initializer_list<const char*> _savegame_date{"long", "short", "iso"};
 static constexpr std::initializer_list<const char*> _savegame_overwrite_confirm{"no", "different", "not same", "yes"};
@@ -391,6 +391,7 @@ static void VelocityUnitsChanged(int32 new_value);
 static void ChangeTrackTypeSortMode(int32 new_value);
 static void PublicRoadsSettingChange(int32 new_value);
 static void TrainSpeedAdaptationChanged(int32 new_value);
+static void AutosaveModeChanged(int32 new_value);
 static bool CheckSharingRail(int32 &new_value);
 static void SharingRailChanged(int32 new_value);
 static bool CheckSharingRoad(int32 &new_value);
@@ -941,7 +942,9 @@ SDT_SSTR(GameSettings, locale.digit_group_separator_currency, SLE_STRQ, SF_NO_NE
 SDT_SSTR(GameSettings, locale.digit_decimal_separator, SLE_STRQ, SF_NO_NETWORK_SYNC, nullptr,                                                       nullptr, [](auto) { MarkWholeScreenDirty(); }, SLV_126, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, vehicle.adjacent_crossings,        SF_NONE, true,                              STR_CONFIG_SETTING_ADJACENT_CROSSINGS, STR_CONFIG_SETTING_ADJACENT_CROSSINGS_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "adjacent_crossings.vehicle.adjacent_crossings"),
 SDT_BOOL(GameSettings, vehicle.safer_crossings,        SF_NONE, false,                              STR_CONFIG_SETTING_SAFER_CROSSINGS, STR_CONFIG_SETTING_SAFER_CROSSINGS_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "safer_crossings.vehicle.safer_crossings"),
-SDTC_OMANY(              gui.autosave, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 1,             4, _autosave_interval,     STR_CONFIG_SETTING_AUTOSAVE, STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT, STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_OMANY(              gui.autosave, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 1,             6, _autosave_interval,     STR_CONFIG_SETTING_AUTOSAVE, STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT, STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF, nullptr, AutosaveModeChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_VAR(              gui.autosave_custom_days, SLE_UINT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 14,       1, 4000, 7, STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS, STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS_HELPTEXT, STR_TIMETABLE_DAYS, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_VAR(              gui.autosave_custom_minutes, SLE_UINT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 30,       3, 8000, 10, STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES, STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES_HELPTEXT, STR_TIMETABLE_MINUTES, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_BOOL(              gui.threaded_saves,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_OMANY(              gui.date_format_in_default_names, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 2,             2, _savegame_date,     STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES, STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT, STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_BOOL(              gui.show_finances,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_SHOWFINANCES, STR_CONFIG_SETTING_SHOWFINANCES_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
@@ -1435,7 +1438,9 @@ static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.locale.units_w
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.locale.units_volume exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.locale.units_force exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.locale.units_height exceeds storage size");
-static_assert(4 <= MAX_SLE_UINT8, "Maximum value for gui.autosave exceeds storage size");
+static_assert(6 <= MAX_SLE_UINT8, "Maximum value for gui.autosave exceeds storage size");
+static_assert(4000 <= MAX_SLE_UINT16, "Maximum value for gui.autosave_custom_days exceeds storage size");
+static_assert(8000 <= MAX_SLE_UINT16, "Maximum value for gui.autosave_custom_minutes exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for gui.date_format_in_default_names exceeds storage size");
 static_assert(3 <= MAX_SLE_UINT8, "Maximum value for gui.auto_scrolling exceeds storage size");
 #ifdef __EMSCRIPTEN__
