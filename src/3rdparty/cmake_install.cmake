@@ -40,6 +40,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/os2/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/cpp-btree/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/mingw-std-threads/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/monocypher/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/randombytes/cmake_install.cmake")
 
 endif()
 

@@ -93,6 +93,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqstate.cpp.o"
   "CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqtable.cpp.o"
   "CMakeFiles/openttd.dir/src/3rdparty/squirrel/squirrel/sqvm.cpp.o"
+  "CMakeFiles/openttd.dir/src/3rdparty/monocypher/monocypher.c.o"
+  "CMakeFiles/openttd.dir/src/3rdparty/randombytes/randombytes.c.o"
   "CMakeFiles/openttd.dir/src/ai/ai_config.cpp.o"
   "CMakeFiles/openttd.dir/src/ai/ai_core.cpp.o"
   "CMakeFiles/openttd.dir/src/ai/ai_gui.cpp.o"
@@ -478,6 +480,6 @@ file(REMOVE_RECURSE
 )
 
 # Per-language clean rules from dependency scanning.
-foreach(lang CXX)
+foreach(lang C CXX)
   include(CMakeFiles/openttd.dir/cmake_clean_${lang}.cmake OPTIONAL)
 endforeach()

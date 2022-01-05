@@ -1,8 +1,44 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
+  "C"
   "CXX"
   )
 # The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_C
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/monocypher/monocypher.c" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/3rdparty/monocypher/monocypher.c.o"
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/randombytes/randombytes.c" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/3rdparty/randombytes/randombytes.c.o"
+  )
+set(CMAKE_C_COMPILER_ID "Clang")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_C
+  "GLOBAL_DATA_DIR=\"/usr/local/share/games/openttd\""
+  "NO_THREADS"
+  "PERSONAL_DIR=\".openttd\""
+  "TTD_ENDIAN=TTD_LITTLE_ENDIAN"
+  "UNIX"
+  "WITH_ASSERT"
+  "WITH_PERSONAL_DIR"
+  "WITH_PNG"
+  "WITH_SDL2"
+  "WITH_ZLIB"
+  )
+
+# The include file search paths:
+set(CMAKE_C_TARGET_INCLUDE_PATH
+  "../src"
+  "../src/3rdparty/squirrel/include"
+  "generated"
+  "generated/script/api"
+  "../src/script/api"
+  "generated/script"
+  "generated/script/api/ai"
+  "../src/script/api/ai"
+  "generated/script/api/game"
+  "../src/script/api/game"
+  "generated/script/api/template"
+  "../src/script/api/template"
+  )
 set(CMAKE_DEPENDS_CHECK_CXX
   "/__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/rev.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/generated/rev.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/md5/md5.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.o"

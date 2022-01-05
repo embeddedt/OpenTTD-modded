@@ -1233,6 +1233,8 @@ openttd.h
 ../src/openttd.h
 rail_gui_type.h
 ../src/rail_gui_type.h
+station_type.h
+../src/station_type.h
 
 ../src/signal_func.h
 signal_type.h
@@ -1898,6 +1900,12 @@ process.h
 cstdio
 -
 
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/monocypher/monocypher.h
+stddef.h
+-
+stdint.h
+-
+
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/optional/optional.hpp
 utility
 -
@@ -1925,6 +1933,12 @@ optional.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getaddrinfo.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/os2/getnameinfo.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/randombytes/randombytes.h
+crtdefs.h
+-
+unistd.h
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp
 ../../../stdafx.h
@@ -4607,6 +4621,8 @@ departures_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/departures_func.h
 cargotype.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/cargotype.h
+zoom_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 table/sprites.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/sprites.h
 table/strings.h
@@ -5899,6 +5915,8 @@ framerate_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/framerate_type.h
 transparency.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/transparency.h
+core/backup_type.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
 table/palettes.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/palettes.h
 table/string_colours.h
@@ -8199,6 +8217,10 @@ network_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
 ../string_func_extra.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
+../3rdparty/randombytes/randombytes.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/randombytes/randombytes.h
+../settings_internal.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/settings_internal.h
 sstream
 -
 iomanip
@@ -10479,6 +10501,8 @@ vehiclelist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.h
 tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
+train.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/train.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -12135,8 +12159,20 @@ string
 /__w/OpenTTD-modded/OpenTTD-modded/src/settings_func.h
 ../strings_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
+../network/network.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/network.h
+../network/network_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_func.h
+../network/network_server.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/network/network_server.h
+../3rdparty/randombytes/randombytes.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/randombytes/randombytes.h
+../3rdparty/monocypher/monocypher.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/monocypher/monocypher.h
 saveload.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
+saveload_buffer.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_buffer.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/table/strings.h
 ../safeguards.h
@@ -15955,6 +15991,8 @@ openttd.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
 rail_gui_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui_type.h
+station_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
 deque

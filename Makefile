@@ -503,6 +503,60 @@ src/3rdparty/md5/md5.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/md5/md5.cpp.s
 .PHONY : src/3rdparty/md5/md5.cpp.s
 
+src/3rdparty/monocypher/monocypher.o: src/3rdparty/monocypher/monocypher.c.o
+
+.PHONY : src/3rdparty/monocypher/monocypher.o
+
+# target to build an object file
+src/3rdparty/monocypher/monocypher.c.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/monocypher/monocypher.c.o
+.PHONY : src/3rdparty/monocypher/monocypher.c.o
+
+src/3rdparty/monocypher/monocypher.i: src/3rdparty/monocypher/monocypher.c.i
+
+.PHONY : src/3rdparty/monocypher/monocypher.i
+
+# target to preprocess a source file
+src/3rdparty/monocypher/monocypher.c.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/monocypher/monocypher.c.i
+.PHONY : src/3rdparty/monocypher/monocypher.c.i
+
+src/3rdparty/monocypher/monocypher.s: src/3rdparty/monocypher/monocypher.c.s
+
+.PHONY : src/3rdparty/monocypher/monocypher.s
+
+# target to generate assembly for a file
+src/3rdparty/monocypher/monocypher.c.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/monocypher/monocypher.c.s
+.PHONY : src/3rdparty/monocypher/monocypher.c.s
+
+src/3rdparty/randombytes/randombytes.o: src/3rdparty/randombytes/randombytes.c.o
+
+.PHONY : src/3rdparty/randombytes/randombytes.o
+
+# target to build an object file
+src/3rdparty/randombytes/randombytes.c.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/randombytes/randombytes.c.o
+.PHONY : src/3rdparty/randombytes/randombytes.c.o
+
+src/3rdparty/randombytes/randombytes.i: src/3rdparty/randombytes/randombytes.c.i
+
+.PHONY : src/3rdparty/randombytes/randombytes.i
+
+# target to preprocess a source file
+src/3rdparty/randombytes/randombytes.c.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/randombytes/randombytes.c.i
+.PHONY : src/3rdparty/randombytes/randombytes.c.i
+
+src/3rdparty/randombytes/randombytes.s: src/3rdparty/randombytes/randombytes.c.s
+
+.PHONY : src/3rdparty/randombytes/randombytes.s
+
+# target to generate assembly for a file
+src/3rdparty/randombytes/randombytes.c.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/3rdparty/randombytes/randombytes.c.s
+.PHONY : src/3rdparty/randombytes/randombytes.c.s
+
 src/3rdparty/squirrel/sqstdlib/sqstdaux.o: src/3rdparty/squirrel/sqstdlib/sqstdaux.cpp.o
 
 .PHONY : src/3rdparty/squirrel/sqstdlib/sqstdaux.o
@@ -13288,6 +13342,12 @@ help:
 	@echo "... src/3rdparty/md5/md5.o"
 	@echo "... src/3rdparty/md5/md5.i"
 	@echo "... src/3rdparty/md5/md5.s"
+	@echo "... src/3rdparty/monocypher/monocypher.o"
+	@echo "... src/3rdparty/monocypher/monocypher.i"
+	@echo "... src/3rdparty/monocypher/monocypher.s"
+	@echo "... src/3rdparty/randombytes/randombytes.o"
+	@echo "... src/3rdparty/randombytes/randombytes.i"
+	@echo "... src/3rdparty/randombytes/randombytes.s"
 	@echo "... src/3rdparty/squirrel/sqstdlib/sqstdaux.o"
 	@echo "... src/3rdparty/squirrel/sqstdlib/sqstdaux.i"
 	@echo "... src/3rdparty/squirrel/sqstdlib/sqstdaux.s"

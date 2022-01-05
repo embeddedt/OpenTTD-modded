@@ -718,6 +718,8 @@ src/3rdparty/all: src/3rdparty/opengl/all
 src/3rdparty/all: src/3rdparty/os2/all
 src/3rdparty/all: src/3rdparty/cpp-btree/all
 src/3rdparty/all: src/3rdparty/mingw-std-threads/all
+src/3rdparty/all: src/3rdparty/monocypher/all
+src/3rdparty/all: src/3rdparty/randombytes/all
 
 .PHONY : src/3rdparty/all
 
@@ -728,6 +730,8 @@ src/3rdparty/clean: src/3rdparty/opengl/clean
 src/3rdparty/clean: src/3rdparty/os2/clean
 src/3rdparty/clean: src/3rdparty/cpp-btree/clean
 src/3rdparty/clean: src/3rdparty/mingw-std-threads/clean
+src/3rdparty/clean: src/3rdparty/monocypher/clean
+src/3rdparty/clean: src/3rdparty/randombytes/clean
 
 .PHONY : src/3rdparty/clean
 
@@ -738,6 +742,8 @@ src/3rdparty/preinstall: src/3rdparty/opengl/preinstall
 src/3rdparty/preinstall: src/3rdparty/os2/preinstall
 src/3rdparty/preinstall: src/3rdparty/cpp-btree/preinstall
 src/3rdparty/preinstall: src/3rdparty/mingw-std-threads/preinstall
+src/3rdparty/preinstall: src/3rdparty/monocypher/preinstall
+src/3rdparty/preinstall: src/3rdparty/randombytes/preinstall
 
 .PHONY : src/3rdparty/preinstall
 
@@ -908,6 +914,42 @@ src/3rdparty/mingw-std-threads/clean:
 src/3rdparty/mingw-std-threads/preinstall:
 
 .PHONY : src/3rdparty/mingw-std-threads/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/3rdparty/monocypher
+
+# Convenience name for "all" pass in the directory.
+src/3rdparty/monocypher/all:
+
+.PHONY : src/3rdparty/monocypher/all
+
+# Convenience name for "clean" pass in the directory.
+src/3rdparty/monocypher/clean:
+
+.PHONY : src/3rdparty/monocypher/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/3rdparty/monocypher/preinstall:
+
+.PHONY : src/3rdparty/monocypher/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/3rdparty/randombytes
+
+# Convenience name for "all" pass in the directory.
+src/3rdparty/randombytes/all:
+
+.PHONY : src/3rdparty/randombytes/all
+
+# Convenience name for "clean" pass in the directory.
+src/3rdparty/randombytes/clean:
+
+.PHONY : src/3rdparty/randombytes/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/3rdparty/randombytes/preinstall:
+
+.PHONY : src/3rdparty/randombytes/preinstall
 
 #=============================================================================
 # Directory level rules for directory src/ai
