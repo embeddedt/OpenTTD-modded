@@ -18,6 +18,8 @@ macro(compile_flags)
             foreach(MSVC_CONFIG ${MSVC_CONFIGS})
                 string(TOUPPER "CMAKE_CXX_FLAGS_${MSVC_CONFIG}" MSVC_FLAGS)
                 string(REPLACE "/MD" "/MT" ${MSVC_FLAGS} "${${MSVC_FLAGS}}")
+                string(TOUPPER "CMAKE_C_FLAGS_${MSVC_CONFIG}" MSVC_FLAGS)
+                string(REPLACE "/MD" "/MT" ${MSVC_FLAGS} "${${MSVC_FLAGS}}")
             endforeach()
         endif()
 
@@ -43,6 +45,11 @@ macro(compile_flags)
         add_link_options(
             "$<$<NOT:$<CONFIG:Debug>>:-fstack-protector>" # Prevent undefined references when _FORTIFY_SOURCE > 0
         )
+        if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+            add_link_options(
+                "$<$<CONFIG:Debug>:-Wl,--disable-dynamicbase,--disable-high-entropy-va,--default-image-base-low>" # ASLR somehow breaks linking for x64 Debug builds
+            )
+        endif()
     endif()
 
     # Prepare a generator that checks if we are not a debug, and don't have asserts
@@ -65,7 +72,7 @@ macro(compile_flags)
             -Wformat-security
             -Wformat=2
             -Winit-self
-            -Wnon-virtual-dtor
+            "$<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>"
 
             # Often parameters are unused, which is fine.
             -Wno-unused-parameter

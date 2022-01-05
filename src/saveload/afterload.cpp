@@ -4020,6 +4020,10 @@ bool AfterLoadGame()
 		}
 	}
 
+	if (SlXvIsFeatureMissing(XSLFI_ST_INDUSTRY_CARGO_MODE)) {
+		_settings_game.station.station_delivery_mode = SD_NEAREST_FIRST;
+	}
+
 	InitializeRoadGUI();
 
 	/* This needs to be done after conversion. */

@@ -2396,8 +2396,8 @@ void AgeVehicle(Vehicle *v)
 
 	SetWindowDirty(WC_VEHICLE_DETAILS, v->index);
 
-	/* Don't warn about non-primary or not ours vehicles or vehicles that are crashed */
-	if (v->Previous() != nullptr || v->owner != _local_company || (v->vehstatus & VS_CRASHED) != 0) return;
+	/* Don't warn about vehicles which are non-primary (e.g., part of an articulated vehicle), don't belong to us, are crashed, or are stopped */
+	if (v->Previous() != nullptr || v->owner != _local_company || (v->vehstatus & VS_CRASHED) != 0 || (v->vehstatus & VS_STOPPED) != 0) return;
 
 	const Company *c = Company::Get(v->owner);
 	/* Don't warn if a renew is active */
@@ -3191,8 +3191,10 @@ static void VehicleIncreaseStats(const Vehicle *front)
 			 * among the wagons in that case.
 			 * As usage is not such an important figure anyway we just
 			 * ignore the additional cargo then.*/
+			EdgeUpdateMode restricted_mode = EUM_INCREASE;
+			if (v->type == VEH_AIRCRAFT) restricted_mode |= EUM_AIRCRAFT;
 			IncreaseStats(Station::Get(last_loading_station), v->cargo_type, front->last_station_visited, v->refit_cap,
-				std::min<uint>(v->refit_cap, v->cargo.StoredCount()), EUM_INCREASE);
+				std::min<uint>(v->refit_cap, v->cargo.StoredCount()), restricted_mode);
 		}
 	}
 }
@@ -3563,7 +3565,7 @@ void Vehicle::HandleLoading(bool mode)
 				return;
 			}
 
-			if (this->type != VEH_TRAIN) this->PlayLeaveStationSound();
+			if (this->type != VEH_TRAIN && this->type != VEH_SHIP) this->PlayLeaveStationSound();
 
 			this->LeaveStation();
 
@@ -3709,6 +3711,12 @@ CommandCost Vehicle::SendToDepot(DoCommandFlag flags, DepotCommand command, Tile
 
 	if (flags & DC_EXEC) {
 		if (this->current_order.IsAnyLoadingType()) this->LeaveStation();
+
+		if (this->type == VEH_TRAIN) {
+			for (Train *v = Train::From(this); v != nullptr; v = v->Next()) {
+				ClrBit(v->flags, VRF_BEYOND_PLATFORM_END);
+			}
+		}
 
 		if (this->IsGroundVehicle() && this->GetNumManualOrders() > 0) {
 			uint16 &gv_flags = this->GetGroundVehicleFlags();

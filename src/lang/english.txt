@@ -1260,6 +1260,8 @@ STR_CONFIG_SETTING_TRAIN_BRAKING_REALISTIC                      :Realistic {PUSH
 
 STR_CONFIG_SETTING_REALISTIC_BRAKING_SIGNALS_NOT_ALLOWED        :{WHITE}Realistic braking can't be enabled. At least one pre-signal or two-way signal is present.
 
+STR_CONFIG_SETTING_DELIVERY_BALANCED                            :Balanced
+
 ###length 3
 STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :Left
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :Centre
@@ -1340,6 +1342,9 @@ STR_CONFIG_SETTING_STATION_RATING_SIZE_CARGO_AMOUNT             :Station cargo c
 STR_CONFIG_SETTING_STATION_RATING_SIZE_CARGO_AMOUNT_HELPTEXT    :When enabled, the cargo capacity of stations before waiting cargo is truncated and the effect of the waiting cargo amount on the station rating for that cargo depend on the size of the station. Larger stations can store more cargo and are more tolerant of large amounts of waiting cargo.
 STR_CONFIG_SETTING_EXTRADYNAMITE                                :Allow removal of more town-owned roads, bridges and tunnels: {STRING2}
 STR_CONFIG_SETTING_EXTRADYNAMITE_HELPTEXT                       :Make it easier to remove town-owned infrastructure and buildings
+
+STR_CONFIG_SETTING_CARGO_DELIVERY_MODE                          :Cargo delivery distribution mode: {STRING2}
+STR_CONFIG_SETTING_CARGO_DELIVERY_MODE_HELPTEXT                 :The method used to deliver cargo to industries surrounding a station.
 
 STR_CONFIG_SETTING_TRAIN_LENGTH                                 :Maximum length of trains: {STRING2}
 STR_CONFIG_SETTING_TRAIN_LENGTH_HELPTEXT                        :Set the maximum length of trains
@@ -1550,6 +1555,8 @@ STR_CONFIG_SETTING_SHOW_TRAIN_WEIGHT_RATIOS_IN_DETAILS          :Show train weig
 STR_CONFIG_SETTING_SHOW_TRAIN_WEIGHT_RATIOS_IN_DETAILS_HELPTEXT :Show train weight ratios in the vehicle details window
 STR_CONFIG_SETTING_SHOW_RESTRICTED_SIG_DEF                      :Show restricted electric signals using default graphics: {STRING2}
 STR_CONFIG_SETTING_SHOW_RESTRICTED_SIG_DEF_HELPTEXT             :Show electric signals with routing restriction programs using the default signal graphics with a blue signal post, instead of using any NewGRF signal graphics. This is to make it easier to visually distinguish restricted signals.
+STR_CONFIG_SETTING_SHOW_ALL_SIG_DEF                             :Show all signals using default graphics: {STRING2}
+STR_CONFIG_SETTING_SHOW_ALL_SIG_DEF_HELPTEXT                    :Show all signals using the default signal graphics, instead of using any NewGRF signal graphics. This is to make it easier to see the state and type of signals when NewGRFs provide unclear or inaccessible signal graphics.
 STR_CONFIG_SETTING_SHOW_ADV_TRACE_RESTRICT_FEATURES             :Show advanced routing restriction features: {STRING2}
 STR_CONFIG_SETTING_SHOW_ADV_TRACE_RESTRICT_FEATURES_HELPTEXT    :Show advanced routing restriction features. When disabled, some advanced features are not shown in the UI, but are still available to all players.
 STR_CONFIG_SETTING_SHOW_PROGSIG_FEATURES                        :Show programmable pre-signal feature: {STRING2}
@@ -2312,6 +2319,9 @@ STR_CONFIG_SETTING_DEMAND_SIZE_HELPTEXT                         :Setting this to
 
 STR_CONFIG_SETTING_SHORT_PATH_SATURATION                        :Saturation of short paths before using high-capacity paths: {STRING2}
 STR_CONFIG_SETTING_SHORT_PATH_SATURATION_HELPTEXT               :Frequently there are multiple paths between two given stations. Cargodist will saturate the shortest path first, then use the second shortest path until that is saturated and so on. Saturation is determined by an estimation of capacity and planned usage. Once it has saturated all paths, if there is still demand left, it will overload all paths, prefering the ones with high capacity. Most of the time the algorithm will not estimate the capacity accurately, though. This setting allows you to specify up to which percentage a shorter path must be saturated in the first pass before choosing the next longer one. Set it to less than 100% to avoid overcrowded stations in case of overestimated capacity.
+
+STR_CONFIG_SETTING_AIRCRAFT_PATH_COST                           :Scale distance of paths which use aircraft: {STRING2}
+STR_CONFIG_SETTING_AIRCRAFT_PATH_COST_HELPTEXT                  :This scales the cost (distance metric) of paths which use aircraft, such that they appear longer/less direct than they actually are. The reduces the tendency for direct routes using aircraft to become heavily overloaded.
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY                  :Speed units: {STRING2}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_HELPTEXT         :Whenever a speed is shown in the user interface, show it in the selected units

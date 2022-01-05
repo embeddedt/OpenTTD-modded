@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.44.2
+## JGR's Patchpack version 0.45.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -83,6 +83,7 @@ See [installation.md](/installation.md) for instructions on how to install.
   This requires a NewGRF which supports this and realistic train braking.
 * No-entry signals.  
   These are not shown in the build signal window by default.
+* Add client setting to show all signals using the default baseset sprites.
 
 #### Roads and Road Vehicles
 
@@ -143,7 +144,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to disable mass action buttons for top-level vehicle lists.
 * Add feature to create a new auto-named group when dragging and dropping a vehicle onto the new group button (ctrl includes shared order vehicles).
 * Add settings to reduce vehicle running costs when a vehicle is stationary or in a depot.
-* If a vehicle's next order is for the current station when leaving, start loading again without moving, instead of leaving.
+* If a train or ship's next order is for the current station when leaving, start loading again without moving, instead of leaving.
 
 #### Orders and Timetabling
 
@@ -190,6 +191,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add a tooltip to show station rating details (controlled by a setting).
 * [Allow NewGRFs to supply additional station name strings](https://github.com/JGRennison/OpenTTD-patches/wiki/GRF-features#extra-station-names).
 * Add sort by number of vehicles calling to the station list window.
+* Add setting to distribute cargo received at a station to all accepting industries equally, instead of just one of them.
 
 #### Towns
 
@@ -259,6 +261,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Increase per-vehicle order limit from 254 to 64k.
 * Increase maximum setting limits for per-company vehicle-type limits.
 * Increase maximum permitted vehicle, group, depot and station/waypoint name lengths.
+* Increase maximum permitted rail waypoint types from 256 to 64k.
 
 #### Time and Date
 
@@ -277,6 +280,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Various changes to reduce the probability of desyncs and improve desync reporting/diagnostics.
 * Add support for zstd savegame compression for autosaves and network joins.
 * Increase the number of settings which can be changed in multiplayer.
+* Store company passwords in network server saves in an encrypted form such that they are automaticaly restored when loaded into the same network server.
 
 #### Money
 
@@ -300,6 +304,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add new link graph distribution modes: asymmetric (equal) and asymmetric (nearest).
 * Allow overriding distribution mode on a per-cargo basis, in game.
 * Fix inaccurate cargo distribution and link graph overlays, and various other problems with large link graphs.
+* Add setting to increase the cargodist link graph distance/cost metric of aircraft links.
 
 #### Input
 
@@ -317,6 +322,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Pause on savegame load if ctrl key is pressed.
 * Ctrl-click up/down in NewGRF window to move to top or bottom.
 * Add setting for when to ask for confirmation before overwriting an existing savegame file, add unique ID to savegames.
+* Allow setting the autosave interval to a custom number of in-game days or real-time minutes.
 * Add more hotkeys.
 * Allow AI/GS developers to reload GSs.
 * Various extensions to the NewGRF developer debug tools.
@@ -457,9 +463,9 @@ For some platforms, you will need to refer to [the installation guide](https://w
 The free data files, split into OpenGFX for graphics, OpenSFX for sounds and
 OpenMSX for music can be found at:
 
-- https://www.openttd.org/downloads/opengfx-releases/ for OpenGFX
-- https://www.openttd.org/downloads/opensfx-releases/ for OpenSFX
-- https://www.openttd.org/downloads/openmsx-releases/ for OpenMSX
+- https://www.openttd.org/downloads/opengfx-releases/latest for OpenGFX
+- https://www.openttd.org/downloads/opensfx-releases/latest for OpenSFX
+- https://www.openttd.org/downloads/openmsx-releases/latest for OpenMSX
 
 Please follow the readme of these packages about the installation procedure.
 The Windows installer can optionally download and install these packages.

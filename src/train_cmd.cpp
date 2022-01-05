@@ -6565,9 +6565,9 @@ static void CheckIfTrainNeedsService(Train *v)
 		default: NOT_REACHED();
 	}
 
-	FindDepotData tfdd = FindClosestTrainDepot(v, max_penalty);
+	FindDepotData tfdd = FindClosestTrainDepot(v, max_penalty * (v->current_order.IsType(OT_GOTO_DEPOT) ? 2 : 1));
 	/* Only go to the depot if it is not too far out of our way. */
-	if (tfdd.best_length == UINT_MAX || tfdd.best_length > max_penalty) {
+	if (tfdd.best_length == UINT_MAX || tfdd.best_length > max_penalty * (v->current_order.IsType(OT_GOTO_DEPOT) && v->current_order.GetDestination() == GetDepotIndex(tfdd.tile) ? 2 : 1)) {
 		if (v->current_order.IsType(OT_GOTO_DEPOT)) {
 			/* If we were already heading for a depot but it has
 			 * suddenly moved farther away, we continue our normal
@@ -6590,6 +6590,10 @@ static void CheckIfTrainNeedsService(Train *v)
 	v->current_order.MakeGoToDepot(depot, ODTFB_SERVICE);
 	v->dest_tile = tfdd.tile;
 	SetWindowWidgetDirty(WC_VEHICLE_VIEW, v->index, WID_VV_START_STOP);
+
+	for (Train *u = v; u != nullptr; u = u->Next()) {
+		ClrBit(u->flags, VRF_BEYOND_PLATFORM_END);
+	}
 }
 
 /** Update day counters of the train vehicle. */

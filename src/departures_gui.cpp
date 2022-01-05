@@ -32,6 +32,7 @@
 #include "company_type.h"
 #include "departures_func.h"
 #include "cargotype.h"
+#include "zoom_func.h"
 
 #include "table/sprites.h"
 #include "table/strings.h"
@@ -153,11 +154,11 @@ protected:
 							&& order->GetDestination() == this->station) {
 						this->vehicles.push_back(v);
 
-						if (v->name.empty()) {
+						if (v->name.empty() && !(v->group_id != DEFAULT_GROUP && _settings_client.gui.vehicle_names != 0)) {
 							if (v->unitnumber > unitnumber_max[v->type]) unitnumber_max[v->type] = v->unitnumber;
 						} else {
 							SetDParam(0, (uint64)(v->index));
-							int width = (GetStringBoundingBox(STR_DEPARTURES_VEH)).width;
+							int width = (GetStringBoundingBox(STR_DEPARTURES_VEH)).width + 4;
 							if (width > this->veh_width) this->veh_width = width;
 						}
 
@@ -280,6 +281,7 @@ public:
 			case WID_DB_LIST:
 				resize->height = DeparturesWindow::entry_height;
 				size->height = 2 * resize->height;
+				size->width = this->min_width;
 				break;
 		}
 	}
@@ -475,10 +477,8 @@ public:
 		uint new_width = this->GetMinWidth();
 
 		if (new_width != this->min_width) {
-			NWidgetCore *n = this->GetWidget<NWidgetCore>(WID_DB_LIST);
-			n->SetMinimalSize(new_width, 0);
-			this->ReInit();
 			this->min_width = new_width;
+			this->ReInit();
 		}
 
 		uint new_height = 1 + FONT_HEIGHT_NORMAL + 1 + (_settings_client.gui.departure_larger_font ? FONT_HEIGHT_NORMAL : FONT_HEIGHT_SMALL) + 1 + 1;

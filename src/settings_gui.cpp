@@ -1765,6 +1765,7 @@ static SettingsContainer &GetSettingsTree()
 			graphics->Add(new SettingEntry("gui.show_vehicle_route"));
 			graphics->Add(new SettingEntry("gui.dash_level_of_route_lines"));
 			graphics->Add(new SettingEntry("gui.show_restricted_signal_default"));
+			graphics->Add(new SettingEntry("gui.show_all_signal_default"));
 		}
 
 		SettingsPage *sound = main->Add(new SettingsPage(STR_CONFIG_SETTING_SOUND));
@@ -2182,6 +2183,7 @@ static SettingsContainer &GetSettingsTree()
 				industries->Add(new SettingEntry("economy.type"));
 				industries->Add(new SettingEntry("station.serve_neutral_industries"));
 				industries->Add(new SettingEntry("economy.industry_cargo_scale_factor"));
+				industries->Add(new SettingEntry("station.station_delivery_mode"));
 			}
 
 			SettingsPage *cdist = environment->Add(new SettingsPage(STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST));
@@ -2205,6 +2207,7 @@ static SettingsContainer &GetSettingsTree()
 				cdist->Add(new SettingEntry("linkgraph.demand_size"));
 				cdist->Add(new SettingEntry("linkgraph.short_path_saturation"));
 				cdist->Add(new SettingEntry("linkgraph.recalc_not_scaled_by_daylength"));
+				cdist->Add(new SettingEntry("linkgraph.aircraft_link_scale"));
 			}
 			SettingsPage *treedist = environment->Add(new SettingsPage(STR_CONFIG_SETTING_ENVIRONMENT_TREES));
 			{

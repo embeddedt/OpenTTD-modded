@@ -2191,10 +2191,10 @@ CommandCost CmdBuildRoadStop(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 		ZoningMarkDirtyStationCoverageArea(st);
 		NotifyRoadLayoutChanged(true);
 		UpdateRoadCachedOneWayStatesAroundTile(tile);
-	}
 
-	if (st != nullptr) {
-		st->AfterStationTileSetChange(true, type ? STATION_TRUCK: STATION_BUS);
+		if (st != nullptr) {
+			st->AfterStationTileSetChange(true, type ? STATION_TRUCK: STATION_BUS);
+		}
 	}
 	return cost;
 }
@@ -4130,6 +4130,31 @@ void RerouteCargo(Station *st, CargoID c, StationID avoid, StationID avoid2)
 	}
 }
 
+/**
+ * Reroute cargo of type c from source at station st or in any vehicles unloading there.
+ * Make sure the cargo's new next hop is neither "avoid" nor "avoid2".
+ * @param st Station to be rerouted at.
+ * @param c Type of cargo.
+ * @param source Source station.
+ * @param avoid Original next hop of cargo, avoid this.
+ * @param avoid2 Another station to be avoided when rerouting.
+ */
+void RerouteCargoFromSource(Station *st, CargoID c, StationID source, StationID avoid, StationID avoid2)
+{
+	GoodsEntry &ge = st->goods[c];
+
+	/* Reroute cargo in station. */
+	ge.cargo.RerouteFromSource(UINT_MAX, &ge.cargo, source, avoid, avoid2, &ge);
+
+	/* Reroute cargo staged to be transferred. */
+	for (Vehicle *v : st->loading_vehicles) {
+		for (; v != nullptr; v = v->Next()) {
+			if (v->cargo_type != c) continue;
+			v->cargo.RerouteFromSource(UINT_MAX, &v->cargo, source, avoid, avoid2, &ge);
+		}
+	}
+}
+
 btree::btree_set<VehicleID> _delete_stale_links_vehicle_cache;
 
 void ClearDeleteStaleLinksVehicleCache()
@@ -4160,6 +4185,9 @@ void DeleteStaleLinks(Station *from)
 			++it; // Do that before removing the edge. Anything else may crash.
 			assert(_date >= edge.LastUpdate());
 			uint timeout = std::max<uint>((LinkGraph::MIN_TIMEOUT_DISTANCE + (DistanceManhattan(from->xy, to->xy) >> 3)) / _settings_game.economy.day_length_factor, 1);
+			if (edge.LastAircraftUpdate() != INVALID_DATE && (uint)(_date - edge.LastAircraftUpdate()) > timeout) {
+				edge.ClearAircraft();
+			}
 			if ((uint)(_date - edge.LastUpdate()) > timeout) {
 				bool updated = false;
 
