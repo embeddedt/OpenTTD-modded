@@ -71,6 +71,8 @@ media/baseset/CMakeFiles/baseset_files: baseset/progsignals.grf
 media/baseset/CMakeFiles/baseset_files: baseset/extra_signals.grf
 media/baseset/CMakeFiles/baseset_files: baseset/route_step.grf
 media/baseset/CMakeFiles/baseset_files: baseset/tracerestrict.grf
+media/baseset/CMakeFiles/baseset_files: baseset/misc_gui.grf
+media/baseset/CMakeFiles/baseset_files: baseset/road_waypoints.grf
 media/baseset/CMakeFiles/baseset_files: baseset/openttd.32.bmp
 
 
@@ -826,8 +828,16 @@ baseset/tracerestrict.grf: ../media/baseset/tracerestrict.grf
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Copying tracerestrict.grf baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/tracerestrict.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/tracerestrict.grf
 
+baseset/misc_gui.grf: ../media/baseset/misc_gui.grf
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Copying misc_gui.grf baseset file"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/misc_gui.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/misc_gui.grf
+
+baseset/road_waypoints.grf: ../media/baseset/road_waypoints.grf
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Copying road_waypoints.grf baseset file"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/road_waypoints.grf /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/road_waypoints.grf
+
 baseset/openttd.32.bmp: ../media/openttd.32.bmp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Copying openttd.32.bmp baseset file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Copying openttd.32.bmp baseset file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/media/baseset && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/media/baseset/../openttd.32.bmp /__w/OpenTTD-modded/OpenTTD-modded/em_build/baseset/openttd.32.bmp
 
 baseset_files: media/baseset/CMakeFiles/baseset_files
@@ -849,6 +859,8 @@ baseset_files: baseset/progsignals.grf
 baseset_files: baseset/extra_signals.grf
 baseset_files: baseset/route_step.grf
 baseset_files: baseset/tracerestrict.grf
+baseset_files: baseset/misc_gui.grf
+baseset_files: baseset/road_waypoints.grf
 baseset_files: baseset/openttd.32.bmp
 baseset_files: media/baseset/CMakeFiles/baseset_files.dir/build.make
 

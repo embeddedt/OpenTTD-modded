@@ -1193,6 +1193,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_AUTOROAD,                          "WID_ROT_AUTOROAD");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_DEMOLISH,                          "WID_ROT_DEMOLISH");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_DEPOT,                             "WID_ROT_DEPOT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_BUILD_WAYPOINT,                    "WID_ROT_BUILD_WAYPOINT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_BUS_STATION,                       "WID_ROT_BUS_STATION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_TRUCK_STATION,                     "WID_ROT_TRUCK_STATION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_ROT_ONE_WAY,                           "WID_ROT_ONE_WAY");
@@ -1411,6 +1412,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VT_SCHEDULED_DISPATCH,                 "WID_VT_SCHEDULED_DISPATCH");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VT_LOCK_ORDER_TIME,                    "WID_VT_LOCK_ORDER_TIME");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VT_EXTRA,                              "WID_VT_EXTRA");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VT_ASSIGN_SCHEDULE,                    "WID_VT_ASSIGN_SCHEDULE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_VT_START_DATE_SELECTION,               "WID_VT_START_DATE_SELECTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TN_PAUSE,                              "WID_TN_PAUSE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TN_FAST_FORWARD,                       "WID_TN_FAST_FORWARD");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TN_SETTINGS,                           "WID_TN_SETTINGS");
@@ -1613,6 +1616,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_W_RENAME,                              "WID_W_RENAME");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_W_SHOW_VEHICLES,                       "WID_W_SHOW_VEHICLES");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_W_DEPARTURES,                          "WID_W_DEPARTURES");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_W_TOGGLE_HIDDEN,                       "WID_W_TOGGLE_HIDDEN");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_W_TOGGLE_HIDDEN_SEL,                   "WID_W_TOGGLE_HIDDEN_SEL");
 
 	SQGSWindow.DefSQStaticMethod(engine, &ScriptWindow::Close,     "Close",     3, ".ii");
 	SQGSWindow.DefSQStaticMethod(engine, &ScriptWindow::IsOpen,    "IsOpen",    3, ".ii");

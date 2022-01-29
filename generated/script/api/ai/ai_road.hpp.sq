@@ -66,6 +66,8 @@ void SQAIRoad_Register(Squirrel *engine)
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::RoadVehHasPowerOnRoad,          "RoadVehHasPowerOnRoad",          3, ".ii");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::ConvertRoadType,                "ConvertRoadType",                4, ".iii");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::HasRoadType,                    "HasRoadType",                    3, ".ii");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::HasRoadTramType,                "HasRoadTramType",                3, ".ii");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadType,                    "GetRoadType",                    3, ".ii");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::AreRoadTilesConnected,          "AreRoadTilesConnected",          3, ".ii");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadParts,     "CanBuildConnectedRoadParts",     5, ".iaii");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadPartsHere, "CanBuildConnectedRoadPartsHere", 4, ".iii");
@@ -88,6 +90,10 @@ void SQAIRoad_Register(Squirrel *engine)
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadTramType,                "GetRoadTramType",                2, ".i");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::GetMaxSpeed,                    "GetMaxSpeed",                    2, ".i");
 	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::GetMaintenanceCostFactor,       "GetMaintenanceCostFactor",       2, ".i");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::IsCatenaryRoadType,             "IsCatenaryRoadType",             2, ".i");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::IsNonLevelCrossingRoadType,     "IsNonLevelCrossingRoadType",     2, ".i");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::IsNoTownHousesRoadType,         "IsNoTownHousesRoadType",         2, ".i");
+	SQAIRoad.DefSQStaticMethod(engine, &ScriptRoad::IsTownBuildableRoadType,        "IsTownBuildableRoadType",        2, ".i");
 
 	SQAIRoad.PostRegister(engine);
 }

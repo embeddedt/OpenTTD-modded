@@ -37,6 +37,7 @@ void SQGSIndustryType_Register(Squirrel *engine)
 	SQGSIndustryType.DefSQStaticMethod(engine, &ScriptIndustryType::IsBuiltOnWater,        "IsBuiltOnWater",        2, ".i");
 	SQGSIndustryType.DefSQStaticMethod(engine, &ScriptIndustryType::HasHeliport,           "HasHeliport",           2, ".i");
 	SQGSIndustryType.DefSQStaticMethod(engine, &ScriptIndustryType::HasDock,               "HasDock",               2, ".i");
+	SQGSIndustryType.DefSQStaticMethod(engine, &ScriptIndustryType::ResolveNewGRFID,       "ResolveNewGRFID",       3, ".ii");
 
 	SQGSIndustryType.PostRegister(engine);
 }

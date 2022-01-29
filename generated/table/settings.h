@@ -202,7 +202,7 @@ SDT_OMANY(GameSettings, vehicle.road_side, SLE_UINT8, SF_NONE, 1,       1, _road
 extern std::string _config_language_file;
 static std::initializer_list<const char*> _support8bppmodes{"no", "system" , "hardware"};
 static std::initializer_list<const char*> _display_opt_modes{"SHOW_TOWN_NAMES", "SHOW_STATION_NAMES", "SHOW_SIGNS", "FULL_ANIMATION", "", "FULL_DETAIL", "WAYPOINTS", "SHOW_COMPETITOR_SIGNS"};
-static std::initializer_list<const char*> _extra_display_opt_modes{"SHOW_MONEY_TEXT_EFFECTS"};
+static std::initializer_list<const char*> _extra_display_opt_modes{"SHOW_MONEY_TEXT_EFFECTS", "SHOW_HIDDEN_SIGNS"};
 #ifdef WITH_COCOA
 extern bool _allow_hidpi_window;
 #endif
@@ -630,6 +630,7 @@ SDT_ENUM(GameSettings, vehicle.train_braking_model, SLE_UINT8, SF_NONE, TBM_ORIG
 SDT_VAR(GameSettings, vehicle.roadveh_acceleration_model, SLE_UINT8, SF_GUI_DROPDOWN, 1,       0, 1, 1, STR_CONFIG_SETTING_ROAD_VEHICLE_ACCELERATION_MODEL, STR_CONFIG_SETTING_ROAD_VEHICLE_ACCELERATION_MODEL_HELPTEXT, STR_CONFIG_SETTING_ORIGINAL, nullptr, RoadVehAccelerationModelChanged, SLV_139, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_VAR(GameSettings, vehicle.train_slope_steepness, SLE_UINT8, SF_NONE, 3,       0, 10, 1, STR_CONFIG_SETTING_TRAIN_SLOPE_STEEPNESS, STR_CONFIG_SETTING_TRAIN_SLOPE_STEEPNESS_HELPTEXT, STR_CONFIG_SETTING_PERCENTAGE, nullptr, TrainSlopeSteepnessChanged, SLV_133, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDT_VAR(GameSettings, vehicle.roadveh_slope_steepness, SLE_UINT8, SF_NONE, 7,       0, 10, 1, STR_CONFIG_SETTING_ROAD_VEHICLE_SLOPE_STEEPNESS, STR_CONFIG_SETTING_ROAD_VEHICLE_SLOPE_STEEPNESS_HELPTEXT, STR_CONFIG_SETTING_PERCENTAGE, nullptr, RoadVehSlopeSteepnessChanged, SLV_139, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
+SDT_VAR(GameSettings, vehicle.through_load_speed_limit, SLE_UINT16, SF_GUI_VELOCITY, 15,       5, 500, 5, STR_CONFIG_SETTING_THROUGH_LOAD_SPEED_LIMIT, STR_CONFIG_SETTING_THROUGH_LOAD_SPEED_LIMIT_HELPTEXT, STR_CONFIG_SETTING_THROUGH_LOAD_SPEED_LIMIT_VAL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "vehicle.through_load_speed_limit"),
 SDT_BOOL(GameSettings, pf.forbid_90_deg,        SF_NONE, false,                              STR_CONFIG_SETTING_FORBID_90_DEG, STR_CONFIG_SETTING_FORBID_90_DEG_HELPTEXT, STR_NULL, nullptr, InvalidateShipPathCache, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "pf.back_of_one_way_pbs_waiting_point", nullptr),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232), "pf.back_of_one_way_pbs_waiting_point", nullptr),
@@ -953,6 +954,7 @@ SDT_OMANY(GameSettings, locale.units_height, SLE_UINT8, SF_NO_NETWORK_SYNC | SF_
 SDT_SSTR(GameSettings, locale.digit_group_separator, SLE_STRQ, SF_NO_NETWORK_SYNC, nullptr,                                                       nullptr, [](auto) { MarkWholeScreenDirty(); }, SLV_118, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDT_SSTR(GameSettings, locale.digit_group_separator_currency, SLE_STRQ, SF_NO_NETWORK_SYNC, nullptr,                                                       nullptr, [](auto) { MarkWholeScreenDirty(); }, SLV_118, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDT_SSTR(GameSettings, locale.digit_decimal_separator, SLE_STRQ, SF_NO_NETWORK_SYNC, nullptr,                                                       nullptr, [](auto) { MarkWholeScreenDirty(); }, SLV_126, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_BOOL(              client_locale.sync_locale_network_server,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SYNC_LOCALE_SETTINGS_NETWORK_SERVER, STR_CONFIG_SETTING_SYNC_LOCALE_SETTINGS_NETWORK_SERVER_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, vehicle.adjacent_crossings,        SF_NONE, true,                              STR_CONFIG_SETTING_ADJACENT_CROSSINGS, STR_CONFIG_SETTING_ADJACENT_CROSSINGS_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "adjacent_crossings.vehicle.adjacent_crossings"),
 SDT_BOOL(GameSettings, vehicle.safer_crossings,        SF_NONE, false,                              STR_CONFIG_SETTING_SAFER_CROSSINGS, STR_CONFIG_SETTING_SAFER_CROSSINGS_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "safer_crossings.vehicle.safer_crossings"),
 SDTC_OMANY(              gui.autosave, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 1,             6, _autosave_interval,     STR_CONFIG_SETTING_AUTOSAVE, STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT, STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF, nullptr, AutosaveModeChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
@@ -1042,6 +1044,7 @@ SDTC_VAR(              gui.default_road_type, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_
 SDTC_VAR(              gui.signal_gui_mode, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 0,       0, 1, 0, STR_CONFIG_SETTING_SIGNAL_GUI_MODE, STR_CONFIG_SETTING_SIGNAL_GUI_MODE_HELPTEXT, STR_CONFIG_SETTING_SIGNAL_GUI_MODE_PATH, nullptr, ProgrammableSignalsShownChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_VAR(              gui.coloured_news_year, SLE_INT32, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 2000,       MIN_YEAR, MAX_YEAR, 1, STR_CONFIG_SETTING_COLOURED_NEWS_YEAR, STR_CONFIG_SETTING_COLOURED_NEWS_YEAR_HELPTEXT, STR_JUST_INT, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_VAR(              gui.cycle_signal_types, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 0,       0, 1, 1, STR_CONFIG_SETTING_CYCLE_SIGNAL_TYPES, STR_CONFIG_SETTING_CYCLE_SIGNAL_TYPES_HELPTEXT, STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
+SDTC_VAR(              gui.default_signal_type, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 5,       0, 5, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_VAR(              gui.drag_signals_density, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 4,       1, 20, 0, STR_CONFIG_SETTING_DRAG_SIGNALS_DENSITY, STR_CONFIG_SETTING_DRAG_SIGNALS_DENSITY_HELPTEXT, STR_CONFIG_SETTING_DRAG_SIGNALS_DENSITY_VALUE, nullptr, [](auto) { InvalidateWindowData(WC_BUILD_SIGNAL, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_BOOL(              gui.drag_signals_fixed_distance,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_DRAG_SIGNALS_FIXED_DISTANCE, STR_CONFIG_SETTING_DRAG_SIGNALS_FIXED_DISTANCE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_VAR(              gui.semaphore_build_before, SLE_INT32, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 1950,       MIN_YEAR, MAX_YEAR, 1, STR_CONFIG_SETTING_SEMAPHORE_BUILD_BEFORE_DATE, STR_CONFIG_SETTING_SEMAPHORE_BUILD_BEFORE_DATE_HELPTEXT, STR_JUST_INT, nullptr, ResetSignalVariant, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
@@ -1096,6 +1099,7 @@ SDTC_BOOL(              gui.shade_trees_on_slopes,        SF_NOT_IN_SAVE | SF_NO
 SDTC_VAR(              gui.station_rating_tooltip_mode, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 1,       0, 2, 0, STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE, STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_HELPTEXT, STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_OFF, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_VAR(              gui.demolish_confirm_mode, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 2,       0, 2, 0, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_HELPTEXT, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_OFF, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_BOOL(              gui.dual_pane_train_purchase_window,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_DUAL_PANE_TRAIN_PURCHASE_WINDOW, STR_CONFIG_SETTING_DUAL_PANE_TRAIN_PURCHASE_WINDOW_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
+SDTC_BOOL(              gui.allow_hiding_waypoint_labels,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL, STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); InvalidateWindowClassesData(WC_WAYPOINT_VIEW, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 #ifdef DEDICATED
 SDTC_BOOL(              gui.show_date_in_logs,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 #endif
@@ -1166,9 +1170,9 @@ SDTG_BOOL("window_maximize",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _window
 };
 #endif /* _WIN32 */
 static const SettingTable _window_settings{
-SDT_BOOL(WindowDesc, pref_sticky,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
-SDT_VAR(WindowDesc, pref_width, SLE_INT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 0, 0, 32000, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
-SDT_VAR(WindowDesc, pref_height, SLE_INT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 0, 0, 32000, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
+SDT_BOOL(WindowDescPreferences, pref_sticky,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
+SDT_VAR(WindowDescPreferences, pref_width, SLE_INT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 0, 0, 32000, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
+SDT_VAR(WindowDescPreferences, pref_height, SLE_INT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 0, 0, 32000, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
 };
 static_assert(12 <= MAX_SLE_INT16, "Maximum value for CompanySettings.engine_renew_months exceeds storage size");
 static_assert(2000000 <= MAX_SLE_UINT, "Maximum value for CompanySettings.engine_renew_money exceeds storage size");
@@ -1298,6 +1302,7 @@ static_assert(1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.train_
 static_assert(1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.roadveh_acceleration_model exceeds storage size");
 static_assert(10 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.train_slope_steepness exceeds storage size");
 static_assert(10 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.roadveh_slope_steepness exceeds storage size");
+static_assert(500 <= MAX_SLE_UINT16, "Maximum value for GameSettings.vehicle.through_load_speed_limit exceeds storage size");
 static_assert(64 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.max_train_length exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.smoke_amount exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.pf.reroute_rv_on_layout_change exceeds storage size");
@@ -1503,6 +1508,7 @@ static_assert(3 <= MAX_SLE_UINT8, "Maximum value for gui.default_road_type excee
 static_assert(1 <= MAX_SLE_UINT8, "Maximum value for gui.signal_gui_mode exceeds storage size");
 static_assert(MAX_YEAR <= MAX_SLE_INT32, "Maximum value for gui.coloured_news_year exceeds storage size");
 static_assert(1 <= MAX_SLE_UINT8, "Maximum value for gui.cycle_signal_types exceeds storage size");
+static_assert(5 <= MAX_SLE_UINT8, "Maximum value for gui.default_signal_type exceeds storage size");
 static_assert(20 <= MAX_SLE_UINT8, "Maximum value for gui.drag_signals_density exceeds storage size");
 static_assert(MAX_YEAR <= MAX_SLE_INT32, "Maximum value for gui.semaphore_build_before exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for gui.order_review_system exceeds storage size");
@@ -1553,5 +1559,5 @@ static_assert(255 <= MAX_SLE_UINT8, "Maximum value for gui.network_chat_box_heig
 static_assert(65535 <= MAX_SLE_UINT16, "Maximum value for gui.network_chat_timeout exceeds storage size");
 static_assert(255 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.repair_cost exceeds storage size");
 static_assert(0xFFFFFFFF <= MAX_SLE_UINT32, "Maximum value for GameSettings.debug.chicken_bits exceeds storage size");
-static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDesc.pref_width exceeds storage size");
-static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDesc.pref_height exceeds storage size");
+static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDescPreferences.pref_width exceeds storage size");
+static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDescPreferences.pref_height exceeds storage size");

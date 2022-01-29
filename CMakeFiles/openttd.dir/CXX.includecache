@@ -1235,6 +1235,8 @@ rail_gui_type.h
 ../src/rail_gui_type.h
 station_type.h
 ../src/station_type.h
+signal_type.h
+../src/signal_type.h
 
 ../src/signal_func.h
 signal_type.h
@@ -4551,6 +4553,10 @@ departures_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/departures_func.h
 departures_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/departures_type.h
+tracerestrict.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
+3rdparty/cpp-btree/btree_set.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 map
 -
 set
@@ -9627,6 +9633,8 @@ clear_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/clear_func.h
 newgrf_animation_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_base.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -10409,6 +10417,8 @@ vehicle_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehicle_type.h
 base_consist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/base_consist.h
+order_base.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
 saveload/saveload_common.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_common.h
 
@@ -11705,6 +11715,8 @@ date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 station_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
+waypoint_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_func.h
 widgets/road_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/road_widget.h
 table/strings.h
@@ -15993,6 +16005,8 @@ rail_gui_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/rail_gui_type.h
 station_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/station_type.h
+signal_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/signal_type.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
 deque
@@ -17447,6 +17461,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/aircraft.h
 ../object_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
+../waypoint_base.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_base.h
 ../string_func_extra.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
 
@@ -18213,6 +18229,8 @@ schdispatch.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/schdispatch.h
 vehiclelist.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/vehiclelist.h
+tracerestrict.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 widgets/timetable_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/timetable_widget.h
 table/sprites.h

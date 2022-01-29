@@ -2438,6 +2438,7 @@ public:
 		WID_ROT_AUTOROAD                             = ::WID_ROT_AUTOROAD,                             ///< Autorail.
 		WID_ROT_DEMOLISH                             = ::WID_ROT_DEMOLISH,                             ///< Demolish.
 		WID_ROT_DEPOT                                = ::WID_ROT_DEPOT,                                ///< Build depot.
+		WID_ROT_BUILD_WAYPOINT                       = ::WID_ROT_BUILD_WAYPOINT,                       ///< Build waypoint.
 		WID_ROT_BUS_STATION                          = ::WID_ROT_BUS_STATION,                          ///< Build bus station.
 		WID_ROT_TRUCK_STATION                        = ::WID_ROT_TRUCK_STATION,                        ///< Build truck station.
 		WID_ROT_ONE_WAY                              = ::WID_ROT_ONE_WAY,                              ///< Build one-way road.
@@ -2748,6 +2749,8 @@ public:
 		WID_VT_SCHEDULED_DISPATCH                    = ::WID_VT_SCHEDULED_DISPATCH,                    ///< Scheduled Dispatch button.
 		WID_VT_LOCK_ORDER_TIME                       = ::WID_VT_LOCK_ORDER_TIME,                       ///< Lock order time button.
 		WID_VT_EXTRA                                 = ::WID_VT_EXTRA,                                 ///< Extra drop down menu.
+		WID_VT_ASSIGN_SCHEDULE                       = ::WID_VT_ASSIGN_SCHEDULE,                       ///< Assign scheduled dispatch schedule.
+		WID_VT_START_DATE_SELECTION                  = ::WID_VT_START_DATE_SELECTION,                  ///< #NWID_SELECTION widget for WID_VT_START_DATE and WID_VT_ASSIGN_SCHEDULE.
 	};
 
 	/* automatically generated from ../../widgets/toolbar_widget.h */
@@ -3024,6 +3027,8 @@ public:
 		WID_W_RENAME                                 = ::WID_W_RENAME,                                 ///< Rename this waypoint.
 		WID_W_SHOW_VEHICLES                          = ::WID_W_SHOW_VEHICLES,                          ///< Show the vehicles visiting this waypoint.
 		WID_W_DEPARTURES                             = ::WID_W_DEPARTURES,                             ///< Departures button.
+		WID_W_TOGGLE_HIDDEN                          = ::WID_W_TOGGLE_HIDDEN,                          ///< Toggle label hidden.
+		WID_W_TOGGLE_HIDDEN_SEL                      = ::WID_W_TOGGLE_HIDDEN_SEL,                      ///< Toggle label hidden selector.
 	};
 
 	// @endenum

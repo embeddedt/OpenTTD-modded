@@ -30,11 +30,13 @@ ef7cd4b07dd202901e6857c9ea2340ae ai/stationlist/info.nut
 35fa0d2e82c8a65d6ad811502edec4c9 ai/stationlist/test.sav
 464c772e03e64ce88283c2e8dba7c152 baseset/extra_signals.grf
 1c24c2fbb3d43258d418ca028c08f856 baseset/innerhighlight.grf
+44b02d1586dbfb34fcbb7bb5b4985a7a baseset/misc_gui.grf
 6448a4f9d4d323209c2c07c21c1e8c25 baseset/openttd.32.bmp
 114491d97cf4bf301ab63d5561abe150 baseset/openttd.grf
 42e7cf3c2deef9d760243fa016402281 baseset/opntitle.dat
 f2b61669b54c2ac50091df5aa3dd029e baseset/orig_extra.grf
 e9d671a1df745b31a9e7da8bc2c3c9f4 baseset/progsignals.grf
+5797879a6a2a14f0cb369d61bd11f742 baseset/road_waypoints.grf
 c729b532a596491775e1e60579a31a02 baseset/route_step.grf
 85f3a63a5ee8b7231fc555ed2f6ebe75 baseset/tracerestrict.grf
 5f54fcd7dc9a6f14f95a7c8b01eb6252 bin/CMakeFiles/binfiles_files

@@ -91,7 +91,7 @@ all: CMakeFiles/openttd.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/openttd.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 99
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 98
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/openttd.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : CMakeFiles/openttd.dir/rule
@@ -193,7 +193,7 @@ CMakeFiles/regression_regression.dir/all: CMakeFiles/regression_files.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/regression_regression.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 100
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 99
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/regression_regression.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : CMakeFiles/regression_regression.dir/rule
@@ -221,7 +221,7 @@ CMakeFiles/regression_stationlist.dir/all: CMakeFiles/openttd.dir/all
 CMakeFiles/regression_stationlist.dir/all: CMakeFiles/regression_files.dir/all
 	$(MAKE) -f CMakeFiles/regression_stationlist.dir/build.make CMakeFiles/regression_stationlist.dir/depend
 	$(MAKE) -f CMakeFiles/regression_stationlist.dir/build.make CMakeFiles/regression_stationlist.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num= "Built target regression_stationlist"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=74 "Built target regression_stationlist"
 .PHONY : CMakeFiles/regression_stationlist.dir/all
 
 # Build rule for subdir invocation for target.
@@ -556,7 +556,7 @@ src/script/api/CMakeFiles/script_ai_includes.dir/all: src/script/api/CMakeFiles/
 
 # Build rule for subdir invocation for target.
 src/script/api/CMakeFiles/script_ai_includes.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 src/script/api/CMakeFiles/script_ai_includes.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : src/script/api/CMakeFiles/script_ai_includes.dir/rule
@@ -583,12 +583,12 @@ clean: src/script/api/CMakeFiles/script_ai_includes.dir/clean
 src/script/api/CMakeFiles/script_ai.dir/all: src/script/api/CMakeFiles/script_window.dir/all
 	$(MAKE) -f src/script/api/CMakeFiles/script_ai.dir/build.make src/script/api/CMakeFiles/script_ai.dir/depend
 	$(MAKE) -f src/script/api/CMakeFiles/script_ai.dir/build.make src/script/api/CMakeFiles/script_ai.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=74,75,76,77,78,79,80,81,82 "Built target script_ai"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=75,76,77,78,79,80,81,82 "Built target script_ai"
 .PHONY : src/script/api/CMakeFiles/script_ai.dir/all
 
 # Build rule for subdir invocation for target.
 src/script/api/CMakeFiles/script_ai.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 9
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 src/script/api/CMakeFiles/script_ai.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : src/script/api/CMakeFiles/script_ai.dir/rule
@@ -1049,12 +1049,12 @@ src/lang/preinstall:
 src/lang/CMakeFiles/language_files.dir/all:
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/depend
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target language_files"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=8,9,10,11,12,13,14 "Built target language_files"
 .PHONY : src/lang/CMakeFiles/language_files.dir/all
 
 # Build rule for subdir invocation for target.
 src/lang/CMakeFiles/language_files.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 src/lang/CMakeFiles/language_files.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : src/lang/CMakeFiles/language_files.dir/rule
@@ -1623,12 +1623,12 @@ clean: media/CMakeFiles/media_files.dir/clean
 media/CMakeFiles/desktop_file.dir/all:
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/depend
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num= "Built target desktop_file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7 "Built target desktop_file"
 .PHONY : media/CMakeFiles/desktop_file.dir/all
 
 # Build rule for subdir invocation for target.
 media/CMakeFiles/desktop_file.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 media/CMakeFiles/desktop_file.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : media/CMakeFiles/desktop_file.dir/rule

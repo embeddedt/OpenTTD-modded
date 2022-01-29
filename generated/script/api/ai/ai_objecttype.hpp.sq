@@ -23,6 +23,7 @@ void SQAIObjectType_Register(Squirrel *engine)
 	SQAIObjectType.DefSQStaticMethod(engine, &ScriptObjectType::GetName,           "GetName",           2, ".i");
 	SQAIObjectType.DefSQStaticMethod(engine, &ScriptObjectType::GetViews,          "GetViews",          2, ".i");
 	SQAIObjectType.DefSQStaticMethod(engine, &ScriptObjectType::BuildObject,       "BuildObject",       4, ".iii");
+	SQAIObjectType.DefSQStaticMethod(engine, &ScriptObjectType::ResolveNewGRFID,   "ResolveNewGRFID",   3, ".ii");
 
 	SQAIObjectType.PostRegister(engine);
 }

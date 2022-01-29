@@ -28,6 +28,8 @@ file(REMOVE_RECURSE
   "../../baseset/extra_signals.grf"
   "../../baseset/route_step.grf"
   "../../baseset/tracerestrict.grf"
+  "../../baseset/misc_gui.grf"
+  "../../baseset/road_waypoints.grf"
   "../../baseset/openttd.32.bmp"
 )
 
