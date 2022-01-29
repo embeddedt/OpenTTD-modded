@@ -42,7 +42,7 @@ struct GenericScopeResolver : public ScopeResolver {
 	{
 	}
 
-	uint32 GetVariable(byte variable, uint32 parameter, GetVariableExtra *extra) const override;
+	uint32 GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const override;
 
 private:
 	bool ai_callback; ///< Callback comes from the AI.
@@ -106,10 +106,10 @@ void ResetGenericCallbacks()
  * @param file The GRF of the callback.
  * @param group The sprite group of the callback.
  */
-void AddGenericCallback(uint8 feature, const GRFFile *file, const SpriteGroup *group)
+void AddGenericCallback(GrfSpecFeature feature, const GRFFile *file, const SpriteGroup *group)
 {
 	if (feature >= lengthof(_gcl)) {
-		grfmsg(5, "AddGenericCallback: Unsupported feature 0x%02X", feature);
+		grfmsg(5, "AddGenericCallback: Unsupported feature %s", GetFeatureString(feature));
 		return;
 	}
 
@@ -119,7 +119,7 @@ void AddGenericCallback(uint8 feature, const GRFFile *file, const SpriteGroup *g
 	_gcl[feature].push_front(GenericCallback(file, group));
 }
 
-/* virtual */ uint32 GenericScopeResolver::GetVariable(byte variable, uint32 parameter, GetVariableExtra *extra) const
+/* virtual */ uint32 GenericScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
 {
 	if (this->ai_callback) {
 		switch (variable) {
@@ -204,7 +204,7 @@ static uint16 GetGenericCallbackResult(uint8 feature, ResolverObject &object, ui
  * @param[out] file Optionally returns the GRFFile which made the final decision for the callback result. May be nullptr if not required.
  * @return callback value if successful or CALLBACK_FAILED
  */
-uint16 GetAiPurchaseCallbackResult(uint8 feature, CargoID cargo_type, uint8 default_selection, IndustryType src_industry, IndustryType dst_industry, uint8 distance, AIConstructionEvent event, uint8 count, uint8 station_size, const GRFFile **file)
+uint16 GetAiPurchaseCallbackResult(GrfSpecFeature feature, CargoID cargo_type, uint8 default_selection, IndustryType src_industry, IndustryType dst_industry, uint8 distance, AIConstructionEvent event, uint8 count, uint8 station_size, const GRFFile **file)
 {
 	GenericResolverObject object(true, CBID_GENERIC_AI_PURCHASE_SELECTION);
 

@@ -472,11 +472,9 @@ int GetTileMarginInFrontOfTrain(const Train *v, int x_pos, int y_pos)
  * @param update_train_state whether the state of the train v may be changed
  * @param station_ahead  'return' the amount of 1/16th tiles in front of the train
  * @param station_length 'return' the station length in 1/16th tiles
- * @param x_pos          vehicle x position
- * @param y_pos          vehicle y position
  * @return the location, calculated from the begin of the station to stop at.
  */
-int GetTrainStopLocation(StationID station_id, TileIndex tile, Train *v, bool update_train_state, int *station_ahead, int *station_length, int x_pos, int y_pos)
+int GetTrainStopLocation(StationID station_id, TileIndex tile, Train *v, bool update_train_state, int *station_ahead, int *station_length)
 {
 	Train *front = v->First();
 	if (IsRailWaypoint(tile)) {
@@ -700,7 +698,7 @@ void AdvanceOrderIndex(const Vehicle *v, VehicleOrderID &index)
 			case OT_GOTO_WAYPOINT:
 				return;
 			case OT_CONDITIONAL: {
-				VehicleOrderID next = ProcessConditionalOrder(order, v, true);
+				VehicleOrderID next = ProcessConditionalOrder(order, v, PCO_DRY_RUN);
 				if (next != INVALID_VEH_ORDER_ID) {
 					depth++;
 					index = next;
@@ -748,26 +746,40 @@ int PredictStationStoppingLocation(const Train *v, const Order *order, int stati
 	}
 	if (osl == OSL_PLATFORM_THROUGH && overhang > 0) {
 		/* The train is longer than the station, and we can run through the station to load/unload */
-		for (const Train *u = v; u != nullptr; u = u->Next()) {
-			if (overhang > 0 && !u->IsArticulatedPart()) {
-				bool skip = true;
-				for (const Train *part = u; part != nullptr; part = part->HasArticulatedPart() ? part->GetNextArticulatedPart() : nullptr) {
-					if (part->cargo_cap != 0) {
-						skip = false;
-						break;
-					}
-				}
-				if (skip) {
-					for (const Train *part = u; part != nullptr; part = part->HasArticulatedPart() ? part->GetNextArticulatedPart() : nullptr) {
-						overhang -= part->gcache.cached_veh_length;
-						adjust += part->gcache.cached_veh_length;
-					}
-					continue;
-				}
+
+		/* Check whether the train has already reached the platform and set VRF_BEYOND_PLATFORM_END on the front part */
+		if (HasBit(v->flags, VRF_BEYOND_PLATFORM_END)) {
+			/* Compute how much of the train should stop beyond the station, using already set flags */
+			int beyond = 0;
+			for (const Train *u = v; u != nullptr && HasBit(u->flags, VRF_BEYOND_PLATFORM_END); u = u->Next()) {
+				beyond += u->gcache.cached_veh_length;
 			}
-			break;
+			/* Adjust for the remaining amount of train being less than the station length */
+			int overshoot = station_length - std::min(v->gcache.cached_total_length - beyond, station_length);
+			adjust = beyond - overshoot;
+		} else {
+			/* Train hasn't reached the platform yet, or no advancing has occured, use predictive mode */
+			for (const Train *u = v; u != nullptr; u = u->Next()) {
+				if (overhang > 0 && !u->IsArticulatedPart()) {
+					bool skip = true;
+					for (const Train *part = u; part != nullptr; part = part->HasArticulatedPart() ? part->GetNextArticulatedPart() : nullptr) {
+						if (part->cargo_cap != 0) {
+							skip = false;
+							break;
+						}
+					}
+					if (skip) {
+						for (const Train *part = u; part != nullptr; part = part->HasArticulatedPart() ? part->GetNextArticulatedPart() : nullptr) {
+							overhang -= part->gcache.cached_veh_length;
+							adjust += part->gcache.cached_veh_length;
+						}
+						continue;
+					}
+				}
+				break;
+			}
+			if (overhang < 0) adjust += overhang;
 		}
-		if (overhang < 0) adjust += overhang;
 	} else if (overhang >= 0) {
 		/* The train is longer than the station, make it stop at the far end of the platform */
 		osl = OSL_PLATFORM_FAR_END;
@@ -1016,7 +1028,7 @@ Train::MaxSpeedInfo Train::GetCurrentMaxSpeedInfoInternal(bool update_state) con
 			this->gcache.cached_max_track_speed :
 			std::min<int>(this->tcache.cached_max_curve_speed, this->gcache.cached_max_track_speed);
 
-	if (this->current_order.IsType(OT_LOADING_ADVANCE)) max_speed = std::min(max_speed, 15);
+	if (this->current_order.IsType(OT_LOADING_ADVANCE)) max_speed = std::min<int>(max_speed, _settings_game.vehicle.through_load_speed_limit);
 
 	int advisory_max_speed = max_speed;
 
@@ -2127,6 +2139,7 @@ CommandCost CmdMoveRailVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 			DeleteWindowById(WC_VEHICLE_REFIT, src->index);
 			DeleteWindowById(WC_VEHICLE_DETAILS, src->index);
 			DeleteWindowById(WC_VEHICLE_TIMETABLE, src->index);
+			DeleteWindowById(WC_SCHDISPATCH_SLOTS, src->index);
 			DeleteNewGRFInspectWindow(GSF_TRAINS, src->index);
 			SetWindowDirty(WC_COMPANY, _current_company);
 
@@ -2135,9 +2148,9 @@ CommandCost CmdMoveRailVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 			DeleteVehicleOrders(src);
 			RemoveVehicleFromGroup(src);
 			src->unitnumber = 0;
-			if (HasBit(src->flags, VRF_HAVE_SLOT)) {
+			if (HasBit(src->vehicle_flags, VF_HAVE_SLOT)) {
 				TraceRestrictRemoveVehicleFromAllSlots(src->index);
-				ClrBit(src->flags, VRF_HAVE_SLOT);
+				ClrBit(src->vehicle_flags, VF_HAVE_SLOT);
 			}
 			OrderBackup::ClearVehicle(src);
 		}
@@ -3867,7 +3880,7 @@ public:
 					this->v->current_order = *order;
 					return UpdateOrderDest(this->v, order, 0, true);
 				case OT_CONDITIONAL: {
-					VehicleOrderID next = ProcessConditionalOrder(order, this->v, true);
+					VehicleOrderID next = ProcessConditionalOrder(order, this->v, PCO_DRY_RUN);
 					if (next != INVALID_VEH_ORDER_ID) {
 						depth++;
 						this->v->cur_real_order_index = next;
@@ -6355,6 +6368,7 @@ static bool TrainLocoHandler(Train *v, bool mode)
 	if (CheckTrainStayInDepot(v)) return true;
 
 	if (v->current_order.IsType(OT_WAITING) && v->reverse_distance == 0) {
+		if (mode) return true;
 		v->HandleWaiting(false, true);
 		if (v->current_order.IsType(OT_WAITING)) return true;
 		if (IsRailWaypointTile(v->tile)) {
@@ -6999,7 +7013,7 @@ CommandCost CmdTemplateReplaceVehicle(TileIndex tile, DoCommandFlag flags, uint3
 	// if a train shall keep its old refit, store the refit setting of its first vehicle
 	if (!use_refit) {
 		for (Train *getc = incoming; getc != nullptr; getc = getc->GetNextUnit()) {
-			if (getc->cargo_type != CT_INVALID) {
+			if (getc->cargo_type != CT_INVALID && getc->cargo_cap > 0) {
 				store_refit_ct = getc->cargo_type;
 				break;
 			}

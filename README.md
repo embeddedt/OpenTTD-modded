@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.45.0
+## JGR's Patchpack version 0.46-rc2
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -59,7 +59,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Drive-through train depots.
 * [Template-based train replacement](http://www.tt-forums.net/viewtopic.php?f=33&t=58904).
 * [Routing restrictions](http://www.tt-forums.net/viewtopic.php?f=33&t=73397).  
-  This also includes slots and counters.  
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
 * [Programmable pre-signals](http://www.tt-forums.net/viewtopic.php?f=33&t=47690).  
   These are not shown in the build signal window by default.  
@@ -84,6 +83,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * No-entry signals.  
   These are not shown in the build signal window by default.
 * Add client setting to show all signals using the default baseset sprites.
+* Remember the last-used signal type between games.
 
 #### Roads and Road Vehicles
 
@@ -96,6 +96,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting for default road/tram types.
 * Add a setting to turn off road vehicles slowing in curves.
 * Add a setting to disable road vehicles from passing through each other when blocked for an extended period of time.
+* Allow road vehicle go to station/waypoint orders to have an associated required stop/bay/waypoint direction.
 
 #### Level Crossings
 
@@ -145,6 +146,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add feature to create a new auto-named group when dragging and dropping a vehicle onto the new group button (ctrl includes shared order vehicles).
 * Add settings to reduce vehicle running costs when a vehicle is stationary or in a depot.
 * If a train or ship's next order is for the current station when leaving, start loading again without moving, instead of leaving.
+* Slots and counters.  
+  See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
 
 #### Orders and Timetabling
 
@@ -158,7 +161,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Order occupancy.  
   Add column to the orders GUI to show occupancy running average, show the average order occupancy, and add a vehicle sort mode.
 * [Timetabling waiting time in depots](http://www.tt-forums.net/viewtopic.php?f=33&t=70969).
-* [Scheduled dispatch](https://github.com/innocenat/OpenTTD-patches/tree/scheduled-dispatch-sx).
+* Scheduled dispatch.  
+  This allows dispatching vehicles from timing points using one or more repeating schedules. This is useful for clock-face timetabling.
 * [More conditional orders](http://www.tt-forums.net/viewtopic.php?f=33&t=38317).  
   Next station: is cargo waiting, is cargo accepted, number of free platforms, amount of cargo waiting.  
   Percent of times, per-cargo load percentage, current time/date, timetable lateness.  
@@ -179,6 +183,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 #### Stations
 
 * [Departure boards](https://www.tt-forums.net/viewtopic.php?f=33&t=49956).
+* Add road waypoints.
 * Add a setting to increase the station catchment radius.
 * Station rating: track "last visited vehicle type" separately per cargo.
 * Add setting to scale station cargo capacity and rating tolerance by size.
@@ -192,6 +197,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * [Allow NewGRFs to supply additional station name strings](https://github.com/JGRennison/OpenTTD-patches/wiki/GRF-features#extra-station-names).
 * Add sort by number of vehicles calling to the station list window.
 * Add setting to distribute cargo received at a station to all accepting industries equally, instead of just one of them.
+* Add setting to allow hiding viewport labels of individual waypoints.
 
 #### Towns
 
@@ -281,6 +287,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add support for zstd savegame compression for autosaves and network joins.
 * Increase the number of settings which can be changed in multiplayer.
 * Store company passwords in network server saves in an encrypted form such that they are automaticaly restored when loaded into the same network server.
+* Add client setting for whether to sync localisation settings (such as measurement units) with the server.
 
 #### Money
 
@@ -549,7 +556,7 @@ If you want to compile OpenTTD from source, instructions can be found in [COMPIL
 
 - [OpenTTD website](https://www.openttd.org)
 - IRC chat using #openttd on irc.oftc.net [more info about our irc channel](https://wiki.openttd.org/en/Development/IRC%20channel)
-- [OpenTTD on Github](https://github.com/openTTD/) for code repositories and for reporting issues
+- [OpenTTD on Github](https://github.com/OpenTTD/) for code repositories and for reporting issues
 - [forum.openttd.org](https://forum.openttd.org/) - the primary community forum site for discussing OpenTTD and related games
 - [OpenTTD wiki](https://wiki.openttd.org/) community-maintained wiki, including topics like gameplay guide, detailed explanation of some game mechanics, how to use add-on content (mods) and much more
 

@@ -63,7 +63,7 @@ TileIndex _build_tunnel_endtile; ///< The end of a tunnel; as hidden return from
 static const int BRIDGE_Z_START = 3;
 
 extern void DrawTrackBits(TileInfo *ti, TrackBits track);
-extern void DrawRoadBits(TileInfo *ti);
+extern void DrawRoadBitsTunnelBridge(TileInfo *ti);
 extern const RoadBits _invalid_tileh_slopes_road[2][15];
 
 extern CommandCost IsRailStationBridgeAboveOk(TileIndex tile, const StationSpec *statspec, byte layout, TileIndex northern_bridge_end, TileIndex southern_bridge_end, int bridge_height,
@@ -549,7 +549,8 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 					}
 
 					case STATION_BUS:
-					case STATION_TRUCK: {
+					case STATION_TRUCK:
+					case STATION_ROADWAYPOINT: {
 						CommandCost ret = IsRoadStopBridgeAboveOK(tile, IsDriveThroughStopTile(tile), GetRoadStopDir(tile),
 								tile_start, tile_end, z_start + 1, bridge_type, transport_type);
 						if (ret.Failed()) {
@@ -672,7 +673,8 @@ CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, u
 						}
 
 						case STATION_BUS:
-						case STATION_TRUCK: {
+						case STATION_TRUCK:
+						case STATION_ROADWAYPOINT: {
 							CommandCost ret = IsRoadStopBridgeAboveOK(tile, IsDriveThroughStopTile(tile), GetRoadStopDir(tile),
 									tile_start, tile_end, z_start + 1, bridge_type, transport_type);
 							if (ret.Failed()) {
@@ -2122,7 +2124,7 @@ static void DrawTile_TunnelBridge(TileInfo *ti, DrawTileProcParams params)
 		DrawBridgeMiddle(ti);
 	} else { // IsBridge(ti->tile)
 		if (transport_type == TRANSPORT_ROAD && IsRoadCustomBridgeHead(ti->tile)) {
-			DrawRoadBits(ti);
+			DrawRoadBitsTunnelBridge(ti);
 			DrawBridgeMiddle(ti);
 			return;
 		}

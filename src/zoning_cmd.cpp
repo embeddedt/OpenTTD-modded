@@ -227,11 +227,25 @@ SpriteID TileZoneCheckUnservedBuildingsEvaluation(TileIndex tile, Owner owner)
 SpriteID TileZoneCheckUnservedIndustriesEvaluation(TileIndex tile, Owner owner)
 {
 	if (IsTileType(tile, MP_INDUSTRY)) {
-		StationFinder stations(TileArea(tile, 1, 1));
+		const Industry *ind = Industry::GetByTile(tile);
+		if (ind->neutral_station != nullptr) return ZONING_INVALID_SPRITE_ID;
 
-		for (const Station *st : *stations.GetStations()) {
-			if (st->owner == owner && st->facilities & (~FACIL_BUS_STOP)) {
-				return ZONING_INVALID_SPRITE_ID;
+		for (const Station *st : ind->stations_near) {
+			if (st->owner == owner) {
+				if (st->facilities & (~(FACIL_BUS_STOP | FACIL_TRUCK_STOP)) || st->facilities == (FACIL_BUS_STOP | FACIL_TRUCK_STOP)) {
+					return ZONING_INVALID_SPRITE_ID;
+				} else if (st->facilities & (FACIL_BUS_STOP | FACIL_TRUCK_STOP)) {
+					for (uint i = 0; i < lengthof(ind->produced_cargo); i++) {
+						if (ind->produced_cargo[i] != CT_INVALID && st->facilities & (IsCargoInClass(ind->produced_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
+							return ZONING_INVALID_SPRITE_ID;
+						}
+					}
+					for (uint i = 0; i < lengthof(ind->accepts_cargo); i++) {
+						if (ind->accepts_cargo[i] != CT_INVALID && st->facilities & (IsCargoInClass(ind->accepts_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
+							return ZONING_INVALID_SPRITE_ID;
+						}
+					}
+				}
 			}
 		}
 
@@ -447,6 +461,11 @@ void ZoningMarkDirtyStationCoverageArea(const Station *st, ZoningModeMask mask)
 	uint outer_radius = mask & ZMM_OUTER ? GetZoningModeDependantStationCoverageRadius(st, _zoning.outer) : 0;
 	uint inner_radius = mask & ZMM_INNER ? GetZoningModeDependantStationCoverageRadius(st, _zoning.inner) : 0;
 	uint radius = std::max<uint>(outer_radius, inner_radius);
+
+	extern const Station *_viewport_highlight_station;
+	if (_viewport_highlight_station == st) {
+		radius = std::max<uint>(radius, st->GetCatchmentRadius());
+	}
 
 	if (radius > 0) {
 		Rect rect = st->GetCatchmentRectUsingRadius(radius);

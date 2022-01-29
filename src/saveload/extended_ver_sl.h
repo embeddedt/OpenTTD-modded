@@ -68,6 +68,7 @@ enum SlXvFeatureIndex {
 	XSLFI_MULTIPLE_DOCKS,                         ///< Multiple docks
 	XSLFI_TIMETABLE_EXTRA,                        ///< Vehicle timetable extra fields
 	XSLFI_TRAIN_FLAGS_EXTRA,                      ///< Train flags field extra size
+	XSLFI_VEHICLE_FLAGS_EXTRA,                    ///< Vehicle flags field extra size
 	XSLFI_TRAIN_THROUGH_LOAD,                     ///< Train through load/unload
 	XSLFI_ORDER_EXTRA_DATA,                       ///< Order extra data field(s)
 	XSLFI_WHOLE_MAP_CHUNK,                        ///< Whole map chunk
@@ -121,6 +122,11 @@ enum SlXvFeatureIndex {
 	XSLFI_LINKGRAPH_AIRCRAFT,                     ///< Link graph last aircraft update field and aircraft link scaling setting
 	XSLFI_COMPANY_PW,                             ///< Company passwords
 	XSLFI_ST_INDUSTRY_CARGO_MODE,                 ///< Station industry cargo mode setting
+	XSLFI_TL_SPEED_LIMIT,                         ///< Through load maximum speed setting
+	XSLFI_WAYPOINT_FLAGS,                         ///< Waypoint flags
+	XSLFI_ROAD_WAYPOINTS,                         ///< Road waypoints
+	XSLFI_MORE_STATION_TYPES,                     ///< More station types (field widening)
+	XSLFI_RV_ORDER_EXTRA_FLAGS,                   ///< Road vehicle order extra flags
 
 	XSLFI_SCRIPT_INT64,                           ///< See: SLV_SCRIPT_INT64
 

@@ -1750,6 +1750,7 @@ static SettingsContainer &GetSettingsTree()
 			localisation->Add(new SettingEntry("locale.units_force"));
 			localisation->Add(new SettingEntry("locale.units_height"));
 			localisation->Add(new SettingEntry("gui.date_format_in_default_names"));
+			localisation->Add(new SettingEntry("client_locale.sync_locale_network_server"));
 		}
 
 		SettingsPage *graphics = main->Add(new SettingsPage(STR_CONFIG_SETTING_GRAPHICS));
@@ -1923,6 +1924,7 @@ static SettingsContainer &GetSettingsTree()
 			interface->Add(new SettingEntry("gui.vehicle_names"));
 			interface->Add(new SettingEntry("gui.station_rating_tooltip_mode"));
 			interface->Add(new SettingEntry("gui.dual_pane_train_purchase_window"));
+			interface->Add(new SettingEntry("gui.allow_hiding_waypoint_labels"));
 		}
 
 		SettingsPage *advisors = main->Add(new SettingsPage(STR_CONFIG_SETTING_ADVISORS));
@@ -2061,6 +2063,7 @@ static SettingsContainer &GetSettingsTree()
 			limitations->Add(new SettingEntry("vehicle.max_aircraft"));
 			limitations->Add(new SettingEntry("vehicle.max_ships"));
 			limitations->Add(new SettingEntry("vehicle.max_train_length"));
+			limitations->Add(new SettingEntry("vehicle.through_load_speed_limit"));
 			limitations->Add(new SettingEntry("station.station_spread"));
 			limitations->Add(new SettingEntry("station.distant_join_stations"));
 			limitations->Add(new SettingEntry("construction.road_stop_on_town_road"));
@@ -2719,11 +2722,12 @@ struct GameSettingsWindow : Window {
 			/* Only open editbox if clicked for the second time, and only for types where it is sensible for. */
 			if (this->last_clicked == pe && !sd->IsBoolSetting() && !(sd->flags & (SF_GUI_DROPDOWN | SF_ENUM))) {
 				int64 value64 = value;
-				/* Show the correct currency-translated value */
+				/* Show the correct currency or velocity translated value */
 				if (sd->flags & SF_GUI_CURRENCY) value64 *= _currency->rate;
+				if (sd->flags & SF_GUI_VELOCITY) value64 = ConvertKmhishSpeedToDisplaySpeed((uint)value64);
 
 				this->valuewindow_entry = pe;
-				if (sd->flags & SF_DECIMAL1) {
+				if (sd->flags & SF_DECIMAL1 || (sd->flags & SF_GUI_VELOCITY && _settings_game.locale.units_velocity == 3)) {
 					SetDParam(0, value64);
 					ShowQueryString(STR_JUST_DECIMAL1, STR_CONFIG_SETTING_QUERY_CAPTION, 10, this, CS_NUMERAL_DECIMAL, QSF_ENABLE_DEFAULT);
 				} else {
@@ -2756,7 +2760,7 @@ struct GameSettingsWindow : Window {
 		int32 value;
 		if (!StrEmpty(str)) {
 			long long llvalue;
-			if (sd->flags & SF_DECIMAL1) {
+			if (sd->flags & SF_DECIMAL1 || (sd->flags & SF_GUI_VELOCITY && _settings_game.locale.units_velocity == 3)) {
 				llvalue = atof(str) * 10;
 			} else {
 				llvalue = atoll(str);
@@ -2766,6 +2770,9 @@ struct GameSettingsWindow : Window {
 			if (sd->flags & SF_GUI_CURRENCY) llvalue /= _currency->rate;
 
 			value = (int32)ClampToI32(llvalue);
+
+			/* Save the correct velocity-translated value */
+			if (sd->flags & SF_GUI_VELOCITY) value = ConvertDisplaySpeedToKmhishSpeed(value);
 		} else {
 			value = sd->def;
 		}

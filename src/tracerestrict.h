@@ -851,6 +851,18 @@ static inline bool IsTraceRestrictTypeAuxSubtype(TraceRestrictItemType type)
 	}
 }
 
+/** May this TraceRestrictItemType take a slot of a different (non-train) vehicle type */
+static inline bool IsTraceRestrictTypeNonMatchingVehicleTypeSlot(TraceRestrictItemType type)
+{
+	switch (type) {
+		case TRIT_COND_SLOT_OCCUPANCY:
+			return true;
+
+		default:
+			return false;
+	}
+}
+
 /** Get mapping ref ID from tile and track */
 static inline TraceRestrictRefId MakeTraceRestrictRefId(TileIndex t, Track track)
 {
@@ -941,6 +953,7 @@ CommandCost TraceRestrictProgramMoveItemAt(std::vector<TraceRestrictItem> &items
 void ShowTraceRestrictProgramWindow(TileIndex tile, Track track);
 
 int GetTraceRestrictTimeDateValue(TraceRestrictTimeDateValueField type);
+int GetTraceRestrictTimeDateValueFromDate(TraceRestrictTimeDateValueField type, DateTicksScaled scaled_date_ticks);
 
 void TraceRestrictRemoveDestinationID(TraceRestrictOrderCondAuxField type, uint16 index);
 void TraceRestrictRemoveGroupID(GroupID index);
@@ -962,6 +975,7 @@ struct TraceRestrictSlot : TraceRestrictSlotPool::PoolItem<&_tracerestrictslot_p
 	uint32 max_occupancy = 1;
 	std::string name;
 	Owner owner;
+	VehicleType vehicle_type;
 
 	std::vector<SignalReference> progsig_dependants;
 
@@ -970,9 +984,10 @@ struct TraceRestrictSlot : TraceRestrictSlotPool::PoolItem<&_tracerestrictslot_p
 	static void ValidateSlotOccupants(std::function<void(const char *)> log);
 	static void PreCleanPool();
 
-	TraceRestrictSlot(CompanyID owner = INVALID_COMPANY)
+	TraceRestrictSlot(CompanyID owner = INVALID_COMPANY, VehicleType type = VEH_TRAIN)
 	{
 		this->owner = owner;
+		this->vehicle_type = type;
 	}
 
 	~TraceRestrictSlot()

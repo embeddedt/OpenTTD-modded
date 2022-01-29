@@ -538,14 +538,14 @@ static bool TransportIndustryGoods(TileIndex tile)
 	bool moved_cargo = false;
 
 	for (uint j = 0; j < lengthof(i->produced_cargo_waiting); j++) {
-		uint cw = std::min<uint>(i->produced_cargo_waiting[j], 255u);
+		uint cw = std::min<uint>(i->produced_cargo_waiting[j], ScaleQuantity(255u, _settings_game.economy.industry_cargo_scale_factor));
 		if (cw > indspec->minimal_cargo && i->produced_cargo[j] != CT_INVALID) {
 			i->produced_cargo_waiting[j] -= cw;
 
 			/* fluctuating economy? */
 			if (EconomyIsInRecession()) cw = (cw + 1) / 2;
 
-			i->this_month_production[j] += cw;
+			i->this_month_production[j] = std::min<uint>(i->this_month_production[j] + cw, 0xFFFF);
 
 			uint am = MoveGoodsToStation(i->produced_cargo[j], cw, ST_INDUSTRY, i->index, &i->stations_near, i->exclusive_consumer);
 			i->this_month_transported[j] += am;

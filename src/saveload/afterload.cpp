@@ -1079,6 +1079,15 @@ bool AfterLoadGame()
 		}
 	}
 
+	if (SlXvIsFeatureMissing(XSLFI_MORE_STATION_TYPES)) {
+		/* Expansion of station type field in m6 */
+		for (TileIndex t = 0; t < MapSize(); t++) {
+			if (IsTileType(t, MP_STATION)) {
+				ClrBit(_me[t].m6, 6);
+			}
+		}
+	}
+
 	for (TileIndex t = 0; t < map_size; t++) {
 		switch (GetTileType(t)) {
 			case MP_STATION: {
@@ -1254,7 +1263,7 @@ bool AfterLoadGame()
 					break;
 
 				case MP_STATION:
-					if (IsRoadStop(t)) SB(_me[t].m7, 6, 2, 1);
+					if (IsStationRoadStop(t)) SB(_me[t].m7, 6, 2, 1);
 					break;
 
 				case MP_TUNNELBRIDGE:
@@ -1308,7 +1317,7 @@ bool AfterLoadGame()
 					break;
 
 				case MP_STATION:
-					if (!IsRoadStop(t)) break;
+					if (!IsStationRoadStop(t)) break;
 
 					if (fix_roadtypes) SB(_me[t].m7, 6, 2, (RoadTypes)GB(_m[t].m3, 0, 3));
 					SB(_me[t].m7, 0, 5, HasBit(_me[t].m6, 2) ? OWNER_TOWN : GetTileOwner(t));
@@ -1465,7 +1474,7 @@ bool AfterLoadGame()
 					has_road = true;
 					break;
 				case MP_STATION:
-					has_road = IsRoadStop(t);
+					has_road = IsAnyRoadStop(t);
 					break;
 				case MP_TUNNELBRIDGE:
 					has_road = GetTunnelBridgeTransportType(t) == TRANSPORT_ROAD;
@@ -1519,7 +1528,7 @@ bool AfterLoadGame()
 					has_road = true;
 					break;
 				case MP_STATION:
-					has_road = IsRoadStop(t);
+					has_road = IsAnyRoadStop(t);
 					break;
 				case MP_TUNNELBRIDGE:
 					has_road = GetTunnelBridgeTransportType(t) == TRANSPORT_ROAD;
@@ -4009,19 +4018,55 @@ bool AfterLoadGame()
 		}
 	}
 
-	if (SlXvIsFeatureMissing(XSLFI_OBJECT_GROUND_TYPES)) {
+	if (SlXvIsFeatureMissing(XSLFI_OBJECT_GROUND_TYPES, 2)) {
 		for (TileIndex t = 0; t < map_size; t++) {
 			if (IsTileType(t, MP_OBJECT)) {
-				_m[t].m4 = 0;
+				if (SlXvIsFeatureMissing(XSLFI_OBJECT_GROUND_TYPES)) _m[t].m4 = 0;
 				ObjectType type = GetObjectType(t);
-				extern void SetShouldObjectHaveNoFoundation(TileIndex tile, Slope tileh, ObjectType type, const ObjectSpec *spec);
-				SetShouldObjectHaveNoFoundation(t, SLOPE_ELEVATED, type, ObjectSpec::Get(type));
+				extern void SetObjectFoundationType(TileIndex tile, Slope tileh, ObjectType type, const ObjectSpec *spec);
+				SetObjectFoundationType(t, SLOPE_ELEVATED, type, ObjectSpec::Get(type));
 			}
 		}
 	}
 
 	if (SlXvIsFeatureMissing(XSLFI_ST_INDUSTRY_CARGO_MODE)) {
 		_settings_game.station.station_delivery_mode = SD_NEAREST_FIRST;
+	}
+
+	if (SlXvIsFeatureMissing(XSLFI_TL_SPEED_LIMIT)) {
+		_settings_game.vehicle.through_load_speed_limit = 15;
+	}
+
+	if (SlXvIsFeaturePresent(XSLFI_SCHEDULED_DISPATCH, 1, 2)) {
+		for (OrderList *order_list : OrderList::Iterate()) {
+			if (order_list->GetScheduledDispatchScheduleCount() == 1) {
+				const DispatchSchedule &ds = order_list->GetDispatchScheduleByIndex(0);
+				if (!ds.IsScheduledDispatchValid() && ds.GetScheduledDispatch().empty()) {
+					order_list->GetScheduledDispatchScheduleSet().clear();
+				} else {
+					VehicleOrderID idx = order_list->GetFirstSharedVehicle()->GetFirstWaitingLocation(false);
+					if (idx != INVALID_VEH_ORDER_ID) {
+						order_list->GetOrderAt(idx)->SetDispatchScheduleIndex(0);
+					}
+				}
+			}
+		}
+	}
+
+	if (SlXvIsFeaturePresent(XSLFI_TRACE_RESTRICT, 7, 12)) {
+		/* Move vehicle in slot flag */
+		for (Vehicle *v : Vehicle::Iterate()) {
+			if (v->type == VEH_TRAIN && HasBit(Train::From(v)->flags, 2)) { /* was VRF_HAVE_SLOT */
+				SetBit(v->vehicle_flags, VF_HAVE_SLOT);
+				ClrBit(Train::From(v)->flags, 2);
+			} else {
+				ClrBit(v->vehicle_flags, VF_HAVE_SLOT);
+			}
+		}
+	} else if (SlXvIsFeatureMissing(XSLFI_TRACE_RESTRICT)) {
+		for (Vehicle *v : Vehicle::Iterate()) {
+			ClrBit(v->vehicle_flags, VF_HAVE_SLOT);
+		}
 	}
 
 	InitializeRoadGUI();
@@ -4062,6 +4107,10 @@ bool AfterLoadGame()
 
 	if (_networking && !_network_server) {
 		SlProcessVENC();
+
+		if (!_settings_client.client_locale.sync_locale_network_server) {
+			_settings_game.locale = _settings_newgame.locale;
+		}
 	}
 
 	/* Show this message last to avoid covering up an error message if we bail out part way */

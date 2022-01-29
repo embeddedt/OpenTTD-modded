@@ -249,6 +249,16 @@ char *CrashLog::LogConfiguration(char *buffer, const char *last) const
 	}
 	buffer += seprintf(buffer, last, "\n");
 
+	if (_grfconfig_static != nullptr) {
+		buffer += seprintf(buffer, last, "Static NewGRFs present:\n");
+		for (GRFConfig *c = _grfconfig_static; c != nullptr; c = c->next) {
+			char md5sum[33];
+			md5sumToString(md5sum, lastof(md5sum), c->ident.md5sum);
+			buffer += seprintf(buffer, last, " GRF ID: %08X, checksum %s, %s, '%s'\n", BSWAP32(c->ident.grfid), md5sum, c->GetDisplayPath(), GetDefaultLangGRFStringFromGRFText(c->name));
+		}
+		buffer += seprintf(buffer, last, "\n");
+	}
+
 	return buffer;
 }
 
@@ -510,6 +520,9 @@ char *CrashLog::FillDesyncCrashLog(char *buffer, const char *last, const DesyncE
 		ConvertDateToYMD(_last_sync_date, &ymd);
 		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i)",
 				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter);
+	}
+	if (info.client_id >= 0) {
+		buffer += seprintf(buffer, last, "Client #%d, \"%s\"\n", info.client_id, info.client_name != nullptr ? info.client_name : "");
 	}
 	buffer += seprintf(buffer, last, "\n");
 

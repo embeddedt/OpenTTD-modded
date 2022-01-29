@@ -585,6 +585,12 @@ STR_MONTH_OCT                                                   :Deireadh Fómha
 STR_MONTH_NOV                                                   :Samhain
 STR_MONTH_DEC                                                   :Nollaig
 
+###length VEHICLE_TYPES
+STR_VEHICLE_TYPE_TRAINS                                         :Traenacha
+STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Feithiclí Bóithre
+STR_VEHICLE_TYPE_SHIPS                                          :Longa
+STR_VEHICLE_TYPE_AIRCRAFT                                       :Aerárthaigh
+
 # Graph window
 STR_GRAPH_KEY_BUTTON                                            :{BLACK}Eochair
 STR_GRAPH_KEY_TOOLTIP                                           :{BLACK}Taispeáin eochair na ngraf
@@ -3115,6 +3121,7 @@ STR_SAVELOAD_DETAIL_GRFSTATUS                                   :{SILVER}NewGRF:
 STR_SAVELOAD_FILTER_TITLE                                       :{BLACK}Teaghrán scagtha:
 STR_SAVELOAD_OVERWRITE_TITLE                                    :{WHITE}Comhad a Fhorscríobh
 STR_SAVELOAD_OVERWRITE_WARNING                                  :{YELLOW}An bhfuil tú cinnte gur mian leat an comhad atá ann cheana féin a fhorscríobh?
+STR_SAVELOAD_DIRECTORY                                          :{STRING} (Comhadlann)
 STR_SAVELOAD_PARENT_DIRECTORY                                   :{STRING} (Máthair-chomhadlann)
 
 STR_SAVELOAD_OSKTITLE                                           :{BLACK}Iontráil ainm don chluiche sábháilte
@@ -3131,7 +3138,7 @@ STR_MAPGEN_HEIGHTMAP_HEIGHT                                     :{BLACK}An beann
 STR_MAPGEN_HEIGHTMAP_HEIGHT_UP                                  :{BLACK}Méadaigh airde uasta an bhinn is airde ar an léarscáil d'aon leibhéal amháin
 STR_MAPGEN_HEIGHTMAP_HEIGHT_DOWN                                :{BLACK}Laghdaigh airde uasta an bhinn is airde ar an léarscáil d'aon leibhéal amháin
 STR_MAPGEN_SNOW_COVERAGE                                        :{BLACK}Clúdach sneachta:
-STR_MAPGEN_SNOW_COVERAGE_UP                                     :{BLACK}éadaigh clúdach an tsneachta deich faoin gcéad
+STR_MAPGEN_SNOW_COVERAGE_UP                                     :{BLACK}Méadaigh clúdach an tsneachta deich faoin gcéad
 STR_MAPGEN_SNOW_COVERAGE_DOWN                                   :{BLACK}Laghdaigh clúdach an tsneachta deich faoin gcéad
 STR_MAPGEN_SNOW_COVERAGE_TEXT                                   :{BLACK}{NUM}%
 STR_MAPGEN_DESERT_COVERAGE                                      :{BLACK}Clúdach an fhásaigh:

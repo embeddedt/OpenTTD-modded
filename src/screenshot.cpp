@@ -701,8 +701,18 @@ static const char *MakeScreenshotName(const char *default_fn, const char *ext, b
 		}
 	}
 
-	/* Add extension to screenshot file */
 	size_t len = strlen(_screenshot_name);
+
+	/* Handle user-specified filenames ending in %d with automatic numbering */
+	if (len >= 2) {
+		if (_screenshot_name[len - 2] == '%' && _screenshot_name[len - 1] == 'd') {
+			generate = true;
+			len -= 2;
+			_screenshot_name[len] = '\0';
+		}
+	}
+
+	/* Add extension to screenshot file */
 	seprintf(&_screenshot_name[len], lastof(_screenshot_name), ".%s", ext);
 
 	const char *screenshot_dir = crashlog ? _personal_dir.c_str() : FiosGetScreenshotDir();
@@ -1125,6 +1135,8 @@ static byte GetTopographyValue(TileIndex tile)
 				return MKCOLOUR(PC_WATER);
 			case STATION_WAYPOINT:
 				return MKCOLOUR(PC_GREY);
+			case STATION_ROADWAYPOINT:
+				return MKCOLOUR(PC_GREY);
 			default: NOT_REACHED();
 		}
 	}
@@ -1217,6 +1229,8 @@ static byte GetIndustryValue(TileIndex tile)
 			case STATION_BUOY:
 				return MKCOLOUR(PC_BLACK);
 			case STATION_WAYPOINT:
+				return MKCOLOUR(PC_GREY);
+			case STATION_ROADWAYPOINT:
 				return MKCOLOUR(PC_GREY);
 			default: NOT_REACHED();
 		}

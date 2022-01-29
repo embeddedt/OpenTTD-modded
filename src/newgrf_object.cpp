@@ -22,6 +22,7 @@
 #include "water.h"
 #include "clear_func.h"
 #include "newgrf_animation_base.h"
+#include "newgrf_extension.h"
 
 #include "safeguards.h"
 
@@ -231,7 +232,7 @@ static uint32 GetCountAndDistanceOfClosestInstance(byte local_id, uint32 grfid, 
 }
 
 /** Used by the resolver to get values for feature 0F deterministic spritegroups. */
-/* virtual */ uint32 ObjectScopeResolver::GetVariable(byte variable, uint32 parameter, GetVariableExtra *extra) const
+/* virtual */ uint32 ObjectScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
 {
 	/* We get the town from the object, or we calculate the closest
 	 * town if we need to when there's no object. */
@@ -262,6 +263,12 @@ static uint32 GetCountAndDistanceOfClosestInstance(byte local_id, uint32 grfid, 
 
 			/* Object view */
 			case 0x48: return this->view;
+
+			case A2VRI_OBJECT_FOUNDATION_SLOPE:
+				return GetTileSlope(this->tile);
+
+			case A2VRI_OBJECT_FOUNDATION_SLOPE_CHANGE:
+				return 0;
 
 			/*
 			 * Disallow the rest:
@@ -333,6 +340,21 @@ static uint32 GetCountAndDistanceOfClosestInstance(byte local_id, uint32 grfid, 
 
 		/* Count of object, distance of closest instance */
 		case 0x64: return GetCountAndDistanceOfClosestInstance(parameter, this->ro.grffile->grfid, this->tile, this->obj);
+
+		case A2VRI_OBJECT_FOUNDATION_SLOPE: {
+			extern Foundation GetFoundation_Object(TileIndex tile, Slope tileh);
+			Slope slope = GetTileSlope(this->tile);
+			ApplyFoundationToSlope(GetFoundation_Object(this->tile, slope), &slope);
+			return slope;
+		}
+
+		case A2VRI_OBJECT_FOUNDATION_SLOPE_CHANGE: {
+			extern Foundation GetFoundation_Object(TileIndex tile, Slope tileh);
+			Slope slope = GetTileSlope(this->tile);
+			Slope orig_slope = slope;
+			ApplyFoundationToSlope(GetFoundation_Object(this->tile, slope), &slope);
+			return slope ^ orig_slope;
+		}
 	}
 
 unhandled:

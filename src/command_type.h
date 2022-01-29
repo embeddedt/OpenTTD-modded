@@ -251,7 +251,9 @@ enum Commands {
 	CMD_CONVERT_RAIL,                 ///< convert a rail type
 
 	CMD_BUILD_RAIL_WAYPOINT,          ///< build a waypoint
+	CMD_BUILD_ROAD_WAYPOINT,          ///< build a road waypoint
 	CMD_RENAME_WAYPOINT,              ///< rename a waypoint
+	CMD_SET_WAYPOINT_LABEL_HIDDEN,    ///< set whether waypoint label is hidden
 	CMD_REMOVE_FROM_RAIL_WAYPOINT,    ///< remove a (rectangle of) tiles from a rail waypoint
 
 	CMD_BUILD_ROAD_STOP,              ///< build a road stop
@@ -450,6 +452,8 @@ enum Commands {
 	CMD_SCHEDULED_DISPATCH_SET_DELAY,           ///< scheduled dispatch set maximum allow delay
 	CMD_SCHEDULED_DISPATCH_RESET_LAST_DISPATCH, ///< scheduled dispatch reset last dispatch date
 	CMD_SCHEDULED_DISPATCH_CLEAR,               ///< scheduled dispatch clear schedule
+	CMD_SCHEDULED_DISPATCH_ADD_NEW_SCHEDULE,    ///< scheduled dispatch add new schedule
+	CMD_SCHEDULED_DISPATCH_REMOVE_SCHEDULE,     ///< scheduled dispatch remove schedule
 
 	CMD_ADD_PLAN,
 	CMD_ADD_PLAN_LINE,
@@ -509,6 +513,8 @@ enum FlaggedCommands {
 	CMD_FLAGS_MASK            = 0xFF00, ///< mask for all command flags
 	CMD_ID_MASK               = 0x00FF, ///< mask for the command ID
 };
+
+static_assert(CMD_END <= CMD_ID_MASK + 1);
 
 /**
  * Command flags for the command table _command_proc_table.

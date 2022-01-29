@@ -2336,6 +2336,10 @@ struct TileAndStation {
 
 static std::vector<TileAndStation> _deleted_stations_nearby;
 static std::vector<StationID> _stations_nearby_list;
+static bool _station_nearby_road_waypoint_search;
+
+static bool IsNearbyStationRightType(const Station *st) { return true; }
+static bool IsNearbyStationRightType(const Waypoint *wp) { return HasBit(wp->waypoint_flags, WPF_ROAD) == _station_nearby_road_waypoint_search; }
 
 /**
  * Add station on this tile to _stations_nearby_list if it's fully within the
@@ -2368,7 +2372,7 @@ static bool AddNearbyStation(TileIndex tile, void *user_data)
 	if (!T::IsValidID(sid)) return false;
 
 	T *st = T::Get(sid);
-	if (st->owner != _local_company || std::find(_stations_nearby_list.begin(), _stations_nearby_list.end(), sid) != _stations_nearby_list.end()) return false;
+	if (st->owner != _local_company || !IsNearbyStationRightType(st) || std::find(_stations_nearby_list.begin(), _stations_nearby_list.end(), sid) != _stations_nearby_list.end()) return false;
 
 	if (st->rect.BeforeAddRect(ctx->tile, ctx->w, ctx->h, StationRect::ADD_TEST).Succeeded()) {
 		_stations_nearby_list.push_back(sid);
@@ -2401,7 +2405,7 @@ static const T *FindStationsNearby(TileArea ta, bool distant_join)
 
 	/* Look for deleted stations */
 	for (const BaseStation *st : BaseStation::Iterate()) {
-		if (T::IsExpected(st) && !st->IsInUse() && st->owner == _local_company) {
+		if (T::IsExpected(st) && !st->IsInUse() && st->owner == _local_company && IsNearbyStationRightType(T::From(st))) {
 			/* Include only within station spread (yes, it is strictly less than) */
 			if (std::max(DistanceMax(ta.tile, st->xy), DistanceMax(TILE_ADDXY(ta.tile, ta.w - 1, ta.h - 1), st->xy)) < _settings_game.station.station_spread) {
 				_deleted_stations_nearby.push_back({st->xy, st->index});
@@ -2556,6 +2560,7 @@ struct SelectStationWindow : Window {
 	void OnInvalidateData(int data = 0, bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
+		if (T::EXPECTED_FACIL == FACIL_WAYPOINT) _station_nearby_road_waypoint_search = (this->select_station_cmd.cmd & CMD_ID_MASK) == CMD_BUILD_ROAD_WAYPOINT;
 		FindStationsNearby<T>(this->area, true);
 		this->vscroll->SetCount((uint)_stations_nearby_list.size() + 1);
 		this->SetDirty();
@@ -2618,6 +2623,7 @@ static bool StationJoinerNeeded(const CommandContainer &cmd, TileArea ta)
 	/* Test for adjacent station or station below selection.
 	 * If adjacent-stations is disabled and we are building next to a station, do not show the selection window.
 	 * but join the other station immediately. */
+	if (T::EXPECTED_FACIL == FACIL_WAYPOINT) _station_nearby_road_waypoint_search = (cmd.cmd & CMD_ID_MASK) == CMD_BUILD_ROAD_WAYPOINT;
 	const T *st = FindStationsNearby<T>(ta, false);
 	return st == nullptr && (_settings_game.station.adjacent_stations || _stations_nearby_list.size() == 0);
 }
@@ -3027,4 +3033,13 @@ public:
 void GuiShowStationRatingTooltip(Window *parent, const Station *st, const CargoSpec *cs) {
 	DeleteWindowById(WC_STATION_RATING_TOOLTIP, 0);
 	new StationRatingTooltipWindow(parent, st, cs);
+}
+
+bool ShouldShowBaseStationViewportLabel(const BaseStation *bst)
+{
+	if (!HasBit(_display_opt, Station::IsExpected(bst) ? DO_SHOW_STATION_NAMES : DO_SHOW_WAYPOINT_NAMES)) return false;
+	if (HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS) && (_local_company != bst->owner && bst->owner != OWNER_NONE)) return false;
+	if (Waypoint::IsExpected(bst) && HasBit(Waypoint::From(bst)->waypoint_flags, WPF_HIDE_LABEL) && _settings_client.gui.allow_hiding_waypoint_labels &&
+			!HasBit(_extra_display_opt, XDO_SHOW_HIDDEN_SIGNS)) return false;
+	return true;
 }

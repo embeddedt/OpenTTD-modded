@@ -1180,9 +1180,9 @@ void Vehicle::PreDestructor()
 		}
 	}
 
-	if (this->type == VEH_TRAIN && HasBit(Train::From(this)->flags, VRF_HAVE_SLOT)) {
+	if (HasBit(this->vehicle_flags, VF_HAVE_SLOT)) {
 		TraceRestrictRemoveVehicleFromAllSlots(this->index);
-		ClrBit(Train::From(this)->flags, VRF_HAVE_SLOT);
+		ClrBit(this->vehicle_flags, VF_HAVE_SLOT);
 	}
 	if (this->type == VEH_TRAIN && HasBit(Train::From(this)->flags, VRF_PENDING_SPEED_RESTRICTION)) {
 		pending_speed_restriction_change_map.erase(this->index);
@@ -3377,6 +3377,8 @@ void Vehicle::LeaveStation()
 	delete this->cargo_payment;
 	assert(this->cargo_payment == nullptr); // cleared by ~CargoPayment
 
+	ClrBit(this->vehicle_flags, VF_COND_ORDER_WAIT);
+
 	TileIndex station_tile = INVALID_TILE;
 
 	if (this->type == VEH_TRAIN) {
@@ -3540,6 +3542,20 @@ void Vehicle::ResetRefitCaps()
 	for (Vehicle *v = this; v != nullptr; v = v->Next()) v->refit_cap = v->cargo_cap;
 }
 
+static bool ShouldVehicleContinueWaiting(Vehicle *v)
+{
+	if (v->GetNumOrders() < 1) return false;
+
+	/* Rate-limit re-checking of conditional order loop */
+	if (HasBit(v->vehicle_flags, VF_COND_ORDER_WAIT) && v->tick_counter % 32 != 0) return true;
+
+	/* If conditional orders lead back to this order, just keep waiting without leaving the order */
+	bool loop = AdvanceOrderIndexDeferred(v, v->cur_implicit_order_index) == v->cur_implicit_order_index;
+	FlushAdvanceOrderIndexDeferred(v, loop);
+	if (loop) SetBit(v->vehicle_flags, VF_COND_ORDER_WAIT);
+	return loop;
+}
+
 /**
  * Handle the loading of the vehicle; when not it skips through dummy
  * orders and does nothing in all other cases.
@@ -3560,7 +3576,7 @@ void Vehicle::HandleLoading(bool mode)
 			if (!mode && this->type != VEH_TRAIN) PayStationSharingFee(this, Station::Get(this->last_station_visited));
 
 			/* Not the first call for this tick, or still loading */
-			if (mode || !HasBit(this->vehicle_flags, VF_LOADING_FINISHED) || (this->current_order_time < wait_time && this->current_order.GetLeaveType() != OLT_LEAVE_EARLY)) {
+			if (mode || !HasBit(this->vehicle_flags, VF_LOADING_FINISHED) || (this->current_order_time < wait_time && this->current_order.GetLeaveType() != OLT_LEAVE_EARLY) || ShouldVehicleContinueWaiting(this)) {
 				if (!mode && this->type == VEH_TRAIN && HasBit(Train::From(this)->flags, VRF_ADVANCE_IN_PLATFORM)) this->AdvanceLoadingInStation();
 				return;
 			}
@@ -3602,8 +3618,12 @@ void Vehicle::HandleWaiting(bool stop_waiting, bool process_orders)
 			if (!stop_waiting && this->current_order_time < wait_time && this->current_order.GetLeaveType() != OLT_LEAVE_EARLY) {
 				return;
 			}
+			if (!stop_waiting && process_orders && ShouldVehicleContinueWaiting(this)) {
+				return;
+			}
 
 			/* When wait_time is expired, we move on. */
+			ClrBit(this->vehicle_flags, VF_COND_ORDER_WAIT);
 			UpdateVehicleTimetable(this, false);
 			this->IncrementImplicitOrderIndex();
 			this->current_order.MakeDummy();
@@ -3711,6 +3731,7 @@ CommandCost Vehicle::SendToDepot(DoCommandFlag flags, DepotCommand command, Tile
 
 	if (flags & DC_EXEC) {
 		if (this->current_order.IsAnyLoadingType()) this->LeaveStation();
+		if (this->current_order.IsType(OT_WAITING)) this->HandleWaiting(true);
 
 		if (this->type == VEH_TRAIN) {
 			for (Train *v = Train::From(this); v != nullptr; v = v->Next()) {
@@ -4165,6 +4186,8 @@ void DumpVehicleFlagsGeneric(const Vehicle *v, T dump, U dump_header)
 	dump('x', "VF_LAST_LOAD_ST_SEP",        HasBit(v->vehicle_flags, VF_LAST_LOAD_ST_SEP));
 	dump('s', "VF_TIMETABLE_SEPARATION",    HasBit(v->vehicle_flags, VF_TIMETABLE_SEPARATION));
 	dump('a', "VF_AUTOMATE_TIMETABLE",      HasBit(v->vehicle_flags, VF_AUTOMATE_TIMETABLE));
+	dump('Q', "VF_HAVE_SLOT",               HasBit(v->vehicle_flags, VF_HAVE_SLOT));
+	dump('W', "VF_COND_ORDER_WAIT",         HasBit(v->vehicle_flags, VF_COND_ORDER_WAIT));
 	dump_header("vcf:", "cached_veh_flags:");
 	dump('l', "VCF_LAST_VISUAL_EFFECT",     HasBit(v->vcache.cached_veh_flags, VCF_LAST_VISUAL_EFFECT));
 	dump('z', "VCF_GV_ZERO_SLOPE_RESIST",   HasBit(v->vcache.cached_veh_flags, VCF_GV_ZERO_SLOPE_RESIST));
@@ -4187,7 +4210,6 @@ void DumpVehicleFlagsGeneric(const Vehicle *v, T dump, U dump_header)
 		dump_header("tf:", "train flags:");
 		dump('R', "VRF_REVERSING",                     HasBit(t->flags, VRF_REVERSING));
 		dump('W', "VRF_WAITING_RESTRICTION",           HasBit(t->flags, VRF_WAITING_RESTRICTION));
-		dump('S', "VRF_HAVE_SLOT",                     HasBit(t->flags, VRF_HAVE_SLOT));
 		dump('P', "VRF_POWEREDWAGON",                  HasBit(t->flags, VRF_POWEREDWAGON));
 		dump('r', "VRF_REVERSE_DIRECTION",             HasBit(t->flags, VRF_REVERSE_DIRECTION));
 		dump('h', "VRF_HAS_HIT_RV",                    HasBit(t->flags, VRF_HAS_HIT_RV));

@@ -16,6 +16,7 @@
 #include "../ship.h"
 #include "../aircraft.h"
 #include "../object_map.h"
+#include "../waypoint_base.h"
 #include "../string_func_extra.h"
 
 /* Helper for filling property tables */
@@ -515,6 +516,7 @@ static const NIVariable _niv_house[] = {
 class NIHHouse : public NIHelper {
 	bool IsInspectable(uint index) const override        { return true; }
 	bool ShowExtraInfoOnly(uint index) const override    { return HouseSpec::Get(GetHouseType(index))->grf_prop.grffile == nullptr; }
+	bool ShowSpriteDumpButton(uint index) const override { return true; }
 	uint GetParent(uint index) const override            { return GetInspectWindowNumber(GSF_FAKE_TOWNS, GetTownIndex(index)); }
 	const void *GetInstance(uint index)const override    { return nullptr; }
 	const void *GetSpec(uint index) const override       { return HouseSpec::Get(GetHouseType(index)); }
@@ -552,6 +554,11 @@ class NIHHouse : public NIHelper {
 			seprintf(buffer, lastof(buffer), "    building_flags: 0x%X", hs->building_flags);
 			output.print(buffer);
 		}
+	}
+
+	/* virtual */ void SpriteDump(uint index, std::function<void(const char *)> print) const override
+	{
+		DumpSpriteGroup(HouseSpec::Get(GetHouseType(index))->grf_prop.spritegroup[0], std::move(print));
 	}
 };
 
@@ -864,7 +871,7 @@ class NIHObject : public NIHelper {
 			uint class_id = ObjectClass::Get(spec->cls_id)->global_id;
 			seprintf(buffer, lastof(buffer), "  index: %u, type ID: %u, class ID: %c%c%c%c", id, GetObjectType(index), class_id >> 24, class_id >> 16, class_id >> 8, class_id);
 			output.print(buffer);
-			seprintf(buffer, lastof(buffer), "  view: %u, colour: %u, effective foundation: %u", obj->view, obj->colour, !GetObjectHasNoEffectiveFoundation(index));
+			seprintf(buffer, lastof(buffer), "  view: %u, colour: %u, effective foundation: %u", obj->view, obj->colour, GetObjectEffectiveFoundationType(index));
 			output.print(buffer);
 			if (spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) {
 				seprintf(buffer, lastof(buffer), "  ground type: %u, density: %u, counter: %u, water class: %u", GetObjectGroundType(index), GetObjectGroundDensity(index), GetObjectGroundCounter(index), GetWaterClass(index));
@@ -1210,7 +1217,17 @@ class NIHStationStruct : public NIHelper {
 	uint GetParent(uint index) const override            { return UINT32_MAX; }
 	const void *GetInstance(uint index)const override    { return nullptr; }
 	const void *GetSpec(uint index) const override       { return nullptr; }
-	void SetStringParameters(uint index) const override  { this->SetSimpleStringParameters(STR_STATION_NAME, index); }
+
+	void SetStringParameters(uint index) const override
+	{
+		const BaseStation *bst = BaseStation::GetIfValid(index);
+		if (bst != nullptr && !Station::IsExpected(bst)) {
+			this->SetSimpleStringParameters(STR_WAYPOINT_NAME, index);
+		} else {
+			this->SetSimpleStringParameters(STR_STATION_NAME, index);
+		}
+	}
+
 	uint32 GetGRFID(uint index) const override           { return 0; }
 
 	uint Resolve(uint index, uint var, uint param, GetVariableExtra *extra) const override
@@ -1251,6 +1268,27 @@ class NIHStationStruct : public NIHelper {
 			seprintf(buffer, lastof(buffer), "  Delete counter: %u", st->delete_ctr);
 			output.print(buffer);
 			seprintf(buffer, lastof(buffer), "  Docking tiles: %X, %u x %u", st->docking_station.tile, st->docking_station.w, st->docking_station.h);
+			output.print(buffer);
+		}
+		const Waypoint *wp = Waypoint::GetIfValid(index);
+		if (wp) {
+			output.register_next_line_click_flag_toggle(1);
+			seprintf(buffer, lastof(buffer), "  [%c] flags: 0x%X", output.flags & 1 ? '-' : '+', wp->waypoint_flags);
+			output.print(buffer);
+			if (output.flags & 1) {
+				auto print = [&](const char *name) {
+					seprintf(buffer, lastof(buffer), "    %s", name);
+					output.print(buffer);
+				};
+				auto check_flag = [&](WaypointFlags flag, const char *name) {
+					if (HasBit(wp->waypoint_flags, flag)) print(name);
+				};
+				check_flag(WPF_HIDE_LABEL,   "WPF_HIDE_LABEL");
+				check_flag(WPF_ROAD,         "WPF_ROAD");
+			}
+
+			seprintf(buffer, lastof(buffer), "  road_waypoint_area: tile: %X (%u x %u), width: %u, height: %u",
+					wp->road_waypoint_area.tile, TileX(wp->road_waypoint_area.tile), TileY(wp->road_waypoint_area.tile), wp->road_waypoint_area.w, wp->road_waypoint_area.h);
 			output.print(buffer);
 		}
 	}

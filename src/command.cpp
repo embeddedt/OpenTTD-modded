@@ -67,7 +67,9 @@ CommandProc CmdBuildTunnel;
 
 CommandProc CmdBuildTrainDepot;
 CommandProcEx CmdBuildRailWaypoint;
+CommandProc CmdBuildRoadWaypoint;
 CommandProc CmdRenameWaypoint;
+CommandProc CmdSetWaypointLabelHidden;
 CommandProc CmdRemoveFromRailWaypoint;
 
 CommandProc CmdBuildRoadStop;
@@ -269,10 +271,12 @@ CommandProc CmdScheduledDispatch;
 CommandProcEx CmdScheduledDispatchAdd;
 CommandProc CmdScheduledDispatchRemove;
 CommandProc CmdScheduledDispatchSetDuration;
-CommandProc CmdScheduledDispatchSetStartDate;
+CommandProcEx CmdScheduledDispatchSetStartDate;
 CommandProc CmdScheduledDispatchSetDelay;
 CommandProc CmdScheduledDispatchResetLastDispatch;
 CommandProc CmdScheduledDispatchClear;
+CommandProcEx CmdScheduledDispatchAddNewSchedule;
+CommandProc CmdScheduledDispatchRemoveSchedule;
 
 CommandProc CmdAddPlan;
 CommandProcEx CmdAddPlanLine;
@@ -313,7 +317,9 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdRemoveFromRailStation,                          0, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_REMOVE_FROM_RAIL_STATION
 	DEF_CMD(CmdConvertRail,                                    0, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_CONVERT_RAIL
 	DEF_CMD(CmdBuildRailWaypoint,                              0, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_RAIL_WAYPOINT
+	DEF_CMD(CmdBuildRoadWaypoint,                              0, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_ROAD_WAYPOINT
 	DEF_CMD(CmdRenameWaypoint,                                 0, CMDT_OTHER_MANAGEMENT      ), // CMD_RENAME_WAYPOINT
+	DEF_CMD(CmdSetWaypointLabelHidden,                         0, CMDT_OTHER_MANAGEMENT      ), // CMD_SET_WAYPOINT_LABEL_HIDDEN
 	DEF_CMD(CmdRemoveFromRailWaypoint,                         0, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_REMOVE_FROM_RAIL_WAYPOINT
 
 	DEF_CMD(CmdBuildRoadStop,            CMD_NO_WATER | CMD_AUTO, CMDT_LANDSCAPE_CONSTRUCTION), // CMD_BUILD_ROAD_STOP
@@ -509,6 +515,8 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdScheduledDispatchSetDelay,                      0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_DELAY
 	DEF_CMD(CmdScheduledDispatchResetLastDispatch,             0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_RESET_LAST_DISPATCH
 	DEF_CMD(CmdScheduledDispatchClear,                         0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_CLEAR
+	DEF_CMD(CmdScheduledDispatchAddNewSchedule,                0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_ADD_NEW_SCHEDULE
+	DEF_CMD(CmdScheduledDispatchRemoveSchedule,                0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_REMOVE_SCHEDULE
 
 	DEF_CMD(CmdAddPlan,                              CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_ADD_PLAN
 	DEF_CMD(CmdAddPlanLine,                          CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_ADD_PLAN_LINE

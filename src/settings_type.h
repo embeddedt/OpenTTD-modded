@@ -22,6 +22,7 @@
 #include "openttd.h"
 #include "rail_gui_type.h"
 #include "station_type.h"
+#include "signal_type.h"
 
 /* Used to validate sizes of "max" value in settings. */
 const size_t MAX_SLE_UINT8 = UINT8_MAX;
@@ -193,6 +194,7 @@ struct GUISettings : public TimeSettings {
 	bool   pause_on_newgame;                 ///< whether to start new games paused or not
 	SignalGUISettings signal_gui_mode;       ///< select which signal types are shown in the signal GUI
 	SignalCycleSettings cycle_signal_types;  ///< Which signal types to cycle with the build signal tool.
+	SignalType default_signal_type;          ///< The default signal type, which is set automatically by the last signal used. Not available in Settings.
 	Year   coloured_news_year;               ///< when does newspaper become coloured?
 	bool   override_time_settings;           ///< Whether to override time display settings stored in savegame.
 	bool   timetable_in_ticks;               ///< whether to show the timetable in ticks rather than days
@@ -245,6 +247,7 @@ struct GUISettings : public TimeSettings {
 	uint8  station_rating_tooltip_mode;      ///< Station rating tooltip mode
 	uint8  demolish_confirm_mode;            ///< Demolition confirmation mode
 	bool   dual_pane_train_purchase_window;  ///< Dual pane train purchase window
+	bool   allow_hiding_waypoint_labels;     ///< Allow hiding waypoint viewport labels
 
 	uint16 console_backlog_timeout;          ///< the minimum amount of time items should be in the console backlog before they will be removed in ~3 seconds granularity.
 	uint16 console_backlog_length;           ///< the minimum amount of items in the console backlog before items will be removed.
@@ -628,6 +631,7 @@ struct VehicleSettings {
 	bool   roadveh_articulated_overtaking;   ///< enable articulated road vehicles overtaking other vehicles
 	bool   roadveh_cant_quantum_tunnel;      ///< enable or disable vehicles quantum tunelling through over vehicles when blocked
 	bool   drive_through_train_depot;        ///< enable drive-through train depot emulation
+	uint16 through_load_speed_limit;         ///< maximum speed for through load
 };
 
 /** Settings related to the economy. */
@@ -761,6 +765,11 @@ struct ScenarioSettings {
 	bool house_ignore_grf;                   ///< allow manually adding houses regardless of GRF restrictions
 };
 
+/** Settings related to currency/unit systems. */
+struct ClientLocaleSettings {
+	bool sync_locale_network_server;         ///< sync locale settings with network server
+};
+
 /** All settings together for the game. */
 struct GameSettings {
 	DifficultySettings   difficulty;         ///< settings related to the difficulty
@@ -784,6 +793,7 @@ struct GameSettings {
 /** All settings that are only important for the local client. */
 struct ClientSettings {
 	GUISettings          gui;                ///< settings related to the GUI
+	ClientLocaleSettings client_locale;      ///< settings related to used currency/unit system in the client
 	NetworkSettings      network;            ///< settings related to the network
 	CompanySettings      company;            ///< default values for per-company settings
 	SoundSettings        sound;              ///< sound effect settings

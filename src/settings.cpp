@@ -833,7 +833,7 @@ static void IniSaveSettingList(IniFile &ini, const char *grpname, StringList &li
  * Load a WindowDesc from config.
  * @param ini IniFile handle to the ini file with the source data
  * @param grpname character string identifying the section-header of the ini file that will be parsed
- * @param desc Destination WindowDesc
+ * @param desc Destination WindowDescPreferences
  */
 void IniLoadWindowSettings(IniFile &ini, const char *grpname, void *desc)
 {
@@ -844,7 +844,7 @@ void IniLoadWindowSettings(IniFile &ini, const char *grpname, void *desc)
  * Save a WindowDesc to config.
  * @param ini IniFile handle to the ini file where the destination data is saved
  * @param grpname character string identifying the section-header of the ini file
- * @param desc Source WindowDesc
+ * @param desc Source WindowDescPreferences
  */
 void IniSaveWindowSettings(IniFile &ini, const char *grpname, void *desc)
 {
@@ -1395,6 +1395,7 @@ static void ClimateThresholdModeChanged(int32 new_value)
 
 static void VelocityUnitsChanged(int32 new_value) {
 	InvalidateWindowClassesData(WC_PAYMENT_RATES);
+	InvalidateWindowClassesData(WC_TRACE_RESTRICT);
 	MarkWholeScreenDirty();
 }
 

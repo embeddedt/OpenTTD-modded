@@ -464,7 +464,7 @@ DropDownList BaseVehicleListWindow::BuildActionDropdownList(bool show_autoreplac
 		list.emplace_back(new DropDownListStringItem(STR_GROUP_ADD_SHARED_VEHICLE, ADI_ADD_SHARED, disable));
 		list.emplace_back(new DropDownListStringItem(STR_GROUP_REMOVE_ALL_VEHICLES, ADI_REMOVE_ALL, disable));
 	}
-	if (this->vli.vtype == VEH_TRAIN && _settings_client.gui.show_adv_tracerestrict_features) {
+	if (_settings_client.gui.show_adv_tracerestrict_features) {
 		list.emplace_back(new DropDownListStringItem(STR_TRACE_RESTRICT_SLOT_MANAGE, ADI_TRACERESTRICT_SLOT_MGMT, false));
 		list.emplace_back(new DropDownListStringItem(STR_TRACE_RESTRICT_COUNTER_MANAGE, ADI_TRACERESTRICT_COUNTER_MGMT, false));
 	}
@@ -2430,8 +2430,8 @@ public:
 						break;
 
 					case ADI_TRACERESTRICT_SLOT_MGMT: {
-						extern void ShowTraceRestrictSlotWindow(CompanyID company);
-						ShowTraceRestrictSlotWindow(this->owner);
+						extern void ShowTraceRestrictSlotWindow(CompanyID company, VehicleType vehtype);
+						ShowTraceRestrictSlotWindow(this->owner, this->vli.vtype);
 						break;
 					}
 
@@ -2471,6 +2471,7 @@ public:
 
 		/* check rail waypoint or buoy (no ownership) */
 		if ((IsRailWaypointTile(tile) && this->vli.vtype == VEH_TRAIN && IsInfraTileUsageAllowed(VEH_TRAIN, this->vli.company, tile))
+				|| (IsRoadWaypointTile(tile) && this->vli.vtype == VEH_ROAD && IsInfraTileUsageAllowed(VEH_ROAD, this->vli.company, tile))
 				|| (IsBuoyTile(tile) && this->vli.vtype == VEH_SHIP)) {
 			if (this->vli.type != VL_STATION_LIST) return;
 			if (!(Station::Get(this->vli.index)->facilities & FACIL_WAYPOINT)) return;
@@ -2481,7 +2482,7 @@ public:
 
 		if (IsTileType(tile, MP_STATION)) {
 			if (this->vli.type != VL_STATION_LIST) return;
-			if (Station::Get(this->vli.index)->facilities & FACIL_WAYPOINT) return;
+			if (BaseStation::Get(this->vli.index)->facilities & FACIL_WAYPOINT) return;
 
 			StationID st_index = GetStationIndex(tile);
 			const Station *st = Station::Get(st_index);
@@ -2823,8 +2824,7 @@ struct VehicleDetailsWindow : Window {
 
 	bool ShouldShowSlotsLine(const Vehicle *v) const
 	{
-		if (v->type != VEH_TRAIN) return false;
-		return HasBit(Train::From(v)->flags, VRF_HAVE_SLOT);
+		return HasBit(v->vehicle_flags, VF_HAVE_SLOT);
 	}
 
 	bool ShouldShowSpeedRestrictionLine(const Vehicle *v) const
@@ -3764,7 +3764,7 @@ public:
 					break;
 
 				case OT_GOTO_WAYPOINT: {
-					assert(v->type == VEH_TRAIN || v->type == VEH_SHIP);
+					assert(v->type == VEH_TRAIN || v->type == VEH_ROAD || v->type == VEH_SHIP);
 					SetDParam(0, v->current_order.GetDestination());
 					str = HasBit(v->vehicle_flags, VF_PATHFINDER_LOST) ? STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL : STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL;
 					SetDParam(1, v->GetDisplaySpeed());

@@ -312,6 +312,7 @@ enum OptionMenuEntries {
 	OME_TRANSPARENTBUILDINGS,
 	OME_SHOW_STATIONSIGNS,
 	OME_SHOW_MONEYTEXT,
+	OME_SHOW_HIDDEN_SIGNS,
 };
 
 /**
@@ -338,6 +339,9 @@ static CallBackFunction ToolbarOptionsClick(Window *w)
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_WAYPOINTS_DISPLAYED,     OME_SHOW_WAYPOINTNAMES, false, HasBit(_display_opt, DO_SHOW_WAYPOINT_NAMES)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_SIGNS_DISPLAYED,         OME_SHOW_SIGNS, false, HasBit(_display_opt, DO_SHOW_SIGNS)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_SHOW_COMPETITOR_SIGNS,   OME_SHOW_COMPETITOR_SIGNS, false, HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS)));
+	if (_settings_client.gui.allow_hiding_waypoint_labels) {
+		list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_SHOW_HIDDEN_SIGNS,       OME_SHOW_HIDDEN_SIGNS, false, HasBit(_extra_display_opt, XDO_SHOW_HIDDEN_SIGNS)));
+	}
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_FULL_ANIMATION,          OME_FULL_ANIMATION, false, HasBit(_display_opt, DO_FULL_ANIMATION)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_FULL_DETAIL,             OME_FULL_DETAILS, false, HasBit(_display_opt, DO_FULL_DETAIL)));
 	list.emplace_back(new DropDownListCheckedItem(STR_SETTINGS_MENU_TRANSPARENT_BUILDINGS,   OME_TRANSPARENTBUILDINGS, false, IsTransparencySet(TO_HOUSES)));
@@ -378,6 +382,7 @@ static CallBackFunction MenuClickSettings(int index)
 		case OME_TRANSPARENTBUILDINGS: ToggleTransparency(TO_HOUSES);                   break;
 		case OME_SHOW_STATIONSIGNS:    ToggleTransparency(TO_SIGNS);                    break;
 		case OME_SHOW_MONEYTEXT:       ToggleBit(_extra_display_opt, XDO_SHOW_MONEY_TEXT_EFFECTS); break;
+		case OME_SHOW_HIDDEN_SIGNS:    ToggleBit(_extra_display_opt, XDO_SHOW_HIDDEN_SIGNS); break;
 	}
 	MarkWholeScreenDirty();
 	return CBF_NONE;
@@ -2031,7 +2036,7 @@ struct MainToolbarWindow : Window {
 	EventState OnHotkey(int hotkey) override
 	{
 		extern void ShowTemplateReplaceWindow();
-		extern void ShowTraceRestrictSlotWindow(CompanyID company);
+		extern void ShowTraceRestrictSlotWindow(CompanyID company, VehicleType vehtype);
 		extern void ShowTraceRestrictCounterWindow(CompanyID company);
 
 		CallBackFunction cbf = CBF_NONE;
@@ -2081,7 +2086,7 @@ struct MainToolbarWindow : Window {
 			case MTHK_LINK_GRAPH_LEGEND: ShowLinkGraphLegend(); break;
 			case MTHK_MESSAGE_HISTORY: ShowMessageHistory(); break;
 			case MTHK_TEMPLATE_REPLACEMENT: ShowTemplateReplaceWindow(); break;
-			case MTHK_TRAIN_SLOTS: ShowTraceRestrictSlotWindow(_local_company); break;
+			case MTHK_TRAIN_SLOTS: ShowTraceRestrictSlotWindow(_local_company, VEH_TRAIN); break;
 			case MTHK_TRAIN_COUNTERS: ShowTraceRestrictCounterWindow(_local_company); break;
 			default: return ES_NOT_HANDLED;
 		}

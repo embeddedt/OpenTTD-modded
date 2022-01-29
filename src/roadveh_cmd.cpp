@@ -1083,7 +1083,7 @@ static void RoadVehCheckOvertake(RoadVehicle *v, RoadVehicle *u)
 			check_tile = ahead_end;
 			continue;
 		}
-		if (IsDriveThroughStopTile(check_tile) && GetDriveThroughStopDisallowedRoadDirections(check_tile) != DRD_NONE) {
+		if (IsStationRoadStopTile(check_tile) && IsDriveThroughStopTile(check_tile) && GetDriveThroughStopDisallowedRoadDirections(check_tile) != DRD_NONE) {
 			const RoadStop *rs = RoadStop::GetByTile(check_tile, GetRoadStopType(check_tile));
 			DiagDirection dir = DirToDiagDir(v->direction);
 			const RoadStop::Entry *entry = rs->GetEntry(dir);
@@ -1799,12 +1799,12 @@ again:
 			 * stop. It also makes it possible to load when on the edge of
 			 * two road stops; otherwise you could get vehicles that should
 			 * be loading but are not actually loading. */
-			if (IsDriveThroughStopTile(v->tile) &&
+			if (IsStationRoadStopTile(v->tile) && IsDriveThroughStopTile(v->tile) &&
 					RoadStop::IsDriveThroughRoadStopContinuation(v->tile, tile) &&
 					v->tile != tile) {
 				/* So, keep 'our' state */
 				dir = (Trackdir)v->state;
-			} else if (IsRoadStop(v->tile)) {
+			} else if (IsStationRoadStop(v->tile)) {
 				/* We're not continuing our drive through road stop, so leave. */
 				RoadStop::GetByTile(v->tile, GetRoadStopType(v->tile))->Leave(v);
 			}

@@ -705,6 +705,11 @@ bool LoadNextSprite(int load_index, SpriteFile &file, uint file_sprite_id)
 
 	if (type == ST_INVALID) return false;
 
+	if (load_index == -1) {
+		if (data != nullptr) _last_sprite_allocation.Clear();
+		return false;
+	}
+
 	if (load_index >= MAX_SPRITES) {
 		usererror("Tried to load too many sprites (#%d; max %d)", load_index, MAX_SPRITES);
 	}
@@ -722,6 +727,8 @@ bool LoadNextSprite(int load_index, SpriteFile &file, uint file_sprite_id)
 	if (data != nullptr) {
 		assert(data == _last_sprite_allocation.GetPtr());
 		sc->buffer = std::move(_last_sprite_allocation);
+	} else {
+		sc->buffer.Clear();
 	}
 	sc->lru = 0;
 	sc->id = file_sprite_id;

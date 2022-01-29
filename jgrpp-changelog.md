@@ -2,6 +2,52 @@
 
 * * *
 
+### v0.46-rc2 (2022-01-29)
+* Road waypoints:
+  * Fix crash when changing one-way state of road waypoints.
+  * Fix crash in road vehicle overtaking checks with road waypoints.
+  * Fix removal of road waypoints during bankruptcy.
+  * Road waypoints no longer block road inferred one-way state interpolation.
+* Fix crash when opening rail waypoint window if there are now fewer types available than the type that was last selected.
+* Add Korean translations by TELK.
+
+### v0.46-rc1 (2022-01-28)
+* Fix timetable wait times not being cleared when changing to a non-stopping order.
+* Fix text input and display of speeds in tiles/day units in routing restriction window.
+* Fix industry monthly production figures being able to overflow when industry production scaling is set to a high value.
+* Fix station catchment highlight from coverage button in station window not being redrawn when station extents changed.
+* Fix various issues in unserved industries zoning overlay mode.
+* Fix wrong error message when building a bridge over an obstructing station.
+* Fix window preference save/load of build vehicle windows.
+* Conditional orders:
+  * Fix crash when evaluating a train in slot conditional order when no slot was assigned.
+  * Fix manual setting of conditional order jump taken travel times.
+  * Improve handling of conditional order waiting loops.
+  * Follow predictable conditional orders in timetable and departure windows.
+* Add support for multiple scheduled dispatch schedules per order list.
+* Allow non-train vehicles to test counter values in conditional orders.
+* Add road waypoints.
+* Allow road vehicle go to station/waypoint orders to have an associated required stop/bay/waypoint direction.
+* Add slot support to road vehicles, ships and aircraft.
+* Add train through load speed limit setting.
+* Add client setting for whether to sync localisation settings with the server in multiplayer.
+* Add client setting to allow hiding viewport labels of individual waypoints.
+* Add NewGRF properties for default object map generation amounts.
+* Remember the last-used signal type between games.
+* Disable touchbar support to fix crash issues on MacOS.
+* Add Korean translations by TELK.
+* Bump trunk base from commit 93e8d4871d3c927cf08eaa322bfdcd2cb73a1730 to commit 9e47df298faf6889c8be7dd0b0eeedeb65db1cdc.
+
+### v0.45.1 (2022-01-10)
+* Fix crash which could occur when removing invalidated link graph flows.
+* Fix template replacement without refitting selecting the wrong cargo when using zero capacity engines with a livery cargo.
+* Fix wrong signal aspects when track was built up to the rear of a tunnel/bridge entrance.
+* Fix ground/tree tile vegetation changes not updating map mode viewports in vegetation mode.
+* Scale limit on cargo which can be moved from industries to stations in one step by the cargo production scaling factor.
+* Add support for automatic numbering of screenshots saved using the screenshot console command.
+* AI/GS script: Add methods related to road and tram types.
+* Bump trunk base from commit d62c5667cff2eed82deb18e28d98345500b30d3f to commit 93e8d4871d3c927cf08eaa322bfdcd2cb73a1730.
+
 ### v0.45.0 (2022-01-05)
 * Fix crash when removing signals from a bridge or tunnel when one or more routing restriction programs were attached.
 * Fix crash when a template replacement train had an engine with an invalid cargo type.

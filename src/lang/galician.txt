@@ -586,6 +586,12 @@ STR_MONTH_OCT                                                   :Outubro
 STR_MONTH_NOV                                                   :Novembro
 STR_MONTH_DEC                                                   :Decembro
 
+###length VEHICLE_TYPES
+STR_VEHICLE_TYPE_TRAINS                                         :Trens
+STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Vehículos de estrada
+STR_VEHICLE_TYPE_SHIPS                                          :Barcos
+STR_VEHICLE_TYPE_AIRCRAFT                                       :Aeronaves
+
 # Graph window
 STR_GRAPH_KEY_BUTTON                                            :{BLACK}Lenda
 STR_GRAPH_KEY_TOOLTIP                                           :{BLACK}Amosa-la lenda das gráficas
@@ -6186,7 +6192,7 @@ STR_TRACE_RESTRICT_SLOT_CREATE_TOOLTIP                          :{BLACK}Fai clic
 STR_TRACE_RESTRICT_SLOT_DELETE_TOOLTIP                          :{BLACK}Eliminar o slot seleccionado
 STR_TRACE_RESTRICT_SLOT_RENAME_TOOLTIP                          :{BLACK}Renomear o slot seleccionado
 STR_TRACE_RESTRICT_SLOT_SET_MAX_OCCUPANCY_TOOLTIP               :{BLACK}Fixar a máxima ocupación do slot seleccionado
-STR_TRACE_RESTRICT_SLOT_CAPTION                                 :{WHITE}Restrición de busca de rutas - Xestión dos slots
+STR_TRACE_RESTRICT_SLOT_CAPTION                                 :{WHITE}Restrición de busca de rutas - Xestión dos slots ({STRING})
 STR_TRACE_RESTRICT_SLOT_MANAGE                                  :Xestionar slots
 STR_TRACE_RESTRICT_SLOT_MAX_OCCUPANCY                           :{TINY_FONT}{COMMA} / {COMMA}
 STR_TRACE_RESTRICT_SLOT_RENAME_CAPTION                          :{BLACK}Renomear un slot
@@ -6681,8 +6687,8 @@ STR_TIMETABLE_AUTO_SEPARATION                                   :{BLACK}Auto Sep
 STR_TIMETABLE_AUTO_SEPARATION_TOOLTIP                           :{BLACK}Automáticamente axusta a hora de comezo dos horarios para asegurar a separación dos vehículos
 STR_TIMETABLE_SCHEDULED_DISPATCH                                :{BLACK}Saída programada
 STR_TIMETABLE_SCHEDULED_DISPATCH_TOOLTIP                        :{BLACK}Abrir fiestras de saídas programadas para configurar automáticamente a hora de inicio dos horarios
-STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER                          :[saída programada]
-STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME             :{PUSH_COLOUR}{RED}[saída programadda - sen tempo de espera no horario]{POP_COLOUR}
+STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER                          :{PUSH_COLOUR}{YELLOW}[{STRING}saída programada]{POP_COLOUR}
+STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME             :{PUSH_COLOUR}{RED}[{STRING}saída programadda - sen tempo de espera no horario]{POP_COLOUR}
 STR_TIMETABLE_LOCK_ORDER_TIME_TOOLTIP                           :{BLACK}Bloquear/desbloquear a cantidade de tempo para a orde resaltada (Ctrl+Click fixa o estado de bloqueo para todas as ordes).{}Cando estea bloqueado, a hora non se modificará mediante o autocompletado ou automatización do horario.
 STR_TIMETABLE_LEAVE_EARLY_ORDER                                 :[saír cedo]
 STR_TIMETABLE_LEAVE_EARLY_ORDER_FULL_ANY                        :[saír cedo se calquera cargamento está cheo]
@@ -6701,7 +6707,6 @@ STR_TIMETABLE_WARNING_AUTOSEP_MISSING_TIMINGS                   :{BLACK}Non se p
 STR_TIMETABLE_WARNING_FULL_LOAD                                 :{BLACK}Non se recomenda a programación de ordes a carga completa
 STR_TIMETABLE_WARNING_AUTOFILL_CONDITIONAL                      :{BLACK}O enchemento automático só actualizará as ordes condicionais da rama escollida
 STR_TIMETABLE_NON_TIMETABLED_BRANCH                             :{BLACK}Non todas as ordes da rama condicional escollida están programadas.
-STR_TIMETABLE_WARNING_NO_SCHEDULED_DISPATCH_ORDER               :{BLACK}Non hai unha orde axeitada para usar coa saída programada.
 STR_TIMETABLE_WARNING_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME     :{BLACK}A orde de saída programada debería ter un temepo de espera programado.
 
 STR_DATE_MINUTES_MINUTE_TOOLTIP                                 :{BLACK}Seleccionar minuto

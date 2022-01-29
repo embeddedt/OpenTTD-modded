@@ -1749,6 +1749,7 @@ static void ViewportAddKdtreeSigns(DrawPixelInfo *dpi, bool towns_only)
 	bool show_signs = HasBit(_display_opt, DO_SHOW_SIGNS) && !IsInvisibilitySet(TO_SIGNS) && !towns_only;
 	bool show_competitors = HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS) && !towns_only;
 	bool show_industries = !_settings_client.gui.hide_industry_labels && _game_mode != GM_MENU && !towns_only;
+	bool hide_hidden_waypoints = _settings_client.gui.allow_hiding_waypoint_labels && !HasBit(_extra_display_opt, XDO_SHOW_HIDDEN_SIGNS);
 
 	const BaseStation *st;
 	const Sign *si;
@@ -1778,6 +1779,7 @@ static void ViewportAddKdtreeSigns(DrawPixelInfo *dpi, bool towns_only)
 
 				/* Don't draw if station is owned by another company and competitor station names are hidden. Stations owned by none are never ignored. */
 				if (!show_competitors && _local_company != st->owner && st->owner != OWNER_NONE) break;
+				if (hide_hidden_waypoints && HasBit(Waypoint::From(st)->waypoint_flags, WPF_HIDE_LABEL)) break;
 
 				stations.push_back(st);
 				break;
@@ -3654,6 +3656,7 @@ void MarkAllViewportsDirty(int left, int top, int right, int bottom, ViewportMar
 {
 	for (uint i = 0; i < _viewport_window_cache.size(); i++) {
 		if (flags & VMDF_NOT_MAP_MODE && _viewport_window_cache[i]->zoom >= ZOOM_LVL_DRAW_MAP) continue;
+		if (flags & VMDF_NOT_MAP_MODE_NON_VEG && _viewport_window_cache[i]->zoom >= ZOOM_LVL_DRAW_MAP && _viewport_window_cache[i]->map_type != VPMT_VEGETATION) continue;
 		const Rect &r = _viewport_coverage_rects[i];
 		if (left >= r.right ||
 				right <= r.left ||
@@ -4072,6 +4075,7 @@ static bool CheckClickOnViewportSign(const Viewport *vp, int x, int y)
 	bool show_signs = HasBit(_display_opt, DO_SHOW_SIGNS) && !IsInvisibilitySet(TO_SIGNS);
 	bool show_competitors = HasBit(_display_opt, DO_SHOW_COMPETITOR_SIGNS);
 	bool show_industries = !_settings_client.gui.hide_industry_labels && !IsInvisibilitySet(TO_SIGNS);
+	bool hide_hidden_waypoints = _settings_client.gui.allow_hiding_waypoint_labels && !HasBit(_extra_display_opt, XDO_SHOW_HIDDEN_SIGNS);
 
 	/* Topmost of each type that was hit */
 	BaseStation *st = nullptr, *last_st = nullptr;
@@ -4093,6 +4097,7 @@ static bool CheckClickOnViewportSign(const Viewport *vp, int x, int y)
 				if (!show_waypoints) break;
 				st = BaseStation::Get(item.id.station);
 				if (!show_competitors && _local_company != st->owner && st->owner != OWNER_NONE) break;
+				if (hide_hidden_waypoints && HasBit(Waypoint::From(st)->waypoint_flags, WPF_HIDE_LABEL)) break;
 				if (CheckClickOnViewportSign(vp, x, y, &st->sign)) last_st = st;
 				break;
 

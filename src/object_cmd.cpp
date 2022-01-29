@@ -75,23 +75,18 @@ void InitializeObjects()
  * Set the object has no effective foundation flag for this tile.
  * Set tileh to SLOPE_ELEVATED if not known, it will be redetermined if required.
  */
-void SetShouldObjectHaveNoFoundation(TileIndex tile, Slope tileh, ObjectType type, const ObjectSpec *spec)
+void SetObjectFoundationType(TileIndex tile, Slope tileh, ObjectType type, const ObjectSpec *spec)
 {
 	if (type == OBJECT_OWNED_LAND) {
-		SetObjectHasNoEffectiveFoundation(tile, true);
+		SetObjectEffectiveFoundationType(tile, OEFT_NONE);
 		return;
 	}
 
 	if (((spec->flags & OBJECT_FLAG_HAS_NO_FOUNDATION) == 0) && (spec->ctrl_flags & OBJECT_CTRL_FLAG_EDGE_FOUNDATION)) {
 		if (tileh == SLOPE_ELEVATED) tileh = GetTileSlope(tile);
 
-		if (IsSteepSlope(tileh)) {
-			SetObjectHasNoEffectiveFoundation(tile, false);
-			return;
-		}
-
 		if (tileh == SLOPE_FLAT) {
-			SetObjectHasNoEffectiveFoundation(tile, true);
+			SetObjectEffectiveFoundationType(tile, OEFT_NONE);
 			return;
 		}
 
@@ -99,9 +94,32 @@ void SetShouldObjectHaveNoFoundation(TileIndex tile, Slope tileh, ObjectType typ
 		DiagDirection edge = (DiagDirection)GB(flags, 0, 2);
 		Slope incline = InclinedSlope(edge);
 
-		SetObjectHasNoEffectiveFoundation(tile, !(IsOddParity(incline & tileh) || (flags & OBJECT_EF_FLAG_FOUNDATION_LOWER && !(tileh & incline))));
+		if (IsSteepSlope(tileh)) {
+			if ((flags & OBJECT_EF_FLAG_INCLINE_FOUNDATION) && (incline & tileh)) {
+				SetObjectEffectiveFoundationType(tile, DiagDirToAxis(edge) == AXIS_X ? OEFT_INCLINE_X : OEFT_INCLINE_Y);
+				return;
+			}
+
+			SetObjectEffectiveFoundationType(tile, OEFT_FLAT);
+			return;
+		}
+
+		if ((flags & OBJECT_EF_FLAG_FOUNDATION_LOWER) && !(tileh & incline)) {
+			SetObjectEffectiveFoundationType(tile, OEFT_FLAT);
+			return;
+		}
+
+		if (IsOddParity(incline & tileh)) {
+			if ((flags & OBJECT_EF_FLAG_INCLINE_FOUNDATION) && IsSlopeWithOneCornerRaised(tileh)) {
+				SetObjectEffectiveFoundationType(tile, DiagDirToAxis(edge) == AXIS_X ? OEFT_INCLINE_X : OEFT_INCLINE_Y);
+			} else {
+				SetObjectEffectiveFoundationType(tile, OEFT_FLAT);
+			}
+		} else {
+			SetObjectEffectiveFoundationType(tile, OEFT_NONE);
+		}
 	} else {
-		SetObjectHasNoEffectiveFoundation(tile, false);
+		SetObjectEffectiveFoundationType(tile, OEFT_FLAT);
 	}
 }
 
@@ -163,7 +181,7 @@ void BuildObject(ObjectType type, TileIndex tile, CompanyID owner, Town *town, u
 		if ((spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) && wc == WATER_CLASS_INVALID) {
 			SetObjectGroundTypeDensity(t, OBJECT_GROUND_GRASS, 0);
 		}
-		SetShouldObjectHaveNoFoundation(t, SLOPE_ELEVATED, type, spec);
+		SetObjectFoundationType(t, SLOPE_ELEVATED, type, spec);
 		MarkTileDirtyByTile(t, VMDF_NOT_MAP_MODE);
 	}
 
@@ -548,7 +566,7 @@ CommandCost CmdBuildObjectArea(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 }
 
 
-static Foundation GetFoundation_Object(TileIndex tile, Slope tileh);
+Foundation GetFoundation_Object(TileIndex tile, Slope tileh);
 
 static void DrawTile_Object(TileInfo *ti, DrawTileProcParams params)
 {
@@ -566,16 +584,30 @@ static void DrawTile_Object(TileInfo *ti, DrawTileProcParams params)
 			uint8 flags = spec->edge_foundation[obj->view];
 			DiagDirection edge = (DiagDirection)GB(flags, 0, 2);
 			Slope incline = InclinedSlope(edge);
-			if (IsSteepSlope(ti->tileh) || IsOddParity(incline & ti->tileh)) {
-				/* Steep slope, or odd number of matching bits indicating that edge is not level */
-				DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
-			} else if (flags & OBJECT_EF_FLAG_FOUNDATION_LOWER && !(ti->tileh & incline)) {
-				/* The edge is the lower edge of an inclined slope */
-				DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
-			} else if (flags & OBJECT_EF_FLAG_ADJUST_Z && ti->tileh & incline) {
-				/* The edge is elevated relative to the lowest tile height, adjust z */
-				building_z_offset = TILE_HEIGHT;
+			Foundation foundation = GetFoundation_Object(ti->tile, ti->tileh);
+			switch (foundation) {
+				case FOUNDATION_NONE:
+					if (flags & OBJECT_EF_FLAG_ADJUST_Z && ti->tileh & incline) {
+						/* The edge is elevated relative to the lowest tile height, adjust z */
+						building_z_offset = TILE_HEIGHT;
+					}
+					break;
+
+				case FOUNDATION_LEVELED:
+					break;
+
+				case FOUNDATION_INCLINED_X:
+				case FOUNDATION_INCLINED_Y:
+					if (flags & OBJECT_EF_FLAG_ADJUST_Z) {
+						/* The edge is elevated relative to the lowest tile height, adjust z */
+						building_z_offset = TILE_HEIGHT;
+					}
+					break;
+
+				default:
+					NOT_REACHED();
 			}
+			if (foundation != FOUNDATION_NONE) DrawFoundation(ti, foundation);
 		} else {
 			DrawFoundation(ti, GetFoundation_Object(ti->tile, ti->tileh));
 		}
@@ -638,9 +670,25 @@ static int GetSlopePixelZ_Object(TileIndex tile, uint x, uint y)
 	}
 }
 
-static Foundation GetFoundation_Object(TileIndex tile, Slope tileh)
+Foundation GetFoundation_Object(TileIndex tile, Slope tileh)
 {
-	return GetObjectHasNoEffectiveFoundation(tile) ? FOUNDATION_NONE : FlatteningFoundation(tileh);
+	if (tileh == SLOPE_FLAT) return FOUNDATION_NONE;
+	switch (GetObjectEffectiveFoundationType(tile)) {
+		case OEFT_NONE:
+			return FOUNDATION_NONE;
+
+		case OEFT_FLAT:
+			return FOUNDATION_LEVELED;
+
+		case OEFT_INCLINE_X:
+			return FOUNDATION_INCLINED_X;
+
+		case OEFT_INCLINE_Y:
+			return FOUNDATION_INCLINED_Y;
+
+		default:
+			NOT_REACHED();
+	}
 }
 
 /**
@@ -1146,10 +1194,12 @@ static CommandCost TerraformTile_Object(TileIndex tile, DoCommandFlag flags, int
 	} else if (AutoslopeEnabled() && type != OBJECT_TRANSMITTER && type != OBJECT_LIGHTHOUSE) {
 		const ObjectSpec *spec = ObjectSpec::Get(type);
 
-		if (flags & DC_EXEC) {
-			SetShouldObjectHaveNoFoundation(tile, tileh_new, type, spec);
-			if (GetObjectGroundType(tile) == OBJECT_GROUND_SHORE) SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 0);
-		}
+		auto pre_success_checks = [&]() {
+			if (flags & DC_EXEC) {
+				SetObjectFoundationType(tile, tileh_new, type, spec);
+				if (spec->ctrl_flags & OBJECT_CTRL_FLAG_USE_LAND_GROUND) SetObjectGroundTypeDensity(tile, OBJECT_GROUND_GRASS, 0);
+			}
+		};
 
 		/* Behaviour:
 		 *  - Both new and old slope must not be steep.
@@ -1167,9 +1217,13 @@ static CommandCost TerraformTile_Object(TileIndex tile, DoCommandFlag flags, int
 			if (HasBit(spec->callback_mask, CBM_OBJ_AUTOSLOPE)) {
 				/* If the callback fails, allow autoslope. */
 				uint16 res = GetObjectCallback(CBID_OBJECT_AUTOSLOPE, 0, 0, spec, Object::GetByTile(tile), tile);
-				if (res == CALLBACK_FAILED || !ConvertBooleanCallback(spec->grf_prop.grffile, CBID_OBJECT_AUTOSLOPE, res)) return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_BUILD_FOUNDATION]);
+				if (res == CALLBACK_FAILED || !ConvertBooleanCallback(spec->grf_prop.grffile, CBID_OBJECT_AUTOSLOPE, res)) {
+					pre_success_checks();
+					return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_BUILD_FOUNDATION]);
+				}
 			} else if (spec->enabled) {
 				/* allow autoslope */
+				pre_success_checks();
 				return CommandCost(EXPENSES_CONSTRUCTION, _price[PR_BUILD_FOUNDATION]);
 			}
 		}

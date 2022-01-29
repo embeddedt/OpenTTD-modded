@@ -588,6 +588,12 @@ STR_MONTH_OCT                                                   :oktober
 STR_MONTH_NOV                                                   :november
 STR_MONTH_DEC                                                   :desember
 
+###length VEHICLE_TYPES
+STR_VEHICLE_TYPE_TRAINS                                         :Tog
+STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Kjøretøy
+STR_VEHICLE_TYPE_SHIPS                                          :Skip
+STR_VEHICLE_TYPE_AIRCRAFT                                       :Luftfartøy
+
 # Graph window
 STR_GRAPH_KEY_BUTTON                                            :{BLACK}Nøkkel
 STR_GRAPH_KEY_TOOLTIP                                           :{BLACK}Vis nøkkel for grafene
@@ -3428,8 +3434,8 @@ STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED_WINTER              :{ORANGE}{STRING
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED_GENERAL            :{ORANGE}{STRING}{GREEN} levert
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED                     :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{RED} (fortsatt nødvendig)
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED                    :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{GREEN} (levert)
-STR_TOWN_VIEW_TOWN_GROWS_EVERY                                  :{BLACK}Byen vokser hver {ORANGE}{COMMA}{BLACK}{NBSP}dag{P "" s}
-STR_TOWN_VIEW_TOWN_GROWS_EVERY_FUNDED                           :{BLACK}Byen vokser hver {ORANGE}{COMMA}{BLACK}{NBSP}dag{P "" s} (finansiert)
+STR_TOWN_VIEW_TOWN_GROWS_EVERY                                  :{BLACK}Byen vokser hver {ORANGE}{COMMA}{BLACK}{NBSP}dag{P "" er}
+STR_TOWN_VIEW_TOWN_GROWS_EVERY_FUNDED                           :{BLACK}Byen vokser hver {ORANGE}{COMMA}{BLACK}{NBSP}dag{P "" er} (finansiert)
 STR_TOWN_VIEW_TOWN_GROW_STOPPED                                 :{BLACK}Byen vokser {RED}ikke{BLACK}
 STR_TOWN_VIEW_NOISE_IN_TOWN                                     :{BLACK}Flystøy: {ORANGE}{COMMA}{BLACK}  støygrense: {ORANGE}{COMMA}
 STR_TOWN_VIEW_CENTER_TOOLTIP                                    :{BLACK}Gå til by. Ctrl+klikk åpner et nytt tilleggsvindu over byen
