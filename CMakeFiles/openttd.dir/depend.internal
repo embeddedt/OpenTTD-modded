@@ -17827,6 +17827,7 @@ CMakeFiles/openttd.dir/src/newgrf_debug_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug_gui.cpp
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_house.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industries.h
@@ -41101,9 +41102,16 @@ CMakeFiles/openttd.dir/src/smallmap_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_town.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/object_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_func.h
@@ -47976,11 +47984,18 @@ CMakeFiles/openttd.dir/src/viewport.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_airport.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_class.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_storage.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_text.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_town.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/object_type.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/openttd.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_base.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/order_func.h

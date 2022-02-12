@@ -16347,6 +16347,10 @@ guitimer_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/guitimer_func.h
 zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
+object_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
+newgrf_object.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
 smallmap_colours.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/smallmap_colours.h
 smallmap_gui.h
@@ -17465,6 +17469,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/waypoint_base.h
 ../string_func_extra.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
+../newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/object_land.h
 
@@ -19937,6 +19943,10 @@ scope.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 blitter/32bpp_base.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/blitter/32bpp_base.hpp
+object_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
+newgrf_object.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
 map
 -
 vector
