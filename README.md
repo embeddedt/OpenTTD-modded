@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.46-rc2
+## JGR's Patchpack version 0.46.1
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -148,6 +148,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * If a train or ship's next order is for the current station when leaving, start loading again without moving, instead of leaving.
 * Slots and counters.  
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
+* Add cargo capacity / running cost sort mode to the build vehicle window.
 
 #### Orders and Timetabling
 
@@ -286,7 +287,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Various changes to reduce the probability of desyncs and improve desync reporting/diagnostics.
 * Add support for zstd savegame compression for autosaves and network joins.
 * Increase the number of settings which can be changed in multiplayer.
-* Store company passwords in network server saves in an encrypted form such that they are automaticaly restored when loaded into the same network server.
+* Store company passwords in network server saves in an encrypted form such that they are automatically restored when loaded into the same network server.
 * Add client setting for whether to sync localisation settings (such as measurement units) with the server.
 
 #### Money

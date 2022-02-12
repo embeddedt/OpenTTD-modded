@@ -323,6 +323,7 @@ STR_SORT_BY_TRACTIVE_EFFORT                                     :견인력
 STR_SORT_BY_INTRO_DATE                                          :도입 날짜
 STR_SORT_BY_RUNNING_COST                                        :유지비
 STR_SORT_BY_POWER_VS_RUNNING_COST                               :유지비 분의 힘
+STR_SORT_BY_CARGO_CAPACITY_VS_RUNNING_COST                      :유지비 분의 수송량
 STR_SORT_BY_CARGO_CAPACITY                                      :화물 수송량
 STR_SORT_BY_VEHICLE_COUNT                                       :차량 수
 STR_SORT_BY_RANGE                                               :항속거리
@@ -1243,6 +1244,8 @@ STR_CONFIG_SETTING_TYPE_DROPDOWN_GAME_INGAME                    :게임 설정 (
 STR_CONFIG_SETTING_TYPE_DROPDOWN_COMPANY_MENU                   :회사 설정 (게임 저장 파일에 저장됨; 새 게임에만 적용됨)
 STR_CONFIG_SETTING_TYPE_DROPDOWN_COMPANY_INGAME                 :회사 설정 (게임 저장 파일에 저장됨; 현재 회사에만 적용됨)
 
+STR_CONFIG_SETTING_ADVISED_LEAVE_DEFAULT                        :이 설정은 기본값으로 두는 것이 좋습니다
+
 STR_CONFIG_SETTINGS_NONE                                        :{WHITE}- 없음 -
 ###length 3
 STR_CONFIG_SETTING_CATEGORY_HIDES                               :{BLACK}검색 결과를 전부 보시려면{}{SILVER}분류 {BLACK}설정을 {WHITE}{STRING}{BLACK}으로 바꾸십시오.
@@ -1458,7 +1461,7 @@ STR_CONFIG_SETTING_FREIGHT_TRAINS                               :화물 무게�
 STR_CONFIG_SETTING_FREIGHT_TRAINS_HELPTEXT                      :열차가 싣고 있는 화물이 열차 속력에 미치는 영향에 대해 설정합니다. 값을 높게 설정하면 화물을 수송하는데 더 큰 힘이 필요합니다. (특히 언덕을 오를 때 심해집니다)
 
 STR_CONFIG_SETTING_PLANE_SPEED                                  :항공기 속력 조절: {STRING}
-STR_CONFIG_SETTING_PLANE_SPEED_HELPTEXT                         :항공 수송에 대한 수입을 제한하기 위해, 다른 운송 수단의 속력을 1로 보았을 때의 항공기의 속력 비율을 설정합니다.
+STR_CONFIG_SETTING_PLANE_SPEED_HELPTEXT                         :항공 수송에 대한 수입을 제한하기 위해, 다른 운송 수단의 속력을 1로 보았을 때 항공기의 상대 속력을 설정합니다.
 STR_CONFIG_SETTING_PLANE_SPEED_VALUE                            :(실제 속력) x {COMMA}분의 1
 
 STR_CONFIG_SETTING_PLANE_CRASHES                                :항공기 추락 빈도수: {STRING}
@@ -2241,6 +2244,7 @@ STR_CONFIG_SETTING_ZOOM_LVL_OUT_128X                            :128x
 
 STR_CONFIG_SETTING_SPRITE_ZOOM_MIN                              :최고 해상도 그래픽 스프라이트: {STRING}
 STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT                     :그래픽 스프라이트에 사용할 최고 해상도를 제한할 수 있습니다. 그래픽 스프라이트 해상도를 제한하면 고해상도 그래픽을 사용할 수 있어도 이를 사용하지 않을 수 있습니다. 이 설정을 사용하면 고해상도 그래픽을 지원하지 않는 GRF 파일을 섞어서 사용할 때 게임의 모습을 일관성있게 만들 수 있습니다.
+STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT_EXTRA               :{STRING}{}{}이 설정을 기본값에서 변경하면 많은 추가 확대/고화질 NewGRF의 그래픽 위치가 잘못 표시되거나 아예 (투명한 그래픽으로) 나타나지 않을 수도 있습니다. 이 설정이 기본값이 아닐 때 그래픽 문제가 발생할 경우, 이 설정을 다시 기본값으로 변경하세요.
 ###length 3
 STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_MIN                          :4x
 STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_IN_2X                        :2x
@@ -4227,7 +4231,7 @@ STR_NEWGRF_ERROR_TOO_MANY_NEWGRFS_LOADED                        :NewGRF가 너�
 STR_NEWGRF_ERROR_STATIC_GRF_CAUSES_DESYNC                       :{2:STRING}{G 2 "을" "를"} 포함한 정적 NewGRF {1:STRING}{G 1 "을" "를"} 불러오는 것은 비동기화를 일으킬 수 있습니다
 STR_NEWGRF_ERROR_UNEXPECTED_SPRITE                              :예기치 않은 스프라이트 (스프라이트 {3:NUM})
 STR_NEWGRF_ERROR_UNKNOWN_PROPERTY                               :알려지지 않은 액션 0 속성 {4:HEX} (스프라이트 {3:NUM})
-STR_NEWGRF_ERROR_UNIMPLEMETED_MAPPED_FEATURE_ID                 :구현되지 않은 재배치된 기능 ID: 이름: {2:RAW_STRING}, 재배치: {5:HEX} (스프라이트 {3:NUM})
+STR_NEWGRF_ERROR_UNIMPLEMETED_MAPPED_FEATURE_ID                 :구현되지 않은 재배치된 기능 ID: 이름: {2:STRING}, 재배치: {5:HEX} (스프라이트 {3:NUM})
 STR_NEWGRF_ERROR_UNIMPLEMETED_MAPPED_PROPERTY                   :구현되지 않은 재배치된 액션 0 속성 특성: {4:HEX}, 이름: {2:STRING}, 재배치: {5:HEX} (스프라이트 {3:NUM})
 STR_NEWGRF_ERROR_UNIMPLEMETED_MAPPED_ACTION5_TYPE               :구현되지 않은 재배치된 액션 5 종류: 이름: {2:STRING}, 재배치: {4:HEX} (스프라이트 {3:NUM})
 STR_NEWGRF_ERROR_INVALID_ID                                     :유효하지 않은 ID 사용 시도 (스프라이트 {3:NUM})
@@ -5735,7 +5739,7 @@ STR_TIMETABLE_AUTO_SEPARATION_TOOLTIP                           :{BLACK}시간�
 
 STR_TIMETABLE_SCHEDULED_DISPATCH                                :{BLACK}배차 일정
 STR_TIMETABLE_SCHEDULED_DISPATCH_TOOLTIP                        :{BLACK}시간표 시작 시간 자동 설정을 위한 '배차 일정' 창을 엽니다.
-STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER                          :{PUSH_COLOUR}{YELLOW}[배{STRING}차 기준]{POP_COLOUR}
+STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER                          :{PUSH_COLOUR}{YELLOW}[배차 일정 {STRING}의 기준]{POP_COLOUR}
 STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME             :{PUSH_COLOUR}{RED}[{STRING}배차 기준 - 대기 시간표가 작성되지 않음]{POP_COLOUR}
 STR_TIMETABLE_SCHEDULED_DISPATCH_ORDER_SCHEDULE_INDEX           :{NUM}{NBSP}-{NBSP}
 

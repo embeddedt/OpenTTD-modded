@@ -18,6 +18,7 @@
 #include "../object_map.h"
 #include "../waypoint_base.h"
 #include "../string_func_extra.h"
+#include "../newgrf_extension.h"
 
 /* Helper for filling property tables */
 #define NIP(prop, base, variable, type, name) { name, (ptrdiff_t)cpp_offsetof(base, variable), cpp_sizeof(base, variable), prop, type }
@@ -842,6 +843,8 @@ static const NIVariable _niv_objects[] = {
 	NIV(0x62, "land info of nearby tiles"),
 	NIV(0x63, "animation stage of nearby tiles"),
 	NIV(0x64, "distance on nearest object with given type"),
+	NIV(A2VRI_OBJECT_FOUNDATION_SLOPE,        "slope after foundation applied"),
+	NIV(A2VRI_OBJECT_FOUNDATION_SLOPE_CHANGE, "slope after foundation applied xor non-foundation slope"),
 	NIV_END()
 };
 
@@ -926,6 +929,7 @@ class NIHObject : public NIHelper {
 				check_ctrl_flag(OBJECT_CTRL_FLAG_USE_LAND_GROUND, "OBJECT_CTRL_FLAG_USE_LAND_GROUND");
 				check_ctrl_flag(OBJECT_CTRL_FLAG_EDGE_FOUNDATION, "OBJECT_CTRL_FLAG_EDGE_FOUNDATION");
 				check_ctrl_flag(OBJECT_CTRL_FLAG_FLOOD_RESISTANT, "OBJECT_CTRL_FLAG_FLOOD_RESISTANT");
+				check_ctrl_flag(OBJECT_CTRL_FLAG_VPORT_MAP_TYPE,  "OBJECT_CTRL_FLAG_VPORT_MAP_TYPE");
 			}
 		}
 	}
