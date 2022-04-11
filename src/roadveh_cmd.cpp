@@ -38,6 +38,7 @@
 #include "scope_info.h"
 #include "string_func.h"
 #include "core/checksum_func.hpp"
+#include "newgrf_roadstop.h"
 
 #include "table/strings.h"
 
@@ -1565,6 +1566,37 @@ inline byte IncreaseOvertakingCounter(RoadVehicle *v)
 	return v->overtaking_ctr;
 }
 
+static bool CheckRestartLoadingAtRoadStop(RoadVehicle *v)
+{
+	if (v->GetNumOrders() < 1) return false;
+
+	StationID station_id = v->current_order.GetDestination();
+	VehicleOrderID next_order_idx = AdvanceOrderIndexDeferred(v, v->cur_implicit_order_index);
+	const Order *next_order = v->GetOrder(next_order_idx);
+	FlushAdvanceOrderIndexDeferred(v, false);
+	if (next_order != nullptr && next_order->IsType(OT_GOTO_STATION) && next_order->GetDestination() == station_id &&
+			!(next_order->GetNonStopType() & ONSF_NO_STOP_AT_DESTINATION_STATION) &&
+			IsInfraTileUsageAllowed(VEH_ROAD, v->owner, v->tile) &&
+			GetRoadStopType(v->tile) == (v->IsBus() ? ROADSTOP_BUS : ROADSTOP_TRUCK)) {
+		v->current_order.Free();
+		ProcessOrders(v);
+
+		/* Double check that order prediction was correct and v->current_order is now for the same station */
+		if (v->current_order.IsType(OT_GOTO_STATION) && v->current_order.GetDestination() == station_id &&
+				!(v->current_order.GetNonStopType() & ONSF_NO_STOP_AT_DESTINATION_STATION)) {
+			v->last_station_visited = station_id;
+			v->BeginLoading();
+			return true;
+		} else {
+			/* Order prediction was incorrect, this should not be reached, just restore the leave station order */
+			v->current_order.MakeLeaveStation();
+			v->current_order.SetDestination(station_id);
+		}
+	}
+
+	return false;
+}
+
 bool IndividualRoadVehicleController(RoadVehicle *v, const RoadVehicle *prev)
 {
 	SCOPE_INFO_FMT([&], "IndividualRoadVehicleController: %s, %s", scope_dumper().VehicleInfo(v), scope_dumper().VehicleInfo(prev));
@@ -1950,6 +1982,8 @@ again:
 				v->last_station_visited = st->index;
 				RoadVehArrivesAt(v, st);
 				v->BeginLoading();
+				TriggerRoadStopRandomisation(st, v->tile, RSRT_VEH_ARRIVES);
+				TriggerRoadStopAnimation(st, v->tile, SAT_TRAIN_ARRIVES);
 			}
 			return false;
 		}
@@ -2012,16 +2046,25 @@ again:
 			if (IsDriveThroughStopTile(v->tile) || (v->current_order.IsType(OT_GOTO_STATION) && v->current_order.GetDestination() == st->index)) {
 				RoadVehArrivesAt(v, st);
 				v->BeginLoading();
+				TriggerRoadStopRandomisation(st, v->tile, RSRT_VEH_ARRIVES);
+				TriggerRoadStopAnimation(st, v->tile, SAT_TRAIN_ARRIVES);
 				return false;
 			}
 		} else {
+			if (v->current_order.IsType(OT_LEAVESTATION)) {
+				if (CheckRestartLoadingAtRoadStop(v)) return false;
+			}
+
 			/* Vehicle is ready to leave a bay in a road stop */
 			if (rs->IsEntranceBusy()) {
 				/* Road stop entrance is busy, so wait as there is nowhere else to go */
 				v->cur_speed = 0;
 				return false;
 			}
-			if (v->current_order.IsType(OT_LEAVESTATION)) v->current_order.Free();
+			if (v->current_order.IsType(OT_LEAVESTATION)) {
+				v->PlayLeaveStationSound();
+				v->current_order.Free();
+			}
 		}
 
 		if (IsStandardRoadStopTile(v->tile)) rs->SetEntranceBusy(true);
@@ -2039,6 +2082,8 @@ again:
 	}
 
 	if (v->current_order.IsType(OT_LEAVESTATION) && IsDriveThroughStopTile(v->tile)) {
+		if (CheckRestartLoadingAtRoadStop(v)) return false;
+		v->PlayLeaveStationSound();
 		v->current_order.Free();
 	}
 

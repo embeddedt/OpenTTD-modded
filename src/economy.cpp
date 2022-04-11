@@ -26,6 +26,7 @@
 #include "newgrf_industrytiles.h"
 #include "newgrf_station.h"
 #include "newgrf_airporttiles.h"
+#include "newgrf_roadstop.h"
 #include "object.h"
 #include "strings_func.h"
 #include "date_func.h"
@@ -334,13 +335,13 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 		/* Sell all the shares that people have on this company */
 		Backup<CompanyID> cur_company2(_current_company, FILE_LINE);
-		const Company *c = Company::Get(old_owner);
+		Company *c = Company::Get(old_owner);
 		for (i = 0; i < 4; i++) {
 			if (c->share_owners[i] == INVALID_OWNER) continue;
 
 			if (c->bankrupt_value == 0 && c->share_owners[i] == new_owner) {
 				/* You are the one buying the company; so don't sell the shares back to you. */
-				Company::Get(new_owner)->share_owners[i] = INVALID_OWNER;
+				c->share_owners[i] = INVALID_OWNER;
 			} else {
 				cur_company2.Change(c->share_owners[i]);
 				/* Sell the shares */
@@ -705,13 +706,8 @@ static void CompaniesGenStatistics()
 
 	Backup<CompanyID> cur_company(_current_company, FILE_LINE);
 
-	if (!_settings_game.economy.infrastructure_maintenance) {
-		for (const Station *st : Station::Iterate()) {
-			cur_company.Change(st->owner);
-			CommandCost cost(EXPENSES_PROPERTY, _price[PR_STATION_VALUE] >> 1);
-			SubtractMoneyFromCompany(cost);
-		}
-	} else {
+	/* Pay Infrastructure Maintenance, if enabled */
+	if (_settings_game.economy.infrastructure_maintenance) {
 		/* Improved monthly infrastructure costs. */
 		for (const Company *c : Company::Iterate()) {
 			cur_company.Change(c->index);
@@ -1078,7 +1074,8 @@ static SmallIndustryList _cargo_delivery_destinations;
 
 template <class F>
 void ForAcceptingIndustries(const Station *st, CargoID cargo_type, IndustryID source, CompanyID company, F&& f) {
-	for (Industry *ind : st->industries_near) {
+	for (const auto &i : st->industries_near) {
+		Industry *ind = i.industry;
 		if (ind->index == source) continue;
 
 		uint cargo_index;
@@ -1475,7 +1472,7 @@ void PrepareUnload(Vehicle *front_v)
 	front_v->cargo_payment = new CargoPayment(front_v);
 
 	CargoStationIDStackSet next_station = front_v->GetNextStoppingStation();
-	if (front_v->orders.list == nullptr || (front_v->current_order.GetUnloadType() & OUFB_NO_UNLOAD) == 0) {
+	if (front_v->orders == nullptr || (front_v->current_order.GetUnloadType() & OUFB_NO_UNLOAD) == 0) {
 		Station *st = Station::Get(front_v->last_station_visited);
 		for (Vehicle *v = front_v; v != nullptr; v = v->Next()) {
 			if (GetUnloadType(v) & OUFB_NO_UNLOAD) continue;
@@ -2152,6 +2149,8 @@ static void LoadUnloadVehicle(Vehicle *front)
 						TriggerStationRandomisation(st, st->xy, SRT_CARGO_TAKEN, v->cargo_type);
 						TriggerStationAnimation(st, st->xy, SAT_CARGO_TAKEN, v->cargo_type);
 						AirportAnimationTrigger(st, AAT_STATION_CARGO_TAKEN, v->cargo_type);
+						TriggerRoadStopAnimation(st, st->xy, SAT_NEW_CARGO, v->cargo_type);
+						TriggerRoadStopRandomisation(st, st->xy, RSRT_CARGO_TAKEN, v->cargo_type);
 					}
 
 					new_load_unload_ticks += loaded;
@@ -2172,6 +2171,9 @@ static void LoadUnloadVehicle(Vehicle *front)
 		if (front->type == VEH_TRAIN) {
 			TriggerStationRandomisation(st, station_tile, SRT_TRAIN_LOADS);
 			TriggerStationAnimation(st, station_tile, SAT_TRAIN_LOADS);
+		} else if (front->type == VEH_ROAD) {
+			TriggerRoadStopRandomisation(st, station_tile, RSRT_VEH_LOADS);
+			TriggerRoadStopAnimation(st, station_tile, SAT_TRAIN_LOADS);
 		}
 	}
 

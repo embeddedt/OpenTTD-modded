@@ -846,7 +846,7 @@ void OrderList::DebugCheckSanity() const
 
 	for (const Vehicle *v = this->first_shared; v != nullptr; v = v->NextShared()) {
 		++check_num_vehicles;
-		assert_msg(v->orders.list == this, "%p, %p", v->orders.list, this);
+		assert_msg(v->orders == this, "%p, %p", v->orders, this);
 	}
 	assert_msg(this->num_vehicles == check_num_vehicles, "%u, %u", this->num_vehicles, check_num_vehicles);
 	DEBUG(misc, 6, "... detected %u orders (%u manual), %u vehicles, %i timetabled, %i total",
@@ -936,7 +936,7 @@ uint GetOrderDistance(const Order *prev, const Order *cur, const Vehicle *v, int
 		conditional_depth++;
 
 		int dist1 = GetOrderDistance(prev, v->GetOrder(cur->GetConditionSkipToOrder()), v, conditional_depth);
-		int dist2 = GetOrderDistance(prev, cur->next == nullptr ? v->orders.list->GetFirstOrder() : cur->next, v, conditional_depth);
+		int dist2 = GetOrderDistance(prev, cur->next == nullptr ? v->orders->GetFirstOrder() : cur->next, v, conditional_depth);
 		return std::max(dist1, dist2);
 	}
 
@@ -986,9 +986,9 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 				if (ret.Failed()) return ret;
 			}
 
-			if (!CanVehicleUseStation(v, st)) return_cmd_error(STR_ERROR_CAN_T_ADD_ORDER);
+			if (!CanVehicleUseStation(v, st)) return CommandCost::DualErrorMessage(STR_ERROR_CAN_T_ADD_ORDER, GetVehicleCannotUseStationReason(v, st));
 			for (Vehicle *u = v->FirstShared(); u != nullptr; u = u->NextShared()) {
-				if (!CanVehicleUseStation(u, st)) return_cmd_error(STR_ERROR_CAN_T_ADD_ORDER_SHARED);
+				if (!CanVehicleUseStation(u, st)) return CommandCost::DualErrorMessage(STR_ERROR_CAN_T_ADD_ORDER_SHARED, GetVehicleCannotUseStationReason(u, st));
 			}
 
 			/* Non stop only allowed for ground vehicles. */
@@ -1057,7 +1057,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 
 						case VEH_ROAD:
 							if (!IsRoadDepotTile(dp->xy)) return CMD_ERROR;
-							if ((GetRoadTypes(dp->xy) & RoadVehicle::From(v)->compatible_roadtypes) == 0) return CMD_ERROR;
+							if ((GetPresentRoadTypes(dp->xy) & RoadVehicle::From(v)->compatible_roadtypes) == 0) return CMD_ERROR;
 							break;
 
 						case VEH_SHIP:
@@ -1085,7 +1085,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 				default: return CMD_ERROR;
 
 				case VEH_TRAIN: {
-					if (!(wp->facilities & FACIL_TRAIN)) return_cmd_error(STR_ERROR_CAN_T_ADD_ORDER);
+					if (!(wp->facilities & FACIL_TRAIN)) return CommandCost::DualErrorMessage(STR_ERROR_CAN_T_ADD_ORDER, STR_ERROR_NO_RAIL_WAYPOINT);
 
 					CommandCost ret = CheckInfraUsageAllowed(v->type, wp->owner);
 					if (ret.Failed()) return ret;
@@ -1093,7 +1093,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 				}
 
 				case VEH_ROAD: {
-					if (!(wp->facilities & FACIL_BUS_STOP) || !(wp->facilities & FACIL_TRUCK_STOP)) return_cmd_error(STR_ERROR_CAN_T_ADD_ORDER);
+					if (!(wp->facilities & FACIL_BUS_STOP) || !(wp->facilities & FACIL_TRUCK_STOP)) return CommandCost::DualErrorMessage(STR_ERROR_CAN_T_ADD_ORDER, STR_ERROR_NO_ROAD_WAYPOINT);
 
 					CommandCost ret = CheckInfraUsageAllowed(v->type, wp->owner);
 					if (ret.Failed()) return ret;
@@ -1101,7 +1101,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 				}
 
 				case VEH_SHIP:
-					if (!(wp->facilities & FACIL_DOCK)) return_cmd_error(STR_ERROR_CAN_T_ADD_ORDER);
+					if (!(wp->facilities & FACIL_DOCK)) return CommandCost::DualErrorMessage(STR_ERROR_CAN_T_ADD_ORDER, STR_ERROR_NO_BUOY);
 					if (wp->owner != OWNER_NONE) {
 						CommandCost ret = CheckInfraUsageAllowed(v->type, wp->owner);
 						if (ret.Failed()) return ret;
@@ -1209,7 +1209,7 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 
 	if (v->GetNumOrders() >= MAX_VEH_ORDER_ID) return_cmd_error(STR_ERROR_TOO_MANY_ORDERS);
 	if (!Order::CanAllocateItem()) return_cmd_error(STR_ERROR_NO_MORE_SPACE_FOR_ORDERS);
-	if (v->orders.list == nullptr && !OrderList::CanAllocateItem()) return_cmd_error(STR_ERROR_NO_MORE_SPACE_FOR_ORDERS);
+	if (v->orders == nullptr && !OrderList::CanAllocateItem()) return_cmd_error(STR_ERROR_NO_MORE_SPACE_FOR_ORDERS);
 
 	if (flags & DC_EXEC) {
 		Order *new_o = new Order();
@@ -1230,16 +1230,16 @@ CommandCost CmdInsertOrderIntl(DoCommandFlag flags, Vehicle *v, VehicleOrderID s
 void InsertOrder(Vehicle *v, Order *new_o, VehicleOrderID sel_ord)
 {
 	/* Create new order and link in list */
-	if (v->orders.list == nullptr) {
-		v->orders.list = new OrderList(new_o, v);
+	if (v->orders == nullptr) {
+		v->orders = new OrderList(new_o, v);
 	} else {
-		v->orders.list->InsertOrderAt(new_o, sel_ord);
+		v->orders->InsertOrderAt(new_o, sel_ord);
 	}
 
 	Vehicle *u = v->FirstShared();
 	DeleteOrderWarnings(u);
 	for (; u != nullptr; u = u->NextShared()) {
-		assert(v->orders.list == u->orders.list);
+		assert(v->orders == u->orders);
 
 		/* If there is added an order before the current one, we need
 		 * to update the selected order. We do not change implicit/real order indices though.
@@ -1391,12 +1391,12 @@ static void CancelLoadingDueToDeletedOrder(Vehicle *v)
  */
 void DeleteOrder(Vehicle *v, VehicleOrderID sel_ord)
 {
-	v->orders.list->DeleteOrderAt(sel_ord);
+	v->orders->DeleteOrderAt(sel_ord);
 
 	Vehicle *u = v->FirstShared();
 	DeleteOrderWarnings(u);
 	for (; u != nullptr; u = u->NextShared()) {
-		assert(v->orders.list == u->orders.list);
+		assert(v->orders == u->orders);
 
 		if (sel_ord == u->cur_real_order_index && u->current_order.IsAnyLoadingType()) {
 			CancelLoadingDueToDeletedOrder(u);
@@ -1534,7 +1534,7 @@ CommandCost CmdMoveOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 	if (moving_one == nullptr) return CMD_ERROR;
 
 	if (flags & DC_EXEC) {
-		v->orders.list->MoveOrder(moving_order, target_order);
+		v->orders->MoveOrder(moving_order, target_order);
 
 		/* Update shared list */
 		Vehicle *u = v->FirstShared();
@@ -1576,7 +1576,7 @@ CommandCost CmdMoveOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 
 			u->cur_timetable_order_index = INVALID_VEH_ORDER_ID;
 
-			assert(v->orders.list == u->orders.list);
+			assert(v->orders == u->orders);
 			/* Update any possible open window of the vehicle */
 			InvalidateVehicleOrder(u, moving_order | (target_order << 16));
 		}
@@ -1655,7 +1655,7 @@ CommandCost CmdReverseOrderList(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 				CommandCost cost = CmdInsertOrderIntl(flags, v, order_count, new_order, true);
 				if (cost.Failed()) return cost;
 				if (flags & DC_EXEC) {
-					Order *order = v->orders.list->GetOrderAt(order_count);
+					Order *order = v->orders->GetOrderAt(order_count);
 					order->SetRefit(new_order.GetRefitCargo());
 					order->SetMaxSpeed(new_order.GetMaxSpeed());
 					if (wait_fixed) {
@@ -2313,7 +2313,7 @@ CommandCost CmdCloneOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 				}
 				if (OrderGoesToRoadDepot(dst, order)) {
 					const Depot *dp = Depot::GetIfValid(order->GetDestination());
-					if (!dp || (GetRoadTypes(dp->xy) & RoadVehicle::From(dst)->compatible_roadtypes) == 0) {
+					if (!dp || (GetPresentRoadTypes(dp->xy) & RoadVehicle::From(dst)->compatible_roadtypes) == 0) {
 						return_cmd_error(STR_ERROR_CAN_T_COPY_SHARE_ORDER);
 					}
 				}
@@ -2324,7 +2324,7 @@ CommandCost CmdCloneOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 				return_cmd_error(STR_ERROR_AIRCRAFT_NOT_ENOUGH_RANGE);
 			}
 
-			if (src->orders.list == nullptr && !OrderList::CanAllocateItem()) {
+			if (src->orders == nullptr && !OrderList::CanAllocateItem()) {
 				return_cmd_error(STR_ERROR_NO_MORE_SPACE_FOR_ORDERS);
 			}
 
@@ -2334,7 +2334,7 @@ CommandCost CmdCloneOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 				 * (We mainly do this to keep the order indices valid and in range.) */
 				DeleteVehicleOrders(dst, false, ShouldResetOrderIndicesOnOrderCopy(src, dst));
 
-				dst->orders.list = src->orders.list;
+				dst->orders = src->orders;
 
 				/* Link this vehicle in the shared-list */
 				dst->AddToShared(src);
@@ -2395,7 +2395,7 @@ CommandCost CmdCloneOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 				}
 				if (OrderGoesToRoadDepot(dst, order)) {
 					const Depot *dp = Depot::GetIfValid(order->GetDestination());
-					if (!dp || (GetRoadTypes(dp->xy) & RoadVehicle::From(dst)->compatible_roadtypes) == 0) {
+					if (!dp || (GetPresentRoadTypes(dp->xy) & RoadVehicle::From(dst)->compatible_roadtypes) == 0) {
 						return_cmd_error(STR_ERROR_CAN_T_COPY_SHARE_ORDER);
 					}
 				}
@@ -2426,20 +2426,20 @@ CommandCost CmdCloneOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 					(*order_dst)->AssignOrder(*order);
 					order_dst = &(*order_dst)->next;
 				}
-				if (dst->orders.list == nullptr) {
-					dst->orders.list = new OrderList(first, dst);
+				if (dst->orders == nullptr) {
+					dst->orders = new OrderList(first, dst);
 				} else {
-					assert(dst->orders.list->GetFirstOrder() == nullptr);
-					assert(!dst->orders.list->IsShared());
-					delete dst->orders.list;
+					assert(dst->orders->GetFirstOrder() == nullptr);
+					assert(!dst->orders->IsShared());
+					delete dst->orders;
 					assert(OrderList::CanAllocateItem());
-					dst->orders.list = new OrderList(first, dst);
+					dst->orders = new OrderList(first, dst);
 				}
 
 				/* Copy over scheduled dispatch data */
-				assert(dst->orders.list != nullptr);
-				if (src->orders.list != nullptr) {
-					dst->orders.list->GetScheduledDispatchScheduleSet() = src->orders.list->GetScheduledDispatchScheduleSet();
+				assert(dst->orders != nullptr);
+				if (src->orders != nullptr) {
+					dst->orders->GetScheduledDispatchScheduleSet() = src->orders->GetScheduledDispatchScheduleSet();
 				}
 
 				/* Set automation bit if target has it. */
@@ -2597,7 +2597,7 @@ void CheckOrders(const Vehicle *v)
 		if (v->GetNumOrders() > 1) {
 			const Order *last = v->GetLastOrder();
 
-			if (v->orders.list->GetFirstOrder()->Equals(*last)) {
+			if (v->orders->GetFirstOrder()->Equals(*last)) {
 				message = STR_NEWS_VEHICLE_HAS_DUPLICATE_ENTRY;
 			}
 		}
@@ -2606,7 +2606,7 @@ void CheckOrders(const Vehicle *v)
 		if (n_st < 2 && message == INVALID_STRING_ID) message = STR_NEWS_VEHICLE_HAS_TOO_FEW_ORDERS;
 
 #ifndef NDEBUG
-		if (v->orders.list != nullptr) v->orders.list->DebugCheckSanity();
+		if (v->orders != nullptr) v->orders->DebugCheckSanity();
 #endif
 
 		if (message == INVALID_STRING_ID && !has_depot_order && v->type != VEH_AIRCRAFT && _settings_client.gui.no_depot_order_warn) message = STR_NEWS_VEHICLE_NO_DEPOT_ORDER;
@@ -2687,13 +2687,13 @@ void DeleteVehicleOrders(Vehicle *v, bool keep_orderlist, bool reset_order_indic
 	if (v->IsOrderListShared()) {
 		/* Remove ourself from the shared order list. */
 		v->RemoveFromShared();
-		v->orders.list = nullptr;
+		v->orders = nullptr;
 	} else {
 		DeleteWindowById(GetWindowClassForVehicleType(v->type), VehicleListIdentifier(VL_SHARED_ORDERS, v->type, v->owner, v->index).Pack());
-		if (v->orders.list != nullptr) {
+		if (v->orders != nullptr) {
 			/* Remove the orders */
-			v->orders.list->FreeChain(keep_orderlist);
-			if (!keep_orderlist) v->orders.list = nullptr;
+			v->orders->FreeChain(keep_orderlist);
+			if (!keep_orderlist) v->orders = nullptr;
 		}
 	}
 
@@ -3413,7 +3413,7 @@ CommandCost CmdMassChangeOrder(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 						if (CmdInsertOrderIntl(flags, v, index + 1, new_order, true).Succeeded()) {
 							DoCommand(0, v->index, index, flags, CMD_DELETE_ORDER);
 
-							order = v->orders.list->GetOrderAt(index);
+							order = v->orders->GetOrderAt(index);
 							order->SetRefit(new_order.GetRefitCargo());
 							order->SetMaxSpeed(new_order.GetMaxSpeed());
 							if (wait_fixed) {

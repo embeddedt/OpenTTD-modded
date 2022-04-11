@@ -82,6 +82,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_TRACE_RESTRICT_CTGRYCND,XSCF_NULL,                1,   1, "tracerestrict_ctgry_cond",  nullptr, nullptr, nullptr        },
 	{ XSLFI_TRACE_RESTRICT_PENCTRL, XSCF_NULL,                1,   1, "tracerestrict_pfpenctrl",   nullptr, nullptr, nullptr        },
 	{ XSLFI_TRACE_RESTRICT_TUNBRIDGE,XSCF_NULL,               1,   1, "tracerestrict_sigtunbridge",nullptr, nullptr, nullptr        },
+	{ XSLFI_TRACE_RESTRICT_SPDADAPTCTRL,XSCF_NULL,            1,   1, "tracerestrict_spdadaptctrl",nullptr, nullptr, nullptr        },
 	{ XSLFI_PROG_SIGS,              XSCF_NULL,                2,   2, "programmable_signals",      nullptr, nullptr, "SPRG"      },
 	{ XSLFI_ADJACENT_CROSSINGS,     XSCF_NULL,                1,   1, "adjacent_crossings",        nullptr, nullptr, nullptr        },
 	{ XSLFI_SAFER_CROSSINGS,        XSCF_NULL,                1,   1, "safer_crossings",           nullptr, nullptr, nullptr        },
@@ -160,7 +161,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_MORE_HOUSES,            XSCF_NULL,                2,   2, "more_houses",               nullptr, nullptr, nullptr        },
 	{ XSLFI_CUSTOM_TOWN_ZONE,       XSCF_IGNORABLE_UNKNOWN,   1,   1, "custom_town_zone",          nullptr, nullptr, nullptr        },
 	{ XSLFI_STATION_CARGO_HISTORY,  XSCF_NULL,                1,   1, "station_cargo_history",     nullptr, nullptr, nullptr        },
-	{ XSLFI_TRAIN_SPEED_ADAPTATION, XSCF_NULL,                1,   1, "train_speed_adaptation",    nullptr, nullptr, "TSAS"         },
+	{ XSLFI_TRAIN_SPEED_ADAPTATION, XSCF_NULL,                2,   2, "train_speed_adaptation",    nullptr, nullptr, "TSAS"         },
 	{ XSLFI_EXTRA_STATION_NAMES,    XSCF_NULL,                1,   1, "extra_station_names",       nullptr, nullptr, nullptr        },
 	{ XSLFI_DEPOT_ORDER_EXTRA_FLAGS,XSCF_IGNORABLE_UNKNOWN,   1,   1, "depot_order_extra_flags",   nullptr, nullptr, nullptr        },
 	{ XSLFI_EXTRA_SIGNAL_TYPES,     XSCF_NULL,                1,   1, "extra_signal_types",        nullptr, nullptr, nullptr        },
@@ -174,6 +175,7 @@ const SlxiSubChunkInfo _sl_xv_sub_chunk_infos[] = {
 	{ XSLFI_ROAD_WAYPOINTS,         XSCF_NULL,                1,   1, "road_waypoints",            nullptr, nullptr, nullptr        },
 	{ XSLFI_MORE_STATION_TYPES,     XSCF_NULL,                1,   1, "more_station_types",        nullptr, nullptr, nullptr        },
 	{ XSLFI_RV_ORDER_EXTRA_FLAGS,   XSCF_IGNORABLE_UNKNOWN,   1,   1, "rv_order_extra_flags",      nullptr, nullptr, nullptr        },
+	{ XSLFI_GRF_ROADSTOPS,          XSCF_NULL,                1,   1, "grf_road_stops",            nullptr, nullptr, nullptr        },
 	{ XSLFI_SCRIPT_INT64,           XSCF_NULL,                1,   1, "script_int64",              nullptr, nullptr, nullptr        },
 	{ XSLFI_NULL, XSCF_NULL, 0, 0, nullptr, nullptr, nullptr, nullptr },// This is the end marker
 };

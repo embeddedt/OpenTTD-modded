@@ -1682,7 +1682,16 @@ STR_CONFIG_SETTING_RIVER_ROUTE_RANDOM_HELPTEXT                  :Choose how rand
 STR_CONFIG_SETTING_RIVERS_TOP_OF_HILL                           :Rivers require their springs to generate at the top of hills: {STRING}
 STR_CONFIG_SETTING_RIVERS_TOP_OF_HILL_HELPTEXT                  :Choose whether rivers require their springs to generate towards the top of hills.
 STR_CONFIG_SETTING_RIVER_TROPICS_WIDTH                          :Tropics width around rivers: {STRING}
-STR_CONFIG_SETTING_RIVER_TROPICS_WIDTH_HELPTEXT                 :Controls the width of the tropic zone that surrounds rivers in sub-tropic landscape.
+STR_CONFIG_SETTING_RIVER_TROPICS_WIDTH_HELPTEXT                 :Controls the width of the tropic zone that surrounds rivers in sub-tropic landscape.{}This is the total width of the zone on both sides of the river.
+STR_CONFIG_SETTING_LAKE_TROPICS_WIDTH                           :Tropics width around lakes: {STRING}
+STR_CONFIG_SETTING_LAKE_TROPICS_WIDTH_HELPTEXT                  :Controls the width of the tropic zone that surrounds lakes in sub-tropic landscape.{}This is the total width of the zone on both sides of the lake.
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH                          :Tropics width around coasts: {STRING}
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH_HELPTEXT                 :Controls the width of the tropic zone that surrounds coasts in sub-tropic landscape.
+###length 4
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH_DEFAULT                  :Default
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH_MEDIUM                   :Medium
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH_LARGE                    :Large
+STR_CONFIG_SETTING_COAST_TROPICS_WIDTH_EXTRALARGE               :Extra Large
 STR_CONFIG_SETTING_LAKE_SIZE                                    :Size of lakes: {STRING}
 STR_CONFIG_SETTING_LAKE_SIZE_HELPTEXT                           :Controls the size of lakes that are generated along rivers.
 STR_CONFIG_SETTING_LAKE_SIZE_VALUE                              :{NUM}
@@ -2456,6 +2465,7 @@ STR_CONFIG_SETTING_ALLOW_GRF_STATIONS_UNDER_BRIDGES_HELPTEXT    :If enabled, New
 
 STR_CONFIG_SETTING_ALLOW_ROAD_STATIONS_UNDER_BRIDGES            :Allow road/tram stops under bridges: {STRING2}
 STR_CONFIG_SETTING_ALLOW_ROAD_STATIONS_UNDER_BRIDGES_HELPTEXT   :Allow road/tram stops under bridges. Drive through stops require 1 height level of clearance, drive in bays require 2 height levels of clearance.
+STR_CONFIG_SETTING_ALLOW_ROAD_STATIONS_UNDER_BRIDGES_HELPTEXT_EXTRA :{STRING}{}{}NewGRF road/tram stops may override this setting and allow or disallow custom stops under bridges, and set custom height clearance requirements.
 
 STR_CONFIG_SETTING_ALLOW_DOCKS_UNDER_BRIDGES                    :Allow docks under bridges: {STRING2}
 STR_CONFIG_SETTING_ALLOW_DOCKS_UNDER_BRIDGES_HELPTEXT           :Allow docks under bridges. Docks require 2 height levels of clearance.{}This may result in graphical issues.
@@ -3303,6 +3313,7 @@ STR_TRACE_RESTRICT_SPEED_RESTRICTION                            :Speed restricti
 STR_TRACE_RESTRICT_NEWS_CONTROL                                 :News control
 STR_TRACE_RESTRICT_COUNTER_OP                                   :Counter operation
 STR_TRACE_RESTRICT_PF_PENALTY_CONTROL                           :Penalty config
+STR_TRACE_RESTRICT_SPEED_ADAPTATION_CONTROL                     :Speed adap. control
 STR_TRACE_RESTRICT_SLOT_ACQUIRE_WAIT                            :Acquire or wait
 STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE                             :Try to acquire
 STR_TRACE_RESTRICT_SLOT_TRY_ACQUIRE_ON_RES                      :Try to acquire (on reserve)
@@ -3353,6 +3364,10 @@ STR_TRACE_RESTRICT_NO_PBS_BACK_PENALTY                          :Do not apply th
 STR_TRACE_RESTRICT_NO_PBS_BACK_PENALTY_CANCEL                   :Cancel do not apply the penalty for passing this PBS signal from the back
 STR_TRACE_RESTRICT_NO_PBS_BACK_PENALTY_SHORT                    :No PBS back penalty
 STR_TRACE_RESTRICT_NO_PBS_BACK_PENALTY_CANCEL_SHORT             :Cancel no PBS back penalty
+STR_TRACE_RESTRICT_MAKE_TRAIN_SPEED_ADAPTATION_EXEMPT           :Make train exempt from automatic speed adaptation
+STR_TRACE_RESTRICT_REMOVE_TRAIN_SPEED_ADAPTATION_EXEMPT         :Remove train exemption from automatic speed adaptation
+STR_TRACE_RESTRICT_MAKE_TRAIN_SPEED_ADAPTATION_EXEMPT_SHORT     :Make exempt
+STR_TRACE_RESTRICT_REMOVE_TRAIN_SPEED_ADAPTATION_EXEMPT_SHORT   :Remove exemption
 STR_TRACE_RESTRICT_TIME_MINUTE                                  :current minute (0 - 59)
 STR_TRACE_RESTRICT_TIME_HOUR                                    :current hour (0 - 23)
 STR_TRACE_RESTRICT_TIME_HOUR_MINUTE                             :current hour and minute (0 - 2359)
@@ -5336,6 +5351,7 @@ STR_VEHICLE_INFO_CAPACITY_CAPACITY                              :{BLACK}Capacity
 STR_VEHICLE_INFO_FEEDER_CARGO_VALUE                             :{BLACK}Transfer Credits: {LTBLUE}{CURRENCY_LONG}
 
 STR_VEHICLE_INFO_SPEED_RESTRICTION                              :{BLACK}Speed restriction: {LTBLUE}{VELOCITY}
+STR_VEHICLE_INFO_SPEED_ADAPTATION_EXEMPT                        :{BLACK}Exempt from speed adaptation
 
 STR_VEHICLE_DETAILS_SERVICING_INTERVAL_DAYS                     :{BLACK}Servicing interval: {LTBLUE}{COMMA}{NBSP}days{BLACK}   Last service: {LTBLUE}{DATE_LONG}
 STR_VEHICLE_DETAILS_SERVICING_INTERVAL_PERCENT                  :{BLACK}Servicing interval: {LTBLUE}{COMMA}%{BLACK}   Last service: {LTBLUE}{DATE_LONG}
@@ -6439,6 +6455,19 @@ STR_ERROR_CAN_T_STOP_SHARING_ORDER_LIST                         :{WHITE}Can't st
 STR_ERROR_CAN_T_COPY_ORDER_LIST                                 :{WHITE}Can't copy order list...
 STR_ERROR_TOO_FAR_FROM_PREVIOUS_DESTINATION                     :{WHITE}... too far from previous destination
 STR_ERROR_AIRCRAFT_NOT_ENOUGH_RANGE                             :{WHITE}... aircraft has not enough range
+
+STR_ERROR_NO_RAIL_STATION                                       :{WHITE}There is no railway station...
+STR_ERROR_NO_BUS_STATION                                        :{WHITE}There is no bus station...
+STR_ERROR_NO_TRUCK_STATION                                      :{WHITE}There is no lorry station...
+STR_ERROR_NO_DOCK                                               :{WHITE}There is no dock...
+STR_ERROR_NO_AIRPORT                                            :{WHITE}There is no airport/heliport...
+STR_ERROR_NO_STOP_COMPATIBLE_ROAD_TYPE                          :{WHITE}There are no stops with a compatible road/tram type...
+STR_ERROR_NO_STOP_ARTIC_VEH                                     :{WHITE}There are no stops which are suitable for articulated road vehicles.{}Articulated road vehicles require a drive-through stop, not a bay stop...
+STR_ERROR_AIRPORT_NO_PLANES                                     :{WHITE}This plane cannot land at this heliport...
+STR_ERROR_AIRPORT_NO_HELIS                                      :{WHITE}This helicopter cannot land at this airport...
+STR_ERROR_NO_RAIL_WAYPOINT                                      :{WHITE}There is no railway waypoint...
+STR_ERROR_NO_ROAD_WAYPOINT                                      :{WHITE}There is no road waypoint...
+STR_ERROR_NO_BUOY                                               :{WHITE}There is no buoy...
 
 # Timetable related errors
 STR_ERROR_CAN_T_TIMETABLE_VEHICLE                               :{WHITE}Can't timetable vehicle...

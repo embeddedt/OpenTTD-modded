@@ -200,7 +200,7 @@ Industry::~Industry()
 	CargoPacket::InvalidateAllFrom(ST_INDUSTRY, this->index);
 
 	for (Station *st : this->stations_near) {
-		st->industries_near.erase(this);
+		st->RemoveIndustryToDeliver(this);
 	}
 
 	if (_game_mode == GM_NORMAL) RegisterGameEvents(GEF_INDUSTRY_DELETE);
@@ -1774,15 +1774,14 @@ static void PopulateStationsNearby(Industry *ind)
 		/* Industry has a neutral station. Use it and ignore any other nearby stations. */
 		ind->stations_near.insert(ind->neutral_station);
 		ind->neutral_station->industries_near.clear();
-		ind->neutral_station->industries_near.insert(ind);
+		ind->neutral_station->industries_near.insert(IndustryListEntry{0, ind});
 		return;
 	}
 
 	ForAllStationsAroundTiles(ind->location, [ind](Station *st, TileIndex tile) {
 		if (!IsTileType(tile, MP_INDUSTRY) || GetIndustryIndex(tile) != ind->index) return false;
-		ind->stations_near.insert(st);
-		st->AddIndustryToDeliver(ind);
-		return true;
+		st->AddIndustryToDeliver(ind, tile);
+		return false;
 	});
 }
 
@@ -3196,7 +3195,8 @@ extern const TileTypeProcs _tile_type_industry_procs = {
 	TerraformTile_Industry,      // terraform_tile_proc
 };
 
-bool IndustryCompare::operator() (const Industry *lhs, const Industry *rhs) const
+bool IndustryCompare::operator() (const IndustryListEntry &lhs, const IndustryListEntry &rhs) const
 {
-	return lhs->index < rhs->index;
+	/* Compare by distance first and use index as a tiebreaker. */
+	return std::tie(lhs.distance, lhs.industry->index) < std::tie(rhs.distance, rhs.industry->index);
 }

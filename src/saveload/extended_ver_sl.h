@@ -35,6 +35,7 @@ enum SlXvFeatureIndex {
 	XSLFI_TRACE_RESTRICT_CTGRYCND,                ///< Trace restrict: category conditionals
 	XSLFI_TRACE_RESTRICT_PENCTRL,                 ///< Trace restrict: PF penalty control
 	XSLFI_TRACE_RESTRICT_TUNBRIDGE,               ///< Trace restrict: restricted signalled tunnel/bridge support
+	XSLFI_TRACE_RESTRICT_SPDADAPTCTRL,            ///< Trace restrict: speed adaptation control
 	XSLFI_PROG_SIGS,                              ///< programmable pre-signals patch
 	XSLFI_ADJACENT_CROSSINGS,                     ///< Adjacent level crossings closure patch
 	XSLFI_SAFER_CROSSINGS,                        ///< Safer level crossings
@@ -127,6 +128,7 @@ enum SlXvFeatureIndex {
 	XSLFI_ROAD_WAYPOINTS,                         ///< Road waypoints
 	XSLFI_MORE_STATION_TYPES,                     ///< More station types (field widening)
 	XSLFI_RV_ORDER_EXTRA_FLAGS,                   ///< Road vehicle order extra flags
+	XSLFI_GRF_ROADSTOPS,                          ///< NewGRF road stops
 
 	XSLFI_SCRIPT_INT64,                           ///< See: SLV_SCRIPT_INT64
 

@@ -57,6 +57,7 @@ void RebuildStationKdtree()
 BaseStation::~BaseStation()
 {
 	free(this->speclist);
+	free(this->roadstop_speclist);
 
 	if (CleaningPool()) return;
 
@@ -182,6 +183,31 @@ Station::~Station()
 void BaseStation::PostDestructor(size_t index)
 {
 	InvalidateWindowData(WC_SELECT_STATION, 0, 0);
+}
+
+void BaseStation::SetRoadStopTileData(TileIndex tile, byte data, byte offset)
+{
+	for (size_t i = 0; i < this->custom_road_stop_tiles.size(); i++) {
+		if (this->custom_road_stop_tiles[i] == tile) {
+			SB(this->custom_road_stop_data[i], offset, 8, data);
+			return;
+		}
+	}
+	this->custom_road_stop_tiles.push_back(tile);
+	this->custom_road_stop_data.push_back(((uint)data) << offset);
+}
+
+void BaseStation::RemoveRoadStopTileData(TileIndex tile)
+{
+	for (size_t i = 0; i < this->custom_road_stop_tiles.size(); i++) {
+		if (this->custom_road_stop_tiles[i] == tile) {
+			this->custom_road_stop_tiles[i] = this->custom_road_stop_tiles.back();
+			this->custom_road_stop_data[i] = this->custom_road_stop_data.back();
+			this->custom_road_stop_tiles.pop_back();
+			this->custom_road_stop_data.pop_back();
+			return;
+		}
+	}
 }
 
 /**
@@ -382,12 +408,24 @@ bool Station::IsWithinRangeOfDockingTile(TileIndex tile, uint max_distance) cons
 
 /**
  * Add nearby industry to station's industries_near list if it accepts cargo.
- * @param ind Industry
+ * For industries that are already on the list update distance if it's closer.
+ * @param ind  Industry
+ * @param tile Tile of the industry to measure distance to.
  */
-void Station::AddIndustryToDeliver(Industry *ind)
+void Station::AddIndustryToDeliver(Industry *ind, TileIndex tile)
 {
-	/* Don't check further if this industry is already in the list */
-	if (this->industries_near.find(ind) != this->industries_near.end()) return;
+	/* Using DistanceMax to get about the same order as with previously used CircularTileSearch. */
+	uint distance = DistanceMax(this->xy, tile);
+
+	/* Don't check further if this industry is already in the list but update the distance if it's closer */
+	auto pos = std::find_if(this->industries_near.begin(), this->industries_near.end(), [&](const IndustryListEntry &e) { return e.industry->index == ind->index; });
+	if (pos != this->industries_near.end()) {
+		if (pos->distance > distance) {
+			this->industries_near.erase(pos);
+			this->industries_near.insert(IndustryListEntry{distance, ind});
+		}
+		return;
+	}
 
 	/* Include only industries that can accept cargo */
 	uint cargo_index;
@@ -396,8 +434,20 @@ void Station::AddIndustryToDeliver(Industry *ind)
 	}
 	if (cargo_index >= lengthof(ind->accepts_cargo)) return;
 
-	this->industries_near.insert(ind);
+	this->industries_near.insert(IndustryListEntry{distance, ind});
 }
+
+/**
+ * Remove nearby industry from station's industries_near list.
+ * @param ind  Industry
+ */
+void Station::RemoveIndustryToDeliver(Industry *ind) {
+	auto pos = std::find_if(this->industries_near.begin(), this->industries_near.end(), [&](const IndustryListEntry &e) { return e.industry->index == ind->index; });
+	if (pos != this->industries_near.end()) {
+		this->industries_near.erase(pos);
+	}
+}
+
 
 /**
  * Remove this station from the nearby stations lists of all towns and industries.
@@ -448,11 +498,11 @@ void Station::RecomputeCatchment(bool no_clear_nearby_lists)
 		}
 		/* The industry's stations_near may have been computed before its neutral station was built so clear and re-add here. */
 		for (Station *st : this->industry->stations_near) {
-			st->industries_near.erase(this->industry);
+			st->RemoveIndustryToDeliver(this->industry);
 		}
 		this->industry->stations_near.clear();
 		this->industry->stations_near.insert(this);
-		this->industries_near.insert(this->industry);
+		this->industries_near.insert(IndustryListEntry{0, this->industry});
 
 		/* Loop finding all station tiles */
 		TileArea ta(TileXY(this->rect.left, this->rect.top), TileXY(this->rect.right, this->rect.bottom));
@@ -498,7 +548,7 @@ void Station::RecomputeCatchment(bool no_clear_nearby_lists)
 			i->stations_near.insert(this);
 
 			/* Add if we can deliver to this industry as well */
-			this->AddIndustryToDeliver(i);
+			this->AddIndustryToDeliver(i, tile);
 		}
 	}
 }

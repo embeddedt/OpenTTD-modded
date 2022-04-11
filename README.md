@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.46.1
+## JGR's Patchpack version 0.47.1
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -145,7 +145,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to disable mass action buttons for top-level vehicle lists.
 * Add feature to create a new auto-named group when dragging and dropping a vehicle onto the new group button (ctrl includes shared order vehicles).
 * Add settings to reduce vehicle running costs when a vehicle is stationary or in a depot.
-* If a train or ship's next order is for the current station when leaving, start loading again without moving, instead of leaving.
+* If a vehicle's next order is for the current station when leaving, start loading again without moving, instead of leaving.
 * Slots and counters.  
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
 * Add cargo capacity / running cost sort mode to the build vehicle window.
@@ -185,6 +185,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 * [Departure boards](https://www.tt-forums.net/viewtopic.php?f=33&t=49956).
 * Add road waypoints.
+* Add NewGRF road stops.
 * Add a setting to increase the station catchment radius.
 * Station rating: track "last visited vehicle type" separately per cargo.
 * Add setting to scale station cargo capacity and rating tolerance by size.
@@ -221,7 +222,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * [Adjusted arctic tree placement](http://www.tt-forums.net/viewtopic.php?f=33&t=72502).
 * Add a new tree placement mode (perfect).
 * [Minimum town distance](https://www.tt-forums.net/viewtopic.php?f=33&t=33625).
-* Add map generation settings to control river/lake and rocky patch generation.
+* Add map generation settings to control river/lake, rocky patch, and tropic zone generation.
 * Add generation of wide rivers.
 * Add settings to customise the size of town zones, and city zones.
 
@@ -336,9 +337,9 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Various extensions to the NewGRF developer debug tools.
 * Various performance improvements.
 * Various minor fixes, see changelog.
-* [NewGRF specification additions](docs/newgrf-additions.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions.html)).
-* [NML specification additions](docs/newgrf-additions-nml.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/newgrf-additions-nml.html)).
-* [AI/GS script additions](docs/script-additions.html) ([online copy](https://htmlpreview.github.io/?https://github.com/JGRennison/OpenTTD-patches/blob/jgrpp/docs/script-additions.html)).
+* [NewGRF specification additions](docs/newgrf-additions.html) ([online copy](https://jgrennison.github.io/OpenTTD-patches/newgrf-additions.html)).
+* [NML specification additions](docs/newgrf-additions-nml.html) ([online copy](https://jgrennison.github.io/OpenTTD-patches/newgrf-additions-nml.html)).
+* [AI/GS script additions](docs/script-additions.html) ([online copy](https://jgrennison.github.io/OpenTTD-patches/script-additions.html)).
 * [Low-level code/performance changes](docs/jgrpp-low-level-changes.md).
 
 #### Translations
