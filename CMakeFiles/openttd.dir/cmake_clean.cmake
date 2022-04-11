@@ -369,6 +369,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/openttd.dir/src/newgrf_object.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o"
+  "CMakeFiles/openttd.dir/src/newgrf_roadstop.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o"
   "CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o"

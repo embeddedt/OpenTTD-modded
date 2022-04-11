@@ -233,6 +233,7 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_object.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_profiling.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_profiling.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.o"
+  "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadstop.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_roadstop.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadtype.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_roadtype.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_sound.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_sound.cpp.o"
   "/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.cpp" "/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/openttd.dir/src/newgrf_spritegroup.cpp.o"

@@ -5714,6 +5714,33 @@ src/newgrf_railtype.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_railtype.cpp.s
 .PHONY : src/newgrf_railtype.cpp.s
 
+src/newgrf_roadstop.o: src/newgrf_roadstop.cpp.o
+
+.PHONY : src/newgrf_roadstop.o
+
+# target to build an object file
+src/newgrf_roadstop.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_roadstop.cpp.o
+.PHONY : src/newgrf_roadstop.cpp.o
+
+src/newgrf_roadstop.i: src/newgrf_roadstop.cpp.i
+
+.PHONY : src/newgrf_roadstop.i
+
+# target to preprocess a source file
+src/newgrf_roadstop.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_roadstop.cpp.i
+.PHONY : src/newgrf_roadstop.cpp.i
+
+src/newgrf_roadstop.s: src/newgrf_roadstop.cpp.s
+
+.PHONY : src/newgrf_roadstop.s
+
+# target to generate assembly for a file
+src/newgrf_roadstop.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_roadstop.cpp.s
+.PHONY : src/newgrf_roadstop.cpp.s
+
 src/newgrf_roadtype.o: src/newgrf_roadtype.cpp.o
 
 .PHONY : src/newgrf_roadtype.o
@@ -13921,6 +13948,9 @@ help:
 	@echo "... src/newgrf_railtype.o"
 	@echo "... src/newgrf_railtype.i"
 	@echo "... src/newgrf_railtype.s"
+	@echo "... src/newgrf_roadstop.o"
+	@echo "... src/newgrf_roadstop.i"
+	@echo "... src/newgrf_roadstop.s"
 	@echo "... src/newgrf_roadtype.o"
 	@echo "... src/newgrf_roadtype.i"
 	@echo "... src/newgrf_roadtype.s"

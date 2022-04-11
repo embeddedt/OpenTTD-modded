@@ -193,7 +193,7 @@ public:
 		 *   - 0 = #ToolTipsWidgets
 		 */
 		WC_TOOLTIPS                                  = ::WC_TOOLTIPS,
-		
+
 		/**
 		* Station rating tooltip window; %Window numbers:
 		*   - 0 = #ToolTipsWidgets
@@ -2472,6 +2472,29 @@ public:
 		WID_BROS_LT_OFF                              = ::WID_BROS_LT_OFF,                              ///< Turn off area highlight.
 		WID_BROS_LT_ON                               = ::WID_BROS_LT_ON,                               ///< Turn on area highlight.
 		WID_BROS_INFO                                = ::WID_BROS_INFO,                                ///< Station acceptance info.
+
+		WID_BROS_MATRIX                              = ::WID_BROS_MATRIX,                              ///< Matrix widget displaying all available road stops.
+		WID_BROS_IMAGE                               = ::WID_BROS_IMAGE,                               ///< Panel used for each image of the matrix.
+		WID_BROS_MATRIX_SCROLL                       = ::WID_BROS_MATRIX_SCROLL,                       ///< Scrollbar of the #WID_BROS_SHOW_NEWST_ADDITIONS.
+
+		WID_BROS_FILTER_CONTAINER                    = ::WID_BROS_FILTER_CONTAINER,                    ///< Container for the filter text box for the road stop class list.
+		WID_BROS_FILTER_EDITBOX                      = ::WID_BROS_FILTER_EDITBOX,                      ///< Filter text box for the road stop class list.
+		WID_BROS_SHOW_NEWST_DEFSIZE                  = ::WID_BROS_SHOW_NEWST_DEFSIZE,                  ///< Selection for default-size button for new road stops.
+		WID_BROS_SHOW_NEWST_ADDITIONS                = ::WID_BROS_SHOW_NEWST_ADDITIONS,                ///< Selection for new class selection list.
+		WID_BROS_SHOW_NEWST_MATRIX                   = ::WID_BROS_SHOW_NEWST_MATRIX,                   ///< Selection for new stop image matrix.
+		WID_BROS_SHOW_NEWST_RESIZE                   = ::WID_BROS_SHOW_NEWST_RESIZE,                   ///< Selection for panel and resize at bottom right for new stops.
+		WID_BROS_SHOW_NEWST_ORIENTATION              = ::WID_BROS_SHOW_NEWST_ORIENTATION,              ///< Selection for the orientation string for new stops.
+		WID_BROS_SHOW_NEWST_TYPE_SEL                 = ::WID_BROS_SHOW_NEWST_TYPE_SEL,                 ///< Selection for the type name.
+		WID_BROS_SHOW_NEWST_TYPE                     = ::WID_BROS_SHOW_NEWST_TYPE,                     ///< Display of selected stop type.
+		WID_BROS_NEWST_LIST                          = ::WID_BROS_NEWST_LIST,                          ///< List with new road stops.
+		WID_BROS_NEWST_SCROLL                        = ::WID_BROS_NEWST_SCROLL,                        ///< Scrollbar of the #WID_BROS_NEWST_LIST.
+	};
+
+	/** Widgets of the #BuildRoadWaypointWindow class. */
+	enum BuildRoadWaypointWidgets {
+		WID_BROW_WAYPOINT_MATRIX                     = ::WID_BROW_WAYPOINT_MATRIX,                     ///< Matrix with waypoints.
+		WID_BROW_WAYPOINT                            = ::WID_BROW_WAYPOINT,                            ///< A single waypoint.
+		WID_BROW_SCROLL                              = ::WID_BROW_SCROLL,                              ///< Scrollbar for the matrix.
 	};
 
 	/* automatically generated from ../../widgets/screenshot_widget.h */
