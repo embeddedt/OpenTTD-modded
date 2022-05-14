@@ -1306,18 +1306,9 @@ public:
 	/** Widgets of the #CompanyInfrastructureWindow class. */
 	enum CompanyInfrastructureWidgets {
 		WID_CI_CAPTION                               = ::WID_CI_CAPTION,                               ///< Caption of window.
-		WID_CI_RAIL_DESC                             = ::WID_CI_RAIL_DESC,                             ///< Description of rail.
-		WID_CI_RAIL_COUNT                            = ::WID_CI_RAIL_COUNT,                            ///< Count of rail.
-		WID_CI_ROAD_DESC                             = ::WID_CI_ROAD_DESC,                             ///< Description of road.
-		WID_CI_ROAD_COUNT                            = ::WID_CI_ROAD_COUNT,                            ///< Count of road.
-		WID_CI_TRAM_DESC                             = ::WID_CI_TRAM_DESC,                             ///< Description of tram.
-		WID_CI_TRAM_COUNT                            = ::WID_CI_TRAM_COUNT,                            ///< Count of tram.
-		WID_CI_WATER_DESC                            = ::WID_CI_WATER_DESC,                            ///< Description of water.
-		WID_CI_WATER_COUNT                           = ::WID_CI_WATER_COUNT,                           ///< Count of water.
-		WID_CI_STATION_DESC                          = ::WID_CI_STATION_DESC,                          ///< Description of station.
-		WID_CI_STATION_COUNT                         = ::WID_CI_STATION_COUNT,                         ///< Count of station.
-		WID_CI_TOTAL_DESC                            = ::WID_CI_TOTAL_DESC,                            ///< Description of total.
-		WID_CI_TOTAL                                 = ::WID_CI_TOTAL,                                 ///< Count of total.
+		WID_CI_DESC                                  = ::WID_CI_DESC,                                  ///< Description.
+		WID_CI_COUNT                                 = ::WID_CI_COUNT,                                 ///< Count.
+		WID_CI_SCROLLBAR                             = ::WID_CI_SCROLLBAR,                             ///< Scrollbar.
 	};
 
 	/** Widgets of the #BuyCompanyWindow class. */
@@ -1402,6 +1393,7 @@ public:
 		WID_DT_BUOY                                  = ::WID_DT_BUOY,                                  ///< Build buoy button.
 		WID_DT_RIVER                                 = ::WID_DT_RIVER,                                 ///< Build river button (in scenario editor).
 		WID_DT_BUILD_AQUEDUCT                        = ::WID_DT_BUILD_AQUEDUCT,                        ///< Build aqueduct button.
+		WID_DT_RIVER_SEL                             = ::WID_DT_RIVER_SEL,                             ///< Build river button selector.
 
 		WID_DT_INVALID                               = ::WID_DT_INVALID,                               ///< Used to initialize a variable.
 	};

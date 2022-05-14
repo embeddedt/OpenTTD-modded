@@ -358,6 +358,7 @@ static void RoadVehSlopeSteepnessChanged(int32 new_value);
 static void ProgrammableSignalsShownChanged(int32 new_value);
 static void VehListCargoFilterShownChanged(int32 new_value);
 static void TownFoundingChanged(int32 new_value);
+static bool TownCouncilToleranceAdjust(int32 &new_value);
 static void DifficultyNoiseChange(int32 new_value);
 static void DifficultyMoneyCheatMultiplayerChange(int32 new_value);
 static void DifficultyRenameTownsMultiplayerChange(int32 new_value);
@@ -439,10 +440,10 @@ static const SettingDescEnumEntry _linkgraph_mode_per_cargo[] = {
 { 0, STR_NULL }
 };
 static const SettingDescEnumEntry _town_council_approval[] = {
-{ 255, STR_CITY_APPROVAL_INDIFFERENT },
-{ 0, STR_CITY_APPROVAL_PERMISSIVE },
+{ 0, STR_CITY_APPROVAL_LENIENT },
 { 1, STR_CITY_APPROVAL_TOLERANT },
 { 2, STR_CITY_APPROVAL_HOSTILE },
+{ 3, STR_CITY_APPROVAL_PERMISSIVE },
 { 0, STR_NULL }
 };
 static const SettingDescEnumEntry _train_braking_model[] = {
@@ -485,7 +486,7 @@ SDT_VAR(GameSettings, difficulty.quantity_sea_lakes, SLE_UINT8, SF_NEWGAME_ONLY,
 SDT_BOOL(GameSettings, difficulty.economy,        SF_NONE, false,                              STR_CONFIG_SETTING_RECESSIONS, STR_CONFIG_SETTING_RECESSIONS_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, difficulty.line_reverse_mode,        SF_NONE, false,                              STR_CONFIG_SETTING_TRAIN_REVERSING, STR_CONFIG_SETTING_TRAIN_REVERSING_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, difficulty.disasters,        SF_NONE, false,                              STR_CONFIG_SETTING_DISASTERS, STR_CONFIG_SETTING_DISASTERS_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
-SDT_ENUM(GameSettings, difficulty.town_council_tolerance, SLE_UINT8, SF_NONE, 0,                              STR_CONFIG_SETTING_CITY_APPROVAL, STR_CONFIG_SETTING_CITY_APPROVAL_HELPTEXT,          nullptr, DifficultyNoiseChange, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _town_council_approval),
+SDT_ENUM(GameSettings, difficulty.town_council_tolerance, SLE_UINT8, SF_NONE, 0,                              STR_CONFIG_SETTING_CITY_APPROVAL, STR_CONFIG_SETTING_CITY_APPROVAL_HELPTEXT,          TownCouncilToleranceAdjust, DifficultyNoiseChange, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _town_council_approval),
 SDT_BOOL(GameSettings, difficulty.money_cheat_in_multiplayer,        SF_NONE, false,                              STR_CONFIG_SETTING_MONEY_CHEAT_MULTIPLAYER, STR_CONFIG_SETTING_MONEY_CHEAT_MULTIPLAYER_HELPTEXT, STR_NULL, nullptr, DifficultyMoneyCheatMultiplayerChange, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "cheat.difficulty.money_cheat_in_multiplayer"),
 SDT_BOOL(GameSettings, difficulty.rename_towns_in_multiplayer,        SF_NONE, false,                              STR_CONFIG_SETTING_RENAME_TOWNS_MULTIPLAYER, STR_CONFIG_SETTING_RENAME_TOWNS_MULTIPLAYER_HELPTEXT, STR_NULL, nullptr, DifficultyRenameTownsMultiplayerChange, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "cheat.difficulty.rename_towns_in_multiplayer"),
 SDTG_VAR("diff_level",              SLE_UINT8, SF_NOT_IN_CONFIG, _old_diff_level, 3, 0, 3, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SLV_178, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
@@ -929,6 +930,7 @@ SDT_VAR(GameSettings, construction.extra_tree_placement, SLE_UINT8, SF_GUI_DROPD
 SDT_NULL(3, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP, SL_CHILLPP_232)),
 SDT_BOOL(GameSettings, construction.trees_around_snow_line_enabled,        SF_NONE, true,                              STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE, STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "everest_treeline.construction.trees_around_snow_line_enabled"),
 SDT_VAR(GameSettings, construction.trees_around_snow_line_range, SLE_UINT8, SF_NONE, 8,       1, 64, 0, STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE_RANGE, STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE_RANGE_HELPTEXT, STR_JUST_COMMA, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "everest_treeline.construction.trees_around_snow_line_range"),
+SDT_VAR(GameSettings, construction.trees_around_snow_line_dynamic_range, SLE_UINT8, SF_NONE, 75,       0, 100, 5, STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE_DYNAMIC_RANGE, STR_CONFIG_SETTING_TREES_AROUND_SNOWLINE_DYNAMIC_RANGE_HELPTEXT, STR_CONFIG_SETTING_PERCENTAGE, nullptr, [](auto) { UpdateCachedSnowLineBounds(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "everest_treeline.construction.trees_around_snow_line_dynamic_range"),
 SDT_VAR(GameSettings, construction.tree_growth_rate, SLE_UINT8, SF_GUI_DROPDOWN, 0,       0, 4, 0, STR_CONFIG_SETTING_TREE_GROWTH, STR_CONFIG_SETTING_TREE_GROWTH_HELPTEXT, STR_CONFIG_SETTING_TREE_GROWTH_NORMAL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "reduced_tree_growth.construction.tree_growth_rate"),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "construction.tree_growth_rate", nullptr),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "construction.trees_around_snow_line_range", nullptr),
@@ -1443,6 +1445,7 @@ static_assert(5000 <= MAX_SLE_UINT16, "Maximum value for GameSettings.game_creat
 static_assert(64000 <= MAX_SLE_UINT16, "Maximum value for GameSettings.game_creation.custom_industry_number exceeds storage size");
 static_assert(3 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.extra_tree_placement exceeds storage size");
 static_assert(64 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.trees_around_snow_line_range exceeds storage size");
+static_assert(100 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.trees_around_snow_line_dynamic_range exceeds storage size");
 static_assert(4 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.tree_growth_rate exceeds storage size");
 static_assert(MAX_MAP_HEIGHT_LIMIT <= MAX_SLE_UINT8, "Maximum value for GameSettings.game_creation.custom_terrain_type exceeds storage size");
 static_assert(CUSTOM_SEA_LEVEL_MAX_PERCENTAGE <= MAX_SLE_UINT8, "Maximum value for GameSettings.game_creation.custom_sea_level exceeds storage size");
