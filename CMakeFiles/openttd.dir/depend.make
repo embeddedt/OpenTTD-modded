@@ -11007,6 +11007,7 @@ CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_cache_check.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_callbacks.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_commons.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_config.h
+CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_debug.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_engine.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_generic.h
 CMakeFiles/openttd.dir/src/group_gui.cpp.o: ../src/newgrf_properties.h

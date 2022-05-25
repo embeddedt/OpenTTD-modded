@@ -11008,6 +11008,7 @@ CMakeFiles/openttd.dir/src/group_gui.cpp.o
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_callbacks.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_config.h
+ /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_engine.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
  /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_properties.h

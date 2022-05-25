@@ -6309,6 +6309,8 @@ gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/gui.h
 tbtr_template_gui_main.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tbtr_template_gui_main.h
+newgrf_debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_debug.h
 widgets/group_widget.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/widgets/group_widget.h
 core/smallvec_type.hpp

@@ -186,7 +186,7 @@ ccb6101c1196e9845923edef24cdcef2 src/script/api/ai_game.hpp.sq.timestamp
 961b1fbc2caf126db20c7101e3f606ee src/script/api/ai_goal.hpp.sq.timestamp
 a15d58d957d2815203857c29601418e7 src/script/api/ai_group.hpp.sq.timestamp
 d766e5d0a767a63862d480bade275c30 src/script/api/ai_grouplist.hpp.sq.timestamp
-542eac9793bfe02a6e58f744400d6d2c src/script/api/ai_includes.hpp.timestamp
+9d972822953160f79f9deaad6406af05 src/script/api/ai_includes.hpp.timestamp
 bf9364ae932bba9ffd9d1bacef814609 src/script/api/ai_industry.hpp.sq.timestamp
 e37b48e7c085f53baad03165e152f930 src/script/api/ai_industrylist.hpp.sq.timestamp
 8d6e96e83c0fd45de633acbae27a3705 src/script/api/ai_industrytype.hpp.sq.timestamp
@@ -258,7 +258,7 @@ b429a96f9e2477dbf85f7e2bc1e0c99c src/script/api/game_gamesettings.hpp.sq.timesta
 8acb20f21b765f13ce7288bdd779e525 src/script/api/game_goal.hpp.sq.timestamp
 652164b64b167c02c838bc072a851e73 src/script/api/game_group.hpp.sq.timestamp
 9681d621425fda9fab12cd88a2173873 src/script/api/game_grouplist.hpp.sq.timestamp
-97c29a3e900d7a86e85bb7b0d8d8c468 src/script/api/game_includes.hpp.timestamp
+00245da7630e25f389653dd055211866 src/script/api/game_includes.hpp.timestamp
 ee9b7f8bd52768042331eacbbf42bc63 src/script/api/game_industry.hpp.sq.timestamp
 f67b51b3bfe1836c8cc20a74f3fa72f2 src/script/api/game_industrylist.hpp.sq.timestamp
 4f409ed938a021d6cf6e71d531f76265 src/script/api/game_industrytype.hpp.sq.timestamp

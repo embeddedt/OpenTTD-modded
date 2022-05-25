@@ -342,9 +342,9 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_SEL_MAXLOAN,                        "WID_CF_SEL_MAXLOAN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_BALANCE_VALUE,                      "WID_CF_BALANCE_VALUE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_LOAN_VALUE,                         "WID_CF_LOAN_VALUE");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_LOAN_LINE,                          "WID_CF_LOAN_LINE");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_TOTAL_VALUE,                        "WID_CF_TOTAL_VALUE");
-	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_MAXLOAN_GAP,                        "WID_CF_MAXLOAN_GAP");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_BALANCE_LINE,                       "WID_CF_BALANCE_LINE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_OWN_VALUE,                          "WID_CF_OWN_VALUE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_INTEREST_RATE,                      "WID_CF_INTEREST_RATE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_MAXLOAN_VALUE,                      "WID_CF_MAXLOAN_VALUE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_SEL_BUTTONS,                        "WID_CF_SEL_BUTTONS");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CF_INCREASE_LOAN,                      "WID_CF_INCREASE_LOAN");
@@ -1260,6 +1260,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_VIDEO_ACCEL_BUTTON,                 "WID_GO_VIDEO_ACCEL_BUTTON");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_VIDEO_VSYNC_BUTTON,                 "WID_GO_VIDEO_VSYNC_BUTTON");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_REFRESH_RATE_DROPDOWN,              "WID_GO_REFRESH_RATE_DROPDOWN");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GO_VIDEO_DRIVER_INFO,                  "WID_GO_VIDEO_DRIVER_INFO");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GS_FILTER,                             "WID_GS_FILTER");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GS_OPTIONSPANEL,                       "WID_GS_OPTIONSPANEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_GS_SCROLLBAR,                          "WID_GS_SCROLLBAR");
