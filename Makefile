@@ -5606,6 +5606,33 @@ src/newgrf_industrytiles.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_industrytiles.cpp.s
 .PHONY : src/newgrf_industrytiles.cpp.s
 
+src/newgrf_newlandscape.o: src/newgrf_newlandscape.cpp.o
+
+.PHONY : src/newgrf_newlandscape.o
+
+# target to build an object file
+src/newgrf_newlandscape.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newlandscape.cpp.o
+.PHONY : src/newgrf_newlandscape.cpp.o
+
+src/newgrf_newlandscape.i: src/newgrf_newlandscape.cpp.i
+
+.PHONY : src/newgrf_newlandscape.i
+
+# target to preprocess a source file
+src/newgrf_newlandscape.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newlandscape.cpp.i
+.PHONY : src/newgrf_newlandscape.cpp.i
+
+src/newgrf_newlandscape.s: src/newgrf_newlandscape.cpp.s
+
+.PHONY : src/newgrf_newlandscape.s
+
+# target to generate assembly for a file
+src/newgrf_newlandscape.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_newlandscape.cpp.s
+.PHONY : src/newgrf_newlandscape.cpp.s
+
 src/newgrf_newsignals.o: src/newgrf_newsignals.cpp.o
 
 .PHONY : src/newgrf_newsignals.o
@@ -7549,6 +7576,33 @@ src/saveload/newgrf_sl.s: src/saveload/newgrf_sl.cpp.s
 src/saveload/newgrf_sl.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/newgrf_sl.cpp.s
 .PHONY : src/saveload/newgrf_sl.cpp.s
+
+src/saveload/newsignals_sl.o: src/saveload/newsignals_sl.cpp.o
+
+.PHONY : src/saveload/newsignals_sl.o
+
+# target to build an object file
+src/saveload/newsignals_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/newsignals_sl.cpp.o
+.PHONY : src/saveload/newsignals_sl.cpp.o
+
+src/saveload/newsignals_sl.i: src/saveload/newsignals_sl.cpp.i
+
+.PHONY : src/saveload/newsignals_sl.i
+
+# target to preprocess a source file
+src/saveload/newsignals_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/newsignals_sl.cpp.i
+.PHONY : src/saveload/newsignals_sl.cpp.i
+
+src/saveload/newsignals_sl.s: src/saveload/newsignals_sl.cpp.s
+
+.PHONY : src/saveload/newsignals_sl.s
+
+# target to generate assembly for a file
+src/saveload/newsignals_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/newsignals_sl.cpp.s
+.PHONY : src/saveload/newsignals_sl.cpp.s
 
 src/saveload/object_sl.o: src/saveload/object_sl.cpp.o
 
@@ -13936,6 +13990,9 @@ help:
 	@echo "... src/newgrf_industrytiles.o"
 	@echo "... src/newgrf_industrytiles.i"
 	@echo "... src/newgrf_industrytiles.s"
+	@echo "... src/newgrf_newlandscape.o"
+	@echo "... src/newgrf_newlandscape.i"
+	@echo "... src/newgrf_newlandscape.s"
 	@echo "... src/newgrf_newsignals.o"
 	@echo "... src/newgrf_newsignals.i"
 	@echo "... src/newgrf_newsignals.s"
@@ -14152,6 +14209,9 @@ help:
 	@echo "... src/saveload/newgrf_sl.o"
 	@echo "... src/saveload/newgrf_sl.i"
 	@echo "... src/saveload/newgrf_sl.s"
+	@echo "... src/saveload/newsignals_sl.o"
+	@echo "... src/saveload/newsignals_sl.i"
+	@echo "... src/saveload/newsignals_sl.s"
 	@echo "... src/saveload/object_sl.o"
 	@echo "... src/saveload/object_sl.i"
 	@echo "... src/saveload/object_sl.s"

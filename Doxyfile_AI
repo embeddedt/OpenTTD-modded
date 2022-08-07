@@ -10,7 +10,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "OpenTTD AI API"
-PROJECT_NUMBER         = 20220525-stock_jgr-g9a82af2076
+PROJECT_NUMBER         = 20220806-stock_jgr-g70807e9386
 OUTPUT_DIRECTORY       = /__w/OpenTTD-modded/OpenTTD-modded/em_build/docs/ai-api/
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English

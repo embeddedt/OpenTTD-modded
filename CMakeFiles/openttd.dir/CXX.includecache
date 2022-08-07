@@ -591,6 +591,8 @@ newgrf_commons.h
 ../src/newgrf_commons.h
 3rdparty/cpp-btree/btree_set.h
 ../src/3rdparty/cpp-btree/btree_set.h
+map
+-
 
 ../src/newgrf_storage.h
 core/pool_type.hpp
@@ -3227,6 +3229,8 @@ bridge_signal_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_signal_map.h
 debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -3247,6 +3251,8 @@ signal_type.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/signal_type.h
 core/bitmath_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/bitmath_func.hpp
+3rdparty/cpp-btree/btree_set.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 vector
 -
 unordered_map
@@ -3539,6 +3545,8 @@ core/random_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 newgrf_generic.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_generic.h
+newgrf_newlandscape.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newlandscape.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/sprites.h
@@ -3949,6 +3957,8 @@ scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
 event_logs.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/event_logs.h
+tile_cmd.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tile_cmd.h
 time.h
 -
 set
@@ -4024,6 +4034,10 @@ gfx_type.h
 alloc_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/alloc_func.hpp
 
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/arena_alloc.hpp
+vector
+-
+
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/backup_type.hpp
 ../debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
@@ -4091,6 +4105,8 @@ geometry_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/geometry_type.hpp
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/hash_func.hpp
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/kdtree.hpp
 ../stdafx.h
@@ -4218,6 +4234,12 @@ cstddef
 cstring
 -
 string
+-
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/y_combinator.hpp
+functional
+-
+utility
 -
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/cpu.cpp
@@ -5821,6 +5843,8 @@ tgp.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tgp.h
 signal_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
+newgrf_industrytiles.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -6719,6 +6743,10 @@ scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
 order_cmd.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/order_cmd.h
+strings_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/strings_func.h
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 
@@ -8051,6 +8079,8 @@ game_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 ../../error.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/error.h
+../../window_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/window_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/core/table/strings.h
 ../../safeguards.h
@@ -8891,6 +8921,8 @@ newgrf_station.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_station.h
 industrytype.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/industrytype.h
+industry_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/industry_map.h
 newgrf_canal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_canal.h
 newgrf_townname.h
@@ -8905,6 +8937,8 @@ newgrf_object.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
 newgrf_newsignals.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+newgrf_newlandscape.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newlandscape.h
 newgrf_extension.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 rev.h
@@ -8935,6 +8969,16 @@ road.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/road.h
 newgrf_roadstop.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadstop.h
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
+core/arena_alloc.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/arena_alloc.hpp
+core/y_combinator.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/y_combinator.hpp
+core/container_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/container_func.hpp
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/build_industry.h
@@ -9277,6 +9321,8 @@ zoom_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/zoom_func.h
 scope.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
 engine_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/engine_base.h
 industry.h
@@ -9359,6 +9405,8 @@ ship.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/ship.h
 scope_info.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope_info.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9579,6 +9627,8 @@ water.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/water.h
 newgrf_animation_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_animation_base.h
+newgrf_industrytiles_analysis.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles_analysis.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -9592,6 +9642,34 @@ newgrf_industries.h
 core/random_func.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/core/random_func.hpp
 
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles_analysis.h
+industrytype.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/industrytype.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newlandscape.cpp
+stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+debug.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
+newgrf_newlandscape.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newlandscape.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
+map_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
+clear_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/clear_map.h
+core/hash_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/hash_func.hpp
+safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newlandscape.h
+newgrf_commons.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+newgrf_spritegroup.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
+
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.cpp
 stdafx.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
@@ -9599,8 +9677,14 @@ debug.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug.h
 newgrf_newsignals.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 map_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/map_func.h
+tracerestrict.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
+string_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9609,6 +9693,14 @@ newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
 newgrf_spritegroup.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_spritegroup.h
+tunnel_map.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tunnel_map.h
+gfx_type.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/gfx_type.h
+vector
+-
+array
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.cpp
 stdafx.h
@@ -9713,12 +9805,16 @@ newgrf_railtype.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_railtype.h
 newgrf_newsignals.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
 date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 depot_base.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/depot_base.h
 town.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/town.h
+signal_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/signal_func.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9855,6 +9951,14 @@ newgrf_cache_check.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cache_check.h
 string_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func.h
+newgrf_extension.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
+newgrf_industrytiles_analysis.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles_analysis.h
+scope.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
+debug_settings.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -9877,6 +9981,8 @@ newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
 3rdparty/cpp-btree/btree_set.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
+map
+-
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_station.cpp
 stdafx.h
@@ -10573,6 +10679,8 @@ tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 train.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/train.h
+date_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 safeguards.h
@@ -11101,6 +11209,8 @@ pathfinder/follow_track.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/follow_track.hpp
 tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -11413,6 +11523,8 @@ infrastructure_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
 scope.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/scope.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/railtypes.h
@@ -11487,6 +11599,8 @@ tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 programmable_signals.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/programmable_signals.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 station_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/station_map.h
 tunnelbridge_map.h
@@ -12109,6 +12223,8 @@ safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/event_logs.h
 ../newgrf_object.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
+../newgrf_industrytiles.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_industrytiles.h
 saveload_internal.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload_internal.h
 signal.h
@@ -12527,6 +12643,16 @@ newgrf_sl.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/newgrf_sl.h
 ../newgrf_commons.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_commons.h
+
+/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/newsignals_sl.cpp
+../stdafx.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/stdafx.h
+../newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+saveload.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/saveload/saveload.h
+../safeguards.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/saveload/object_sl.cpp
 ../stdafx.h
@@ -16219,6 +16345,12 @@ bridge_signal_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/bridge_signal_map.h
 newgrf_newsignals.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
+core/checksum_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/checksum_func.hpp
+core/hash_func.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/hash_func.hpp
+pathfinder/follow_track.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/pathfinder/follow_track.hpp
 safeguards.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/safeguards.h
 
@@ -17371,6 +17503,8 @@ game/game_text.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/game/game_text.hpp
 network/network_content_gui.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/network/network_content_gui.h
+core/y_combinator.hpp
+/__w/OpenTTD-modded/OpenTTD-modded/src/core/y_combinator.hpp
 stack
 -
 table/strings.h
@@ -17537,6 +17671,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadstop.h
 ../newgrf_cargo.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_cargo.h
+../newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 ../date_func.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/date_func.h
 ../timetable.h
@@ -17553,6 +17689,8 @@ core/enum_type.hpp
 /__w/OpenTTD-modded/OpenTTD-modded/src/string_func_extra.h
 ../newgrf_extension.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_extension.h
+../animated_tile.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile.h
 
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/object_land.h
 
@@ -19245,6 +19383,8 @@ tracerestrict.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 newgrf_roadstop.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_roadstop.h
+newgrf_newsignals.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_newsignals.h
 table/strings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/table/strings.h
 table/bridge_land.h
@@ -20033,6 +20173,10 @@ object_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/object_map.h
 newgrf_object.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/newgrf_object.h
+infrastructure_func.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/infrastructure_func.h
+tracerestrict.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/tracerestrict.h
 map
 -
 vector
@@ -20745,6 +20889,8 @@ road_map.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/road_map.h
 debug_settings.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/debug_settings.h
+animated_tile.h
+/__w/OpenTTD-modded/OpenTTD-modded/src/animated_tile.h
 3rdparty/cpp-btree/btree_set.h
 /__w/OpenTTD-modded/OpenTTD-modded/src/3rdparty/cpp-btree/btree_set.h
 

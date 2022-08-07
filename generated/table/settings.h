@@ -61,6 +61,9 @@ static size_t ConvertLandscape(const char *value);
 #define SDTG_VAR(name, type, flags, var, def, min, max, interval, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)\
 	NSD(Int, SLEG_GENERAL_X(SL_VAR, var, type, 1, from, to, extver), name, flags, guiproc, startup, patxname, def, min, max, interval, str, strhelp, strval, cat, pre_check, post_callback, nullptr)
 
+#define SDTG_ENUM(name, type, flags, var, def, str, strhelp, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname, enumlist)\
+	NSD(Int, SLEG_GENERAL_X(SL_VAR, var, type, 1, from, to, extver), name, flags | SF_ENUM, guiproc, startup, patxname, def, 0, 0, 0, str, strhelp, STR_NULL, cat, pre_check, post_callback, enumlist)
+
 #define SDTG_BOOL(name, flags, var, def, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)\
 	NSD(Bool, SLEG_GENERAL_X(SL_VAR, var, SLE_BOOL, 1, from, to, extver), name, flags, guiproc, startup, patxname, def, str, strhelp, strval, cat, pre_check, post_callback)
 
@@ -108,6 +111,9 @@ static size_t ConvertLandscape(const char *value);
 #define SDTC_VAR(var, type, flags, def, min, max, interval, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)\
 	SDTG_VAR(#var, type, flags, _settings_client.var, def, min, max, interval, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)
 
+#define SDTC_ENUM(var, type, flags, def, str, strhelp, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname, enumlist)\
+	SDTG_ENUM(#var, type, flags, _settings_client.var, def, str, strhelp, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname, enumlist)
+
 #define SDTC_BOOL(var, flags, def, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)\
 	SDTG_BOOL(#var, flags, _settings_client.var, def, str, strhelp, strval, pre_check, post_callback, from, to, extver, cat, guiproc, startup, patxname)
 
@@ -147,7 +153,7 @@ SDT_BOOL(CompanySettings, infra_others_buy_in_depot[2],        SF_PER_COMPANY, f
 SDT_BOOL(CompanySettings, infra_others_buy_in_depot[3],        SF_PER_COMPANY, false,                        STR_CONFIG_SETTING_INFRA_OTHERS_BUY_IN_DEPOT_AIR, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, "infra_sharing.infra_others_buy_in_depot.air"),
 SDT_BOOL(CompanySettings, advance_order_on_clone,        SF_PER_COMPANY, false,                        STR_CONFIG_SETTING_ADVANCE_ORDER_ON_CLONE, STR_CONFIG_SETTING_ADVANCE_ORDER_ON_CLONE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, "advance_order_on_clone"),
 SDT_BOOL(CompanySettings, copy_clone_add_to_group,        SF_PER_COMPANY, true,                        STR_CONFIG_SETTING_COPY_CLONE_ADD_TO_GROUP, STR_CONFIG_SETTING_COPY_CLONE_ADD_TO_GROUP_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, "copy_clone_add_to_group"),
-SDT_VAR(CompanySettings, simulated_wormhole_signals, SLE_UINT8, SF_PER_COMPANY, 4, 1, 16, 0, STR_CONFIG_SETTING_SIMULATE_SIGNALS, STR_CONFIG_SETTING_SIMULATE_SIGNALS_HELPTEXT, STR_CONFIG_SETTING_SIMULATE_SIGNALS_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, "simulated_wormhole_signals"),
+SDT_VAR(CompanySettings, old_simulated_wormhole_signals, SLE_UINT8, SF_PER_COMPANY, 4, 1, 16, 0, STR_CONFIG_SETTING_SIMULATE_SIGNALS, STR_CONFIG_SETTING_SIMULATE_SIGNALS_HELPTEXT, STR_CONFIG_SETTING_SIMULATE_SIGNALS_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SIG_TUNNEL_BRIDGE, 1, 9), SC_ADVANCED, nullptr, false, "simulated_wormhole_signals"),
 };
 static const SettingTable _currency_settings{
 SDT_VAR (CurrencySpec, rate, SLE_UINT16, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 1, 0, UINT16_MAX, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, false, nullptr),
@@ -451,9 +457,21 @@ static const SettingDescEnumEntry _train_braking_model[] = {
 { TBM_REALISTIC, STR_CONFIG_SETTING_TRAIN_BRAKING_REALISTIC },
 { 0, STR_NULL }
 };
+static const SettingDescEnumEntry _realistic_braking_aspect_limited[] = {
+{ TRBALM_OFF, STR_CONFIG_SETTING_OFF },
+{ TRBALM_ON, STR_CONFIG_SETTING_TRAIN_BRAKING_ASPECT_LIMITED_ON },
+{ 0, STR_NULL }
+};
 static const SettingDescEnumEntry _station_delivery_mode[] = {
 { SD_NEAREST_FIRST, STR_CONFIG_SETTING_ORIGINAL},
 { SD_BALANCED, STR_CONFIG_SETTING_DELIVERY_BALANCED},
+{ 0, STR_NULL }
+};
+static const SettingDescEnumEntry _disable_water_animation[] = {
+{ 255, STR_CONFIG_SETTING_OFF },
+{ 3, STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION_8X },
+{ 4, STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION_16X },
+{ 5, STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION_32X },
 { 0, STR_NULL }
 };
 /* Some settings do not need to be synchronised when playing in multiplayer.
@@ -486,7 +504,7 @@ SDT_VAR(GameSettings, difficulty.quantity_sea_lakes, SLE_UINT8, SF_NEWGAME_ONLY,
 SDT_BOOL(GameSettings, difficulty.economy,        SF_NONE, false,                              STR_CONFIG_SETTING_RECESSIONS, STR_CONFIG_SETTING_RECESSIONS_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, difficulty.line_reverse_mode,        SF_NONE, false,                              STR_CONFIG_SETTING_TRAIN_REVERSING, STR_CONFIG_SETTING_TRAIN_REVERSING_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, difficulty.disasters,        SF_NONE, false,                              STR_CONFIG_SETTING_DISASTERS, STR_CONFIG_SETTING_DISASTERS_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
-SDT_ENUM(GameSettings, difficulty.town_council_tolerance, SLE_UINT8, SF_NONE, 0,                              STR_CONFIG_SETTING_CITY_APPROVAL, STR_CONFIG_SETTING_CITY_APPROVAL_HELPTEXT,          TownCouncilToleranceAdjust, DifficultyNoiseChange, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _town_council_approval),
+SDT_ENUM(GameSettings, difficulty.town_council_tolerance, SLE_UINT8, SF_ENUM_PRE_CB_VALIDATE, 0,                              STR_CONFIG_SETTING_CITY_APPROVAL, STR_CONFIG_SETTING_CITY_APPROVAL_HELPTEXT,          TownCouncilToleranceAdjust, DifficultyNoiseChange, SLV_97, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _town_council_approval),
 SDT_BOOL(GameSettings, difficulty.money_cheat_in_multiplayer,        SF_NONE, false,                              STR_CONFIG_SETTING_MONEY_CHEAT_MULTIPLAYER, STR_CONFIG_SETTING_MONEY_CHEAT_MULTIPLAYER_HELPTEXT, STR_NULL, nullptr, DifficultyMoneyCheatMultiplayerChange, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "cheat.difficulty.money_cheat_in_multiplayer"),
 SDT_BOOL(GameSettings, difficulty.rename_towns_in_multiplayer,        SF_NONE, false,                              STR_CONFIG_SETTING_RENAME_TOWNS_MULTIPLAYER, STR_CONFIG_SETTING_RENAME_TOWNS_MULTIPLAYER_HELPTEXT, STR_NULL, nullptr, DifficultyRenameTownsMultiplayerChange, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "cheat.difficulty.rename_towns_in_multiplayer"),
 SDTG_VAR("diff_level",              SLE_UINT8, SF_NOT_IN_CONFIG, _old_diff_level, 3, 0, 3, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_97, SLV_178, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
@@ -546,8 +564,8 @@ SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XS
 SDT_VAR(GameSettings, economy.town_cargogen_mode, SLE_UINT8, SF_GUI_DROPDOWN, TCGM_BITCOUNT,       TCGM_BEGIN, TCGM_END - 1, 1, STR_CONFIG_SETTING_TOWN_CARGOGENMODE, STR_CONFIG_SETTING_TOWN_CARGOGENMODE_HELPTEXT, STR_CONFIG_SETTING_TOWN_CARGOGENMODE_ORIGINAL, nullptr, nullptr, SLV_TOWN_CARGOGEN, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "economy.max_town_heightlevel", nullptr),
 SDT_VAR(GameSettings, economy.max_town_heightlevel, SLE_UINT8, SF_NONE, MAX_MAP_HEIGHT_LIMIT,       2, MAX_MAP_HEIGHT_LIMIT, 1, STR_CONFIG_SETTING_TOWN_ABOVE_HEIGHT, STR_CONFIG_SETTING_TOWN_ABOVE_HEIGHT_HELPTEXT, STR_JUST_INT, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "max_town_heightlevel.economy.max_town_heightlevel"),
-SDT_VAR(GameSettings, economy.min_town_land_area, SLE_UINT16, SF_NONE, 0,       0, 400, 5, STR_CONFIG_SETTING_MIN_TOWN_LAND_AREA, STR_CONFIG_SETTING_MIN_TOWN_LAND_AREA_HELPTEXT, STR_CONFIG_SETTING_MIN_LAND_AREA_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "max_town_heightlevel.economy.min_town_land_area"),
-SDT_VAR(GameSettings, economy.min_city_land_area, SLE_UINT16, SF_NONE, 75,       0, 400, 5, STR_CONFIG_SETTING_MIN_CITY_LAND_AREA, STR_CONFIG_SETTING_MIN_CITY_LAND_AREA_HELPTEXT, STR_CONFIG_SETTING_MIN_LAND_AREA_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "max_town_heightlevel.economy.min_city_land_area"),
+SDT_VAR(GameSettings, economy.min_town_land_area, SLE_UINT16, SF_GUI_0_IS_SPECIAL, 0,       0, 400, 5, STR_CONFIG_SETTING_MIN_TOWN_LAND_AREA, STR_CONFIG_SETTING_MIN_TOWN_LAND_AREA_HELPTEXT, STR_CONFIG_SETTING_MIN_LAND_AREA_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "max_town_heightlevel.economy.min_town_land_area"),
+SDT_VAR(GameSettings, economy.min_city_land_area, SLE_UINT16, SF_GUI_0_IS_SPECIAL, 75,       0, 400, 5, STR_CONFIG_SETTING_MIN_CITY_LAND_AREA, STR_CONFIG_SETTING_MIN_CITY_LAND_AREA_HELPTEXT, STR_CONFIG_SETTING_MIN_LAND_AREA_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "max_town_heightlevel.economy.min_city_land_area"),
 SDT_VAR(GameSettings, linkgraph.recalc_interval, SLE_UINT16, SF_NONE, 4,       2, 32, 2, STR_CONFIG_SETTING_LINKGRAPH_INTERVAL, STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT, STR_JUST_COMMA, nullptr, nullptr, SLV_183, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_VAR(GameSettings, linkgraph.recalc_time, SLE_UINT16, SF_NONE, 16,       1, 4096, 1, STR_CONFIG_SETTING_LINKGRAPH_TIME, STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT, STR_JUST_COMMA, nullptr, nullptr, SLV_183, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, linkgraph.recalc_not_scaled_by_daylength,        SF_NONE, true,                              STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED, STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest([](uint16 version, bool version_in_range, uint16 feature_versions[XSLFI_SIZE]) -> bool { return version_in_range && SlXvIsFeaturePresent(feature_versions, XSLFI_LINKGRAPH_DAY_SCALE) && !SlXvIsFeaturePresent(feature_versions, XSLFI_JOKERPP); }),        SC_ADVANCED, nullptr, false, "linkgraph_day_scale.linkgraph.recalc_not_scaled_by_daylength"),
@@ -630,6 +648,7 @@ SDT_VAR(GameSettings, economy.town_cargo_scale_factor, SLE_INT16, SF_DECIMAL1 | 
 SDT_VAR(GameSettings, economy.industry_cargo_scale_factor, SLE_INT16, SF_DECIMAL1 | SF_DEC1SCALE, 0,       -50, +50, 1, STR_CONFIG_SETTING_INDUSTRY_CARGO_FACTOR, STR_CONFIG_SETTING_INDUSTRY_CARGO_FACTOR_HELPTEXT, STR_DECIMAL1_WITH_SCALE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "industry_cargo_adj.economy.industry_cargo_scale_factor"),
 SDT_VAR(GameSettings, vehicle.train_acceleration_model, SLE_UINT8, SF_GUI_DROPDOWN, 1,       0, 1, 1, STR_CONFIG_SETTING_TRAIN_ACCELERATION_MODEL, STR_CONFIG_SETTING_TRAIN_ACCELERATION_MODEL_HELPTEXT, STR_CONFIG_SETTING_ORIGINAL, nullptr, TrainAccelerationModelChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_ENUM(GameSettings, vehicle.train_braking_model, SLE_UINT8, SF_NONE, TBM_ORIGINAL,                              STR_CONFIG_SETTING_TRAIN_BRAKING_MODEL, STR_CONFIG_SETTING_TRAIN_BRAKING_MODEL_HELPTEXT,          CheckTrainBrakingModelChange, TrainBrakingModelChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "realistic_braking.vehicle.train_braking_model", _train_braking_model),
+SDT_ENUM(GameSettings, vehicle.realistic_braking_aspect_limited, SLE_UINT8, SF_NONE, TRBALM_OFF,                              STR_CONFIG_SETTING_REALISTIC_BRAKING_ASPECT_LIMITED, STR_CONFIG_SETTING_REALISTIC_BRAKING_ASPECT_LIMITED_HELPTEXT,          nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "realistic_braking.vehicle.realistic_braking_aspect_limited", _realistic_braking_aspect_limited),
 SDT_VAR(GameSettings, vehicle.roadveh_acceleration_model, SLE_UINT8, SF_GUI_DROPDOWN, 1,       0, 1, 1, STR_CONFIG_SETTING_ROAD_VEHICLE_ACCELERATION_MODEL, STR_CONFIG_SETTING_ROAD_VEHICLE_ACCELERATION_MODEL_HELPTEXT, STR_CONFIG_SETTING_ORIGINAL, nullptr, RoadVehAccelerationModelChanged, SLV_139, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_VAR(GameSettings, vehicle.train_slope_steepness, SLE_UINT8, SF_NONE, 3,       0, 10, 1, STR_CONFIG_SETTING_TRAIN_SLOPE_STEEPNESS, STR_CONFIG_SETTING_TRAIN_SLOPE_STEEPNESS_HELPTEXT, STR_CONFIG_SETTING_PERCENTAGE, nullptr, TrainSlopeSteepnessChanged, SLV_133, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDT_VAR(GameSettings, vehicle.roadveh_slope_steepness, SLE_UINT8, SF_NONE, 7,       0, 10, 1, STR_CONFIG_SETTING_ROAD_VEHICLE_SLOPE_STEEPNESS, STR_CONFIG_SETTING_ROAD_VEHICLE_SLOPE_STEEPNESS_HELPTEXT, STR_CONFIG_SETTING_PERCENTAGE, nullptr, RoadVehSlopeSteepnessChanged, SLV_139, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
@@ -721,6 +740,8 @@ SDT_BOOL(GameSettings, construction.allow_road_stops_under_bridges,        SF_NO
 SDT_BOOL(GameSettings, construction.allow_docks_under_bridges,        SF_NONE, false,                              STR_CONFIG_SETTING_ALLOW_DOCKS_UNDER_BRIDGES, STR_CONFIG_SETTING_ALLOW_DOCKS_UNDER_BRIDGES_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "allow_stations_under_bridges.construction.allow_docks_under_bridges"),
 SDT_VAR(GameSettings, construction.purchase_land_permitted, SLE_UINT8, SF_GUI_DROPDOWN, 1,       0, 2, 1, STR_CONFIG_SETTING_PURCHASE_LAND_PERMITTED, STR_CONFIG_SETTING_PURCHASE_LAND_PERMITTED_HELPTEXT, STR_PURCHASE_LAND_PERMITTED_NO, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "purchase_land_permitted.construction.purchase_land_permitted"),
 SDT_BOOL(GameSettings, construction.build_object_area_permitted,        SF_NONE, true,                              STR_CONFIG_SETTING_BUILD_OBJECT_PERMITTED, STR_CONFIG_SETTING_BUILD_OBJECT_PERMITTED_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "build_object_area_permitted.construction.build_object_area_permitted"),
+SDT_VAR(GameSettings, construction.no_expire_objects_after, SLE_INT32, SF_GUI_0_IS_SPECIAL, 0,       MIN_YEAR, MAX_YEAR, 1, STR_CONFIG_SETTING_NO_EXPIRE_OBJECTS_AFTER, STR_CONFIG_SETTING_NO_EXPIRE_OBJECTS_AFTER_HELPTEXT, STR_CONFIG_SETTING_NO_EXPIRE_OBJECTS_AFTER_VALUE, nullptr, [](auto) { InvalidateWindowClassesData(WC_BUILD_OBJECT, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "construction.no_expire_objects_after"),
+SDT_BOOL(GameSettings, construction.ignore_object_intro_dates,        SF_NONE, false,                              STR_CONFIG_SETTING_IGNORE_OBJECT_INTRO_DATES, STR_CONFIG_SETTING_IGNORE_OBJECT_INTRO_DATES_HELPTEXT, STR_NULL, nullptr, [](auto) { InvalidateWindowClassesData(WC_BUILD_OBJECT, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, "construction.ignore_object_intro_dates"),
 SDT_BOOL(GameSettings, station.adjacent_stations,        SF_NONE, true,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_62, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, economy.station_noise_level,        SF_NO_NETWORK, false,                              STR_CONFIG_SETTING_NOISE_LEVEL, STR_CONFIG_SETTING_NOISE_LEVEL_HELPTEXT, STR_NULL, nullptr, [](auto new_value) { InvalidateWindowClassesData(WC_TOWN_VIEW, new_value); }, SLV_96, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, station.distant_join_stations,        SF_NONE, true,                              STR_CONFIG_SETTING_DISTANT_JOIN_STATIONS, STR_CONFIG_SETTING_DISTANT_JOIN_STATIONS_HELPTEXT, STR_NULL, nullptr, [](auto) { DeleteWindowById(WC_SELECT_STATION, 0); }, SLV_106, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
@@ -1105,6 +1126,9 @@ SDTC_VAR(              gui.station_rating_tooltip_mode, SLE_UINT8, SF_NOT_IN_SAV
 SDTC_VAR(              gui.demolish_confirm_mode, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 2,       0, 2, 0, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_HELPTEXT, STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_OFF, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_BOOL(              gui.dual_pane_train_purchase_window,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_DUAL_PANE_TRAIN_PURCHASE_WINDOW, STR_CONFIG_SETTING_DUAL_PANE_TRAIN_PURCHASE_WINDOW_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_BOOL(              gui.allow_hiding_waypoint_labels,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL, STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); InvalidateWindowClassesData(WC_WAYPOINT_VIEW, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
+SDTC_ENUM(              gui.disable_water_animation, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 255,                              STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION, STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION_HELPTEXT,          nullptr, SpriteZoomMinChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _disable_water_animation),
+SDTC_BOOL(              gui.show_order_occupancy_by_default,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_ORDER_OCCUPANCY_BY_DEFAULT, STR_CONFIG_SETTING_SHOW_ORDER_OCCUPANCY_BY_DEFAULT_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_BOOL(              gui.show_group_hierarchy_name,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME, STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 #ifdef DEDICATED
 SDTC_BOOL(              gui.show_date_in_logs,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 #endif
@@ -1166,6 +1190,7 @@ SDTC_BOOL(              gui.hide_industry_labels,        SF_NOT_IN_SAVE | SF_NO_
 SDT_BOOL(GameSettings, vehicle.pay_for_repair,        SF_NONE, true,                              STR_CONFIG_SETTING_PAY_FOR_REPAIR_VEHICLE, STR_CONFIG_SETTING_PAY_FOR_REPAIR_VEHICLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VEHICLE_REPAIR_COST),        SC_EXPERT, nullptr, false, "vehicle_repair_cost.vehicle.pay_for_repair"),
 SDT_VAR(GameSettings, vehicle.repair_cost, SLE_UINT8, SF_NONE, 100,       1, 255, 1, STR_CONFIG_SETTING_REPAIR_COST, STR_CONFIG_SETTING_REPAIR_COST_HELPTEXT, STR_JUST_INT, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VEHICLE_REPAIR_COST),        SC_EXPERT, nullptr, false, "vehicle_repair_cost.vehicle.repair_cost"),
 SDT_VAR(GameSettings, debug.chicken_bits, SLE_UINT32, SF_NOT_IN_CONFIG | SF_NO_NEWGAME, 0,       0, 0xFFFFFFFF, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "debug.chicken_bits"),
+SDT_VAR(GameSettings, debug.newgrf_optimiser_flags, SLE_UINT32, SF_NOT_IN_CONFIG | SF_NO_NEWGAME | SF_NO_NETWORK, 0,       0, 0xFFFFFFFF, 0, STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, "debug.newgrf_optimiser_flags"),
 };
 /* win32_v.cpp only settings */
 #if defined(_WIN32) && !defined(DEDICATED)
@@ -1188,7 +1213,7 @@ static_assert(800 <= MAX_SLE_UINT16, "Maximum value for CompanySettings.vehicle.
 static_assert(100 <= MAX_SLE_UINT8, "Maximum value for CompanySettings.auto_timetable_separation_rate exceeds storage size");
 static_assert(1000 <= MAX_SLE_UINT16, "Maximum value for CompanySettings.timetable_autofill_rounding exceeds storage size");
 static_assert(100 <= MAX_SLE_UINT8, "Maximum value for CompanySettings.order_occupancy_smoothness exceeds storage size");
-static_assert(16 <= MAX_SLE_UINT8, "Maximum value for CompanySettings.simulated_wormhole_signals exceeds storage size");
+static_assert(16 <= MAX_SLE_UINT8, "Maximum value for CompanySettings.old_simulated_wormhole_signals exceeds storage size");
 static_assert(UINT16_MAX <= MAX_SLE_UINT16, "Maximum value for CurrencySpec.rate exceeds storage size");
 static_assert(MAX_YEAR <= MAX_SLE_INT32, "Maximum value for CurrencySpec.to_euro exceeds storage size");
 static_assert(SP_CUSTOM <= MAX_SLE_UINT8, "Maximum value for _old_diff_level exceeds storage size");
@@ -1331,6 +1356,7 @@ static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.plane_
 static_assert(64 <= MAX_SLE_UINT8, "Maximum value for GameSettings.station.station_spread exceeds storage size");
 static_assert(5 <= MAX_SLE_UINT8, "Maximum value for GameSettings.station.catchment_increase exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.purchase_land_permitted exceeds storage size");
+static_assert(MAX_YEAR <= MAX_SLE_INT32, "Maximum value for GameSettings.construction.no_expire_objects_after exceeds storage size");
 static_assert(125 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.day_length_factor exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.raw_industry_construction exceeds storage size");
 static_assert(4 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.industry_platform exceeds storage size");
@@ -1567,5 +1593,6 @@ static_assert(255 <= MAX_SLE_UINT8, "Maximum value for gui.network_chat_box_heig
 static_assert(65535 <= MAX_SLE_UINT16, "Maximum value for gui.network_chat_timeout exceeds storage size");
 static_assert(255 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.repair_cost exceeds storage size");
 static_assert(0xFFFFFFFF <= MAX_SLE_UINT32, "Maximum value for GameSettings.debug.chicken_bits exceeds storage size");
+static_assert(0xFFFFFFFF <= MAX_SLE_UINT32, "Maximum value for GameSettings.debug.newgrf_optimiser_flags exceeds storage size");
 static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDescPreferences.pref_width exceeds storage size");
 static_assert(32000 <= MAX_SLE_INT16, "Maximum value for WindowDescPreferences.pref_height exceeds storage size");

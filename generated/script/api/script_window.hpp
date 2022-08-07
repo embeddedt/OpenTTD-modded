@@ -2051,8 +2051,13 @@ public:
 		WID_NGRFI_SCROLLBAR                          = ::WID_NGRFI_SCROLLBAR,                          ///< Scrollbar.
 		WID_NGRFI_REFRESH                            = ::WID_NGRFI_REFRESH,                            ///< Refresh toggle.
 		WID_NGRFI_LOG_CONSOLE                        = ::WID_NGRFI_LOG_CONSOLE,                        ///< Log to console
+		WID_NGRFI_DUPLICATE                          = ::WID_NGRFI_DUPLICATE,                          ///< Duplicate window
 		WID_NGRFI_SPRITE_DUMP                        = ::WID_NGRFI_SPRITE_DUMP,                        ///< Dump current sprite group
 		WID_NGRFI_SPRITE_DUMP_SEL                    = ::WID_NGRFI_SPRITE_DUMP_SEL,                    ///< Selection widget for WID_NGRFI_SPRITE_DUMP
+		WID_NGRFI_SPRITE_DUMP_UNOPT                  = ::WID_NGRFI_SPRITE_DUMP_UNOPT,                  ///< Dump unoptimised sprite group
+		WID_NGRFI_SPRITE_DUMP_UNOPT_SEL              = ::WID_NGRFI_SPRITE_DUMP_UNOPT_SEL,              ///< Selection widget for WID_NGRFI_SPRITE_DUMP_UNOPT
+		WID_NGRFI_SPRITE_DUMP_GOTO                   = ::WID_NGRFI_SPRITE_DUMP_GOTO,                   ///< Goto sprite
+		WID_NGRFI_SPRITE_DUMP_GOTO_SEL               = ::WID_NGRFI_SPRITE_DUMP_GOTO_SEL,               ///< Selection widget for WID_NGRFI_SPRITE_DUMP_GOTO
 	};
 
 	/** Widgets of the #SpriteAlignerWindow class. */
@@ -2212,7 +2217,9 @@ public:
 		WID_O_COND_COUNTER                           = ::WID_O_COND_COUNTER,                           ///< Choose condition counter.
 		WID_O_COND_TIME_DATE                         = ::WID_O_COND_TIME_DATE,                         ///< Choose time/date value.
 		WID_O_COND_TIMETABLE                         = ::WID_O_COND_TIMETABLE,                         ///< Choose timetable value.
+		WID_O_COND_SCHED_SELECT                      = ::WID_O_COND_SCHED_SELECT,                      ///< Choose scheduled dispatch schedule.
 		WID_O_COND_AUX_VIA                           = ::WID_O_COND_AUX_VIA,                           ///< Condition via button.
+		WID_O_COND_SCHED_TEST                        = ::WID_O_COND_SCHED_TEST,                        ///< Choose scheduled dispatch test.
 		WID_O_RELEASE_SLOT                           = ::WID_O_RELEASE_SLOT,                           ///< Choose slot to release.
 		WID_O_SEL_COND_VALUE                         = ::WID_O_SEL_COND_VALUE,                         ///< Widget for conditional value or conditional cargo type.
 		WID_O_SEL_COND_AUX                           = ::WID_O_SEL_COND_AUX,                           ///< Widget for auxiliary conditional cargo type.
@@ -2402,6 +2409,8 @@ public:
 		WID_BS_SEMAPHORE_NOEN_SEL                    = ::WID_BS_SEMAPHORE_NOEN_SEL,                    ///< NWID_SELECTION for WID_BS_SEMAPHORE_NO_ENTRY
 		WID_BS_ELECTRIC_NOEN_SEL                     = ::WID_BS_ELECTRIC_NOEN_SEL,                     ///< NWID_SELECTION for WID_BS_ELECTRIC_NO_ENTRY
 		WID_BS_PROGRAM_SEL                           = ::WID_BS_PROGRAM_SEL,                           ///< NWID_SELECTION for WID_BS_PROGRAM
+		WID_BS_STYLE                                 = ::WID_BS_STYLE,                                 ///< Style selection dropdown
+		WID_BS_STYLE_SEL                             = ::WID_BS_STYLE_SEL,                             ///< NWID_SELECTION for WID_BS_STYLE
 	};
 
 	/** Widgets of the #BuildRailDepotWindow class. */
