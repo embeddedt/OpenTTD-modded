@@ -464,7 +464,7 @@ size_t BoolSettingDesc::ParseValue(const char *str) const
 
 static bool ValidateEnumSetting(const IntSettingDesc *sdb, int32 &val)
 {
-	if (sdb->pre_check != nullptr && !sdb->pre_check(val)) return false;
+	if (sdb->flags & SF_ENUM_PRE_CB_VALIDATE && sdb->pre_check != nullptr && !sdb->pre_check(val)) return false;
 	for (const SettingDescEnumEntry *enumlist = sdb->enumlist; enumlist != nullptr && enumlist->str != STR_NULL; enumlist++) {
 		if (enumlist->val == val) {
 			return true;
@@ -1139,6 +1139,7 @@ static void TrainBrakingModelChanged(int32 new_value)
 	UpdateAllBlockSignals();
 
 	InvalidateWindowData(WC_BUILD_SIGNAL, 0);
+	InvalidateWindowClassesData(WC_GAME_OPTIONS);
 }
 
 /**
@@ -1617,7 +1618,7 @@ static void StationCatchmentChanged(int32 new_value)
 
 static bool CheckSharingRail(int32 &new_value)
 {
-	return CheckSharingChangePossible(VEH_TRAIN);
+	return CheckSharingChangePossible(VEH_TRAIN, new_value);
 }
 
 static void SharingRailChanged(int32 new_value)
@@ -1627,17 +1628,17 @@ static void SharingRailChanged(int32 new_value)
 
 static bool CheckSharingRoad(int32 &new_value)
 {
-	return CheckSharingChangePossible(VEH_ROAD);
+	return CheckSharingChangePossible(VEH_ROAD, new_value);
 }
 
 static bool CheckSharingWater(int32 &new_value)
 {
-	return CheckSharingChangePossible(VEH_SHIP);
+	return CheckSharingChangePossible(VEH_SHIP, new_value);
 }
 
 static bool CheckSharingAir(int32 &new_value)
 {
-	return CheckSharingChangePossible(VEH_AIRCRAFT);
+	return CheckSharingChangePossible(VEH_AIRCRAFT, new_value);
 }
 
 static bool IndustryLabelsHideChange(int32 i)

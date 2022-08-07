@@ -2,6 +2,72 @@
 
 * * *
 
+### v0.48.1 (2022-08-01)
+* Fix various issues that could occur when attempting to disable infrastructure sharing when shared infrastructure is still in use.
+* Fix crashes and other issues when removing a company would remove infrastructure which is in use by the train reservation of another company when realistic braking is enabled.
+* Fix some NewGRFs having incorrect behaviour (when using variational action 2 variable 1C in some cases).
+* Fix crash which could occur with tooltip windows in some special cases.
+* Fix viewport map mode bridges/tunnels not appearing dotted at high zoom.
+* Fix insufficient train braking when in realistic braking mode when train lookahead is aspect limited is enabled and the lookahead distance is shorter than the reservation.
+* Do not enable the behaviour where vehicles continue loading if the next order is for the same station for implicit orders.
+* Do not apply the show signals using default graphics settings for custom signal styles
+* Bump trunk base from commit 19af139631b5bc98dba6de4c4f0b7aeb6b3ac6aa to commit ccb9d9988011725c1ff0d415af37efb99e2b0849.
+
+### v0.48.0 (2022-07-03)
+* Fix crash which could occur after removing non-rectangular airports.
+* Fix crash which could occur with non-buildable template trains with some NewGRFs.
+* Fix not being able to construct industries of only one tile.
+* Fix the land info window showing incorrect text for no-entry signals.
+* Fix wrong powered state or visual effect type, or desync warning messages, which could occur with trains from some NewGRFs and tiles of two different rail types.
+* Fix reservation error when a reserve through signal was the last tile, when there were no junctions earlier in the reservation.
+* Fix desync which could occur after removing part of a station moved the station sign within the catchment of industries.
+* Fix not being able to build waypoints when custom types are no longer present and a custom type was previously selected.
+* Fix timetable automation not updating conditional jump travel times.
+* Fix road/tram type check when moving depot orders to another depot.
+* Add setting to show order occupancy values by default.
+* Add conditional order to test if last or next scheduled dispatch is the first or last dispatch slot.
+* Show group name when grouping vehicles by shared orders, if all vehicles in shared order set are in the same group.
+* Add setting to show full group hierarchy in group names.
+* Enable shared orders and occupancy buttons for competitor order windows.
+* Add button to highlight all signals using a particular routing restriction program.
+* Sending a vehicle to a depot for sale can now sell immediately, if the vehicle is already stopped in a suitable depot.
+* NewGRF:
+  * Allow signal graphics NewGRF to define additional signal styles and test for additional signal properties.
+  * Allow NewGRFs to provide custom graphics for landscape rocky tiles.
+* Add a hotkey to toggle the via state of an order.
+* Remove the tunnel/bridge signal spacing setting, the usual signal spacing setting in the signal window is used instead.
+* Slightly boost the realistic braking stats of trains affected by the freight weight multiplier.
+* Add a setting to limit train lookahead to the signal aspect when using realistic braking and multi-aspect signalling.
+* Bump trunk base from commit 0d3756818fc2178242b0a72d979131a9cb376d76 to commit 19af139631b5bc98dba6de4c4f0b7aeb6b3ac6aa.
+
+### v0.47.3 (2022-06-09)
+* Fix being able to add/remove/modify tunnel/bridge signals when occupied by trains, which could result in train or game crashes.
+* Fix crash when building public roads encountered level crossings and other non-normal road.
+* Fix performance problems refreshing the cargodist link graph when order lists contained many conditional order loops.
+* Fix timetable autofill activation when scheduled dispatch is active.
+* Disabling timetable automation without holding the ctrl key no longer clears the timetable.
+* Support railtype-dependant GRF train speed limits with realistic braking.
+* Fix selecting a savegame with realistic braking enabled in the load savegame window triggering realistic braking signal checks on the current game.
+* Allow ctrl-clicking on trains of other companies on own track to start/stop.
+* Add setting to disable water animation depending on zoom level.
+* Add setting to disable object expiry after a given year.
+* Add setting to ignore object introduction dates.
+* Allow linking only inputs or outputs to smallmap and viewport map mode in industry chain window.
+* Viewport map mode:
+  * Fix ships not always updating in viewport map mode.
+  * Fix the industry chain window not always updating viewports in industry map mode.
+  * Fix scrolling viewport overlay over vehicle dots on animated blitters.
+  * Fix scrolling viewport overlay on emscripten.
+  * Allow using the measurement tool in viewport map mode.
+* Trees:
+  * Fix tree tile grass not growing when tree growth/spread was disabled.
+  * Make tree tile grass growth speed independent of the tree growth speed.
+  * Adjust positioning of seasonally variable snow line width for arctic tree placement.
+* Improve reliability of crashlog writing on Unix/Linux and MacOS.
+* Add various features to the NewGRF debug window.
+* Various NewGRF and realistic braking related minor performance improvements.
+* Bump trunk base from commit e79724ea22b2c4428ab402a808b7ab777fec2985 to commit 0d3756818fc2178242b0a72d979131a9cb376d76.
+
 ### v0.47.2 (2022-05-01)
 * Fix crash and/or multiplayer desync after a new industry is built within the catchment of an existing station.
 * Fix multiplayer desync after a raise land action removed a water object next to a dock.

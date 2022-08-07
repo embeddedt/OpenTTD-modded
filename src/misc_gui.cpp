@@ -197,6 +197,8 @@ public:
 		/* Tiletype */
 		SetDParam(0, td.dparam[0]);
 		SetDParam(1, td.dparam[1]);
+		SetDParam(2, td.dparam[2]);
+		SetDParam(3, td.dparam[3]);
 		this->landinfo_data.push_back(GetString(td.str));
 
 		/* Up to four owners */
@@ -768,10 +770,15 @@ struct TooltipsWindow : public Window
 	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
 		/* There is only one widget. */
-		for (uint i = 0; i != this->paramcount; i++) SetDParam(i, this->params[i]);
+		if (this->paramcount == 0) {
+			size->width  = std::min<uint>(GetStringBoundingBox(this->buffer).width, ScaleGUITrad(194));
+			size->height = GetStringHeight(this->buffer, size->width);
+		} else {
+			for (uint i = 0; i != this->paramcount; i++) SetDParam(i, this->params[i]);
 
-		size->width  = std::min<uint>(GetStringBoundingBox(this->string_id).width, ScaleGUITrad(194));
-		size->height = GetStringHeight(this->string_id, size->width);
+			size->width  = std::min<uint>(GetStringBoundingBox(this->string_id).width, ScaleGUITrad(194));
+			size->height = GetStringHeight(this->string_id, size->width);
+		}
 
 		/* Increase slightly to have some space around the box. */
 		size->width  += 2 + WD_FRAMERECT_LEFT + WD_FRAMERECT_RIGHT;

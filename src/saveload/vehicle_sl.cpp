@@ -1168,6 +1168,7 @@ struct train_venc {
 	uint8 cached_tflags;
 	uint8 cached_num_engines;
 	uint16 cached_centre_mass;
+	uint16 cached_braking_length;
 	uint16 cached_veh_weight;
 	uint16 cached_uncapped_decel;
 	uint8 cached_deceleration;
@@ -1237,6 +1238,7 @@ void Save_VENC()
 			SlWriteByte(t->tcache.cached_tflags);
 			SlWriteByte(t->tcache.cached_num_engines);
 			SlWriteUint16(t->tcache.cached_centre_mass);
+			SlWriteUint16(t->tcache.cached_braking_length);
 			SlWriteUint16(t->tcache.cached_veh_weight);
 			SlWriteUint16(t->tcache.cached_uncapped_decel);
 			SlWriteByte(t->tcache.cached_deceleration);
@@ -1299,6 +1301,7 @@ void Load_VENC()
 		venc.cached_tflags = SlReadByte();
 		venc.cached_num_engines = SlReadByte();
 		venc.cached_centre_mass = SlReadUint16();
+		venc.cached_braking_length = SlReadUint16();
 		venc.cached_veh_weight = SlReadUint16();
 		venc.cached_uncapped_decel = SlReadUint16();
 		venc.cached_deceleration = SlReadByte();
@@ -1387,6 +1390,7 @@ void SlProcessVENC()
 		CheckVehicleVENCProp(t->tcache.cached_tflags, (TrainCacheFlags)venc.cached_tflags, t, "cached_tflags");
 		CheckVehicleVENCProp(t->tcache.cached_num_engines, venc.cached_num_engines, t, "cached_num_engines");
 		CheckVehicleVENCProp(t->tcache.cached_centre_mass, venc.cached_centre_mass, t, "cached_centre_mass");
+		CheckVehicleVENCProp(t->tcache.cached_braking_length, venc.cached_braking_length, t, "cached_braking_length");
 		CheckVehicleVENCProp(t->tcache.cached_veh_weight, venc.cached_veh_weight, t, "cached_veh_weight");
 		CheckVehicleVENCProp(t->tcache.cached_uncapped_decel, venc.cached_uncapped_decel, t, "cached_uncapped_decel");
 		CheckVehicleVENCProp(t->tcache.cached_deceleration, venc.cached_deceleration, t, "cached_deceleration");
@@ -1418,11 +1422,14 @@ const SaveLoadTable GetVehicleLookAheadDescription()
 		     SLE_VAR(TrainReservationLookAhead, reservation_end_trackdir,     SLE_UINT8),
 		     SLE_VAR(TrainReservationLookAhead, current_position,             SLE_INT32),
 		     SLE_VAR(TrainReservationLookAhead, reservation_end_position,     SLE_INT32),
+		SLE_CONDVAR_X(TrainReservationLookAhead, lookahead_end_position,      SLE_INT32,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REALISTIC_TRAIN_BRAKING, 9)),
 		     SLE_VAR(TrainReservationLookAhead, reservation_end_z,            SLE_INT16),
 		     SLE_VAR(TrainReservationLookAhead, tunnel_bridge_reserved_tiles, SLE_INT16),
 		     SLE_VAR(TrainReservationLookAhead, flags,                        SLE_UINT16),
 		     SLE_VAR(TrainReservationLookAhead, speed_restriction,            SLE_UINT16),
 		SLE_CONDVAR_X(TrainReservationLookAhead, next_extend_position,        SLE_INT32,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REALISTIC_TRAIN_BRAKING, 5)),
+		SLE_CONDVAR_X(TrainReservationLookAhead, cached_zpos,                 SLE_INT32,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REALISTIC_TRAIN_BRAKING, 6)),
+		SLE_CONDVAR_X(TrainReservationLookAhead, zpos_refresh_remaining,      SLE_UINT8,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REALISTIC_TRAIN_BRAKING, 6)),
 	};
 
 	return _vehicle_look_ahead_desc;
@@ -1435,6 +1442,7 @@ const SaveLoadTable GetVehicleLookAheadItemDescription()
 		     SLE_VAR(TrainReservationLookAheadItem, end,                      SLE_INT32),
 		     SLE_VAR(TrainReservationLookAheadItem, z_pos,                    SLE_INT16),
 		     SLE_VAR(TrainReservationLookAheadItem, data_id,                  SLE_UINT16),
+		SLE_CONDVAR_X(TrainReservationLookAheadItem, data_aux,                SLE_UINT16,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_REALISTIC_TRAIN_BRAKING, 9)),
 		     SLE_VAR(TrainReservationLookAheadItem, type,                     SLE_UINT8),
 	};
 

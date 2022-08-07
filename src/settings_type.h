@@ -247,6 +247,9 @@ struct GUISettings : public TimeSettings {
 	uint8  demolish_confirm_mode;            ///< Demolition confirmation mode
 	bool   dual_pane_train_purchase_window;  ///< Dual pane train purchase window
 	bool   allow_hiding_waypoint_labels;     ///< Allow hiding waypoint viewport labels
+	uint8  disable_water_animation;          ///< Disable water animation depending on zoom level
+	bool   show_order_occupancy_by_default;  ///< Show order occupancy by default in vehicle order window
+	bool   show_group_hierarchy_name;        ///< Show the full hierarchy in group names
 
 	uint16 console_backlog_timeout;          ///< the minimum amount of time items should be in the console backlog before they will be removed in ~3 seconds granularity.
 	uint16 console_backlog_length;           ///< the minimum amount of items in the console backlog before items will be removed.
@@ -455,6 +458,8 @@ struct ConstructionSettings {
 	bool   allow_docks_under_bridges;        ///< allow docks under bridges
 	byte   purchase_land_permitted;          ///< whether and how purchasing land is permitted
 	bool   build_object_area_permitted;      ///< whether building objects by area is permitted
+	Year   no_expire_objects_after;          ///< do not expire objects after this year
+	bool   ignore_object_intro_dates;        ///< allow players to build objects before their introduction dates (does not include during map generation)
 
 	uint32 terraform_per_64k_frames;         ///< how many tile heights may, over a long period, be terraformed per 65536 frames?
 	uint16 terraform_frame_burst;            ///< how many tile heights may, over a short period, be terraformed?
@@ -601,6 +606,7 @@ struct VehicleSettings {
 	uint8  smoke_amount;                     ///< amount of smoke/sparks locomotives produce
 	uint8  train_acceleration_model;         ///< realistic acceleration for trains
 	uint8  train_braking_model;              ///< braking model for trains
+	uint8  realistic_braking_aspect_limited; ///< realistic braking lookahead is aspect limited
 	uint8  roadveh_acceleration_model;       ///< realistic acceleration for road vehicles
 	uint8  train_slope_steepness;            ///< Steepness of hills for trains when using realistic acceleration
 	uint8  roadveh_slope_steepness;          ///< Steepness of hills for road vehicles when using realistic acceleration
@@ -617,8 +623,8 @@ struct VehicleSettings {
 	uint8  freight_trains;                   ///< value to multiply the weight of cargo by
 	bool   dynamic_engines;                  ///< enable dynamic allocation of engine data
 	bool   never_expire_vehicles;            ///< never expire vehicles
-	Year   no_expire_vehicles_after;         ///< do not expire vehicles ater this year
-	Year   no_introduce_vehicles_after;      ///< do not introduce vehicles ater this year
+	Year   no_expire_vehicles_after;         ///< do not expire vehicles after this year
+	Year   no_introduce_vehicles_after;      ///< do not introduce vehicles after this year
 	byte   extend_vehicle_life;              ///< extend vehicle life by this many years
 	byte   road_side;                        ///< the side of the road vehicles drive on
 	uint8  plane_crashes;                    ///< number of plane crashes, 0 = none, 1 = reduced, 2 = normal
@@ -751,12 +757,14 @@ struct CompanySettings {
 	uint16 timetable_autofill_rounding;      ///< round up timetable times to be a multiple of this number of ticks
 	bool advance_order_on_clone;             ///< when cloning a vehicle or copying/sharing an order list, advance the current order to a suitable point
 	bool copy_clone_add_to_group;            ///< whether to add cloned vehicles to the source vehicle's group, when cloning a vehicle without sharing orders
-	byte simulated_wormhole_signals;         ///< tunnel/bridge signal simulation spacing
+
+	byte old_simulated_wormhole_signals;     ///< no longer needs a setting: tunnel/bridge signal simulation spacing
 };
 
 /** Debug settings. */
 struct DebugSettings {
 	uint32 chicken_bits;                     ///< chicken bits
+	uint32 newgrf_optimiser_flags;           ///< NewGRF optimiser flags
 };
 
 /** Scenario editor settings. */

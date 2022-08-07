@@ -111,6 +111,8 @@
 #include "blitter/32bpp_base.hpp"
 #include "object_map.h"
 #include "newgrf_object.h"
+#include "infrastructure_func.h"
+#include "tracerestrict.h"
 
 #include <map>
 #include <vector>
@@ -1390,6 +1392,7 @@ enum TileHighlightType {
 
 const Station *_viewport_highlight_station; ///< Currently selected station for coverage area highlight
 const Town *_viewport_highlight_town;       ///< Currently selected town for coverage area highlight
+const TraceRestrictProgram *_viewport_highlight_tracerestrict_program; ///< Currently selected tracerestrict program for highlight
 
 /**
  * Get tile highlight type of coverage area for a given tile.
@@ -1418,6 +1421,13 @@ static TileHighlightType GetTileHighlightType(TileIndex t)
 				if (st->owner != _current_company) continue;
 				if (GetStationIndex(t) == st->index) return THT_WHITE;
 			}
+		}
+	}
+
+	if (_viewport_highlight_tracerestrict_program != nullptr) {
+		const TraceRestrictRefId *refs = _viewport_highlight_tracerestrict_program->GetRefIdsPtr();
+		for (uint i = 0; i < _viewport_highlight_tracerestrict_program->refcount; i++) {
+			if (GetTraceRestrictRefIdTileIndex(refs[i]) == t) return THT_LIGHT_BLUE;
 		}
 	}
 
@@ -3285,7 +3295,9 @@ static void ViewportMapDrawBridgeTunnel(Viewport * const vp, const TunnelBridgeT
 	}
 
 	TileIndexDiff delta = TileOffsByDiagDir(GetTunnelBridgeDirection(tile));
+	uint zoom_mask = (1 << (vp->zoom - ZOOM_LVL_DRAW_MAP)) - 1;
 	for (tile += delta; tile != tbtm->to_tile; tile += delta) { // For each tile
+		if (zoom_mask != 0 && ((TileX(tile) ^ TileY(tile)) & zoom_mask)) continue;
 		const Point pt = RemapCoords(TileX(tile) * TILE_SIZE, TileY(tile) * TILE_SIZE, z);
 		const int x = UnScaleByZoomLower(pt.x - _vd.dpi.left, _vd.dpi.zoom);
 		if (IsInsideMM(x, 0, w)) {
@@ -4605,7 +4617,7 @@ HandleViewportClickedResult HandleViewportClicked(const Viewport *vp, int x, int
 		if (IsCompanyBuildableVehicleType(v)) {
 			v = v->First();
 			WindowClass wc = _thd.GetCallbackWnd()->window_class;
-			if (_ctrl_pressed && v->owner == _local_company) {
+			if (_ctrl_pressed && IsVehicleControlAllowed(v, _local_company)) {
 				StartStopVehicle(v, true);
 			} else if (wc != WC_CREATE_TEMPLATE && wc != WC_TEMPLATEGUI_MAIN) {
 				ShowVehicleViewWindow(v);
@@ -6255,6 +6267,8 @@ void SetViewportCatchmentStation(const Station *st, bool sel)
 		MarkCatchmentTilesDirty();
 		_viewport_highlight_station = st;
 		_viewport_highlight_town = nullptr;
+		if (_viewport_highlight_tracerestrict_program != nullptr) InvalidateWindowClassesData(WC_TRACE_RESTRICT);
+		_viewport_highlight_tracerestrict_program = nullptr;
 		MarkCatchmentTilesDirty();
 	} else if (!sel && _viewport_highlight_station == st) {
 		MarkCatchmentTilesDirty();
@@ -6276,12 +6290,31 @@ void SetViewportCatchmentTown(const Town *t, bool sel)
 	if (sel && _viewport_highlight_town != t) {
 		_viewport_highlight_station = nullptr;
 		_viewport_highlight_town = t;
+		if (_viewport_highlight_tracerestrict_program != nullptr) InvalidateWindowClassesData(WC_TRACE_RESTRICT);
+		_viewport_highlight_tracerestrict_program = nullptr;
 		MarkWholeNonMapViewportsDirty();
 	} else if (!sel && _viewport_highlight_town == t) {
 		_viewport_highlight_town = nullptr;
 		MarkWholeNonMapViewportsDirty();
 	}
 	if (_viewport_highlight_town != nullptr) SetWindowDirty(WC_TOWN_VIEW, _viewport_highlight_town->index);
+}
+
+void SetViewportCatchmentTraceRestrictProgram(const TraceRestrictProgram *prog, bool sel)
+{
+	if (_viewport_highlight_town != nullptr) SetWindowDirty(WC_TOWN_VIEW, _viewport_highlight_town->index);
+	if (_viewport_highlight_station != nullptr) SetWindowDirty(WC_STATION_VIEW, _viewport_highlight_station->index);
+	if (sel && _viewport_highlight_tracerestrict_program != prog) {
+		_viewport_highlight_station = nullptr;
+		_viewport_highlight_town = nullptr;
+		_viewport_highlight_tracerestrict_program = prog;
+		InvalidateWindowClassesData(WC_TRACE_RESTRICT);
+		MarkWholeNonMapViewportsDirty();
+	} else if (!sel && _viewport_highlight_tracerestrict_program == prog) {
+		_viewport_highlight_tracerestrict_program = nullptr;
+		InvalidateWindowClassesData(WC_TRACE_RESTRICT);
+		MarkWholeNonMapViewportsDirty();
+	}
 }
 
 int GetSlopeTreeBrightnessAdjust(Slope slope)

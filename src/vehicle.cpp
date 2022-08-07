@@ -3141,8 +3141,11 @@ void Vehicle::DeleteUnreachedImplicitOrders()
 			ClrBit(gv_flags, GVF_SUPPRESS_IMPLICIT_ORDERS);
 			this->cur_implicit_order_index = this->cur_real_order_index;
 			if (this->cur_timetable_order_index != this->cur_real_order_index) {
-				/* Timetable order ID was not the real order, to avoid updating the wrong timetable, just clear the timetable index */
-				this->cur_timetable_order_index = INVALID_VEH_ORDER_ID;
+				Order *real_timetable_order = this->cur_timetable_order_index != INVALID_VEH_ORDER_ID ? this->GetOrder(this->cur_timetable_order_index) : nullptr;
+				if (real_timetable_order == nullptr || !real_timetable_order->IsType(OT_CONDITIONAL)) {
+					/* Timetable order ID was not the real order or a conditional order, to avoid updating the wrong timetable, just clear the timetable index */
+					this->cur_timetable_order_index = INVALID_VEH_ORDER_ID;
+				}
 			}
 			InvalidateVehicleOrder(this, 0);
 			return;
@@ -3461,6 +3464,7 @@ void Vehicle::LeaveStation()
 		}
 
 		SetBit(Train::From(this)->flags, VRF_LEAVING_STATION);
+		if (Train::From(this)->lookahead != nullptr) Train::From(this)->lookahead->zpos_refresh_remaining = 0;
 	}
 	if (this->type == VEH_ROAD && !(this->vehstatus & VS_CRASHED)) {
 		/* Trigger road stop animation */
@@ -3520,6 +3524,7 @@ void Vehicle::AdvanceLoadingInStation()
 	HideFillingPercent(&this->fill_percent_te_id);
 	this->current_order.MakeLoadingAdvance(this->last_station_visited);
 	this->current_order.SetNonStopType(ONSF_NO_STOP_AT_ANY_STATION);
+	if (Train::From(this)->lookahead != nullptr) Train::From(this)->lookahead->zpos_refresh_remaining = 0;
 	this->MarkDirty();
 }
 
@@ -3556,6 +3561,9 @@ static bool ShouldVehicleContinueWaiting(Vehicle *v)
 
 	/* Rate-limit re-checking of conditional order loop */
 	if (HasBit(v->vehicle_flags, VF_COND_ORDER_WAIT) && v->tick_counter % 32 != 0) return true;
+
+	/* Don't use implicit orders for waiting loops */
+	if (v->cur_implicit_order_index < v->GetNumOrders() && v->GetOrder(v->cur_implicit_order_index)->IsType(OT_IMPLICIT)) return false;
 
 	/* If conditional orders lead back to this order, just keep waiting without leaving the order */
 	bool loop = AdvanceOrderIndexDeferred(v, v->cur_implicit_order_index) == v->cur_implicit_order_index;
@@ -3655,7 +3663,29 @@ CommandCost Vehicle::SendToDepot(DoCommandFlag flags, DepotCommand command, Tile
 	if (ret.Failed()) return ret;
 
 	if (this->vehstatus & VS_CRASHED) return CMD_ERROR;
-	if (this->IsStoppedInDepot()) return CMD_ERROR;
+	if (this->IsStoppedInDepot()) {
+		if ((command & DEPOT_SELL) && !(command & DEPOT_CANCEL) && (!(command & DEPOT_SPECIFIC) || specific_depot == this->tile)) {
+			/* Sell vehicle immediately */
+
+			if (flags & DC_EXEC) {
+				int x = this->x_pos;
+				int y = this->y_pos;
+				int z = this->z_pos;
+
+				CommandCost cost = DoCommand(this->tile, this->index | (1 << 20), 0, flags, CMD_SELL_VEHICLE);
+				if (cost.Succeeded()) {
+					if (IsLocalCompany()) {
+						if (cost.GetCost() != 0) {
+							ShowCostOrIncomeAnimation(x, y, z, cost.GetCost());
+						}
+					}
+					SubtractMoneyFromCompany(cost);
+				}
+			}
+			return CommandCost();
+		}
+		return CMD_ERROR;
+	}
 
 	auto cancel_order = [&]() {
 		if (flags & DC_EXEC) {
@@ -3908,9 +3938,10 @@ int ReversingDistanceTargetSpeed(const Train *v);
 
 /**
  * Draw visual effects (smoke and/or sparks) for a vehicle chain.
+ * @param max_speed The speed as limited by underground and orders, UINT_MAX if not already known
  * @pre this->IsPrimaryVehicle()
  */
-void Vehicle::ShowVisualEffect() const
+void Vehicle::ShowVisualEffect(uint max_speed) const
 {
 	assert(this->IsPrimaryVehicle());
 	bool sound = false;
@@ -3926,8 +3957,7 @@ void Vehicle::ShowVisualEffect() const
 		return;
 	}
 
-	/* Use the speed as limited by underground and orders. */
-	uint max_speed = this->GetCurrentMaxSpeed();
+	if (max_speed == UINT_MAX) max_speed = this->GetCurrentMaxSpeed();
 
 	if (this->type == VEH_TRAIN) {
 		const Train *t = Train::From(this);

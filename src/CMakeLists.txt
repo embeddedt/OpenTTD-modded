@@ -29,11 +29,6 @@ add_files(
     viewport_sprite_sorter_sse4.cpp
     CONDITION SSE_FOUND
 )
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    set_compile_flags(
-        viewport_sprite_sorter_sse4.cpp
-        COMPILE_FLAGS -msse4.1)
-endif()
 
 add_files(
     aircraft.h
@@ -271,6 +266,9 @@ add_files(
     newgrf_industries.h
     newgrf_industrytiles.cpp
     newgrf_industrytiles.h
+    newgrf_industrytiles_analysis.h
+    newgrf_newlandscape.cpp
+    newgrf_newlandscape.h
     newgrf_newsignals.cpp
     newgrf_newsignals.h
     newgrf_object.cpp

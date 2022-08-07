@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.47.2
+## JGR's Patchpack version 0.48.1
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -167,7 +167,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * [More conditional orders](http://www.tt-forums.net/viewtopic.php?f=33&t=38317).  
   Next station: is cargo waiting, is cargo accepted, number of free platforms, amount of cargo waiting.  
   Percent of times, per-cargo load percentage, current time/date, timetable lateness.  
-  Slots/counters: train in slot, slot occupancy, counter value.
+  Slots/counters: train in slot, slot occupancy, counter value.  
+  Scheduled dispatch departure slots.
 * Reverse at waypoint orders.
 * Add a menu item to the vehicle list to change order target, e.g. for moving depot orders to a different depot.
 * Add game setting to allow only non-stop orders for trains and road vehicles.
@@ -216,6 +217,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 #### Industries
 
 * Industry cargo generation factor.
+* Allow linking only inputs or outputs to the smallmap and map mode viewports in the industry chain window.
 
 #### Map and Landscaping
 
@@ -236,6 +238,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to control if and how land purchasing is permitted.
 * Add a company rate limit for land purchasing.
 * Add a company rate limit for object construction.
+* Add setting to disable object expiry after a given year.
+* Add setting to ignore object introduction dates.
 * Add setting for whether to confirm before demolishing industries and/or rail stations.
 
 #### Scenario Editor
@@ -262,6 +266,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Make smallmap refresh period variable with map mode/zoom and pause state.
 * Add display setting for income/cost text effects.
 * Make the company infrastructure window scrollable.
+* Add setting to disable water animation depending on zoom level.
 
 #### Limits
 

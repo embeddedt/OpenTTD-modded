@@ -1995,7 +1995,7 @@ void BaseVehicleListWindow::DrawVehicleListItems(VehicleID selected_vehicle, int
 					DrawString(text_left, text_right, y, STR_TINY_BLACK_VEHICLE);
 				} else if (v->group_id != DEFAULT_GROUP) {
 					/* The vehicle has no name, but is member of a group, so print group name */
-					SetDParam(0, v->group_id);
+					SetDParam(0, v->group_id | GROUP_NAME_HIERARCHY);
 					DrawString(text_left, text_right, y, STR_TINY_GROUP, TC_BLACK);
 				}
 
@@ -2019,6 +2019,22 @@ void BaseVehicleListWindow::DrawVehicleListItems(VehicleID selected_vehicle, int
 				for (int i = 0; i < static_cast<int>(vehgroup.NumVehicles()); ++i) {
 					if (image_left + 8 * i >= image_right) break; // Break if there is no more space to draw any more vehicles anyway.
 					DrawVehicleImage(vehgroup.vehicles_begin[i], image_left + 8 * i, image_right, y + FONT_HEIGHT_SMALL - 1, selected_vehicle, EIT_IN_LIST, 0);
+				}
+
+				if (vehgroup.vehicles_begin[0]->group_id != DEFAULT_GROUP) {
+					/* If all vehicles are in the same group, print group name */
+					GroupID gid = vehgroup.vehicles_begin[0]->group_id;
+					bool show_group = true;
+					for (int i = 1; i < static_cast<int>(vehgroup.NumVehicles()); ++i) {
+						if (vehgroup.vehicles_begin[i]->group_id != gid) {
+							show_group = false;
+							break;
+						}
+					}
+					if (show_group) {
+						SetDParam(0, gid | GROUP_NAME_HIERARCHY);
+						DrawString(text_left, text_right, y, STR_TINY_GROUP, TC_BLACK);
+					}
 				}
 
 				if (show_orderlist) DrawSmallOrderList((vehgroup.vehicles_begin[0])->GetFirstOrder(), orderlist_left, orderlist_right, y, this->order_arrow_width);
@@ -2461,7 +2477,7 @@ public:
 		if (IsDepotTile(tile) && GetDepotVehicleType(tile) == this->vli.vtype) {
 			if (this->vli.type != VL_DEPOT_LIST) return;
 			if (!IsInfraTileUsageAllowed(this->vli.vtype, this->vli.company, tile)) return;
-			if (this->vli.vtype == VEH_ROAD && GetPresentRoadTypes(Depot::Get(this->vli.index)->xy) != GetRoadTypes(tile)) return;
+			if (this->vli.vtype == VEH_ROAD && GetPresentRoadTramTypes(Depot::Get(this->vli.index)->xy) != GetPresentRoadTramTypes(tile)) return;
 
 			DestinationID dest = (this->vli.vtype == VEH_AIRCRAFT) ? GetStationIndex(tile) : GetDepotIndex(tile);
 			DoCommandP(0, this->vli.index | (this->vli.vtype << 16) | (OT_GOTO_DEPOT << 20), dest, CMD_MASS_CHANGE_ORDER);
@@ -2882,7 +2898,7 @@ struct VehicleDetailsWindow : Window {
 					dim = maxdim(dim, GetStringBoundingBox(STR_VEHICLE_INFO_PROFIT_THIS_YEAR_LAST_YEAR_LIFETIME));
 				}
 				if (this->vehicle_group_line_shown) {
-					SetDParam(0, v->group_id);
+					SetDParam(0, v->group_id | GROUP_NAME_HIERARCHY);
 					dim = maxdim(dim, GetStringBoundingBox(STR_VEHICLE_INFO_GROUP));
 				}
 				if (this->vehicle_weight_ratio_line_shown) {
@@ -3085,7 +3101,7 @@ struct VehicleDetailsWindow : Window {
 
 				bool should_show_group = this->ShouldShowGroupLine(v);
 				if (should_show_group) {
-					SetDParam(0, v->group_id);
+					SetDParam(0, v->group_id | GROUP_NAME_HIERARCHY);
 					DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, y, STR_VEHICLE_INFO_GROUP);
 					y += FONT_HEIGHT_NORMAL;
 				}
@@ -3434,7 +3450,7 @@ void CcStartStopVehicle(const CommandCost &result, TileIndex tile, uint32 p1, ui
 	if (result.Failed()) return;
 
 	const Vehicle *v = Vehicle::GetIfValid(p1);
-	if (v == nullptr || !v->IsPrimaryVehicle() || v->owner != _local_company) return;
+	if (v == nullptr || !v->IsPrimaryVehicle()) return;
 
 	StringID msg = (v->vehstatus & VS_STOPPED) ? STR_VEHICLE_COMMAND_STOPPED : STR_VEHICLE_COMMAND_STARTED;
 	Point pt = RemapCoords(v->x_pos, v->y_pos, v->z_pos);

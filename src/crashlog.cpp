@@ -234,6 +234,9 @@ char *CrashLog::LogConfiguration(char *buffer, const char *last) const
 	if (_settings_game.debug.chicken_bits != 0) {
 		buffer += seprintf(buffer, last, "Chicken bits: 0x%08X\n\n", _settings_game.debug.chicken_bits);
 	}
+	if (_settings_game.debug.newgrf_optimiser_flags != 0) {
+		buffer += seprintf(buffer, last, "NewGRF optimiser flags: 0x%08X\n\n", _settings_game.debug.newgrf_optimiser_flags);
+	}
 
 	buffer += seprintf(buffer, last, "AI Configuration (local: %i) (current: %i):\n", (int)_local_company, (int)_current_company);
 	for (const Company *c : Company::Iterate()) {
@@ -900,18 +903,6 @@ bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_ou
 	_savegame_DBGL_data = nullptr;
 	_save_DBGC_data = false;
 
-	if (!(_screen.width < 1 || _screen.height < 1 || _screen.dst_ptr == nullptr)) {
-		SetScreenshotAuxiliaryText("Desync Log", buffer);
-		bret = this->WriteScreenshot(filename, lastof(filename), name_buffer);
-		if (bret) {
-			printf("Desync screenshot written to %s. Please add this file to any bug reports.\n\n", filename);
-		} else {
-			ret = false;
-			printf("Writing desync screenshot failed.\n\n");
-		}
-		ClearScreenshotAuxiliaryText();
-	}
-
 	return ret;
 }
 
@@ -961,18 +952,6 @@ bool CrashLog::MakeInconsistencyLog(const InconsistencyExtraInfo &info) const
 	}
 	_savegame_DBGL_data = nullptr;
 	_save_DBGC_data = false;
-
-	if (!(_screen.width < 1 || _screen.height < 1 || _screen.dst_ptr == nullptr)) {
-		SetScreenshotAuxiliaryText("Inconsistency Log", buffer);
-		bret = this->WriteScreenshot(filename, lastof(filename), name_buffer);
-		if (bret) {
-			printf("Inconsistency screenshot written to %s. Please add this file to any bug reports.\n\n", filename);
-		} else {
-			ret = false;
-			printf("Writing inconsistency screenshot failed.\n\n");
-		}
-		ClearScreenshotAuxiliaryText();
-	}
 
 	return ret;
 }
