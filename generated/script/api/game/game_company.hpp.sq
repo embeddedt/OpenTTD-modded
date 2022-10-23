@@ -83,6 +83,8 @@ void SQGSCompany_Register(Squirrel *engine)
 	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHIP_INC,           "EXPENSES_SHIP_INC");
 	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_LOAN_INT,           "EXPENSES_LOAN_INT");
 	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_OTHER,              "EXPENSES_OTHER");
+	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHARING_COST,       "EXPENSES_SHARING_COST");
+	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHARING_INC,        "EXPENSES_SHARING_INC");
 	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_INVALID,            "EXPENSES_INVALID");
 
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ResolveCompanyID,              "ResolveCompanyID",              2, ".i");
@@ -103,6 +105,7 @@ void SQGSCompany_Register(Squirrel *engine)
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyCargoDelivered,    "GetQuarterlyCargoDelivered",    3, ".ii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyPerformanceRating, "GetQuarterlyPerformanceRating", 3, ".ii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyCompanyValue,      "GetQuarterlyCompanyValue",      3, ".ii");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAnnualExpenseValue,         "GetAnnualExpenseValue",         4, ".iii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::BuildCompanyHQ,                "BuildCompanyHQ",                2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetCompanyHQ,                  "GetCompanyHQ",                  2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAutoRenewStatus,            "GetAutoRenewStatus",            2, ".i");

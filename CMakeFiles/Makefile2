@@ -372,6 +372,7 @@ src/all: src/3rdparty/all
 src/all: src/ai/all
 src/all: src/blitter/all
 src/all: src/core/all
+src/all: src/fontcache/all
 src/all: src/game/all
 src/all: src/lang/all
 src/all: src/linkgraph/all
@@ -397,6 +398,7 @@ src/clean: src/3rdparty/clean
 src/clean: src/ai/clean
 src/clean: src/blitter/clean
 src/clean: src/core/clean
+src/clean: src/fontcache/clean
 src/clean: src/game/clean
 src/clean: src/lang/clean
 src/clean: src/linkgraph/clean
@@ -422,6 +424,7 @@ src/preinstall: src/3rdparty/preinstall
 src/preinstall: src/ai/preinstall
 src/preinstall: src/blitter/preinstall
 src/preinstall: src/core/preinstall
+src/preinstall: src/fontcache/preinstall
 src/preinstall: src/game/preinstall
 src/preinstall: src/lang/preinstall
 src/preinstall: src/linkgraph/preinstall
@@ -1006,6 +1009,24 @@ src/core/preinstall:
 .PHONY : src/core/preinstall
 
 #=============================================================================
+# Directory level rules for directory src/fontcache
+
+# Convenience name for "all" pass in the directory.
+src/fontcache/all:
+
+.PHONY : src/fontcache/all
+
+# Convenience name for "clean" pass in the directory.
+src/fontcache/clean:
+
+.PHONY : src/fontcache/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/fontcache/preinstall:
+
+.PHONY : src/fontcache/preinstall
+
+#=============================================================================
 # Directory level rules for directory src/game
 
 # Convenience name for "all" pass in the directory.
@@ -1049,12 +1070,12 @@ src/lang/preinstall:
 src/lang/CMakeFiles/language_files.dir/all:
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/depend
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=8,9,10,11,12,13,14 "Built target language_files"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target language_files"
 .PHONY : src/lang/CMakeFiles/language_files.dir/all
 
 # Build rule for subdir invocation for target.
 src/lang/CMakeFiles/language_files.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 8
 	$(MAKE) -f CMakeFiles/Makefile2 src/lang/CMakeFiles/language_files.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : src/lang/CMakeFiles/language_files.dir/rule
@@ -1623,12 +1644,12 @@ clean: media/CMakeFiles/media_files.dir/clean
 media/CMakeFiles/desktop_file.dir/all:
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/depend
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7 "Built target desktop_file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num= "Built target desktop_file"
 .PHONY : media/CMakeFiles/desktop_file.dir/all
 
 # Build rule for subdir invocation for target.
 media/CMakeFiles/desktop_file.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 1
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 	$(MAKE) -f CMakeFiles/Makefile2 media/CMakeFiles/desktop_file.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : media/CMakeFiles/desktop_file.dir/rule

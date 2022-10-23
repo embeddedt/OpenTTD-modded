@@ -191,6 +191,7 @@ bf9364ae932bba9ffd9d1bacef814609 src/script/api/ai_industry.hpp.sq.timestamp
 e37b48e7c085f53baad03165e152f930 src/script/api/ai_industrylist.hpp.sq.timestamp
 8d6e96e83c0fd45de633acbae27a3705 src/script/api/ai_industrytype.hpp.sq.timestamp
 8b2cad85d06e499f6793914463b5a65c src/script/api/ai_industrytypelist.hpp.sq.timestamp
+3e38c08ced00a9e5f309e5615c485336 src/script/api/ai_inflation.hpp.sq.timestamp
 3a0597bee08068b231163a2572d2c1cb src/script/api/ai_info_docs.hpp.sq.timestamp
 f8722351947764da20389984c847a817 src/script/api/ai_infrastructure.hpp.sq.timestamp
 adca913b6e517b014bca9ab0770ad20e src/script/api/ai_list.hpp.sq.timestamp
@@ -263,6 +264,7 @@ ee9b7f8bd52768042331eacbbf42bc63 src/script/api/game_industry.hpp.sq.timestamp
 f67b51b3bfe1836c8cc20a74f3fa72f2 src/script/api/game_industrylist.hpp.sq.timestamp
 4f409ed938a021d6cf6e71d531f76265 src/script/api/game_industrytype.hpp.sq.timestamp
 469aa8d8c54eae52e6b0aab081b00472 src/script/api/game_industrytypelist.hpp.sq.timestamp
+6f7627ba563e54665596bcae9fbdaeb1 src/script/api/game_inflation.hpp.sq.timestamp
 f14e094fdd62959651135d3aa5e61b7f src/script/api/game_info_docs.hpp.sq.timestamp
 46404ee596e98cb38668ad5c5706681c src/script/api/game_infrastructure.hpp.sq.timestamp
 d93b6be91f9f71cc7f4e193b280038f3 src/script/api/game_list.hpp.sq.timestamp
@@ -335,6 +337,7 @@ a2fcb9332d328dcfc919142e22318291 src/script/api/template_group.hpp.sq.timestamp
 468fcdd39ae893d07dba88018040af1f src/script/api/template_industrylist.hpp.sq.timestamp
 256dd9d700028d7e5b94d503ce3c1a9d src/script/api/template_industrytype.hpp.sq.timestamp
 b28dfef41bed8ec1c71faac29b0144d7 src/script/api/template_industrytypelist.hpp.sq.timestamp
+c139c7b974adc0ec100f575441f2677f src/script/api/template_inflation.hpp.sq.timestamp
 080d76f7c0f9ec2973e7dc48caf70d88 src/script/api/template_info_docs.hpp.sq.timestamp
 047c93d387866e4e40844ab366a75c56 src/script/api/template_infrastructure.hpp.sq.timestamp
 eacacd5a7b6b3773205930a0cb693bd4 src/script/api/template_list.hpp.sq.timestamp

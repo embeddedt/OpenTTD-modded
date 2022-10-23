@@ -37,6 +37,7 @@
 #include "game_industrylist.hpp.sq"
 #include "game_industrytype.hpp.sq"
 #include "game_industrytypelist.hpp.sq"
+#include "game_inflation.hpp.sq"
 #include "game_infrastructure.hpp.sq"
 #include "game_list.hpp.sq"
 #include "game_log.hpp.sq"
@@ -136,6 +137,7 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSIndustryList_CargoProducing_Register(engine);
 	SQGSIndustryType_Register(engine);
 	SQGSIndustryTypeList_Register(engine);
+	SQGSInflation_Register(engine);
 	SQGSInfrastructure_Register(engine);
 	SQGSLog_Register(engine);
 	SQGSMap_Register(engine);

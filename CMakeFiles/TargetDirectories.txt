@@ -210,6 +210,15 @@
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/core/CMakeFiles/list_install_components.dir
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/core/CMakeFiles/edit_cache.dir
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/core/CMakeFiles/rebuild_cache.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/install/strip.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/install.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/package_source.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/package.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/install/local.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/test.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/list_install_components.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/edit_cache.dir
+/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/fontcache/CMakeFiles/rebuild_cache.dir
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/game/CMakeFiles/install/strip.dir
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/game/CMakeFiles/install.dir
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/game/CMakeFiles/package_source.dir

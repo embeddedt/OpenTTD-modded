@@ -62,6 +62,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/ai/ai_industrytype.hpp.sq"
   "ai_industrytypelist.hpp.sq.timestamp"
   "../../../generated/script/api/ai/ai_industrytypelist.hpp.sq"
+  "ai_inflation.hpp.sq.timestamp"
+  "../../../generated/script/api/ai/ai_inflation.hpp.sq"
   "ai_info_docs.hpp.sq.timestamp"
   "../../../generated/script/api/ai/ai_info_docs.hpp.sq"
   "ai_infrastructure.hpp.sq.timestamp"

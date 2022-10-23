@@ -1030,6 +1030,7 @@ public:
 		WID_AP_COVERAGE_LABEL                        = ::WID_AP_COVERAGE_LABEL,                        ///< Label if you want to see the coverage.
 		WID_AP_BTN_DONTHILIGHT                       = ::WID_AP_BTN_DONTHILIGHT,                       ///< Don't show the coverage button.
 		WID_AP_BTN_DOHILIGHT                         = ::WID_AP_BTN_DOHILIGHT,                         ///< Show the coverage button.
+		WID_AP_ACCEPTANCE                            = ::WID_AP_ACCEPTANCE,                            ///< Acceptance info.
 	};
 
 	/* automatically generated from ../../widgets/autoreplace_widget.h */
@@ -2197,6 +2198,8 @@ public:
 		WID_O_SCROLLBAR                              = ::WID_O_SCROLLBAR,                              ///< Order list scrollbar.
 		WID_O_SKIP                                   = ::WID_O_SKIP,                                   ///< Skip current order.
 		WID_O_MANAGE_LIST                            = ::WID_O_MANAGE_LIST,                            ///< Manage order list.
+		WID_O_MGMT_BTN                               = ::WID_O_MGMT_BTN,                               ///< Management button.
+		WID_O_MGMT_LIST_BTN                          = ::WID_O_MGMT_LIST_BTN,                          ///< Management list button.
 		WID_O_DELETE                                 = ::WID_O_DELETE,                                 ///< Delete selected order.
 		WID_O_STOP_SHARING                           = ::WID_O_STOP_SHARING,                           ///< Stop sharing orders.
 		WID_O_NON_STOP                               = ::WID_O_NON_STOP,                               ///< Goto non-stop to destination.
@@ -2221,9 +2224,13 @@ public:
 		WID_O_COND_AUX_VIA                           = ::WID_O_COND_AUX_VIA,                           ///< Condition via button.
 		WID_O_COND_SCHED_TEST                        = ::WID_O_COND_SCHED_TEST,                        ///< Choose scheduled dispatch test.
 		WID_O_RELEASE_SLOT                           = ::WID_O_RELEASE_SLOT,                           ///< Choose slot to release.
+		WID_O_COUNTER_OP                             = ::WID_O_COUNTER_OP,                             ///< Choose counter operation.
+		WID_O_CHANGE_COUNTER                         = ::WID_O_CHANGE_COUNTER,                         ///< Choose counter to change.
+		WID_O_COUNTER_VALUE                          = ::WID_O_COUNTER_VALUE,                          ///< Choose counter value.
 		WID_O_SEL_COND_VALUE                         = ::WID_O_SEL_COND_VALUE,                         ///< Widget for conditional value or conditional cargo type.
 		WID_O_SEL_COND_AUX                           = ::WID_O_SEL_COND_AUX,                           ///< Widget for auxiliary conditional cargo type.
 		WID_O_SEL_COND_AUX2                          = ::WID_O_SEL_COND_AUX2,                          ///< Widget for auxiliary conditional via button.
+		WID_O_SEL_MGMT                               = ::WID_O_SEL_MGMT,                               ///< Widget for management buttons.
 		WID_O_SEL_TOP_LEFT                           = ::WID_O_SEL_TOP_LEFT,                           ///< #NWID_SELECTION widget for left part of the top row of the 'your train' order window.
 		WID_O_SEL_TOP_MIDDLE                         = ::WID_O_SEL_TOP_MIDDLE,                         ///< #NWID_SELECTION widget for middle part of the top row of the 'your train' order window.
 		WID_O_SEL_TOP_RIGHT                          = ::WID_O_SEL_TOP_RIGHT,                          ///< #NWID_SELECTION widget for right part of the top row of the 'your train' order window.

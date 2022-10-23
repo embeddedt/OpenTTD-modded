@@ -32,6 +32,7 @@
 #include "ai_industrylist.hpp.sq"
 #include "ai_industrytype.hpp.sq"
 #include "ai_industrytypelist.hpp.sq"
+#include "ai_inflation.hpp.sq"
 #include "ai_infrastructure.hpp.sq"
 #include "ai_list.hpp.sq"
 #include "ai_log.hpp.sq"
@@ -122,6 +123,7 @@ void SQAI_RegisterAll(Squirrel *engine)
 	SQAIIndustryList_CargoProducing_Register(engine);
 	SQAIIndustryType_Register(engine);
 	SQAIIndustryTypeList_Register(engine);
+	SQAIInflation_Register(engine);
 	SQAIInfrastructure_Register(engine);
 	SQAILog_Register(engine);
 	SQAIMap_Register(engine);

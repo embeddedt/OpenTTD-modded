@@ -52,6 +52,7 @@ void SQAICargo_Register(Squirrel *engine)
 	SQAICargo.DefSQStaticMethod(engine, &ScriptCargo::GetTownEffect,       "GetTownEffect",       2, ".i");
 	SQAICargo.DefSQStaticMethod(engine, &ScriptCargo::GetCargoIncome,      "GetCargoIncome",      4, ".iii");
 	SQAICargo.DefSQStaticMethod(engine, &ScriptCargo::GetDistributionType, "GetDistributionType", 2, ".i");
+	SQAICargo.DefSQStaticMethod(engine, &ScriptCargo::GetWeight,           "GetWeight",           3, ".ii");
 
 	SQAICargo.PostRegister(engine);
 }

@@ -70,6 +70,22 @@ void SQAICompany_Register(Squirrel *engine)
 	SQAICompany.DefSQConst(engine, ScriptCompany::COLOUR_GREY,                 "COLOUR_GREY");
 	SQAICompany.DefSQConst(engine, ScriptCompany::COLOUR_WHITE,                "COLOUR_WHITE");
 	SQAICompany.DefSQConst(engine, ScriptCompany::COLOUR_INVALID,              "COLOUR_INVALID");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_CONSTRUCTION,       "EXPENSES_CONSTRUCTION");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_NEW_VEHICLES,       "EXPENSES_NEW_VEHICLES");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_TRAIN_RUN,          "EXPENSES_TRAIN_RUN");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_ROADVEH_RUN,        "EXPENSES_ROADVEH_RUN");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_AIRCRAFT_RUN,       "EXPENSES_AIRCRAFT_RUN");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHIP_RUN,           "EXPENSES_SHIP_RUN");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_PROPERTY,           "EXPENSES_PROPERTY");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_TRAIN_INC,          "EXPENSES_TRAIN_INC");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_ROADVEH_INC,        "EXPENSES_ROADVEH_INC");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_AIRCRAFT_INC,       "EXPENSES_AIRCRAFT_INC");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHIP_INC,           "EXPENSES_SHIP_INC");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_LOAN_INT,           "EXPENSES_LOAN_INT");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_OTHER,              "EXPENSES_OTHER");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHARING_COST,       "EXPENSES_SHARING_COST");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_SHARING_INC,        "EXPENSES_SHARING_INC");
+	SQAICompany.DefSQConst(engine, ScriptCompany::EXPENSES_INVALID,            "EXPENSES_INVALID");
 
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::ResolveCompanyID,              "ResolveCompanyID",              2, ".i");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::IsMine,                        "IsMine",                        2, ".i");
@@ -90,6 +106,7 @@ void SQAICompany_Register(Squirrel *engine)
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyCargoDelivered,    "GetQuarterlyCargoDelivered",    3, ".ii");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyPerformanceRating, "GetQuarterlyPerformanceRating", 3, ".ii");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::GetQuarterlyCompanyValue,      "GetQuarterlyCompanyValue",      3, ".ii");
+	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::GetAnnualExpenseValue,         "GetAnnualExpenseValue",         4, ".iii");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::BuildCompanyHQ,                "BuildCompanyHQ",                2, ".i");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::GetCompanyHQ,                  "GetCompanyHQ",                  2, ".i");
 	SQAICompany.DefSQStaticMethod(engine, &ScriptCompany::SetAutoRenewStatus,            "SetAutoRenewStatus",            2, ".b");

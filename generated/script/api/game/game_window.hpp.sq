@@ -233,6 +233,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_AP_COVERAGE_LABEL,                     "WID_AP_COVERAGE_LABEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_AP_BTN_DONTHILIGHT,                    "WID_AP_BTN_DONTHILIGHT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_AP_BTN_DOHILIGHT,                      "WID_AP_BTN_DOHILIGHT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_AP_ACCEPTANCE,                         "WID_AP_ACCEPTANCE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_RV_CAPTION,                            "WID_RV_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_RV_SORT_ASCENDING_DESCENDING,          "WID_RV_SORT_ASCENDING_DESCENDING");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_RV_SHOW_HIDDEN_ENGINES,                "WID_RV_SHOW_HIDDEN_ENGINES");
@@ -1007,6 +1008,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SCROLLBAR,                           "WID_O_SCROLLBAR");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SKIP,                                "WID_O_SKIP");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_MANAGE_LIST,                         "WID_O_MANAGE_LIST");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_MGMT_BTN,                            "WID_O_MGMT_BTN");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_MGMT_LIST_BTN,                       "WID_O_MGMT_LIST_BTN");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_DELETE,                              "WID_O_DELETE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_STOP_SHARING,                        "WID_O_STOP_SHARING");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_NON_STOP,                            "WID_O_NON_STOP");
@@ -1031,9 +1034,13 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_COND_AUX_VIA,                        "WID_O_COND_AUX_VIA");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_COND_SCHED_TEST,                     "WID_O_COND_SCHED_TEST");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_RELEASE_SLOT,                        "WID_O_RELEASE_SLOT");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_COUNTER_OP,                          "WID_O_COUNTER_OP");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_CHANGE_COUNTER,                      "WID_O_CHANGE_COUNTER");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_COUNTER_VALUE,                       "WID_O_COUNTER_VALUE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_COND_VALUE,                      "WID_O_SEL_COND_VALUE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_COND_AUX,                        "WID_O_SEL_COND_AUX");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_COND_AUX2,                       "WID_O_SEL_COND_AUX2");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_MGMT,                            "WID_O_SEL_MGMT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_TOP_LEFT,                        "WID_O_SEL_TOP_LEFT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_TOP_MIDDLE,                      "WID_O_SEL_TOP_MIDDLE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_TOP_RIGHT,                       "WID_O_SEL_TOP_RIGHT");

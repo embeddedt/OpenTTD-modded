@@ -240,40 +240,40 @@ SDTG_SSTR("screenshot_format", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _sc
 SDTG_SSTR("savegame_format", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _savegame_format, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_EXPERT, nullptr, true, nullptr),
 SDTG_BOOL("rightclick_emulate",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _rightclick_emulate, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #ifdef HAS_TRUETYPE_FONT
-SDTG_SSTR("small_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.small.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_SSTR("small_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.small.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_SSTR("medium_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.medium.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_SSTR("medium_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.medium.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_SSTR("large_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.large.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_SSTR("large_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.large.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_SSTR("mono_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.mono.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_SSTR("mono_font", SLE_STR, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.mono.font, nullptr,       0,                                               nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_VAR("small_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.small.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_VAR("small_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.small.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_VAR("medium_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.medium.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_VAR("medium_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.medium.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_VAR("large_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.large.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_VAR("large_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.large.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_VAR("mono_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.mono.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_VAR("mono_size", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.mono.size, 0, 0, 72, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_BOOL("small_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.small.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_BOOL("small_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.small.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_BOOL("medium_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.medium.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_BOOL("medium_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.medium.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_BOOL("large_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.large.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_BOOL("large_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.large.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 #ifdef HAS_TRUETYPE_FONT
-SDTG_BOOL("mono_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _freetype.mono.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
+SDTG_BOOL("mono_aa",        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _fcsettings.mono.aa, false,                               STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_ADVANCED, nullptr, true, nullptr),
 #endif
 SDTG_VAR("sprite_cache_size_px", SLE_UINT, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _sprite_cache_size, 128, 1, 512, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_EXPERT, nullptr, true, nullptr),
 SDTG_VAR("player_face", SLE_UINT32, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, _company_manager_face, 0, 0, 0xFFFFFFFF, 0,        STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(), SC_BASIC, nullptr, true, nullptr),
@@ -418,7 +418,6 @@ static int64 LinkGraphDistModeXrefChillPP(int64 val);
 /* Begin - GUI callbacks */
 static bool LinkGraphDistributionSettingGUI(SettingOnGuiCtrlData &data);
 static bool OrderTownGrowthRate(SettingOnGuiCtrlData &data);
-static bool SpriteZoomMinSettingGUI(SettingOnGuiCtrlData &data);
 static bool AllowRoadStopsUnderBridgesSettingGUI(SettingOnGuiCtrlData &data);
 /* End - GUI callbacks */
 static const SettingDescEnumEntry _linkgraph_mode_symmetric[] = {
@@ -560,6 +559,8 @@ SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XS
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP), "economy.day_length_factor", nullptr),
 SDT_VAR(GameSettings, economy.found_town, SLE_UINT8, SF_GUI_DROPDOWN, TF_FORBIDDEN,       TF_BEGIN, TF_END - 1, 1, STR_CONFIG_SETTING_TOWN_FOUNDING, STR_CONFIG_SETTING_TOWN_FOUNDING_HELPTEXT, STR_CONFIG_SETTING_TOWN_FOUNDING_FORBIDDEN, nullptr, TownFoundingChanged, SLV_128, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDT_BOOL(GameSettings, economy.allow_town_level_crossings,        SF_NONE, true,                              STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS, STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS_HELPTEXT, STR_NULL, nullptr, nullptr, SLV_143, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
+SDT_VAR(GameSettings, economy.town_build_tunnels, SLE_UINT8, SF_GUI_DROPDOWN, TTM_ALLOWED,       TTM_BEGIN, TTM_END - 1, 1, STR_CONFIG_SETTING_TOWN_TUNNELS, STR_CONFIG_SETTING_TOWN_TUNNELS_HELPTEXT, STR_CONFIG_SETTING_TOWN_TUNNELS_FORBIDDEN, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "economy.town_build_tunnels"),
+SDT_VAR(GameSettings, economy.town_max_road_slope, SLE_UINT8, SF_GUI_0_IS_SPECIAL, 4,       0, 8, 1, STR_CONFIG_SETTING_TOWN_MAX_ROAD_SLOPE, STR_CONFIG_SETTING_TOWN_MAX_ROAD_SLOPE_HELPTEXT, STR_CONFIG_SETTING_TOWN_MAX_ROAD_SLOPE_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, "economy.town_max_road_slope"),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_CHILLPP), "economy.old_town_cargo_factor", nullptr),
 SDT_VAR(GameSettings, economy.town_cargogen_mode, SLE_UINT8, SF_GUI_DROPDOWN, TCGM_BITCOUNT,       TCGM_BEGIN, TCGM_END - 1, 1, STR_CONFIG_SETTING_TOWN_CARGOGENMODE, STR_CONFIG_SETTING_TOWN_CARGOGENMODE_HELPTEXT, STR_CONFIG_SETTING_TOWN_CARGOGENMODE_ORIGINAL, nullptr, nullptr, SLV_TOWN_CARGOGEN, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "economy.max_town_heightlevel", nullptr),
@@ -833,10 +834,10 @@ SDT_BOOL(GameSettings, economy.infrastructure_sharing[0],        SF_NONE, false,
 SDT_BOOL(GameSettings, economy.infrastructure_sharing[1],        SF_NONE, false,                              STR_CONFIG_SETTING_SHARING_ROAD, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, CheckSharingRoad, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.infrastructure_sharing.road"),
 SDT_BOOL(GameSettings, economy.infrastructure_sharing[2],        SF_NONE, false,                              STR_CONFIG_SETTING_SHARING_WATER, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, CheckSharingWater, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.infrastructure_sharing.water"),
 SDT_BOOL(GameSettings, economy.infrastructure_sharing[3],        SF_NONE, false,                              STR_CONFIG_SETTING_SHARING_AIR, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, CheckSharingAir, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.infrastructure_sharing.air"),
-SDT_VAR(GameSettings, economy.sharing_fee[0], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_RAIL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.rail"),
-SDT_VAR(GameSettings, economy.sharing_fee[1], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_ROAD, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.road"),
-SDT_VAR(GameSettings, economy.sharing_fee[2], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_WATER, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.water"),
-SDT_VAR(GameSettings, economy.sharing_fee[3], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_AIR, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.air"),
+SDT_VAR(GameSettings, economy.sharing_fee[0], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_RAIL, STR_CONFIG_SETTING_SHARING_FEE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.rail"),
+SDT_VAR(GameSettings, economy.sharing_fee[1], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_ROAD, STR_CONFIG_SETTING_SHARING_FEE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.road"),
+SDT_VAR(GameSettings, economy.sharing_fee[2], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_WATER, STR_CONFIG_SETTING_SHARING_FEE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.water"),
+SDT_VAR(GameSettings, economy.sharing_fee[3], SLE_UINT, SF_GUI_CURRENCY, 100,       0, 1000000, 10, STR_CONFIG_SETTING_SHARING_FEE_AIR, STR_CONFIG_SETTING_SHARING_FEE_HELPTEXT, STR_JUST_CURRENCY_LONG, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_fee.air"),
 SDT_BOOL(GameSettings, economy.sharing_payment_in_debt,        SF_NONE, false,                              STR_CONFIG_SETTING_SHARING_PAYMENT_IN_DEBT, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_INFRA_SHARING),        SC_ADVANCED, nullptr, false, "infra_sharing.economy.sharing_payment_in_debt"),
 SDT_XREF(         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_JOKERPP), "economy.day_length_factor", nullptr),
 SDT_NULL(1, SL_MIN_VERSION, SLV_106, SlXvFeatureTest()),
@@ -1012,7 +1013,7 @@ SDTC_VAR(              gui.window_snap_radius, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO
 SDTC_VAR(              gui.window_soft_limit, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_0_IS_SPECIAL, 20,       5, 255, 1, STR_CONFIG_SETTING_SOFT_LIMIT, STR_CONFIG_SETTING_SOFT_LIMIT_HELPTEXT, STR_CONFIG_SETTING_SOFT_LIMIT_VALUE, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_VAR(              gui.zoom_min, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, ZOOM_LVL_MIN,       ZOOM_LVL_MIN, ZOOM_LVL_OUT_4X, 0, STR_CONFIG_SETTING_ZOOM_MIN, STR_CONFIG_SETTING_ZOOM_MIN_HELPTEXT, STR_CONFIG_SETTING_ZOOM_LVL_MIN, nullptr, ZoomMinMaxChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, true, nullptr),
 SDTC_VAR(              gui.zoom_max, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, ZOOM_LVL_MAX,       ZOOM_LVL_OUT_8X, ZOOM_LVL_MAX, 0, STR_CONFIG_SETTING_ZOOM_MAX, STR_CONFIG_SETTING_ZOOM_MAX_HELPTEXT, STR_CONFIG_SETTING_ZOOM_LVL_OUT_2X, nullptr, ZoomMinMaxChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, true, nullptr),
-SDTC_VAR(              gui.sprite_zoom_min, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN | SF_GUI_ADVISE_DEFAULT, ZOOM_LVL_MIN,       ZOOM_LVL_MIN, ZOOM_LVL_OUT_4X, 0, STR_CONFIG_SETTING_SPRITE_ZOOM_MIN, STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT, STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_MIN, nullptr, SpriteZoomMinChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, SpriteZoomMinSettingGUI, false, nullptr),
+SDTC_VAR(              gui.sprite_zoom_min, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, ZOOM_LVL_MIN,       ZOOM_LVL_MIN, ZOOM_LVL_OUT_4X, 0, STR_CONFIG_SETTING_SPRITE_ZOOM_MIN, STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT, STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_MIN, nullptr, SpriteZoomMinChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_BOOL(              gui.population_in_label,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_POPULATION_IN_LABEL, STR_CONFIG_SETTING_POPULATION_IN_LABEL_HELPTEXT, STR_NULL, nullptr, [](auto) { UpdateAllTownVirtCoords(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_BOOL(              gui.link_terraform_toolbar,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_LINK_TERRAFORM_TOOLBAR, STR_CONFIG_SETTING_LINK_TERRAFORM_TOOLBAR_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_VAR(              gui.smallmap_land_colour, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 0,       0, 2, 0, STR_CONFIG_SETTING_SMALLMAP_LAND_COLOUR, STR_CONFIG_SETTING_SMALLMAP_LAND_COLOUR_HELPTEXT, STR_CONFIG_SETTING_SMALLMAP_LAND_COLOUR_GREEN, nullptr, RedrawSmallmap, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
@@ -1119,6 +1120,7 @@ SDTC_BOOL(              gui.sort_track_types_by_speed,        SF_NOT_IN_SAVE | S
 SDTC_BOOL(              gui.show_depot_sell_gui,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_DEPOT_SELL_GUI, STR_CONFIG_SETTING_SHOW_DEPOT_SELL_GUI_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_BOOL(              gui.open_vehicle_gui_clone_share,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE, STR_CONFIG_SETTING_OPEN_VEHICLE_GUI_CLONE_SHARE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_EXPERT, nullptr, false, nullptr),
 SDTC_BOOL(              gui.show_newgrf_name,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_NEWGRF_NAME, STR_CONFIG_SETTING_SHOW_NEWGRF_NAME_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
+SDTC_BOOL(              gui.show_wagon_intro_year,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_WAGON_INTRO_YEAR, STR_CONFIG_SETTING_SHOW_WAGON_INTRO_YEAR_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_VAR(              gui.linkgraph_colours, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 0,       0, 3, 0, STR_CONFIG_SETTING_LINKGRAPH_COLOURS, STR_CONFIG_SETTING_LINKGRAPH_COLOURS_HELPTEXT, STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREEN_TO_RED, nullptr, UpdateLinkgraphColours, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_VAR(              gui.vehicle_names, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC | SF_GUI_DROPDOWN, 1,       0, 2, 0, STR_CONFIG_SETTING_VEHICLE_NAMES, STR_CONFIG_SETTING_VEHICLE_NAMES_HELPTEXT, STR_CONFIG_SETTING_VEHICLE_NAMES_TRADITIONAL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
 SDTC_BOOL(              gui.shade_trees_on_slopes,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES, STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
@@ -1128,7 +1130,9 @@ SDTC_BOOL(              gui.dual_pane_train_purchase_window,        SF_NOT_IN_SA
 SDTC_BOOL(              gui.allow_hiding_waypoint_labels,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL, STR_CONFIG_SETTING_ALLOW_HIDE_WAYPOINT_LABEL_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); InvalidateWindowClassesData(WC_WAYPOINT_VIEW, 0); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 SDTC_ENUM(              gui.disable_water_animation, SLE_UINT8, SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, 255,                              STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION, STR_CONFIG_SETTING_DISABLE_WATER_ANIMATION_HELPTEXT,          nullptr, SpriteZoomMinChanged, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr, _disable_water_animation),
 SDTC_BOOL(              gui.show_order_occupancy_by_default,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_ORDER_OCCUPANCY_BY_DEFAULT, STR_CONFIG_SETTING_SHOW_ORDER_OCCUPANCY_BY_DEFAULT_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
-SDTC_BOOL(              gui.show_group_hierarchy_name,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME, STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_BOOL(              gui.show_order_management_button,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_CONFIG_SETTING_SHOW_ORDER_MANAGEMENT_BY_DEFAULT, STR_CONFIG_SETTING_SHOW_ORDER_MANAGEMENT_BY_DEFAULT_HELPTEXT, STR_NULL, nullptr, [](auto) { InvalidateWindowClassesData(WC_VEHICLE_ORDERS); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_BOOL(              gui.show_group_hierarchy_name,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME, STR_CONFIG_SETTING_SHOW_GROUP_HIERARCHY_NAME_HELPTEXT, STR_NULL, nullptr, [](auto) { InvalidateWindowClassesData(WC_GAME_OPTIONS); MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_BASIC, nullptr, false, nullptr),
+SDTC_BOOL(              gui.show_vehicle_group_hierarchy_name,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, false,                              STR_CONFIG_SETTING_SHOW_VEHICLE_GROUP_HIERARCHY_NAME, STR_CONFIG_SETTING_SHOW_VEHICLE_GROUP_HIERARCHY_NAME_HELPTEXT, STR_NULL, nullptr, [](auto) { MarkWholeScreenDirty(); }, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 #ifdef DEDICATED
 SDTC_BOOL(              gui.show_date_in_logs,        SF_NOT_IN_SAVE | SF_NO_NETWORK_SYNC, true,                              STR_NULL, STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT, STR_NULL, nullptr, nullptr, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(),        SC_ADVANCED, nullptr, false, nullptr),
 #endif
@@ -1226,16 +1230,16 @@ static_assert(6 <= MAX_SLE_UINT8, "Maximum value for gui.autosave exceeds storag
 static_assert(1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.vehicle.road_side exceeds storage size");
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for _support8bpp exceeds storage size");
 #ifdef HAS_TRUETYPE_FONT
-static_assert(72 <= MAX_SLE_UINT, "Maximum value for _freetype.small.size exceeds storage size");
+static_assert(72 <= MAX_SLE_UINT, "Maximum value for _fcsettings.small.size exceeds storage size");
 #endif
 #ifdef HAS_TRUETYPE_FONT
-static_assert(72 <= MAX_SLE_UINT, "Maximum value for _freetype.medium.size exceeds storage size");
+static_assert(72 <= MAX_SLE_UINT, "Maximum value for _fcsettings.medium.size exceeds storage size");
 #endif
 #ifdef HAS_TRUETYPE_FONT
-static_assert(72 <= MAX_SLE_UINT, "Maximum value for _freetype.large.size exceeds storage size");
+static_assert(72 <= MAX_SLE_UINT, "Maximum value for _fcsettings.large.size exceeds storage size");
 #endif
 #ifdef HAS_TRUETYPE_FONT
-static_assert(72 <= MAX_SLE_UINT, "Maximum value for _freetype.mono.size exceeds storage size");
+static_assert(72 <= MAX_SLE_UINT, "Maximum value for _fcsettings.mono.size exceeds storage size");
 #endif
 static_assert(512 <= MAX_SLE_UINT, "Maximum value for _sprite_cache_size exceeds storage size");
 static_assert(0xFFFFFFFF <= MAX_SLE_UINT32, "Maximum value for _company_manager_face exceeds storage size");
@@ -1314,6 +1318,8 @@ static_assert(16 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.
 static_assert(2 <= MAX_SLE_UINT8, "Maximum value for GameSettings.construction.train_signal_side exceeds storage size");
 static_assert(NUM_TLS - 1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.town_layout exceeds storage size");
 static_assert(TF_END - 1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.found_town exceeds storage size");
+static_assert(TTM_END - 1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.town_build_tunnels exceeds storage size");
+static_assert(8 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.town_max_road_slope exceeds storage size");
 static_assert(TCGM_END - 1 <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.town_cargogen_mode exceeds storage size");
 static_assert(MAX_MAP_HEIGHT_LIMIT <= MAX_SLE_UINT8, "Maximum value for GameSettings.economy.max_town_heightlevel exceeds storage size");
 static_assert(400 <= MAX_SLE_UINT16, "Maximum value for GameSettings.economy.min_town_land_area exceeds storage size");

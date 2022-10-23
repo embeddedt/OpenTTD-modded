@@ -62,6 +62,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/template/template_industrytype.hpp.sq"
   "template_industrytypelist.hpp.sq.timestamp"
   "../../../generated/script/api/template/template_industrytypelist.hpp.sq"
+  "template_inflation.hpp.sq.timestamp"
+  "../../../generated/script/api/template/template_inflation.hpp.sq"
   "template_info_docs.hpp.sq.timestamp"
   "../../../generated/script/api/template/template_info_docs.hpp.sq"
   "template_infrastructure.hpp.sq.timestamp"

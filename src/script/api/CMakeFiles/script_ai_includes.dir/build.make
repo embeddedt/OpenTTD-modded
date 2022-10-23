@@ -87,6 +87,7 @@ src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_industry.hp
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_industrylist.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_industrytype.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_industrytypelist.hpp.sq
+src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_inflation.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_info_docs.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_infrastructure.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_list.hpp.sq

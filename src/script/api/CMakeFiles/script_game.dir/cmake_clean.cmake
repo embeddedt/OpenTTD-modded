@@ -62,6 +62,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/game/game_industrytype.hpp.sq"
   "game_industrytypelist.hpp.sq.timestamp"
   "../../../generated/script/api/game/game_industrytypelist.hpp.sq"
+  "game_inflation.hpp.sq.timestamp"
+  "../../../generated/script/api/game/game_inflation.hpp.sq"
   "game_info_docs.hpp.sq.timestamp"
   "../../../generated/script/api/game/game_info_docs.hpp.sq"
   "game_infrastructure.hpp.sq.timestamp"

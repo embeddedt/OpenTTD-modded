@@ -87,6 +87,7 @@ src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_indus
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_industrylist.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_industrytype.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_industrytypelist.hpp.sq
+src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_inflation.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_info_docs.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_infrastructure.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_list.hpp.sq

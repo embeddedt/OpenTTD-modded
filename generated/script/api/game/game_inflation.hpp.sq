@@ -1,0 +1,28 @@
+/*
+ * This file is part of OpenTTD.
+ * OpenTTD is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2.
+ * OpenTTD is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
+
+#include "../script_inflation.hpp"
+#include "../template/template_inflation.hpp.sq"
+
+
+template <> const char *GetClassName<ScriptInflation, ST_GS>() { return "GSInflation"; }
+
+void SQGSInflation_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptInflation, ST_GS> SQGSInflation("GSInflation");
+	SQGSInflation.PreRegister(engine);
+	SQGSInflation.AddConstructor<void (ScriptInflation::*)(), 1>(engine, "x");
+
+	SQGSInflation.DefSQStaticMethod(engine, &ScriptInflation::GetPriceFactor,   "GetPriceFactor",   1, ".");
+	SQGSInflation.DefSQStaticMethod(engine, &ScriptInflation::GetPaymentFactor, "GetPaymentFactor", 1, ".");
+	SQGSInflation.DefSQStaticMethod(engine, &ScriptInflation::SetPriceFactor,   "SetPriceFactor",   2, ".i");
+	SQGSInflation.DefSQStaticMethod(engine, &ScriptInflation::SetPaymentFactor, "SetPaymentFactor", 2, ".i");
+
+	SQGSInflation.PostRegister(engine);
+}

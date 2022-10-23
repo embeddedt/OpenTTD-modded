@@ -2933,6 +2933,60 @@ src/fontcache.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache.cpp.s
 .PHONY : src/fontcache.cpp.s
 
+src/fontcache/spritefontcache.o: src/fontcache/spritefontcache.cpp.o
+
+.PHONY : src/fontcache/spritefontcache.o
+
+# target to build an object file
+src/fontcache/spritefontcache.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/spritefontcache.cpp.o
+.PHONY : src/fontcache/spritefontcache.cpp.o
+
+src/fontcache/spritefontcache.i: src/fontcache/spritefontcache.cpp.i
+
+.PHONY : src/fontcache/spritefontcache.i
+
+# target to preprocess a source file
+src/fontcache/spritefontcache.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/spritefontcache.cpp.i
+.PHONY : src/fontcache/spritefontcache.cpp.i
+
+src/fontcache/spritefontcache.s: src/fontcache/spritefontcache.cpp.s
+
+.PHONY : src/fontcache/spritefontcache.s
+
+# target to generate assembly for a file
+src/fontcache/spritefontcache.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/spritefontcache.cpp.s
+.PHONY : src/fontcache/spritefontcache.cpp.s
+
+src/fontcache/truetypefontcache.o: src/fontcache/truetypefontcache.cpp.o
+
+.PHONY : src/fontcache/truetypefontcache.o
+
+# target to build an object file
+src/fontcache/truetypefontcache.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/truetypefontcache.cpp.o
+.PHONY : src/fontcache/truetypefontcache.cpp.o
+
+src/fontcache/truetypefontcache.i: src/fontcache/truetypefontcache.cpp.i
+
+.PHONY : src/fontcache/truetypefontcache.i
+
+# target to preprocess a source file
+src/fontcache/truetypefontcache.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/truetypefontcache.cpp.i
+.PHONY : src/fontcache/truetypefontcache.cpp.i
+
+src/fontcache/truetypefontcache.s: src/fontcache/truetypefontcache.cpp.s
+
+.PHONY : src/fontcache/truetypefontcache.s
+
+# target to generate assembly for a file
+src/fontcache/truetypefontcache.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/fontcache/truetypefontcache.cpp.s
+.PHONY : src/fontcache/truetypefontcache.cpp.s
+
 src/framerate_gui.o: src/framerate_gui.cpp.o
 
 .PHONY : src/framerate_gui.o
@@ -5282,6 +5336,33 @@ src/newgrf_airporttiles.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_airporttiles.cpp.s
 .PHONY : src/newgrf_airporttiles.cpp.s
 
+src/newgrf_analysis.o: src/newgrf_analysis.cpp.o
+
+.PHONY : src/newgrf_analysis.o
+
+# target to build an object file
+src/newgrf_analysis.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_analysis.cpp.o
+.PHONY : src/newgrf_analysis.cpp.o
+
+src/newgrf_analysis.i: src/newgrf_analysis.cpp.i
+
+.PHONY : src/newgrf_analysis.i
+
+# target to preprocess a source file
+src/newgrf_analysis.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_analysis.cpp.i
+.PHONY : src/newgrf_analysis.cpp.i
+
+src/newgrf_analysis.s: src/newgrf_analysis.cpp.s
+
+.PHONY : src/newgrf_analysis.s
+
+# target to generate assembly for a file
+src/newgrf_analysis.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_analysis.cpp.s
+.PHONY : src/newgrf_analysis.cpp.s
+
 src/newgrf_canal.o: src/newgrf_canal.cpp.o
 
 .PHONY : src/newgrf_canal.o
@@ -5686,6 +5767,33 @@ src/newgrf_object.s: src/newgrf_object.cpp.s
 src/newgrf_object.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_object.cpp.s
 .PHONY : src/newgrf_object.cpp.s
+
+src/newgrf_optimiser.o: src/newgrf_optimiser.cpp.o
+
+.PHONY : src/newgrf_optimiser.o
+
+# target to build an object file
+src/newgrf_optimiser.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_optimiser.cpp.o
+.PHONY : src/newgrf_optimiser.cpp.o
+
+src/newgrf_optimiser.i: src/newgrf_optimiser.cpp.i
+
+.PHONY : src/newgrf_optimiser.i
+
+# target to preprocess a source file
+src/newgrf_optimiser.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_optimiser.cpp.i
+.PHONY : src/newgrf_optimiser.cpp.i
+
+src/newgrf_optimiser.s: src/newgrf_optimiser.cpp.s
+
+.PHONY : src/newgrf_optimiser.s
+
+# target to generate assembly for a file
+src/newgrf_optimiser.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/newgrf_optimiser.cpp.s
+.PHONY : src/newgrf_optimiser.cpp.s
 
 src/newgrf_profiling.o: src/newgrf_profiling.cpp.o
 
@@ -10034,6 +10142,33 @@ src/script/api/script_industrytypelist.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_industrytypelist.cpp.s
 .PHONY : src/script/api/script_industrytypelist.cpp.s
 
+src/script/api/script_inflation.o: src/script/api/script_inflation.cpp.o
+
+.PHONY : src/script/api/script_inflation.o
+
+# target to build an object file
+src/script/api/script_inflation.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_inflation.cpp.o
+.PHONY : src/script/api/script_inflation.cpp.o
+
+src/script/api/script_inflation.i: src/script/api/script_inflation.cpp.i
+
+.PHONY : src/script/api/script_inflation.i
+
+# target to preprocess a source file
+src/script/api/script_inflation.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_inflation.cpp.i
+.PHONY : src/script/api/script_inflation.cpp.i
+
+src/script/api/script_inflation.s: src/script/api/script_inflation.cpp.s
+
+.PHONY : src/script/api/script_inflation.s
+
+# target to generate assembly for a file
+src/script/api/script_inflation.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_inflation.cpp.s
+.PHONY : src/script/api/script_inflation.cpp.s
+
 src/script/api/script_infrastructure.o: src/script/api/script_infrastructure.cpp.o
 
 .PHONY : src/script/api/script_infrastructure.o
@@ -13693,6 +13828,12 @@ help:
 	@echo "... src/fontcache.o"
 	@echo "... src/fontcache.i"
 	@echo "... src/fontcache.s"
+	@echo "... src/fontcache/spritefontcache.o"
+	@echo "... src/fontcache/spritefontcache.i"
+	@echo "... src/fontcache/spritefontcache.s"
+	@echo "... src/fontcache/truetypefontcache.o"
+	@echo "... src/fontcache/truetypefontcache.i"
+	@echo "... src/fontcache/truetypefontcache.s"
 	@echo "... src/framerate_gui.o"
 	@echo "... src/framerate_gui.i"
 	@echo "... src/framerate_gui.s"
@@ -13954,6 +14095,9 @@ help:
 	@echo "... src/newgrf_airporttiles.o"
 	@echo "... src/newgrf_airporttiles.i"
 	@echo "... src/newgrf_airporttiles.s"
+	@echo "... src/newgrf_analysis.o"
+	@echo "... src/newgrf_analysis.i"
+	@echo "... src/newgrf_analysis.s"
 	@echo "... src/newgrf_canal.o"
 	@echo "... src/newgrf_canal.i"
 	@echo "... src/newgrf_canal.s"
@@ -13999,6 +14143,9 @@ help:
 	@echo "... src/newgrf_object.o"
 	@echo "... src/newgrf_object.i"
 	@echo "... src/newgrf_object.s"
+	@echo "... src/newgrf_optimiser.o"
+	@echo "... src/newgrf_optimiser.i"
+	@echo "... src/newgrf_optimiser.s"
 	@echo "... src/newgrf_profiling.o"
 	@echo "... src/newgrf_profiling.i"
 	@echo "... src/newgrf_profiling.s"
@@ -14482,6 +14629,9 @@ help:
 	@echo "... src/script/api/script_industrytypelist.o"
 	@echo "... src/script/api/script_industrytypelist.i"
 	@echo "... src/script/api/script_industrytypelist.s"
+	@echo "... src/script/api/script_inflation.o"
+	@echo "... src/script/api/script_inflation.i"
+	@echo "... src/script/api/script_inflation.s"
 	@echo "... src/script/api/script_infrastructure.o"
 	@echo "... src/script/api/script_infrastructure.i"
 	@echo "... src/script/api/script_infrastructure.s"
