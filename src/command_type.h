@@ -22,26 +22,35 @@ struct GRFFile;
  * a possible error message/state together.
  */
 class CommandCost {
-	ExpensesType expense_type; ///< the type of expence as shown on the finances view
 	Money cost;       ///< The cost of this action
-	StringID message; ///< Warning message for when success is unset
+	ExpensesType expense_type; ///< the type of expence as shown on the finances view
 	bool success;     ///< Whether the comment went fine up to this moment
-	const GRFFile *textref_stack_grffile; ///< NewGRF providing the #TextRefStack content.
-	uint textref_stack_size;   ///< Number of uint32 values to put on the #TextRefStack for the error message.
+	StringID message; ///< Warning message for when success is unset
 	StringID extra_message = INVALID_STRING_ID;    ///< Additional warning message for when success is unset
 
-	static uint32 textref_stack[16];
+	struct CommandCostAuxliaryData {
+		uint32 textref_stack[16] = {};
+		const GRFFile *textref_stack_grffile = nullptr; ///< NewGRF providing the #TextRefStack content.
+		uint textref_stack_size = 0;                    ///< Number of uint32 values to put on the #TextRefStack for the error message.
+		TileIndex tile = INVALID_TILE;
+	};
+	std::unique_ptr<CommandCostAuxliaryData> aux_data;
 
 public:
 	/**
 	 * Creates a command cost return with no cost and no error
 	 */
-	CommandCost() : expense_type(INVALID_EXPENSES), cost(0), message(INVALID_STRING_ID), success(true), textref_stack_grffile(nullptr), textref_stack_size(0) {}
+	CommandCost() : cost(0), expense_type(INVALID_EXPENSES), success(true), message(INVALID_STRING_ID) {}
 
 	/**
 	 * Creates a command return value the is failed with the given message
 	 */
-	explicit CommandCost(StringID msg) : expense_type(INVALID_EXPENSES), cost(0), message(msg), success(false), textref_stack_grffile(nullptr), textref_stack_size(0) {}
+	explicit CommandCost(StringID msg) : cost(0), expense_type(INVALID_EXPENSES), success(false), message(msg) {}
+
+	CommandCost(const CommandCost &other);
+	CommandCost(CommandCost &&other) = default;
+	CommandCost &operator=(const CommandCost &other);
+	CommandCost &operator=(CommandCost &&other) = default;
 
 	/**
 	 * Creates a command return value the is failed with the given message
@@ -57,14 +66,14 @@ public:
 	 * Creates a command cost with given expense type and start cost of 0
 	 * @param ex_t the expense type
 	 */
-	explicit CommandCost(ExpensesType ex_t) : expense_type(ex_t), cost(0), message(INVALID_STRING_ID), success(true), textref_stack_grffile(nullptr), textref_stack_size(0) {}
+	explicit CommandCost(ExpensesType ex_t) : cost(0), expense_type(ex_t), success(true), message(INVALID_STRING_ID) {}
 
 	/**
 	 * Creates a command return value with the given start cost and expense type
 	 * @param ex_t the expense type
 	 * @param cst the initial cost of this command
 	 */
-	CommandCost(ExpensesType ex_t, const Money &cst) : expense_type(ex_t), cost(cst), message(INVALID_STRING_ID), success(true), textref_stack_grffile(nullptr), textref_stack_size(0) {}
+	CommandCost(ExpensesType ex_t, const Money &cst) : cost(cst), expense_type(ex_t), success(true), message(INVALID_STRING_ID) {}
 
 
 	/**
@@ -125,7 +134,7 @@ public:
 	 */
 	const GRFFile *GetTextRefStackGRF() const
 	{
-		return this->textref_stack_grffile;
+		return this->aux_data != nullptr ? this->aux_data->textref_stack_grffile : 0;
 	}
 
 	/**
@@ -134,7 +143,7 @@ public:
 	 */
 	uint GetTextRefStackSize() const
 	{
-		return this->textref_stack_size;
+		return this->aux_data != nullptr ? this->aux_data->textref_stack_size : 0;
 	}
 
 	/**
@@ -143,7 +152,7 @@ public:
 	 */
 	const uint32 *GetTextRefStack() const
 	{
-		return textref_stack;
+		return this->aux_data != nullptr ? this->aux_data->textref_stack : nullptr;
 	}
 
 	/**
@@ -217,6 +226,13 @@ public:
 		res.success = false;
 		return res;
 	}
+
+	TileIndex GetTile() const
+	{
+		return this->aux_data != nullptr ? this->aux_data->tile : INVALID_TILE;
+	}
+
+	void SetTile(TileIndex tile);
 };
 
 /**
@@ -288,6 +304,7 @@ enum Commands {
 	CMD_SKIP_TO_ORDER,                ///< skip an order to the next of specific one
 	CMD_DELETE_ORDER,                 ///< delete an order
 	CMD_INSERT_ORDER,                 ///< insert a new order
+	CMD_DUPLICATE_ORDER,              ///< duplicate an order
 	CMD_MASS_CHANGE_ORDER,            ///< mass change the target of an order
 
 	CMD_CHANGE_SERVICE_INT,           ///< change the server interval of a vehicle
@@ -391,6 +408,8 @@ enum Commands {
 	CMD_DELETE_VIRTUAL_TRAIN,         ///< Delete a virtual train
 	CMD_BUILD_VIRTUAL_RAIL_VEHICLE,   ///< Build a virtual train
 	CMD_REPLACE_TEMPLATE_VEHICLE,     ///< Replace a template vehicle with another one based on a virtual train
+	CMD_MOVE_VIRTUAL_RAIL_VEHICLE,    ///< Move a virtual rail vehicle
+	CMD_SELL_VIRTUAL_VEHICLE,         ///< Sell a virtual vehicle
 
 	CMD_CLONE_TEMPLATE_VEHICLE_FROM_TRAIN, ///< clone a train and create a new template vehicle based on it
 	CMD_DELETE_TEMPLATE_VEHICLE,      ///< delete a template vehicle
@@ -510,6 +529,7 @@ DECLARE_ENUM_AS_BIT_SET(DoCommandFlag)
  */
 enum FlaggedCommands {
 	CMD_NETWORK_COMMAND       = 0x0100, ///< execute the command without sending it on the network
+	CMD_NO_SHIFT_ESTIMATE     = 0x0200, ///< do not check shift key state for whether to estimate command
 	CMD_FLAGS_MASK            = 0xFF00, ///< mask for all command flags
 	CMD_ID_MASK               = 0x00FF, ///< mask for the command ID
 };
@@ -536,6 +556,7 @@ enum CommandFlags {
 	CMD_PROCEX    =  0x800, ///< the command proc function has extended parameters
 	CMD_SERVER_NS = 0x1000, ///< the command can only be initiated by the server (this is not executed in spectator mode)
 	CMD_LOG_AUX   = 0x2000, ///< the command should be logged in the auxiliary log instead of the main log
+	CMD_P1_TILE   = 0x4000, ///< use p1 for money text and error tile
 };
 DECLARE_ENUM_AS_BIT_SET(CommandFlags)
 

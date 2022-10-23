@@ -41,6 +41,9 @@ macro(compile_flags)
         "$<$<CONFIG:Debug>:-D_DEBUG>"
         "$<$<NOT:$<CONFIG:Debug>>:-D_FORTIFY_SOURCE=2>" # FORTIFY_SOURCE should only be used in non-debug builds (requires -O1+)
     )
+    if(CMAKE_BUILD_TYPE AND NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_compile_options(-DFEWER_ASSERTS)
+    endif()
     if(MINGW)
         add_link_options(
             "$<$<NOT:$<CONFIG:Debug>>:-fstack-protector>" # Prevent undefined references when _FORTIFY_SOURCE > 0
@@ -58,6 +61,11 @@ macro(compile_flags)
 
     if(MSVC)
         add_compile_options(/W3)
+        if(MSVC_VERSION GREATER 1929)
+            # Starting with version 19.30, there is an optimisation bug, see #9966 for details
+            # This flag disables the broken optimisation to work around the bug
+            add_compile_options(/d2ssa-rse-)
+        endif()
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
         add_compile_options(
             -W

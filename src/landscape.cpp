@@ -849,7 +849,7 @@ void RunTileLoop()
 
 	TileIndex tile = _cur_tileloop_tile;
 	/* The LFSR cannot have a zeroed state. */
-	assert(tile != 0);
+	dbg_assert(tile != 0);
 
 	SCOPE_INFO_FMT([&], "RunTileLoop: tile: %dx%d", TileX(tile), TileY(tile));
 
@@ -1170,7 +1170,7 @@ static bool MakeLake(TileIndex tile, void *user_data)
  */
 static bool FlowsDown(TileIndex begin, TileIndex end)
 {
-	assert(DistanceManhattan(begin, end) == 1);
+	dbg_assert(DistanceManhattan(begin, end) == 1);
 
 	int heightBegin;
 	int heightEnd;
@@ -1247,7 +1247,7 @@ static void River_FoundEndNode(AyStar *aystar, OpenListNode *current)
 
 			MarkTileDirtyByTile(tile);
 
-			if (_is_main_river && (radius > 1)) {
+			if (_settings_game.game_creation.land_generator != LG_ORIGINAL && _is_main_river && (radius > 1)) {
 				CircularTileSearch(&tile, radius + RandomRange(1), RiverMakeWider, (void *)&path->node.tile);
 			} else {
 				/* Remove desert directly around the river tile. */
@@ -1660,7 +1660,6 @@ void OnTick_Trees();
 void OnTick_Station();
 void OnTick_Industry();
 
-void OnTick_Companies();
 void OnTick_LinkGraph();
 
 void CallLandscapeTick()
@@ -1674,6 +1673,5 @@ void CallLandscapeTick()
 		OnTick_Industry();
 	}
 
-	OnTick_Companies();
 	OnTick_LinkGraph();
 }

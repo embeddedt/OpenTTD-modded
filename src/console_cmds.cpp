@@ -59,9 +59,12 @@
 #include "scope_info.h"
 #include "event_logs.h"
 #include "tile_cmd.h"
+#include "object_base.h"
 #include <time.h>
 
 #include <set>
+
+#include <sstream>
 
 #include "safeguards.h"
 
@@ -806,6 +809,19 @@ DEF_CONSOLE_CMD(ConUnpauseGame)
 	return true;
 }
 
+DEF_CONSOLE_CMD(ConStepGame)
+{
+	if (argc == 0 || argc > 2) {
+		IConsoleHelp("Advances the game for a certain amount of ticks (default 1). Usage: 'step [n]'");
+		return true;
+	}
+	auto n = (argc > 1 ? atoi(argv[1]) : 1);
+
+	DoCommandP(0, PM_PAUSED_NORMAL, 0 | (n << 1), CMD_PAUSE);
+
+	return true;
+}
+
 DEF_CONSOLE_CMD(ConRcon)
 {
 	if (argc == 0) {
@@ -1283,42 +1299,67 @@ static void PrintLineByLine(char *buf)
 	});
 }
 
+/**
+ * Print a text buffer line by line to the console. Lines are separated by '\n'.
+ * @param full_string The multi-line string to print.
+ */
+static void PrintLineByLine(const std::string &full_string)
+{
+	std::istringstream in(full_string);
+	std::string line;
+	while (std::getline(in, line)) {
+		IConsolePrint(CC_DEFAULT, line.c_str());
+	}
+}
+
 DEF_CONSOLE_CMD(ConListAILibs)
 {
-	char buf[4096];
-	AI::GetConsoleLibraryList(buf, lastof(buf));
+	if (argc == 0) {
+		IConsoleHelp("List installed AI libraries. Usage: 'list_ai_libs'.");
+		return true;
+	}
 
-	PrintLineByLine(buf);
+	const std::string output_str = AI::GetConsoleLibraryList();
+	PrintLineByLine(output_str);
 
 	return true;
 }
 
 DEF_CONSOLE_CMD(ConListAI)
 {
-	char buf[4096];
-	AI::GetConsoleList(buf, lastof(buf));
+	if (argc == 0) {
+		IConsoleHelp("List installed AIs. Usage: 'list_ai'.");
+		return true;
+	}
 
-	PrintLineByLine(buf);
+	const std::string output_str = AI::GetConsoleList();
+	PrintLineByLine(output_str);
 
 	return true;
 }
 
 DEF_CONSOLE_CMD(ConListGameLibs)
 {
-	char buf[4096];
-	Game::GetConsoleLibraryList(buf, lastof(buf));
+	if (argc == 0) {
+		IConsoleHelp("List installed Game Script libraries. Usage: 'list_game_libs'.");
+		return true;
+	}
 
-	PrintLineByLine(buf);
+	const std::string output_str = Game::GetConsoleLibraryList();
+	PrintLineByLine(output_str);
 
 	return true;
 }
 
 DEF_CONSOLE_CMD(ConListGame)
 {
-	char buf[4096];
-	Game::GetConsoleList(buf, lastof(buf));
+	if (argc == 0) {
+		IConsoleHelp("List installed Game Scripts. Usage: 'list_game'.");
+		return true;
+	}
 
-	PrintLineByLine(buf);
+	const std::string output_str = Game::GetConsoleList();
+	PrintLineByLine(output_str);
 
 	return true;
 }
@@ -1728,7 +1769,7 @@ DEF_CONSOLE_CMD(ConDebugLevel)
 	if (argc == 1) {
 		IConsolePrintF(CC_DEFAULT, "Current debug-level: '%s'", GetDebugString());
 	} else {
-		SetDebugString(argv[1]);
+		SetDebugString(argv[1], [](const char *err) { IConsolePrint(CC_ERROR, err); });
 	}
 
 	return true;
@@ -2508,6 +2549,7 @@ DEF_CONSOLE_CMD(ConMapStats)
 	IConsolePrint(CC_DEFAULT, "");
 	IConsolePrintF(CC_DEFAULT, "towns: %u", (uint) Town::GetNumItems());
 	IConsolePrintF(CC_DEFAULT, "industries: %u", (uint) Industry::GetNumItems());
+	IConsolePrintF(CC_DEFAULT, "objects: %u", (uint) Object::GetNumItems());
 	return true;
 }
 
@@ -3649,6 +3691,7 @@ void IConsoleStdLibRegister()
 
 	IConsole::CmdRegister("pause",                   ConPauseGame,        ConHookServerOrNoNetwork);
 	IConsole::CmdRegister("unpause",                 ConUnpauseGame,      ConHookServerOrNoNetwork);
+	IConsole::CmdRegister("step",                    ConStepGame,         ConHookNoNetwork);
 
 	IConsole::CmdRegister("company_pw",              ConCompanyPassword,  ConHookNeedNetwork);
 	IConsole::AliasRegister("company_password",      "company_pw %+");

@@ -56,8 +56,10 @@ class CrashLogWindows : public CrashLog {
 	char *LogRegisters(char *buffer, const char *last) const override;
 	char *LogModules(char *buffer, const char *last) const override;
 public:
-#if defined(_MSC_VER) || defined(WITH_DBGHELP)
+#if defined(_MSC_VER)
 	int WriteCrashDump(char *filename, const char *filename_last) const override;
+#endif /* _MSC_VER */
+#if defined(_MSC_VER) || defined(WITH_DBGHELP)
 	char *AppendDecodedStacktrace(char *buffer, const char *last) const;
 #else
 	char *AppendDecodedStacktrace(char *buffer, const char *last) const { return buffer; }
@@ -548,6 +550,28 @@ char *CrashLogWindows::AppendDecodedStacktrace(char *buffer, const char *last) c
 				if (bfd_info.file_name != nullptr) {
 					buffer += seprintf(buffer, last, " (%s:%d)", bfd_info.file_name, bfd_info.line);
 				}
+				if (bfd_info.found && bfd_info.abfd) {
+					const char *file_name = nullptr;
+					const char *func_name = nullptr;
+					uint line_num = 0;
+					uint iteration_limit = 32;
+					while (iteration_limit-- && bfd_find_inliner_info(bfd_info.abfd, &file_name, &func_name, &line_num)) {
+						buffer += seprintf(buffer, last, "\n[inlined]%*s", (int)(19 + (sizeof(void *) * 2)), "");
+						if (func_name) {
+							int status = -1;
+							char *demangled = nullptr;
+#if defined(WITH_DEMANGLE)
+							demangled = abi::__cxa_demangle(func_name, nullptr, 0, &status);
+#endif
+							const char *name = (demangled != nullptr && status == 0) ? demangled : func_name;
+							buffer += seprintf(buffer, last, " %s", name);
+							free(demangled);
+						}
+						if (file_name != nullptr) {
+							buffer += seprintf(buffer, last, " (%s:%u)", file_name, line_num);
+						}
+					}
+				}
 #endif
 			}
 			buffer += seprintf(buffer, last, "\n");
@@ -558,7 +582,9 @@ char *CrashLogWindows::AppendDecodedStacktrace(char *buffer, const char *last) c
 
 	return buffer + seprintf(buffer, last, "\n*** End of additional info ***\n");
 }
+#endif /* _MSC_VER  || WITH_DBGHELP */
 
+#if defined(_MSC_VER)
 /* virtual */ int CrashLogWindows::WriteCrashDump(char *filename, const char *filename_last) const
 {
 	if (_settings_client.gui.developer == 0) return 0;

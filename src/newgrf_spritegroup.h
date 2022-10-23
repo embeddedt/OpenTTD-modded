@@ -50,43 +50,7 @@ enum SpriteGroupType : uint8 {
 struct SpriteGroup;
 typedef uint32 SpriteGroupID;
 struct ResolverObject;
-
-enum AnalyseCallbackOperationMode : uint8 {
-	ACOM_CB_VAR,
-	ACOM_CB36_PROP,
-	ACOM_FIND_CB_RESULT,
-	ACOM_CB36_SPEED,
-	ACOM_INDUSTRY_TILE,
-	ACOM_CB_REFIT_CAPACITY,
-};
-
-struct AnalyseCallbackOperationIndustryTileData;
-
-enum AnalyseCallbackOperationResultFlags : uint8 {
-	ACORF_NONE                              = 0,
-	ACORF_CB_RESULT_FOUND                   = 1 << 0,
-	ACORF_CB_REFIT_CAP_NON_WHITELIST_FOUND  = 1 << 1,
-	ACORF_CB_REFIT_CAP_SEEN_VAR_47          = 1 << 2,
-};
-DECLARE_ENUM_AS_BIT_SET(AnalyseCallbackOperationResultFlags)
-
-struct AnalyseCallbackOperation {
-	struct FindCBResultData {
-		uint16 callback;
-		bool check_var_10;
-		uint8 var_10_value;
-	};
-
-	btree::btree_set<const SpriteGroup *> seen;
-	AnalyseCallbackOperationMode mode = ACOM_CB_VAR;
-	SpriteGroupCallbacksUsed callbacks_used = SGCU_NONE;
-	AnalyseCallbackOperationResultFlags result_flags = ACORF_NONE;
-	uint64 properties_used = 0;
-	union {
-		FindCBResultData cb_result;
-		AnalyseCallbackOperationIndustryTileData *indtile;
-	} data;
-};
+struct AnalyseCallbackOperation;
 
 /* SPRITE_WIDTH is 24. ECS has roughly 30 sprite groups per real sprite.
  * Adding an 'extra' margin would be assuming 64 sprite groups per real
@@ -97,6 +61,7 @@ extern SpriteGroupPool _spritegroup_pool;
 enum SpriteGroupFlags : uint8 {
 	SGF_NONE                     = 0,
 	SGF_ACTION6                  = 1 << 0,
+	SGF_INLINING                 = 1 << 1,
 };
 DECLARE_ENUM_AS_BIT_SET(SpriteGroupFlags)
 
@@ -210,6 +175,7 @@ enum DeterministicSpriteGroupAdjustOperation : uint8 {
 	DSGA_OP_JNZ,            ///< jump forward fixed number of adjusts (to adjust after DSGAF_END_BLOCK marker (taking into account nesting)) if b is non-zero. return b if jumped, return a if not jumped
 	DSGA_OP_JZ_LV,          ///< jump forward fixed number of adjusts (to adjust after DSGAF_END_BLOCK marker (taking into account nesting)) if a is zero. return a
 	DSGA_OP_JNZ_LV,         ///< jump forward fixed number of adjusts (to adjust after DSGAF_END_BLOCK marker (taking into account nesting)) if a is non-zero. return a
+	DSGA_OP_NOOP,           ///< a
 
 	DSGA_OP_SPECIAL_END,
 };
@@ -238,6 +204,7 @@ inline bool IsEvalAdjustWithZeroRemovable(DeterministicSpriteGroupAdjustOperatio
 		case DSGA_OP_SHL:
 		case DSGA_OP_SHR:
 		case DSGA_OP_SAR:
+		case DSGA_OP_UMAX:
 			return true;
 
 		default:
@@ -252,6 +219,19 @@ inline bool IsEvalAdjustWithZeroAlwaysZero(DeterministicSpriteGroupAdjustOperati
 		case DSGA_OP_MUL:
 		case DSGA_OP_AND:
 		case DSGA_OP_RST:
+			return true;
+
+		default:
+			return false;
+	}
+}
+
+inline bool IsEvalAdjustWithOneRemovable(DeterministicSpriteGroupAdjustOperation op)
+{
+	switch (op) {
+		case DSGA_OP_MUL:
+		case DSGA_OP_SDIV:
+		case DSGA_OP_UDIV:
 			return true;
 
 		default:
@@ -462,11 +442,12 @@ struct DeterministicSpriteGroupRange {
 enum DeterministicSpriteGroupFlags : uint8 {
 	DSGF_NONE                    = 0,
 	DSGF_NO_DSE                  = 1 << 0,
-	DSGF_DSE_RECURSIVE_DISABLE   = 1 << 1,
 	DSGF_VAR_TRACKING_PENDING    = 1 << 2,
 	DSGF_REQUIRES_VAR1C          = 1 << 3,
 	DSGF_CHECK_EXPENSIVE_VARS    = 1 << 4,
 	DSGF_CHECK_INSERT_JUMP       = 1 << 5,
+	DSGF_CB_HANDLER              = 1 << 6,
+	DSGF_INLINE_CANDIDATE        = 1 << 7,
 };
 DECLARE_ENUM_AS_BIT_SET(DeterministicSpriteGroupFlags)
 
@@ -474,6 +455,7 @@ struct DeterministicSpriteGroupShadowCopy {
 	std::vector<DeterministicSpriteGroupAdjust> adjusts;
 	std::vector<DeterministicSpriteGroupRange> ranges;
 	const SpriteGroup *default_group;
+	bool calculated_result;
 };
 
 struct DeterministicSpriteGroup : SpriteGroup {
@@ -762,16 +744,23 @@ private:
 	DumpSpriteGroupPrinter print_fn;
 
 	const SpriteGroup *top_default_group = nullptr;
+	const SpriteGroup *top_graphics_group = nullptr;
 	btree::btree_set<const DeterministicSpriteGroup *> seen_dsgs;
 
 	enum SpriteGroupDumperFlags {
 		SGDF_DEFAULT          = 1 << 0,
+		SGDF_RANGE            = 1 << 1,
 	};
+
+	void DumpSpriteGroup(const SpriteGroup *sg, const char *prefix, uint flags);
 
 public:
 	SpriteGroupDumper(DumpSpriteGroupPrinter print) : print_fn(print) {}
 
-	void DumpSpriteGroup(const SpriteGroup *sg, int padding, uint flags);
+	void DumpSpriteGroup(const SpriteGroup *sg, uint flags)
+	{
+		this->DumpSpriteGroup(sg, "", flags);
+	}
 };
 
 void DumpSpriteGroup(const SpriteGroup *sg, DumpSpriteGroupPrinter print);

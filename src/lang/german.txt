@@ -231,9 +231,9 @@ STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}m
 STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}m
 
 # Common window strings
-STR_LIST_FILTER_TITLE                                           :{BLACK}Auswahl-Text:
-STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Filter eingeben
-STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Stichwort eingeben, mit dem die Liste gefiltert werden soll
+STR_LIST_FILTER_TITLE                                           :{BLACK}Filter:
+STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Einen oder mehrere Schlüsselwörter für den Listenfilter eingeben
+STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Ein oder mehrere Stichwörter eingeben, mit dem die Liste gefiltert werden soll
 
 STR_TOOLTIP_GROUP_ORDER                                         :{BLACK}Gruppierung wählen
 STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Sortierreihenfolge auswählen (absteigend/aufsteigend)
@@ -1213,7 +1213,7 @@ STR_WARNING_NO_SUITABLE_AI                                      :{WHITE}Keine KI
 
 # Settings tree window
 STR_CONFIG_SETTING_TREE_CAPTION                                 :{WHITE}Einstellungen
-STR_CONFIG_SETTING_FILTER_TITLE                                 :{BLACK}Suchtext:
+STR_CONFIG_SETTING_FILTER_TITLE                                 :{BLACK}Filter:
 STR_CONFIG_SETTING_EXPAND_ALL                                   :{BLACK}Alles ausklappen
 STR_CONFIG_SETTING_COLLAPSE_ALL                                 :{BLACK}Alles einklappen
 STR_CONFIG_SETTING_RESET_ALL                                    :{BLACK}Alle Werte zurücksetzen
@@ -1294,7 +1294,7 @@ STR_CONFIG_SETTING_RUNNING_COSTS_IN_DEPOT_HELPTEXT              :Legt die Höhe 
 STR_CONFIG_SETTING_RUNNING_COSTS_IN_DEPOT_VALUE                 :1 / {COMMA}
 
 STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED                   :Betriebskosten gestoppter Fahrzeuge: {STRING}
-STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED_HELPTEXT          :Legt die Höhe der Wartungs- und Betriebskosten gestoppter Fahrzeugefest, die sich nicht im Depot befinden
+STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED_HELPTEXT          :Legt die Höhe der Wartungs- und Betriebskosten gestoppter Fahrzeuge, die sich nicht im Depot befinden, fest
 STR_CONFIG_SETTING_RUNNING_COSTS_WHEN_STOPPED_VALUE             :1 / {COMMA}
 
 STR_CONFIG_SETTING_CONSTRUCTION_SPEED                           :Baugeschwindigkeit: {STRING}
@@ -1502,7 +1502,7 @@ STR_CONFIG_SETTING_ROADVEH_CANT_QUANTUM_TUNNEL                  :Verhindert das 
 STR_CONFIG_SETTING_ROADVEH_CANT_QUANTUM_TUNNEL_HELPTEXT         :Deaktiviert das Durchfahren eines Straßenfahrzeugs durch ein anderes, wenn dessen Weg für längere Zeit blockiert ist und es deshalb den Weg anderer Straßenfahrzeuge blockiert.
 
 STR_CONFIG_SETTING_DRIVE_THROUGH_TRAIN_DEPOT                    :Durchfahrts-Zugdepots: {STRING}
-STR_CONFIG_SETTING_DRIVE_THROUGH_TRAIN_DEPOT_HELPTEXT           :Aktiviert die Emulation von Durchfahrts-Zugdepots. Züge können sich zwischen Zugdepots bewegen, die Rücken an Rücken platziert sind, optional mit weiteren Depots dazwischen. Erforder den YAPF-Pathfinder.
+STR_CONFIG_SETTING_DRIVE_THROUGH_TRAIN_DEPOT_HELPTEXT           :Aktiviert die Emulation von Durchfahrts-Zugdepots. Züge können sich zwischen Zugdepots bewegen, die Rücken an Rücken platziert sind, optional mit weiteren Depots dazwischen. Erfordert den YAPF-Pathfinder.
 
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :Firmenfarbe zu Spielbeginn: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :Wähle die Firmenfarbe zu Spielbeginn
@@ -1597,7 +1597,7 @@ STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREY_TO_RED                :Grau zu rot
 STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREYSCALE                  :Graustufe
 
 STR_CONFIG_SETTING_VEHICLE_NAMES                                :Fahrzeugnamen: {STRING}
-STR_CONFIG_SETTING_VEHICLE_NAMES_HELPTEXT                       :Legt das Namensschema für Fahrzeugnamen fest. Dies wird niht auf Fahrzeuge angewendet, die einen selbst festgelegten Namen haben.
+STR_CONFIG_SETTING_VEHICLE_NAMES_HELPTEXT                       :Legt das Namensschema für Fahrzeugnamen fest. Dies wird nicht auf Fahrzeuge angewendet, die einen selbst festgelegten Namen haben.
 STR_CONFIG_SETTING_VEHICLE_NAMES_TRADITIONAL                    :Traditionell
 STR_CONFIG_SETTING_VEHICLE_NAMES_MODERN                         :Modern
 STR_CONFIG_SETTING_VEHICLE_NAMES_LONG                           :Lang
@@ -1687,11 +1687,11 @@ STR_CONFIG_SETTING_ROUGHNESS_OF_TERRAIN_VERY_ROUGH              :Sehr zerklüfte
 STR_CONFIG_SETTING_VARIETY                                      :Größe der Geländeformen: {STRING}
 STR_CONFIG_SETTING_VARIETY_HELPTEXT                             :(nur TerraGenesis) Beinflusst, ob die Karte sowohl bergige als auch ebene Gegenden enthält. Weil dieses die Karte nur ebener macht, sollten andere Einstellungen auf bergig gesetzt werden.
 STR_CONFIG_SETTING_RIVER_MIN_LENGTH                             :Mindestlänge von Flüssen: {STRING}
-STR_CONFIG_SETTING_RIVER_MIN_LENGTH_HELPTEXT                    :Mininale Länge von Flüssen. Damit wird auch die Erstellung von Seen bestimmt.
-STR_CONFIG_SETTING_RIVER_ROUTE_RANDOM                           :Zufällgikeit von Flussläufen: {STRING}
+STR_CONFIG_SETTING_RIVER_MIN_LENGTH_HELPTEXT                    :Minimale Länge von Flüssen. Damit wird auch die Erstellung von Seen bestimmt.
+STR_CONFIG_SETTING_RIVER_ROUTE_RANDOM                           :Zufälligkeit von Flussläufen: {STRING}
 STR_CONFIG_SETTING_RIVER_ROUTE_RANDOM_HELPTEXT                  :Wähle, wie zufällig die Flussläufe aussehen sollen.
 STR_CONFIG_SETTING_RIVERS_TOP_OF_HILL                           :Flussläufe sollen von höhreren zu niedrigeren Höhenstufen verlaufen: {STRING}
-STR_CONFIG_SETTING_RIVERS_TOP_OF_HILL_HELPTEXT                  :Legt fest, ob die Quellen von Flüssen in den bergen liegen sollen.
+STR_CONFIG_SETTING_RIVERS_TOP_OF_HILL_HELPTEXT                  :Legt fest, ob die Quellen von Flüssen in den Bergen liegen sollen.
 STR_CONFIG_SETTING_RIVER_TROPICS_WIDTH                          :Breite des tropischen Geländes um Flussläufe herum: {STRING}
 STR_CONFIG_SETTING_RIVER_TROPICS_WIDTH_HELPTEXT                 :Legt die Breite des tropischen Geländes fest, das Flüsse umgibt.{}This is the total width of the zone on both sides of the river.
 STR_CONFIG_SETTING_LAKE_TROPICS_WIDTH                           :Breite des tropischen Geländes um Seen herum: {STRING}
@@ -1845,10 +1845,10 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :Schließt ein F
 STR_CONFIG_SETTING_AUTOSAVE                                     :Autosicherung: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Intervall zwischen automatischen Speicherungen wählen
 
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS                         :benutzerdefinierter Autosicherungsintervall in Tagen: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS                         :Benutzerdefinierter Autosicherungsintervall in Tagen: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS_HELPTEXT                :Legt einen benutzerdefinierten Intervall für die Autosicherung in Tagen fest.
 
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES                      :benutzerdefinierter Autosicherungsintervall in Echtzeitminuten: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES                      :Benutzerdefinierter Autosicherungsintervall in Echtzeitminuten: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES_HELPTEXT             :Legt eine Zeitspanne in Echtzeitminuten für den Abstand zwischen Autosicherungen fest.
 
 STR_CONFIG_SETTING_AUTOSAVE_ON_NETWORK_DISCONNECT               :Autosichern bei Verbindungsabbruch: {STRING}
@@ -2267,7 +2267,6 @@ STR_CONFIG_SETTING_ZOOM_LVL_OUT_128X                            :128x
 
 STR_CONFIG_SETTING_SPRITE_ZOOM_MIN                              :Höchste Auflösung der Sprites: {STRING}
 STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT                     :Limitiert die maximale Auflösung, die von Sprites verwendet wird. Das Limitieren der Sprite-Auflösung verhindert das Verwenden von hochauflösenden Grafiken selbst dann, wenn diese verfügbar sind. Dies kann dabei helfen eine einheitliche Spieldarstellung zu erhalten, wenn GRF-Dateien mit und ohne hochauflösenden Grafiken verwendet werden.
-STR_CONFIG_SETTING_SPRITE_ZOOM_MIN_HELPTEXT_EXTRA               :{STRING}{}{}Die Verwendung einer anderen als der Standardeinstellung kann dazu führen, dass NewGRFs mit Extra-Zoom- und/oder 24Bit-Grafiken Platzhalter, falsche oder transparente Grafiken anzeigen. Falls solche Probleme auftreten, benutze die Standardeinstellung (1x).
 ###length 3
 STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_MIN                          :4x
 STR_CONFIG_SETTING_SPRITE_ZOOM_LVL_IN_2X                        :2x
@@ -3124,6 +3123,8 @@ STR_LINKGRAPH_LEGEND_UNUSED                                     :{TINY_FONT}{BLA
 STR_LINKGRAPH_LEGEND_SATURATED                                  :{TINY_FONT}{BLACK}ausgeglichen
 STR_LINKGRAPH_LEGEND_OVERLOADED                                 :{TINY_FONT}{BLACK}überlastet
 
+# Linkgraph tooltip
+
 # Base for station construction window(s)
 STR_STATION_BUILD_COVERAGE_AREA_TITLE                           :{BLACK}Einzugsgebiet anzeigen
 STR_STATION_BUILD_COVERAGE_OFF                                  :{BLACK}aus
@@ -3265,7 +3266,7 @@ STR_TRACE_RESTRICT_VARIABLE_TRAIN_OWNER                         :Zugbesitzer
 STR_TRACE_RESTRICT_VARIABLE_TRAIN_STATUS                        :Zugstatus
 STR_TRACE_RESTRICT_VARIABLE_TRAIN_ENGINE_CLASS                  :Antriebsart
 STR_TRACE_RESTRICT_VARIABLE_UNDEFINED                           :undefiniert
-STR_TRACE_RESTRICT_VARIABLE_UNDEFINED_RED                       :{RED}undefiniert
+STR_TRACE_RESTRICT_VARIABLE_UNDEFINED_RED                       :{PUSH_COLOUR}{RED}undefiniert{POP_COLOUR}
 STR_TRACE_RESTRICT_CONDITIONAL_COMPARE_INTEGER                  :{STRING} {STRING} {STRING} {COMMA} dann
 STR_TRACE_RESTRICT_CONDITIONAL_COMPARE_SPEED                    :{STRING} {STRING} {STRING} {VELOCITY} dann
 STR_TRACE_RESTRICT_CONDITIONAL_COMPARE_WEIGHT                   :{STRING} {STRING} {STRING} {WEIGHT_SHORT} dann
@@ -3360,9 +3361,9 @@ STR_TRACE_RESTRICT_COUNTER_NAME                                 :{TRCOUNTER}
 STR_TRACE_RESTRICT_COUNTER_INCREASE                             :Inkrementiere
 STR_TRACE_RESTRICT_COUNTER_DECREASE                             :Dekrementiere
 STR_TRACE_RESTRICT_COUNTER_SET                                  :Setze
-STR_TRACE_RESTRICT_COUNTER_INCREASE_ITEM                        :Inkrementiere Zähler: {STRING}{BLACK}{STRING} um {COMMA}
-STR_TRACE_RESTRICT_COUNTER_DECREASE_ITEM                        :Dekrementiere Zähler: {STRING}{BLACK}{STRING} um {COMMA}
-STR_TRACE_RESTRICT_COUNTER_SET_ITEM                             :Setze Zähler: {STRING}{BLACK}{STRING} auf {COMMA}
+STR_TRACE_RESTRICT_COUNTER_INCREASE_ITEM                        :Inkrementiere Zähler: {STRING} um {COMMA}
+STR_TRACE_RESTRICT_COUNTER_DECREASE_ITEM                        :Dekrementiere Zähler: {STRING} um {COMMA}
+STR_TRACE_RESTRICT_COUNTER_SET_ITEM                             :Setze Zähler: {STRING} auf {COMMA}
 STR_TRACE_RESTRICT_TRAIN_STATUS_EMPTY                           :leer
 STR_TRACE_RESTRICT_TRAIN_STATUS_FULL                            :voll
 STR_TRACE_RESTRICT_TRAIN_STATUS_BROKEN_DOWN                     :hat eine Panne
@@ -4068,7 +4069,7 @@ STR_SAVELOAD_DETAIL_CAPTION                                     :{BLACK}Spielsta
 STR_SAVELOAD_DETAIL_NOT_AVAILABLE                               :{BLACK}Keine Informationen verfügbar
 STR_SAVELOAD_DETAIL_COMPANY_INDEX                               :{SILVER}{COMMA}: {WHITE}{STRING}
 STR_SAVELOAD_DETAIL_GRFSTATUS                                   :{SILVER}NewGRF: {WHITE}{STRING}
-STR_SAVELOAD_FILTER_TITLE                                       :{BLACK}Suchtext:
+STR_SAVELOAD_FILTER_TITLE                                       :{BLACK}Filter:
 STR_SAVELOAD_OVERWRITE_TITLE                                    :{WHITE}Datei überschreiben
 STR_SAVELOAD_OVERWRITE_WARNING                                  :{YELLOW}Existierende Datei wirklich überschreiben?
 STR_SAVELOAD_DIRECTORY                                          :{STRING} (Verzeichnis)
@@ -4725,6 +4726,7 @@ STR_FINANCES_SECTION_OTHER                                      :{GOLD}Sonstiges
 STR_FINANCES_SECTION_INFRASTRUCTURE_COSTS                       :{GOLD}Kosten für Infrastruktur-Sharing
 STR_FINANCES_SECTION_INFRASTRUCTURE_INCOME                      :{GOLD}Einnahmen aus Infrastruktur-Sharing
 STR_FINANCES_NEGATIVE_INCOME                                    :-{CURRENCY_LONG}
+STR_FINANCES_ZERO_INCOME                                        :{CURRENCY_LONG}
 STR_FINANCES_POSITIVE_INCOME                                    :+{CURRENCY_LONG}
 STR_FINANCES_NET_PROFIT                                         :{WHITE}Reingewinn
 STR_FINANCES_BANK_BALANCE_TITLE                                 :{WHITE}Kontostand
@@ -4985,6 +4987,7 @@ STR_PURCHASE_INFO_RUNNINGCOST                                   :{BLACK}Betriebs
 STR_PURCHASE_INFO_CAPACITY                                      :{BLACK}Kapazität: {GOLD}{CARGO_LONG} {STRING}
 STR_PURCHASE_INFO_REFITTABLE                                    :(umrüstbar)
 STR_PURCHASE_INFO_DESIGNED_LIFE                                 :{BLACK}Entworfen: {GOLD}{NUM}{BLACK} Betriebsdauer: {GOLD}{COMMA} Jahr{P "" e}
+STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Entworfen: {GOLD}{NUM}
 STR_PURCHASE_INFO_RELIABILITY                                   :{BLACK}Max. Zuverlässigkeit: {GOLD}{COMMA}%
 STR_PURCHASE_INFO_COST                                          :{BLACK}Kosten: {GOLD}{CURRENCY_LONG}
 STR_PURCHASE_INFO_COST_REFIT                                    :{BLACK}Kosten: {GOLD}{CURRENCY_LONG}{BLACK} (Kosten der Umrüstung: {GOLD}{CURRENCY_LONG}{BLACK})
@@ -5378,7 +5381,9 @@ STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED                         :{BLACK}Gewicht:
 STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE                  :{BLACK}Gewicht: {LTBLUE}{WEIGHT_SHORT} {BLACK}Leistung: {LTBLUE}{POWER}{BLACK} Max. Geschw.: {LTBLUE}{VELOCITY} {BLACK}Max. Zugkraft: {LTBLUE}{FORCE}
 
 STR_VEHICLE_INFO_TRAIN_LENGTH                                   :{BLACK}Zuglänge: {LTBLUE}{DECIMAL} Kachel{P "" n} {STRING}
-STR_VEHICLE_INFO_WEIGHT_RATIOS                                  :{BLACK}Leistung / Gewicht: {LTBLUE}{POWER_WEIGHT_RATIO} {BLACK} Max. Zugkraft / Gewicht: {LTBLUE}{FORCE_WEIGHT_RATIO}
+STR_VEHICLE_INFO_WEIGHT_RATIOS                                  :{STRING} {STRING}
+STR_VEHICLE_INFO_POWER_WEIGHT_RATIO                             :{BLACK}Leistung / Gewicht: {LTBLUE}{POWER_WEIGHT_RATIO}
+STR_VEHICLE_INFO_TE_WEIGHT_RATIO                                :{BLACK}Max. Zugkraft / Gewicht: {LTBLUE}{FORCE_WEIGHT_RATIO}
 STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS                        :{BLACK}Volles Gewicht: {LTBLUE}{WEIGHT_SHORT} {STRING}
 STR_VEHICLE_INFO_MAX_SPEED_LOADED                               :{BLACK}Maximalgeschwindigkeit (beladen): {LTBLUE}{VELOCITY}
 
@@ -5790,7 +5795,7 @@ STR_TIMETABLE_STATUS_NOT_STARTED                                :{BLACK}Dieser F
 STR_TIMETABLE_STATUS_START_AT                                   :{BLACK}Dieser Fahrplan wird ab {STRING} in Kraft sein
 
 STR_TIMETABLE_STARTING_DATE                                     :{BLACK}Anfangsdatum
-STR_TIMETABLE_STARTING_DATE_TOOLTIP                             :{BLACK}Wähle ein Anfangsdatum für diesen Fahrplan aus. Mit Strg+Klick wird das Anfangsdatum dieses Fahrplans festgelegt und bei allen anderen Fahrzeugen, die nach demselben Fahrplan unterwegs sind, wird ein zeitlich versetztes Anfangsdatum gesetzt, so dass die Abstände zwischen den einzelnen Fahrzeugen immer gleich sind. Dazu muss der Fahrplan erst komplett erfasst worden sein.
+STR_TIMETABLE_STARTING_DATE_TOOLTIP                             :{BLACK}Wähle ein Anfangsdatum für diesen Fahrplan aus. Mit Strg+Klick wird bei allen Fahrzeugen, die nach demselben Fahrplan unterwegs sind, ein zeitlich versetztes Anfangsdatum gesetzt, so dass die Abstände zwischen den einzelnen Fahrzeugen immer gleich sind. Dazu muss der Fahrplan erst komplett erfasst worden sein.
 
 STR_TIMETABLE_CHANGE_TIME                                       :{BLACK}Zeit ändern
 STR_TIMETABLE_WAIT_TIME_TOOLTIP                                 :{BLACK}Zeitrahmen für den markierten Auftrag ändern

@@ -230,9 +230,9 @@ STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}m
 STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}m
 
 # Common window strings
-STR_LIST_FILTER_TITLE                                           :{BLACK}Süzgeç metni:
-STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Süzgeç metnini girin
-STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Listeyi filtrelemek için bir anahtar sözcük girin
+STR_LIST_FILTER_TITLE                                           :{BLACK}Filtre:
+STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Listeyi filtrelemek için anahtar sözcük girin
+STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Listeyi filtrelemek için anahtar sözcük girin
 
 STR_TOOLTIP_GROUP_ORDER                                         :{BLACK}Gruplama sırasını seç
 STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Sıralama türünü seçin (azalan/artan)
@@ -1175,7 +1175,7 @@ STR_WARNING_NO_SUITABLE_AI                                      :{WHITE}Uygun YZ
 
 # Settings tree window
 STR_CONFIG_SETTING_TREE_CAPTION                                 :{WHITE}Ayarlar
-STR_CONFIG_SETTING_FILTER_TITLE                                 :{BLACK}Süzgeç metni:
+STR_CONFIG_SETTING_FILTER_TITLE                                 :{BLACK}Filtre:
 STR_CONFIG_SETTING_EXPAND_ALL                                   :{BLACK}Tümünü genişlet
 STR_CONFIG_SETTING_COLLAPSE_ALL                                 :{BLACK}Tümünü kısalt
 STR_CONFIG_SETTING_RESET_ALL                                    :{BLACK}Tüm değerleri sıfırla
@@ -2629,6 +2629,8 @@ STR_LINKGRAPH_LEGEND_UNUSED                                     :{TINY_FONT}{BLA
 STR_LINKGRAPH_LEGEND_SATURATED                                  :{TINY_FONT}{BLACK}doygun
 STR_LINKGRAPH_LEGEND_OVERLOADED                                 :{TINY_FONT}{BLACK}aşırı dolu
 
+# Linkgraph tooltip
+
 # Base for station construction window(s)
 STR_STATION_BUILD_COVERAGE_AREA_TITLE                           :{BLACK}Kapsama alanı
 STR_STATION_BUILD_COVERAGE_OFF                                  :{BLACK}Kapalı
@@ -3136,7 +3138,7 @@ STR_SAVELOAD_DETAIL_CAPTION                                     :{BLACK}Oyun Ayr
 STR_SAVELOAD_DETAIL_NOT_AVAILABLE                               :{BLACK}Mevcut bilgi yok
 STR_SAVELOAD_DETAIL_COMPANY_INDEX                               :{SILVER}{COMMA}: {WHITE}{STRING}
 STR_SAVELOAD_DETAIL_GRFSTATUS                                   :{SILVER}NewGRF: {WHITE}{STRING}
-STR_SAVELOAD_FILTER_TITLE                                       :{BLACK}Süzgeç dizgesi:
+STR_SAVELOAD_FILTER_TITLE                                       :{BLACK}Filtre:
 STR_SAVELOAD_OVERWRITE_TITLE                                    :{WHITE}Dosya Üzerine Yaz
 STR_SAVELOAD_OVERWRITE_WARNING                                  :{YELLOW}Mevcut dosyanın üzerine yazmak istediğinizden emin misiniz?
 STR_SAVELOAD_DIRECTORY                                          :{STRING} (Dizin)
@@ -3232,7 +3234,7 @@ STR_NEWGRF_SETTINGS_INFO_TITLE                                  :{WHITE}Ayrınt�
 STR_NEWGRF_SETTINGS_ACTIVE_LIST                                 :{WHITE}Aktif NewGRF dosyaları
 STR_NEWGRF_SETTINGS_INACTIVE_LIST                               :{WHITE}Aktif olmayan NewGRF dosyaları
 STR_NEWGRF_SETTINGS_SELECT_PRESET                               :{ORANGE}Önceden belirlenmiş ayar seçin:
-STR_NEWGRF_FILTER_TITLE                                         :{ORANGE}Süzgeç metni:
+STR_NEWGRF_FILTER_TITLE                                         :{ORANGE}Filtre:
 STR_NEWGRF_SETTINGS_PRESET_LIST_TOOLTIP                         :{BLACK}Seçili önayarı yükle
 STR_NEWGRF_SETTINGS_PRESET_SAVE                                 :{BLACK}Önayarı kaydet
 STR_NEWGRF_SETTINGS_PRESET_SAVE_TOOLTIP                         :{BLACK}Şimdiki listeyi önayar olarak kaydet
@@ -3657,6 +3659,7 @@ STR_FINANCES_SECTION_LOAN_INTEREST                              :{GOLD}Kredi Fai
 STR_FINANCES_SECTION_OTHER                                      :{GOLD}Diğer
 
 STR_FINANCES_NEGATIVE_INCOME                                    :-{CURRENCY_LONG}
+STR_FINANCES_ZERO_INCOME                                        :{CURRENCY_LONG}
 STR_FINANCES_POSITIVE_INCOME                                    :+{CURRENCY_LONG}
 STR_FINANCES_NET_PROFIT                                         :{WHITE}Net Kâr
 STR_FINANCES_BANK_BALANCE_TITLE                                 :{WHITE}Banka Hesabı
@@ -3869,6 +3872,7 @@ STR_PURCHASE_INFO_RUNNINGCOST                                   :{BLACK}Bakım: 
 STR_PURCHASE_INFO_CAPACITY                                      :{BLACK}Kapasite: {GOLD}{CARGO_LONG} {STRING}
 STR_PURCHASE_INFO_REFITTABLE                                    :(modifiyeli)
 STR_PURCHASE_INFO_DESIGNED_LIFE                                 :{BLACK}Yapım yılı: {GOLD}{NUM}{BLACK} Ömür: {GOLD}{COMMA} sene
+STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Yapım yılı: {GOLD}{NUM}
 STR_PURCHASE_INFO_RELIABILITY                                   :{BLACK}Aza. Güvenilirlik: {GOLD}%{COMMA}
 STR_PURCHASE_INFO_COST                                          :{BLACK}Fiyat: {GOLD}{CURRENCY_LONG}
 STR_PURCHASE_INFO_COST_REFIT                                    :{BLACK}Maliyet: {GOLD}{CURRENCY_LONG}{BLACK} (Tamirat Maliyeti: {GOLD}{CURRENCY_LONG}{BLACK})

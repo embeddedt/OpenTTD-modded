@@ -2,6 +2,53 @@
 
 * * *
 
+### v0.48.5 (2022-10-05)
+* Fix vehicles with no cargo being shown with the cargo of the last selected vehicle in the build vehicle window.
+* Fix animation of NewGRF road stops.
+* Fix crash when reloading NewGRFs when the landscape info window is open.
+* Fix crash when selecting a release slot order in ship and aircraft order windows.
+* Fix hang which could occur with some NewGRFs.
+* Slightly reduce the map entropy of tree tiles.
+* Bump trunk base from commit 164ec3ac07c514cdce692554f6339ce1f05d8869 to commit f011a559d01db3eb43e71031ff03fa904a41d068.
+
+### v0.48.4 (2022-09-26)
+* Fix crash when a tram attempted to turn around against the underside of a tram custom bridge head.
+* Fix crash when removing a routing restriction which enabled reserve through from a tunnel/bridge with signals.
+* Fix some NewGRFs having incorrect behaviour in some special cases.
+* Bump trunk base from commit 81388d9425c63121eeb43bf247fb1458ca6ead92 to commit 164ec3ac07c514cdce692554f6339ce1f05d8869.
+
+### v0.48.3 (2022-09-18)
+* Fix crash when joining a multiplayer server when a saved default face is set.
+* Fix displayed capacities/weights of articulated vehicles in build window.
+* Fix moving and selling template train wagons/engines being disallowed when paused, when build while paused setting disallows construction actions.
+* Fix improved breakdowns being incorrectly enabled after loading old/other savegames.
+* Allow changing road vehicle driving side when all road vehicles are in depots.
+* Add AI/GS script method to get annual expense category value.
+* Do not show max TE/weight for maglevs.
+* Bump trunk base from commit 03552996395be4c468d64adc7a076e1b233f0d4c to commit 81388d9425c63121eeb43bf247fb1458ca6ead92.
+
+### v0.48.2 (2022-09-09)
+* Fix excessive braking for slopes with realistic train braking.
+* Fix incorrect infrastructure totals when overbuilding bay road stops with a different road/tram type active.
+* Fix route step markers being rendered incorrectly with some fonts or when the zoom level is changed.
+* Fix conflicts between company bankruptcy and manually triggered company sales, reduce delays before showing purchase company prompts.
+* Fix crash when showing the maximum achievable speed estimate for trains of 0 mass.
+* Fix crash which could occur with autoreplace failure news messages in some languages.
+* Fix crash which could occur when adding plans in single player.
+* Fix some industry NewGRFs having incorrect behaviour (when querying the closest industry of an invalid or non present type).
+* Template-based train replacement:
+  * Fix incorrect template replacement error message when the template is not buildable.
+  * Show warning if template trains are not compatible with any rail type.
+* Only apply the highest resolution sprites to use setting when the NewGRF supplies suitable fallback graphics.
+* Add a setting to show the introduction year for train wagons.
+* Add setting to show group hierarchy in vehicle names.
+* Add routing restriction conditional on direction of order target from signal.
+* Remove road vehicles during load which are uncorrectably invalid (i.e. when required NewGRFs are missing), instead of crashing.
+* AI/GS script:
+  * Increase the maximum number of operations which scripts can use when saving the game.
+  * Add script functions to get and set inflation factors.
+* Bump trunk base from commit ccb9d9988011725c1ff0d415af37efb99e2b0849 to commit 03552996395be4c468d64adc7a076e1b233f0d4c.
+
 ### v0.48.1 (2022-08-01)
 * Fix various issues that could occur when attempting to disable infrastructure sharing when shared infrastructure is still in use.
 * Fix crashes and other issues when removing a company would remove infrastructure which is in use by the train reservation of another company when realistic braking is enabled.

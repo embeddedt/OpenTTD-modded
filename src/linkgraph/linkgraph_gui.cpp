@@ -14,6 +14,7 @@
 #include "../company_gui.h"
 #include "../date_func.h"
 #include "../viewport_func.h"
+#include "../zoom_func.h"
 #include "../smallmap_gui.h"
 #include "../zoom_func.h"
 #include "../landscape.h"
@@ -169,7 +170,7 @@ void LinkGraphOverlay::RebuildCache(bool incremental)
 					item->from_pt = from_pt;
 					item->to_pt = to_pt;
 				}
-				this->AddStats(lg.Monthly(edge.Capacity()), lg.Monthly(edge.Usage()),
+				this->AddStats(c, lg.Monthly(edge.Capacity()), lg.Monthly(edge.Usage()),
 						ge.flows.GetFlowVia(to->index), from->owner == OWNER_NONE || to->owner == OWNER_NONE,
 						item->prop);
 			}
@@ -344,11 +345,12 @@ inline bool LinkGraphOverlay::IsLinkVisible(Point pta, Point ptb, const DrawPixe
  * @param new_shared If the new link is shared.
  * @param cargo LinkProperties to write the information to.
  */
-/* static */ void LinkGraphOverlay::AddStats(uint new_cap, uint new_usg, uint new_plan, bool new_shared, LinkProperties &cargo)
+/* static */ void LinkGraphOverlay::AddStats(CargoID new_cargo, uint new_cap, uint new_usg, uint new_plan, bool new_shared, LinkProperties &cargo)
 {
 	/* multiply the numbers by 32 in order to avoid comparing to 0 too often. */
 	if (cargo.capacity == 0 ||
-			std::max(cargo.usage, cargo.planned) * 32 / (cargo.capacity + 1) < std::max(new_usg, new_plan) * 32 / (new_cap + 1)) {
+			cargo.Usage() * 32 / (cargo.capacity + 1) < std::max(new_usg, new_plan) * 32 / (new_cap + 1)) {
+		cargo.cargo = new_cargo;
 		cargo.capacity = new_cap;
 		cargo.usage = new_usg;
 		cargo.planned = new_plan;
@@ -399,8 +401,9 @@ void LinkGraphOverlay::Draw(const DrawPixelInfo *dpi)
  */
 void LinkGraphOverlay::DrawLinks(const DrawPixelInfo *dpi) const
 {
+	int width = ScaleGUITrad(this->scale);
 	for (LinkList::const_iterator i(this->cached_links.begin()); i != this->cached_links.end(); ++i) {
-		if (!this->IsLinkVisible(i->from_pt, i->to_pt, dpi, this->scale + 2)) continue;
+		if (!this->IsLinkVisible(i->from_pt, i->to_pt, dpi, width + 2)) continue;
 		if (!Station::IsValidID(i->from_id)) continue;
 		if (!Station::IsValidID(i->to_id)) continue;
 		this->DrawContent(i->from_pt, i->to_pt, i->prop);
@@ -415,22 +418,23 @@ void LinkGraphOverlay::DrawLinks(const DrawPixelInfo *dpi) const
  */
 void LinkGraphOverlay::DrawContent(Point pta, Point ptb, const LinkProperties &cargo) const
 {
-	uint usage_or_plan = std::min(cargo.capacity * 2 + 1, std::max(cargo.usage, cargo.planned));
+	uint usage_or_plan = std::min(cargo.capacity * 2 + 1, cargo.Usage());
 	int colour = LinkGraphOverlay::LINK_COLOURS[_settings_client.gui.linkgraph_colours][usage_or_plan * lengthof(LinkGraphOverlay::LINK_COLOURS[0]) / (cargo.capacity * 2 + 2)];
-	int dash = cargo.shared ? this->scale * 4 : 0;
+	int width = ScaleGUITrad(this->scale);
+	int dash = cargo.shared ? width * 4 : 0;
 
 	/* Move line a bit 90° against its dominant direction to prevent it from
 	 * being hidden below the grey line. */
 	int side = _settings_game.vehicle.road_side ? 1 : -1;
 	if (abs(pta.x - ptb.x) < abs(pta.y - ptb.y)) {
-		int offset_x = (pta.y > ptb.y ? 1 : -1) * side * this->scale;
-		GfxDrawLine(pta.x + offset_x, pta.y, ptb.x + offset_x, ptb.y, colour, this->scale, dash);
+		int offset_x = (pta.y > ptb.y ? 1 : -1) * side * width;
+		GfxDrawLine(pta.x + offset_x, pta.y, ptb.x + offset_x, ptb.y, colour, width, dash);
 	} else {
-		int offset_y = (pta.x < ptb.x ? 1 : -1) * side * this->scale;
-		GfxDrawLine(pta.x, pta.y + offset_y, ptb.x, ptb.y + offset_y, colour, this->scale, dash);
+		int offset_y = (pta.x < ptb.x ? 1 : -1) * side * width;
+		GfxDrawLine(pta.x, pta.y + offset_y, ptb.x, ptb.y + offset_y, colour, width, dash);
 	}
 
-	GfxDrawLine(pta.x, pta.y, ptb.x, ptb.y, _colour_gradient[COLOUR_GREY][1], this->scale);
+	GfxDrawLine(pta.x, pta.y, ptb.x, ptb.y, _colour_gradient[COLOUR_GREY][1], width);
 }
 
 /**
@@ -439,14 +443,15 @@ void LinkGraphOverlay::DrawContent(Point pta, Point ptb, const LinkProperties &c
  */
 void LinkGraphOverlay::DrawStationDots(const DrawPixelInfo *dpi) const
 {
+	int width = ScaleGUITrad(this->scale);
 	for (StationSupplyList::const_iterator i(this->cached_stations.begin()); i != this->cached_stations.end(); ++i) {
 		const Point &pt = i->pt;
-		if (!this->IsPointVisible(pt, dpi, 3 * this->scale)) continue;
+		if (!this->IsPointVisible(pt, dpi, 3 * width)) continue;
 
 		const Station *st = Station::GetIfValid(i->id);
 		if (st == nullptr) continue;
 
-		uint r = this->scale * 2 + this->scale * 2 * std::min<uint>(200, i->quantity) / 200;
+		uint r = width * 2 + width * 2 * std::min<uint>(200, i->quantity) / 200;
 
 		LinkGraphOverlay::DrawVertex(pt.x, pt.y, r,
 				_colour_gradient[st->owner != OWNER_NONE ?
@@ -477,6 +482,56 @@ void LinkGraphOverlay::DrawStationDots(const DrawPixelInfo *dpi) const
 	GfxDrawLine(x - w1, y + w2, x + w2, y + w2, border_colour);
 	GfxDrawLine(x - w1, y - w1, x - w1, y + w2, border_colour);
 	GfxDrawLine(x + w2, y - w1, x + w2, y + w2, border_colour);
+}
+
+bool LinkGraphOverlay::ShowTooltip(Point pt, TooltipCloseCondition close_cond)
+{
+	for (LinkList::const_reverse_iterator i(this->cached_links.rbegin()); i != this->cached_links.rend(); ++i) {
+		if (!Station::IsValidID(i->from_id)) continue;
+		if (!Station::IsValidID(i->to_id)) continue;
+
+		Point pta = i->from_pt;
+		Point ptb = i->to_pt;
+
+		/* Check the distance from the cursor to the line defined by the two stations. */
+		auto check_distance = [&]() -> bool {
+			int64 a = ((ptb.x - pta.x) * (pta.y - pt.y) - (pta.x - pt.x) * (ptb.y - pta.y));
+			return ((a * a) / ((ptb.x - pta.x) * (ptb.x - pta.x) + (ptb.y - pta.y) * (ptb.y - pta.y))) <= 16;
+		};
+		const auto &link = i->prop;
+		if (link.Usage() > 0 &&
+				pt.x + 2 >= std::min(pta.x, ptb.x) &&
+				pt.x - 2 <= std::max(pta.x, ptb.x) &&
+				check_distance()) {
+
+			static char buf[1024];
+			buf[0] = 0;
+
+			/* Fill buf with more information if this is a bidirectional link. */
+			for (LinkList::const_reverse_iterator j = std::next(i); j != this->cached_links.rend(); ++j) {
+				if (j->from_id == i->to_id && j->to_id == i->from_id) {
+					if (j->prop.Usage() > 0) {
+						SetDParam(0, j->prop.cargo);
+						SetDParam(1, j->prop.Usage());
+						SetDParam(2, j->prop.Usage() * 100 / (j->prop.capacity + 1));
+						GetString(buf, STR_LINKGRAPH_STATS_TOOLTIP_RETURN_EXTENSION, lastof(buf));
+					}
+					break;
+				}
+			}
+
+			SetDParam(0, link.cargo);
+			SetDParam(1, link.Usage());
+			SetDParam(2, i->from_id);
+			SetDParam(3, i->to_id);
+			SetDParam(4, link.Usage() * 100 / (link.capacity + 1));
+			SetDParamStr(5, buf);
+			GuiShowTooltips(this->window, STR_LINKGRAPH_STATS_TOOLTIP, 0, nullptr, close_cond);
+			return true;
+		}
+	}
+	GuiShowTooltips(this->window, STR_NULL, 0, nullptr, close_cond);
+	return false;
 }
 
 /**

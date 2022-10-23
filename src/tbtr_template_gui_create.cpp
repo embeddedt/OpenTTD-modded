@@ -122,7 +122,7 @@ static void TrainDepotMoveVehicle(const Vehicle *wagon, VehicleID sel, const Veh
 	if (wagon == v) return;
 
 	DoCommandP(v->tile, v->index | ((_ctrl_pressed ? 1 : 0) << 20) | (1 << 21) , wagon == nullptr ? INVALID_VEHICLE : wagon->index,
-			CMD_MOVE_RAIL_VEHICLE | CMD_MSG(STR_ERROR_CAN_T_MOVE_VEHICLE), CcVirtualTrainWagonsMoved);
+			CMD_MOVE_VIRTUAL_RAIL_VEHICLE | CMD_MSG(STR_ERROR_CAN_T_MOVE_VEHICLE), CcVirtualTrainWagonsMoved);
 }
 
 class TemplateCreateWindow : public Window {
@@ -308,12 +308,21 @@ public:
 					int y = ScaleGUITrad(4) - this->vscroll->GetPosition();
 					bool buildable = true;
 					Money buy_cost = 0;
+					RailTypes types = static_cast<RailTypes>(UINT64_MAX);
 					for (Train *train = this->virtual_train; train != nullptr; train = train->GetNextUnit()) {
-						if (!IsEngineBuildable(train->engine_type, VEH_TRAIN, train->owner)) buildable = false;
-						buy_cost += Engine::Get(train->engine_type)->GetCost();
+						const Engine *e = Engine::Get(train->engine_type);
+						if (!IsEngineBuildable(train->engine_type, VEH_TRAIN, train->owner)) {
+							buildable = false;
+						} else {
+							types &= (GetRailTypeInfo(e->u.rail.railtype))->compatible_railtypes;
+						}
+						buy_cost += e->GetCost();
 					}
 					if (!buildable) {
 						DrawString(8, r.right, y, STR_TMPL_WARNING_VEH_UNAVAILABLE);
+						y += FONT_HEIGHT_NORMAL;
+					} else if (types == RAILTYPES_NONE) {
+						DrawString(8, r.right, y, STR_TMPL_WARNING_VEH_NO_COMPATIBLE_RAIL_TYPE);
 						y += FONT_HEIGHT_NORMAL;
 					}
 
@@ -343,8 +352,10 @@ public:
 						SetDParam(0, full_weight);
 						if (_settings_client.gui.show_train_weight_ratios_in_details) {
 							SetDParam(1, STR_VEHICLE_INFO_WEIGHT_RATIOS);
-							SetDParam(2, (100 * this->virtual_train->gcache.cached_power) / std::max<uint>(1, full_weight));
-							SetDParam(3, (this->virtual_train->gcache.cached_max_te / 10) / std::max<uint>(1, full_weight));
+							SetDParam(2, STR_VEHICLE_INFO_POWER_WEIGHT_RATIO);
+							SetDParam(3, (100 * this->virtual_train->gcache.cached_power) / std::max<uint>(1, full_weight));
+							SetDParam(4, this->virtual_train->GetAccelerationType() == 2 ? STR_EMPTY : STR_VEHICLE_INFO_TE_WEIGHT_RATIO);
+							SetDParam(5, (this->virtual_train->gcache.cached_max_te / 10) / std::max<uint>(1, full_weight));
 						} else {
 							SetDParam(1, STR_EMPTY);
 						}
@@ -421,7 +432,7 @@ public:
 					}
 				}
 
-				DoCommandP(0, this->sel | (sell_cmd << 20) | (1 << 21), 0, GetCmdSellVeh(VEH_TRAIN), CcDeleteVirtualTrain);
+				DoCommandP(0, this->sel | (sell_cmd << 20) | (1 << 21), 0, CMD_SELL_VIRTUAL_VEHICLE | CMD_MSG(STR_ERROR_CAN_T_SELL_TRAIN), CcDeleteVirtualTrain);
 
 				this->sel = INVALID_VEHICLE;
 

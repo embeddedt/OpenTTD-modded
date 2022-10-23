@@ -95,6 +95,7 @@ static const uint GEN_HASHY_BUCKET_BITS = 6;
 VehicleID _new_vehicle_id;
 uint _returned_refit_capacity;        ///< Stores the capacity after a refit operation.
 uint16 _returned_mail_refit_capacity; ///< Stores the mail capacity after a refit operation (Aircraft only).
+CargoArray _returned_vehicle_capacities; ///< Stores the cargo capacities after a vehicle build operation
 
 
 /** The pool with all our precious vehicles. */
@@ -160,7 +161,7 @@ bool Vehicle::NeedsAutorenewing(const Company *c, bool use_renew_setting) const
 	 * However this takes time and since the Company pointer is often present
 	 * when this function is called then it's faster to pass the pointer as an
 	 * argument rather than finding it again. */
-	assert(c == Company::Get(this->owner));
+	dbg_assert(c == Company::Get(this->owner));
 
 	if (use_renew_setting && !c->settings.engine_renew) return false;
 	if (this->age - this->max_age < (c->settings.engine_renew_months * 30)) return false;
@@ -178,7 +179,7 @@ bool Vehicle::NeedsAutorenewing(const Company *c, bool use_renew_setting) const
  */
 void VehicleServiceInDepot(Vehicle *v)
 {
-	assert(v != nullptr);
+	dbg_assert(v != nullptr);
 	const Engine *e = Engine::Get(v->engine_type);
 	if (v->type == VEH_TRAIN) {
 		if (v->Next() != nullptr) VehicleServiceInDepot(v->Next());
@@ -1146,7 +1147,7 @@ void Vehicle::PreDestructor()
 		HideFillingPercent(&this->fill_percent_te_id);
 		this->CancelReservation(INVALID_STATION, st);
 		delete this->cargo_payment;
-		assert(this->cargo_payment == nullptr); // cleared by ~CargoPayment
+		dbg_assert(this->cargo_payment == nullptr); // cleared by ~CargoPayment
 	}
 
 	if (this->IsEngineCountable()) {
@@ -1485,7 +1486,7 @@ void VehicleTickMotion(Vehicle *v, Vehicle *front)
 	if (v->vehstatus & VS_HIDDEN) return;
 
 	v->motion_counter += front->cur_speed;
-	if (_settings_client.sound.vehicle) {
+	if (_settings_client.sound.vehicle && _settings_client.music.effect_vol != 0) {
 		/* Play a running sound if the motion counter passes 256 (Do we not skip sounds?) */
 		if (GB(v->motion_counter, 0, 8) < front->cur_speed) PlayVehicleSound(v, VSE_RUNNING);
 
@@ -1628,7 +1629,7 @@ void CallVehicleTicks()
 	}
 	v = nullptr;
 
-	/* do Template Replacement */
+	/* Handle vehicles marked for immediate sale */
 	Backup<CompanyID> sell_cur_company(_current_company, FILE_LINE);
 	for (VehicleID index : _vehicles_to_sell) {
 		Vehicle *v = Vehicle::Get(index);
@@ -1765,7 +1766,7 @@ void CallVehicleTicks()
 			default:
 				NOT_REACHED();
 		}
-		assert(type != INVALID_EXPENSES);
+		dbg_assert(type != INVALID_EXPENSES);
 
 		Money vehicle_new_value = v->GetEngine()->GetCost();
 
@@ -2517,7 +2518,7 @@ uint8 CalcPercentVehicleFilledOfCargo(const Vehicle *front, CargoID cargo)
 void VehicleEnterDepot(Vehicle *v)
 {
 	/* Always work with the front of the vehicle */
-	assert(v == v->First());
+	dbg_assert(v == v->First());
 
 	switch (v->type) {
 		case VEH_TRAIN: {
@@ -3379,7 +3380,7 @@ void Vehicle::LeaveStation()
 	assert(this->current_order.IsAnyLoadingType());
 
 	delete this->cargo_payment;
-	assert(this->cargo_payment == nullptr); // cleared by ~CargoPayment
+	dbg_assert(this->cargo_payment == nullptr); // cleared by ~CargoPayment
 
 	ClrBit(this->vehicle_flags, VF_COND_ORDER_WAIT);
 
@@ -3509,7 +3510,7 @@ void Vehicle::LeaveStation()
 void Vehicle::AdvanceLoadingInStation()
 {
 	assert(this->current_order.IsType(OT_LOADING));
-	assert(this->type == VEH_TRAIN);
+	dbg_assert(this->type == VEH_TRAIN);
 
 	ClrBit(Train::From(this)->flags, VRF_ADVANCE_IN_PLATFORM);
 
@@ -3943,7 +3944,7 @@ int ReversingDistanceTargetSpeed(const Train *v);
  */
 void Vehicle::ShowVisualEffect(uint max_speed) const
 {
-	assert(this->IsPrimaryVehicle());
+	dbg_assert(this->IsPrimaryVehicle());
 	bool sound = false;
 
 	/* Do not show any smoke when:
@@ -4099,7 +4100,7 @@ void Vehicle::ShowVisualEffect(uint max_speed) const
  */
 void Vehicle::SetNext(Vehicle *next)
 {
-	assert(this != next);
+	dbg_assert(this != next);
 
 	if (this->next != nullptr) {
 		/* We had an old next vehicle. Update the first and previous pointers */
@@ -4128,11 +4129,11 @@ void Vehicle::SetNext(Vehicle *next)
  */
 void Vehicle::AddToShared(Vehicle *shared_chain)
 {
-	assert(this->previous_shared == nullptr && this->next_shared == nullptr);
+	dbg_assert(this->previous_shared == nullptr && this->next_shared == nullptr);
 
 	if (shared_chain->orders == nullptr) {
-		assert(shared_chain->previous_shared == nullptr);
-		assert(shared_chain->next_shared == nullptr);
+		dbg_assert(shared_chain->previous_shared == nullptr);
+		dbg_assert(shared_chain->next_shared == nullptr);
 		this->orders = shared_chain->orders = new OrderList(nullptr, shared_chain);
 	}
 
@@ -4374,7 +4375,7 @@ void VehiclesYearlyLoop()
 bool CanVehicleUseStation(EngineID engine_type, const Station *st)
 {
 	const Engine *e = Engine::GetIfValid(engine_type);
-	assert(e != nullptr);
+	dbg_assert(e != nullptr);
 
 	switch (e->type) {
 		case VEH_TRAIN:
@@ -4467,7 +4468,7 @@ StringID GetVehicleCannotUseStationReason(const Vehicle *v, const Station *st)
  */
 GroundVehicleCache *Vehicle::GetGroundVehicleCache()
 {
-	assert(this->IsGroundVehicle());
+	dbg_assert(this->IsGroundVehicle());
 	if (this->type == VEH_TRAIN) {
 		return &Train::From(this)->gcache;
 	} else {
@@ -4482,7 +4483,7 @@ GroundVehicleCache *Vehicle::GetGroundVehicleCache()
  */
 const GroundVehicleCache *Vehicle::GetGroundVehicleCache() const
 {
-	assert(this->IsGroundVehicle());
+	dbg_assert(this->IsGroundVehicle());
 	if (this->type == VEH_TRAIN) {
 		return &Train::From(this)->gcache;
 	} else {
@@ -4497,7 +4498,7 @@ const GroundVehicleCache *Vehicle::GetGroundVehicleCache() const
  */
 uint16 &Vehicle::GetGroundVehicleFlags()
 {
-	assert(this->IsGroundVehicle());
+	dbg_assert(this->IsGroundVehicle());
 	if (this->type == VEH_TRAIN) {
 		return Train::From(this)->gv_flags;
 	} else {
@@ -4512,7 +4513,7 @@ uint16 &Vehicle::GetGroundVehicleFlags()
  */
 const uint16 &Vehicle::GetGroundVehicleFlags() const
 {
-	assert(this->IsGroundVehicle());
+	dbg_assert(this->IsGroundVehicle());
 	if (this->type == VEH_TRAIN) {
 		return Train::From(this)->gv_flags;
 	} else {
@@ -4595,6 +4596,7 @@ void DumpVehicleStats(char *buffer, const char *last)
 		line(it.second.template_train, "tmpl train");
 		buffer += seprintf(buffer, last, "\n");
 	}
+	buffer += seprintf(buffer, last, "  %10s: %5u\n", "total", (uint)Vehicle::GetNumItems());
 }
 
 void ShiftVehicleDates(int interval)

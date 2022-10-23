@@ -740,18 +740,23 @@ static GUIEngineList::FilterFunction * const _filter_funcs[] = {
 	&CargoAndEngineFilter,
 };
 
-static int DrawCargoCapacityInfo(int left, int right, int y, EngineID engine, TestedEngineDetails &te)
+static uint GetCargoWeight(const CargoArray &cap)
 {
-	CargoArray cap;
-	CargoTypes refits;
-	GetArticulatedVehicleCargoesAndRefits(engine, &cap, &refits, te.cargo, te.capacity);
-
+	uint weight = 0;
 	for (CargoID c = 0; c < NUM_CARGO; c++) {
-		if (cap[c] == 0) continue;
+		if (cap[c] != 0) weight += CargoSpec::Get(c)->weight * cap[c] / 16;
+	}
+	return weight;
+}
+
+static int DrawCargoCapacityInfo(int left, int right, int y, TestedEngineDetails &te, bool refittable)
+{
+	for (CargoID c = 0; c < NUM_CARGO; c++) {
+		if (te.all_capacities[c] == 0) continue;
 
 		SetDParam(0, c);
-		SetDParam(1, cap[c]);
-		SetDParam(2, HasBit(refits, c) ? STR_PURCHASE_INFO_REFITTABLE : STR_EMPTY);
+		SetDParam(1, te.all_capacities[c]);
+		SetDParam(2, refittable ? STR_PURCHASE_INFO_REFITTABLE : STR_EMPTY);
 		DrawString(left, right, y, STR_PURCHASE_INFO_CAPACITY);
 		y += FONT_HEIGHT_NORMAL;
 	}
@@ -778,8 +783,7 @@ static int DrawRailWagonPurchaseInfo(int left, int right, int y, EngineID engine
 	/* Wagon weight - (including cargo) */
 	uint weight = e->GetDisplayWeight();
 	SetDParam(0, weight);
-	uint cargo_weight = ((e->CanCarryCargo() && te.cargo < NUM_CARGO) ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
-	SetDParam(1, cargo_weight + weight);
+	SetDParam(1, GetCargoWeight(te.all_capacities) + weight);
 	DrawString(left, right, y, STR_PURCHASE_INFO_WEIGHT_CWEIGHT);
 	y += FONT_HEIGHT_NORMAL;
 
@@ -872,8 +876,7 @@ static int DrawRoadVehPurchaseInfo(int left, int right, int y, EngineID engine_n
 		/* Road vehicle weight - (including cargo) */
 		int16 weight = e->GetDisplayWeight();
 		SetDParam(0, weight);
-		uint cargo_weight = ((e->CanCarryCargo() && te.cargo < NUM_CARGO) ? CargoSpec::Get(te.cargo)->weight * te.capacity / 16 : 0);
-		SetDParam(1, cargo_weight + weight);
+		SetDParam(1, GetCargoWeight(te.all_capacities) + weight);
 		DrawString(left, right, y, STR_PURCHASE_INFO_WEIGHT_CWEIGHT);
 		y += FONT_HEIGHT_NORMAL;
 
@@ -1055,6 +1058,20 @@ static uint ShowAdditionalText(int left, int right, int y, EngineID engine)
 	return result;
 }
 
+void TestedEngineDetails::FillDefaultCapacities(const Engine *e)
+{
+	this->cargo = e->GetDefaultCargoType();
+	if (e->type == VEH_TRAIN || e->type == VEH_ROAD) {
+		this->all_capacities = GetCapacityOfArticulatedParts(e->index);
+		this->capacity = this->all_capacities[this->cargo];
+		this->mail_capacity = 0;
+	} else {
+		this->capacity = e->GetDisplayDefaultCapacity(&this->mail_capacity);
+		this->all_capacities[this->cargo] = this->capacity;
+		this->all_capacities[CT_MAIL] = this->mail_capacity;
+	}
+}
+
 /**
  * Draw the purchase info details of a vehicle at a given location.
  * @param left,right,y location where to draw the info
@@ -1096,7 +1113,7 @@ int DrawVehiclePurchaseInfo(int left, int right, int y, EngineID engine_number, 
 
 	if (articulated_cargo) {
 		/* Cargo type + capacity, or N/A */
-		int new_y = DrawCargoCapacityInfo(left, right, y, engine_number, te);
+		int new_y = DrawCargoCapacityInfo(left, right, y, te, refittable);
 
 		if (new_y == y) {
 			SetDParam(0, CT_INVALID);
@@ -1119,6 +1136,10 @@ int DrawVehiclePurchaseInfo(int left, int right, int y, EngineID engine_number, 
 		/* Reliability */
 		SetDParam(0, ToPercent16(e->reliability));
 		DrawString(left, right, y, STR_PURCHASE_INFO_RELIABILITY);
+		y += FONT_HEIGHT_NORMAL;
+	} else if (_settings_client.gui.show_wagon_intro_year) {
+		SetDParam(0, ymd.year);
+		DrawString(left, right, y, STR_PURCHASE_INFO_DESIGNED);
 		y += FONT_HEIGHT_NORMAL;
 	}
 
@@ -1255,7 +1276,7 @@ struct BuildVehicleWindowBase : Window {
 		} else {
 			VehicleID target = (*(this->virtual_train_out))->GetLastUnit()->index;
 
-			DoCommandP(0, (1 << 23) | (1 << 21) | toadd->index, target, CMD_MOVE_RAIL_VEHICLE | CMD_MSG(STR_ERROR_CAN_T_MOVE_VEHICLE), CcMoveNewVirtualEngine);
+			DoCommandP(0, (1 << 23) | (1 << 21) | toadd->index, target, CMD_MOVE_VIRTUAL_RAIL_VEHICLE | CMD_MSG(STR_ERROR_CAN_T_MOVE_VEHICLE), CcMoveNewVirtualEngine);
 		}
 	}
 };
@@ -1444,6 +1465,7 @@ struct BuildVehicleWindow : BuildVehicleWindowBase {
 		if (!e->CanCarryCargo()) {
 			this->te.cost = 0;
 			this->te.cargo = CT_INVALID;
+			this->te.all_capacities.Clear();
 			return;
 		}
 
@@ -1459,6 +1481,7 @@ struct BuildVehicleWindow : BuildVehicleWindowBase {
 					this->te.capacity      = _returned_refit_capacity;
 					this->te.mail_capacity = _returned_mail_refit_capacity;
 					this->te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+					this->te.all_capacities = _returned_vehicle_capacities;
 					delete t;
 					RestoreRandomSeeds(saved_seeds);
 					return;
@@ -1474,14 +1497,14 @@ struct BuildVehicleWindow : BuildVehicleWindowBase {
 				this->te.capacity      = _returned_refit_capacity;
 				this->te.mail_capacity = _returned_mail_refit_capacity;
 				this->te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+				this->te.all_capacities = _returned_vehicle_capacities;
 				return;
 			}
 		}
 
 		/* Purchase test was not possible or failed, fill in the defaults instead. */
 		this->te.cost     = 0;
-		this->te.capacity = e->GetDisplayDefaultCapacity(&this->te.mail_capacity);
-		this->te.cargo    = e->GetDefaultCargoType();
+		this->te.FillDefaultCapacities(e);
 	}
 
 	void OnInit() override
@@ -2226,6 +2249,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 		if (!e->CanCarryCargo()) {
 			state.te.cost = 0;
 			state.te.cargo = CT_INVALID;
+			state.te.all_capacities.Clear();
 			return;
 		}
 
@@ -2241,6 +2265,7 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 					state.te.capacity      = _returned_refit_capacity;
 					state.te.mail_capacity = _returned_mail_refit_capacity;
 					state.te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+					state.te.all_capacities = _returned_vehicle_capacities;
 					delete t;
 					RestoreRandomSeeds(saved_seeds);
 					return;
@@ -2256,14 +2281,14 @@ struct BuildVehicleWindowTrainAdvanced final : BuildVehicleWindowBase {
 				state.te.capacity      = _returned_refit_capacity;
 				state.te.mail_capacity = _returned_mail_refit_capacity;
 				state.te.cargo         = (cargo == CT_INVALID) ? e->GetDefaultCargoType() : cargo;
+				state.te.all_capacities = _returned_vehicle_capacities;
 				return;
 			}
 		}
 
 		/* Purchase test was not possible or failed, fill in the defaults instead. */
 		state.te.cost     = 0;
-		state.te.capacity = e->GetDisplayDefaultCapacity(&state.te.mail_capacity);
-		state.te.cargo    = e->GetDefaultCargoType();
+		state.te.FillDefaultCapacities(e);
 	}
 
 	void OnInit() override

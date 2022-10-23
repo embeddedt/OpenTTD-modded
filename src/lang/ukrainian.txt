@@ -2753,6 +2753,8 @@ STR_LINKGRAPH_LEGEND_OVERLOADED.r                               :{TINY_FONT}{BLA
 STR_LINKGRAPH_LEGEND_OVERLOADED.d                               :{TINY_FONT}{BLACK}перевантаженому
 STR_LINKGRAPH_LEGEND_OVERLOADED.z                               :{TINY_FONT}{BLACK}перевантажений
 
+# Linkgraph tooltip
+
 # Base for station construction window(s)
 STR_STATION_BUILD_COVERAGE_AREA_TITLE                           :{BLACK}Підсвічення зони покриття
 STR_STATION_BUILD_COVERAGE_OFF                                  :{BLACK}Ні
@@ -3982,6 +3984,7 @@ STR_PURCHASE_INFO_RUNNINGCOST                                   :{BLACK}Тран
 STR_PURCHASE_INFO_CAPACITY                                      :{BLACK}Місткість: {GOLD}{CARGO_LONG} {STRING}
 STR_PURCHASE_INFO_REFITTABLE                                    :(змінюється)
 STR_PURCHASE_INFO_DESIGNED_LIFE                                 :{BLACK}Рік випуску: {GOLD}{NUM}{BLACK} Вік: {GOLD}{COMMA} р{P ік оки оків}
+STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Рік випуску: {GOLD}{NUM}
 STR_PURCHASE_INFO_RELIABILITY                                   :{BLACK}Надійність: {GOLD}{COMMA}%
 STR_PURCHASE_INFO_COST                                          :{BLACK}Ціна: {GOLD}{CURRENCY_LONG}
 STR_PURCHASE_INFO_COST_REFIT                                    :{BLACK}Ціна: {GOLD}{CURRENCY_LONG}{BLACK} (Вартість переобладнання:: {GOLD}{CURRENCY_LONG}{BLACK})

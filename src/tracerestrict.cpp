@@ -569,6 +569,49 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 						break;
 					}
 
+					case TRIT_COND_TARGET_DIRECTION: {
+						const Order *o = nullptr;
+						switch (static_cast<TraceRestrictTargetDirectionCondAuxField>(GetTraceRestrictAuxField(item))) {
+							case TRTDCAF_CURRENT_ORDER:
+								o = &(v->current_order);
+								break;
+
+							case TRTDCAF_NEXT_ORDER:
+								if (v->orders == nullptr) break;
+								if (v->orders->GetNumOrders() == 0) break;
+
+								const Order *current_order = v->GetOrder(v->cur_real_order_index);
+								for (const Order *order = v->orders->GetNext(current_order); order != current_order; order = v->orders->GetNext(order)) {
+									if (order->IsGotoOrder()) {
+										o = order;
+										break;
+									}
+								}
+								break;
+						}
+
+						if (o == nullptr) break;
+
+						TileIndex target = o->GetLocation(v, true);
+						if (target == INVALID_TILE) break;
+
+						switch (condvalue) {
+							case DIAGDIR_NE:
+								result = TestBinaryConditionCommon(item, TileX(target) < TileX(input.tile));
+								break;
+							case DIAGDIR_SE:
+								result = TestBinaryConditionCommon(item, TileY(target) > TileY(input.tile));
+								break;
+							case DIAGDIR_SW:
+								result = TestBinaryConditionCommon(item, TileX(target) > TileX(input.tile));
+								break;
+							case DIAGDIR_NW:
+								result = TestBinaryConditionCommon(item, TileY(target) < TileY(input.tile));
+								break;
+						}
+						break;
+					}
+
 					default:
 						NOT_REACHED();
 				}
@@ -750,23 +793,7 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 						if (!(input.permitted_slot_operations & TRPISP_CHANGE_COUNTER)) break;
 						TraceRestrictCounter *ctr = TraceRestrictCounter::GetIfValid(GetTraceRestrictValue(item));
 						if (ctr == nullptr) break;
-						switch (static_cast<TraceRestrictCounterCondOpField>(GetTraceRestrictCondOp(item))) {
-							case TRCCOF_INCREASE:
-								ctr->UpdateValue(ctr->value + value);
-								break;
-
-							case TRCCOF_DECREASE:
-								ctr->UpdateValue(ctr->value - value);
-								break;
-
-							case TRCCOF_SET:
-								ctr->UpdateValue(value);
-								break;
-
-							default:
-								NOT_REACHED();
-								break;
-						}
+						ctr->ApplyUpdate(static_cast<TraceRestrictCounterCondOpField>(GetTraceRestrictCondOp(item)), value);
 						break;
 					}
 
@@ -980,6 +1007,7 @@ CommandCost TraceRestrictProgram::Validate(const std::vector<TraceRestrictItem> 
 				case TRIT_COND_CURRENT_ORDER:
 				case TRIT_COND_NEXT_ORDER:
 				case TRIT_COND_LAST_STATION:
+				case TRIT_COND_TARGET_DIRECTION:
 					actions_used_flags |= TRPAUF_ORDER_CONDITIONALS;
 					break;
 
@@ -1198,6 +1226,7 @@ void SetTraceRestrictValueDefault(TraceRestrictItem &item, TraceRestrictValueTyp
 		case TRVT_PF_PENALTY_CONTROL:
 		case TRVT_SPEED_ADAPTATION_CONTROL:
 		case TRVT_SIGNAL_MODE_CONTROL:
+		case TRVT_ORDER_TARGET_DIAGDIR:
 			SetTraceRestrictValue(item, 0);
 			if (!IsTraceRestrictTypeAuxSubtype(GetTraceRestrictType(item))) {
 				SetTraceRestrictAuxField(item, 0);
@@ -1371,7 +1400,9 @@ bool TraceRestrictRemoveProgramMapping(TraceRestrictRefId ref)
 			TraceRestrictRemoveProgramMapping(const_cast<const TraceRestrictProgram *>(prog)->GetRefIdsPtr()[0]);
 		}
 
-		if (update_reserve_through) UpdateSignalReserveThroughBit(tile, track, true);
+		if (update_reserve_through && IsTileType(tile, MP_RAILWAY)) {
+			UpdateSignalReserveThroughBit(tile, track, true);
+		}
 		return true;
 	} else {
 		return false;
@@ -2557,6 +2588,24 @@ void TraceRestrictCounter::UpdateValue(int32 new_value)
 	}
 }
 
+int32 TraceRestrictCounter::ApplyValue(int32 current, TraceRestrictCounterCondOpField op, int32 value)
+{
+	switch (op) {
+		case TRCCOF_INCREASE:
+			return std::max<int32>(0, current + value);
+
+		case TRCCOF_DECREASE:
+			return std::max<int32>(0, current - value);
+
+		case TRCCOF_SET:
+			return std::max<int32>(0, value);
+
+		default:
+			NOT_REACHED();
+			break;
+	}
+}
+
 static bool IsUniqueCounterName(const char *name)
 {
 	for (const TraceRestrictCounter *ctr : TraceRestrictCounter::Iterate()) {
@@ -2587,6 +2636,10 @@ void TraceRestrictRemoveCounterID(TraceRestrictCounterID index)
 				(o->GetConditionVariable() == OCV_COUNTER_VALUE) &&
 				GB(o->GetXData(), 16, 16) == index) {
 			SB(o->GetXDataRef(), 16, 16, INVALID_TRACE_RESTRICT_COUNTER_ID);
+			changed_order = true;
+		}
+		if (o->IsType(OT_COUNTER) && o->GetDestination() == index) {
+			o->SetDestination(INVALID_TRACE_RESTRICT_COUNTER_ID);
 			changed_order = true;
 		}
 	}

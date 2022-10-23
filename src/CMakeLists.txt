@@ -10,6 +10,7 @@ add_subdirectory(3rdparty)
 add_subdirectory(ai)
 add_subdirectory(blitter)
 add_subdirectory(core)
+add_subdirectory(fontcache)
 add_subdirectory(game)
 add_subdirectory(lang)
 add_subdirectory(linkgraph)
@@ -162,7 +163,6 @@ add_files(
     fios_gui.cpp
     fontcache.cpp
     fontcache.h
-    fontcache_internal.h
     fontdetection.h
     framerate_gui.cpp
     framerate_type.h
@@ -239,6 +239,8 @@ add_files(
     newgrf_airporttiles.h
     newgrf_animation_base.h
     newgrf_animation_type.h
+    newgrf_analysis.cpp
+    newgrf_analysis.h
     newgrf_cache_check.h
     newgrf_callbacks.h
     newgrf_canal.cpp
@@ -267,12 +269,14 @@ add_files(
     newgrf_industrytiles.cpp
     newgrf_industrytiles.h
     newgrf_industrytiles_analysis.h
+    newgrf_internal.h
     newgrf_newlandscape.cpp
     newgrf_newlandscape.h
     newgrf_newsignals.cpp
     newgrf_newsignals.h
     newgrf_object.cpp
     newgrf_object.h
+    newgrf_optimiser.cpp
     newgrf_profiling.cpp
     newgrf_profiling.h
     newgrf_properties.h

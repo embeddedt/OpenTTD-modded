@@ -674,15 +674,20 @@ public:
 			}
 
 			bool buildable = true;
+			RailTypes types = static_cast<RailTypes>(UINT64_MAX);
 			for (const TemplateVehicle *u = v; u != nullptr; u = u->GetNextUnit()) {
 				if (!IsEngineBuildable(u->engine_type, VEH_TRAIN, u->owner)) {
 					buildable = false;
 					break;
+				} else {
+					types &= (GetRailTypeInfo(Engine::Get(u->engine_type)->u.rail.railtype))->compatible_railtypes;
 				}
 			}
 			/* Draw a notification string for chains that are not buildable */
 			if (!buildable) {
 				DrawString(left, right - ScaleGUITrad(24), y + ScaleGUITrad(2), STR_TMPL_WARNING_VEH_UNAVAILABLE, TC_RED, SA_CENTER);
+			} else if (types == RAILTYPES_NONE) {
+				DrawString(left, right - ScaleGUITrad(24), y + ScaleGUITrad(2), STR_TMPL_WARNING_VEH_NO_COMPATIBLE_RAIL_TYPE, TC_RED, SA_CENTER);
 			}
 
 			/* Draw the template's length in tile-units */
@@ -763,8 +768,10 @@ public:
 			SetDParam(0, tmp->full_weight);
 			if (_settings_client.gui.show_train_weight_ratios_in_details) {
 				SetDParam(1, STR_VEHICLE_INFO_WEIGHT_RATIOS);
-				SetDParam(2, (100 * tmp->power) / std::max<uint>(1, tmp->full_weight));
-				SetDParam(3, (tmp->max_te / 10) / std::max<uint>(1, tmp->full_weight));
+				SetDParam(2, STR_VEHICLE_INFO_POWER_WEIGHT_RATIO);
+				SetDParam(3, (100 * tmp->power) / std::max<uint>(1, tmp->full_weight));
+				SetDParam(4, GetRailTypeInfo(tmp->railtype)->acceleration_type == 2 ? STR_EMPTY : STR_VEHICLE_INFO_TE_WEIGHT_RATIO);
+				SetDParam(5, (tmp->max_te / 10) / std::max<uint>(1, tmp->full_weight));
 			} else {
 				SetDParam(1, STR_EMPTY);
 			}

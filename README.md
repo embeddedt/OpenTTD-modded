@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.48.1
+## JGR's Patchpack version 0.48.5
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -84,6 +84,7 @@ See [installation.md](/installation.md) for instructions on how to install.
   These are not shown in the build signal window by default.
 * Add client setting to show all signals using the default baseset sprites.
 * Remember the last-used signal type between games.
+* Add client setting to show the introduction year for train wagons.
 
 #### Roads and Road Vehicles
 
@@ -97,6 +98,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add a setting to turn off road vehicles slowing in curves.
 * Add a setting to disable road vehicles from passing through each other when blocked for an extended period of time.
 * Allow road vehicle go to station/waypoint orders to have an associated required stop/bay/waypoint direction.
+* Allow changing road vehicle driving side when all road vehicles are in depots.
 
 #### Level Crossings
 
@@ -149,6 +151,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Slots and counters.  
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
 * Add cargo capacity / running cost sort mode to the build vehicle window.
+* Add client settings to show the full group hierarchy in group and vehicle names.
 
 #### Orders and Timetabling
 
@@ -518,35 +521,6 @@ Most types of add-on content can be downloaded within OpenTTD via the 'Check Onl
 
 Add-on content can also be installed manually, but that's more complicated; the [OpenTTD wiki](https://wiki.openttd.org/) may offer help with that, or the [OpenTTD directory structure guide](./docs/directory_structure.md).
 
-### 1.5.1) AI opponents
-
-OpenTTD comes without AI opponents, so if you want to play with AIs you have to download them.
-
-The easiest way is via the 'Check Online Content' button in the main menu.
-
-You can select some AIs that you think are compatible with your playing style.
-
-AI help and discussions may also be found in the [AI section of the forum](https://www.tt-forums.net/viewforum.php?f=65).
-
-### 1.5.2) Scenarios and height maps
-
-Scenarios and heightmaps can be added via the 'Check Online Content' button in the main menu.
-
-### 1.5.3) NewGRFs
-
-A wide range of add-content is available as NewGRFs, including vehicles, industries, stations, landscape objects, town names and more.
-
-NewGRFs can be added via the 'Check Online Content' button in the main menu.
-
-See also the wiki [guide to NewGRFs](https://wiki.openttd.org/en/Manual/NewGRF) and [the forum graphics development section](https://www.tt-forums.net/viewforum.php?f=66).
-
-### 1.5.4) Game scripts
-
-Game scripts can provide additional challenges or changes to the standard OpenTTD gameplay, for example setting transport goals, or changing town growth behaviour.
-
-Game scripts can be added via the 'Check Online Content' button in the main menu.
-
-See also the wiki [guide to game scripts](https://wiki.openttd.org/en/Manual/Game%20script) and [the forum graphics game script section](https://www.tt-forums.net/viewforum.php?f=65).
 
 ### 1.6) OpenTTD directories
 
@@ -564,6 +538,7 @@ If you want to compile OpenTTD from source, instructions can be found in [COMPIL
 'Official' channels
 
 - [OpenTTD website](https://www.openttd.org)
+- [OpenTTD official Discord](https://discord.gg/openttd)
 - IRC chat using #openttd on irc.oftc.net [more info about our irc channel](https://wiki.openttd.org/en/Development/IRC%20channel)
 - [OpenTTD on Github](https://github.com/OpenTTD/) for code repositories and for reporting issues
 - [forum.openttd.org](https://forum.openttd.org/) - the primary community forum site for discussing OpenTTD and related games

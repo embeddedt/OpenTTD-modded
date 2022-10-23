@@ -79,10 +79,12 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 
 	ViewportMapClearTunnelCache();
 	ClearCommandLog();
+	ClearCommandQueue();
 	ClearSpecialEventsLog();
 	ClearDesyncMsgLog();
 
 	_pause_mode = PM_UNPAUSED;
+	_pause_countdown = 0;
 	_game_speed = 100;
 	_tick_counter = 0;
 	_tick_skip_counter = 0;

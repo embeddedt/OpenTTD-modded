@@ -357,8 +357,8 @@ STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}м
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}Фильтр:
-STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Введите строку фильтра
-STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Введите ключевое слово для фильтрации списка
+STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Введите ключевые слова для фильтрации списка
+STR_LIST_FILTER_TOOLTIP                                         :{BLACK}Введите ключевые слова для фильтрации списка
 
 STR_TOOLTIP_GROUP_ORDER                                         :{BLACK}Выбор порядка группировки
 STR_TOOLTIP_SORT_ORDER                                          :{BLACK}Смена направления сортировки (убывание/возрастание)
@@ -379,7 +379,7 @@ STR_TOOLTIP_RESIZE                                              :{BLACK}Нажм
 STR_TOOLTIP_TOGGLE_LARGE_SMALL_WINDOW                           :{BLACK}Большое/маленькое окно
 STR_TOOLTIP_VSCROLL_BAR_SCROLLS_LIST                            :{BLACK}Прокрутка вверх/вниз
 STR_TOOLTIP_HSCROLL_BAR_SCROLLS_LIST                            :{BLACK}Прокрутка влево/вправо
-STR_TOOLTIP_DEMOLISH_BUILDINGS_ETC                              :{BLACK}Полная очистка прямоугольного участка земли. Ctrl - выбор области по диагонали. При нажатом Shift - оценка стоимости очистки.
+STR_TOOLTIP_DEMOLISH_BUILDINGS_ETC                              :{BLACK}Полная очистка прямоугольного участка земли.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости очистки.
 
 # Show engines button
 ###length VEHICLE_TYPES
@@ -511,7 +511,7 @@ STR_SCENEDIT_TOOLBAR_ROAD_CONSTRUCTION                          :{BLACK}Стро
 STR_SCENEDIT_TOOLBAR_TRAM_CONSTRUCTION                          :{BLACK}Строительство трамвайных путей
 STR_SCENEDIT_TOOLBAR_PLANT_TREES                                :{BLACK}Посадить деревья. При нажатом Shift - оценка стоимости высадки.
 STR_SCENEDIT_TOOLBAR_PLACE_SIGN                                 :{BLACK}Поставить метку
-STR_SCENEDIT_TOOLBAR_PLACE_OBJECT                               :{BLACK}Разместить объект. При нажатом Shift - оценка стоимости строительства.
+STR_SCENEDIT_TOOLBAR_PLACE_OBJECT                               :{BLACK}Разместить объект.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости строительства.
 
 # Scenario editor file menu
 ###length 7
@@ -2796,6 +2796,11 @@ STR_LINKGRAPH_LEGEND_UNUSED                                     :{TINY_FONT}{BLA
 STR_LINKGRAPH_LEGEND_SATURATED                                  :{TINY_FONT}{BLACK}загруж.
 STR_LINKGRAPH_LEGEND_OVERLOADED                                 :{TINY_FONT}{BLACK}перегруз
 
+# Linkgraph tooltip
+STR_LINKGRAPH_STATS_TOOLTIP                                     :{BLACK}{CARGO_LONG} в месяц к перевозке от {STATION} к {STATION} ({COMMA}% ёмкости){STRING}
+STR_LINKGRAPH_STATS_TOOLTIP_RETURN_EXTENSION                    :{}{CARGO_LONG} к возврату ({COMMA}% ёмкости)
+STR_LINKGRAPH_STATS_TOOLTIP_TIME_EXTENSION                      :{}Среднее время в пути: {NUM}{NBSP}д{P ень ня ней}
+
 # Base for station construction window(s)
 STR_STATION_BUILD_COVERAGE_AREA_TITLE                           :{BLACK}Подсветка зоны покрытия
 STR_STATION_BUILD_COVERAGE_OFF                                  :{BLACK}Выкл
@@ -3000,15 +3005,15 @@ STR_STATION_BUILD_NOISE                                         :{BLACK}Прои
 
 # Landscaping toolbar
 STR_LANDSCAPING_TOOLBAR                                         :{WHITE}Ландшафт
-STR_LANDSCAPING_TOOLTIP_LOWER_A_CORNER_OF_LAND                  :{BLACK}Опустить угол земли. Перетаскивание опускает первый выбранный угол и выравнивает выбранную область до новой высоты угла. Ctrl выбирает область по диагонали. При нажатом Shift - оценка стоимости строительства.
-STR_LANDSCAPING_TOOLTIP_RAISE_A_CORNER_OF_LAND                  :{BLACK}Поднять угол земли. Перетаскивание поднимает первый выбранный угол и выравнивает выбранную область до новой высоты угла. Ctrl выбирает область по диагонали. При нажатом Shift - оценка стоимости строительства.
-STR_LANDSCAPING_LEVEL_LAND_TOOLTIP                              :{BLACK}Выровнять землю до высоты первого выбранного угла. Ctrl выбирает область по диагонали. При нажатом Shift - оценка стоимости выравнивания.
-STR_LANDSCAPING_TOOLTIP_PURCHASE_LAND                           :{BLACK}Покупка земли. При нажатом Shift - оценка стоимости покупки.
+STR_LANDSCAPING_TOOLTIP_LOWER_A_CORNER_OF_LAND                  :{BLACK}Опустить угол земли. Перетаскивание опускает первый выбранный угол и выравнивает выбранную область до новой высоты угла.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости строительства.
+STR_LANDSCAPING_TOOLTIP_RAISE_A_CORNER_OF_LAND                  :{BLACK}Поднять угол земли. Перетаскивание поднимает первый выбранный угол и выравнивает выбранную область до новой высоты угла.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости строительства.
+STR_LANDSCAPING_LEVEL_LAND_TOOLTIP                              :{BLACK}Выровнять землю до высоты первого выбранного угла.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости выравнивания.
+STR_LANDSCAPING_TOOLTIP_PURCHASE_LAND                           :{BLACK}Покупка земли.{}При нажатом Ctrl - выбор диагональной области.{}При нажатом Shift - оценка стоимости покупки.
 STR_LANDSCAPING_TOOLTIP_RULER_TOOL                              :{BLACK}Виртуальная линейка для измерения расстояний и высот
 
 # Object construction window
 STR_OBJECT_BUILD_CAPTION                                        :{WHITE}Выбор объекта
-STR_OBJECT_BUILD_TOOLTIP                                        :{BLACK}Выберите создаваемый объект. При нажатом Shift - оценка стоимости постройки.
+STR_OBJECT_BUILD_TOOLTIP                                        :{BLACK}Выберите создаваемый объект.{}При нажатом Ctrl они размещаются в диагональной области.{}При нажатом Shift - оценка стоимости постройки.
 STR_OBJECT_BUILD_CLASS_TOOLTIP                                  :{BLACK}Выберите класс объекта для строительства
 STR_OBJECT_BUILD_PREVIEW_TOOLTIP                                :{BLACK}Предварительный просмотр объекта
 STR_OBJECT_BUILD_SIZE                                           :{BLACK}Размер: {GOLD}{NUM} × {NUM} клеток
@@ -3839,6 +3844,7 @@ STR_FINANCES_SECTION_LOAN_INTEREST                              :{GOLD}Плат�
 STR_FINANCES_SECTION_OTHER                                      :{GOLD}Прочие расходы
 
 STR_FINANCES_NEGATIVE_INCOME                                    :-{CURRENCY_LONG}
+STR_FINANCES_ZERO_INCOME                                        :{CURRENCY_LONG}
 STR_FINANCES_POSITIVE_INCOME                                    :+{CURRENCY_LONG}
 STR_FINANCES_NET_PROFIT                                         :{WHITE}Чистая прибыль
 STR_FINANCES_BANK_BALANCE_TITLE                                 :{WHITE}Баланс:
@@ -4051,6 +4057,7 @@ STR_PURCHASE_INFO_RUNNINGCOST                                   :{BLACK}Стои
 STR_PURCHASE_INFO_CAPACITY                                      :{BLACK}Ёмкость: {GOLD}{CARGO_LONG} {STRING}
 STR_PURCHASE_INFO_REFITTABLE                                    :(переоб.)
 STR_PURCHASE_INFO_DESIGNED_LIFE                                 :{BLACK}Разработан в {GOLD}{NUM} г.{BLACK} Срок службы: {GOLD}{COMMA} {P год года лет}
+STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Разработан в {GOLD}{NUM} г.
 STR_PURCHASE_INFO_RELIABILITY                                   :{BLACK}Макс. надёжность: {GOLD}{COMMA}%
 STR_PURCHASE_INFO_COST                                          :{BLACK}Цена: {GOLD}{CURRENCY_LONG}
 STR_PURCHASE_INFO_COST_REFIT                                    :{BLACK}Цена: {GOLD}{CURRENCY_LONG}{BLACK} (Стоимость переоборудования: {GOLD}{CURRENCY_LONG}{BLACK})
@@ -5147,6 +5154,7 @@ STR_ERROR_OBJECT_IN_THE_WAY                                     :{WHITE}Объе
 STR_ERROR_COMPANY_HEADQUARTERS_IN                               :{WHITE}... штаб-квартира компании мешает
 STR_ERROR_CAN_T_PURCHASE_THIS_LAND                              :{WHITE}Невозможно купить эту землю...
 STR_ERROR_YOU_ALREADY_OWN_IT                                    :{WHITE}... вы и так уже владеете этим!
+STR_ERROR_BUILD_OBJECT_LIMIT_REACHED                            :{WHITE}... достигнуто максимальное количество объектов
 
 # Group related errors
 STR_ERROR_GROUP_CAN_T_CREATE                                    :{WHITE}Невозможно создать группу...

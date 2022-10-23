@@ -321,6 +321,15 @@ public:
 		return this->GetCargoWeight(this->cargo.StoredCount());
 	}
 
+	/**
+	 * Allows to know the acceleration type of a vehicle.
+	 * @return Acceleration type of the vehicle.
+	 */
+	inline int GetAccelerationType() const
+	{
+		return GetRailTypeInfo(this->railtype)->acceleration_type;
+	}
+
 protected: // These functions should not be called outside acceleration code.
 	/**
 	 * Gets the speed a broken down train (low speed breakdown) is limited to.
@@ -440,15 +449,6 @@ protected: // These functions should not be called outside acceleration code.
 	}
 
 	/**
-	 * Allows to know the acceleration type of a vehicle.
-	 * @return Acceleration type of the vehicle.
-	 */
-	inline int GetAccelerationType() const
-	{
-		return GetRailTypeInfo(this->railtype)->acceleration_type;
-	}
-
-	/**
 	 * Returns the slope steepness used by this vehicle.
 	 * @return Slope steepness used by the vehicle.
 	 */
@@ -520,6 +520,6 @@ inline int GetTileMarginInFrontOfTrain(const Train *v)
 int GetTrainStopLocation(StationID station_id, TileIndex tile, Train *v, bool update_train_state, int *station_ahead, int *station_length);
 
 int GetTrainRealisticAccelerationAtSpeed(const int speed, const int mass, const uint32 cached_power, const uint32 max_te, const uint32 air_drag, const RailType railtype);
-int GetTrainEstimatedMaxAchievableSpeed(const Train *train, const int mass, const int speed_cap);
+int GetTrainEstimatedMaxAchievableSpeed(const Train *train, int mass, const int speed_cap);
 
 #endif /* TRAIN_H */

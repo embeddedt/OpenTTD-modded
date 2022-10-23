@@ -216,6 +216,7 @@ public:
 	virtual void ExtraInfo(uint index, NIExtraInfoOutput &output) const {}
 	virtual void SpriteDump(uint index, DumpSpriteGroupPrinter print) const {}
 	virtual bool ShowExtraInfoOnly(uint index) const { return false; };
+	virtual bool ShowExtraInfoIncludingGRFIDOnly(uint index) const { return false; };
 	virtual bool ShowSpriteDumpButton(uint index) const { return false; };
 
 protected:
@@ -326,7 +327,7 @@ struct NewGRFInspectWindow : Window {
 	btree::btree_map<int, uint16> nfo_line_lines;
 	const SpriteGroup *selected_sprite_group = nullptr;
 	btree::btree_map<int, uint32> highlight_tag_lines;
-	uint32 selected_highlight_tag = 0;
+	uint32 selected_highlight_tags[6] = {};
 	btree::btree_set<const SpriteGroup *> collapsed_groups;
 
 	/**
@@ -569,7 +570,7 @@ struct NewGRFInspectWindow : Window {
 					collapse_lines = 0;
 				}
 				if (operation == DSGPO_END && collapsed && collapse_group == group) {
-					seprintf(tmp_buf, lastof(tmp_buf), "%*sCOLLAPSED: %u lines omitted", highlight_tag + 2, "", collapse_lines);
+					seprintf(tmp_buf, lastof(tmp_buf), "%sCOLLAPSED: %u lines omitted", buf, collapse_lines);
 					buf = tmp_buf;
 					collapsed = false;
 					highlight_tag = 0;
@@ -590,7 +591,16 @@ struct NewGRFInspectWindow : Window {
 				if (highlight_tag != 0) const_cast<NewGRFInspectWindow *>(this)->highlight_tag_lines[offset] = highlight_tag;
 
 				TextColour colour = (this->selected_sprite_group == group && group != nullptr) ? TC_LIGHT_BLUE : TC_BLACK;
-				if (highlight_tag != 0 && this->selected_highlight_tag == highlight_tag) colour = TC_YELLOW;
+				if (highlight_tag != 0) {
+					for (uint i = 0; i < lengthof(this->selected_highlight_tags); i++) {
+						if (this->selected_highlight_tags[i] == highlight_tag) {
+							static const TextColour text_colours[] = { TC_YELLOW, TC_GREEN, TC_ORANGE, TC_CREAM, TC_BROWN, TC_RED };
+							static_assert(lengthof(this->selected_highlight_tags) == lengthof(text_colours));
+							colour = text_colours[i];
+							break;
+						}
+					}
+				}
 				::DrawString(r.left + LEFT_OFFSET, r.right - RIGHT_OFFSET, r.top + TOP_OFFSET + (scroll_offset * this->resize.step_height), buf, colour);
 			});
 			SpriteGroupDumper::use_shadows = false;
@@ -617,6 +627,8 @@ struct NewGRFInspectWindow : Window {
 				this->DrawString(r, i++, "  File: %s", grfconfig->filename);
 			}
 		}
+
+		if (nih->ShowExtraInfoIncludingGRFIDOnly(index)) return;
 
 		const_cast<NewGRFInspectWindow*>(this)->first_variable_line_index = i;
 
@@ -767,6 +779,23 @@ struct NewGRFInspectWindow : Window {
 		return true;
 	}
 
+	void SelectHighlightTag(uint32 tag)
+	{
+		for (uint i = 0; i < lengthof(this->selected_highlight_tags); i++) {
+			if (this->selected_highlight_tags[i] == tag) {
+				this->selected_highlight_tags[i] = 0;
+				return;
+			}
+		}
+		for (uint i = 0; i < lengthof(this->selected_highlight_tags); i++) {
+			if (this->selected_highlight_tags[i] == 0) {
+				this->selected_highlight_tags[i] = tag;
+				return;
+			}
+		}
+		this->selected_highlight_tags[lengthof(this->selected_highlight_tags) - 1] = tag;
+	}
+
 	void OnClick(Point pt, int widget, int click_count) override
 	{
 		switch (widget) {
@@ -805,8 +834,8 @@ struct NewGRFInspectWindow : Window {
 						uint32 highlight_tag = 0;
 						auto iter = this->highlight_tag_lines.find(line);
 						if (iter != this->highlight_tag_lines.end()) highlight_tag = iter->second;
-						if (highlight_tag != 0 || this->selected_highlight_tag != 0) {
-							this->selected_highlight_tag = (highlight_tag == this->selected_highlight_tag) ? 0 : highlight_tag;
+						if (highlight_tag != 0) {
+							this->SelectHighlightTag(highlight_tag);
 							this->SetWidgetDirty(WID_NGRFI_MAINPANEL);
 						}
 					} else if (_shift_pressed) {

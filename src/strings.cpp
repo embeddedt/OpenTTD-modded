@@ -1853,12 +1853,14 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, &tmp_params, last);
 				} else if (v->group_id != DEFAULT_GROUP && _settings_client.gui.vehicle_names != 0 && v->type < VEH_COMPANY_END) {
 					/* The vehicle has no name, but is member of a group, so print group name */
+					uint32 group_name = v->group_id;
+					if (_settings_client.gui.show_vehicle_group_hierarchy_name) group_name |= GROUP_NAME_HIERARCHY;
 					if (_settings_client.gui.vehicle_names == 1) {
-						int64 args_array[] = {v->group_id, v->unitnumber};
+						int64 args_array[] = {group_name, v->unitnumber};
 						StringParameters tmp_params(args_array);
 						buff = GetStringWithArgs(buff, STR_FORMAT_GROUP_VEHICLE_NAME, &tmp_params, last);
 					} else {
-						int64 args_array[] = {v->group_id, STR_TRADITIONAL_TRAIN_NAME + v->type, v->unitnumber};
+						int64 args_array[] = {group_name, STR_TRADITIONAL_TRAIN_NAME + v->type, v->unitnumber};
 						StringParameters tmp_params(args_array);
 						buff = GetStringWithArgs(buff, STR_FORMAT_GROUP_VEHICLE_NAME_LONG, &tmp_params, last);
 					}
@@ -2398,7 +2400,7 @@ const char *GetCurrentLanguageIsoCode()
  */
 bool MissingGlyphSearcher::FindMissingGlyphs()
 {
-	InitFreeType(this->Monospace());
+	InitFontCache(this->Monospace());
 	const Sprite *question_mark[FS_END];
 
 	for (FontSize size = this->Monospace() ? FS_MONO : FS_BEGIN; size < (this->Monospace() ? FS_END : FS_MONO); size++) {
@@ -2423,7 +2425,7 @@ bool MissingGlyphSearcher::FindMissingGlyphs()
 					default: NOT_REACHED();
 				}
 
-				DEBUG(freetype, 0, "Font is missing glyphs to display char 0x%X in %s font size", c, size_name.c_str());
+				DEBUG(fontcache, 0, "Font is missing glyphs to display char 0x%X in %s font size", c, size_name.c_str());
 				return true;
 			}
 		}
@@ -2467,7 +2469,7 @@ class LanguagePackGlyphSearcher : public MissingGlyphSearcher {
 		return false;
 	}
 
-	void SetFontNames(FreeTypeSettings *settings, const char *font_name, const void *os_data) override
+	void SetFontNames(FontCacheSettings *settings, const char *font_name, const void *os_data) override
 	{
 #if defined(WITH_FREETYPE) || defined(_WIN32) || defined(WITH_COCOA)
 		settings->small.font = font_name;
@@ -2503,15 +2505,15 @@ void CheckForMissingGlyphs(bool base_font, MissingGlyphSearcher *searcher)
 	if (bad_font) {
 		/* We found an unprintable character... lets try whether we can find
 		 * a fallback font that can print the characters in the current language. */
-		bool any_font_configured = !_freetype.medium.font.empty();
-		FreeTypeSettings backup = _freetype;
+		bool any_font_configured = !_fcsettings.medium.font.empty();
+		FontCacheSettings backup = _fcsettings;
 
-		_freetype.mono.os_handle = nullptr;
-		_freetype.medium.os_handle = nullptr;
+		_fcsettings.mono.os_handle = nullptr;
+		_fcsettings.medium.os_handle = nullptr;
 
-		bad_font = !SetFallbackFont(&_freetype, _langpack.langpack->isocode, _langpack.langpack->winlangid, searcher);
+		bad_font = !SetFallbackFont(&_fcsettings, _langpack.langpack->isocode, _langpack.langpack->winlangid, searcher);
 
-		_freetype = backup;
+		_fcsettings = backup;
 
 		if (!bad_font && any_font_configured) {
 			/* If the user configured a bad font, and we found a better one,
@@ -2530,7 +2532,7 @@ void CheckForMissingGlyphs(bool base_font, MissingGlyphSearcher *searcher)
 			/* Our fallback font does miss characters too, so keep the
 			 * user chosen font as that is more likely to be any good than
 			 * the wild guess we made */
-			InitFreeType(searcher->Monospace());
+			InitFontCache(searcher->Monospace());
 		}
 	}
 #endif
