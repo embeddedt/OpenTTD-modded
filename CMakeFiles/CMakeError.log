@@ -1,18 +1,18 @@
 Performing C++ SOURCE FILE Test LIBLZMA_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_cc7c5/fast"
-/usr/bin/make -f CMakeFiles/cmTC_cc7c5.dir/build.make CMakeFiles/cmTC_cc7c5.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_7f625/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7f625.dir/build.make CMakeFiles/cmTC_7f625.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_cc7c5.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DLIBLZMA_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_cc7c5.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_7f625.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DLIBLZMA_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_7f625.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 em++: error: Attempt to set a non-existent setting: 'USE_LIBLZMA'
  - did you mean one of USE_ZLIB, USE_SDL_IMAGE, USE_LIBPNG?
  - perhaps a typo in emcc's  -s X=Y  notation?
  - (see src/settings.js for valid values)
-make[1]: *** [CMakeFiles/cmTC_cc7c5.dir/build.make:66: CMakeFiles/cmTC_cc7c5.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_7f625.dir/build.make:66: CMakeFiles/cmTC_7f625.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_cc7c5/fast] Error 2
+make: *** [Makefile:121: cmTC_7f625/fast] Error 2
 
 Source file was:
 
@@ -21,18 +21,18 @@ Source file was:
 Performing C++ SOURCE FILE Test BITMATH_BUILTINS_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_48ac3/fast"
-/usr/bin/make -f CMakeFiles/cmTC_48ac3.dir/build.make CMakeFiles/cmTC_48ac3.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_3d554/fast"
+/usr/bin/make -f CMakeFiles/cmTC_3d554.dir/build.make CMakeFiles/cmTC_3d554.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_48ac3.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBITMATH_BUILTINS_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_48ac3.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_3d554.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBITMATH_BUILTINS_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_3d554.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 em++: error: Attempt to set a non-existent setting: 'USE_LIBLZMA'
  - did you mean one of USE_ZLIB, USE_SDL_IMAGE, USE_LIBPNG?
  - perhaps a typo in emcc's  -s X=Y  notation?
  - (see src/settings.js for valid values)
-make[1]: *** [CMakeFiles/cmTC_48ac3.dir/build.make:66: CMakeFiles/cmTC_48ac3.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_3d554.dir/build.make:66: CMakeFiles/cmTC_3d554.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_48ac3/fast] Error 2
+make: *** [Makefile:121: cmTC_3d554/fast] Error 2
 
 Source file was:
 
@@ -42,18 +42,18 @@ Source file was:
 Performing C++ SOURCE FILE Test OVERFLOW_BUILTINS_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_ce84d/fast"
-/usr/bin/make -f CMakeFiles/cmTC_ce84d.dir/build.make CMakeFiles/cmTC_ce84d.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_5a5fc/fast"
+/usr/bin/make -f CMakeFiles/cmTC_5a5fc.dir/build.make CMakeFiles/cmTC_5a5fc.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_ce84d.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DOVERFLOW_BUILTINS_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_ce84d.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_5a5fc.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DOVERFLOW_BUILTINS_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_5a5fc.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 em++: error: Attempt to set a non-existent setting: 'USE_LIBLZMA'
  - did you mean one of USE_ZLIB, USE_SDL_IMAGE, USE_LIBPNG?
  - perhaps a typo in emcc's  -s X=Y  notation?
  - (see src/settings.js for valid values)
-make[1]: *** [CMakeFiles/cmTC_ce84d.dir/build.make:66: CMakeFiles/cmTC_ce84d.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_5a5fc.dir/build.make:66: CMakeFiles/cmTC_5a5fc.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_ce84d/fast] Error 2
+make: *** [Makefile:121: cmTC_5a5fc/fast] Error 2
 
 Source file was:
 
@@ -70,18 +70,18 @@ int main() {
 Performing C++ SOURCE FILE Test DL_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_fb0f1/fast"
-/usr/bin/make -f CMakeFiles/cmTC_fb0f1.dir/build.make CMakeFiles/cmTC_fb0f1.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_dfdd2/fast"
+/usr/bin/make -f CMakeFiles/cmTC_dfdd2.dir/build.make CMakeFiles/cmTC_dfdd2.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_fb0f1.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DDL_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_fb0f1.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_dfdd2.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DDL_FOUND -sUSE_LIBLZMA=1   -std=c++17 -o CMakeFiles/cmTC_dfdd2.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 em++: error: Attempt to set a non-existent setting: 'USE_LIBLZMA'
  - did you mean one of USE_ZLIB, USE_SDL_IMAGE, USE_LIBPNG?
  - perhaps a typo in emcc's  -s X=Y  notation?
  - (see src/settings.js for valid values)
-make[1]: *** [CMakeFiles/cmTC_fb0f1.dir/build.make:66: CMakeFiles/cmTC_fb0f1.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_dfdd2.dir/build.make:66: CMakeFiles/cmTC_dfdd2.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_fb0f1/fast] Error 2
+make: *** [Makefile:121: cmTC_dfdd2/fast] Error 2
 
 Source file was:
 
@@ -93,23 +93,23 @@ Source file was:
 Performing C++ SOURCE FILE Test SIGALTSTACK failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_51486/fast"
-/usr/bin/make -f CMakeFiles/cmTC_51486.dir/build.make CMakeFiles/cmTC_51486.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_bd111/fast"
+/usr/bin/make -f CMakeFiles/cmTC_bd111.dir/build.make CMakeFiles/cmTC_bd111.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_51486.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DSIGALTSTACK   -std=c++17 -o CMakeFiles/cmTC_51486.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_51486.js
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_51486.dir/link.txt --verbose=1
-/emsdk/upstream/emscripten/em++   -DSIGALTSTACK   -rdynamic  @CMakeFiles/cmTC_51486.dir/objects1.rsp  -o cmTC_51486.js 
+Building CXX object CMakeFiles/cmTC_bd111.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DSIGALTSTACK   -std=c++17 -o CMakeFiles/cmTC_bd111.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_bd111.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_bd111.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DSIGALTSTACK   -rdynamic  @CMakeFiles/cmTC_bd111.dir/objects1.rsp  -o cmTC_bd111.js 
 error: undefined symbol: sigaltstack (referenced by top-level compiled C/C++ code)
 warning: Link with `-s LLD_REPORT_UNDEFINED` to get more information on undefined symbols
 warning: To disable errors for undefined symbols use `-s ERROR_ON_UNDEFINED_SYMBOLS=0`
 warning: _sigaltstack may need to be added to EXPORTED_FUNCTIONS if it arrives from a system library
 Error: Aborting compilation due to previous errors
-em++: error: '/emsdk/node/12.18.1_64bit/bin/node /emsdk/upstream/emscripten/src/compiler.js /tmp/tmp8u19ugr6.txt' failed (1)
-make[1]: *** [CMakeFiles/cmTC_51486.dir/build.make:88: cmTC_51486.js] Error 1
+em++: error: '/emsdk/node/12.18.1_64bit/bin/node /emsdk/upstream/emscripten/src/compiler.js /tmp/tmpj39lujg0.txt' failed (1)
+make[1]: *** [CMakeFiles/cmTC_bd111.dir/build.make:88: cmTC_bd111.js] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_51486/fast] Error 2
+make: *** [Makefile:121: cmTC_bd111/fast] Error 2
 
 Source file was:
 
@@ -126,19 +126,19 @@ Source file was:
 Performing C++ SOURCE FILE Test DBG_GDB_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0c1b0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0c1b0.dir/build.make CMakeFiles/cmTC_0c1b0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_64b68/fast"
+/usr/bin/make -f CMakeFiles/cmTC_64b68.dir/build.make CMakeFiles/cmTC_64b68.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0c1b0.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DDBG_GDB_FOUND   -std=c++17 -o CMakeFiles/cmTC_0c1b0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_64b68.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DDBG_GDB_FOUND   -std=c++17 -o CMakeFiles/cmTC_64b68.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:9:29: error: use of undeclared identifier 'SYS_gettid'
         pid_t tid = syscall(SYS_gettid);
                             ^
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DDBG_GDB_FOUND -std=c++17 -o CMakeFiles/cmTC_0c1b0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_0c1b0.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_0c1b0.dir/build.make:66: CMakeFiles/cmTC_0c1b0.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DDBG_GDB_FOUND -std=c++17 -o CMakeFiles/cmTC_64b68.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_64b68.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_64b68.dir/build.make:66: CMakeFiles/cmTC_64b68.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_0c1b0/fast] Error 2
+make: *** [Makefile:121: cmTC_64b68/fast] Error 2
 
 Source file was:
 
@@ -157,23 +157,23 @@ Source file was:
 Performing C++ SOURCE FILE Test PRCTL_PT_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_88641/fast"
-/usr/bin/make -f CMakeFiles/cmTC_88641.dir/build.make CMakeFiles/cmTC_88641.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_4e6ed/fast"
+/usr/bin/make -f CMakeFiles/cmTC_4e6ed.dir/build.make CMakeFiles/cmTC_4e6ed.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_88641.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DPRCTL_PT_FOUND   -std=c++17 -o CMakeFiles/cmTC_88641.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
-Linking CXX executable cmTC_88641.js
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_88641.dir/link.txt --verbose=1
-/emsdk/upstream/emscripten/em++   -DPRCTL_PT_FOUND   -rdynamic  @CMakeFiles/cmTC_88641.dir/objects1.rsp  -o cmTC_88641.js 
+Building CXX object CMakeFiles/cmTC_4e6ed.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DPRCTL_PT_FOUND   -std=c++17 -o CMakeFiles/cmTC_4e6ed.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Linking CXX executable cmTC_4e6ed.js
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4e6ed.dir/link.txt --verbose=1
+/emsdk/upstream/emscripten/em++   -DPRCTL_PT_FOUND   -rdynamic  @CMakeFiles/cmTC_4e6ed.dir/objects1.rsp  -o cmTC_4e6ed.js 
 error: undefined symbol: prctl (referenced by top-level compiled C/C++ code)
 warning: Link with `-s LLD_REPORT_UNDEFINED` to get more information on undefined symbols
 warning: To disable errors for undefined symbols use `-s ERROR_ON_UNDEFINED_SYMBOLS=0`
 warning: _prctl may need to be added to EXPORTED_FUNCTIONS if it arrives from a system library
 Error: Aborting compilation due to previous errors
-em++: error: '/emsdk/node/12.18.1_64bit/bin/node /emsdk/upstream/emscripten/src/compiler.js /tmp/tmp7w26r_eg.txt' failed (1)
-make[1]: *** [CMakeFiles/cmTC_88641.dir/build.make:88: cmTC_88641.js] Error 1
+em++: error: '/emsdk/node/12.18.1_64bit/bin/node /emsdk/upstream/emscripten/src/compiler.js /tmp/tmptu772w5j.txt' failed (1)
+make[1]: *** [CMakeFiles/cmTC_4e6ed.dir/build.make:88: cmTC_4e6ed.js] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_88641/fast] Error 2
+make: *** [Makefile:121: cmTC_4e6ed/fast] Error 2
 
 Source file was:
 
@@ -184,19 +184,19 @@ Source file was:
 Performing C++ SOURCE FILE Test UCONTEXT_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_2f436/fast"
-/usr/bin/make -f CMakeFiles/cmTC_2f436.dir/build.make CMakeFiles/cmTC_2f436.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_cf12f/fast"
+/usr/bin/make -f CMakeFiles/cmTC_cf12f.dir/build.make CMakeFiles/cmTC_cf12f.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_2f436.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DUCONTEXT_FOUND   -std=c++17 -o CMakeFiles/cmTC_2f436.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_cf12f.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DUCONTEXT_FOUND   -std=c++17 -o CMakeFiles/cmTC_cf12f.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:10:2: error: Unknown arch
 #error Unknown arch
  ^
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DUCONTEXT_FOUND -std=c++17 -o CMakeFiles/cmTC_2f436.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_2f436.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_2f436.dir/build.make:66: CMakeFiles/cmTC_2f436.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DUCONTEXT_FOUND -std=c++17 -o CMakeFiles/cmTC_cf12f.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_cf12f.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_cf12f.dir/build.make:66: CMakeFiles/cmTC_cf12f.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_2f436/fast] Error 2
+make: *** [Makefile:121: cmTC_cf12f/fast] Error 2
 
 Source file was:
 
@@ -215,19 +215,19 @@ int main() {
 Performing C++ SOURCE FILE Test BFD_FOUND_A0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_13ebe/fast"
-/usr/bin/make -f CMakeFiles/cmTC_13ebe.dir/build.make CMakeFiles/cmTC_13ebe.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_b8451/fast"
+/usr/bin/make -f CMakeFiles/cmTC_b8451.dir/build.make CMakeFiles/cmTC_b8451.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_13ebe.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_A0   -std=c++17 -o CMakeFiles/cmTC_13ebe.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_b8451.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_A0   -std=c++17 -o CMakeFiles/cmTC_b8451.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_A0 -std=c++17 -o CMakeFiles/cmTC_13ebe.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_13ebe.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_13ebe.dir/build.make:66: CMakeFiles/cmTC_13ebe.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_A0 -std=c++17 -o CMakeFiles/cmTC_b8451.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_b8451.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_b8451.dir/build.make:66: CMakeFiles/cmTC_b8451.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_13ebe/fast] Error 2
+make: *** [Makefile:121: cmTC_b8451/fast] Error 2
 
 Source file was:
 
@@ -252,19 +252,19 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_A1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7d447/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7d447.dir/build.make CMakeFiles/cmTC_7d447.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_ffa2d/fast"
+/usr/bin/make -f CMakeFiles/cmTC_ffa2d.dir/build.make CMakeFiles/cmTC_ffa2d.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7d447.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_A1   -std=c++17 -o CMakeFiles/cmTC_7d447.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_ffa2d.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_A1   -std=c++17 -o CMakeFiles/cmTC_ffa2d.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_A1 -std=c++17 -o CMakeFiles/cmTC_7d447.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_7d447.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_7d447.dir/build.make:66: CMakeFiles/cmTC_7d447.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_A1 -std=c++17 -o CMakeFiles/cmTC_ffa2d.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_ffa2d.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_ffa2d.dir/build.make:66: CMakeFiles/cmTC_ffa2d.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_7d447/fast] Error 2
+make: *** [Makefile:121: cmTC_ffa2d/fast] Error 2
 
 Source file was:
 
@@ -289,19 +289,19 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_B0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_73a92/fast"
-/usr/bin/make -f CMakeFiles/cmTC_73a92.dir/build.make CMakeFiles/cmTC_73a92.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_a74ac/fast"
+/usr/bin/make -f CMakeFiles/cmTC_a74ac.dir/build.make CMakeFiles/cmTC_a74ac.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_73a92.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_B0   -std=c++17 -o CMakeFiles/cmTC_73a92.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_a74ac.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_B0   -std=c++17 -o CMakeFiles/cmTC_a74ac.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_B0 -std=c++17 -o CMakeFiles/cmTC_73a92.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_73a92.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_73a92.dir/build.make:66: CMakeFiles/cmTC_73a92.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_B0 -std=c++17 -o CMakeFiles/cmTC_a74ac.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_a74ac.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_a74ac.dir/build.make:66: CMakeFiles/cmTC_a74ac.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_73a92/fast] Error 2
+make: *** [Makefile:121: cmTC_a74ac/fast] Error 2
 
 Source file was:
 
@@ -326,19 +326,19 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_B1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_049b5/fast"
-/usr/bin/make -f CMakeFiles/cmTC_049b5.dir/build.make CMakeFiles/cmTC_049b5.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_d1552/fast"
+/usr/bin/make -f CMakeFiles/cmTC_d1552.dir/build.make CMakeFiles/cmTC_d1552.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_049b5.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_B1   -std=c++17 -o CMakeFiles/cmTC_049b5.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_d1552.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_B1   -std=c++17 -o CMakeFiles/cmTC_d1552.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_B1 -std=c++17 -o CMakeFiles/cmTC_049b5.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_049b5.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_049b5.dir/build.make:66: CMakeFiles/cmTC_049b5.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_B1 -std=c++17 -o CMakeFiles/cmTC_d1552.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_d1552.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_d1552.dir/build.make:66: CMakeFiles/cmTC_d1552.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_049b5/fast] Error 2
+make: *** [Makefile:121: cmTC_d1552/fast] Error 2
 
 Source file was:
 
@@ -363,19 +363,19 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_C0 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0276c/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0276c.dir/build.make CMakeFiles/cmTC_0276c.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_185d0/fast"
+/usr/bin/make -f CMakeFiles/cmTC_185d0.dir/build.make CMakeFiles/cmTC_185d0.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0276c.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_C0   -std=c++17 -o CMakeFiles/cmTC_0276c.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_185d0.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_C0   -std=c++17 -o CMakeFiles/cmTC_185d0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_C0 -std=c++17 -o CMakeFiles/cmTC_0276c.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_0276c.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_0276c.dir/build.make:66: CMakeFiles/cmTC_0276c.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_C0 -std=c++17 -o CMakeFiles/cmTC_185d0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_185d0.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_185d0.dir/build.make:66: CMakeFiles/cmTC_185d0.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_0276c/fast] Error 2
+make: *** [Makefile:121: cmTC_185d0/fast] Error 2
 
 Source file was:
 
@@ -400,19 +400,19 @@ Source file was:
 Performing C++ SOURCE FILE Test BFD_FOUND_C1 failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_7a233/fast"
-/usr/bin/make -f CMakeFiles/cmTC_7a233.dir/build.make CMakeFiles/cmTC_7a233.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_7969e/fast"
+/usr/bin/make -f CMakeFiles/cmTC_7969e.dir/build.make CMakeFiles/cmTC_7969e.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_7a233.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DBFD_FOUND_C1   -std=c++17 -o CMakeFiles/cmTC_7a233.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_7969e.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DBFD_FOUND_C1   -std=c++17 -o CMakeFiles/cmTC_7969e.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:4:18: fatal error: 'bfd.h' file not found
         #include <bfd.h>
                  ^~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_C1 -std=c++17 -o CMakeFiles/cmTC_7a233.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_7a233.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_7a233.dir/build.make:66: CMakeFiles/cmTC_7a233.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DBFD_FOUND_C1 -std=c++17 -o CMakeFiles/cmTC_7969e.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_7969e.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_7969e.dir/build.make:66: CMakeFiles/cmTC_7969e.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_7a233/fast] Error 2
+make: *** [Makefile:121: cmTC_7969e/fast] Error 2
 
 Source file was:
 
@@ -437,15 +437,15 @@ Source file was:
 Performing C++ SOURCE FILE Test SSE_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_a64d0/fast"
-/usr/bin/make -f CMakeFiles/cmTC_a64d0.dir/build.make CMakeFiles/cmTC_a64d0.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_40af5/fast"
+/usr/bin/make -f CMakeFiles/cmTC_40af5.dir/build.make CMakeFiles/cmTC_40af5.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_a64d0.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DSSE_FOUND -msse4.1   -std=c++17 -o CMakeFiles/cmTC_a64d0.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_40af5.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DSSE_FOUND -msse4.1   -std=c++17 -o CMakeFiles/cmTC_40af5.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 em++: error: Passing any of -msse, -msse2, -msse3, -mssse3, -msse4.1, -msse4.2, -mavx, -mfpu=neon flags also requires passing -msimd128!
-make[1]: *** [CMakeFiles/cmTC_a64d0.dir/build.make:66: CMakeFiles/cmTC_a64d0.dir/src.cxx.o] Error 1
+make[1]: *** [CMakeFiles/cmTC_40af5.dir/build.make:66: CMakeFiles/cmTC_40af5.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_a64d0/fast] Error 2
+make: *** [Makefile:121: cmTC_40af5/fast] Error 2
 
 Source file was:
 
@@ -456,19 +456,19 @@ Source file was:
 Performing C++ SOURCE FILE Test XAUDIO2_FOUND failed with the following output:
 Change Dir: /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_0e585/fast"
-/usr/bin/make -f CMakeFiles/cmTC_0e585.dir/build.make CMakeFiles/cmTC_0e585.dir/build
+Run Build Command:"/usr/bin/make" "cmTC_0c8b8/fast"
+/usr/bin/make -f CMakeFiles/cmTC_0c8b8.dir/build.make CMakeFiles/cmTC_0c8b8.dir/build
 make[1]: Entering directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-Building CXX object CMakeFiles/cmTC_0e585.dir/src.cxx.o
-/emsdk/upstream/emscripten/em++    -DXAUDIO2_FOUND   -std=c++17 -o CMakeFiles/cmTC_0e585.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
+Building CXX object CMakeFiles/cmTC_0c8b8.dir/src.cxx.o
+/emsdk/upstream/emscripten/em++    -DXAUDIO2_FOUND   -std=c++17 -o CMakeFiles/cmTC_0c8b8.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx
 /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx:3:14: fatal error: 'windows.h' file not found
     #include <windows.h>
              ^~~~~~~~~~~
 1 error generated.
-em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DXAUDIO2_FOUND -std=c++17 -o CMakeFiles/cmTC_0e585.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_0e585.dir/src.cxx.o' failed (1)
-make[1]: *** [CMakeFiles/cmTC_0e585.dir/build.make:66: CMakeFiles/cmTC_0e585.dir/src.cxx.o] Error 1
+em++: error: '/emsdk/upstream/bin/clang++ -DEMSCRIPTEN -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr -Xclang -isystem/emsdk/upstream/emscripten/system/include/SDL -target wasm32-unknown-emscripten -D__EMSCRIPTEN_major__=2 -D__EMSCRIPTEN_minor__=0 -D__EMSCRIPTEN_tiny__=10 -D_LIBCPP_ABI_VERSION=2 -Dunix -D__unix -D__unix__ -Werror=implicit-function-declaration --sysroot=/emsdk/upstream/emscripten/system -Xclang -isystem/emsdk/upstream/emscripten/cache/wasm/include -Xclang -iwithsysroot/include/libcxx -Xclang -iwithsysroot/lib/libcxxabi/include -Xclang -iwithsysroot/include/compat -Xclang -iwithsysroot/include/libc -Xclang -iwithsysroot/lib/libc/musl/arch/emscripten -Xclang -iwithsysroot/local/include -Xclang -iwithsysroot/include/SSE -Xclang -iwithsysroot/include/neon -Xclang -iwithsysroot/lib/compiler-rt/include -Xclang -iwithsysroot/lib/libunwind/include -DXAUDIO2_FOUND -std=c++17 -o CMakeFiles/cmTC_0c8b8.dir/src.cxx.o -c /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp/src.cxx -c -o CMakeFiles/cmTC_0c8b8.dir/src.cxx.o' failed (1)
+make[1]: *** [CMakeFiles/cmTC_0c8b8.dir/build.make:66: CMakeFiles/cmTC_0c8b8.dir/src.cxx.o] Error 1
 make[1]: Leaving directory '/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles/CMakeTmp'
-make: *** [Makefile:121: cmTC_0e585/fast] Error 2
+make: *** [Makefile:121: cmTC_0c8b8/fast] Error 2
 
 Source file was:
 

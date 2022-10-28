@@ -2244,6 +2244,7 @@ public:
 		WID_O_SEL_OCCUPANCY                          = ::WID_O_SEL_OCCUPANCY,                          ///< #NWID_SELECTION widget for the occupancy list panel.
 		WID_O_OCCUPANCY_LIST                         = ::WID_O_OCCUPANCY_LIST,                         ///< Occupancy list panel.
 		WID_O_OCCUPANCY_TOGGLE                       = ::WID_O_OCCUPANCY_TOGGLE,                       ///< Toggle display of occupancy measures.
+		WID_O_TOGGLE_SIZE                            = ::WID_O_TOGGLE_SIZE,                            ///< Toggle show order management button.
 	};
 
 	/** Widgets of the #CargoTypeOrdersWindow class. */
@@ -2871,6 +2872,8 @@ public:
 		WID_TA_SCROLLBAR                             = ::WID_TA_SCROLLBAR,                             ///< Scrollbar of the list of commands.
 		WID_TA_ACTION_INFO                           = ::WID_TA_ACTION_INFO,                           ///< Additional information about the action.
 		WID_TA_EXECUTE                               = ::WID_TA_EXECUTE,                               ///< Do-it button.
+		WID_TA_SETTING                               = ::WID_TA_SETTING,                               ///< Setting drop-down.
+		WID_TA_BTN_SEL                               = ::WID_TA_BTN_SEL,                               ///< Button selector.
 	};
 
 	/** Widgets of the #TownViewWindow class. */

@@ -1054,6 +1054,7 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_SEL_OCCUPANCY,                       "WID_O_SEL_OCCUPANCY");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_OCCUPANCY_LIST,                      "WID_O_OCCUPANCY_LIST");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_OCCUPANCY_TOGGLE,                    "WID_O_OCCUPANCY_TOGGLE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_O_TOGGLE_SIZE,                         "WID_O_TOGGLE_SIZE");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CTO_CAPTION,                           "WID_CTO_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CTO_HEADER,                            "WID_CTO_HEADER");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_CTO_CLOSEBTN,                          "WID_CTO_CLOSEBTN");
@@ -1510,6 +1511,8 @@ void SQGSWindow_Register(Squirrel *engine)
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TA_SCROLLBAR,                          "WID_TA_SCROLLBAR");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TA_ACTION_INFO,                        "WID_TA_ACTION_INFO");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TA_EXECUTE,                            "WID_TA_EXECUTE");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TA_SETTING,                            "WID_TA_SETTING");
+	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TA_BTN_SEL,                            "WID_TA_BTN_SEL");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TV_CAPTION,                            "WID_TV_CAPTION");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TV_VIEWPORT,                           "WID_TV_VIEWPORT");
 	SQGSWindow.DefSQConst(engine, ScriptWindow::WID_TV_INFO,                               "WID_TV_INFO");
