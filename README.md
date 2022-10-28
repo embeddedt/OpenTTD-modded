@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.48.5
+## JGR's Patchpack version 0.49.0
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -181,7 +181,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Timetabled wait times at waypoints.
 * Add warning/info messages to the timetable window.
 * Add features to reverse the order of an order list, and to append the reverse of an order list.  
-  (Use the ctrl key when the end of orders marker is selected).
+  (Use the ctrl key when the end of orders marker is selected, or enable the order management button).
+* Add features to duplicate an individual order and to change the jump target of conditional orders.
 * Add company setting for whether to advance the current order when cloning/copying/sharing (if current depot is in order list).
 * Add vehicle list menu item to mass cancel go to or service at depot orders.
 
@@ -216,6 +217,9 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add "indifferent" mode to the town council attitude to area restructuring setting.
 * Disallow converting town-owned roads to types with the no houses flag.
 * Add public roads (road network automatically built between towns) at map generation and in the scenario editor.
+* Add setting for if/when towns can build road tunnels.
+* Add setting to limit length of continuous inclined roads built by towns.
+* Allow overriding town road construction settings on a per-town basis, add setting to enable this for multiplayer clients.
 
 #### Industries
 
