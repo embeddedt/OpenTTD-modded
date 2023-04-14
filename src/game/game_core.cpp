@@ -73,6 +73,9 @@
 {
 	if (Game::instance != nullptr) return;
 
+	/* Don't start GameScripts in intro */
+	if (_game_mode == GM_MENU) return;
+
 	/* Clients shouldn't start GameScripts */
 	if (_networking && !_network_server) return;
 
@@ -88,10 +91,12 @@
 	Game::info = info;
 	Game::instance = new GameInstance();
 	Game::instance->Initialize(info);
+	Game::instance->LoadOnStack(config->GetToLoadData());
+	config->SetToLoadData(nullptr);
 
 	cur_company.Restore();
 
-	InvalidateWindowData(WC_AI_DEBUG, 0, -1);
+	InvalidateWindowData(WC_SCRIPT_DEBUG, 0, -1);
 }
 
 /* static */ void Game::Uninitialize(bool keepConfig)
@@ -193,9 +198,10 @@
 	Game::scanner_library->RescanDir();
 	ResetConfig();
 
-	InvalidateWindowData(WC_AI_LIST, 0, 1);
-	SetWindowClassesDirty(WC_AI_DEBUG);
-	InvalidateWindowClassesData(WC_AI_SETTINGS);
+	InvalidateWindowData(WC_SCRIPT_LIST, 0, 1);
+	SetWindowClassesDirty(WC_SCRIPT_DEBUG);
+	InvalidateWindowClassesData(WC_SCRIPT_SETTINGS);
+	InvalidateWindowClassesData(WC_GAME_OPTIONS);
 }
 
 
@@ -207,18 +213,6 @@
 		cur_company.Restore();
 	} else {
 		GameInstance::SaveEmpty();
-	}
-}
-
-/* static */ void Game::Load(int version)
-{
-	if (Game::instance != nullptr && (!_networking || _network_server)) {
-		Backup<CompanyID> cur_company(_current_company, OWNER_DEITY, FILE_LINE);
-		Game::instance->Load(version);
-		cur_company.Restore();
-	} else {
-		/* Read, but ignore, the load data */
-		GameInstance::LoadEmpty();
 	}
 }
 

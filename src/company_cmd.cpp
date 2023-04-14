@@ -42,9 +42,12 @@
 
 #include "table/strings.h"
 
+#include <vector>
+
 #include "safeguards.h"
 
 void ClearEnginesHiddenFlagOfCompany(CompanyID cid);
+void UpdateObjectColours(const Company *c);
 
 CompanyID _local_company;   ///< Company controlled by the human player at this client. Can also be #COMPANY_SPECTATOR.
 CompanyID _current_company; ///< Company currently doing an action.
@@ -53,6 +56,9 @@ Colours _company_colours[MAX_COMPANIES];  ///< NOSAVE: can be determined from co
 CompanyManagerFace _company_manager_face; ///< for company manager face storage in openttd.cfg
 uint _next_competitor_start;              ///< the number of ticks before the next AI is started
 uint _cur_company_tick_index;             ///< used to generate a name for one company that doesn't have a name yet per tick
+
+CompanyMask _saved_PLYP_invalid_mask;
+std::vector<uint8> _saved_PLYP_data;
 
 CompanyPool _company_pool("Company"); ///< Pool of companies.
 INSTANTIATE_POOL_METHODS(Company)
@@ -83,6 +89,7 @@ Company::~Company()
 	if (CleaningPool()) return;
 
 	DeleteCompanyWindows(this->index);
+	SetBit(_saved_PLYP_invalid_mask, this->index);
 }
 
 /**
@@ -120,8 +127,11 @@ void SetLocalCompany(CompanyID new_company)
 
 	_current_company = _local_company = new_company;
 
-	/* Delete any construction windows... */
-	if (switching_company) DeleteConstructionWindows();
+	if (switching_company) {
+		InvalidateWindowClassesData(WC_COMPANY);
+		/* Delete any construction windows... */
+		DeleteConstructionWindows();
+	}
 
 	if (switching_company && Company::IsValidID(new_company)) {
 		for (Town *town : Town::Iterate()) {
@@ -574,7 +584,8 @@ Company *DoStartupNewCompany(DoStartupNewCompanyFlag flags, CompanyID company)
 	ResetCompanyLivery(c);
 	_company_colours[c->index] = (Colours)c->colour;
 
-	c->money = c->current_loan = (std::min<int64>(INITIAL_LOAN, _economy.max_loan) * _economy.inflation_prices >> 16) / 50000 * 50000;
+	/* Scale the initial loan based on the inflation rounded down to the loan interval. The maximum loan has already been inflation adjusted. */
+	c->money = c->current_loan = std::min<int64>((INITIAL_LOAN * _economy.inflation_prices >> 16) / LOAN_INTERVAL * LOAN_INTERVAL, _economy.max_loan);
 
 	c->share_owners[0] = c->share_owners[1] = c->share_owners[2] = c->share_owners[3] = INVALID_OWNER;
 
@@ -583,11 +594,11 @@ Company *DoStartupNewCompany(DoStartupNewCompanyFlag flags, CompanyID company)
 	c->inaugurated_year = _cur_year;
 
 	/* If starting a player company in singleplayer and a favorite company manager face is selected, choose it. Otherwise, use a random face.
-	 * In a network game, we'll choose the favorite face later in CmdCompanyCtrl to sync it to all clients, but we choose it here for the first (host) company. */
-	if (_company_manager_face != 0 && !is_ai) {
+	 * In a network game, we'll choose the favorite face later in CmdCompanyCtrl to sync it to all clients. */
+	if (_company_manager_face != 0 && !is_ai && !_networking) {
 		c->face = _company_manager_face;
 	} else {
-		RandomCompanyManagerFaceBits(c->face, (GenderEthnicity)Random(), false, false);
+		RandomCompanyManagerFaceBits(c->face, (GenderEthnicity)Random(), false, _random);
 	}
 
 	SetDefaultCompanySettings(c->index);
@@ -637,10 +648,22 @@ static bool MaybeStartNewCompany()
 	return false;
 }
 
+static void ClearSavedPLYP()
+{
+	_saved_PLYP_invalid_mask = 0;
+	_saved_PLYP_data.clear();
+}
+
 /** Initialize the pool of companies. */
 void InitializeCompanies()
 {
 	_cur_company_tick_index = 0;
+	ClearSavedPLYP();
+}
+
+void UninitializeCompanies()
+{
+	ClearSavedPLYP();
 }
 
 /**
@@ -734,11 +757,11 @@ static void HandleBankruptcyTakeover(Company *c)
 	c->bankrupt_last_asked = best->index;
 
 	c->bankrupt_timeout = TAKE_OVER_TIMEOUT;
-	if (best->is_ai) {
-		AI::NewEvent(best->index, new ScriptEventCompanyAskMerger(c->index, ClampToI32(c->bankrupt_value)));
-	} else if (IsInteractiveCompany(best->index)) {
+
+	AI::NewEvent(best->index, new ScriptEventCompanyAskMerger(c->index, c->bankrupt_value));
+	if (IsInteractiveCompany(best->index)) {
 		ShowBuyCompanyDialog(c->index);
-	} else if (!_networking || (_network_server && !NetworkCompanyHasClients(best->index))) {
+	} else if ((!_networking || (_network_server && !NetworkCompanyHasClients(best->index))) && !best->is_ai) {
 		/* This company can never accept the offer as there are no clients connected, decline the offer on the company's behalf */
 		Backup<CompanyID> cur_company(_current_company, best->index, FILE_LINE);
 		DoCommandP(0, c->index, 0, CMD_DECLINE_BUY_COMPANY | CMD_NO_SHIFT_ESTIMATE);
@@ -901,7 +924,7 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 				/* In network games, we need to try setting the company manager face here to sync it to all clients.
 				 * If a favorite company manager face is selected, choose it. Otherwise, use a random face. */
-				if (_company_manager_face != 0) NetworkSendCommand(0, 0, _company_manager_face, 0, CMD_SET_COMPANY_MANAGER_FACE, nullptr, nullptr, _local_company, 0);
+				if (_company_manager_face != 0) NetworkSendCommand(0, 0, _company_manager_face, 0, CMD_SET_COMPANY_MANAGER_FACE, nullptr, nullptr, _local_company, nullptr);
 
 				/* Now that we have a new company, broadcast our company settings to
 				 * all clients so everything is in sync */
@@ -948,8 +971,6 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 
 			DEBUG(desync, 1, "delete_company: date{%08x; %02x; %02x}, company_id: %u, reason: %u", _date, _date_fract, _tick_skip_counter, company_id, reason);
 
-			/* Delete any open window of the company */
-			DeleteCompanyWindows(c->index);
 			CompanyNewsInformation *cni = new CompanyNewsInformation(c);
 
 			/* Show the bankrupt news */
@@ -996,8 +1017,8 @@ CommandCost CmdCompanyCtrl(TileIndex tile, DoCommandFlag flags, uint32 p1, uint3
 	}
 
 	InvalidateWindowClassesData(WC_GAME_OPTIONS);
-	InvalidateWindowClassesData(WC_AI_SETTINGS);
-	InvalidateWindowClassesData(WC_AI_LIST);
+	InvalidateWindowClassesData(WC_SCRIPT_SETTINGS);
+	InvalidateWindowClassesData(WC_SCRIPT_LIST);
 
 	return CommandCost();
 }
@@ -1124,7 +1145,6 @@ CommandCost CmdSetCompanyColour(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 			}
 		}
 
-		extern void UpdateObjectColours(const Company *c);
 		UpdateObjectColours(c);
 	}
 	return CommandCost();

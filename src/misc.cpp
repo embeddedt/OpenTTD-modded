@@ -11,7 +11,7 @@
 #include "landscape.h"
 #include "news_func.h"
 #include "ai/ai.hpp"
-#include "ai/ai_gui.hpp"
+#include "script/script_gui.h"
 #include "newgrf.h"
 #include "newgrf_house.h"
 #include "economy_func.h"
@@ -44,6 +44,7 @@
 
 
 extern TileIndex _cur_tileloop_tile;
+extern TileIndex _aux_tileloop_tile;
 extern void ClearAllSignalSpeedRestrictions();
 extern void MakeNewgameSettingsLive();
 
@@ -88,7 +89,10 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 	_game_speed = 100;
 	_tick_counter = 0;
 	_tick_skip_counter = 0;
+	_scaled_tick_counter = 0;
+	_scaled_date_ticks_offset = 0;
 	_cur_tileloop_tile = 1;
+	_aux_tileloop_tile = 1;
 	_thd.redsq = INVALID_TILE;
 	_road_layout_change_counter = 0;
 	_loaded_local_company = COMPANY_SPECTATOR;
@@ -98,17 +102,16 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 	_game_load_date_fract = 0;
 	_game_load_tick_skip_counter = 0;
 	_game_load_time = 0;
-	_extra_station_names_used = 0;
-	_extra_station_names_probability = 0;
 	_extra_aspects = 0;
 	_aspect_cfg_hash = 0;
+	InitGRFGlobalVars();
 	_loadgame_DBGL_data.clear();
 	if (reset_settings) MakeNewgameSettingsLive();
 
 	_newgrf_profilers.clear();
 
 	if (reset_date) {
-		SetDate(ConvertYMDToDate(_settings_game.game_creation.starting_year, 0, 1), 0);
+		SetDate(ConvertYMDToDate(_settings_game.game_creation.starting_year, 0, 1), 0, false);
 		InitializeOldNames();
 	} else {
 		SetScaledTickVariables();
@@ -153,7 +156,7 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 	InitializeGraphGui();
 	InitializeObjectGui();
 	InitializeTownGui();
-	InitializeAIGui();
+	InitializeScriptGui();
 	InitializeTrees();
 	InitializeIndustries();
 	InitializeObjects();

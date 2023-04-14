@@ -74,6 +74,9 @@
 #ifdef WITH_ZLIB
 # include <zlib.h>
 #endif
+#ifdef WITH_CURL
+# include <curl/curl.h>
+#endif
 
 #include "safeguards.h"
 
@@ -359,6 +362,16 @@ char *CrashLog::LogLibraries(char *buffer, const char *last) const
 	buffer += seprintf(buffer, last, " Zlib:       %s\n", zlibVersion());
 #endif
 
+#ifdef WITH_CURL
+	auto *curl_v = curl_version_info(CURLVERSION_NOW);
+	buffer += seprintf(buffer, last, " Curl:       %s\n", curl_v->version);
+	if (curl_v->ssl_version != nullptr) {
+		buffer += seprintf(buffer, last, " Curl SSL:   %s\n", curl_v->ssl_version);
+	} else {
+		buffer += seprintf(buffer, last, " Curl SSL:   none\n");
+	}
+#endif
+
 	buffer += seprintf(buffer, last, "\n");
 	return buffer;
 }
@@ -457,8 +470,9 @@ char *CrashLog::FillCrashLog(char *buffer, const char *last)
 
 	buffer += seprintf(buffer, last, "In game date: %i-%02i-%02i (%i, %i) (DL: %u)\n", _cur_date_ymd.year, _cur_date_ymd.month + 1, _cur_date_ymd.day, _date_fract, _tick_skip_counter, _settings_game.economy.day_length_factor);
 	if (_game_load_time != 0) {
-		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), %s",
-				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter, asctime(gmtime(&_game_load_time)));
+		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), ",
+				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter);
+		buffer += UTCTime::Format(buffer, last, _game_load_time, "%Y-%m-%d %H:%M:%S");
 	}
 	buffer += seprintf(buffer, last, "\n");
 
@@ -508,10 +522,10 @@ char *CrashLog::FillCrashLog(char *buffer, const char *last)
  */
 char *CrashLog::FillDesyncCrashLog(char *buffer, const char *last, const DesyncExtraInfo &info) const
 {
-	time_t cur_time = time(nullptr);
 	buffer += seprintf(buffer, last, "*** OpenTTD Multiplayer %s Desync Report ***\n\n", _network_server ? "Server" : "Client");
 
-	buffer += seprintf(buffer, last, "Desync at: %s", asctime(gmtime(&cur_time)));
+	buffer += UTCTime::Format(buffer, last, "Desync at: %Y-%m-%d %H:%M:%S (UTC)\n");
+
 	if (!_network_server && info.flags) {
 		auto flag_check = [&](DesyncExtraInfo::Flags flag, const char *str) {
 			return info.flags & flag ? str : "";
@@ -522,21 +536,30 @@ char *CrashLog::FillDesyncCrashLog(char *buffer, const char *last, const DesyncE
 				flag_check(DesyncExtraInfo::DEIF_STATE, "S"),
 				flag_check(DesyncExtraInfo::DEIF_DBL_RAND, "D"));
 	}
+	if (_network_server && (info.desync_frame_seed || info.desync_frame_state_checksum)) {
+		buffer += seprintf(buffer, last, "Desync frame: %08X (seed), %08X (state checksum)\n", info.desync_frame_seed, info.desync_frame_state_checksum);
+	}
 
-	buffer += seprintf(buffer, last, "In game date: %i-%02i-%02i (%i, %i) (DL: %u)\n", _cur_date_ymd.year, _cur_date_ymd.month + 1, _cur_date_ymd.day, _date_fract, _tick_skip_counter, _settings_game.economy.day_length_factor);
+	extern uint32 _frame_counter;
+
+	buffer += seprintf(buffer, last, "In game date: %i-%02i-%02i (%i, %i) (DL: %u), %08X\n",
+			_cur_date_ymd.year, _cur_date_ymd.month + 1, _cur_date_ymd.day, _date_fract, _tick_skip_counter, _settings_game.economy.day_length_factor, _frame_counter);
 	if (_game_load_time != 0) {
-		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), %s",
-				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter, asctime(gmtime(&_game_load_time)));
+		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), ",
+				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter);
+		buffer += UTCTime::Format(buffer, last, _game_load_time, "%Y-%m-%d %H:%M:%S");
+		buffer += seprintf(buffer, last, "\n");
 	}
 	if (!_network_server) {
 		extern Date   _last_sync_date;
 		extern DateFract _last_sync_date_fract;
 		extern uint8  _last_sync_tick_skip_counter;
+		extern uint32 _last_sync_frame_counter;
 
 		YearMonthDay ymd;
 		ConvertDateToYMD(_last_sync_date, &ymd);
-		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i)",
-				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter);
+		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i), %08X\n",
+				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter, _last_sync_frame_counter);
 	}
 	if (info.client_id >= 0) {
 		buffer += seprintf(buffer, last, "Client #%d, \"%s\"\n", info.client_id, info.client_name != nullptr ? info.client_name : "");
@@ -575,29 +598,34 @@ char *CrashLog::FillDesyncCrashLog(char *buffer, const char *last, const DesyncE
  */
 char *CrashLog::FillInconsistencyLog(char *buffer, const char *last, const InconsistencyExtraInfo &info) const
 {
-	time_t cur_time = time(nullptr);
 	buffer += seprintf(buffer, last, "*** OpenTTD Inconsistency Report ***\n\n");
 
-	buffer += seprintf(buffer, last, "Inconsistency at: %s", asctime(gmtime(&cur_time)));
+	buffer += UTCTime::Format(buffer, last, "Inconsistency at: %Y-%m-%d %H:%M:%S (UTC)\n");
 
 #ifdef USE_SCOPE_INFO
 	buffer += WriteScopeLog(buffer, last);
 #endif
 
-	buffer += seprintf(buffer, last, "In game date: %i-%02i-%02i (%i, %i) (DL: %u)\n", _cur_date_ymd.year, _cur_date_ymd.month + 1, _cur_date_ymd.day, _date_fract, _tick_skip_counter, _settings_game.economy.day_length_factor);
+	extern uint32 _frame_counter;
+
+	buffer += seprintf(buffer, last, "In game date: %i-%02i-%02i (%i, %i) (DL: %u), %08X\n",
+			_cur_date_ymd.year, _cur_date_ymd.month + 1, _cur_date_ymd.day, _date_fract, _tick_skip_counter, _settings_game.economy.day_length_factor, _frame_counter);
 	if (_game_load_time != 0) {
-		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), %s",
-				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter, asctime(gmtime(&_game_load_time)));
+		buffer += seprintf(buffer, last, "Game loaded at: %i-%02i-%02i (%i, %i), ",
+				_game_load_cur_date_ymd.year, _game_load_cur_date_ymd.month + 1, _game_load_cur_date_ymd.day, _game_load_date_fract, _game_load_tick_skip_counter);
+		buffer += UTCTime::Format(buffer, last, _game_load_time, "%Y-%m-%d %H:%M:%S");
+		buffer += seprintf(buffer, last, "\n");
 	}
 	if (_networking && !_network_server) {
 		extern Date   _last_sync_date;
 		extern DateFract _last_sync_date_fract;
 		extern uint8  _last_sync_tick_skip_counter;
+		extern uint32 _last_sync_frame_counter;
 
 		YearMonthDay ymd;
 		ConvertDateToYMD(_last_sync_date, &ymd);
-		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i)",
-				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter);
+		buffer += seprintf(buffer, last, "Last sync at: %i-%02i-%02i (%i, %i), %08X\n",
+				ymd.year, ymd.month + 1, ymd.day, _last_sync_date_fract, _last_sync_tick_skip_counter, _last_sync_frame_counter);
 	}
 	buffer += seprintf(buffer, last, "\n");
 
@@ -701,7 +729,7 @@ void CrashLog::FlushCrashLogBuffer()
  * @param filename_last The last position in the filename buffer.
  * @return true when the crash save was successfully made.
  */
-bool CrashLog::WriteSavegame(char *filename, const char *filename_last, const char *name) const
+/* static */ bool CrashLog::WriteSavegame(char *filename, const char *filename_last, const char *name)
 {
 	/* If the map array doesn't exist, saving will fail too. If the map got
 	 * initialised, there is a big chance the rest is initialised too. */
@@ -720,6 +748,29 @@ bool CrashLog::WriteSavegame(char *filename, const char *filename_last, const ch
 }
 
 /**
+ * Write the (desync) savegame to a file, threaded.
+ * @note On success the filename will be filled with the full path of the
+ *       crash save file. Make sure filename is at least \c MAX_PATH big.
+ * @param filename      Output for the filename of the written file.
+ * @param filename_last The last position in the filename buffer.
+ * @return true when the crash save was successfully made.
+ */
+/* static */ bool CrashLog::WriteDiagnosticSavegame(char *filename, const char *filename_last, const char *name)
+{
+	/* If the map array doesn't exist, saving will fail too. If the map got
+	 * initialised, there is a big chance the rest is initialised too. */
+	if (_m == nullptr) return false;
+
+	try {
+		seprintf(filename, filename_last, "%s%s.sav", _personal_dir.c_str(), name);
+
+		return SaveOrLoad(filename, SLO_SAVE, DFT_GAME_FILE, NO_DIRECTORY, true) == SL_OK;
+	} catch (...) {
+		return false;
+	}
+}
+
+/**
  * Write the (crash) screenshot to a file.
  * @note On success the filename will be filled with the full path of the
  *       screenshot. Make sure filename is at least \c MAX_PATH big.
@@ -727,7 +778,7 @@ bool CrashLog::WriteSavegame(char *filename, const char *filename_last, const ch
  * @param filename_last The last position in the filename buffer.
  * @return true when the crash screenshot was successfully made.
  */
-bool CrashLog::WriteScreenshot(char *filename, const char *filename_last, const char *name) const
+/* static */ bool CrashLog::WriteScreenshot(char *filename, const char *filename_last, const char *name)
 {
 	/* Don't draw when we have invalid screen size */
 	if (_screen.width < 1 || _screen.height < 1 || _screen.dst_ptr == nullptr) return false;
@@ -777,8 +828,7 @@ bool CrashLog::MakeCrashLog(char *buffer, const char *last)
 	crashlogged = true;
 
 	char *name_buffer_date = this->name_buffer + seprintf(this->name_buffer, lastof(this->name_buffer), "crash-");
-	time_t cur_time = time(nullptr);
-	strftime(name_buffer_date, lastof(this->name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
+	UTCTime::Format(name_buffer_date, lastof(this->name_buffer), "%Y%m%dT%H%M%SZ");
 
 #ifdef DEDICATED
 	if (!_settings_client.gui.keep_all_autosave) {
@@ -877,8 +927,7 @@ bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_ou
 
 	char name_buffer[64];
 	char *name_buffer_date = name_buffer + seprintf(name_buffer, lastof(name_buffer), "desync-%s-", mode);
-	time_t cur_time = time(nullptr);
-	strftime(name_buffer_date, lastof(name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
+	UTCTime::Format(name_buffer_date, lastof(this->name_buffer), "%Y%m%dT%H%M%SZ");
 
 	printf("Desync encountered (%s), generating desync log...\n", mode);
 	char *b = this->FillDesyncCrashLog(buffer, last, info);
@@ -898,13 +947,26 @@ bool CrashLog::MakeDesyncCrashLog(const std::string *log_in, std::string *log_ou
 		ret = false;
 	}
 
-	_savegame_DBGL_data = buffer;
+	if (info.defer_savegame_write != nullptr) {
+		info.defer_savegame_write->name_buffer = name_buffer;
+	} else {
+		bret = this->WriteDesyncSavegame(buffer, name_buffer);
+		if (!bret) ret = false;
+	}
+
+	return ret;
+}
+
+/* static */ bool CrashLog::WriteDesyncSavegame(const char *log_data, const char *name_buffer)
+{
+	char filename[MAX_PATH];
+
+	_savegame_DBGL_data = log_data;
 	_save_DBGC_data = true;
-	bret = this->WriteSavegame(filename, lastof(filename), name_buffer);
-	if (bret) {
+	bool ret = CrashLog::WriteDiagnosticSavegame(filename, lastof(filename), name_buffer);
+	if (ret) {
 		printf("Desync savegame written to %s. Please add this file and the last (auto)save to any bug reports.\n\n", filename);
 	} else {
-		ret = false;
 		printf("Writing desync savegame failed. Please attach the last (auto)save to any bug reports.\n\n");
 	}
 	_savegame_DBGL_data = nullptr;
@@ -934,8 +996,7 @@ bool CrashLog::MakeInconsistencyLog(const InconsistencyExtraInfo &info) const
 
 	char name_buffer[64];
 	char *name_buffer_date = name_buffer + seprintf(name_buffer, lastof(name_buffer), "inconsistency-");
-	time_t cur_time = time(nullptr);
-	strftime(name_buffer_date, lastof(name_buffer) - name_buffer_date, "%Y%m%dT%H%M%SZ", gmtime(&cur_time));
+	UTCTime::Format(name_buffer_date, lastof(this->name_buffer), "%Y%m%dT%H%M%SZ");
 
 	printf("Inconsistency encountered, generating diagnostics log...\n");
 	this->FillInconsistencyLog(buffer, last, info);
@@ -950,7 +1011,7 @@ bool CrashLog::MakeInconsistencyLog(const InconsistencyExtraInfo &info) const
 
 	_savegame_DBGL_data = buffer;
 	_save_DBGC_data = true;
-	bret = this->WriteSavegame(filename, lastof(filename), name_buffer);
+	bret = this->WriteDiagnosticSavegame(filename, lastof(filename), name_buffer);
 	if (bret) {
 		printf("info savegame written to %s. Please add this file and the last (auto)save to any bug reports.\n\n", filename);
 	} else {

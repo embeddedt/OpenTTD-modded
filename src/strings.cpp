@@ -36,6 +36,8 @@
 #include "tracerestrict.h"
 #include "game/game_text.hpp"
 #include "network/network_content_gui.h"
+#include "newgrf_engine.h"
+#include "core/backup_type.hpp"
 #include "core/y_combinator.hpp"
 #include <stack>
 
@@ -447,7 +449,7 @@ static char *FormatWallClockString(char *buff, DateTicksScaled ticks, const char
 	seprintf(hour,   lastof(hour),   "%02i", (int) MINUTES_HOUR(minutes)  );
 	seprintf(minute, lastof(minute), "%02i", (int) MINUTES_MINUTE(minutes));
 	if (show_date) {
-		int64 args[3] = { (int64)hour, (int64)minute, (int64)ticks / (DAY_TICKS * _settings_game.economy.day_length_factor) };
+		int64 args[3] = { (int64)hour, (int64)minute, ScaledDateTicksToDate(ticks) };
 		if (_settings_client.gui.date_with_time == 1) {
 			YearMonthDay ymd;
 			ConvertDateToYMD(args[2], &ymd);
@@ -754,17 +756,31 @@ struct UnitsLong {
 
 /** Unit conversions for velocity. */
 static const Units _units_velocity[] = {
-	{ {    1,  0}, STR_UNITS_VELOCITY_IMPERIAL,     0 },
-	{ {  103,  6}, STR_UNITS_VELOCITY_METRIC,       0 },
-	{ { 1831, 12}, STR_UNITS_VELOCITY_SI,           0 },
-	{ {37888, 16}, STR_UNITS_VELOCITY_GAMEUNITS,    1 },
+	{ {       1,  0}, STR_UNITS_VELOCITY_IMPERIAL,     0 },
+	{ {     103,  6}, STR_UNITS_VELOCITY_METRIC,       0 },
+	{ {    1831, 12}, STR_UNITS_VELOCITY_SI,           0 },
+	{ {   37888, 16}, STR_UNITS_VELOCITY_GAMEUNITS,    1 },
+	{ { 7289499, 23}, STR_UNITS_VELOCITY_KNOTS,        0 },
 };
 
-/** Unit conversions for velocity. */
+/** Unit conversions for power. */
 static const Units _units_power[] = {
 	{ {   1,  0}, STR_UNITS_POWER_IMPERIAL, 0 },
 	{ {4153, 12}, STR_UNITS_POWER_METRIC,   0 },
 	{ {6109, 13}, STR_UNITS_POWER_SI,       0 },
+};
+
+/** Unit conversions for power to weight. */
+static const Units _units_power_to_weight[] = {
+	{ {  29,  5}, STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL, 1},
+	{ {   1,  0}, STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC, 1},
+	{ {   1,  0}, STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_SI, 1},
+	{ {  59,  6}, STR_UNITS_POWER_METRIC_TO_WEIGHT_IMPERIAL, 1},
+	{ {  65,  6}, STR_UNITS_POWER_METRIC_TO_WEIGHT_METRIC, 1},
+	{ {  65,  6}, STR_UNITS_POWER_METRIC_TO_WEIGHT_SI, 1},
+	{ { 173,  8}, STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL, 1},
+	{ {   3,  2}, STR_UNITS_POWER_SI_TO_WEIGHT_METRIC, 1},
+	{ {   3,  2}, STR_UNITS_POWER_SI_TO_WEIGHT_SI, 1},
 };
 
 /** Unit conversions for weight. */
@@ -796,16 +812,28 @@ static const Units _units_height[] = {
 };
 
 /**
+ * Get index for velocity conversion units for a vehicle type.
+ * @param type VehicleType to convert velocity for.
+ * @return Index within velocity conversion units for vehicle type.
+ */
+static byte GetVelocityUnits(VehicleType type)
+{
+	if (type == VEH_SHIP || type == VEH_AIRCRAFT) return _settings_game.locale.units_velocity_nautical;
+
+	return _settings_game.locale.units_velocity;
+}
+
+/**
  * Convert the given (internal) speed to the display speed.
  * @param speed the speed to convert
  * @return the converted speed.
  */
-uint ConvertSpeedToDisplaySpeed(uint speed)
+uint ConvertSpeedToDisplaySpeed(uint speed, VehicleType type)
 {
 	/* For historical reasons we don't want to mess with the
 	 * conversion for speed. So, don't round it and keep the
 	 * original conversion factors instead of the real ones. */
-	return _units_velocity[_settings_game.locale.units_velocity].c.ToDisplay(speed, false);
+	return _units_velocity[GetVelocityUnits(type)].c.ToDisplay(speed, false);
 }
 
 /**
@@ -813,9 +841,9 @@ uint ConvertSpeedToDisplaySpeed(uint speed)
  * @param speed the speed to convert
  * @return the converted speed.
  */
-uint ConvertSpeedToUnitDisplaySpeed(uint speed)
+uint ConvertSpeedToUnitDisplaySpeed(uint speed, VehicleType type)
 {
-	uint result = ConvertSpeedToDisplaySpeed(speed);
+	uint result = ConvertSpeedToDisplaySpeed(speed, type);
 	for (uint i = 0; i < _units_velocity[_settings_game.locale.units_velocity].decimal_places; i++) {
 		result /= 10;
 	}
@@ -827,9 +855,9 @@ uint ConvertSpeedToUnitDisplaySpeed(uint speed)
  * @param speed the speed to convert
  * @return the converted speed.
  */
-uint ConvertDisplaySpeedToSpeed(uint speed)
+uint ConvertDisplaySpeedToSpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[_settings_game.locale.units_velocity].c.FromDisplay(speed);
+	return _units_velocity[GetVelocityUnits(type)].c.FromDisplay(speed);
 }
 
 /**
@@ -837,9 +865,9 @@ uint ConvertDisplaySpeedToSpeed(uint speed)
  * @param speed the speed to convert
  * @return the converted speed.
  */
-uint ConvertKmhishSpeedToDisplaySpeed(uint speed)
+uint ConvertKmhishSpeedToDisplaySpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[_settings_game.locale.units_velocity].c.ToDisplay(speed * 10, false) / 16;
+	return _units_velocity[GetVelocityUnits(type)].c.ToDisplay(speed * 10, false) / 16;
 }
 
 /**
@@ -847,9 +875,9 @@ uint ConvertKmhishSpeedToDisplaySpeed(uint speed)
  * @param speed the speed to convert
  * @return the converted speed.
  */
-uint ConvertDisplaySpeedToKmhishSpeed(uint speed)
+uint ConvertDisplaySpeedToKmhishSpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[_settings_game.locale.units_velocity].c.FromDisplay(speed * 16, true, 10);
+	return _units_velocity[GetVelocityUnits(type)].c.FromDisplay(speed * 16, true, 10);
 }
 
 /**
@@ -1036,6 +1064,8 @@ uint ConvertDisplayQuantityToCargoQuantity(CargoID cargo, uint quantity)
 	return quantity;
 }
 
+static std::vector<const char *> _game_script_raw_strings;
+
 /**
  * Parse most format codes within a string and write the result to a buffer.
  * @param buff    The buffer to write the final string to.
@@ -1163,11 +1193,13 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 
 						sub_args.SetParam(i++, param);
 					} else {
+						s++; // skip the leading \"
 						char *g = stredup(s);
-						g[p - s] = '\0';
+						g[p - s - 1] = '\0'; // skip the trailing \"
 
 						sub_args_need_free[i] = true;
 						sub_args.SetParam(i++, (uint64)(size_t)g);
+						_game_script_raw_strings.push_back(g);
 					}
 				}
 				/* If we didn't error out, we can actually print the string. */
@@ -1177,7 +1209,10 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				}
 
 				for (int i = 0; i < 20; i++) {
-					if (sub_args_need_free[i]) free((void *)sub_args.GetParam(i));
+					if (sub_args_need_free[i]) {
+						free((void *)sub_args.GetParam(i));
+						_game_script_raw_strings.pop_back();
+					}
 				}
 				break;
 			}
@@ -1281,20 +1316,23 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				break;
 
 			case SCC_RAW_STRING_POINTER: { // {RAW_STRING}
-				if (game_script) break;
-				const char *str = (const char *)(size_t)args->GetInt64(SCC_RAW_STRING_POINTER);
-				buff = FormatString(buff, str, args, last);
+				const char *raw_string = (const char *)(size_t)args->GetInt64(SCC_RAW_STRING_POINTER);
+				if (game_script && std::find(_game_script_raw_strings.begin(), _game_script_raw_strings.end(), raw_string) == _game_script_raw_strings.end()) {
+					buff = strecat(buff, "(invalid RAW_STRING parameter)", last);
+					break;
+				}
+				buff = FormatString(buff, raw_string, args, last);
 				break;
 			}
 
 			case SCC_STRING: {// {STRING}
-				StringID str = args->GetInt32(SCC_STRING);
-				if (game_script && GetStringTab(str) != TEXT_TAB_GAMESCRIPT_START) break;
+				StringID string_id = args->GetInt32(SCC_STRING);
+				if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
 				/* WARNING. It's prohibited for the included string to consume any arguments.
 				 * For included strings that consume argument, you should use STRING1, STRING2 etc.
 				 * To debug stuff you can set argv to nullptr and it will tell you */
 				StringParameters tmp_params(args->GetDataPointer(), args->GetDataLeft(), nullptr);
-				buff = GetStringWithArgs(buff, str, &tmp_params, last, next_substr_case_index, game_script);
+				buff = GetStringWithArgs(buff, string_id, &tmp_params, last, next_substr_case_index, game_script);
 				next_substr_case_index = 0;
 				break;
 			}
@@ -1308,14 +1346,14 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 			case SCC_STRING7:
 			case SCC_STRING8: { // {STRING1..8}
 				/* Strings that consume arguments */
-				StringID str = args->GetInt32(b);
-				if (game_script && GetStringTab(str) != TEXT_TAB_GAMESCRIPT_START) break;
+				StringID string_id = args->GetInt32(b);
+				if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
 				uint size = b - SCC_STRING1 + 1;
 				if (game_script && size > args->GetDataLeft()) {
 					buff = strecat(buff, "(too many parameters)", last);
 				} else {
 					StringParameters sub_args(*args, size);
-					buff = GetStringWithArgs(buff, str, &sub_args, last, next_substr_case_index, game_script);
+					buff = GetStringWithArgs(buff, string_id, &sub_args, last, next_substr_case_index, game_script);
 				}
 				next_substr_case_index = 0;
 				break;
@@ -1495,7 +1533,7 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				if (_settings_time.time_in_minutes) {
 					buff = FormatWallClockString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_LONG), last, _settings_client.gui.date_with_time, next_substr_case_index);
 				} else {
-					buff = FormatYmdString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_LONG) / (DAY_TICKS * _settings_game.economy.day_length_factor), last, next_substr_case_index);
+					buff = FormatYmdString(buff, ScaledDateTicksToDate(args->GetInt64(SCC_DATE_WALLCLOCK_LONG)), last, next_substr_case_index);
 				}
 				break;
 			}
@@ -1504,7 +1542,7 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				if (_settings_time.time_in_minutes) {
 					buff = FormatWallClockString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_SHORT), last, _settings_client.gui.date_with_time, next_substr_case_index);
 				} else {
-					buff = FormatYmdString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_SHORT) / (DAY_TICKS * _settings_game.economy.day_length_factor), last, next_substr_case_index);
+					buff = FormatYmdString(buff, ScaledDateTicksToDate(args->GetInt64(SCC_DATE_WALLCLOCK_SHORT)), last, next_substr_case_index);
 				}
 				break;
 			}
@@ -1513,7 +1551,7 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				if (_settings_time.time_in_minutes) {
 					buff = FormatWallClockString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_TINY), last, false, next_substr_case_index);
 				} else {
-					buff = FormatTinyOrISODate(buff, args->GetInt64(SCC_DATE_WALLCLOCK_TINY) / (DAY_TICKS * _settings_game.economy.day_length_factor), STR_FORMAT_DATE_TINY, last);
+					buff = FormatTinyOrISODate(buff, ScaledDateTicksToDate(args->GetInt64(SCC_DATE_WALLCLOCK_TINY)), STR_FORMAT_DATE_TINY, last);
 				}
 				break;
 			}
@@ -1522,7 +1560,7 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				if (_settings_time.time_in_minutes) {
 					buff = FormatWallClockString(buff, args->GetInt64(SCC_DATE_WALLCLOCK_ISO), last, false, next_substr_case_index);
 				} else {
-					buff = FormatTinyOrISODate(buff, args->GetInt64(SCC_DATE_WALLCLOCK_ISO) / (DAY_TICKS * _settings_game.economy.day_length_factor), STR_FORMAT_DATE_ISO, last);
+					buff = FormatTinyOrISODate(buff, ScaledDateTicksToDate(args->GetInt64(SCC_DATE_WALLCLOCK_ISO)), STR_FORMAT_DATE_ISO, last);
 				}
 				break;
 			}
@@ -1582,12 +1620,29 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				break;
 			}
 
+			case SCC_POWER_TO_WEIGHT: { // {POWER_TO_WEIGHT}
+				auto setting = _settings_game.locale.units_power * 3u + _settings_game.locale.units_weight;
+				assert(setting < lengthof(_units_power_to_weight));
+
+				auto const &x = _units_power_to_weight[setting];
+
+				int64 args_array[] = {x.c.ToDisplay(args->GetInt64()), x.decimal_places};
+
+				StringParameters tmp_params(args_array);
+				buff = FormatString(buff, GetStringPtr(x.s), &tmp_params, last);
+				break;
+			}
+
 			case SCC_VELOCITY: { // {VELOCITY}
-				assert(_settings_game.locale.units_velocity < lengthof(_units_velocity));
-				unsigned int decimal_places = _units_velocity[_settings_game.locale.units_velocity].decimal_places;
-				uint64 args_array[] = {ConvertKmhishSpeedToDisplaySpeed(args->GetInt64(SCC_VELOCITY)), decimal_places};
+				int64 arg = args->GetInt64(SCC_VELOCITY);
+				// Unpack vehicle type from packed argument to get desired units.
+				VehicleType vt = static_cast<VehicleType>(GB(arg, 56, 8));
+				byte units = GetVelocityUnits(vt);
+				assert(units < lengthof(_units_velocity));
+				unsigned int decimal_places = _units_velocity[units].decimal_places;
+				uint64 args_array[] = {ConvertKmhishSpeedToDisplaySpeed(GB(arg, 0, 56), vt), decimal_places};
 				StringParameters tmp_params(args_array, decimal_places ? 2 : 1, nullptr);
-				buff = FormatString(buff, GetStringPtr(_units_velocity[_settings_game.locale.units_velocity].s), &tmp_params, last);
+				buff = FormatString(buff, GetStringPtr(_units_velocity[units].s), &tmp_params, last);
 				break;
 			}
 
@@ -1691,17 +1746,38 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 			}
 
 			case SCC_ENGINE_NAME: { // {ENGINE}
-				const Engine *e = Engine::GetIfValid(args->GetInt32(SCC_ENGINE_NAME));
+				int64 arg = args->GetInt64(SCC_ENGINE_NAME);
+				const Engine *e = Engine::GetIfValid(static_cast<EngineID>(arg));
 				if (e == nullptr) break;
 
 				if (!e->name.empty() && e->IsEnabled()) {
 					int64 args_array[] = {(int64)(size_t)e->name.c_str()};
 					StringParameters tmp_params(args_array);
 					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, &tmp_params, last);
-				} else {
-					StringParameters tmp_params(nullptr, 0, nullptr);
-					buff = GetStringWithArgs(buff, e->info.string_id, &tmp_params, last);
+
+					break;
 				}
+
+				if (HasBit(e->info.callback_mask, CBM_VEHICLE_NAME)) {
+					uint16 callback = GetVehicleCallback(CBID_VEHICLE_NAME, static_cast<uint32>(arg >> 32), 0, e->index, nullptr);
+					/* Not calling ErrorUnknownCallbackResult due to being inside string processing. */
+					if (callback != CALLBACK_FAILED && callback < 0x400) {
+						const GRFFile *grffile = e->GetGRF();
+						assert(grffile != nullptr);
+
+						StartTextRefStackUsage(grffile, 6);
+						uint64 tmp_dparam[6] = { 0 };
+						WChar tmp_type[6] = { 0 };
+						StringParameters tmp_params(tmp_dparam, 6, tmp_type);
+						buff = GetStringWithArgs(buff, GetGRFStringID(grffile->grfid, 0xD000 + callback), &tmp_params, last);
+						StopTextRefStackUsage();
+
+						break;
+					}
+				}
+
+				StringParameters tmp_params(nullptr, 0, nullptr);
+				buff = GetStringWithArgs(buff, e->info.string_id, &tmp_params, last);
 				break;
 			}
 
@@ -1737,7 +1813,11 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				const Industry *i = Industry::GetIfValid(args->GetInt32(SCC_INDUSTRY_NAME));
 				if (i == nullptr) break;
 
-				if (_scan_for_gender_data) {
+				static bool use_cache = true;
+				if (use_cache) { // Use cached version if first call
+					AutoRestoreBackup cache_backup(use_cache, false);
+					buff = strecpy(buff, i->GetCachedName(), last);
+				} else if (_scan_for_gender_data) {
 					/* Gender is defined by the industry type.
 					 * STR_FORMAT_INDUSTRY_NAME may have the town first, so it would result in the gender of the town name */
 					StringParameters tmp_params(nullptr, 0, nullptr);
@@ -1782,12 +1862,16 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 					break;
 				}
 
-				if (!st->name.empty()) {
+				static bool use_cache = true;
+				if (use_cache) { // Use cached version if first call
+					AutoRestoreBackup cache_backup(use_cache, false);
+					buff = strecpy(buff, st->GetCachedName(), last);
+				} else if (!st->name.empty()) {
 					int64 args_array[] = {(int64)(size_t)st->name.c_str()};
 					StringParameters tmp_params(args_array);
 					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, &tmp_params, last);
 				} else {
-					StringID str = st->string_id;
+					StringID string_id = st->string_id;
 					if (st->indtype != IT_INVALID) {
 						/* Special case where the industry provides the name for the station */
 						const IndustrySpec *indsp = GetIndustrySpec(st->indtype);
@@ -1796,17 +1880,17 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 						 * thus cause very strange things. Here we check for that before we
 						 * actually set the station name. */
 						if (indsp->station_name != STR_NULL && indsp->station_name != STR_UNDEFINED) {
-							str = indsp->station_name;
+							string_id = indsp->station_name;
 						}
 					}
 					if (st->extra_name_index != UINT16_MAX && st->extra_name_index < _extra_station_names_used) {
-						str = _extra_station_names[st->extra_name_index].str;
+						string_id = _extra_station_names[st->extra_name_index].str;
 					}
 
 					uint64 args_array[] = {STR_TOWN_NAME, st->town->index, st->index};
 					WChar types_array[] = {0, SCC_TOWN_NAME, SCC_NUM};
 					StringParameters tmp_params(args_array, 3, types_array);
-					buff = GetStringWithArgs(buff, str, &tmp_params, last);
+					buff = GetStringWithArgs(buff, string_id, &tmp_params, last);
 				}
 				break;
 			}
@@ -1815,7 +1899,11 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				const Town *t = Town::GetIfValid(args->GetInt32(SCC_TOWN_NAME));
 				if (t == nullptr) break;
 
-				if (!t->name.empty()) {
+				static bool use_cache = true;
+				if (use_cache) { // Use cached version if first call
+					AutoRestoreBackup cache_backup(use_cache, false);
+					buff = strecpy(buff, t->GetCachedName(), last);
+				} else if (!t->name.empty()) {
 					int64 args_array[] = {(int64)(size_t)t->name.c_str()};
 					StringParameters tmp_params(args_array);
 					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, &tmp_params, last);
@@ -1836,9 +1924,9 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 				} else {
 					int64 args_array[] = {wp->town->index, wp->town_cn + 1};
 					StringParameters tmp_params(args_array);
-					StringID str = ((wp->string_id == STR_SV_STNAME_BUOY) ? STR_FORMAT_BUOY_NAME : STR_FORMAT_WAYPOINT_NAME);
-					if (wp->town_cn != 0) str++;
-					buff = GetStringWithArgs(buff, str, &tmp_params, last);
+					StringID string_id = ((wp->string_id == STR_SV_STNAME_BUOY) ? STR_FORMAT_BUOY_NAME : STR_FORMAT_WAYPOINT_NAME);
+					if (wp->town_cn != 0) string_id++;
+					buff = GetStringWithArgs(buff, string_id, &tmp_params, last);
 				}
 				break;
 			}
@@ -1868,14 +1956,14 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters *arg
 					int64 args_array[] = {v->unitnumber};
 					StringParameters tmp_params(args_array);
 
-					StringID str;
+					StringID string_id;
 					if (v->type < VEH_COMPANY_END) {
-						str = ((_settings_client.gui.vehicle_names == 1) ? STR_SV_TRAIN_NAME : STR_TRADITIONAL_TRAIN_NAME) + v->type;
+						string_id = ((_settings_client.gui.vehicle_names == 1) ? STR_SV_TRAIN_NAME : STR_TRADITIONAL_TRAIN_NAME) + v->type;
 					} else {
-						str = STR_INVALID_VEHICLE;
+						string_id = STR_INVALID_VEHICLE;
 					}
 
-					buff = GetStringWithArgs(buff, str, &tmp_params, last);
+					buff = GetStringWithArgs(buff, string_id, &tmp_params, last);
 				}
 				break;
 			}
@@ -2213,6 +2301,7 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 	BuildIndustriesLegend();
 	BuildContentTypeStringList();
 	InvalidateWindowClassesData(WC_BUILD_VEHICLE);      // Build vehicle window.
+	InvalidateWindowClassesData(WC_BUILD_VIRTUAL_TRAIN);// Build template trains window.
 	InvalidateWindowClassesData(WC_TRAINS_LIST);        // Train group window.
 	InvalidateWindowClassesData(WC_TRACE_RESTRICT_SLOTS);// Trace restrict slots window.
 	InvalidateWindowClassesData(WC_ROADVEH_LIST);       // Road vehicle group window.
@@ -2550,11 +2639,13 @@ void CheckForMissingGlyphs(bool base_font, MissingGlyphSearcher *searcher)
 
 		/* Reset the font width */
 		LoadStringWidthTable(searcher->Monospace());
+		ReInitAllWindows(false);
 		return;
 	}
 
 	/* Update the font with cache */
 	LoadStringWidthTable(searcher->Monospace());
+	ReInitAllWindows(false);
 
 #if !defined(WITH_ICU_LX) && !defined(WITH_UNISCRIBE) && !defined(WITH_COCOA)
 	/*

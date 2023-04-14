@@ -104,6 +104,7 @@ static void _GenerateWorld()
 
 		SetGeneratingWorldProgress(GWP_MAP_INIT, 2);
 		SetObjectToPlace(SPR_CURSOR_ZZZ, PAL_NONE, HT_NONE, WC_MAIN_WINDOW, 0);
+		ScriptObject::InitializeRandomizers();
 
 		BasePersistentStorageArray::SwitchMode(PSM_ENTER_GAMELOOP);
 
@@ -320,6 +321,8 @@ void GenerateWorld(GenWorldMode mode, uint size_x, uint size_y, bool reset_setti
 	LoadStringWidthTable();
 	AnalyseEngineCallbacks();
 	AnalyseIndustryTileSpriteGroups();
+	extern void AnalyseHouseSpriteGroups();
+	AnalyseHouseSpriteGroups();
 
 	/* Re-init the windowing system */
 	ResetWindowSystem();
@@ -340,4 +343,6 @@ void GenerateWorld(GenWorldMode mode, uint size_x, uint size_y, bool reset_setti
 	}
 
 	_GenerateWorld();
+
+	ReInitAllWindows(false);
 }

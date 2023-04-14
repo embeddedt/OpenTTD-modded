@@ -56,7 +56,7 @@ struct NewSignalStyleMapping {
 	inline bool operator==(const NewSignalStyleMapping& o) const { return grfid == o.grfid && grf_local_id == o.grf_local_id; }
 };
 extern std::array<NewSignalStyleMapping, MAX_NEW_SIGNAL_STYLES> _new_signal_style_mapping;
-extern uint _num_new_signal_styles;
+extern uint8 _num_new_signal_styles;
 extern uint16 _enabled_new_signal_styles_mask;
 
 /** Resolver for the new signals scope. */
@@ -66,6 +66,7 @@ struct NewSignalsScopeResolver : public ScopeResolver {
 	CustomSignalSpriteContext signal_context;
 	uint8 signal_style;
 	const TraceRestrictProgram *prog;
+	uint z;
 
 	/**
 	 * Constructor of the railtype scope resolvers.
@@ -74,8 +75,8 @@ struct NewSignalsScopeResolver : public ScopeResolver {
 	 * @param context Are we resolving sprites for the upper halftile, or on a bridge?
 	 * @param signal_context Signal context.
 	 */
-	NewSignalsScopeResolver(ResolverObject &ro, TileIndex tile, TileContext context, CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog)
-		: ScopeResolver(ro), tile(tile), context(context), signal_context(signal_context), signal_style(signal_style), prog(prog)
+	NewSignalsScopeResolver(ResolverObject &ro, TileIndex tile, TileContext context, CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog, uint z)
+		: ScopeResolver(ro), tile(tile), context(context), signal_context(signal_context), signal_style(signal_style), prog(prog), z(z)
 	{
 	}
 
@@ -87,9 +88,10 @@ struct NewSignalsScopeResolver : public ScopeResolver {
 struct NewSignalsResolverObject : public ResolverObject {
 	NewSignalsScopeResolver newsignals_scope; ///< Resolver for the new signals scope.
 
-	NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32 param1, uint32 param2, CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog = nullptr);
+	NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32 param1, uint32 param2,
+			CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog = nullptr, uint z = 0);
 
-	ScopeResolver *GetScope(VarSpriteGroupScope scope = VSG_SCOPE_SELF, byte relative = 0) override
+	ScopeResolver *GetScope(VarSpriteGroupScope scope = VSG_SCOPE_SELF, VarSpriteGroupScopeOffset relative = 0) override
 	{
 		switch (scope) {
 			case VSG_SCOPE_SELF: return &this->newsignals_scope;
@@ -103,6 +105,7 @@ struct NewSignalsResolverObject : public ResolverObject {
 };
 
 uint GetNewSignalsRestrictedSignalsInfo(const TraceRestrictProgram *prog, TileIndex tile, uint8 signal_style);
+uint GetNewSignalsVerticalClearanceInfo(TileIndex tile, uint z);
 
 inline uint GetNewSignalsSignalContext(CustomSignalSpriteContext signal_context, TileIndex tile)
 {
@@ -110,5 +113,7 @@ inline uint GetNewSignalsSignalContext(CustomSignalSpriteContext signal_context,
 	if ((signal_context == CSSC_TUNNEL_BRIDGE_ENTRANCE || signal_context == CSSC_TUNNEL_BRIDGE_EXIT) && IsTunnel(tile)) result |= 0x100;
 	return result;
 }
+
+uint32 GetNewSignalsSideVariable();
 
 #endif /* NEWGRF_NEWSIGNALS_H */

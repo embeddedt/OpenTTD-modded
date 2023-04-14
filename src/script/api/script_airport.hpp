@@ -98,7 +98,7 @@ public:
 	 * @pre IsAirportInformationAvailable(type).
 	 * @return The width in tiles.
 	 */
-	static int32 GetAirportWidth(AirportType type);
+	static SQInteger GetAirportWidth(AirportType type);
 
 	/**
 	 * Get the height of this type of airport.
@@ -106,7 +106,7 @@ public:
 	 * @pre IsAirportInformationAvailable(type).
 	 * @return The height in tiles.
 	 */
-	static int32 GetAirportHeight(AirportType type);
+	static SQInteger GetAirportHeight(AirportType type);
 
 	/**
 	 * Get the coverage radius of this type of airport.
@@ -114,7 +114,7 @@ public:
 	 * @pre IsAirportInformationAvailable(type).
 	 * @return The radius in tiles.
 	 */
-	static int32 GetAirportCoverageRadius(AirportType type);
+	static SQInteger GetAirportCoverageRadius(AirportType type);
 
 	/**
 	 * Get the number of hangars of the airport.
@@ -122,7 +122,7 @@ public:
 	 * @pre ScriptMap::IsValidTile(tile).
 	 * @return The number of hangars of the airport.
 	 */
-	static int32 GetNumHangars(TileIndex tile);
+	static SQInteger GetNumHangars(TileIndex tile);
 
 	/**
 	 * Get the first hangar tile of the airport.
@@ -144,7 +144,7 @@ public:
 	 * @pre ScriptMap::IsValidTile(tile).
 	 * @pre AirportAvailable(type).
 	 * @pre station_id == ScriptStation::STATION_NEW || station_id == ScriptStation::STATION_JOIN_ADJACENT || ScriptStation::IsValidStation(station_id).
-	 * @game @pre Valid ScriptCompanyMode active in scope.
+	 * @game @pre ScriptCompanyMode::IsValid().
 	 * @exception ScriptError::ERR_AREA_NOT_CLEAR
 	 * @exception ScriptError::ERR_FLAT_LAND_REQUIRED
 	 * @exception ScriptError::ERR_LOCAL_AUTHORITY_REFUSES
@@ -158,7 +158,7 @@ public:
 	 * Removes an airport.
 	 * @param tile Any tile of the airport.
 	 * @pre ScriptMap::IsValidTile(tile).
-	 * @game @pre Valid ScriptCompanyMode active in scope.
+	 * @game @pre ScriptCompanyMode::IsValid().
 	 * @exception ScriptError::ERR_OWNED_BY_ANOTHER_COMPANY
 	 * @return Whether the airport has been/can be removed or not.
 	 */
@@ -182,7 +182,7 @@ public:
 	 * @return The amount of noise added to the nearest town.
 	 * @note The noise will be added to the town with TownID GetNearestTown(tile, type).
 	 */
-	static int GetNoiseLevelIncrease(TileIndex tile, AirportType type);
+	static SQInteger GetNoiseLevelIncrease(TileIndex tile, AirportType type);
 
 	/**
 	 * Get the TownID of the town whose local authority will influence
@@ -200,7 +200,7 @@ public:
 	 * @pre IsAirportInformationAvailable(type)
 	 * @return Maintenance cost factor of the airport type.
 	 */
-	static uint16 GetMaintenanceCostFactor(AirportType type);
+	static SQInteger GetMaintenanceCostFactor(AirportType type);
 
 	/**
 	 * Get the monthly maintenance cost of an airport type.

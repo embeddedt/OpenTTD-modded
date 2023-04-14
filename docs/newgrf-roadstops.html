@@ -24,13 +24,14 @@
 	Features/properties/variables which require a higher version will indicate the required version. Unless indicated otherwise these will fall back to doing nothing on versions which do not support them.</p>
 
 
-	<p><b>Actions:</b>
+	<p><b>Sections:</b>
 	<ul>
 		<li><a href="#a0roadstops">Action 0</a></li>
 		<li><a href="#a2roadstops">Action 2</a></li>
 		<li><a href="#varaction2roadstops">Variational Action 2</a></li>
 		<li><a href="#randomaction2roadstops">Random Action 2</a></li>
 		<li><a href="#a3roadstops">Action 3</a></li>
+		<li><a href="#erata">Erata</a></li>
 	</ul></p>
 
 	<h3 id="a0roadstops">Action 0 - Road Stops</h3>
@@ -53,6 +54,8 @@
 		<tr><td><a href="#roadstop_general_flags">12</a></td><td><a href="#roadstop_general_flags">roadstop_general_flags</a></td><td>4</td><td>General flags</td></tr>
 		<tr><td><a href="#roadstop_min_bridge_height">13</a></td><td><a href="#roadstop_min_bridge_height">roadstop_min_bridge_height</a></td><td>6</td><td>Minimum bridge heights</td></tr>
 		<tr><td><a href="#roadstop_disallowed_bridge_pillars">14</a></td><td><a href="#roadstop_disallowed_bridge_pillars">roadstop_disallowed_bridge_pillars</a></td><td>6</td><td>Disallowed bridge pillars</td></tr>
+		<tr><td><a href="#roadstop_cost_multipliers">15</a></td><td><a href="#roadstop_cost_multipliers">roadstop_cost_multipliers</a></td><td>2</td><td>Cost multipliers</td></tr>
+		<tr><td><a href="#roadstop_height">16</a></td><td><a href="#roadstop_height">roadstop_height</a></td><td>1</td><td>Height (for build window)</td></tr>
 	</table>
 
 	<h4 id="roadstop_class_id">Road stop class ID (08, or mappable property: roadstop_class_id)</h4>
@@ -92,7 +95,7 @@
 	<tr><th>Bit</th><th>Value</th><th>Meaning</th></tr>
 	<tr><td>0</td><td>1</td><td>Bay stops: Draw road type ground sprite</td></tr>
 	<tr><td>1</td><td>2</td><td>Drive through stops: Draw road/tram type overlays</td></tr>
-	<tr><td>4</td><td>4</td><td>Road waypoints: Draw sprite layout ground sprite on top of the underlying road (by default the sprite layout ground sprite is not used)</td></tr>
+	<tr><td>2</td><td>4</td><td>Road waypoints: Draw sprite layout ground sprite on top of the underlying road (by default the sprite layout ground sprite is not used)</td></tr>
 	</table>
 	The default value is 3 (bits 0 and 1 both set).
 	</p>
@@ -153,6 +156,10 @@
 	<tr><td>2</td><td>4</td><td>Do not show catenary graphics.</br>This requires <font face="monospace">road_stops</font>, version 2.</td></tr>
 	<tr><td>3</td><td>8</td><td>Only allow drive-through stops (not bay stops).</br>This requires <font face="monospace">road_stops</font>, version 2.</td></tr>
 	<tr><td>4</td><td>10</td><td>Do not automatically build connecting road pieces.</br>This requires <font face="monospace">road_stops</font>, version 3.</td></tr>
+	<tr><td>5</td><td>20</td><td>Only show in the road build menu (not tram).</br>This requires <font face="monospace">road_stops</font>, version 4.</td></tr>
+	<tr><td>6</td><td>40</td><td>Only show in the tram build menu (not road).</br>This requires <font face="monospace">road_stops</font>, version 4.</td></tr>
+	<tr><td>7</td><td>80</td><td>Use custom graphics for disabled road stop views.</br>This requires <font face="monospace">road_stops</font>, version 8.</td></tr>
+	<tr><td>8</td><td>100</td><td>Read the road stop draw mode from variable 0x100, this overrides the <a href="#roadstop_draw_mode">roadstop_draw_mode</a> property.</br>This requires <font face="monospace">road_stops</font>, version 9.</td></tr>
 	</table>
 	The default value is 0 (no flags enabled).
 	</p>
@@ -173,6 +180,13 @@
 	The second byte is the removal cost multiplier.<br />
 	The total property length is 2 bytes.<br />
 	A value of 16 produces a build or removal cost the same as non-NewGRF road stops.</a>.
+	</p>
+	<h4 id="roadstop_height">Road stop height (in the build window) (16, or mappable property: roadstop_height)</h4>
+	<p>This property sets the height used to size the road stop build window previews.<br />
+	The nominal height for the road stop preview is set to at least: 32 + "value of this property" * 8.<br />
+	This similar to <a href="https://newgrf-specs.tt-wiki.net/wiki/Action0/Objects#Building_height_.2816.29">Object variable 16</a>.<br />
+	The total property length is 1 byte.<br />
+	This requires <font face="monospace">road_stops</font>, version 6.
 	</p>
 
 	<p style="padding-top: 0.25em;">
@@ -224,8 +238,10 @@
 		<tr><td><a href="#roadstop_animation_frame_nearby_tiles">66</a></td><td><a href="#roadstop_animation_frame_nearby_tiles">roadstop_animation_frame_nearby_tiles</a></td><td>Animation frame of nearby tile</td></tr>
 		<tr><td><a href="#roadstop_land_info_nearby_tiles">67</a></td><td><a href="#roadstop_land_info_nearby_tiles">roadstop_land_info_nearby_tiles</a></td><td>Land info of nearby tiles</td></tr>
 		<tr><td><a href="#roadstop_road_stop_info_nearby_tiles">68</a></td><td><a href="#roadstop_road_stop_info_nearby_tiles">roadstop_road_stop_info_nearby_tiles</a></td><td>Road stop info of nearby tiles</td></tr>
+		<tr><td></td><td><a href="#roadstop_road_stop_info_nearby_tiles_v2">roadstop_road_stop_info_nearby_tiles_v2</a></td><td>Road stop info of nearby tiles (v2)</td></tr>
 		<tr><td><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/BaseStation">69</a></td><td></td><td>Information about cargo accepted in the past (BaseStation)</td></tr>
 		<tr><td><a href="#roadstop_road_stop_grfid_nearby_tiles">6A</a></td><td><a href="#roadstop_road_stop_grfid_nearby_tiles">roadstop_road_stop_grfid_nearby_tiles</a></td><td>GRFID of nearby road stop tiles</td></tr>
+		<tr><td><a href="#roadstop_road_info_nearby_tiles">6B</a></td><td><a href="#roadstop_road_info_nearby_tiles">roadstop_road_info_nearby_tiles</a></td><td>Road info of nearby plain road tiles</td></tr>
 	</table>
 
 	<h4 id="roadstop_view">Road stop view/rotation (40, or mappable variable: roadstop_view)</h4>
@@ -295,6 +311,18 @@
 		2 - East-bound only<br />
 		3 - No entry
 	</td></tr>
+	<tr><td>2 - 3</td><td>
+		Inferred one-way road information, from examining the road layout:<br />
+		0 - Two-way traffic<br />
+		1 - West-bound only<br />
+		2 - East-bound only<br />
+		3 - No entry<br />
+		This requires <font face="monospace">road_stops</font>, version 8.
+	</td></tr>
+	<tr><td>4</td><td>
+		1 if the road stop is being drawn in the build window<br />
+		This requires <font face="monospace">road_stops</font>, version 9.
+	</td></tr>
 	</table>
 	<br />
 	The remaining bits are reserved for future use and should be masked.
@@ -311,7 +339,10 @@
 
 	<table>
 	<tr><th>Bits</th><th>Meaning</th></tr>
-	<tr><td>0 - 7</td><td>If the tile is defined in the current GRF, this is the setID used in the definition. Otherwise, the content is undefined. </td></tr>
+	<tr><td>0 - 7</td><td>
+		If the tile is defined in the current GRF, this is the lower 8 bits of the setID used in the definition. Otherwise, the content is undefined.<br />
+		Note that if this GRF has any road stop setIDs greater than 255, bits 24 - 31 need to be used as well.
+	</td></tr>
 	<tr><td>8 - 9</td><td>
 		0 - The tile uses original TTD graphics<br />
 		1 - The tile is defined in the current GRF<br />
@@ -332,13 +363,84 @@
 		1 - North-bound only<br />
 		2 - South-bound only<br />
 		3 - No entry
+	</td></tr>
+	<tr><td>24 - 31</td><td>
+		If the tile is defined in the current GRF, this is the upper 8 bits of the setID used in the definition. Otherwise, the content is undefined.<br />
+		This can be ignored if this GRF does not have any road stop setIDs greater than 255 (does not define more than 256 road stop types).<br />
+		This requires <font face="monospace">road_stops</font>, version 7.
+	</td></tr>
 	</table>
 	<br />
 	The remaining bits are reserved for future use and should be masked.
 	</p>
 
+	<h4 id="roadstop_road_stop_info_nearby_tiles_v2">Road stop of nearby tile v2 (mappable variable: roadstop_road_stop_info_nearby_tiles_v2)</h4>
+	<p>This has a similar value to <a href="#roadstop_road_stop_info_nearby_tiles">68</a>/<a href="#roadstop_road_stop_info_nearby_tiles">roadstop_road_stop_info_nearby_tiles</a>, above.<br />
+
+	<table>
+	<tr><th>Bits</th><th>Meaning</th></tr>
+	<tr><td>0 - 15</td><td>If the tile is defined in the current GRF, this is the setID used in the definition. Otherwise, the content is undefined. </td></tr>
+	<tr><td>16 - 17</td><td>
+		0 - The tile uses original TTD graphics<br />
+		1 - The tile is defined in the current GRF<br />
+		2 - The tile is defined in another GRF
+	</td></tr>
+	<tr><td>18</td><td>Set if the selected tile belongs to the current station, clear otherwise</td></tr>
+	<tr><td>19</td><td>Clear if the selected tile has the same view/rotation, set if a different view/rotation</td></tr>
+	<tr><td>20 - 23</td><td>View/rotation of the selected tile</td></tr>
+	<tr><td>24 - 27</td><td>
+		0 - Passenger/bus stop<br />
+		1 - Freight/lorry stop<br />
+		2 - Road waypoint
+	</td></tr>
+	<tr><td>28</td><td>Set if the stop type (passenger/bus, freight/lorry or road waypoint) is the same as the current tile</td></tr>
+	<tr><td>29 - 30</td><td>
+		One-way road information of the selected tile:<br />
+		0 - Two-way traffic<br />
+		1 - North-bound only<br />
+		2 - South-bound only<br />
+		3 - No entry
+	</table>
+	<br />
+	The remaining bits are reserved for future use and should be masked.<br />
+	This requires <font face="monospace">road_stops</font>, version 7.
+	</p>
+
 	<h4 id="roadstop_road_stop_grfid_nearby_tiles">GRFID of nearby road stop tile (6A, or mappable variable: roadstop_road_stop_grfid_nearby_tiles)</h4>
 	<p>This has the same value as <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Stations#GRFID_of_nearby_station_tile_.286A.29">station (feature 4) variable 6A</a>.</p>
+
+	<h4 id="roadstop_road_info_nearby_tiles">Road info of nearby plain road tiles (6B, or mappable variable: roadstop_road_info_nearby_tiles)</h4>
+
+	The returned value is 0xFFFFFFFF if the selected tile isn't a plain road tile.<br /><br />
+
+	<table>
+	<tr><th>Bits</th><th>Value</th><th>Meaning</th></tr>
+	<tr><td>0</td><td>01</td><td>North-west road piece is present</td></tr>
+	<tr><td>1</td><td>02</td><td>South-west road piece is present</td></tr>
+	<tr><td>2</td><td>04</td><td>South-east road piece is present</td></tr>
+	<tr><td>3</td><td>08</td><td>North-east road piece is present</td></tr>
+	<tr><td>4</td><td>10</td><td>North-west tram piece is present</td></tr>
+	<tr><td>5</td><td>20</td><td>South-west tram piece is present</td></tr>
+	<tr><td>6</td><td>40</td><td>South-east tram piece is present</td></tr>
+	<tr><td>7</td><td>80</td><td>North-east tram piece is present</td></tr>
+	<tr><td>8 - 15</td><td></td><td>
+		Road piece and slope:<br />
+		(Same order as <a href="https://newgrf-specs.tt-wiki.net/wiki/Action3/Roadtypes#Road_underlay_.2802.29">road sprites</a>).<br />
+		0 - 18: As above<br />
+		0xFF: No road present
+	</td></tr>
+	<tr><td>16 - 23</td><td></td><td>
+		Tram piece and slope:<br />
+		(Same order as <a href="https://newgrf-specs.tt-wiki.net/wiki/Action3/Roadtypes#Road_underlay_.2802.29">road sprites</a>).<br />
+		0 - 18: As above<br />
+		0xFF: No tram present
+	</td></tr>
+	</table>
+	<br />
+	The remaining bits are reserved for future use and should be masked.
+	<br />
+	This requires <font face="monospace">road_stops</font>, version 5.
+	</p>
 
 	<br />
 	<h3 id="randomaction2roadstops">Random Action 2 - Road Stops</h3>
@@ -369,6 +471,14 @@
 	<p>See the <a href="https://newgrf-specs.tt-wiki.net/wiki/Action3">Action 3 Specification</a> for background information.</p>
 
 	<p>Road stops have the same Action 3 cargo-type values as feature 4 (station).</p>
+
+	<p>In feature name <font face="monospace">road_stops</font> version 7 and later, the Action 3 ID field is an extended byte; GRFs may define more than 255 road stop types.<br />
+	In versions 1 to 6 (inclusive), only 255 road stop types may be defined per GRF, and the extended byte format may not be used.</p>
+	<br />
+
+	<h3 id="erata">Erata</h3>
+
+	<p>In feature name <font face="monospace">road_stops</font> versions 1 to 5 (inclusive), mapped Action 0 properties which are unknown and should be ignored, instead generate an error on use.</p>
 
 
 </body>

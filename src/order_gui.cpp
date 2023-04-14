@@ -31,8 +31,10 @@
 #include "engine_func.h"
 #include "vehicle_func.h"
 #include "vehiclelist.h"
+#include "error.h"
 #include "tracerestrict.h"
 #include "scope.h"
+#include "core/backup_type.hpp"
 
 #include "widgets/order_widget.h"
 
@@ -68,9 +70,9 @@ static const uint32 _cargo_type_unload_order_drowdown_hidden_mask = 0x8; // 0100
 DropDownList GetSlotDropDownList(Owner owner, TraceRestrictSlotID slot_id, int &selected, VehicleType vehtype, bool show_other_types);
 DropDownList GetCounterDropDownList(Owner owner, TraceRestrictCounterID ctr_id, int &selected);
 
-static bool ModifyOrder(const Vehicle *v, VehicleOrderID order_id, uint32 p2, bool error_msg = true)
+static bool ModifyOrder(const Vehicle *v, VehicleOrderID order_id, uint32 p2, bool error_msg = true, const char *text = nullptr)
 {
-	return DoCommandPEx(v->tile, v->index, p2, order_id, CMD_MODIFY_ORDER | (error_msg ? CMD_MSG(STR_ERROR_CAN_T_MODIFY_THIS_ORDER) : 0), nullptr, nullptr, 0);
+	return DoCommandPEx(v->tile, v->index, p2, order_id, CMD_MODIFY_ORDER | (error_msg ? CMD_MSG(STR_ERROR_CAN_T_MODIFY_THIS_ORDER) : 0), nullptr, text, nullptr);
 }
 
 struct CargoTypeOrdersWindow : public Window {
@@ -187,37 +189,38 @@ public:
 	virtual void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
 		if (widget == WID_CTO_HEADER) {
-			(*size).height = std::max((*size).height, (uint) WD_FRAMERECT_TOP + FONT_HEIGHT_NORMAL + WD_FRAMERECT_BOTTOM);
+			(*size).height = std::max((*size).height, (uint) FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.Vertical());
 		} else if (WID_CTO_CARGO_LABEL_FIRST <= widget && widget <= WID_CTO_CARGO_LABEL_LAST) {
-			(*size).width  = std::max((*size).width,  WD_FRAMERECT_LEFT + this->CARGO_ICON_WIDTH + WD_FRAMETEXT_LEFT + this->max_cargo_name_width + WD_FRAMETEXT_RIGHT + padding.width);
-			(*size).height = std::max((*size).height, (uint) WD_FRAMERECT_TOP + FONT_HEIGHT_NORMAL + WD_FRAMERECT_BOTTOM);
+			(*size).width  = std::max((*size).width, WidgetDimensions::scaled.framerect.left + this->CARGO_ICON_WIDTH + WidgetDimensions::scaled.framerect.Horizontal() + this->max_cargo_name_width + padding.width);
+			(*size).height = std::max((*size).height, (uint) FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.Vertical());
 		} else if ((WID_CTO_CARGO_DROPDOWN_FIRST <= widget && widget <= WID_CTO_CARGO_DROPDOWN_LAST) || widget == WID_CTO_SET_TO_ALL_DROPDOWN) {
-			(*size).width  = std::max((*size).width,  WD_DROPDOWNTEXT_LEFT + this->max_cargo_dropdown_width + WD_DROPDOWNTEXT_RIGHT + NWidgetLeaf::dropdown_dimension.width);
-			(*size).height = std::max((*size).height, (uint) WD_DROPDOWNTEXT_TOP + FONT_HEIGHT_NORMAL + WD_DROPDOWNTEXT_BOTTOM);
+			(*size).width  = std::max((*size).width, WidgetDimensions::scaled.dropdowntext.Horizontal() + this->max_cargo_dropdown_width + NWidgetLeaf::dropdown_dimension.width);
+			(*size).height = std::max((*size).height, (uint) WidgetDimensions::scaled.dropdowntext.Vertical() + FONT_HEIGHT_NORMAL);
 		} else if (widget == WID_CTO_SET_TO_ALL_LABEL) {
-			(*size).width = std::max((*size).width, this->max_cargo_name_width + WD_FRAMETEXT_RIGHT + padding.width);
-			(*size).height = std::max((*size).height, (uint) WD_FRAMERECT_TOP + FONT_HEIGHT_NORMAL + WD_FRAMERECT_BOTTOM);
+			(*size).width = std::max((*size).width, this->max_cargo_name_width + WidgetDimensions::scaled.framerect.right + padding.width);
+			(*size).height = std::max((*size).height, (uint) FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.Vertical());
 		}
 	}
 
 	virtual void DrawWidget(const Rect &r, int widget) const override
 	{
 		if (WID_CTO_CARGO_LABEL_FIRST <= widget && widget <= WID_CTO_CARGO_LABEL_LAST) {
+			Rect ir = r.Shrink(WidgetDimensions::scaled.framerect);
 			const CargoSpec *cs = _sorted_cargo_specs[widget - WID_CTO_CARGO_LABEL_FIRST];
 			bool rtl = (_current_text_dir == TD_RTL);
 
 			/* Draw cargo icon. */
-			int rect_left   = rtl ? r.right - WD_FRAMETEXT_RIGHT - this->CARGO_ICON_WIDTH : r.left + WD_FRAMERECT_LEFT;
+			int rect_left   = rtl ? ir.right - this->CARGO_ICON_WIDTH : ir.left;
 			int rect_right  = rect_left + this->CARGO_ICON_WIDTH;
-			int rect_top    = r.top + WD_FRAMERECT_TOP + ((r.bottom - WD_FRAMERECT_BOTTOM - r.top - WD_FRAMERECT_TOP) - this->CARGO_ICON_HEIGHT) / 2;
+			int rect_top    = ir.top + ((ir.bottom - ir.top) - this->CARGO_ICON_HEIGHT) / 2;
 			int rect_bottom = rect_top + this->CARGO_ICON_HEIGHT;
 			GfxFillRect(rect_left, rect_top, rect_right, rect_bottom, PC_BLACK);
 			GfxFillRect(rect_left + 1, rect_top + 1, rect_right - 1, rect_bottom - 1, cs->legend_colour);
 
 			/* Draw cargo name */
-			int text_left  = rtl ? r.left + WD_FRAMETEXT_LEFT : rect_right + WD_FRAMETEXT_LEFT;
-			int text_right = rtl ? rect_left - WD_FRAMETEXT_LEFT : r.right - WD_FRAMETEXT_RIGHT;
-			int text_top   = r.top + WD_FRAMERECT_TOP;
+			int text_left  = rtl ? ir.left : rect_right + WidgetDimensions::scaled.framerect.left;
+			int text_right = rtl ? rect_left - WidgetDimensions::scaled.framerect.left : ir.right;
+			int text_top   = ir.top;
 			SetDParam(0, cs->name);
 			DrawString(text_left, text_right, text_top, STR_BLACK_STRING);
 		}
@@ -394,7 +397,7 @@ static const NWidgetPart _nested_cargo_type_orders_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_GREY), SetMinimalSize(1, 4), SetFill(1, 0), SetResize(1, 0), EndContainer(), // SPACER
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_PANEL, COLOUR_GREY),
-			NWidget(WWT_TEXT, COLOUR_GREY, WID_CTO_SET_TO_ALL_LABEL), SetPadding(0, 0, 0, WD_FRAMERECT_LEFT + 12 + WD_FRAMETEXT_LEFT), SetFill(1, 0), SetResize(1, 0), SetDataTip(STR_CARGO_TYPE_ORDERS_SET_TO_ALL_LABEL, STR_CARGO_TYPE_ORDERS_SET_TO_ALL_TOOLTIP),
+			NWidget(WWT_TEXT, COLOUR_GREY, WID_CTO_SET_TO_ALL_LABEL), SetPadding(0, 0, 0, 12 + WidgetDimensions::unscaled.framerect.Horizontal()), SetFill(1, 0), SetResize(1, 0), SetDataTip(STR_CARGO_TYPE_ORDERS_SET_TO_ALL_LABEL, STR_CARGO_TYPE_ORDERS_SET_TO_ALL_TOOLTIP),
 		EndContainer(),
 		NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_CTO_SET_TO_ALL_DROPDOWN), SetFill(1, 0), SetResize(1, 0), SetDataTip(STR_NULL, STR_CARGO_TYPE_ORDERS_SET_TO_ALL_TOOLTIP),
 	EndContainer(),
@@ -623,6 +626,8 @@ static const StringID _order_goto_dropdown[] = {
 	STR_ORDER_SHARE,
 	STR_ORDER_RELEASE_SLOT_BUTTON,
 	STR_ORDER_CHANGE_COUNTER_BUTTON,
+	STR_ORDER_LABEL_TEXT_BUTTON,
+	STR_ORDER_LABEL_DEPARTURES_VIA_BUTTON,
 	INVALID_STRING_ID
 };
 
@@ -633,18 +638,14 @@ static const StringID _order_goto_dropdown_aircraft[] = {
 	STR_ORDER_SHARE,
 	STR_ORDER_RELEASE_SLOT_BUTTON,
 	STR_ORDER_CHANGE_COUNTER_BUTTON,
+	STR_ORDER_LABEL_TEXT_BUTTON,
+	STR_ORDER_LABEL_DEPARTURES_VIA_BUTTON,
 	INVALID_STRING_ID
 };
 
 static const StringID _order_manage_list_dropdown[] = {
 	STR_ORDER_REVERSE_ORDER_LIST,
 	STR_ORDER_APPEND_REVERSED_ORDER_LIST,
-	INVALID_STRING_ID
-};
-
-static const StringID _order_manage_dropdown[] = {
-	STR_ORDER_DUPLICATE_ORDER,
-	STR_ORDER_CHANGE_JUMP_TARGET,
 	INVALID_STRING_ID
 };
 
@@ -768,8 +769,8 @@ static const StringID _order_conditional_condition_dispatch_slot_last[] = {
 	INVALID_STRING_ID,
 };
 
-extern uint ConvertSpeedToDisplaySpeed(uint speed);
-extern uint ConvertDisplaySpeedToSpeed(uint speed);
+extern uint ConvertSpeedToDisplaySpeed(uint speed, VehicleType type);
+extern uint ConvertDisplaySpeedToSpeed(uint speed, VehicleType type);
 
 static const StringID _order_depot_action_dropdown[] = {
 	STR_ORDER_DROP_GO_ALWAYS_DEPOT,
@@ -844,17 +845,24 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 	SpriteID sprite = rtl ? SPR_ARROW_LEFT : SPR_ARROW_RIGHT;
 	Dimension sprite_size = GetSpriteSize(sprite);
 	if (v->cur_real_order_index == order_index) {
+		/* Draw two arrows before the next real order. */
 		DrawSprite(sprite, PAL_NONE, rtl ? right -     sprite_size.width : left,                     y + ((int)FONT_HEIGHT_NORMAL - (int)sprite_size.height) / 2);
 		DrawSprite(sprite, PAL_NONE, rtl ? right - 2 * sprite_size.width : left + sprite_size.width, y + ((int)FONT_HEIGHT_NORMAL - (int)sprite_size.height) / 2);
 	} else if (v->cur_implicit_order_index == order_index) {
+		/* Draw one arrow before the next implicit order; the next real order will still get two arrows. */
 		DrawSprite(sprite, PAL_NONE, rtl ? right -     sprite_size.width : left,                     y + ((int)FONT_HEIGHT_NORMAL - (int)sprite_size.height) / 2);
 	}
 
 	TextColour colour = TC_BLACK;
 	if (order->IsType(OT_IMPLICIT)) {
 		colour = (selected ? TC_SILVER : TC_GREY) | TC_NO_SHADE;
-	} else if (selected) {
-		colour = TC_WHITE;
+	} else {
+		if (selected) {
+			colour = TC_WHITE;
+		} else {
+			Colours order_colour = order->GetColour();
+			if (order_colour != INVALID_COLOUR) colour = TC_IS_PALETTE_COLOUR | (TextColour)_colour_value[order_colour];
+		}
 	}
 
 	SetDParam(0, order_index + 1);
@@ -894,6 +902,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 			SetDParam(2, order->GetDestination());
 
 			if (timetable) {
+				/* Show only wait time in the timetable window. */
 				SetDParam(3, STR_EMPTY);
 
 				if (order->GetWaitTime() > 0 || order->IsWaitTimetabled()) {
@@ -902,6 +911,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 				}
 				timetable_wait_time_valid = true;
 			} else {
+				/* Show non-stop, refit and stop location only in the order window. */
 				SetDParam(3, (order->GetNonStopType() & ONSF_NO_STOP_AT_DESTINATION_STATION) ? STR_EMPTY : _station_load_types[order->IsRefit()][unload][load]);
 				if (order->IsRefit()) {
 					SetDParam(4, order->IsAutoRefit() ? STR_ORDER_AUTO_REFIT_ANY : CargoSpec::Get(order->GetRefitCargo())->name);
@@ -918,6 +928,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 
 		case OT_GOTO_DEPOT:
 			if (order->GetDepotActionType() & ODATFB_NEAREST_DEPOT) {
+				/* Going to the nearest depot. */
 				SetDParam(0, STR_ORDER_GO_TO_NEAREST_DEPOT_FORMAT);
 				if (v->type == VEH_AIRCRAFT) {
 					SetDParam(2, STR_ORDER_NEAREST_HANGAR);
@@ -927,6 +938,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 					SetDParam(3, STR_ORDER_TRAIN_DEPOT + v->type);
 				}
 			} else {
+				/* Going to a specific depot. */
 				SetDParam(0, STR_ORDER_GO_TO_DEPOT_FORMAT);
 				SetDParam(2, v->type);
 				SetDParam(3, order->GetDestination());
@@ -941,10 +953,12 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 			if (!timetable && (order->GetDepotActionType() & ODATFB_SELL)) {
 				SetDParam(7, STR_ORDER_SELL_ORDER);
 			} else {
+				/* Do not show stopping in the depot in the timetable window. */
 				if (!timetable && (order->GetDepotActionType() & ODATFB_HALT)) {
 					SetDParam(7, STR_ORDER_STOP_ORDER);
 				}
 
+				/* Do not show refitting in the depot in the timetable window. */
 				if (!timetable && order->IsRefit()) {
 					SetDParam(7, (order->GetDepotActionType() & ODATFB_HALT) ? STR_ORDER_REFIT_STOP_ORDER : STR_ORDER_REFIT_ORDER);
 					SetDParam(8, CargoSpec::Get(order->GetRefitCargo())->name);
@@ -1095,7 +1109,7 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 						SetDParam(3, STR_ORDER_CONDITIONAL_COMPARATOR_EQUALS + occ);
 						break;
 					case OCV_MAX_SPEED:
-						value = ConvertSpeedToDisplaySpeed(value);
+						value = ConvertSpeedToDisplaySpeed(value, v->type);
 						/* FALL THROUGH */
 					default:
 						SetDParam(3, STR_ORDER_CONDITIONAL_COMPARATOR_EQUALS + occ);
@@ -1150,6 +1164,31 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 			SetDParam(3, order->GetXData());
 			break;
 
+		case OT_LABEL:
+			switch (order->GetLabelSubType()) {
+				case OLST_TEXT: {
+					SetDParam(0, STR_ORDER_LABEL_TEXT);
+					const char *text = order->GetLabelText();
+					SetDParamStr(1, StrEmpty(text) ? "" : text);
+					break;
+				}
+
+				case OLST_DEPARTURES_VIA:
+					SetDParam(0, STR_ORDER_LABEL_DEPARTURES_VIA);
+					if (Waypoint::IsValidID(order->GetDestination())) {
+						SetDParam(1, STR_WAYPOINT_NAME);
+					} else {
+						SetDParam(1, STR_STATION_NAME);
+					}
+					SetDParam(2, order->GetDestination());
+					break;
+
+				default:
+					SetDParam(0, STR_TRACE_RESTRICT_VARIABLE_UNDEFINED_RED);
+					break;
+			}
+			break;
+
 		default: NOT_REACHED();
 	}
 
@@ -1169,12 +1208,9 @@ void DrawOrderString(const Vehicle *v, const Order *order, int order_index, int 
 		Dimension lock_d = GetSpriteSize(SPR_LOCK);
 		DrawPixelInfo tmp_dpi;
 		if (FillDrawPixelInfo(&tmp_dpi, rtl ? left : middle, y, rtl ? middle - left : right - middle, lock_d.height)) {
-			DrawPixelInfo *old_dpi = _cur_dpi;
-			_cur_dpi = &tmp_dpi;
+			AutoRestoreBackup dpi_backup(_cur_dpi, &tmp_dpi);
 
 			DrawSprite(SPR_LOCK, PAL_NONE, rtl ? edge - 3 - lock_d.width - left : edge + 3 - middle, 0);
-
-			_cur_dpi = old_dpi;
 		}
 	}
 }
@@ -1332,6 +1368,7 @@ private:
 		OPOS_SHARE,
 		OPOS_COND_VIA,
 		OPOS_CONDITIONAL_RETARGET,
+		OPOS_DEPARTURE_VIA,
 		OPOS_END,
 	};
 
@@ -1342,6 +1379,8 @@ private:
 		DP_GROUNDVEHICLE_ROW_CONDITIONAL = 1, ///< Display the row for conditional orders in the top row of the train/rv order window.
 		DP_GROUNDVEHICLE_ROW_SLOT        = 2, ///< Display the row for release slot orders in the top row of the train/rv order window.
 		DP_GROUNDVEHICLE_ROW_COUNTER     = 3, ///< Display the row for change counter orders in the top row of the train/rv order window.
+		DP_GROUNDVEHICLE_ROW_TEXT_LABEL  = 4, ///< Display the row for text label orders in the top row of the train/rv order window.
+		DP_GROUNDVEHICLE_ROW_EMPTY       = 5, ///< Display the row for no buttons in the top row of the train/rv order window.
 
 		/* WID_O_SEL_TOP_LEFT */
 		DP_LEFT_LOAD       = 0, ///< Display 'load' in the left button of the top row of the train/rv order window.
@@ -1362,6 +1401,8 @@ private:
 		DP_ROW_CONDITIONAL = 2, ///< Display the conditional order buttons in the top row of the ship/airplane order window.
 		DP_ROW_SLOT        = 3, ///< Display the release slot buttons in the top row of the ship/airplane order window.
 		DP_ROW_COUNTER     = 4, ///< Display the change counter buttons in the top row of the ship/airplane order window.
+		DP_ROW_TEXT_LABEL  = 5, ///< Display the text label buttons in the top row of the ship/airplane order window.
+		DP_ROW_EMPTY       = 6, ///< Display no buttons in the top row of the ship/airplane order window.
 
 		/* WID_O_SEL_COND_VALUE */
 		DP_COND_VALUE_NUMBER = 0, ///< Display number widget
@@ -1430,7 +1471,7 @@ private:
 	VehicleOrderID GetOrderFromPt(int y)
 	{
 		NWidgetBase *nwid = this->GetWidget<NWidgetBase>(WID_O_ORDER_LIST);
-		int sel = (y - nwid->pos_y - WD_FRAMERECT_TOP) / nwid->resize_y; // Selected line in the WID_O_ORDER_LIST panel.
+		int sel = (y - nwid->pos_y - WidgetDimensions::scaled.framerect.top) / nwid->resize_y; // Selected line in the WID_O_ORDER_LIST panel.
 
 		if ((uint)sel >= this->vscroll->GetCapacity()) return INVALID_VEH_ORDER_ID;
 
@@ -1475,9 +1516,9 @@ private:
 		return DoCommandPEx(this->vehicle->tile, this->vehicle->index, this->OrderGetSel(), order_pack, CMD_INSERT_ORDER | CMD_MSG(STR_ERROR_CAN_T_INSERT_NEW_ORDER), nullptr, nullptr, 0);
 	}
 
-	bool ModifyOrder(VehicleOrderID sel_ord, uint32 p2, bool error_msg = true)
+	bool ModifyOrder(VehicleOrderID sel_ord, uint32 p2, bool error_msg = true, const char *text = nullptr)
 	{
-		return ::ModifyOrder(this->vehicle, sel_ord, p2, error_msg);
+		return ::ModifyOrder(this->vehicle, sel_ord, p2, error_msg, text);
 	}
 
 	/**
@@ -1493,6 +1534,7 @@ private:
 			HT_VEHICLE,           // OPOS_SHARE
 			HT_RECT,              // OPOS_COND_VIA
 			HT_NONE,              // OPOS_CONDITIONAL_RETARGET
+			HT_RECT,              // OPOS_DEPARTURE_VIA
 		};
 		SetObjectToPlaceWnd(ANIMCURSOR_PICKSTATION, PAL_NONE, goto_place_style[type - 1], this);
 		this->goto_type = type;
@@ -1546,7 +1588,7 @@ private:
 		Order order;
 		order.next = nullptr;
 		order.index = 0;
-		order.MakeGoToDepot(0, ODTFB_PART_OF_ORDERS,
+		order.MakeGoToDepot(INVALID_DEPOT, ODTFB_PART_OF_ORDERS,
 				(_settings_client.gui.new_nonstop || _settings_game.order.nonstop_only) && this->vehicle->IsGroundVehicle() ? ONSF_NO_STOP_AT_INTERMEDIATE_STATIONS : ONSF_STOP_EVERYWHERE);
 		order.SetDepotActionType(ODATFB_NEAREST_DEPOT);
 
@@ -1575,6 +1617,19 @@ private:
 		order.next = nullptr;
 		order.index = 0;
 		order.MakeChangeCounter();
+
+		this->InsertNewOrder(order.Pack());
+	}
+
+	/**
+	 * Handle the click on the text label button.
+	 */
+	void OrderClick_TextLabel()
+	{
+		Order order;
+		order.next = nullptr;
+		order.index = 0;
+		order.MakeLabel(OLST_TEXT);
 
 		this->InsertNewOrder(order.Pack());
 	}
@@ -1719,7 +1774,7 @@ private:
 	{
 		this->can_do_refit = false;
 		this->can_do_autorefit = false;
-		for (const Vehicle *w = this->vehicle; w != nullptr; w = w->IsGroundVehicle() ? w->Next() : nullptr) {
+		for (const Vehicle *w = this->vehicle; w != nullptr; w = w->IsArticulatedCallbackVehicleType() ? w->Next() : nullptr) {
 			if (IsEngineRefittable(w->engine_type)) this->can_do_refit = true;
 			if (HasBit(Engine::Get(w->engine_type)->info.misc_flags, EF_AUTO_REFIT)) this->can_do_autorefit = true;
 		}
@@ -1789,13 +1844,13 @@ public:
 		switch (widget) {
 			case WID_O_OCCUPANCY_LIST:
 				SetDParamMaxValue(0, 100);
-				size->width = WD_FRAMERECT_LEFT + GetStringBoundingBox(STR_ORDERS_OCCUPANCY_PERCENT).width + 10 + WD_FRAMERECT_RIGHT;
+				size->width = GetStringBoundingBox(STR_ORDERS_OCCUPANCY_PERCENT).width + 10 + WidgetDimensions::unscaled.framerect.Horizontal();
 				/* FALL THROUGH */
 
 			case WID_O_SEL_OCCUPANCY:
 			case WID_O_ORDER_LIST:
 				resize->height = FONT_HEIGHT_NORMAL;
-				size->height = 6 * resize->height + WD_FRAMERECT_TOP + WD_FRAMERECT_BOTTOM;
+				size->height = 6 * resize->height + padding.height;
 				break;
 
 			case WID_O_COND_VARIABLE: {
@@ -1825,13 +1880,13 @@ public:
 
 			case WID_O_OCCUPANCY_TOGGLE:
 				SetDParamMaxValue(0, 100);
-				size->width = WD_FRAMERECT_LEFT + GetStringBoundingBox(STR_ORDERS_OCCUPANCY_PERCENT).width + 10 + WD_FRAMERECT_RIGHT;
+				size->width = GetStringBoundingBox(STR_ORDERS_OCCUPANCY_PERCENT).width + 10 + WidgetDimensions::unscaled.framerect.Horizontal();
 				break;
 
 			case WID_O_TIMETABLE_VIEW: {
 				Dimension d = GetStringBoundingBox(STR_ORDERS_TIMETABLE_VIEW);
 				Dimension spr_d = GetSpriteSize(SPR_WARNING_SIGN);
-				d.width += spr_d.width + 2;
+				d.width += spr_d.width + WidgetDimensions::scaled.hsep_normal;
 				d.height = std::max(d.height, spr_d.height);
 				d.width += padding.width;
 				d.height += padding.height;
@@ -2188,6 +2243,15 @@ public:
 					break;
 				}
 
+				case OT_LABEL: {
+					if (row_sel != nullptr) {
+						row_sel->SetDisplayedPlane(order->GetLabelSubType() == OLST_TEXT ? DP_ROW_TEXT_LABEL : DP_ROW_EMPTY);
+					} else {
+						train_row_sel->SetDisplayedPlane(order->GetLabelSubType() == OLST_TEXT ? DP_GROUNDVEHICLE_ROW_TEXT_LABEL : DP_GROUNDVEHICLE_ROW_EMPTY);
+					}
+					break;
+				}
+
 				default: // every other order
 					if (row_sel != nullptr) {
 						row_sel->SetDisplayedPlane(DP_ROW_LOAD);
@@ -2246,12 +2310,13 @@ public:
 
 	void DrawOrderListWidget(const Rect &r) const
 	{
+		Rect ir = r.Shrink(WidgetDimensions::scaled.frametext, WidgetDimensions::scaled.framerect);
 		bool rtl = _current_text_dir == TD_RTL;
 		SetDParamMaxValue(0, this->vehicle->GetNumOrders(), 2);
-		int index_column_width = GetStringBoundingBox(STR_ORDER_INDEX).width + 2 * GetSpriteSize(rtl ? SPR_ARROW_RIGHT : SPR_ARROW_LEFT).width + 3;
-		int middle = rtl ? r.right - WD_FRAMETEXT_RIGHT - index_column_width : r.left + WD_FRAMETEXT_LEFT + index_column_width;
+		int index_column_width = GetStringBoundingBox(STR_ORDER_INDEX).width + 2 * GetSpriteSize(rtl ? SPR_ARROW_RIGHT : SPR_ARROW_LEFT).width + WidgetDimensions::scaled.hsep_normal;
+		int middle = rtl ? ir.right - index_column_width : ir.left + index_column_width;
 
-		int y = r.top + WD_FRAMERECT_TOP;
+		int y = ir.top;
 		int line_height = this->GetWidget<NWidgetBase>(WID_O_ORDER_LIST)->resize_y;
 
 		int i = this->vscroll->GetPosition();
@@ -2264,10 +2329,10 @@ public:
 
 				if (i != this->selected_order && i == this->order_over) {
 					/* Highlight dragged order destination. */
-					int top = (this->order_over < this->selected_order ? y : y + line_height) - WD_FRAMERECT_TOP;
-					int bottom = std::min(top + 2, r.bottom - WD_FRAMERECT_BOTTOM);
-					top = std::max(top - 3, r.top + WD_FRAMERECT_TOP);
-					GfxFillRect(r.left + WD_FRAMETEXT_LEFT, top, r.right - WD_FRAMETEXT_RIGHT, bottom, _colour_gradient[COLOUR_GREY][7]);
+					int top = (this->order_over < this->selected_order ? y : y + line_height) - WidgetDimensions::scaled.framerect.top;
+					int bottom = std::min(top + 2, ir.bottom);
+					top = std::max(top - 3, ir.top);
+					GfxFillRect(ir.left, top, ir.right, bottom, _colour_gradient[COLOUR_GREY][7]);
 					break;
 				}
 				y += line_height;
@@ -2277,7 +2342,7 @@ public:
 			}
 
 			/* Reset counters for drawing the orders. */
-			y = r.top + WD_FRAMERECT_TOP;
+			y = ir.top;
 			i = this->vscroll->GetPosition();
 			order = this->vehicle->GetOrder(i);
 		}
@@ -2287,7 +2352,7 @@ public:
 			/* Don't draw anything if it extends past the end of the window. */
 			if (!this->vscroll->IsVisible(i)) break;
 
-			DrawOrderString(this->vehicle, order, i, y, i == this->selected_order, false, r.left + WD_FRAMETEXT_LEFT, middle, r.right - WD_FRAMETEXT_RIGHT);
+			DrawOrderString(this->vehicle, order, i, y, i == this->selected_order, false, ir.left, middle, ir.right);
 			y += line_height;
 
 			i++;
@@ -2296,13 +2361,14 @@ public:
 
 		if (this->vscroll->IsVisible(i)) {
 			StringID str = this->vehicle->IsOrderListShared() ? STR_ORDERS_END_OF_SHARED_ORDERS : STR_ORDERS_END_OF_ORDERS;
-			DrawString(rtl ? r.left + WD_FRAMETEXT_LEFT : middle, rtl ? middle : r.right - WD_FRAMETEXT_RIGHT, y, str, (i == this->selected_order) ? TC_WHITE : TC_BLACK);
+			DrawString(rtl ? ir.left : middle, rtl ? middle : ir.right, y, str, (i == this->selected_order) ? TC_WHITE : TC_BLACK);
 		}
 	}
 
 	void DrawOccupancyListWidget(const Rect &r) const
 	{
-		int y = r.top + WD_FRAMERECT_TOP;
+		Rect ir = r.Shrink(WidgetDimensions::scaled.framerect);
+		int y = ir.top;
 		int line_height = this->GetWidget<NWidgetBase>(WID_O_ORDER_LIST)->resize_y;
 
 		int i = this->vscroll->GetPosition();
@@ -2315,7 +2381,13 @@ public:
 			uint8 occupancy = order->GetOccupancy();
 			if (occupancy > 0) {
 				SetDParam(0, occupancy - 1);
-				DrawString(r.left + WD_FRAMETEXT_LEFT, r.right - WD_FRAMETEXT_RIGHT, y, STR_ORDERS_OCCUPANCY_PERCENT, (i == this->selected_order) ? TC_WHITE : TC_BLACK);
+				TextColour colour;
+				if (order->UseOccupancyValueForAverage()) {
+					colour = (i == this->selected_order) ? TC_WHITE : TC_BLACK;
+				} else {
+					colour = ((i == this->selected_order) ? TC_SILVER : TC_GREY) | TC_NO_SHADE;
+				}
+				DrawString(ir.left, ir.right, y, STR_ORDERS_OCCUPANCY_PERCENT, colour);
 			}
 			y += line_height;
 
@@ -2383,7 +2455,7 @@ public:
 							value = order->GetConditionValue();
 							break;
 					}
-					if (order->GetConditionVariable() == OCV_MAX_SPEED) value = ConvertSpeedToDisplaySpeed(value);
+					if (order->GetConditionVariable() == OCV_MAX_SPEED) value = ConvertSpeedToDisplaySpeed(value, this->vehicle->type);
 					if (order->GetConditionVariable() == OCV_CARGO_WAITING_AMOUNT) value = ConvertCargoQuantityToDisplayQuantity(order->GetConditionValue(), value);
 					SetDParam(0, value);
 				}
@@ -2589,10 +2661,22 @@ public:
 				const Order *order = this->vehicle->GetOrder(sel);
 				if (order == nullptr) break;
 
-				uint hidden_mask = 0;
-				if (!order->IsType(OT_CONDITIONAL)) hidden_mask |= 2;
-
-				ShowDropDownMenu(this, _order_manage_dropdown, -1, widget, 0, hidden_mask, UINT_MAX, DDSF_LOST_FOCUS);
+				DropDownList list;
+				list.emplace_back(new DropDownListStringItem(STR_ORDER_DUPLICATE_ORDER, 0, false));
+				if (order->IsType(OT_CONDITIONAL)) list.emplace_back(new DropDownListStringItem(STR_ORDER_CHANGE_JUMP_TARGET, 1, false));
+				if (!order->IsType(OT_IMPLICIT)) {
+					list.emplace_back(new DropDownListItem(-1, false));
+					list.emplace_back(new DropDownListStringItem(STR_COLOUR_DEFAULT, 0x100 + INVALID_COLOUR, false));
+					auto add_colour = [&](Colours colour) {
+						list.emplace_back(new DropDownListStringItem(STR_COLOUR_DARK_BLUE + colour, 0x100 + colour, false));
+					};
+					add_colour(COLOUR_YELLOW);
+					add_colour(COLOUR_LIGHT_BLUE);
+					add_colour(COLOUR_GREEN);
+					add_colour(COLOUR_ORANGE);
+					add_colour(COLOUR_PINK);
+				}
+				ShowDropDownList(this, std::move(list), 0x100 + order->GetColour(), widget, 0, true, false, DDSF_LOST_FOCUS);
 				break;
 			}
 
@@ -2807,7 +2891,7 @@ public:
 					list.emplace_back(new DropDownListStringItem(STR_ORDER_CONDITIONAL_COMPARATOR_DISPATCH_SLOT_IS_NOT_FIRST, 0x101, false));
 					list.emplace_back(new DropDownListStringItem(STR_ORDER_CONDITIONAL_COMPARATOR_DISPATCH_SLOT_IS_LAST, 0x102, false));
 					list.emplace_back(new DropDownListStringItem(STR_ORDER_CONDITIONAL_COMPARATOR_DISPATCH_SLOT_IS_NOT_LAST, 0x103, false));
-					int selected = ((o->GetConditionValue() % 2) * 2) + ((o->GetConditionComparator() == OCC_IS_FALSE) ? 1 : 0);
+					int selected = 0x100 + ((o->GetConditionValue() % 2) * 2) + ((o->GetConditionComparator() == OCC_IS_FALSE) ? 1 : 0);
 					ShowDropDownList(this, std::move(list), selected, WID_O_COND_COMPARATOR, 0, true);
 					break;
 				}
@@ -2859,7 +2943,7 @@ public:
 						value = order->GetConditionValue();
 						break;
 				}
-				if (order->GetConditionVariable() == OCV_MAX_SPEED) value = ConvertSpeedToDisplaySpeed(value);
+				if (order->GetConditionVariable() == OCV_MAX_SPEED) value = ConvertSpeedToDisplaySpeed(value, this->vehicle->type);
 				if (order->GetConditionVariable() == OCV_CARGO_WAITING_AMOUNT) value = ConvertCargoQuantityToDisplayQuantity(order->GetConditionValue(), value);
 				this->query_text_widget = widget;
 				SetDParam(0, value);
@@ -2917,6 +3001,14 @@ public:
 				break;
 			}
 
+			case WID_O_TEXT_LABEL: {
+				const Order *order = this->vehicle->GetOrder(this->OrderGetSel());
+				this->query_text_widget = widget;
+				SetDParamStr(0, order->GetLabelText());
+				ShowQueryString(STR_JUST_RAW_STRING, STR_ORDER_LABEL_TEXT_CAPTION, NUM_CARGO - 1, this, CS_ALPHANUMERAL, QSF_NONE);
+				break;
+			}
+
 			case WID_O_TOGGLE_SIZE: {
 				_settings_client.gui.show_order_management_button = !_settings_client.gui.show_order_management_button;
 				InvalidateWindowClassesData(WC_VEHICLE_ORDERS);
@@ -2933,7 +3025,7 @@ public:
 
 			switch (this->vehicle->GetOrder(sel)->GetConditionVariable()) {
 				case OCV_MAX_SPEED:
-					value = Clamp(ConvertDisplaySpeedToSpeed(value), 0, 2047);
+					value = Clamp(ConvertDisplaySpeedToSpeed(value, this->vehicle->type), 0, 2047);
 					break;
 
 				case OCV_PERCENT:
@@ -2971,7 +3063,11 @@ public:
 		}
 
 		if (this->query_text_widget == WID_O_ADD_VEH_GROUP) {
-			DoCommandP(0, VehicleListIdentifier(VL_SINGLE_VEH, this->vehicle->type, this->vehicle->owner, this->vehicle->index).Pack(), 0, CMD_CREATE_GROUP_FROM_LIST | CMD_MSG(STR_ERROR_GROUP_CAN_T_CREATE), nullptr, str);
+			DoCommandP(0, VehicleListIdentifier(VL_SINGLE_VEH, this->vehicle->type, this->vehicle->owner, this->vehicle->index).Pack(), CF_ANY, CMD_CREATE_GROUP_FROM_LIST | CMD_MSG(STR_ERROR_GROUP_CAN_T_CREATE), nullptr, str);
+		}
+
+		if (this->query_text_widget == WID_O_TEXT_LABEL && str != nullptr) {
+			this->ModifyOrder(this->OrderGetSel(), MOF_LABEL_TEXT, true, str);
 		}
 	}
 
@@ -2998,6 +3094,8 @@ public:
 					case 3: this->OrderClick_Goto(OPOS_SHARE); break;
 					case 4: this->OrderClick_ReleaseSlot(); break;
 					case 5: this->OrderClick_ChangeCounter(); break;
+					case 6: this->OrderClick_TextLabel(); break;
+					case 7: this->OrderClick_Goto(OPOS_DEPARTURE_VIA); break;
 					default: NOT_REACHED();
 				}
 				break;
@@ -3085,6 +3183,10 @@ public:
 			case WID_O_MGMT_BTN:
 				if (this->goto_type == OPOS_CONDITIONAL_RETARGET) {
 					ResetObjectToPlace();
+					break;
+				}
+				if (index >= 0x100 && index <= 0x100 + INVALID_COLOUR) {
+					this->ModifyOrder(this->OrderGetSel(), MOF_COLOUR | (index & 0xFF) << 8);
 					break;
 				}
 				switch (index) {
@@ -3184,6 +3286,28 @@ public:
 					}
 				}
 			}
+		} else if (this->goto_type == OPOS_DEPARTURE_VIA) {
+			if (IsTileType(tile, MP_STATION) || IsTileType(tile, MP_INDUSTRY)) {
+				const BaseStation *st = nullptr;
+
+				if (IsTileType(tile, MP_STATION)) {
+					st = BaseStation::GetByTile(tile);
+				} else {
+					const Industry *in = Industry::GetByTile(tile);
+					st = in->neutral_station;
+				}
+				if (st != nullptr && IsInfraUsageAllowed(this->vehicle->type, this->vehicle->owner, st->owner)) {
+					Order order;
+					order.next = nullptr;
+					order.index = 0;
+					order.MakeLabel(OLST_DEPARTURES_VIA);
+					order.SetDestination(st->index);
+
+					if (this->InsertNewOrder(order.Pack())) {
+						ResetObjectToPlace();
+					}
+				}
+			}
 		}
 	}
 
@@ -3202,6 +3326,40 @@ public:
 			this->selected_order = -1;
 			ResetObjectToPlace();
 		}
+		return true;
+	}
+
+	/**
+	 * Clones an order list from a vehicle list.  If this doesn't make sense (because not all vehicles in the list have the same orders), then it displays an error.
+	 * @return This always returns true, which indicates that the contextual action handled the mouse click.
+	 *         Note that it's correct behaviour to always handle the click even though an error is displayed,
+	 *         because users aren't going to expect the default action to be performed just because they overlooked that cloning doesn't make sense.
+	 */
+	bool OnVehicleSelect(VehicleList::const_iterator begin, VehicleList::const_iterator end) override
+	{
+		bool share_order = _ctrl_pressed || this->goto_type == OPOS_SHARE;
+		if (this->vehicle->GetNumOrders() != 0 && !share_order) return false;
+
+		if (!share_order) {
+			/* If CTRL is not pressed: If all the vehicles in this list have the same orders, then copy orders */
+			if (AllEqual(begin, end, [](const Vehicle *v1, const Vehicle *v2) {
+				return VehiclesHaveSameOrderList(v1, v2);
+			})) {
+				OnVehicleSelect(*begin);
+			} else {
+				ShowErrorMessage(STR_ERROR_CAN_T_COPY_ORDER_LIST, STR_ERROR_CAN_T_COPY_ORDER_VEHICLE_LIST, WL_INFO);
+			}
+		} else {
+			/* If CTRL is pressed: If all the vehicles in this list share orders, then copy orders */
+			if (AllEqual(begin, end, [](const Vehicle *v1, const Vehicle *v2) {
+				return v1->FirstShared() == v2->FirstShared();
+			})) {
+				OnVehicleSelect(*begin);
+			} else {
+				ShowErrorMessage(STR_ERROR_CAN_T_SHARE_ORDER_LIST, STR_ERROR_CAN_T_SHARE_ORDER_VEHICLE_LIST, WL_INFO);
+			}
+		}
+
 		return true;
 	}
 
@@ -3387,6 +3545,13 @@ static const NWidgetPart _nested_orders_train_widgets[] = {
 				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_O_COUNTER_VALUE), SetMinimalSize(124, 12), SetFill(1, 0),
 														SetDataTip(STR_BLACK_COMMA, STR_TRACE_RESTRICT_COND_VALUE_TOOLTIP), SetResize(1, 0),
 			EndContainer(),
+			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE),
+				NWidget(WWT_PANEL, COLOUR_GREY), EndContainer(),
+				NWidget(WWT_PANEL, COLOUR_GREY), EndContainer(),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_O_TEXT_LABEL), SetMinimalSize(124, 12), SetFill(1, 0),
+														SetDataTip(STR_ORDER_LABEL_TEXT_BUTTON, STR_ORDER_LABEL_TEXT_BUTTON_TOOLTIP), SetResize(1, 0),
+			EndContainer(),
+			NWidget(WWT_PANEL, COLOUR_GREY), SetFill(1, 0), SetResize(1, 0), EndContainer(),
 		EndContainer(),
 		NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_O_OCCUPANCY_TOGGLE), SetMinimalSize(36, 12), SetDataTip(STR_ORDERS_OCCUPANCY_BUTTON, STR_ORDERS_OCCUPANCY_BUTTON_TOOLTIP),
 		NWidget(NWID_SELECTION, INVALID_COLOUR, WID_O_SEL_SHARED),
@@ -3482,6 +3647,8 @@ static const NWidgetPart _nested_orders_widgets[] = {
 															SetDataTip(STR_NULL, STR_ORDER_CONDITIONAL_TIME_DATE_TOOLTIP), SetResize(1, 0),
 					NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_O_COND_TIMETABLE), SetMinimalSize(124, 12), SetFill(1, 0),
 															SetDataTip(STR_NULL, STR_ORDER_CONDITIONAL_TIMETABLE_TOOLTIP), SetResize(1, 0),
+					NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_O_COND_COUNTER), SetMinimalSize(124, 12), SetFill(1, 0),
+															SetDataTip(STR_NULL, STR_ORDER_CONDITIONAL_COUNTER_TOOLTIP), SetResize(1, 0),
 					NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_O_COND_SCHED_SELECT), SetMinimalSize(124, 12), SetFill(1, 0),
 															SetDataTip(STR_NULL, STR_ORDER_CONDITIONAL_SCHED_SELECT_TOOLTIP), SetResize(1, 0),
 				EndContainer(),
@@ -3520,6 +3687,17 @@ static const NWidgetPart _nested_orders_widgets[] = {
 				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_O_COUNTER_VALUE), SetMinimalSize(124, 12), SetFill(1, 0),
 														SetDataTip(STR_BLACK_COMMA, STR_TRACE_RESTRICT_COND_VALUE_TOOLTIP), SetResize(1, 0),
 			EndContainer(),
+
+			/* Buttons for changing a text label */
+			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE),
+				NWidget(WWT_PANEL, COLOUR_GREY), EndContainer(),
+				NWidget(WWT_PANEL, COLOUR_GREY), EndContainer(),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_O_TEXT_LABEL), SetMinimalSize(124, 12), SetFill(1, 0),
+														SetDataTip(STR_ORDER_LABEL_TEXT_BUTTON, STR_ORDER_LABEL_TEXT_BUTTON_TOOLTIP), SetResize(1, 0),
+			EndContainer(),
+
+			/* No buttons */
+			NWidget(WWT_PANEL, COLOUR_GREY), SetFill(1, 0), SetResize(1, 0), EndContainer(),
 		EndContainer(),
 
 		NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_O_OCCUPANCY_TOGGLE), SetMinimalSize(36, 12), SetDataTip(STR_ORDERS_OCCUPANCY_BUTTON, STR_ORDERS_OCCUPANCY_BUTTON_TOOLTIP),

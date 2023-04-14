@@ -21,13 +21,15 @@ add_files(
     mem_func.hpp
     multimap.hpp
     overflowsafe_type.hpp
+    pod_pool.hpp
     pool_func.cpp
     pool_func.hpp
     pool_type.hpp
     random_func.cpp
     random_func.hpp
+    serialisation.cpp
+    serialisation.hpp
     smallmap_type.hpp
-    smallmatrix_type.hpp
     smallstack_type.hpp
     smallvec_type.hpp
     string_compare_type.hpp

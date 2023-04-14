@@ -182,7 +182,7 @@ void FixTitleGameZoom(int zoom_adjust)
 {
 	if (_game_mode != GM_MENU) return;
 
-	Viewport *vp = FindWindowByClass(WC_MAIN_WINDOW)->viewport;
+	Viewport *vp = GetMainWindow()->viewport;
 
 	/* Adjust the zoom in/out.
 	 * Can't simply add, since operator+ is not defined on the ZoomLevel type. */
@@ -233,6 +233,7 @@ enum {
 	GHK_CLOSE_ERROR,
 	GHK_CHANGE_MAP_MODE_PREV,
 	GHK_CHANGE_MAP_MODE_NEXT,
+	GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE,
 };
 
 struct MainWindow : Window
@@ -253,7 +254,7 @@ struct MainWindow : Window
 		nvp->InitializeViewport(this, TileXY(32, 32), ScaleZoomGUI(ZOOM_LVL_VIEWPORT));
 
 		this->viewport->map_type = (ViewportMapType) _settings_client.gui.default_viewport_map_mode;
-		this->viewport->overlay = new LinkGraphOverlay(this, WID_M_VIEWPORT, 0, 0, 3);
+		this->viewport->overlay = new LinkGraphOverlay(this, WID_M_VIEWPORT, 0, 0, 2);
 		this->refresh.SetInterval(LINKGRAPH_DELAY);
 	}
 
@@ -276,6 +277,8 @@ struct MainWindow : Window
 	{
 		this->DrawWidgets();
 		if (_game_mode == GM_MENU) {
+			ViewportDoDrawProcessAllPending();
+
 			static const SpriteID title_sprites[] = {SPR_OTTD_O, SPR_OTTD_P, SPR_OTTD_E, SPR_OTTD_N, SPR_OTTD_T, SPR_OTTD_T, SPR_OTTD_D};
 			uint letter_spacing = ScaleGUITrad(10);
 			int name_width = (lengthof(title_sprites) - 1) * letter_spacing;
@@ -456,6 +459,13 @@ struct MainWindow : Window
 					this->SetDirty();
 				}
 				break;
+			case GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE:
+				if (_settings_client.gui.show_vehicle_route_mode != 0) {
+					_settings_client.gui.show_vehicle_route_mode ^= 3;
+					CheckMarkDirtyFocusedRoutePaths();
+					SetWindowDirty(WC_GAME_OPTIONS, WN_GAME_OPTIONS_GAME_SETTINGS);
+				}
+				break;
 
 			default: return ES_NOT_HANDLED;
 		}
@@ -574,6 +584,7 @@ static Hotkey global_hotkeys[] = {
 	Hotkey(WKC_SPACE, "close_error", GHK_CLOSE_ERROR),
 	Hotkey(WKC_PAGEUP,   "previous_map_mode", GHK_CHANGE_MAP_MODE_PREV),
 	Hotkey(WKC_PAGEDOWN, "next_map_mode",     GHK_CHANGE_MAP_MODE_NEXT),
+	Hotkey((uint16)0,    "switch_viewport_route_overlay_mode", GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE),
 	HOTKEY_LIST_END
 };
 HotkeyList MainWindow::hotkeys("global", global_hotkeys);

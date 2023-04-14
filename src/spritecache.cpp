@@ -120,7 +120,7 @@ static inline SpriteCache *GetSpriteCache(uint index)
 
 static inline bool IsMapgenSpriteID(SpriteID sprite)
 {
-	return IsInsideMM(sprite, 4845, 4882);
+	return IsInsideMM(sprite, SPR_MAPGEN_BEGIN, SPR_MAPGEN_END);
 }
 
 static SpriteCache *AllocateSpriteCache(uint index)
@@ -284,7 +284,7 @@ static bool ResizeSpriteIn(SpriteLoader::Sprite *sprite, ZoomLevel src, ZoomLeve
 	sprite[tgt].y_offs = sprite[src].y_offs * scaled_1;
 	sprite[tgt].colours = sprite[src].colours;
 
-	sprite[tgt].AllocateData(tgt, sprite[tgt].width * sprite[tgt].height);
+	sprite[tgt].AllocateData(tgt, static_cast<size_t>(sprite[tgt].width) * sprite[tgt].height);
 
 	SpriteLoader::CommonPixel *dst = sprite[tgt].data;
 	for (int y = 0; y < sprite[tgt].height; y++) {
@@ -307,7 +307,7 @@ static void ResizeSpriteOut(SpriteLoader::Sprite *sprite, ZoomLevel zoom)
 	sprite[zoom].y_offs = UnScaleByZoom(sprite[ZOOM_LVL_NORMAL].y_offs, zoom);
 	sprite[zoom].colours = sprite[ZOOM_LVL_NORMAL].colours;
 
-	sprite[zoom].AllocateData(zoom, sprite[zoom].height * sprite[zoom].width);
+	sprite[zoom].AllocateData(zoom, static_cast<size_t>(sprite[zoom].height) * sprite[zoom].width);
 
 	SpriteLoader::CommonPixel *dst = sprite[zoom].data;
 	const SpriteLoader::CommonPixel *src = sprite[zoom - 1].data;
@@ -338,9 +338,10 @@ static bool PadSingleSprite(SpriteLoader::Sprite *sprite, ZoomLevel zoom, uint p
 	if (width > UINT16_MAX || height > UINT16_MAX) return false;
 
 	/* Copy source data and reallocate sprite memory. */
-	SpriteLoader::CommonPixel *src_data = MallocT<SpriteLoader::CommonPixel>(sprite->width * sprite->height);
-	MemCpyT(src_data, sprite->data, sprite->width * sprite->height);
-	sprite->AllocateData(zoom, width * height);
+	size_t sprite_size = static_cast<size_t>(sprite->width) * sprite->height;
+	SpriteLoader::CommonPixel *src_data = MallocT<SpriteLoader::CommonPixel>(sprite_size);
+	MemCpyT(src_data, sprite->data, sprite_size);
+	sprite->AllocateData(zoom, static_cast<size_t>(width) * height);
 
 	/* Copy with padding to destination. */
 	SpriteLoader::CommonPixel *src = src_data;
@@ -567,14 +568,14 @@ static void *ReadSprite(const SpriteCache *sc, SpriteID id, SpriteType sprite_ty
 		return (void*)GetRawSprite(SPR_IMG_QUERY, ST_NORMAL, allocator, encoder);
 	}
 
-	if (sprite->type == ST_FONT && ZOOM_LVL_FONT != ZOOM_LVL_NORMAL) {
-		/* Make ZOOM_LVL_NORMAL be ZOOM_LVL_FONT */
-		sprite[ZOOM_LVL_NORMAL].width  = sprite[ZOOM_LVL_FONT].width;
-		sprite[ZOOM_LVL_NORMAL].height = sprite[ZOOM_LVL_FONT].height;
-		sprite[ZOOM_LVL_NORMAL].x_offs = sprite[ZOOM_LVL_FONT].x_offs;
-		sprite[ZOOM_LVL_NORMAL].y_offs = sprite[ZOOM_LVL_FONT].y_offs;
-		sprite[ZOOM_LVL_NORMAL].data   = sprite[ZOOM_LVL_FONT].data;
-		sprite[ZOOM_LVL_NORMAL].colours = sprite[ZOOM_LVL_FONT].colours;
+	if (sprite->type == ST_FONT && ZOOM_LVL_GUI != ZOOM_LVL_NORMAL) {
+		/* Make ZOOM_LVL_NORMAL be ZOOM_LVL_GUI */
+		sprite[ZOOM_LVL_NORMAL].width  = sprite[ZOOM_LVL_GUI].width;
+		sprite[ZOOM_LVL_NORMAL].height = sprite[ZOOM_LVL_GUI].height;
+		sprite[ZOOM_LVL_NORMAL].x_offs = sprite[ZOOM_LVL_GUI].x_offs;
+		sprite[ZOOM_LVL_NORMAL].y_offs = sprite[ZOOM_LVL_GUI].y_offs;
+		sprite[ZOOM_LVL_NORMAL].data   = sprite[ZOOM_LVL_GUI].data;
+		sprite[ZOOM_LVL_NORMAL].colours = sprite[ZOOM_LVL_GUI].colours;
 	}
 
 	return encoder->Encode(sprite, allocator);

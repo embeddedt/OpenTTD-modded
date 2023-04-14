@@ -30,6 +30,7 @@
 	<ul>
 	<li><a href="newgrf-roadstops.html">Road stops</a></li>
 	<li><a href="newgrf-newlandscape.html">New landscape (custom graphics)</a></li>
+	<li><a href="newgrf-town.html">Towns (the parent scope for stations, objects, etc.)</a></li>
 	</ul>
 
 	<br />
@@ -46,10 +47,13 @@
 	<li><a href="#a0signals">Action 0 - Signals (Feature 0E)</a></li>
 	<li><a href="#a0objects">Action 0 - Objects</a></li>
 	<li><a href="#variable-mapping">Action 14 - Variable Mapping for Variational Action 2</a></li>
+	<li><a href="#varaction2_additional_types">Variational Action 2 - Additional Types</a></li>
 	<li><a href="#varaction2_station">Variational Action 2 - Stations</a></li>
 	<li><a href="#varaction2_railtypes">Variational Action 2 - Railtypes</a></li>
 	<li><a href="#varaction2_object">Variational Action 2 - Objects</a></li>
 	<li><a href="#varaction2_signals">Variational Action 2 - Signals (Feature 0E)</a></li>
+	<li><a href="#callbacks_ships">Callbacks - Ships</a></li>
+	<li><a href="#a3objects">Action 3 - Objects</a></li>
 	<li><a href="#a3signals">Action 3 - Signals (Feature 0E)</a></li>
 	<li><a href="#action5">Action 14 - Type ID Mapping for Action 5</a></li>
 	<li><a href="#feature-id-mapping">Action 14 - Feature ID Mapping</a></li>
@@ -80,8 +84,21 @@
 	If the test is successful, the bit is set (to 1), otherwise the bit is cleared (to 0).<br />
 	The bit number MUST be in the range: 4 &le; bit number &le; 31. These bits can be assumed to be 0 on implementations which do not support this feature test mechanism.<br />
 	Global variable 0x9D can then be tested by using a standard <a href="https://newgrf-specs.tt-wiki.net/wiki/Action7">Action 7 or 9</a>, or a standard <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2">Variational Action 2</a>.<br />
-	If this field is omitted, no bit is set or cleared, and the test is not observable.
+	If this field is omitted, no bit is set or cleared, and the test is not observable (unless the SVAL chunk is used).
 	</p>
+	<h4 id="FTST-SVAL">Feature Set Global Variable 0x91 Success Test Value: C "FTST" -> B "SVAL"</h4>
+	<p>Within an FTST chunk, the SVAL binary (type B) field contains a 32 bit value which can be tested using the mechanism below. This is 4 bytes.<br />
+	If the test is successful, the value is added to a list of successful result values which can be checked using the mechanism below.<br />
+	If the test is unsuccessful, no action is taken.<br />
+	The value must be &gt; 0, a value of 0 has no effect.</p>
+	<p>To check if the test succeeded (the value has been added to the list of successful result values), use <a href="https://newgrf-specs.tt-wiki.net/wiki/Action7">Action 7 or 9</a>.<br />
+	The parameter to test is global variable 0x91 (this always has a value of 0, equivalent to the case where the test has failed, if this feature test mechanism is not present).<br />
+	The condition-type to use is: 02 (\7=, equality) to jump if the value is in the list (the test succeeded), or 03 (\7!, inequality) to jump if the value is not in the list (the test did not succeed).<br />
+	The value in the Action 7 or 9 must match the value specified in this SVAL chunk.
+	</p>
+	<p>If this field is omitted, the test is not observable (unless the SETP chunk is used).</p>
+	<p>This chunk and the associated test mechanism requires the feature name: <font face="monospace">feature_test</font>, version 2.<br />
+	Using this chunk instead or as well as SETP allows observing the result of more than 28 feature tests.</p>
 	<br />
 	<h4 id="FTST-example">Example NFO:</h4>
 	<pre>
@@ -133,6 +150,9 @@
 	Global variable 0x8D can then be tested by using a standard <a href="https://newgrf-specs.tt-wiki.net/wiki/Action7">Action 7 or 9</a>, or a standard <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2">Variational Action 2</a>.<br />
 	If this field is omitted, no bit is set or cleared.
 	</p>
+	<h4 id="A0PM-SVAL">Success Indicator Global Variable 0x91 Test Value: C "A0PM" -> B "SVAL"</h4>
+	<p>This behaves identically to the <a href="#FTST-SVAL">C "FTST" -> B "SVAL"</a> case, above</p>
+	<p>This chunk and the associated test mechanism requires the feature name: <font face="monospace">property_mapping</font>, version 2.</p>
 	<h4 id="A0PM-FLBK">Fallback Mode: C "A0PM" -> B "FLBK"</h4>
 	<p>Within an A0PM chunk, the FLBK binary (type B) field contains the fallback mode. This is 1 byte.<br />
 	The fallback mode may take the following values:
@@ -310,9 +330,25 @@
 	<tr><th>Bit</th><th>Value</th><th>Meaning</th></tr>
 	<tr><td>0</td><td>1</td><td>Scripts (AI/GS) may not build this road/tram type</td></tr>
 	<tr><td>1</td><td>2</td><td>Towns may not modify tiles of this road/tram type in any way whatsoever</td></tr>
+	<tr><td>2</td><td>4</td><td>Disallow tunnels for this road/tram type<br />
+			Support for this bit is indicated by the feature name: <font face="monospace">action0_roadtype_extra_flags</font>, version 2.</td></tr>
+	<tr><td>3</td><td>8</td><td>Disallow collisions with trains for vehicles of this road/tram type<br />
+			Support for this bit is indicated by the feature name: <font face="monospace">action0_roadtype_extra_flags</font>, version 2.</td></tr>
 	</table>
 	</p>
 	<p>This is indicated by the feature name: <font face="monospace">action0_roadtype_extra_flags</font>, version 1</p>
+	<h4 id="roadtype_collision_mode">Road vehicle collision mode (mappable property: roadtype_collision_mode)</h4>
+	<p>This property sets the road vehicle collision mode for road vehicles of this road/tram type.<br />
+	The property length is 1 byte. The format is:
+	<table>
+	<tr><th>Value</th><th>Meaning</th></tr>
+	<tr><td>0</td><td>Normal: Normal road vehicle collision rules (this is the default)</td></tr>
+	<tr><td>1</td><td>None: Do not collide at all with other road vehicles</td></tr>
+	<tr><td>2</td><td>Elevated: Collide only with other elevated road vehicles</td></tr>
+	</table>
+	Unknown values are ignored. More values may be added in future.
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">action0_roadtype_collision_mode</font>, version 1</p>
 	<br />
 	<h3 id="a0globalsettings"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action0/Global_Settings">Action 0 - Global Settings</a></h3>
 	<h4 id="global_extra_station_names">Extra station names (mappable property: global_extra_station_names)</h4>
@@ -361,6 +397,11 @@
 	The Action 0 ID field is ignored. The property length is 1 byte.
 	</p>
 	<p>This is indicated by the feature name: <font face="monospace">action0_global_default_object_generate_amount</font>, version 1</p>
+	<h4 id="global_allow_rocks_in_desert">Allow rocky tiles in desert zones (tropical climate) (mappable property: global_allow_rocks_in_desert)</h4>
+	<p>This sets whether rocky tiles are allowed to generate in and remain in desert zones (tropical climate).<br />
+	The Action 0 ID field is ignored. The property length is 1 byte. 0 is disabled (default). 1 is enabled.
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">action0_global_allow_rocks_in_desert</font>, version 1</p>
 	<br />
 	<h3 id="a0signals"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action0">Action 0 - Signals (Feature 0E)</a></h3>
 	<p>Note that Action 0 feature 0E is not supported (does nothing) in standard OpenTTD.</p>
@@ -633,6 +674,11 @@
 	<p>Within an A2VM chunk, the NAME text (type T) field contains the name of the variable to map. The value of the language ID byte is ignored.</p>
 	<h4 id="A2VM-FEAT">Action 0 Feature ID: C "A2VM" -> B "FEAT"</h4>
 	<p>Within an A2VM chunk, the FEAT binary (type B) field contains the <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2#Feature">Variational Action 2 feature ID</a>. This is 1 byte.</p>
+	<p>In the case where a parent/related scope is used to access a different feature (e.g. the town feature as the parent scope for objects),
+	the feature ID used here is that associated with the scope where the variable is used.<br />
+	To map a town variable, the feature ID should be the result of mapping the "town" feature name using the <a href="#feature-id-mapping">feature mapping mechanism</a>,
+	this is not necessarily the feature ID used directly in the variational action 2.</p>
+	</p>
 	<h4 id="A2VM-RSFT">Shift to replace: C "A2VM" -> B "RSFT"</h4>
 	<p>Within an A2VM chunk, the RSFT binary (type B) field contains the Variational Action 2 varadjust shift-num value to look for. This is 1 byte.<br />
 	The shift-num value must be &lt; 32 (0x20).<br />
@@ -650,6 +696,9 @@
 	If this is not specified, a value of 0 is assumed.</p>
 	<h4 id="A2VM-SETT">Success Indicator Global Variable 0x8D Bit: C "A2VM" -> B "SETT"</h4>
 	<p>This behaves identically to the <a href="#A0PM-SETT">C "A0PM" -> B "SETT"</a> case, above</p>
+	<h4 id="A2VM-SVAL">Success Indicator Global Variable 0x91 Test Value: C "A2VM" -> B "SVAL"</h4>
+	<p>This behaves identically to the <a href="#FTST-SVAL">C "FTST" -> B "SVAL"</a> case, above</p>
+	<p>This chunk and the associated test mechanism requires the feature name: <font face="monospace">variable_mapping</font>, version 3.</p>
 	<h4 id="A2VM-VPRM">Replacement parameter: C "A2VM" -> B "VPRM"</h4>
 	<p>Within an A2VM chunk, the VPRM binary (type B) field contains the Variational Action 2 parameter value (as in 60+X variables) to use on the mapped variable. This is 4 bytes.<br />
 	If this is not specified, a value of 0 is assumed.<br />
@@ -676,6 +725,59 @@
                    02 00    00 04 // range 00 - 04: link to action2ID 02
                    01 00          // default:       link to action2ID 01
 	</pre>
+	<br />
+	<h3 id="varaction2_additional_types">Variational Action 2 - Additional Types</h3>
+	<p>Additional variational action 2 types are indicated by the feature name: <font face="monospace">more_varaction2_types</font>, this document describes version 1.<br />
+	This feature name must be tested for to enable this feature.</p>
+	<p>See the <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2#Type">Variational Action 2 Specification (types)</a> for background information.</p>
+	<p>This feature adds the type value 87, for additional variation action 2 modes/scopes. (This is used instead of the standard values: 81, 82, 85, 86, 89 or 8A).<br />
+	An additional byte follows to specify which sub-type.</p>
+	<p>
+	<pre>&lt;Sprite-number&gt; * &lt;Length&gt; 02 &lt;feature&gt; &lt;set-id&gt; 87 &lt;sub-type&gt; ...</pre>
+	The following sub-types are defined:
+	<table>
+	<tr><th>Sub-type</th><th>Meaning</th></tr>
+	<tr><td>00</td><td>Callback failure group</td></tr>
+	<tr><td>01</td><td>Relative scope for vehicles (same syntax as <a href="https://newgrf-specs.tt-wiki.net/wiki/RandomAction2#80.2F83.2F84">random action 2 type 84</a>)</td></tr>
+	<tr><td>02</td><td>Relative scope for vehicles (longer syntax)</td></tr>
+	</table>
+	<p>If an unknown sub-type is used, or if subsequent sub-type bytes are invalid, a callback failure group is created, the same as sub-type 00.</p>
+	<h4 id="varaction2_additional_type_00">Sub-type 00: Callback failure</h4>
+	<pre>&lt;Sprite-number&gt; * &lt;Length&gt; 02 &lt;feature&gt; &lt;set-id&gt; <b>87 00</b></pre>
+	This produces a callback failed result in all cases (appropriate whether or not variable 0C is currently 0).<br />
+	This can be used to avoiding needing to branch on variable 0C or create empty (feature-dependant) real sprite/sprite layout/industry production groups.
+	</p>
+	<h4 id="varaction2_additional_type_01">Sub-type 01: Relative scope for vehicles (random action 2 type 84 syntax)</h4>
+	<pre>&lt;Sprite-number&gt; * &lt;Length&gt; 02 &lt;feature&gt; &lt;set-id&gt; <b>87 01 &lt;count&gt;</b> &lt;variable&gt; &lt;varadjust&gt; [&lt;operator&gt; &lt;variable&gt; &lt;varadjust&gt;]... &lt;nvar&gt; (&lt;set-id&gt; &lt;low-range&gt; &lt;high-range&gt;){n} &lt;default&gt;</pre>
+	<p>This sub-type is only valid for vehicles.</p>
+	<p>The vehicle which is accessed can be any in the vehicle consist. The <font face="monospace">count</font> byte selects which, this has the same syntax and functionality
+	as the <a href="https://newgrf-specs.tt-wiki.net/wiki/RandomAction2#count"><font face="monospace">count</font> byte in random action 2 type 84</a>.</p>
+	<p>Note: The count byte mode where temporary variable 0x100 is used should be used with caution.</p>
+	<h4 id="varaction2_additional_type_02">Sub-type 02: Relative scope for vehicles (longer syntax)</h4>
+	<pre>&lt;Sprite-number&gt; * &lt;Length&gt; 02 &lt;feature&gt; &lt;set-id&gt; <b>87 02 &lt;mode&gt; &lt;offset&gt;</b> &lt;variable&gt; &lt;varadjust&gt; [&lt;operator&gt; &lt;variable&gt; &lt;varadjust&gt;]... &lt;nvar&gt; (&lt;set-id&gt; &lt;low-range&gt; &lt;high-range&gt;){n} &lt;default&gt;</pre>
+	<p>This sub-type is only valid for vehicles.</p>
+	<p>The vehicle which is accessed can be any in the vehicle consist. The <font face="monospace">mode</font> and <font face="monospace">offset</font> bytes select which.</p>
+	<p>The <font face="monospace">mode</font> byte has the following syntax:
+	<table>
+	<tr><th>Bits</th><th>Meaning</th></tr>
+	<tr><td>0 - 1</td><td>
+		Selection mode:<br/>
+		These values are the same as bits 6 - 7 of the <a href="https://newgrf-specs.tt-wiki.net/wiki/RandomAction2#count"><font face="monospace">count</font> byte in random action 2 type 84</a>.
+		<table>
+		<tr><th>Value</th><th>Meaning</th></tr>
+		<tr><td>0</td><td>Count back (away from the engine), starting at this vehicle</td></tr>
+		<tr><td>1</td><td>Count forward (toward the engine), starting at this vehicle</td></tr>
+		<tr><td>2</td><td>Count back, starting at the engine</td></tr>
+		<tr><td>3</td><td>Count back, starting at the first vehicle in this chain of vehicles with the same ID, as for vehicle variable 41</td></tr>
+		</table>
+	</td></tr>
+	<tr><td>7</td><td>If set, use variable 0x100 for the offset. The offset byte must be 0.</td></tr>
+	</table>
+	The remaining bits are reserved for future used and must be set to 0.
+	</p>
+	<p>The <font face="monospace">offset</font> byte specifies how far to count from the starting vehicle. A value of 0 is not special.<br />
+	Bit 7 of the <font face="monospace">mode</font> byte must be set to use temporary variable 0x100 instead.</p>
+	<p>Note: Using temporary variable 0x100 as the offset should be used with caution.</p>
 	<br />
 	<h3 id="varaction2_station"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Stations">Variational Action 2 - Stations</a></h3>
 	<h4 id="varaction2_station_var42">Track type in purchase list (42)</h4>
@@ -712,6 +814,31 @@
 	</table>
 	</p>
 	<p>This is indicated by the feature name: <font face="monospace">varaction2_railtype_signal_context</font>, version 1</p>
+	<h4 id="railtype_signal_side">Signal side (mappable variable: railtype_signal_side)</h4>
+	<p>This applies to <a href="https://newgrf-specs.tt-wiki.net/wiki/Action3/Railtypes#Signal_sprites_.280B.29">Action 2/3 - Railtype custom signal sprites</a>.<br />
+	<table>
+	<tr><th>Bit</th><th>Meaning</th></tr>
+	<tr><td>0</td><td>
+		<table>
+		<tr><th>Value</th><th>Meaning</th></tr>
+		<tr><td>0</td><td>Signals are on the left</td></tr>
+		<tr><td>1</td><td>Signals are on the right</td></tr>
+		</table>
+	</td></tr>
+	</table>
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_railtype_signal_side</font>, version 1</p>
+	<h4 id="railtype_signal_vertical_clearance">Vertical clearance (mappable variable: railtype_signal_vertical_clearance)</h4>
+	<p>This applies to <a href="https://newgrf-specs.tt-wiki.net/wiki/Action3/Railtypes#Signal_sprites_.280B.29">Action 2/3 - Railtype custom signal sprites</a>.<br />
+	<table>
+	<tr><th>Bit</th><th>Meaning</th></tr>
+	<tr><td>0 - 7</td><td>
+		Pixels of vertical clearance between the signal and any bridge above.<br />
+		If there is no bridge above, the value is 0xFF.
+	</td></tr>
+	</table>
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_railtype_signal_vertical_clearance</font>, version 1</p>
 	<br />
 	<h3 id="varaction2_object"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Objects">Variational Action 2 - Objects</a></h3>
 	<h4 id="object_foundation_tile_slope">Tile slope after foundation applied (mappable variable: object_foundation_tile_slope)</h4>
@@ -754,12 +881,66 @@
 	</table>
 	</p>
 	<p>This is indicated by the feature name: <font face="monospace">varaction2_signals_signal_context</font>, version 1</p>
+	<h4 id="signals_signal_side">Signal side (mappable variable: signals_signal_side)</h4>
+	<p>This applies to <a href="#a3signals_custom_signal_sprites">Action 2/3 Signals (Feature 0E) custom signal sprites</a>.<br />
+	<table>
+	<tr><th>Bit</th><th>Meaning</th></tr>
+	<tr><td>0</td><td>
+		<table>
+		<tr><th>Value</th><th>Meaning</th></tr>
+		<tr><td>0</td><td>Signals are on the left</td></tr>
+		<tr><td>1</td><td>Signals are on the right</td></tr>
+		</table>
+	</td></tr>
+	</table>
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_signals_signal_side</font>, version 1</p>
 	<h4 id="signals_signal_style">Signal style (mappable variable: signals_signal_style)</h4>
 	<p>This applies to <a href="#a3signals_custom_signal_sprites">Action 2/3 Signals (Feature 0E) custom signal sprites</a>.<br />
 	If the signal being drawn uses a custom signal style, the value is the signal style ID as set in the <a href="#signals_define_style">signals_define_style</a> property.<br />
 	Otherwise for signals using the default style, the value is 0.
 	</p>
-	<p>This is indicated by the feature name: <font face="monospace">action0_signals_style</font>, version 1</p>
+	<p>This is indicated by the feature name: <font face="monospace">action0_signals_style</font>, version 1.</p>
+	<h4 id="signals_signal_vertical_clearance">Vertical clearance (mappable variable: signals_signal_vertical_clearance)</h4>
+	<p>This applies to <a href="#a3signals_custom_signal_sprites">Action 2/3 Signals (Feature 0E) custom signal sprites</a>.<br />
+	<table>
+	<tr><th>Bit</th><th>Meaning</th></tr>
+	<tr><td>0 - 7</td><td>
+		Pixels of vertical clearance between the signal and any bridge above.<br />
+		If there is no bridge above, the value is 0xFF.
+	</td></tr>
+	</table>
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_signals_signal_vertical_clearance</font>, version 1</p>
+	<br />
+	<br />
+	<h3 id="callbacks_ships"><a href="https://newgrf-specs.tt-wiki.net/wiki/Callbacks">Callbacks - Ships</a></h3>
+	<h4 id="callbacks_ships_articulated">Multi-part ships</h4>
+	<p><b><a href="https://newgrf-specs.tt-wiki.net/wiki/Callbacks#Articulated_engine_.2816.29">Callback 16 - Articulated engine</a> may also be used for ships.</b><br />
+	The feature name: <font face="monospace">multi_part_ships</font> must be tested for to enable this callback for ships.<br />
+	This functions the same as for trains and road vehicles, and is enabled for individual engines in the same way (bit 4 of ship property 12).<br />
+	Additional ship parts are not used for graphics, they are only used for additional cargo capacity.<br />
+	The graphics chain for the primary vehicle may check the cargo states of the other ship parts if required.<br />
+	Additional ship parts may be refitted individually.
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">multi_part_ships</font>, version 1</p>
+	<p><b>Callback EC008002 - Ship part name for refit window</b><br />
+	This callback is called on the primary vehicle to get the name of each part of the ship (e.g. the name of each cargo hold) in the refit window.<br />
+	This is not called for ships of only one part.<br />
+	If this callback is not handled, a default name is used.<br />
+	Bits 0 - 7 of variable 10 contains the index of the part of the ship. The first/primary part is 0, each subsequent part increases the value by 1.
+	</p>
+	<p>
+		The return value should be the number of a D0xx text to be displayed. The contents of registers 100h..105h are copied onto the text reference stack and can be used with string codes 80/81 to show texts from the D8xx range as well, extending the available unique strings.<br />
+		You can return 400 to use the default name (instead of failing the callback).<br />
+		(This is the same return format as callbacks: 23, 38, 3A, 14D, 15C, 161).
+	</p>
+	<p>This is indicated by the feature name: <font face="monospace">multi_part_ships</font>, version 1</p>
+	<br />
+	<br />
+	<h3 id="a3objects"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action3">Action 3 - Objects</a></h3>
+	<p>If feature name <font face="monospace">more_objects_per_grf</font> is present and the feature is successfully tested for, the Action 3 ID field is an extended byte, and GRFs may define more than 255 object types.<br />
+	Otherwise, only 255 object types may be defined per GRF, and the extended byte format may not be used.</p>
 	<br />
 	<br />
 	<h3 id="a3signals"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action3">Action 3 - Signals (Feature 0E)</a></h3>
@@ -794,6 +975,9 @@
 	It is possible to override existing type IDs, however this use is not recommended.</p>
 	<h4 id="A5TM-SETT">Success Indicator Global Variable 0x8D Bit: C "A5TM" -> B "SETT"</h4>
 	<p>This behaves identically to the <a href="#A0PM-SETT">C "A0PM" -> B "SETT"</a> case, above</p>
+	<h4 id="A5TM-SVAL">Success Indicator Global Variable 0x91 Test Value: C "A5TM" -> B "SVAL"</h4>
+	<p>This behaves identically to the <a href="#FTST-SVAL">C "FTST" -> B "SVAL"</a> case, above</p>
+	<p>This chunk and the associated test mechanism requires the feature name: <font face="monospace">action5_type_id_mapping</font>, version 2.</p>
 	<h4 id="A5TM-FLBK">Fallback Mode: C "A5TM" -> B "FLBK"</h4>
 	<p>This behaves identically to the <a href="#A0PM-FLBK">C "A0PM" -> B "FLBK"</a> case, above</p>
 	<h4 id="A5TM-example">Example NFO:</h4>
@@ -864,10 +1048,14 @@
 	<h4 id="FIDM-FTID">Property ID: C "FIDM" -> B "FTID"</h4>
 	<p>Within an FTID chunk, the FTID binary (type B) field contains the feature ID to allocate to the named feature. This is 1 byte.<br />
 	Note that the remapped feature ID can only be used after this FIDM chunk in the GRF. It is not applied retrospectively to sprites earlier in the GRF file, or earlier parts of the current Action 14 sprite.<br />
-	It is possible to override existing feature IDs, however this use is STRONGLY NOT RECOMMENDED due to a high potential for confusion when your code is inspected by someone else.<br />
-	At the time of writing known existing feature IDs include the values: 0x00 - 0x13 (inclusive) and 0x48.</p>
+	It is possible to override existing feature IDs, however this use is STRONGLY NOT RECOMMENDED (except in the specific case below) due to a high potential for confusion when your code is inspected by someone else.<br />
+	At the time of writing known existing feature IDs include the values: 0x00 - 0x14 (inclusive) and 0x48.</p>
+	<p>The interface for feature 0x14 (road stops) is mostly equivalent to that of the "roadstops" feature name, therefore it is reasonable to map the "roadstops" feature name to ID 0x14, such that both interfaces can be supported simultaneously.</p>
 	<h4 id="FIDM-SETT">Success Indicator Global Variable 0x8D Bit: C "FIDM" -> B "SETT"</h4>
 	<p>This behaves identically to the <a href="#A0PM-SETT">C "A0PM" -> B "SETT"</a> case, above</p>
+	<h4 id="FIDM-SVAL">Success Indicator Global Variable 0x91 Test Value: C "FIDM" -> B "SVAL"</h4>
+	<p>This behaves identically to the <a href="#FTST-SVAL">C "FTST" -> B "SVAL"</a> case, above</p>
+	<p>This chunk and the associated test mechanism requires the feature name: <font face="monospace">feature_id_mapping</font>, version 2.</p>
 	<h4 id="FIDM-FLBK">Fallback Mode: C "FIDM" -> B "FLBK"</h4>
 	<p>This behaves identically to the <a href="#A0PM-FLBK">C "A0PM" -> B "FLBK"</a> case, above</p>
 	<h4 id="FIDM-example">Example NFO:</h4>
@@ -893,6 +1081,7 @@
 	<tr><th>Feature name</th><th>Description</th></tr>
 	<tr><td><font face="monospace">road_stops</font></td><td><a href="newgrf-roadstops.html">Custom road stops (bus stops, lorry stops and road waypoints)</a></d></tr>
 	<tr><td><font face="monospace">new_landscape</font></td><td><a href="newgrf-newlandscape.html">Custom landscape graphics (currently rocky tiles only)</a></d></tr>
+	<tr><td><font face="monospace">town</font></td><td><a href="newgrf-town.html">Towns (the parent scope for stations, objects, etc.)</a></d></tr>
 	</table>
 </body>
 </html>

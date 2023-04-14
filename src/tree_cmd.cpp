@@ -457,6 +457,7 @@ void RemoveAllTrees()
  */
 uint PlaceTreeGroupAroundTile(TileIndex tile, TreeType treetype, uint radius, uint count, bool set_zone)
 {
+	dbg_assert(_game_mode == GM_EDITOR); // Due to InteractiveRandom being used in this function
 	dbg_assert(treetype < TREE_TOYLAND + TREE_COUNT_TOYLAND);
 	const bool allow_desert = treetype == TREE_CACTUS;
 	uint planted = 0;
@@ -536,14 +537,16 @@ void GenerateTrees()
 
 /**
  * Plant a tree.
- * @param tile end tile of area-drag
+ * @param end_tile end tile of area-drag
  * @param flags type of operation
- * @param p1 tree type, TREE_INVALID means random.
+ * @param p1 various bitstuffed data.
+ * - p1 = (bit 0 -  7) - tree type, TREE_INVALID means random.
+ * - p1 = (bit      8) - whether to use the Orthogonal (0) or Diagonal (1) iterator.
  * @param p2 start tile of area-drag of tree plantation
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdPlantTree(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdPlantTree(TileIndex end_tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
 	StringID msg = INVALID_STRING_ID;
 	CommandCost cost(EXPENSES_OTHER);
@@ -556,8 +559,9 @@ CommandCost CmdPlantTree(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 	Company *c = (_game_mode != GM_EDITOR) ? Company::GetIfValid(_current_company) : nullptr;
 	int limit = (c == nullptr ? INT32_MAX : GB(c->tree_limit, 16, 16));
 
-	TileArea ta(tile, p2);
-	for (TileIndex tile : ta) {
+	OrthogonalOrDiagonalTileIterator iter(end_tile, p2, HasBit(p1, 8));
+	for (; *iter != INVALID_TILE; ++iter) {
+		TileIndex tile = *iter;
 		switch (GetTileType(tile)) {
 			case MP_TREES: {
 				bool grow_existing_tree_instead = false;
@@ -784,7 +788,7 @@ static void DrawTile_Trees(TileInfo *ti, DrawTileProcParams params)
 }
 
 
-static int GetSlopePixelZ_Trees(TileIndex tile, uint x, uint y)
+static int GetSlopePixelZ_Trees(TileIndex tile, uint x, uint y, bool ground_vehicle)
 {
 	int z;
 	Slope tileh = GetTilePixelSlope(tile, &z);
@@ -898,6 +902,15 @@ static bool CanPlantExtraTrees(TileIndex tile)
 		_settings_game.construction.extra_tree_placement == ETP_SPREAD_ALL);
 }
 
+static bool IsTemperateTreeOnSnow(TileIndex tile)
+{
+	if (_settings_game.game_creation.landscape == LT_ARCTIC && IsInsideMM(GetTreeType(tile), TREE_TEMPERATE, TREE_SUB_ARCTIC)) {
+		TreeGround ground = GetTreeGround(tile);
+		if (ground == TREE_GROUND_SNOW_DESERT || ground == TREE_GROUND_ROUGH_SNOW) return true;
+	}
+	return false;
+}
+
 static void TileLoop_Trees(TileIndex tile)
 {
 	if (GetTreeGround(tile) == TREE_GROUND_SHORE) {
@@ -947,7 +960,9 @@ static void TileLoop_Trees(TileIndex tile)
 					GetTropicZone(tile) == TROPICZONE_DESERT) {
 				AddTreeGrowth(tile, 1);
 			} else {
-				switch (GB(Random(), 0, 3)) {
+				uint mode = GB(Random(), 0, 3);
+				if (IsTemperateTreeOnSnow(tile)) mode = 0;
+				switch (mode) {
 					case 0: // start destructing
 						AddTreeGrowth(tile, 1);
 						break;
@@ -1000,7 +1015,7 @@ static void TileLoop_Trees(TileIndex tile)
 			break;
 
 		case 6: // final stage of tree destruction
-			if (!CanPlantExtraTrees(tile)) {
+			if (!CanPlantExtraTrees(tile) && !IsTemperateTreeOnSnow(tile)) {
 				/* if trees can't spread just plant a new one to prevent deforestation */
 				SetTreeGrowth(tile, 0);
 			} else if (GetTreeCount(tile) > 1) {

@@ -20,8 +20,6 @@
 #include "3rdparty/cpp-btree/btree_map.h"
 #include <bitset>
 
-static const uint MAX_SPRITEGROUP = UINT8_MAX; ///< Maximum GRF-local ID for a spritegroup.
-
 /** Base GRF ID for OpenTTD's base graphics GRFs. */
 static const uint32 OPENTTD_GRAPHICS_BASE_GRF_ID = BSWAP32(0xFF4F5400);
 
@@ -29,6 +27,7 @@ struct VarAction2GroupVariableTracking {
 	std::bitset<256> in;
 	std::bitset<256> out;
 	std::bitset<256> proc_call_out;
+	std::bitset<256> proc_call_in;
 };
 
 struct VarAction2ProcedureAnnotation {
@@ -65,7 +64,7 @@ public:
 	int skip_sprites;         ///< Number of pseudo sprites to skip before processing the next one. (-1 to skip to end of file)
 
 	/* Currently referenceable spritegroups */
-	const SpriteGroup *spritegroups[MAX_SPRITEGROUP + 1];
+	std::vector<const SpriteGroup *> spritegroups;
 
 	/* VarAction2 temporary storage variable tracking */
 	btree::btree_map<const SpriteGroup *, VarAction2GroupVariableTracking *> group_temp_store_variable_tracking;
@@ -123,12 +122,15 @@ public:
 			this->spritesets[i].clear();
 		}
 
-		memset(this->spritegroups, 0, sizeof(this->spritegroups));
+		this->spritegroups.clear();
 
 		this->group_temp_store_variable_tracking.clear();
 		this->group_temp_store_variable_tracking_storage.EmptyArena();
 		this->procedure_annotations.clear();
 		this->procedure_annotations_storage.EmptyArena();
+		for (auto iter : this->inlinable_adjust_groups) {
+			iter.second->~vector<DeterministicSpriteGroupAdjust>();
+		}
 		this->inlinable_adjust_groups.clear();
 		this->inlinable_adjust_groups_storage.EmptyArena();
 		this->dead_store_elimination_candidates.clear();
@@ -274,9 +276,15 @@ inline void OptimiseVarAction2PreCheckAdjust(VarAction2OptimiseState &state, con
 	if (variable == 0x1C) state.var_1C_present = true;
 }
 
+struct VarAction2AdjustInfo {
+	GrfSpecFeature feature;
+	GrfSpecFeature scope_feature;
+	byte varsize;
+};
+
 const SpriteGroup *PruneTargetSpriteGroup(const SpriteGroup *result);
-void OptimiseVarAction2Adjust(VarAction2OptimiseState &state, const GrfSpecFeature feature, const byte varsize, DeterministicSpriteGroup *group, DeterministicSpriteGroupAdjust &adjust);
-void OptimiseVarAction2DeterministicSpriteGroup(VarAction2OptimiseState &state, const GrfSpecFeature feature, const byte varsize, DeterministicSpriteGroup *group, std::vector<DeterministicSpriteGroupAdjust> &saved_adjusts);
+void OptimiseVarAction2Adjust(VarAction2OptimiseState &state, const VarAction2AdjustInfo info, DeterministicSpriteGroup *group, DeterministicSpriteGroupAdjust &adjust);
+void OptimiseVarAction2DeterministicSpriteGroup(VarAction2OptimiseState &state, const VarAction2AdjustInfo info, DeterministicSpriteGroup *group, std::vector<DeterministicSpriteGroupAdjust> &saved_adjusts);
 void HandleVarAction2OptimisationPasses();
 
 #endif /* NEWGRF_INTERNAL_H */

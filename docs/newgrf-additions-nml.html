@@ -30,9 +30,28 @@
 	<ul>
 	<li><a href="newgrf-roadstops-nml.html">Road stops (FEAT_ROADSTOPS)</a></li>
 	<li><a href="newgrf-newlandscape-nml.html">New landscape (FEAT_NEWLANDSCAPE)</a></li>
+	<li><a href="newgrf-town-nml.html">Towns (the parent scope for stations, objects, etc.) (FEAT_TOWN)</a></li>
 	</ul>
 
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Builtin_functions">Builtin functions</a></h3>
+	<h3 id="sections">Sections</h3>
+	<ul>
+	<li><a href="#builtin-functions">Builtin functions</a></li>
+	<li><a href="#switch-types">Additional switch types</a></li>
+	<li><a href="#ship-callbacks">Ship callbacks</a></li>
+	<li><a href="#railtype-properties">Railtype properties</a></li>
+	<li><a href="#railtype-variables">Railtype variables</a></li>
+	<li><a href="#roadtype-properties">Roadtype properties</a></li>
+	<li><a href="#tramtype-properties">Tramtype properties</a></li>
+	<li><a href="#object-ids">Object IDs</a></li>
+	<li><a href="#object-properties">Object properties</a></li>
+	<li><a href="#object-variables">Object variables</a></li>
+	<li><a href="#global-variable-properties">Global variables properties</a></li>
+	<li><a href="#replace-new-sprites">Replace new sprites</a></li>
+	<li><a href="#signal-graphics">Signal graphics using switches</a></li>
+	</ul>
+	<br />
+
+	<h3 id="builtin-functions"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Builtin_functions">Builtin functions</a></h3>
 
 	<p>
 		<h4>extended_feature_test(feature_name[, min_version[, max_version]])</h4>
@@ -41,7 +60,39 @@
 		In most cases it is not necessary to use this function, as extended properties (listed below) which are not supported are simply skipped/ignored.
 	</p>
 
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Railtypes#Railtype_properties">Railtypes properties</a></h3>
+	<h3 id="switch-types"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Switch">Additional switch types</a></h3>
+	<p>
+		In addition to SELF and PARENT, switches for vehicle features may use one of the following types below.<br />
+		(These are mostly the same as in <a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Random_switch">random_switch</a>).<br />
+		The 'x' parameter (count x vehicles in given direction) is currently required to be a compile-time constant between 0 and 255.
+		<table>
+		<tr><th>Type</th><th>Meaning</th></tr>
+		<tr><td>BACKWARD_SELF(x)</td><td>Count x vehicles backward (away from the engine), starting at the vehicle itself</td></tr>
+		<tr><td>FORWARD_SELF(x)</td><td>Count x vehicles forward (towards the engine), starting at the vehicle itself</td></tr>
+		<tr><td>BACKWARD_ENGINE(x)</td><td>Count x vehicles backward, starting at the leading engine</td></tr>
+		<tr><td>BACKWARD_SAMEID(x)</td><td>Count x vehicles backward, starting at the first vehicle in the chain with the same ID</td></tr>
+		</table>
+		<p>These require the <span class="code">more_varaction2_types</span> feature. If this feature is not present, switches of these types will produce a CB_FAILED result.</p>
+	</p>
+
+	<h3 id="ship-callbacks"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Vehicles#Vehicle_callbacks">Ship callbacks</a></h3>
+	<p>
+		The <span class="code">articulated_part</span> callback is also available for ships.<br />
+		Additional ship parts are not used for graphics, they are only used for additional cargo capacity, the default graphics chain is unused.<br />
+		The default graphics chain for the primary vehicle may check the cargo states of the other ship parts if required.<br />
+		Additional ship parts may be refitted individually.
+		<p>This requires the <span class="code">multi_part_ships</span> feature.</p>
+	</p>
+	<p>
+		Added callback: <span class="code">refit_part_name</span><br />
+		This callback is called on the primary vehicle to get the name of each part of the ship (e.g. the name of each cargo hold) in the refit window.<br />
+		This is not called for ships of only one part.<br />
+		The callback handler should return a string or CB_RESULT_NO_TEXT.<br />
+		If this callback is not handled or if CB_RESULT_NO_TEXT is returned, a default name is used.<br />
+		<span class="code">getbits(extra_callback_info1, 0, 8)</span> contains the index of the part of the ship. The first/primary part is 0, each subsequent part increases the value by 1.
+	</p>
+
+	<h3 id="railtype-properties"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Railtypes#Railtype_properties">Railtype properties</a></h3>
 	<table>
 	<tr><th>Property</th><th>Value range</th><th>Comment</th></tr>
 	<tr><td>enable_programmable_pre_signals</td><td>0 or 1</td>
@@ -104,7 +155,7 @@
 		</td>
 	</tr>
 	</table>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Railtypes#Railtype_variables">Railtypes variables</a></h3>
+	<h3 id="railtype-variables"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Railtypes#Railtype_variables">Railtype variables</a></h3>
 	<p>Variables in the table below which are not supported by the version of OpenTTD being used return a value of 0.</p>
 	<table>
 	<tr><th>Variable</th><th>Value range</th><th>Comment</th></tr>
@@ -148,8 +199,24 @@
 			Above signal context variables in one variable (all of the railtype_signal_context variable)
 		</td>
 	</tr>
+	<tr><td>signal_side</td><td>SIGNAL_SIDE_XXX</td>
+		<td>
+			<dl>
+				<dt>LEFT</dt>
+				<dd>Signals are on the left</dd>
+				<dt>RIGHT</dt>
+				<dd>Signals are on the right</dd>
+			</dl>
+		</td>
+	</tr>
+	<tr><td>signal_vertical_clearance</td><td>0 - 255</td>
+		<td>
+			Pixels of vertical clearance between the signal and any bridge above.<br />
+			If there is no bridge above, the value is 0xFF.
+		</td>
+	</tr>
 	</table>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Roadtypes#Roadtype_properties">Roadtype properties</a></h3>
+	<h3 id="roadtype-properties"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Roadtypes#Roadtype_properties">Roadtype properties</a></h3>
 	<table>
 	<tr><th>Property</th><th>Value range</th><th>Comment</th></tr>
 	<tr><td>roadtype_extra_flags</td><td>bitmask(ROADTYPE_EXTRA_FLAG_XXX, ...)</td>
@@ -159,11 +226,28 @@
 				<dd>Scripts (AI/GS) may not build this roadtype</dd>
 				<dt>NO_TOWN_MODIFY</dt>
 				<dd>Towns may not modify tiles of this roadtype in any way whatsoever</dd>
+				<dt>NO_TUNNELS</dt>
+				<dd>Disallow tunnels for this roadtype</dd>
+				<dt>NO_TRAIN_COLLISION</dt>
+				<dd>Disallow collisions with trains for vehicles of this roadtype</dd>
+			</dl>
+		</td>
+	</tr>
+	<tr><td>roadtype_collision_mode</td><td>ROADTYPE_COLLISION_MODE_XXX</td>
+		<td>
+			Sets the road vehicle collision mode for road vehicles of this road type.
+			<dl>
+				<dt>NORMAL</dt>
+				<dd>Normal road vehicle collision rules (this is the default)</dd>
+				<dt>NONE</dt>
+				<dd>Do not collide at all with other road vehicles</dd>
+				<dt>ELEVATED</dt>
+				<dd>Collide only with other elevated road vehicles</dd>
 			</dl>
 		</td>
 	</tr>
 	</table>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Tramtypes#Tramtype_properties">Tramtype properties</a></h3>
+	<h3 id="tramtype-properties"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Tramtypes#Tramtype_properties">Tramtype properties</a></h3>
 	<table>
 	<tr><th>Property</th><th>Value range</th><th>Comment</th></tr>
 	<tr><td>tramtype_extra_flags</td><td>bitmask(TRAMTYPE_EXTRA_FLAG_XXX, ...)</td>
@@ -173,11 +257,34 @@
 				<dd>Scripts (AI/GS) may not build this tramtype</dd>
 				<dt>NO_TOWN_MODIFY</dt>
 				<dd>Towns may not modify tiles of this tramtype in any way whatsoever</dd>
+				<dt>NO_TUNNELS</dt>
+				<dd>Disallow tunnels for this tramtype</dd>
+				<dt>NO_TRAIN_COLLISION</dt>
+				<dd>Disallow collisions with trains for vehicles of this tramtype</dd>
+			</dl>
+		</td>
+	</tr>
+	<tr><td>tramtype_collision_mode</td><td>TRAMTYPE_COLLISION_MODE_XXX</td>
+		<td>
+			Sets the road vehicle collision mode for road vehicles of this tram type.
+			<dl>
+				<dt>NORMAL</dt>
+				<dd>Normal road vehicle collision rules (this is the default)</dd>
+				<dt>NONE</dt>
+				<dd>Do not collide at all with other road vehicles</dd>
+				<dt>ELEVATED</dt>
+				<dd>Collide only with other elevated road vehicles</dd>
 			</dl>
 		</td>
 	</tr>
 	</table>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Objects#Object_properties">Object properties</a></h3>
+	<h3 id="object-ids"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Objects#Object_IDs">Object IDs</a></h3>
+	<p>
+		Object IDs are NewGRF-local and can be freely chosen in the 0..63999 range, as of the <span class="code">more_objects_per_grf</span> feature.<br />
+		When loaded into a version of OpenTTD without this feature, IDs are limited to the range: 0..254.
+		Any objects with IDs outside this range will be skipped.
+	</p>
+	<h3 id="object-properties"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Objects#Object_properties">Object properties</a></h3>
 	<table>
 	<tr><th>Property</th><th>Value range</th><th>Comment</th></tr>
 	<tr><td>use_land_ground</td><td>0 or 1</td><td>
@@ -262,7 +369,7 @@
 		</table></p>
 	</td></tr>
 	</table>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Objects#Object_variables">Object variables</a></h3>
+	<h3 id="object-variables"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Objects#Object_variables">Object variables</a></h3>
 	<p>Variables in the table below which are not supported by the version of OpenTTD being used return a value of 0.</p>
 	<table>
 	<tr><th>Variable</th><th>Value range</th><th>Comment</th></tr>
@@ -275,7 +382,7 @@
 		This is useful for xoring with the tile_slope variable, because if this variable is unavailable then the result is still the underlying tile slope.
 	</td></tr>
 	</table>
-	<h3>Global variables properties</h3>
+	<h3 id="global-variable-properties">Global variables properties</h3>
 	<p>The variables listed below should set inside an item and property block of the form:<pre class="code">
 item (FEAT_GLOBALVARS) {
 	property {
@@ -323,6 +430,11 @@ item (FEAT_GLOBALVARS) {
 			Some station names are always used first even when this is non-zero.
 		</td>
 	</tr>
+	<tr><td>allow_rocks_in_desert</td><td>0 or 1</td>
+		<td>
+			Sets whether rocky tiles are allowed to generate in and remain in desert zones (tropical climate).
+		</td>
+	</tr>
 	</table>
 	<p>Syntax example:
 		<pre class="code">
@@ -336,7 +448,7 @@ item (FEAT_GLOBALVARS) {
 }
 		</pre>
 	</p>
-	<h3><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Replace_new_sprites">Replace new sprites</a></h3>
+	<h3 id="replace-new-sprites"><a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Replace_new_sprites">Replace new sprites</a></h3>
 	<table>
 	<tr><th>Type</th><th>Number of sprites </th><th>Comment</th></tr>
 	<tr><td>PROGRAMMABLE_PRE_SIGNAL</td><td>32</td>
@@ -376,7 +488,7 @@ item (FEAT_GLOBALVARS) {
 		</td>
 	</tr>
 	</table>
-	<h3>Signal graphics using switches</h3>
+	<h3 id="signal-graphics">Signal graphics using switches</h3>
 	<p>
 		This feature allows signal sprites to be specified using switches in a very similar manner to <a href="https://newgrf-specs.tt-wiki.net/wiki/NML:Railtypes#signals">railtype signals</a> in
 		<span class="code">item (FEAT_RAILTYPES) { graphics { signals: ... } }</span> blocks.<br />
@@ -589,9 +701,25 @@ item (FEAT_GLOBALVARS) {
 			Above signal context variables in one variable (all of the signals_signal_context variable)
 		</td>
 	</tr>
+	<tr><td>signal_side</td><td>SIGNAL_SIDE_XXX</td>
+		<td>
+			<dl>
+				<dt>LEFT</dt>
+				<dd>Signals are on the left</dd>
+				<dt>RIGHT</dt>
+				<dd>Signals are on the right</dd>
+			</dl>
+		</td>
+	</tr>
 	<tr><td>signal_style</td><td>0 - 255</td>
 		<td>
 			The style ID defined using define_style for signals using a custom style, or 0 for signals using the default style
+		</td>
+	</tr>
+	<tr><td>signal_vertical_clearance</td><td>0 - 255</td>
+		<td>
+			Pixels of vertical clearance between the signal and any bridge above.<br />
+			If there is no bridge above, the value is 0xFF.
 		</td>
 	</tr>
 	</table>

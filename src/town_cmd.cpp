@@ -99,7 +99,7 @@ static bool TestTownOwnsBridge(TileIndex tile, const Town *t)
 
 	if (!town_owned) {
 		/* Or other adjacent road */
-		TileIndex adjacent = tile + TileOffsByDiagDir(ReverseDiagDir(GetTunnelBridgeDirection(GetOtherTunnelBridgeEnd(tile))));
+		adjacent = tile + TileOffsByDiagDir(ReverseDiagDir(GetTunnelBridgeDirection(GetOtherTunnelBridgeEnd(tile))));
 		town_owned = IsTileType(adjacent, MP_ROAD) && IsTileOwner(adjacent, OWNER_TOWN) && GetTownIndex(adjacent) == t->index;
 	}
 
@@ -367,8 +367,7 @@ void DrawHouseImage(HouseID house_id, int left, int top, int right, int bottom)
 {
 	DrawPixelInfo tmp_dpi;
 	if (!FillDrawPixelInfo(&tmp_dpi, left, top, right - left + 1, bottom - top + 1)) return;
-	DrawPixelInfo *old_dpi = _cur_dpi;
-	_cur_dpi = &tmp_dpi;
+	AutoRestoreBackup dpi_backup(_cur_dpi, &tmp_dpi);
 
 	const HouseSpec *hs = HouseSpec::Get(house_id);
 
@@ -412,11 +411,9 @@ void DrawHouseImage(HouseID house_id, int left, int top, int right, int bottom)
 		}
 		if (!ground) break;
 	}
-
-	_cur_dpi = old_dpi;
 }
 
-static int GetSlopePixelZ_Town(TileIndex tile, uint x, uint y)
+static int GetSlopePixelZ_Town(TileIndex tile, uint x, uint y, bool ground_vehicle)
 {
 	return GetTileMaxPixelZ(tile);
 }
@@ -525,7 +522,7 @@ void Town::UpdateVirtCoord()
 
 	SetDParam(0, this->index);
 	SetDParam(1, this->cache.population);
-	this->cache.sign.UpdatePosition(HasBit(_display_opt, DO_SHOW_TOWN_NAMES) ? ZOOM_LVL_OUT_128X : ZOOM_LVL_END, pt.x, pt.y - 24 * ZOOM_LVL_BASE, this->Label(), STR_VIEWPORT_TOWN);
+	this->cache.sign.UpdatePosition(HasBit(_display_opt, DO_SHOW_TOWN_NAMES) ? ZOOM_LVL_OUT_128X : ZOOM_LVL_END, pt.x, pt.y - 24 * ZOOM_LVL_BASE, this->Label(), STR_VIEWPORT_TOWN_TINY_WHITE);
 
 	if (_viewport_sign_kdtree_valid) _viewport_sign_kdtree.Insert(ViewportSignKdtreeItem::MakeTown(this->index));
 
@@ -998,7 +995,7 @@ static RoadBits GetTownRoadBits(TileIndex tile)
 	return GetAnyRoadBits(tile, RTT_ROAD, true);
 }
 
-RoadType GetTownRoadType(const Town *t)
+RoadType GetTownRoadType()
 {
 	RoadType best_rt = ROADTYPE_ROAD;
 	const RoadTypeInfo *best = nullptr;
@@ -1097,7 +1094,7 @@ static bool IsRoadAllowedHere(Town *t, TileIndex tile, DiagDirection dir)
 		/* No, try if we are able to build a road piece there.
 		 * If that fails clear the land, and if that fails exit.
 		 * This is to make sure that we can build a road here later. */
-		RoadType rt = GetTownRoadType(t);
+		RoadType rt = GetTownRoadType();
 		if (DoCommand(tile, ((dir == DIAGDIR_NW || dir == DIAGDIR_SE) ? ROAD_Y : ROAD_X) | (rt << 4), 0, DC_AUTO | DC_NO_WATER, CMD_BUILD_ROAD).Failed() &&
 				DoCommand(tile, 0, 0, DC_AUTO | DC_NO_WATER | DC_TOWN, CMD_LANDSCAPE_CLEAR).Failed()) {
 			return false;
@@ -1266,7 +1263,7 @@ static bool GrowTownWithExtraHouse(Town *t, TileIndex tile)
  */
 static bool GrowTownWithRoad(const Town *t, TileIndex tile, RoadBits rcmd)
 {
-	RoadType rt = GetTownRoadType(t);
+	RoadType rt = GetTownRoadType();
 	if (DoCommand(tile, rcmd | (rt << 4), t->index, DC_EXEC | DC_AUTO | DC_NO_WATER | DC_TOWN, CMD_BUILD_ROAD).Succeeded()) {
 		_grow_town_result = GROWTH_SUCCEED;
 		return true;
@@ -1287,8 +1284,6 @@ static bool CanRoadContinueIntoNextTile(const Town *t, const TileIndex tile, con
 {
 	const int delta = TileOffsByDiagDir(road_dir); // +1 tile in the direction of the road
 	TileIndex next_tile = tile + delta; // The tile beyond which must be connectable to the target tile
-	RoadBits rcmd = DiagDirToRoadBits(ReverseDiagDir(road_dir));
-	RoadType rt = GetTownRoadType(t);
 
 	/* Before we try anything, make sure the tile is on the map and not the void. */
 	if (!IsValidTile(next_tile)) return false;
@@ -1312,6 +1307,9 @@ static bool CanRoadContinueIntoNextTile(const Town *t, const TileIndex tile, con
 	/* If the next tile is a railroad track, check if towns are allowed to build level crossings.
 	 * If level crossing are not allowed, reject the construction. Else allow DoCommand to determine if the rail track is buildable. */
 	if (IsTileType(next_tile, MP_RAILWAY) && !t->GetAllowBuildLevelCrossings()) return false;
+
+	RoadBits rcmd = DiagDirToRoadBits(ReverseDiagDir(road_dir));
+	RoadType rt = GetTownRoadType();
 
 	/* If a road tile can be built, the construction is allowed. */
 	return DoCommand(next_tile, rcmd | (rt << 4), t->index, DC_AUTO | DC_NO_WATER, CMD_BUILD_ROAD).Succeeded();
@@ -1351,6 +1349,8 @@ static bool RedundantBridgeExistsNearby(TileIndex tile, void *user_data)
 static bool GrowTownWithBridge(const Town *t, const TileIndex tile, const DiagDirection bridge_dir)
 {
 	assert(bridge_dir < DIAGDIR_END);
+
+	if (!t->GetAllowBuildBridges()) return false;
 
 	const Slope slope = GetTileSlope(tile);
 
@@ -1413,7 +1413,7 @@ static bool GrowTownWithBridge(const Town *t, const TileIndex tile, const DiagDi
 
 	for (;;) {
 		/* Can we actually build the bridge? */
-		RoadType rt = GetTownRoadType(t);
+		RoadType rt = GetTownRoadType();
 		if (MayTownBuildBridgeType(bridge_type) && DoCommand(tile, bridge_tile, bridge_type | rt << 8 | TRANSPORT_ROAD << 15, CommandFlagsToDCFlags(GetCommandFlags(CMD_BUILD_BRIDGE)) | DC_TOWN, CMD_BUILD_BRIDGE).Succeeded()) {
 			DoCommand(tile, bridge_tile, bridge_type | rt << 8 | TRANSPORT_ROAD << 15, DC_EXEC | CommandFlagsToDCFlags(GetCommandFlags(CMD_BUILD_BRIDGE)) | DC_TOWN, CMD_BUILD_BRIDGE);
 			_grow_town_result = GROWTH_SUCCEED;
@@ -1503,7 +1503,7 @@ static bool GrowTownWithTunnel(const Town *t, const TileIndex tile, const DiagDi
 	if (!CanRoadContinueIntoNextTile(t, tunnel_tile, tunnel_dir)) return false;
 
 	/* Attempt to build the tunnel. Return false if it fails to let the town build a road instead. */
-	RoadType rt = GetTownRoadType(t);
+	RoadType rt = GetTownRoadType();
 	if (DoCommand(tile, rt | (TRANSPORT_ROAD << 8), 0, CommandFlagsToDCFlags(GetCommandFlags(CMD_BUILD_TUNNEL)), CMD_BUILD_TUNNEL).Succeeded()) {
 		DoCommand(tile, rt | (TRANSPORT_ROAD << 8), 0, DC_EXEC | CommandFlagsToDCFlags(GetCommandFlags(CMD_BUILD_TUNNEL)), CMD_BUILD_TUNNEL);
 		_grow_town_result = GROWTH_SUCCEED;
@@ -2010,7 +2010,7 @@ static bool GrowTown(Town *t)
 			/* Only work with plain land that not already has a house */
 			if (!IsTileType(tile, MP_HOUSE) && IsTileFlat(tile)) {
 				if (DoCommand(tile, 0, 0, DC_AUTO | DC_NO_WATER | DC_TOWN, CMD_LANDSCAPE_CLEAR).Succeeded()) {
-					RoadType rt = GetTownRoadType(t);
+					RoadType rt = GetTownRoadType();
 					DoCommand(tile, GenRandomRoadBits() | (rt << 4), t->index, DC_EXEC | DC_AUTO | DC_TOWN, CMD_BUILD_ROAD);
 					cur_company.Restore();
 					return true;
@@ -2052,21 +2052,37 @@ void UpdateTownRadius(Town *t)
 		{121, 81,  0, 49, 36}, // 88
 	};
 
-	if (_settings_game.economy.town_zone_calc_mode && t->larger_town) {
+	if (_settings_game.economy.town_zone_calc_mode) {
 		int mass = t->cache.num_houses / 8;
-		t->cache.squared_town_zone_radius[0] = mass * _settings_game.economy.city_zone_0_mult;
-		t->cache.squared_town_zone_radius[1] = mass * _settings_game.economy.city_zone_1_mult;
-		t->cache.squared_town_zone_radius[2] = mass * _settings_game.economy.city_zone_2_mult;
-		t->cache.squared_town_zone_radius[3] = mass * _settings_game.economy.city_zone_3_mult;
-		t->cache.squared_town_zone_radius[4] = mass * _settings_game.economy.city_zone_4_mult;
-	} else if (_settings_game.economy.town_zone_calc_mode) {
-		int mass = t->cache.num_houses / 8;
-		t->cache.squared_town_zone_radius[0] = mass * _settings_game.economy.town_zone_0_mult;
-		t->cache.squared_town_zone_radius[1] = mass * _settings_game.economy.town_zone_1_mult;
-		t->cache.squared_town_zone_radius[2] = mass * _settings_game.economy.town_zone_2_mult;
-		t->cache.squared_town_zone_radius[3] = mass * _settings_game.economy.town_zone_3_mult;
-		t->cache.squared_town_zone_radius[4] = mass * _settings_game.economy.town_zone_4_mult;
-	} else if (t->cache.num_houses < 92) {
+		if (t->larger_town) {
+			t->cache.squared_town_zone_radius[0] = mass * _settings_game.economy.city_zone_0_mult;
+			t->cache.squared_town_zone_radius[1] = mass * _settings_game.economy.city_zone_1_mult;
+			t->cache.squared_town_zone_radius[2] = mass * _settings_game.economy.city_zone_2_mult;
+			t->cache.squared_town_zone_radius[3] = mass * _settings_game.economy.city_zone_3_mult;
+			t->cache.squared_town_zone_radius[4] = mass * _settings_game.economy.city_zone_4_mult;
+		} else {
+			t->cache.squared_town_zone_radius[0] = mass * _settings_game.economy.town_zone_0_mult;
+			t->cache.squared_town_zone_radius[1] = mass * _settings_game.economy.town_zone_1_mult;
+			t->cache.squared_town_zone_radius[2] = mass * _settings_game.economy.town_zone_2_mult;
+			t->cache.squared_town_zone_radius[3] = mass * _settings_game.economy.town_zone_3_mult;
+			t->cache.squared_town_zone_radius[4] = mass * _settings_game.economy.town_zone_4_mult;
+		}
+		return;
+	}
+
+	MemSetT(t->cache.squared_town_zone_radius, 0, lengthof(t->cache.squared_town_zone_radius));
+
+	uint16 cb_result = GetTownZonesCallback(t);
+	if (cb_result == 0) {
+		t->cache.squared_town_zone_radius[0] = GetRegister(0x100);
+		t->cache.squared_town_zone_radius[1] = GetRegister(0x101);
+		t->cache.squared_town_zone_radius[2] = GetRegister(0x102);
+		t->cache.squared_town_zone_radius[3] = GetRegister(0x103);
+		t->cache.squared_town_zone_radius[4] = GetRegister(0x104);
+		return;
+	}
+
+	if (t->cache.num_houses < 92) {
 		memcpy(t->cache.squared_town_zone_radius, _town_squared_town_zone_radius_data[t->cache.num_houses / 4], sizeof(t->cache.squared_town_zone_radius));
 	} else {
 		int mass = t->cache.num_houses / 8;
@@ -2078,6 +2094,13 @@ void UpdateTownRadius(Town *t)
 		t->cache.squared_town_zone_radius[2] = 0;
 		t->cache.squared_town_zone_radius[3] = mass * 5 - 5;
 		t->cache.squared_town_zone_radius[4] = mass * 3 + 5;
+	}
+}
+
+void UpdateTownRadii()
+{
+	for (Town *town : Town::Iterate()) {
+		UpdateTownRadius(town);
 	}
 }
 
@@ -2539,7 +2562,7 @@ bool GenerateTowns(TownLayout layout)
 		bool city = (_settings_game.economy.larger_towns != 0 && Chance16(1, _settings_game.economy.larger_towns));
 		IncreaseGeneratingWorldProgress(GWP_TOWN);
 		/* Get a unique name for the town. */
-		if (!GenerateTownName(&townnameparts, &town_names)) continue;
+		if (!GenerateTownName(_random, &townnameparts, &town_names)) continue;
 		/* try 20 times to create a random-sized town for the first loop. */
 		if (CreateRandomTown(20, townnameparts, TSZ_RANDOM, city, layout) != nullptr) current_number++; // If creation was successful, raise a flag.
 	} while (--total);
@@ -2553,7 +2576,7 @@ bool GenerateTowns(TownLayout layout)
 
 	/* If current_number is still zero at this point, it means that not a single town has been created.
 	 * So give it a last try, but now more aggressive */
-	if (GenerateTownName(&townnameparts) &&
+	if (GenerateTownName(_random, &townnameparts) &&
 			CreateRandomTown(10000, townnameparts, TSZ_RANDOM, _settings_game.economy.larger_towns != 0, layout) != nullptr) {
 		return true;
 	}
@@ -2624,7 +2647,7 @@ static inline void ClearMakeHouseTile(TileIndex tile, Town *t, byte counter, byt
 
 	IncreaseBuildingCount(t, type);
 	MakeHouseTile(tile, t->index, counter, stage, type, random_bits);
-	if (HouseSpec::Get(type)->building_flags & BUILDING_IS_ANIMATED) AddAnimatedTile(tile);
+	if (HouseSpec::Get(type)->building_flags & BUILDING_IS_ANIMATED) AddAnimatedTile(tile, false);
 
 	MarkTileDirtyByTile(tile);
 }
@@ -3809,8 +3832,6 @@ CommandCost CmdDoTownAction(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
  */
 CommandCost CmdOverrideTownSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
-	if (_networking && !_settings_game.difficulty.override_town_settings_in_multiplayer) return CMD_ERROR;
-
 	Town *t = Town::GetIfValid(p1);
 	if (t == nullptr) return CMD_ERROR;
 
@@ -3818,8 +3839,12 @@ CommandCost CmdOverrideTownSetting(TileIndex tile, DoCommandFlag flags, uint32 p
 	const bool is_override = HasBit(p2, 16);
 	const uint8 value = GB(p2, 8, 8);
 	switch (setting) {
+		case TSOF_OVERRIDE_GROWTH:
+			if (is_override && value != 0) return CMD_ERROR;
+			break;
 		case TSOF_OVERRIDE_BUILD_ROADS:
 		case TSOF_OVERRIDE_BUILD_LEVEL_CROSSINGS:
+		case TSOF_OVERRIDE_BUILD_BRIDGES:
 			if (is_override && value != 0 && value != 1) return CMD_ERROR;
 			break;
 		case TSOF_OVERRIDE_BUILD_TUNNELS:
@@ -3836,8 +3861,11 @@ CommandCost CmdOverrideTownSetting(TileIndex tile, DoCommandFlag flags, uint32 p
 		SB(t->override_flags, setting, 1, is_override ? 1 : 0);
 		if (is_override) {
 			switch (setting) {
+				case TSOF_OVERRIDE_GROWTH:
+					break;
 				case TSOF_OVERRIDE_BUILD_ROADS:
 				case TSOF_OVERRIDE_BUILD_LEVEL_CROSSINGS:
+				case TSOF_OVERRIDE_BUILD_BRIDGES:
 					SB(t->override_values, setting, 1, value & 1);
 					break;
 				case TSOF_OVERRIDE_BUILD_TUNNELS:
@@ -3851,9 +3879,29 @@ CommandCost CmdOverrideTownSetting(TileIndex tile, DoCommandFlag flags, uint32 p
 			}
 		}
 		SetWindowDirty(WC_TOWN_AUTHORITY, p1);
+		if (setting == TSOF_OVERRIDE_GROWTH) UpdateTownGrowth(t);
 	}
 
 	return CommandCost();
+}
+
+/**
+ * Override a town setting (non-admin use)
+ * @param tile unused
+ * @param flags type of operation
+ * @param p1 town to do the action at
+ * @param p2 various bitstuffed elements
+ *  - p2 = (bit 0  -  7) - what setting to change
+ *  - p2 = (bit 8  - 15) - the data to modify
+ *  - p2 = (bit 16)      - whether to override the value, or use the default
+ * @param text unused
+ * @return the cost of this operation or an error
+ */
+CommandCost CmdOverrideTownSettingNonAdmin(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	if (_networking && !_settings_game.difficulty.override_town_settings_in_multiplayer) return CMD_ERROR;
+
+	return CmdOverrideTownSetting(tile, flags, p1, p2, text);
 }
 
 template <typename Func>
@@ -3914,7 +3962,7 @@ static void UpdateTownRating(Town *t)
  */
 static void UpdateTownGrowCounter(Town *t, uint16 prev_growth_rate)
 {
-	if (t->growth_rate == TOWN_GROWTH_RATE_NONE) return;
+	if (t->growth_rate == TOWN_GROWTH_RATE_NONE || t->IsTownGrowthDisabledByOverride()) return;
 	if (prev_growth_rate == TOWN_GROWTH_RATE_NONE) {
 		t->grow_counter = std::min<uint16>(t->growth_rate, t->grow_counter);
 		return;
@@ -3976,6 +4024,10 @@ static uint GetNormalGrowthRate(Town *t)
 	if (t->larger_town) m /= 2;
 
 	if (_settings_game.economy.town_growth_cargo_transported > 0) {
+		/* The standard growth rate here is proportional to 1/m.
+		 * town_growth_cargo_transported percent of the growth rate is multiplied by the proportion of town cargoes transported.
+		 * The growth rate can only be decreased by this setting, not increased.
+		 */
 		uint32 inverse_m = UINT32_MAX / m;
 		auto calculate_cargo_ratio_fix15 = [](const TransportedCargoStat<uint32> &stat) -> uint32 {
 			return stat.old_max ? ((uint64) (stat.old_act << 15)) / stat.old_max : 1 << 15;
@@ -4001,6 +4053,7 @@ static uint GetNormalGrowthRate(Town *t)
 static void UpdateTownGrowthRate(Town *t)
 {
 	if (HasBit(t->flags, TOWN_CUSTOM_GROWTH)) return;
+	if (t->IsTownGrowthDisabledByOverride()) return;
 	uint old_rate = t->growth_rate;
 	t->growth_rate = GetNormalGrowthRate(t);
 	UpdateTownGrowCounter(t, old_rate);
@@ -4023,6 +4076,8 @@ static void UpdateTownGrowth(Town *t)
 
 	ClrBit(t->flags, TOWN_IS_GROWING);
 
+	if (t->IsTownGrowthDisabledByOverride()) return;
+
 	if (_settings_game.economy.town_growth_rate == 0 && t->fund_buildings_months == 0) return;
 
 	if (t->fund_buildings_months == 0) {
@@ -4044,7 +4099,6 @@ static void UpdateTownGrowth(Town *t)
 
 	if (HasBit(t->flags, TOWN_CUSTOM_GROWTH)) {
 		if (t->growth_rate != TOWN_GROWTH_RATE_NONE) SetBit(t->flags, TOWN_IS_GROWING);
-		SetWindowDirty(WC_TOWN_VIEW, t->index);
 		return;
 	}
 

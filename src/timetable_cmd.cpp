@@ -36,6 +36,9 @@
 static void ChangeTimetable(Vehicle *v, VehicleOrderID order_number, uint32 val, ModifyTimetableFlags mtf, bool timetabled, bool ignore_lock = false)
 {
 	Order *order = v->GetOrder(order_number);
+	assert(order != nullptr);
+	if (order->HasNoTimetableTimes()) return;
+
 	int total_delta = 0;
 	int timetable_delta = 0;
 
@@ -50,7 +53,7 @@ static void ChangeTimetable(Vehicle *v, VehicleOrderID order_number, uint32 val,
 			order->SetWaitTimetabled(timetabled);
 			if (HasBit(v->vehicle_flags, VF_SCHEDULED_DISPATCH) && timetabled && order->IsScheduledDispatchOrder(true)) {
 				for (Vehicle *u = v->FirstShared(); u != nullptr; u = u->NextShared()) {
-					if (u->cur_implicit_order_index == order_number && (u->last_station_visited == order->GetDestination())) {
+					if (u->cur_implicit_order_index == order_number && order->IsBaseStationOrder() && u->last_station_visited == order->GetDestination()) {
 						u->lateness_counter += timetable_delta;
 					}
 				}
@@ -162,7 +165,7 @@ static void ChangeTimetable(Vehicle *v, VehicleOrderID order_number, uint32 val,
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdChangeTimetable(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, uint32 binary_length)
+CommandCost CmdChangeTimetable(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	VehicleID veh = GB(p1, 0, 20);
 
@@ -174,7 +177,7 @@ CommandCost CmdChangeTimetable(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 
 	VehicleOrderID order_number = GB(p3,  0, 16);
 	Order *order = v->GetOrder(order_number);
-	if (order == nullptr || order->IsType(OT_IMPLICIT)) return CMD_ERROR;
+	if (order == nullptr || order->IsType(OT_IMPLICIT) || order->HasNoTimetableTimes()) return CMD_ERROR;
 
 	ModifyTimetableFlags mtf = Extract<ModifyTimetableFlags, 28, 3>(p1);
 	if (mtf >= MTF_END) return CMD_ERROR;
@@ -373,6 +376,7 @@ CommandCost CmdBulkChangeTimetable(TileIndex tile, DoCommandFlag flags, uint32 p
  * @param flags Operation to perform.
  * @param p1 Various bitstuffed elements
  * - p1 = (bit  0-19) - Vehicle with the orders to change.
+ * - p1 = (bit  20)   - Apply to all vehicles in group.
  * @param p2 unused
  * @param text unused
  * @return the cost of this operation or an error
@@ -380,6 +384,7 @@ CommandCost CmdBulkChangeTimetable(TileIndex tile, DoCommandFlag flags, uint32 p
 CommandCost CmdSetVehicleOnTime(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
 	VehicleID veh = GB(p1, 0, 20);
+	bool apply_to_group = HasBit(p1, 20);
 
 	Vehicle *v = Vehicle::GetIfValid(veh);
 	if (v == nullptr || !v->IsPrimaryVehicle() || v->orders == nullptr) return CMD_ERROR;
@@ -388,8 +393,23 @@ CommandCost CmdSetVehicleOnTime(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 	if (ret.Failed()) return ret;
 
 	if (flags & DC_EXEC) {
-		v->lateness_counter = 0;
-		SetWindowDirty(WC_VEHICLE_TIMETABLE, v->index);
+		if (apply_to_group) {
+			int32 most_late = 0;
+			for (Vehicle *u = v->FirstShared(); u != nullptr; u = u->NextShared()) {
+				if (u->lateness_counter > most_late) {
+					most_late = u->lateness_counter;
+				}
+			}
+			if (most_late > 0) {
+				for (Vehicle *u = v->FirstShared(); u != nullptr; u = u->NextShared()) {
+					u->lateness_counter -= most_late;
+					SetWindowDirty(WC_VEHICLE_TIMETABLE, u->index);
+				}
+			}
+		} else {
+			v->lateness_counter = 0;
+			SetWindowDirty(WC_VEHICLE_TIMETABLE, v->index);
+		}
 	}
 
 	return CommandCost();
@@ -461,7 +481,7 @@ CommandCost CmdSetTimetableStart(TileIndex tile, DoCommandFlag flags, uint32 p1,
 	if (timetable_all && !v->orders->IsCompleteTimetable()) return CMD_ERROR;
 
 	const DateTicksScaled now = _scaled_date_ticks;
-	DateTicksScaled start_date_scaled = (_settings_game.economy.day_length_factor * (((DateTicksScaled)_date * DAY_TICKS) + _date_fract + (DateTicksScaled)(int32)p2)) + sub_ticks;
+	DateTicksScaled start_date_scaled = DateTicksToScaledDateTicks(_date * DAY_TICKS + _date_fract + (int32)p2) + sub_ticks;
 
 	if (flags & DC_EXEC) {
 		std::vector<Vehicle *> vehs;
@@ -493,8 +513,7 @@ CommandCost CmdSetTimetableStart(TileIndex tile, DoCommandFlag flags, uint32 p1,
 			if (tt_start < now && idx < 0) {
 				tt_start += total_duration;
 			}
-			w->timetable_start = tt_start / _settings_game.economy.day_length_factor;
-			w->timetable_start_subticks = tt_start % _settings_game.economy.day_length_factor;
+			std::tie(w->timetable_start, w->timetable_start_subticks) = ScaledDateTicksToDateTicksAndSubTicks(tt_start);
 			++idx;
 		}
 
@@ -644,6 +663,8 @@ CommandCost CmdTimetableSeparation(TileIndex tile, DoCommandFlag flags, uint32 p
 
 static inline bool IsOrderUsableForSeparation(const Order *order)
 {
+	if (order->HasNoTimetableTimes()) return true;
+
 	if (order->GetWaitTime() == 0 && order->IsType(OT_GOTO_STATION) && !(order->GetNonStopType() & ONSF_NO_STOP_AT_DESTINATION_STATION)) {
 		// non-station orders are permitted to have 0 wait times
 		return false;
@@ -686,8 +707,8 @@ std::vector<TimetableProgress> PopulateSeparationState(const Vehicle *v_start)
 			// Do not try to separate vehicles on depot service or halt orders
 			separation_valid = false;
 		}
-		if (order->IsType(OT_RELEASE_SLOT) || order->IsType(OT_COUNTER)) {
-			// Do not try to separate vehicles on release slot or change counter orders
+		if (order->IsType(OT_RELEASE_SLOT) || order->IsType(OT_COUNTER) || order->IsType(OT_DUMMY) || order->IsType(OT_LABEL)) {
+			// Do not try to separate vehicles on release slot, change counter, or invalid orders
 			separation_valid = false;
 		}
 		int order_ticks;
@@ -864,7 +885,7 @@ void UpdateVehicleTimetable(Vehicle *v, bool travelling)
                 v->trip_history.NewRound();
 
 		if (v->timetable_start != 0) {
-			v->lateness_counter = _scaled_date_ticks - ((_settings_game.economy.day_length_factor * ((DateTicksScaled) v->timetable_start)) + v->timetable_start_subticks);
+			v->lateness_counter = _scaled_date_ticks - (DateTicksToScaledDateTicks(v->timetable_start) + v->timetable_start_subticks);
 			v->timetable_start = 0;
 			v->timetable_start_subticks = 0;
 		}

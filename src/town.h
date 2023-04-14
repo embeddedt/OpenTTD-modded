@@ -65,6 +65,8 @@ enum TownSettingOverrideFlags {
 	TSOF_OVERRIDE_BUILD_LEVEL_CROSSINGS     = 1,
 	TSOF_OVERRIDE_BUILD_TUNNELS             = 2,
 	TSOF_OVERRIDE_BUILD_INCLINED_ROADS      = 3,
+	TSOF_OVERRIDE_GROWTH                    = 4,
+	TSOF_OVERRIDE_BUILD_BRIDGES             = 5,
 };
 
 /** Town data structure. */
@@ -187,6 +189,11 @@ struct Town : TownPool::PoolItem<&_town_pool> {
 		return this->cached_name.c_str();
 	}
 
+	inline bool IsTownGrowthDisabledByOverride() const
+	{
+		return HasBit(this->override_flags, TSOF_OVERRIDE_GROWTH);
+	}
+
 	inline bool GetAllowBuildRoads() const
 	{
 		return HasBit(this->override_flags, TSOF_OVERRIDE_BUILD_ROADS) ? HasBit(this->override_values, TSOF_OVERRIDE_BUILD_ROADS) : _settings_game.economy.allow_town_roads;
@@ -195,6 +202,11 @@ struct Town : TownPool::PoolItem<&_town_pool> {
 	inline bool GetAllowBuildLevelCrossings() const
 	{
 		return HasBit(this->override_flags, TSOF_OVERRIDE_BUILD_LEVEL_CROSSINGS) ? HasBit(this->override_values, TSOF_OVERRIDE_BUILD_LEVEL_CROSSINGS) : _settings_game.economy.allow_town_level_crossings;
+	}
+
+	inline bool GetAllowBuildBridges() const
+	{
+		return HasBit(this->override_flags, TSOF_OVERRIDE_BUILD_BRIDGES) ? HasBit(this->override_values, TSOF_OVERRIDE_BUILD_BRIDGES) : _settings_game.economy.allow_town_bridges;
 	}
 
 	inline TownTunnelMode GetBuildTunnelMode() const
@@ -271,6 +283,7 @@ void ResetHouses();
 void ClearTownHouse(Town *t, TileIndex tile);
 void UpdateTownMaxPass(Town *t);
 void UpdateTownRadius(Town *t);
+void UpdateTownRadii();
 CommandCost CheckIfAuthorityAllowsNewStation(TileIndex tile, DoCommandFlag flags);
 Town *ClosestTownFromTile(TileIndex tile, uint threshold);
 void ChangeTownRating(Town *t, int add, int max, DoCommandFlag flags);
@@ -379,7 +392,7 @@ static inline uint16 TownTicksToGameTicks(uint16 ticks) {
 }
 
 
-RoadType GetTownRoadType(const Town *t);
+RoadType GetTownRoadType();
 bool MayTownModifyRoad(TileIndex tile);
 
 #endif /* TOWN_H */

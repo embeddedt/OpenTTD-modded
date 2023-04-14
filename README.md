@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.49.0
+## JGR's Patchpack version 0.52.1
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -127,6 +127,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 #### Ships
 
 * [Ship collision avoidance](http://www.tt-forums.net/viewtopic.php?f=33&t=74365).
+* Allow NewGRF ships to carry more than one cargo.
 
 #### Vehicles in General
 
@@ -217,9 +218,10 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add "indifferent" mode to the town council attitude to area restructuring setting.
 * Disallow converting town-owned roads to types with the no houses flag.
 * Add public roads (road network automatically built between towns) at map generation and in the scenario editor.
-* Add setting for if/when towns can build road tunnels.
+* Add settings for if/when towns can build road bridges and tunnels.
 * Add setting to limit length of continuous inclined roads built by towns.
-* Allow overriding town road construction settings on a per-town basis, add setting to enable this for multiplayer clients.
+* Allow overriding town road construction settings and whether town growth is enabled on a per-town basis, add setting to enable this for multiplayer clients.
+* Allow NewGRFs to set town zone radii.
 
 #### Industries
 
@@ -274,6 +276,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add display setting for income/cost text effects.
 * Make the company infrastructure window scrollable.
 * Add setting to disable water animation depending on zoom level.
+* Add zoom in support to the minimap window.
 
 #### Limits
 

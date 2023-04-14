@@ -24,7 +24,6 @@
 #include "3rdparty/cpp-btree/btree_map.h"
 #include <map>
 #include <vector>
-#include <unordered_map>
 
 struct Train;
 
@@ -46,7 +45,7 @@ struct TraceRestrictSlot;
 
 /** Type of the pool for trace restrict slots. */
 typedef Pool<TraceRestrictSlot, TraceRestrictSlotID, 16, 0xFFF0> TraceRestrictSlotPool;
-/** The actual pool for trace restrict nodes. */
+/** The actual pool for trace restrict slots. */
 extern TraceRestrictSlotPool _tracerestrictslot_pool;
 
 static const TraceRestrictSlotID NEW_TRACE_RESTRICT_SLOT_ID = 0xFFFD;        // for GUI use only
@@ -57,9 +56,9 @@ static const TraceRestrictSlotID INVALID_TRACE_RESTRICT_SLOT_ID = 0xFFFF;
 typedef uint16 TraceRestrictCounterID;
 struct TraceRestrictCounter;
 
-/** Type of the pool for trace restrict slots. */
+/** Type of the pool for trace restrict counters. */
 typedef Pool<TraceRestrictCounter, TraceRestrictCounterID, 16, 0xFFF0> TraceRestrictCounterPool;
-/** The actual pool for trace restrict nodes. */
+/** The actual pool for trace restrict counters. */
 extern TraceRestrictCounterPool _tracerestrictcounter_pool;
 
 static const TraceRestrictCounterID NEW_TRACE_RESTRICT_COUNTER_ID = 0xFFFE;        // for GUI use only
@@ -88,10 +87,10 @@ void ClearTraceRestrictMapping();
 typedef uint32 TraceRestrictItem;
 
 /**
- * Describes the allocation of bits to fields in TraceRestrictItem
- * Of the fields below, the type seem the most likely
+ * Describes the allocation of bits to fields in TraceRestrictItem.
+ * Of the fields below, the type seems the most likely
  * to need future expansion, hence the reserved bits are placed
- * immediately after them
+ * immediately after them.
  *
  * COUNT values describe the field bit width
  * OFFSET values describe the field bit offset
@@ -154,6 +153,7 @@ enum TraceRestrictItemType {
 	TRIT_COND_RESERVED_TILES      = 29,   ///< Test reserved tiles ahead of train
 	TRIT_COND_CATEGORY            = 30,   ///< Test train category
 	TRIT_COND_TARGET_DIRECTION    = 31,   ///< Test direction of order target tile relative to this signal tile
+	TRIT_COND_RESERVATION_THROUGH = 32,   ///< Test if train reservation passes through tile
 
 	TRIT_COND_END                 = 48,   ///< End (exclusive) of conditional item types, note that this has the same value as TRIT_REVERSE
 	TRIT_REVERSE                  = 48,   ///< Reverse behind signal
@@ -334,6 +334,7 @@ enum TraceRestrictTrainStatusValueField {
 	TRTSVF_WAITING                     =  8,      ///< Train is waiting
 	TRTSVF_LOST                        =  9,      ///< Train is lost
 	TRTSVF_REQUIRES_SERVICE            = 10,      ///< Train requires service
+	TRTSVF_STOPPING_AT_STATION_WAYPOINT= 11,      ///< Train stops at destination station/waypoint
 };
 
 /**
@@ -360,7 +361,7 @@ enum TraceRestrictSlotCondOpField {
 	TRSCOF_PBS_RES_END_ACQ_TRY    = 5,       ///< PBS reservations ending at this signal: acquire a slot, or carry on otherwise
 	TRSCOF_PBS_RES_END_RELEASE    = 6,       ///< PBS reservations ending at this signal: release a slot
 	TRSCOF_ACQUIRE_TRY_ON_RESERVE = 7,       ///< try to acquire a slot (on reserve), or carry on otherwise
-	/* space up to 8 */
+	/* space up to 7 */
 };
 
 /**
@@ -379,7 +380,7 @@ enum TraceRestrictCounterCondOpField {
 	TRCCOF_INCREASE               = 0,       ///< increase counter by value
 	TRCCOF_DECREASE               = 1,       ///< decrease counter by value
 	TRCCOF_SET                    = 2,       ///< set counter to value
-	/* space up to 8 */
+	/* space up to 7 */
 };
 
 /**
@@ -488,7 +489,7 @@ struct TraceRestrictProgramInput {
 struct TraceRestrictProgramResult {
 	uint32 penalty;                          ///< Total additional pathfinder penalty
 	TraceRestrictProgramResultFlags flags;   ///< Flags of other actions to take
-	uint16 speed_restriction;                ///> Speed restriction to apply (if TRPRF_SPEED_RESTRICTION_SET flag present)
+	uint16 speed_restriction;                ///< Speed restriction to apply (if TRPRF_SPEED_RESTRICTION_SET flag present)
 
 	TraceRestrictProgramResult()
 			: penalty(0), flags(static_cast<TraceRestrictProgramResultFlags>(0)) { }
@@ -666,7 +667,8 @@ static inline bool IsTraceRestrictConditional(TraceRestrictItem item)
 static inline bool IsTraceRestrictDoubleItem(TraceRestrictItem item)
 {
 	const TraceRestrictItemType type = GetTraceRestrictType(item);
-	return type == TRIT_COND_PBS_ENTRY_SIGNAL || type == TRIT_COND_SLOT_OCCUPANCY || type == TRIT_COUNTER || type == TRIT_COND_COUNTER_VALUE || type == TRIT_COND_TIME_DATE_VALUE;
+	return type == TRIT_COND_PBS_ENTRY_SIGNAL || type == TRIT_COND_SLOT_OCCUPANCY || type == TRIT_COUNTER ||
+			type == TRIT_COND_COUNTER_VALUE || type == TRIT_COND_TIME_DATE_VALUE || type == TRIT_COND_RESERVATION_THROUGH;
 }
 
 /**
@@ -717,6 +719,7 @@ enum TraceRestrictValueType {
 	TRVT_SPEED_ADAPTATION_CONTROL = 48,///< takes a TraceRestrictSpeedAdaptationControlField
 	TRVT_SIGNAL_MODE_CONTROL      = 49,///< takes a TraceRestrictSignalModeControlField
 	TRVT_ORDER_TARGET_DIAGDIR     = 50,///< takes a DiagDirection, and the order type in the auxiliary field
+	TRVT_TILE_INDEX_THROUGH       = 51,///< takes a TileIndex in the next item slot (passes through)
 };
 
 /**
@@ -871,40 +874,74 @@ static inline TraceRestrictTypePropertySet GetTraceRestrictTypeProperties(TraceR
 				out.cond_type = TRCOT_BINARY;
 				break;
 
+			case TRIT_COND_RESERVATION_THROUGH:
+				out.value_type = TRVT_TILE_INDEX_THROUGH;
+				out.cond_type = TRCOT_BINARY;
+				break;
+
 			default:
 				NOT_REACHED();
 				break;
 		}
 	} else {
 		out.cond_type = TRCOT_NONE;
-		if (GetTraceRestrictType(item) == TRIT_PF_PENALTY) {
-			out.value_type = TRVT_PF_PENALTY;
-		} else if (GetTraceRestrictType(item) == TRIT_PF_DENY) {
-			out.value_type = TRVT_DENY;
-		} else if (GetTraceRestrictType(item) == TRIT_RESERVE_THROUGH) {
-			out.value_type = TRVT_RESERVE_THROUGH;
-		} else if (GetTraceRestrictType(item) == TRIT_LONG_RESERVE) {
-			out.value_type = TRVT_LONG_RESERVE;
-		} else if (GetTraceRestrictType(item) == TRIT_WAIT_AT_PBS) {
-			out.value_type = TRVT_WAIT_AT_PBS;
-		} else if (GetTraceRestrictType(item) == TRIT_SLOT) {
-			out.value_type = TRVT_SLOT_INDEX;
-		} else if (GetTraceRestrictType(item) == TRIT_REVERSE) {
-			out.value_type = TRVT_REVERSE;
-		} else if (GetTraceRestrictType(item) == TRIT_SPEED_RESTRICTION) {
-			out.value_type = TRVT_SPEED;
-		} else if (GetTraceRestrictType(item) == TRIT_NEWS_CONTROL) {
-			out.value_type = TRVT_NEWS_CONTROL;
-		} else if (GetTraceRestrictType(item) == TRIT_COUNTER) {
-			out.value_type = TRVT_COUNTER_INDEX_INT;
-		} else if (GetTraceRestrictType(item) == TRIT_PF_PENALTY_CONTROL) {
-			out.value_type = TRVT_PF_PENALTY_CONTROL;
-		} else if (GetTraceRestrictType(item) == TRIT_SPEED_ADAPTATION_CONTROL) {
-			out.value_type = TRVT_SPEED_ADAPTATION_CONTROL;
-		} else if (GetTraceRestrictType(item) == TRIT_SIGNAL_MODE_CONTROL) {
-			out.value_type = TRVT_SIGNAL_MODE_CONTROL;
-		} else {
-			out.value_type = TRVT_NONE;
+
+		switch (GetTraceRestrictType(item)) {
+			case TRIT_PF_PENALTY:
+				out.value_type = TRVT_PF_PENALTY;
+				break;
+
+			case TRIT_PF_DENY:
+				out.value_type = TRVT_DENY;
+				break;
+
+			case TRIT_RESERVE_THROUGH:
+				out.value_type = TRVT_RESERVE_THROUGH;
+				break;
+
+			case TRIT_LONG_RESERVE:
+				out.value_type = TRVT_LONG_RESERVE;
+				break;
+
+			case TRIT_WAIT_AT_PBS:
+				out.value_type = TRVT_WAIT_AT_PBS;
+				break;
+
+			case TRIT_SLOT:
+				out.value_type = TRVT_SLOT_INDEX;
+				break;
+
+			case TRIT_REVERSE:
+				out.value_type = TRVT_REVERSE;
+				break;
+
+			case TRIT_SPEED_RESTRICTION:
+				out.value_type = TRVT_SPEED;
+				break;
+
+			case TRIT_NEWS_CONTROL:
+				out.value_type = TRVT_NEWS_CONTROL;
+				break;
+
+			case TRIT_COUNTER:
+				out.value_type = TRVT_COUNTER_INDEX_INT;
+				break;
+
+			case TRIT_PF_PENALTY_CONTROL:
+				out.value_type = TRVT_PF_PENALTY_CONTROL;
+				break;
+
+			case TRIT_SPEED_ADAPTATION_CONTROL:
+				out.value_type = TRVT_SPEED_ADAPTATION_CONTROL;
+				break;
+
+			case TRIT_SIGNAL_MODE_CONTROL:
+				out.value_type = TRVT_SIGNAL_MODE_CONTROL;
+				break;
+
+			default:
+				out.value_type = TRVT_NONE;
+				break;
 		}
 	}
 
@@ -1091,12 +1128,12 @@ struct TraceRestrictSlot : TraceRestrictSlotPool::PoolItem<&_tracerestrictslot_p
 	void Clear();
 	void UpdateSignals();
 
-	private:
+private:
 	void DeIndex(VehicleID id);
 };
 
 /**
- * Slot type, used for slot operations
+ * Counter type
  */
 struct TraceRestrictCounter : TraceRestrictCounterPool::PoolItem<&_tracerestrictcounter_pool> {
 	int32 value = 0;

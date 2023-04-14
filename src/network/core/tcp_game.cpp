@@ -74,6 +74,7 @@ static const char* _packet_game_type_names[] {
 	"CLIENT_DESYNC_LOG",
 	"SERVER_DESYNC_LOG",
 	"CLIENT_DESYNC_MSG",
+	"CLIENT_DESYNC_SYNC_DATA",
 };
 static_assert(lengthof(_packet_game_type_names) == PACKET_END);
 
@@ -108,7 +109,6 @@ NetworkRecvStatus NetworkGameSocketHandler::CloseConnection(bool error)
 
 	/* Clients drop back to the main menu */
 	if (!_network_server && _networking) {
-		extern void ClientNetworkEmergencySave(); // from network_client.cpp
 		ClientNetworkEmergencySave();
 		DeleteNetworkClientWindows();
 		_switch_mode = SM_MENU;
@@ -175,6 +175,7 @@ NetworkRecvStatus NetworkGameSocketHandler::HandlePacket(Packet *p)
 		case PACKET_CLIENT_DESYNC_LOG:            return this->Receive_CLIENT_DESYNC_LOG(p);
 		case PACKET_SERVER_DESYNC_LOG:            return this->Receive_SERVER_DESYNC_LOG(p);
 		case PACKET_CLIENT_DESYNC_MSG:            return this->Receive_CLIENT_DESYNC_MSG(p);
+		case PACKET_CLIENT_DESYNC_SYNC_DATA:      return this->Receive_CLIENT_DESYNC_SYNC_DATA(p);
 		case PACKET_SERVER_QUIT:                  return this->Receive_SERVER_QUIT(p);
 		case PACKET_SERVER_ERROR_QUIT:            return this->Receive_SERVER_ERROR_QUIT(p);
 		case PACKET_SERVER_SHUTDOWN:              return this->Receive_SERVER_SHUTDOWN(p);
@@ -267,6 +268,7 @@ NetworkRecvStatus NetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p) { re
 NetworkRecvStatus NetworkGameSocketHandler::Receive_CLIENT_DESYNC_LOG(Packet *p) { return this->ReceiveInvalidPacket(PACKET_CLIENT_DESYNC_LOG); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_DESYNC_LOG(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_DESYNC_LOG); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_CLIENT_DESYNC_MSG(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_DESYNC_LOG); }
+NetworkRecvStatus NetworkGameSocketHandler::Receive_CLIENT_DESYNC_SYNC_DATA(Packet *p) { return this->ReceiveInvalidPacket(PACKET_CLIENT_DESYNC_SYNC_DATA); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_QUIT(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_QUIT); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_ERROR_QUIT(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_ERROR_QUIT); }
 NetworkRecvStatus NetworkGameSocketHandler::Receive_SERVER_SHUTDOWN(Packet *p) { return this->ReceiveInvalidPacket(PACKET_SERVER_SHUTDOWN); }

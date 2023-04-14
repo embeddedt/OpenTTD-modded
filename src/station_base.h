@@ -932,9 +932,9 @@ public:
 		return *this;
 	}
 
-	virtual TileIterator *Clone() const
+	virtual std::unique_ptr<TileIterator> Clone() const
 	{
-		return new AirportTileIterator(*this);
+		return std::make_unique<AirportTileIterator>(*this);
 	}
 };
 

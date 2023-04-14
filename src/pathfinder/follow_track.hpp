@@ -87,11 +87,11 @@ struct CFollowTrackT
 		m_railtypes = railtype_override;
 	}
 
-	inline static TransportType TT() { return Ttr_type_; }
-	inline static bool IsWaterTT() { return TT() == TRANSPORT_WATER; }
-	inline static bool IsRailTT() { return TT() == TRANSPORT_RAIL; }
+	debug_inline static TransportType TT() { return Ttr_type_; }
+	debug_inline static bool IsWaterTT() { return TT() == TRANSPORT_WATER; }
+	debug_inline static bool IsRailTT() { return TT() == TRANSPORT_RAIL; }
 	inline bool IsTram() const { return IsRoadTT() && RoadTypeIsTram(RoadVehicle::From(m_veh)->roadtype); }
-	inline static bool IsRoadTT() { return TT() == TRANSPORT_ROAD; }
+	debug_inline static bool IsRoadTT() { return TT() == TRANSPORT_ROAD; }
 	inline static bool Allow90degTurns() { return T90deg_turns_allowed_; }
 	inline static bool DoTrackMasking() { return Tmask_reserved_tracks; }
 
@@ -124,9 +124,8 @@ struct CFollowTrackT
 		m_old_td = old_td;
 		m_err = EC_NONE;
 		dbg_assert_tile(
-			((TrackStatusToTrackdirBits(
-				GetTileTrackStatus(m_old_tile, TT(), (IsRoadTT() && m_veh != nullptr) ? (this->IsTram() ? RTT_TRAM : RTT_ROAD) : 0)
-			) & TrackdirToTrackdirBits(m_old_td)) != 0) ||
+			((GetTileTrackdirBits(m_old_tile, TT(), (IsRoadTT() && m_veh != nullptr) ? (this->IsTram() ? RTT_TRAM : RTT_ROAD) : 0)
+			& TrackdirToTrackdirBits(m_old_td)) != 0) ||
 			(IsTram() && GetSingleTramBit(m_old_tile) != INVALID_DIAGDIR), // Disable the assertion for single tram bits
 			m_old_tile
 		);
@@ -243,7 +242,7 @@ protected:
 		} else if (IsRoadTT()) {
 			m_new_td_bits = GetTrackdirBitsForRoad(m_new_tile, this->IsTram() ? RTT_TRAM : RTT_ROAD);
 		} else {
-			m_new_td_bits = TrackStatusToTrackdirBits(GetTileTrackStatus(m_new_tile, TT(), 0));
+			m_new_td_bits = GetTileTrackdirBits(m_new_tile, TT(), 0);
 		}
 		return (m_new_td_bits != TRACKDIR_BIT_NONE);
 	}
@@ -395,7 +394,7 @@ protected:
 			/* entered railway station
 			 * get platform length */
 			uint length = BaseStation::GetByTile(m_new_tile)->GetPlatformLength(m_new_tile, TrackdirToExitdir(m_old_td));
-			/* how big step we must do to get to the last platform tile; */
+			/* how big step we must do to get to the last platform tile? */
 			m_tiles_skipped = length - 1;
 			/* move to the platform end */
 			TileIndexDiff diff = TileOffsByDiagDir(m_exitdir);

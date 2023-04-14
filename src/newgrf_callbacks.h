@@ -279,6 +279,17 @@ enum CallbackID {
 
 	/** Called to spawn visual effects for vehicles. */
 	CBID_VEHICLE_SPAWN_VISUAL_EFFECT     = 0x160, // 15 bit callback
+
+	/** Called to determine the engine name to show. */
+	CBID_VEHICLE_NAME                    = 0x161, // 15 bit callback
+
+	/** Extended/non-standard callbacks follow */
+
+	/** Called to set town zones */
+	XCBID_TOWN_ZONES                     = 0xEC008001,
+
+	/** Called to get the name of the part of a ship for the refit window */
+	XCBID_SHIP_REFIT_PART_NAME           = 0xEC008002,
 };
 
 /**
@@ -294,6 +305,7 @@ enum VehicleCallbackMask {
 	CBM_VEHICLE_CARGO_SUFFIX   = 5, ///< Show suffix after cargo name
 	CBM_VEHICLE_COLOUR_REMAP   = 6, ///< Change colour mapping of vehicle
 	CBM_VEHICLE_SOUND_EFFECT   = 7, ///< Vehicle uses custom sound effects
+	CBM_VEHICLE_NAME           = 8, ///< Engine name
 };
 
 /**

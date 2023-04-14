@@ -69,7 +69,7 @@ public:
 	{
 		const Vehicle *v = Vehicle::Get(window_number);
 		this->CreateNestedTree();
-		
+
 		this->FinishInitNested(window_number);
 		this->owner = v->owner;
 		InvalidateData();
@@ -108,7 +108,7 @@ public:
 				SetDParam(0, UINT64_MAX >> 2);
 				SetDParam(1, 100);
 				Dimension text_dim = GetStringBoundingBox(STR_TRIP_HISTORY_TOTALINCOME);
-				size->width = text_dim.width + WD_FRAMERECT_LEFT + WD_FRAMERECT_RIGHT;
+				size->width = text_dim.width + WidgetDimensions::scaled.framerect.Horizontal();
 				break;
 			}
 
@@ -116,7 +116,7 @@ public:
 			case VTH_MATRIX_RECEIVED: {
 				SetDParam(0, _date);
 				Dimension text_dim = GetStringBoundingBox(STR_TRIP_HISTORY_DATE);
-				size->width = text_dim.width + WD_MATRIX_LEFT + WD_MATRIX_RIGHT;
+				size->width = text_dim.width + WidgetDimensions::scaled.matrix.Horizontal();
 				break;
 			}
 			case VTH_MATRIX_PROFIT:
@@ -124,42 +124,43 @@ public:
 			case VTH_MATRIX_TBT:
 			case VTH_MATRIX_DAYCHANGE:
 			case VTH_MATRIX_OCCUPANCY:
-				resize->height = FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM;
+				resize->height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.matrix.Vertical();
 				size->height = 10 * resize->height;
 				break;
 		}
 	}
 	virtual void DrawWidget(const Rect &r, int widget) const {
 	    	const Vehicle *v = Vehicle::Get(this->window_number);
-		int y = WD_FRAMERECT_TOP;
-		
+		int y = WidgetDimensions::scaled.framerect.top;
+		int line_height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.matrix.Vertical();
+
 		switch( widget ) {
 		    case VTH_MATRIX_RECEIVED:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].date);
-					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_DATE, TC_BLACK, SA_RIGHT);
+					    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y, STR_TRIP_HISTORY_DATE, TC_BLACK, SA_RIGHT);
 				    }
 			    }
 			    break;
 		    case VTH_MATRIX_PROFIT:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i].date > 0) {
 					    if ( v->trip_history.t[i].profit > 0 ) {
 						    SetDParam(0, v->trip_history.t[i].profit );
-						    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_PROFIT, TC_BLACK, SA_RIGHT);
+						    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y, STR_TRIP_HISTORY_PROFIT, TC_BLACK, SA_RIGHT);
 					    } else {
 						    SetDParam(0, -v->trip_history.t[i].profit);
-						    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_VIRTUAL_PROFIT, TC_BLACK, SA_RIGHT);
+						    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y, STR_TRIP_HISTORY_VIRTUAL_PROFIT, TC_BLACK, SA_RIGHT);
 					    }
 				    }
 			    }
 			    break;
 		    case VTH_MATRIX_PERCHANGE:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i+1].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].profit_change);
-					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y,
+					    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y,
 						    v->trip_history.t[i].profit_change >= 0 ?
 							    STR_TRIP_HISTORY_PROFITCHANGEPOS :
 							    STR_TRIP_HISTORY_PROFITCHANGENEG, TC_BLACK, SA_RIGHT
@@ -168,18 +169,18 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_TBT:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].TBT);
-					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y, STR_TRIP_HISTORY_TBT, TC_BLACK, SA_RIGHT);
+					    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y, STR_TRIP_HISTORY_TBT, TC_BLACK, SA_RIGHT);
 				    }
 			    }
 			    break;
 		    case VTH_MATRIX_DAYCHANGE:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i+1].date > 0) {
 					    SetDParam(0, v->trip_history.t[i].TBT_change);
-					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y,
+					    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y,
 						    v->trip_history.t[i].TBT_change > 0 ?
 							    STR_TRIP_HISTORY_TBTCHANGEPOS :
 							    STR_TRIP_HISTORY_TBTCHANGENEG, TC_BLACK, SA_RIGHT
@@ -188,10 +189,10 @@ public:
 			    }
 			    break;
 		    case VTH_MATRIX_OCCUPANCY:
-			    for(int i = 0; i <= valid_rows; i++, y += FONT_HEIGHT_NORMAL + WD_MATRIX_TOP + WD_MATRIX_BOTTOM) {
+			    for(int i = 0; i <= valid_rows; i++, y += line_height) {
 				    if (v->trip_history.t[i+1].date > 0 && v->trip_history.t[i].occupancy >= 0) {
 					    SetDParam(0, v->trip_history.t[i].occupancy);
-					    DrawString(r.left + WD_MATRIX_LEFT, r.right - WD_MATRIX_RIGHT, r.top + y,
+					    DrawString(r.left + WidgetDimensions::scaled.matrix.left, r.right - WidgetDimensions::scaled.matrix.right, r.top + y,
 						    STR_TRIP_HISTORY_OCCUPANCY, TC_BLACK, SA_RIGHT
 					    );
 				    }
@@ -201,19 +202,19 @@ public:
 			    SetDParam(0, valid_rows + 1);
 			    SetDParam(1, v->trip_history.total_profit);
 			    SetDParam(2, v->trip_history.profit_per_day);
-			    DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, r.top + WD_FRAMERECT_TOP, STR_TRIP_HISTORY_TOTALINCOME, TC_BLACK);
+			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_TOTALINCOME, TC_BLACK);
 			    SetDParam(0, v->trip_history.avg_daylength);
-			    DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, r.top + FONT_HEIGHT_NORMAL + WD_FRAMERECT_TOP, STR_TRIP_HISTORY_DAYAVERAGE, TC_BLACK);
+			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE, TC_BLACK);
 			    SetDParam(0, valid_rows + 1);
 			    SetDParam(1, v->trip_history.total_change);
-			    DrawString(r.left + WD_FRAMERECT_LEFT, r.right - WD_FRAMERECT_RIGHT, r.top + 2*FONT_HEIGHT_NORMAL + WD_FRAMERECT_TOP, STR_TRIP_HISTORY_DAYAVERAGE_IMPROVEMENT, TC_BLACK);
+			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + 2*FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE_IMPROVEMENT, TC_BLACK);
 			    break;
 		}
 	}
 };
 
 static WindowDesc _vehicle_trip_history(
-	WDP_AUTO, "trip_history", 450, 191, 
+	WDP_AUTO, "trip_history", 450, 191,
 	WC_VEHICLE_TRIP_HISTORY,WC_VEHICLE_DETAILS,
 	0,
 	_vehicle_trip_history_widgets,

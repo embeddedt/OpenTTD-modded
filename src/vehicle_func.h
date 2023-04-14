@@ -241,7 +241,7 @@ static inline uint32 GetCmdSendToDepot(const BaseVehicle *v)
 
 CommandCost EnsureNoVehicleOnGround(TileIndex tile);
 bool EnsureNoRoadVehWithTrackdir(TileIndex tile, Trackdir trackdir);
-CommandCost EnsureNoRoadVehicleOnGround(TileIndex tile);
+bool IsTrainCollidableRoadVehicleOnGround(TileIndex tile);
 CommandCost EnsureNoTrainOnTrackBits(TileIndex tile, TrackBits track_bits);
 
 extern VehicleID _new_vehicle_id;
@@ -259,5 +259,8 @@ typedef std::vector<VehicleID> VehicleSet;
 void GetVehicleSet(VehicleSet &set, Vehicle *v, uint8 num_vehicles);
 
 void CheckCargoCapacity(Vehicle *v);
+
+bool VehiclesHaveSameEngineList(const Vehicle *v1, const Vehicle *v2);
+bool VehiclesHaveSameOrderList(const Vehicle *v1, const Vehicle *v2);
 
 #endif /* VEHICLE_FUNC_H */

@@ -17,6 +17,10 @@
 #include "../command_type.h"
 #include "../date_type.h"
 
+#include <vector>
+#include <array>
+#include <memory>
+
 static const uint32 FIND_SERVER_EXTENDED_TOKEN = 0x2A49582A;
 
 #ifdef RANDOM_DEBUG
@@ -84,6 +88,7 @@ extern uint32 _sync_frame;
 extern Date   _last_sync_date;
 extern DateFract _last_sync_date_fract;
 extern uint8  _last_sync_tick_skip_counter;
+extern uint32  _last_sync_frame_counter;
 extern bool _network_first_time;
 /* Vars needed for the join-GUI */
 extern NetworkJoinStatus _network_join_status;
@@ -99,6 +104,16 @@ extern std::string _network_server_name;
 extern uint8 _network_reconnect;
 
 extern CompanyMask _network_company_passworded;
+
+/* Sync debugging */
+struct NetworkSyncRecord {
+	uint32 frame;
+	uint32 seed_1;
+	uint64 state_checksum;
+};
+extern std::vector<NetworkSyncRecord> _network_client_sync_records;
+extern std::unique_ptr<std::array<NetworkSyncRecord, 1024>> _network_server_sync_records;
+extern uint32 _network_server_sync_records_next;
 
 void NetworkQueryServer(const std::string &connection_string);
 
@@ -137,5 +152,7 @@ std::string NetworkGenerateRandomKeyString(uint bytes);
 std::string_view ParseCompanyFromConnectionString(const std::string &connection_string, CompanyID *company_id);
 NetworkAddress ParseConnectionString(const std::string &connection_string, uint16 default_port);
 std::string NormalizeConnectionString(const std::string &connection_string, uint16 default_port);
+
+void ClientNetworkEmergencySave();
 
 #endif /* NETWORK_INTERNAL_H */

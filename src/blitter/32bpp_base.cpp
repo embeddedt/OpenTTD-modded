@@ -75,6 +75,11 @@ void Blitter_32bppBase::DrawRect(void *video, int width, int height, uint8 colou
 	} while (--height);
 }
 
+void Blitter_32bppBase::DrawRectAt(void *video, int x, int y, int width, int height, uint8 colour)
+{
+	this->Blitter_32bppBase::DrawRect((Colour *)video + x + y * _screen.pitch, width, height, colour);
+}
+
 void Blitter_32bppBase::CopyFromBuffer(void *video, const void *src, int width, int height)
 {
 	uint32 *dst = (uint32 *)video;
@@ -170,9 +175,9 @@ void Blitter_32bppBase::ScrollBuffer(void *video, int left, int top, int width, 
 	}
 }
 
-int Blitter_32bppBase::BufferSize(int width, int height)
+size_t Blitter_32bppBase::BufferSize(uint width, uint height)
 {
-	return width * height * sizeof(uint32);
+	return sizeof(uint32) * width * height;
 }
 
 void Blitter_32bppBase::PaletteAnimate(const Palette &palette)

@@ -162,6 +162,17 @@ public:
 	virtual void DrawRect(void *video, int width, int height, uint8 colour) = 0;
 
 	/**
+	 * Make a single horizontal line in a single colour on the video-buffer.
+	 * @param video The destination pointer (video-buffer).
+	 * @param x The x position within video-buffer.
+	 * @param y The y position within video-buffer.
+	 * @param width The length of the line.
+	 * @param height The height of the line.
+	 * @param colour A 8bpp mapping colour.
+	 */
+	virtual void DrawRectAt(void *video, int x, int y, int width, int height, uint8 colour) = 0;
+
+	/**
 	 * Draw a line with a given colour.
 	 * @param video The destination pointer (video-buffer).
 	 * @param x The x coordinate from where the line starts.
@@ -224,7 +235,7 @@ public:
 	 * @param height The height of the buffer-to-be.
 	 * @return The size needed for the buffer.
 	 */
-	virtual int BufferSize(int width, int height) = 0;
+	virtual size_t BufferSize(uint width, uint height) = 0;
 
 	/**
 	 * Called when the 8bpp palette is changed; you should redraw all pixels on the screen that

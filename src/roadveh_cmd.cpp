@@ -97,10 +97,10 @@ int RoadVehicle::GetDisplayImageWidth(Point *offset) const
 	int reference_width = ROADVEHINFO_DEFAULT_VEHICLE_WIDTH;
 
 	if (offset != nullptr) {
-		offset->x = ScaleGUITrad(reference_width) / 2;
+		offset->x = ScaleSpriteTrad(reference_width) / 2;
 		offset->y = 0;
 	}
-	return ScaleGUITrad(this->gcache.cached_veh_length * reference_width / VEHICLE_LENGTH);
+	return ScaleSpriteTrad(this->gcache.cached_veh_length * reference_width / VEHICLE_LENGTH);
 }
 
 static void GetRoadVehIcon(EngineID engine, EngineImageType image_type, VehicleSpriteSeq *result)
@@ -153,7 +153,7 @@ void DrawRoadVehEngine(int left, int right, int preferred_x, int y, EngineID eng
 	GetRoadVehIcon(engine, image_type, &seq);
 
 	Rect16 rect = seq.GetBounds();
-	preferred_x = Clamp(preferred_x,
+	preferred_x = SoftClamp(preferred_x,
 			left - UnScaleGUI(rect.left),
 			right - UnScaleGUI(rect.right));
 
@@ -174,10 +174,10 @@ void GetRoadVehSpriteSize(EngineID engine, uint &width, uint &height, int &xoffs
 	VehicleSpriteSeq seq;
 	GetRoadVehIcon(engine, image_type, &seq);
 
-	Rect16 rect = seq.GetBounds();
+	Rect rect = ConvertRect<Rect16, Rect>(seq.GetBounds());
 
-	width  = UnScaleGUI(rect.right - rect.left + 1);
-	height = UnScaleGUI(rect.bottom - rect.top + 1);
+	width  = UnScaleGUI(rect.Width());
+	height = UnScaleGUI(rect.Height());
 	xoffs  = UnScaleGUI(rect.left);
 	yoffs  = UnScaleGUI(rect.top);
 }
@@ -288,7 +288,7 @@ CommandCost CmdBuildRoadVehicle(TileIndex tile, DoCommandFlag flags, const Engin
 		int y = TileY(tile) * TILE_SIZE + TILE_SIZE / 2;
 		v->x_pos = x;
 		v->y_pos = y;
-		v->z_pos = GetSlopePixelZ(x, y);
+		v->z_pos = GetSlopePixelZ(x, y, true);
 
 		v->state = RVSB_IN_DEPOT;
 		v->vehstatus = VS_HIDDEN | VS_STOPPED | VS_DEFPAL;
@@ -363,15 +363,12 @@ static FindDepotData FindClosestRoadDepot(const RoadVehicle *v, int max_distance
 	}
 }
 
-bool RoadVehicle::FindClosestDepot(TileIndex *location, DestinationID *destination, bool *reverse)
+ClosestDepot RoadVehicle::FindClosestDepot()
 {
 	FindDepotData rfdd = FindClosestRoadDepot(this, 0);
-	if (rfdd.best_length == UINT_MAX) return false;
+	if (rfdd.best_length == UINT_MAX) return ClosestDepot();
 
-	if (location    != nullptr) *location    = rfdd.tile;
-	if (destination != nullptr) *destination = GetDepotIndex(rfdd.tile);
-
-	return true;
+	return ClosestDepot(rfdd.tile, GetDepotIndex(rfdd.tile));
 }
 
 inline bool IsOneWayRoadTile(TileIndex tile)
@@ -386,7 +383,7 @@ inline bool IsOneWaySideJunctionRoadTile(TileIndex tile)
 
 static bool MayReverseOnOneWayRoadTile(TileIndex tile, DiagDirection dir)
 {
-	TrackdirBits bits = TrackStatusToTrackdirBits(GetTileTrackStatus(tile, TRANSPORT_ROAD, RTT_ROAD));
+	TrackdirBits bits = GetTileTrackdirBits(tile, TRANSPORT_ROAD, RTT_ROAD);
 	return bits & DiagdirReachesTrackdirs(ReverseDiagDir(dir));
 }
 
@@ -634,6 +631,8 @@ static void RoadVehCrash(RoadVehicle *v)
 
 static bool RoadVehCheckTrainCrash(RoadVehicle *v)
 {
+	if (HasBit(_roadtypes_non_train_colliding, v->roadtype)) return false;
+
 	for (RoadVehicle *u = v; u != nullptr; u = u->Next()) {
 		if (u->state == RVSB_WORMHOLE) continue;
 
@@ -684,6 +683,7 @@ struct RoadVehFindData {
 	Vehicle *best;
 	uint best_diff;
 	Direction dir;
+	RoadTypeCollisionMode collision_mode;
 };
 
 static Vehicle *EnumCheckRoadVehClose(Vehicle *v, void *data)
@@ -700,6 +700,7 @@ static Vehicle *EnumCheckRoadVehClose(Vehicle *v, void *data)
 			abs(v->z_pos - rvf->veh->z_pos) < 6 &&
 			v->direction == rvf->dir &&
 			rvf->veh->First() != v->First() &&
+			HasBit(_collision_mode_roadtypes[rvf->collision_mode], RoadVehicle::From(v)->roadtype) &&
 			(dist_x[v->direction] >= 0 || (x_diff > dist_x[v->direction] && x_diff <= 0)) &&
 			(dist_x[v->direction] <= 0 || (x_diff < dist_x[v->direction] && x_diff >= 0)) &&
 			(dist_y[v->direction] >= 0 || (y_diff > dist_y[v->direction] && y_diff <= 0)) &&
@@ -717,16 +718,19 @@ static Vehicle *EnumCheckRoadVehClose(Vehicle *v, void *data)
 
 static RoadVehicle *RoadVehFindCloseTo(RoadVehicle *v, int x, int y, Direction dir, bool update_blocked_ctr = true)
 {
-	RoadVehFindData rvf;
-	RoadVehicle *front = v->First();
+	RoadTypeCollisionMode collision_mode = GetRoadTypeInfo(v->roadtype)->collision_mode;
+	if (collision_mode == RTCM_NONE) return nullptr;
 
+	RoadVehicle *front = v->First();
 	if (front->reverse_ctr != 0) return nullptr;
 
+	RoadVehFindData rvf;
 	rvf.x = x;
 	rvf.y = y;
 	rvf.dir = dir;
 	rvf.veh = v;
 	rvf.best_diff = UINT_MAX;
+	rvf.collision_mode = collision_mode;
 
 	if (front->state == RVSB_WORMHOLE) {
 		FindVehicleOnPos(v->tile, VEH_ROAD, &rvf, EnumCheckRoadVehClose);
@@ -744,7 +748,7 @@ static RoadVehicle *RoadVehFindCloseTo(RoadVehicle *v, int x, int y, Direction d
 		return nullptr;
 	}
 
-	if (update_blocked_ctr && ++front->blocked_ctr > 1480  && (!_settings_game.vehicle.roadveh_cant_quantum_tunnel)) return nullptr;
+	if (update_blocked_ctr && ++front->blocked_ctr > 1480 && (!_settings_game.vehicle.roadveh_cant_quantum_tunnel)) return nullptr;
 
 	RoadVehicle *rv = RoadVehicle::From(rvf.best);
 	if (rv != nullptr && front->IsRoadVehicleOnLevelCrossing() && (rv->First()->cur_speed == 0 || rv->First()->IsRoadVehicleStopped())) return nullptr;
@@ -848,6 +852,7 @@ struct OvertakeData {
 	Trackdir trackdir;
 	int tunnelbridge_min;
 	int tunnelbridge_max;
+	RoadTypeCollisionMode collision_mode;
 };
 
 static Vehicle *EnumFindVehBlockingOvertake(Vehicle *v, void *data)
@@ -855,6 +860,7 @@ static Vehicle *EnumFindVehBlockingOvertake(Vehicle *v, void *data)
 	const OvertakeData *od = (OvertakeData*)data;
 
 	if (v->First() == od->u || v->First() == od->v) return nullptr;
+	if (!HasBit(_collision_mode_roadtypes[od->collision_mode], RoadVehicle::From(v)->roadtype)) return nullptr;
 	if (RoadVehicle::From(v)->overtaking != 0 || v->direction != od->v->direction) return v;
 
 	/* Check if other vehicle is behind */
@@ -899,6 +905,7 @@ static Vehicle *EnumFindVehBlockingOvertakeBehind(Vehicle *v, void *data)
 	const OvertakeData *od = (OvertakeData*)data;
 
 	if (v->First() == od->u || v->First() == od->v) return nullptr;
+	if (!HasBit(_collision_mode_roadtypes[od->collision_mode], RoadVehicle::From(v)->roadtype)) return nullptr;
 	if (RoadVehicle::From(v)->overtaking != 0 && TileVirtXY(v->x_pos, v->y_pos) == od->tile) return v;
 	return nullptr;
 }
@@ -906,7 +913,7 @@ static Vehicle *EnumFindVehBlockingOvertakeBehind(Vehicle *v, void *data)
 static bool CheckRoadInfraUnsuitableForOvertaking(OvertakeData *od)
 {
 	if (!HasTileAnyRoadType(od->tile, od->v->compatible_roadtypes)) return true;
-	TrackStatus ts = GetTileTrackStatus(od->tile, TRANSPORT_ROAD, GetRoadTramType(od->v->roadtype));
+	TrackStatus ts = GetTileTrackStatus(od->tile, TRANSPORT_ROAD, ((od->v->roadtype + 1) << 8) | GetRoadTramType(od->v->roadtype));
 	TrackdirBits trackdirbits = TrackStatusToTrackdirBits(ts);
 	TrackdirBits red_signals = TrackStatusToRedSignals(ts); // barred level crossing
 	TrackBits trackbits = TrackdirBitsToTrackBits(trackdirbits);
@@ -1043,6 +1050,7 @@ static void RoadVehCheckOvertake(RoadVehicle *v, RoadVehicle *u)
 	od.v = v;
 	od.u = u;
 	od.trackdir = DiagDirToDiagTrackdir(DirToDiagDir(v->direction));
+	od.collision_mode = GetRoadTypeInfo(v->roadtype)->collision_mode;
 
 	/* Are the current and the next tile suitable for overtaking?
 	 *  - Does the track continue along od.trackdir
@@ -1161,7 +1169,7 @@ static Trackdir RoadFindPathToDest(RoadVehicle *v, TileIndex tile, DiagDirection
 	Trackdir best_track;
 	bool path_found = true;
 
-	TrackStatus ts = GetTileTrackStatus(tile, TRANSPORT_ROAD, GetRoadTramType(v->roadtype));
+	TrackStatus ts = GetTileTrackStatus(tile, TRANSPORT_ROAD, ((v->roadtype + 1) << 8) | GetRoadTramType(v->roadtype));
 	TrackdirBits red_signals = TrackStatusToRedSignals(ts); // crossing
 	TrackdirBits trackdirs = TrackStatusToTrackdirBits(ts);
 
@@ -1450,6 +1458,7 @@ struct FinishOvertakeData {
 	int min_coord;
 	int max_coord;
 	uint8 not_road_pos;
+	RoadTypeCollisionMode collision_mode;
 };
 
 static Vehicle *EnumFindVehBlockingFinishOvertake(Vehicle *v, void *data)
@@ -1457,6 +1466,7 @@ static Vehicle *EnumFindVehBlockingFinishOvertake(Vehicle *v, void *data)
 	const FinishOvertakeData *od = (FinishOvertakeData*)data;
 
 	if (v->First() == od->v) return nullptr;
+	if (!HasBit(_collision_mode_roadtypes[od->collision_mode], RoadVehicle::From(v)->roadtype)) return nullptr;
 
 	/* Check if other vehicle is behind */
 	switch (DirToDiagDir(v->direction)) {
@@ -1487,6 +1497,8 @@ static void RoadVehCheckFinishOvertake(RoadVehicle *v)
 	FinishOvertakeData od;
 	od.direction = v->direction;
 	od.v = v;
+	od.collision_mode = GetRoadTypeInfo(v->roadtype)->collision_mode;
+
 	const RoadVehicle *last = v->Last();
 	const int front_margin = 10;
 	const int back_margin = 10;
@@ -1568,7 +1580,7 @@ inline byte IncreaseOvertakingCounter(RoadVehicle *v)
 
 static bool CheckRestartLoadingAtRoadStop(RoadVehicle *v)
 {
-	if (v->GetNumOrders() < 1) return false;
+	if (v->GetNumOrders() < 1 || !Company::Get(v->owner)->settings.remain_if_next_order_same_station) return false;
 
 	StationID station_id = v->current_order.GetDestination();
 	VehicleOrderID next_order_idx = AdvanceOrderIndexDeferred(v, v->cur_implicit_order_index);
@@ -2001,7 +2013,7 @@ again:
 		 * A vehicle has to spend at least 9 frames on a tile, so the following articulated part can follow.
 		 * (The following part may only be one tile behind, and the front part is moved before the following ones.)
 		 * The short (inner) curve has 8 frames, this elongates it to 10. */
-		v->UpdateInclination(false, true);
+		v->UpdateViewport(true, true);
 		return true;
 	}
 
@@ -2325,4 +2337,17 @@ Trackdir RoadVehicle::GetVehicleTrackdir() const
 	/* If vehicle's state is a valid track direction (vehicle is not turning around) return it,
 	 * otherwise transform it into a valid track direction */
 	return (Trackdir)((IsReversingRoadTrackdir((Trackdir)this->state)) ? (this->state - 6) : this->state);
+}
+
+uint16 RoadVehicle::GetMaxWeight() const
+{
+	uint16 weight = CargoSpec::Get(this->cargo_type)->WeightOfNUnits(this->GetEngine()->DetermineCapacity(this));
+
+	/* Vehicle weight is not added for articulated parts. */
+	if (!this->IsArticulatedPart()) {
+		/* Road vehicle weight is in units of 1/4 t. */
+		weight += GetVehicleProperty(this, PROP_ROADVEH_WEIGHT, RoadVehInfo(this->engine_type)->weight) / 4;
+	}
+
+	return weight;
 }

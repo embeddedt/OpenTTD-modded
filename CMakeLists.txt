@@ -5,7 +5,7 @@ if(NOT BINARY_NAME)
 endif()
 
 project(${BINARY_NAME}
-    VERSION 13.0
+    VERSION 14.0
 )
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_BINARY_DIR)
@@ -120,6 +120,14 @@ find_package(LibLZMA)
 find_package(LZO)
 find_package(ZSTD 1.4)
 find_package(PNG)
+
+if(WIN32 OR EMSCRIPTEN)
+    # Windows uses WinHttp for HTTP requests.
+    # Emscripten uses Javascript for HTTP requests.
+else()
+    # All other targets use libcurl.
+    find_package(CURL)
+endif()
 
 if(NOT OPTION_DEDICATED)
     if(NOT WIN32)
@@ -352,6 +360,10 @@ link_package(LIBLZMA TARGET LibLZMA::LibLZMA ENCOURAGED)
 link_package(LZO)
 link_package(ZSTD TARGET ZSTD::ZSTD RECOMMENDED)
 
+if(NOT WIN32 AND NOT EMSCRIPTEN)
+    link_package(CURL ENCOURAGED)
+endif()
+
 if(NOT OPTION_DEDICATED)
     link_package(Fluidsynth)
     link_package(SDL)
@@ -375,6 +387,8 @@ if(NOT OPTION_DEDICATED)
         link_package(OpenGL TARGET OpenGL::GL)
     endif()
 endif()
+
+include(CheckAtomic)
 
 if(APPLE)
     link_package(Iconv TARGET Iconv::Iconv)
@@ -464,6 +478,7 @@ if(WIN32)
         imm32
         usp10
         psapi
+        winhttp
     )
 endif()
 

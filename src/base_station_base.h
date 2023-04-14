@@ -30,9 +30,14 @@ struct StationSpecList {
 struct RoadStopSpecList {
 	const RoadStopSpec *spec;
 	uint32 grfid;      ///< GRF ID of this custom road stop
-	uint8  localidx;   ///< Station ID within GRF of road stop
+	uint16 localidx;   ///< Station ID within GRF of road stop
 };
 
+struct RoadStopTileData {
+	TileIndex tile;
+	uint8 random_bits;
+	uint8 animation_frame;
+};
 
 /** StationRect - used to track station spread out rectangle - cheaper than scanning whole map */
 struct StationRect : public Rect {
@@ -71,10 +76,8 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 	Owner owner;                    ///< The owner of this station
 	StationFacility facilities;     ///< The facilities that this station has
 
-	uint8 num_specs;                ///< Number of specs in the speclist
-	uint8 num_roadstop_specs;       ///< Number of road stop specs in the roadstop_speclist
-	StationSpecList *speclist;      ///< List of station specs of this station
-	RoadStopSpecList *roadstop_speclist; ///< List of road stop specs of this station
+	std::vector<StationSpecList> speclist;           ///< List of rail station specs of this station.
+	std::vector<RoadStopSpecList> roadstop_speclist; ///< List of road stop specs of this station
 
 	Date build_date;                ///< Date of construction
 
@@ -88,8 +91,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 	TileArea train_station;         ///< Tile area the train 'station' part covers
 	StationRect rect;               ///< NOSAVE: Station spread out rectangle maintained by StationRect::xxx() functions
 
-	std::vector<TileIndex> custom_road_stop_tiles;      ///< List of custom road stop tiles
-	std::vector<uint16> custom_road_stop_data;          ///< Custom road stop random bits (low) and animation byte (high) in same order as custom_road_stop_tiles
+	std::vector<RoadStopTileData> custom_roadstop_tile_data; ///< List of custom road stop tile data
 
 	/**
 	 * Initialize the base station.
@@ -194,30 +196,28 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 		return (this->facilities & facilities) != 0;
 	}
 
-	inline uint GetRoadStopData(TileIndex tile) const
+	inline byte GetRoadStopRandomBits(TileIndex tile) const
 	{
-		for (size_t i = 0; i < this->custom_road_stop_tiles.size(); i++) {
-			if (this->custom_road_stop_tiles[i] == tile) return this->custom_road_stop_data[i];
+		for (const RoadStopTileData &tile_data : this->custom_roadstop_tile_data) {
+			if (tile_data.tile == tile) return tile_data.random_bits;
 		}
 		return 0;
 	}
 
-	inline byte GetRoadStopRandomBits(TileIndex tile) const
-	{
-		return GB(this->GetRoadStopData(tile), 0, 8);
-	}
-
 	inline byte GetRoadStopAnimationFrame(TileIndex tile) const
 	{
-		return GB(this->GetRoadStopData(tile), 8, 8);
+		for (const RoadStopTileData &tile_data : this->custom_roadstop_tile_data) {
+			if (tile_data.tile == tile) return tile_data.animation_frame;
+		}
+		return 0;
 	}
 
 private:
-	void SetRoadStopTileData(TileIndex tile, byte data, byte offset);
+	bool SetRoadStopTileData(TileIndex tile, byte data, bool animation);
 
 public:
-	inline void SetRoadStopRandomBits(TileIndex tile, byte random_bits) { this->SetRoadStopTileData(tile, random_bits, 0); }
-	inline void SetRoadStopAnimationFrame(TileIndex tile, byte frame) { this->SetRoadStopTileData(tile, frame, 8); }
+	inline void SetRoadStopRandomBits(TileIndex tile, byte random_bits) { this->SetRoadStopTileData(tile, random_bits, false); }
+	inline bool SetRoadStopAnimationFrame(TileIndex tile, byte frame) { return this->SetRoadStopTileData(tile, frame, true); }
 	void RemoveRoadStopTileData(TileIndex tile);
 
 	static void PostDestructor(size_t index);

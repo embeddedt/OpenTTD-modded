@@ -329,32 +329,33 @@ static byte MapAircraftMovementAction(const Aircraft *v)
 }
 
 
-/* virtual */ ScopeResolver *VehicleResolverObject::GetScope(VarSpriteGroupScope scope, byte relative)
+/* virtual */ ScopeResolver *VehicleResolverObject::GetScope(VarSpriteGroupScope scope, VarSpriteGroupScopeOffset relative)
 {
 	switch (scope) {
 		case VSG_SCOPE_SELF:   return &this->self_scope;
 		case VSG_SCOPE_PARENT: return &this->parent_scope;
 		case VSG_SCOPE_RELATIVE: {
-			int32 count = GB(relative, 0, 4);
-			if (this->self_scope.v != nullptr && (relative != this->cached_relative_count || count == 0)) {
+			int32 count = GB(relative, 0, 8);
+			if (this->self_scope.v != nullptr && (relative != this->cached_relative_count || HasBit(relative, 15))) {
 				/* Note: This caching only works as long as the VSG_SCOPE_RELATIVE cannot be used in
 				 *       VarAct2 with procedure calls. */
-				if (count == 0) count = GetRegister(0x100);
+				/* Therefore procedure calls made from within a relative scope must save and restore the cached relative scope */
+				if (HasBit(relative, 15)) count = GetRegister(0x100);
 
 				const Vehicle *v = nullptr;
-				switch (GB(relative, 6, 2)) {
+				switch (GB(relative, 8, 2)) {
 					default: NOT_REACHED();
-					case 0x00: // count back (away from the engine), starting at this vehicle
+					case VSGSRM_BACKWARD_SELF: // count back (away from the engine), starting at this vehicle
 						v = this->self_scope.v;
 						break;
-					case 0x01: // count forward (toward the engine), starting at this vehicle
+					case VSGSRM_FORWARD_SELF: // count forward (toward the engine), starting at this vehicle
 						v = this->self_scope.v;
 						count = -count;
 						break;
-					case 0x02: // count back, starting at the engine
+					case VSGSRM_BACKWARD_ENGINE: // count back, starting at the engine
 						v = this->parent_scope.v;
 						break;
-					case 0x03: { // count back, starting at the first vehicle in this chain of vehicles with the same ID, as for vehicle variable 41
+					case VSGSRM_BACKWARD_SAMEID: { // count back, starting at the first vehicle in this chain of vehicles with the same ID, as for vehicle variable 41
 						const Vehicle *self = this->self_scope.v;
 						for (const Vehicle *u = self->First(); u != self; u = u->Next()) {
 							if (u->engine_type != self->engine_type) {
@@ -658,6 +659,7 @@ static uint32 VehicleGetVariable(Vehicle *v, const VehicleScopeResolver *object,
 
 			{
 				const Vehicle *w = v->Next();
+				assert(w != nullptr);
 				uint16 altitude = ClampToU16(v->z_pos - w->z_pos); // Aircraft height - shadow height
 				byte airporttype = ATP_TTDP_LARGE;
 
@@ -1133,6 +1135,8 @@ static uint32 VehicleGetVariable(Vehicle *v, const VehicleScopeResolver *object,
 			case 0x92: return Clamp(_date - DAYS_TILL_ORIGINAL_BASE_YEAR, 0, 0xFFFF); // Date of last service
 			case 0x93: return GB(Clamp(_date - DAYS_TILL_ORIGINAL_BASE_YEAR, 0, 0xFFFF), 8, 8);
 			case 0xC4: return Clamp(_cur_year, ORIGINAL_BASE_YEAR, ORIGINAL_MAX_YEAR) - ORIGINAL_BASE_YEAR; // Build year
+			case 0xC6: return Engine::Get(this->self_type)->grf_prop.local_id;
+			case 0xC7: return GB(Engine::Get(this->self_type)->grf_prop.local_id, 8, 8);
 			case 0xDA: return INVALID_VEHICLE; // Next vehicle
 			case 0xF2: return 0; // Cargo subtype
 		}

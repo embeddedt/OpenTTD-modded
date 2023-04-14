@@ -20,7 +20,7 @@
 std::vector<const GRFFile *> _new_signals_grfs;
 std::array<NewSignalStyle, MAX_NEW_SIGNAL_STYLES> _new_signal_styles;
 std::array<NewSignalStyleMapping, MAX_NEW_SIGNAL_STYLES> _new_signal_style_mapping;
-uint _num_new_signal_styles = 0;
+uint8 _num_new_signal_styles = 0;
 uint16 _enabled_new_signal_styles_mask = 0;
 
 /* virtual */ uint32 NewSignalsScopeResolver::GetRandomBits() const
@@ -34,6 +34,17 @@ static uint8 MapSignalStyle(uint8 style)
 	return style != 0 ? _new_signal_styles[style - 1].grf_local_id : 0;
 }
 
+uint32 GetNewSignalsSideVariable()
+{
+	bool side;
+	switch (_settings_game.construction.train_signal_side) {
+		case 0:  side = false;                                 break; // left
+		case 2:  side = true;                                  break; // right
+		default: side = _settings_game.vehicle.road_side != 0; break; // driving side
+	}
+	return side ? 1 : 0;
+}
+
 /* virtual */ uint32 NewSignalsScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
 {
 	if (this->tile == INVALID_TILE) {
@@ -42,6 +53,8 @@ static uint8 MapSignalStyle(uint8 style)
 			case A2VRI_SIGNALS_SIGNAL_RESTRICTION_INFO: return 0;
 			case A2VRI_SIGNALS_SIGNAL_CONTEXT: return this->signal_context;
 			case A2VRI_SIGNALS_SIGNAL_STYLE: return MapSignalStyle(this->signal_style);
+			case A2VRI_SIGNALS_SIGNAL_SIDE: return GetNewSignalsSideVariable();
+			case A2VRI_SIGNALS_SIGNAL_VERTICAL_CLEARANCE: return 0xFF;
 		}
 	}
 
@@ -52,6 +65,8 @@ static uint8 MapSignalStyle(uint8 style)
 		case A2VRI_SIGNALS_SIGNAL_CONTEXT:
 			return GetNewSignalsSignalContext(this->signal_context, this->tile);
 		case A2VRI_SIGNALS_SIGNAL_STYLE: return MapSignalStyle(this->signal_style);
+		case A2VRI_SIGNALS_SIGNAL_SIDE: return GetNewSignalsSideVariable();
+		case A2VRI_SIGNALS_SIGNAL_VERTICAL_CLEARANCE: return GetNewSignalsVerticalClearanceInfo(this->tile, this->z);
 	}
 
 	DEBUG(grf, 1, "Unhandled new signals tile variable 0x%X", variable);
@@ -81,9 +96,11 @@ GrfSpecFeature NewSignalsResolverObject::GetFeature() const
  * @param param2 Extra parameter (second parameter of the callback, except railtypes do not have callbacks).
  * @param signal_context Signal context.
  * @param prog Routing restriction program.
+ * @param z Signal pixel z.
  */
-NewSignalsResolverObject::NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32 param1, uint32 param2, CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog)
-	: ResolverObject(grffile, CBID_NO_CALLBACK, param1, param2), newsignals_scope(*this, tile, context, signal_context, signal_style, prog)
+NewSignalsResolverObject::NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32 param1, uint32 param2,
+		CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog, uint z)
+	: ResolverObject(grffile, CBID_NO_CALLBACK, param1, param2), newsignals_scope(*this, tile, context, signal_context, signal_style, prog, z)
 {
 	this->root_spritegroup = grffile != nullptr ? grffile->new_signals_group : nullptr;
 }
@@ -98,6 +115,16 @@ uint GetNewSignalsRestrictedSignalsInfo(const TraceRestrictProgram *prog, TileIn
 		if ((prog->actions_used_flags & TRPAUF_REVERSE) && !IsTileType(tile, MP_TUNNELBRIDGE)) result |= 4;
 	}
 	return result;
+}
+
+uint GetNewSignalsVerticalClearanceInfo(TileIndex tile, uint z)
+{
+	if (IsBridgeAbove(tile)) {
+		uint height = GetBridgePixelHeight(GetNorthernBridgeEnd(tile));
+		return std::min<uint>(0xFF, height - z);
+	} else {
+		return 0xFF;
+	}
 }
 
 void DumpNewSignalsSpriteGroups(DumpSpriteGroupPrinter print)
