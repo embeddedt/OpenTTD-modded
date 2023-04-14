@@ -11,13 +11,13 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptSign::ErrorMessages GetParam(ForceType<ScriptSign::ErrorMessages>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptSign::ErrorMessages)tmp; }
-	template <> inline int Return<ScriptSign::ErrorMessages>(HSQUIRRELVM vm, ScriptSign::ErrorMessages res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptSign::ErrorMessages> { static inline ScriptSign::ErrorMessages Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptSign::ErrorMessages)tmp; } };
+	template <> struct Return<ScriptSign::ErrorMessages> { static inline int Set(HSQUIRRELVM vm, ScriptSign::ErrorMessages res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptSign to be used as Squirrel parameter */
-	template <> inline ScriptSign *GetParam(ForceType<ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; }
-	template <> inline ScriptSign &GetParam(ForceType<ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; }
-	template <> inline const ScriptSign *GetParam(ForceType<const ScriptSign *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; }
-	template <> inline const ScriptSign &GetParam(ForceType<const ScriptSign &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; }
-	template <> inline int Return<ScriptSign *>(HSQUIRRELVM vm, ScriptSign *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Sign", res, nullptr, DefSQDestructorCallback<ScriptSign>, true); return 1; }
+	template <> struct Param<ScriptSign *> { static inline ScriptSign *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; } };
+	template <> struct Param<ScriptSign &> { static inline ScriptSign &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; } };
+	template <> struct Param<const ScriptSign *> { static inline const ScriptSign *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSign *)instance; } };
+	template <> struct Param<const ScriptSign &> { static inline const ScriptSign &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSign *)instance; } };
+	template <> struct Return<ScriptSign *> { static inline int Set(HSQUIRRELVM vm, ScriptSign *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Sign", res, nullptr, DefSQDestructorCallback<ScriptSign>, true); return 1; } };
 } // namespace SQConvert

@@ -1,0 +1,40 @@
+/*
+ * This file is part of OpenTTD.
+ * OpenTTD is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2.
+ * OpenTTD is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
+
+#include "../script_league.hpp"
+#include "../template/template_league.hpp.sq"
+
+
+template <> const char *GetClassName<ScriptLeagueTable, ST_GS>() { return "GSLeagueTable"; }
+
+void SQGSLeagueTable_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptLeagueTable, ST_GS> SQGSLeagueTable("GSLeagueTable");
+	SQGSLeagueTable.PreRegister(engine);
+	SQGSLeagueTable.AddConstructor<void (ScriptLeagueTable::*)(), 1>(engine, "x");
+
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LEAGUE_TABLE_INVALID,         "LEAGUE_TABLE_INVALID");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LEAGUE_TABLE_ELEMENT_INVALID, "LEAGUE_TABLE_ELEMENT_INVALID");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_NONE,                    "LINK_NONE");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_TILE,                    "LINK_TILE");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_INDUSTRY,                "LINK_INDUSTRY");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_TOWN,                    "LINK_TOWN");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_COMPANY,                 "LINK_COMPANY");
+	SQGSLeagueTable.DefSQConst(engine, ScriptLeagueTable::LINK_STORY_PAGE,              "LINK_STORY_PAGE");
+
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::IsValidLeagueTable,        "IsValidLeagueTable",        2, ".i");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::IsValidLeagueTableElement, "IsValidLeagueTableElement", 2, ".i");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::New,                       "New",                       4, "....");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::NewElement,                "NewElement",                8, ".iii..ii");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::UpdateElementData,         "UpdateElementData",         6, ".ii.ii");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::UpdateElementScore,        "UpdateElementScore",        4, ".ii.");
+	SQGSLeagueTable.DefSQStaticMethod(engine, &ScriptLeagueTable::RemoveElement,             "RemoveElement",             2, ".i");
+
+	SQGSLeagueTable.PostRegister(engine);
+}

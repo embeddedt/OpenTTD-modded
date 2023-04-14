@@ -90,6 +90,7 @@ src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_industrytyp
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_inflation.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_info_docs.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_infrastructure.hpp.sq
+src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_league.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_list.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_log.hpp.sq
 src/script/api/ai_includes.hpp.timestamp: generated/script/api/ai/ai_map.hpp.sq

@@ -1,1 +1,1 @@
-/emsdk/upstream/emscripten/em++     -rdynamic @CMakeFiles/openttd.dir/objects1.rsp  -o openttd.html @CMakeFiles/openttd.dir/linklibs.rsp
+/emsdk/upstream/emscripten/em++     -rdynamic -gline-tables-only -gline-tables-only -gline-tables-only @CMakeFiles/openttd.dir/objects1.rsp  -o openttd.html @CMakeFiles/openttd.dir/linklibs.rsp

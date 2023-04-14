@@ -11,18 +11,20 @@
 
 namespace SQConvert {
 	/* Allow ScriptText to be used as Squirrel parameter */
-	template <> inline ScriptText *GetParam(ForceType<ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; }
-	template <> inline ScriptText &GetParam(ForceType<ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; }
-	template <> inline const ScriptText *GetParam(ForceType<const ScriptText *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; }
-	template <> inline const ScriptText &GetParam(ForceType<const ScriptText &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; }
+	template <> struct Param<ScriptText *> { static inline ScriptText *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; } };
+	template <> struct Param<ScriptText &> { static inline ScriptText &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; } };
+	template <> struct Param<const ScriptText *> { static inline const ScriptText *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptText *)instance; } };
+	template <> struct Param<const ScriptText &> { static inline const ScriptText &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptText *)instance; } };
 
-	template <> inline Text *GetParam(ForceType<Text *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) {
-		if (sq_gettype(vm, index) == OT_INSTANCE) {
-			return GetParam(ForceType<ScriptText *>(), vm, index, ptr);
+	template <> struct Param<Text *> {
+		static inline Text *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) {
+			if (sq_gettype(vm, index) == OT_INSTANCE) {
+				return Param<ScriptText *>::Get(vm, index, ptr);
+			}
+			if (sq_gettype(vm, index) == OT_STRING) {
+				return new RawText(Param<const char *>::Get(vm, index, ptr));
+			}
+			return nullptr;
 		}
-		if (sq_gettype(vm, index) == OT_STRING) {
-			return new RawText(GetParam(ForceType<const char *>(), vm, index, ptr));
-		}
-		return nullptr;
-	}
+	};
 } // namespace SQConvert

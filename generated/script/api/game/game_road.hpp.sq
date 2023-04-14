@@ -69,7 +69,7 @@ void SQGSRoad_Register(Squirrel *engine)
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::HasRoadTramType,                "HasRoadTramType",                3, ".ii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadType,                    "GetRoadType",                    3, ".ii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::AreRoadTilesConnected,          "AreRoadTilesConnected",          3, ".ii");
-	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadParts,     "CanBuildConnectedRoadParts",     5, ".iaii");
+	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadParts,     "CanBuildConnectedRoadParts",     5, ".iiii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadPartsHere, "CanBuildConnectedRoadPartsHere", 4, ".iii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetNeighbourRoadCount,          "GetNeighbourRoadCount",          2, ".i");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadDepotFrontTile,          "GetRoadDepotFrontTile",          2, ".i");

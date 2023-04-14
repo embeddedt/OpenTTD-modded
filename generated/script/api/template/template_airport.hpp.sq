@@ -11,15 +11,15 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptAirport::AirportType GetParam(ForceType<ScriptAirport::AirportType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptAirport::AirportType)tmp; }
-	template <> inline int Return<ScriptAirport::AirportType>(HSQUIRRELVM vm, ScriptAirport::AirportType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptAirport::PlaneType GetParam(ForceType<ScriptAirport::PlaneType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptAirport::PlaneType)tmp; }
-	template <> inline int Return<ScriptAirport::PlaneType>(HSQUIRRELVM vm, ScriptAirport::PlaneType res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptAirport::AirportType> { static inline ScriptAirport::AirportType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptAirport::AirportType)tmp; } };
+	template <> struct Return<ScriptAirport::AirportType> { static inline int Set(HSQUIRRELVM vm, ScriptAirport::AirportType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptAirport::PlaneType> { static inline ScriptAirport::PlaneType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptAirport::PlaneType)tmp; } };
+	template <> struct Return<ScriptAirport::PlaneType> { static inline int Set(HSQUIRRELVM vm, ScriptAirport::PlaneType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptAirport to be used as Squirrel parameter */
-	template <> inline ScriptAirport *GetParam(ForceType<ScriptAirport *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAirport *)instance; }
-	template <> inline ScriptAirport &GetParam(ForceType<ScriptAirport &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAirport *)instance; }
-	template <> inline const ScriptAirport *GetParam(ForceType<const ScriptAirport *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAirport *)instance; }
-	template <> inline const ScriptAirport &GetParam(ForceType<const ScriptAirport &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAirport *)instance; }
-	template <> inline int Return<ScriptAirport *>(HSQUIRRELVM vm, ScriptAirport *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Airport", res, nullptr, DefSQDestructorCallback<ScriptAirport>, true); return 1; }
+	template <> struct Param<ScriptAirport *> { static inline ScriptAirport *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAirport *)instance; } };
+	template <> struct Param<ScriptAirport &> { static inline ScriptAirport &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAirport *)instance; } };
+	template <> struct Param<const ScriptAirport *> { static inline const ScriptAirport *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptAirport *)instance; } };
+	template <> struct Param<const ScriptAirport &> { static inline const ScriptAirport &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptAirport *)instance; } };
+	template <> struct Return<ScriptAirport *> { static inline int Set(HSQUIRRELVM vm, ScriptAirport *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Airport", res, nullptr, DefSQDestructorCallback<ScriptAirport>, true); return 1; } };
 } // namespace SQConvert

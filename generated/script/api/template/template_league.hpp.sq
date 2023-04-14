@@ -1,0 +1,27 @@
+/*
+ * This file is part of OpenTTD.
+ * OpenTTD is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, version 2.
+ * OpenTTD is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
+
+#include "../script_league.hpp"
+
+namespace SQConvert {
+	/* Allow enums to be used as Squirrel parameters */
+	template <> struct Param<ScriptLeagueTable::LeagueTableID> { static inline ScriptLeagueTable::LeagueTableID Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptLeagueTable::LeagueTableID)tmp; } };
+	template <> struct Return<ScriptLeagueTable::LeagueTableID> { static inline int Set(HSQUIRRELVM vm, ScriptLeagueTable::LeagueTableID res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptLeagueTable::LeagueTableElementID> { static inline ScriptLeagueTable::LeagueTableElementID Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptLeagueTable::LeagueTableElementID)tmp; } };
+	template <> struct Return<ScriptLeagueTable::LeagueTableElementID> { static inline int Set(HSQUIRRELVM vm, ScriptLeagueTable::LeagueTableElementID res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptLeagueTable::LinkType> { static inline ScriptLeagueTable::LinkType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptLeagueTable::LinkType)tmp; } };
+	template <> struct Return<ScriptLeagueTable::LinkType> { static inline int Set(HSQUIRRELVM vm, ScriptLeagueTable::LinkType res) { sq_pushinteger(vm, res); return 1; } };
+
+	/* Allow ScriptLeagueTable to be used as Squirrel parameter */
+	template <> struct Param<ScriptLeagueTable *> { static inline ScriptLeagueTable *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptLeagueTable *)instance; } };
+	template <> struct Param<ScriptLeagueTable &> { static inline ScriptLeagueTable &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptLeagueTable *)instance; } };
+	template <> struct Param<const ScriptLeagueTable *> { static inline const ScriptLeagueTable *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptLeagueTable *)instance; } };
+	template <> struct Param<const ScriptLeagueTable &> { static inline const ScriptLeagueTable &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptLeagueTable *)instance; } };
+	template <> struct Return<ScriptLeagueTable *> { static inline int Set(HSQUIRRELVM vm, ScriptLeagueTable *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "LeagueTable", res, nullptr, DefSQDestructorCallback<ScriptLeagueTable>, true); return 1; } };
+} // namespace SQConvert

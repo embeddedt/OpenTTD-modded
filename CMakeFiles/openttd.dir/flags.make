@@ -3,13 +3,13 @@
 
 # compile C with /emsdk/upstream/emscripten/emcc
 # compile CXX with /emsdk/upstream/emscripten/em++
-C_FLAGS =   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -gline-tables-only -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2
+C_FLAGS =   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -Wno-deprecated-builtins -DWITH_DEMANGLE -DWITH_SIGACTION -gline-tables-only -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2
 
 C_DEFINES = -DGLOBAL_DATA_DIR=\"/usr/local/share/games/openttd\" -DNO_THREADS -DPERSONAL_DIR=\".openttd\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB
 
 C_INCLUDES = @CMakeFiles/openttd.dir/includes_C.rsp
 
-CXX_FLAGS =   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -DWITH_DEMANGLE -DWITH_SIGACTION -gline-tables-only -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17
+CXX_FLAGS =   -s DISABLE_EXCEPTION_CATCHING=0 -D_FORTIFY_SOURCE=2 -W -Wall -Wcast-qual -Wextra -Wsign-compare -Wundef -Wpointer-arith -Wwrite-strings -Wredundant-decls -Wformat-security -Wformat=2 -Winit-self -Wnon-virtual-dtor -Wno-unused-parameter -Wno-multichar -fno-strict-aliasing -O2 -DNDEBUG -Wno-deprecated-builtins -DWITH_DEMANGLE -DWITH_SIGACTION -gline-tables-only -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 -std=c++17
 
 CXX_DEFINES = -DGLOBAL_DATA_DIR=\"/usr/local/share/games/openttd\" -DNO_THREADS -DPERSONAL_DIR=\".openttd\" -DTTD_ENDIAN=TTD_LITTLE_ENDIAN -DUNIX -DWITH_ASSERT -DWITH_PERSONAL_DIR -DWITH_PNG -DWITH_SDL2 -DWITH_ZLIB
 

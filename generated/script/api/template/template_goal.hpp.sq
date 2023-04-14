@@ -11,19 +11,19 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptGoal::GoalID GetParam(ForceType<ScriptGoal::GoalID>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::GoalID)tmp; }
-	template <> inline int Return<ScriptGoal::GoalID>(HSQUIRRELVM vm, ScriptGoal::GoalID res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptGoal::GoalType GetParam(ForceType<ScriptGoal::GoalType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::GoalType)tmp; }
-	template <> inline int Return<ScriptGoal::GoalType>(HSQUIRRELVM vm, ScriptGoal::GoalType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptGoal::QuestionType GetParam(ForceType<ScriptGoal::QuestionType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::QuestionType)tmp; }
-	template <> inline int Return<ScriptGoal::QuestionType>(HSQUIRRELVM vm, ScriptGoal::QuestionType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptGoal::QuestionButton GetParam(ForceType<ScriptGoal::QuestionButton>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::QuestionButton)tmp; }
-	template <> inline int Return<ScriptGoal::QuestionButton>(HSQUIRRELVM vm, ScriptGoal::QuestionButton res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptGoal::GoalID> { static inline ScriptGoal::GoalID Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::GoalID)tmp; } };
+	template <> struct Return<ScriptGoal::GoalID> { static inline int Set(HSQUIRRELVM vm, ScriptGoal::GoalID res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptGoal::GoalType> { static inline ScriptGoal::GoalType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::GoalType)tmp; } };
+	template <> struct Return<ScriptGoal::GoalType> { static inline int Set(HSQUIRRELVM vm, ScriptGoal::GoalType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptGoal::QuestionType> { static inline ScriptGoal::QuestionType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::QuestionType)tmp; } };
+	template <> struct Return<ScriptGoal::QuestionType> { static inline int Set(HSQUIRRELVM vm, ScriptGoal::QuestionType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptGoal::QuestionButton> { static inline ScriptGoal::QuestionButton Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptGoal::QuestionButton)tmp; } };
+	template <> struct Return<ScriptGoal::QuestionButton> { static inline int Set(HSQUIRRELVM vm, ScriptGoal::QuestionButton res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptGoal to be used as Squirrel parameter */
-	template <> inline ScriptGoal *GetParam(ForceType<ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; }
-	template <> inline ScriptGoal &GetParam(ForceType<ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; }
-	template <> inline const ScriptGoal *GetParam(ForceType<const ScriptGoal *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; }
-	template <> inline const ScriptGoal &GetParam(ForceType<const ScriptGoal &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; }
-	template <> inline int Return<ScriptGoal *>(HSQUIRRELVM vm, ScriptGoal *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Goal", res, nullptr, DefSQDestructorCallback<ScriptGoal>, true); return 1; }
+	template <> struct Param<ScriptGoal *> { static inline ScriptGoal *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; } };
+	template <> struct Param<ScriptGoal &> { static inline ScriptGoal &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; } };
+	template <> struct Param<const ScriptGoal *> { static inline const ScriptGoal *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptGoal *)instance; } };
+	template <> struct Param<const ScriptGoal &> { static inline const ScriptGoal &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptGoal *)instance; } };
+	template <> struct Return<ScriptGoal *> { static inline int Set(HSQUIRRELVM vm, ScriptGoal *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Goal", res, nullptr, DefSQDestructorCallback<ScriptGoal>, true); return 1; } };
 } // namespace SQConvert

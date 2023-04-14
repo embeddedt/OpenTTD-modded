@@ -98,6 +98,7 @@ void SQAIVehicle_Register(Squirrel *engine)
 	ScriptError::RegisterErrorMapString(ScriptVehicle::ERR_VEHICLE_TOO_LONG,             "ERR_VEHICLE_TOO_LONG");
 
 	SQAIVehicle.DefSQStaticMethod(engine, &ScriptVehicle::IsValidVehicle,                 "IsValidVehicle",                 2, ".i");
+	SQAIVehicle.DefSQStaticMethod(engine, &ScriptVehicle::IsPrimaryVehicle,               "IsPrimaryVehicle",               2, ".i");
 	SQAIVehicle.DefSQStaticMethod(engine, &ScriptVehicle::GetNumWagons,                   "GetNumWagons",                   2, ".i");
 	SQAIVehicle.DefSQStaticMethod(engine, &ScriptVehicle::SetName,                        "SetName",                        3, ".i.");
 	SQAIVehicle.DefSQStaticMethod(engine, &ScriptVehicle::GetName,                        "GetName",                        2, ".i");

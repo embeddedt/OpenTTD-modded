@@ -68,6 +68,7 @@ bin/CMakeFiles/binfiles_files: ai/compat_1.8.nut
 bin/CMakeFiles/binfiles_files: ai/compat_1.9.nut
 bin/CMakeFiles/binfiles_files: ai/compat_12.nut
 bin/CMakeFiles/binfiles_files: ai/compat_13.nut
+bin/CMakeFiles/binfiles_files: ai/compat_14.nut
 bin/CMakeFiles/binfiles_files: game/compat_1.10.nut
 bin/CMakeFiles/binfiles_files: game/compat_1.11.nut
 bin/CMakeFiles/binfiles_files: game/compat_1.2.nut
@@ -80,6 +81,7 @@ bin/CMakeFiles/binfiles_files: game/compat_1.8.nut
 bin/CMakeFiles/binfiles_files: game/compat_1.9.nut
 bin/CMakeFiles/binfiles_files: game/compat_12.nut
 bin/CMakeFiles/binfiles_files: game/compat_13.nut
+bin/CMakeFiles/binfiles_files: game/compat_14.nut
 bin/CMakeFiles/binfiles_files: game/compat_brgs.nut
 bin/CMakeFiles/binfiles_files: scripts/autoexec.scr.example
 bin/CMakeFiles/binfiles_files: scripts/game_start.scr.example
@@ -152,92 +154,100 @@ ai/compat_13.nut: ../bin/ai/compat_13.nut
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Copying compat_13.nut bin/ai/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/ai/compat_13.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/ai/compat_13.nut
 
+ai/compat_14.nut: ../bin/ai/compat_14.nut
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Copying compat_14.nut bin/ai/ file"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/ai/compat_14.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/ai/compat_14.nut
+
 game/compat_1.10.nut: ../bin/game/compat_1.10.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Copying compat_1.10.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Copying compat_1.10.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.10.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.10.nut
 
 game/compat_1.11.nut: ../bin/game/compat_1.11.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Copying compat_1.11.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Copying compat_1.11.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.11.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.11.nut
 
 game/compat_1.2.nut: ../bin/game/compat_1.2.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Copying compat_1.2.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Copying compat_1.2.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.2.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.2.nut
 
 game/compat_1.3.nut: ../bin/game/compat_1.3.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Copying compat_1.3.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Copying compat_1.3.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.3.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.3.nut
 
 game/compat_1.4.nut: ../bin/game/compat_1.4.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Copying compat_1.4.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Copying compat_1.4.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.4.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.4.nut
 
 game/compat_1.5.nut: ../bin/game/compat_1.5.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Copying compat_1.5.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Copying compat_1.5.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.5.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.5.nut
 
 game/compat_1.6.nut: ../bin/game/compat_1.6.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Copying compat_1.6.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Copying compat_1.6.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.6.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.6.nut
 
 game/compat_1.7.nut: ../bin/game/compat_1.7.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Copying compat_1.7.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Copying compat_1.7.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.7.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.7.nut
 
 game/compat_1.8.nut: ../bin/game/compat_1.8.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Copying compat_1.8.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Copying compat_1.8.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.8.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.8.nut
 
 game/compat_1.9.nut: ../bin/game/compat_1.9.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Copying compat_1.9.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Copying compat_1.9.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_1.9.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_1.9.nut
 
 game/compat_12.nut: ../bin/game/compat_12.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Copying compat_12.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Copying compat_12.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_12.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_12.nut
 
 game/compat_13.nut: ../bin/game/compat_13.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Copying compat_13.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Copying compat_13.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_13.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_13.nut
 
+game/compat_14.nut: ../bin/game/compat_14.nut
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Copying compat_14.nut bin/game/ file"
+	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_14.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_14.nut
+
 game/compat_brgs.nut: ../bin/game/compat_brgs.nut
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Copying compat_brgs.nut bin/game/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Copying compat_brgs.nut bin/game/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/game/compat_brgs.nut /__w/OpenTTD-modded/OpenTTD-modded/em_build/game/compat_brgs.nut
 
 scripts/autoexec.scr.example: ../bin/scripts/autoexec.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Copying autoexec.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Copying autoexec.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/autoexec.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/autoexec.scr.example
 
 scripts/game_start.scr.example: ../bin/scripts/game_start.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Copying game_start.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Copying game_start.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/game_start.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/game_start.scr.example
 
 scripts/on_client.scr.example: ../bin/scripts/on_client.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Copying on_client.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Copying on_client.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/on_client.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/on_client.scr.example
 
 scripts/on_dedicated.scr.example: ../bin/scripts/on_dedicated.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Copying on_dedicated.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Copying on_dedicated.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/on_dedicated.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/on_dedicated.scr.example
 
 scripts/on_server.scr.example: ../bin/scripts/on_server.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Copying on_server.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Copying on_server.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/on_server.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/on_server.scr.example
 
 scripts/on_server_connect.scr.example: ../bin/scripts/on_server_connect.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Copying on_server_connect.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Copying on_server_connect.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/on_server_connect.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/on_server_connect.scr.example
 
 scripts/pre_dedicated.scr.example: ../bin/scripts/pre_dedicated.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Copying pre_dedicated.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Copying pre_dedicated.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/pre_dedicated.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/pre_dedicated.scr.example
 
 scripts/pre_server.scr.example: ../bin/scripts/pre_server.scr.example
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Copying pre_server.scr.example bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Copying pre_server.scr.example bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/pre_server.scr.example /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/pre_server.scr.example
 
 scripts/readme.txt: ../bin/scripts/readme.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Copying readme.txt bin/scripts/ file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Copying readme.txt bin/scripts/ file"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/bin && /usr/bin/cmake -E copy /__w/OpenTTD-modded/OpenTTD-modded/bin/scripts/readme.txt /__w/OpenTTD-modded/OpenTTD-modded/em_build/scripts/readme.txt
 
 binfiles_files: bin/CMakeFiles/binfiles_files
@@ -256,6 +266,7 @@ binfiles_files: ai/compat_1.8.nut
 binfiles_files: ai/compat_1.9.nut
 binfiles_files: ai/compat_12.nut
 binfiles_files: ai/compat_13.nut
+binfiles_files: ai/compat_14.nut
 binfiles_files: game/compat_1.10.nut
 binfiles_files: game/compat_1.11.nut
 binfiles_files: game/compat_1.2.nut
@@ -268,6 +279,7 @@ binfiles_files: game/compat_1.8.nut
 binfiles_files: game/compat_1.9.nut
 binfiles_files: game/compat_12.nut
 binfiles_files: game/compat_13.nut
+binfiles_files: game/compat_14.nut
 binfiles_files: game/compat_brgs.nut
 binfiles_files: scripts/autoexec.scr.example
 binfiles_files: scripts/game_start.scr.example

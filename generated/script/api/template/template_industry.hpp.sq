@@ -11,15 +11,15 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptIndustry::CargoAcceptState GetParam(ForceType<ScriptIndustry::CargoAcceptState>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptIndustry::CargoAcceptState)tmp; }
-	template <> inline int Return<ScriptIndustry::CargoAcceptState>(HSQUIRRELVM vm, ScriptIndustry::CargoAcceptState res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptIndustry::IndustryControlFlags GetParam(ForceType<ScriptIndustry::IndustryControlFlags>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptIndustry::IndustryControlFlags)tmp; }
-	template <> inline int Return<ScriptIndustry::IndustryControlFlags>(HSQUIRRELVM vm, ScriptIndustry::IndustryControlFlags res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptIndustry::CargoAcceptState> { static inline ScriptIndustry::CargoAcceptState Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptIndustry::CargoAcceptState)tmp; } };
+	template <> struct Return<ScriptIndustry::CargoAcceptState> { static inline int Set(HSQUIRRELVM vm, ScriptIndustry::CargoAcceptState res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptIndustry::IndustryControlFlags> { static inline ScriptIndustry::IndustryControlFlags Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptIndustry::IndustryControlFlags)tmp; } };
+	template <> struct Return<ScriptIndustry::IndustryControlFlags> { static inline int Set(HSQUIRRELVM vm, ScriptIndustry::IndustryControlFlags res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptIndustry to be used as Squirrel parameter */
-	template <> inline ScriptIndustry *GetParam(ForceType<ScriptIndustry *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptIndustry *)instance; }
-	template <> inline ScriptIndustry &GetParam(ForceType<ScriptIndustry &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptIndustry *)instance; }
-	template <> inline const ScriptIndustry *GetParam(ForceType<const ScriptIndustry *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptIndustry *)instance; }
-	template <> inline const ScriptIndustry &GetParam(ForceType<const ScriptIndustry &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptIndustry *)instance; }
-	template <> inline int Return<ScriptIndustry *>(HSQUIRRELVM vm, ScriptIndustry *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Industry", res, nullptr, DefSQDestructorCallback<ScriptIndustry>, true); return 1; }
+	template <> struct Param<ScriptIndustry *> { static inline ScriptIndustry *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptIndustry *)instance; } };
+	template <> struct Param<ScriptIndustry &> { static inline ScriptIndustry &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptIndustry *)instance; } };
+	template <> struct Param<const ScriptIndustry *> { static inline const ScriptIndustry *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptIndustry *)instance; } };
+	template <> struct Param<const ScriptIndustry &> { static inline const ScriptIndustry &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptIndustry *)instance; } };
+	template <> struct Return<ScriptIndustry *> { static inline int Set(HSQUIRRELVM vm, ScriptIndustry *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Industry", res, nullptr, DefSQDestructorCallback<ScriptIndustry>, true); return 1; } };
 } // namespace SQConvert

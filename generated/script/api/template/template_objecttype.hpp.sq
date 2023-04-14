@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptObjectType to be used as Squirrel parameter */
-	template <> inline ScriptObjectType *GetParam(ForceType<ScriptObjectType *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptObjectType *)instance; }
-	template <> inline ScriptObjectType &GetParam(ForceType<ScriptObjectType &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptObjectType *)instance; }
-	template <> inline const ScriptObjectType *GetParam(ForceType<const ScriptObjectType *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptObjectType *)instance; }
-	template <> inline const ScriptObjectType &GetParam(ForceType<const ScriptObjectType &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptObjectType *)instance; }
-	template <> inline int Return<ScriptObjectType *>(HSQUIRRELVM vm, ScriptObjectType *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "ObjectType", res, nullptr, DefSQDestructorCallback<ScriptObjectType>, true); return 1; }
+	template <> struct Param<ScriptObjectType *> { static inline ScriptObjectType *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptObjectType *)instance; } };
+	template <> struct Param<ScriptObjectType &> { static inline ScriptObjectType &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptObjectType *)instance; } };
+	template <> struct Param<const ScriptObjectType *> { static inline const ScriptObjectType *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptObjectType *)instance; } };
+	template <> struct Param<const ScriptObjectType &> { static inline const ScriptObjectType &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptObjectType *)instance; } };
+	template <> struct Return<ScriptObjectType *> { static inline int Set(HSQUIRRELVM vm, ScriptObjectType *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "ObjectType", res, nullptr, DefSQDestructorCallback<ScriptObjectType>, true); return 1; } };
 } // namespace SQConvert

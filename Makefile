@@ -2231,6 +2231,33 @@ src/core/random_func.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/core/random_func.cpp.s
 .PHONY : src/core/random_func.cpp.s
 
+src/core/serialisation.o: src/core/serialisation.cpp.o
+
+.PHONY : src/core/serialisation.o
+
+# target to build an object file
+src/core/serialisation.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/core/serialisation.cpp.o
+.PHONY : src/core/serialisation.cpp.o
+
+src/core/serialisation.i: src/core/serialisation.cpp.i
+
+.PHONY : src/core/serialisation.i
+
+# target to preprocess a source file
+src/core/serialisation.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/core/serialisation.cpp.i
+.PHONY : src/core/serialisation.cpp.i
+
+src/core/serialisation.s: src/core/serialisation.cpp.s
+
+.PHONY : src/core/serialisation.s
+
+# target to generate assembly for a file
+src/core/serialisation.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/core/serialisation.cpp.s
+.PHONY : src/core/serialisation.cpp.s
+
 src/cpu.o: src/cpu.cpp.o
 
 .PHONY : src/cpu.o
@@ -3068,6 +3095,33 @@ src/game/game_core.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/game/game_core.cpp.s
 .PHONY : src/game/game_core.cpp.s
 
+src/game/game_gui.o: src/game/game_gui.cpp.o
+
+.PHONY : src/game/game_gui.o
+
+# target to build an object file
+src/game/game_gui.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/game/game_gui.cpp.o
+.PHONY : src/game/game_gui.cpp.o
+
+src/game/game_gui.i: src/game/game_gui.cpp.i
+
+.PHONY : src/game/game_gui.i
+
+# target to preprocess a source file
+src/game/game_gui.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/game/game_gui.cpp.i
+.PHONY : src/game/game_gui.cpp.i
+
+src/game/game_gui.s: src/game/game_gui.cpp.s
+
+.PHONY : src/game/game_gui.s
+
+# target to generate assembly for a file
+src/game/game_gui.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/game/game_gui.cpp.s
+.PHONY : src/game/game_gui.cpp.s
+
 src/game/game_info.o: src/game/game_info.cpp.o
 
 .PHONY : src/game/game_info.o
@@ -3796,6 +3850,60 @@ src/landscape.s: src/landscape.cpp.s
 src/landscape.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/landscape.cpp.s
 .PHONY : src/landscape.cpp.s
+
+src/league_cmd.o: src/league_cmd.cpp.o
+
+.PHONY : src/league_cmd.o
+
+# target to build an object file
+src/league_cmd.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_cmd.cpp.o
+.PHONY : src/league_cmd.cpp.o
+
+src/league_cmd.i: src/league_cmd.cpp.i
+
+.PHONY : src/league_cmd.i
+
+# target to preprocess a source file
+src/league_cmd.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_cmd.cpp.i
+.PHONY : src/league_cmd.cpp.i
+
+src/league_cmd.s: src/league_cmd.cpp.s
+
+.PHONY : src/league_cmd.s
+
+# target to generate assembly for a file
+src/league_cmd.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_cmd.cpp.s
+.PHONY : src/league_cmd.cpp.s
+
+src/league_gui.o: src/league_gui.cpp.o
+
+.PHONY : src/league_gui.o
+
+# target to build an object file
+src/league_gui.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_gui.cpp.o
+.PHONY : src/league_gui.cpp.o
+
+src/league_gui.i: src/league_gui.cpp.i
+
+.PHONY : src/league_gui.i
+
+# target to preprocess a source file
+src/league_gui.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_gui.cpp.i
+.PHONY : src/league_gui.cpp.i
+
+src/league_gui.s: src/league_gui.cpp.s
+
+.PHONY : src/league_gui.s
+
+# target to generate assembly for a file
+src/league_gui.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/league_gui.cpp.s
+.PHONY : src/league_gui.cpp.s
 
 src/linkgraph/demands.o: src/linkgraph/demands.cpp.o
 
@@ -4526,6 +4634,33 @@ src/network/core/host.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/host.cpp.s
 .PHONY : src/network/core/host.cpp.s
 
+src/network/core/http_none.o: src/network/core/http_none.cpp.o
+
+.PHONY : src/network/core/http_none.o
+
+# target to build an object file
+src/network/core/http_none.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/http_none.cpp.o
+.PHONY : src/network/core/http_none.cpp.o
+
+src/network/core/http_none.i: src/network/core/http_none.cpp.i
+
+.PHONY : src/network/core/http_none.i
+
+# target to preprocess a source file
+src/network/core/http_none.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/http_none.cpp.i
+.PHONY : src/network/core/http_none.cpp.i
+
+src/network/core/http_none.s: src/network/core/http_none.cpp.s
+
+.PHONY : src/network/core/http_none.s
+
+# target to generate assembly for a file
+src/network/core/http_none.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/http_none.cpp.s
+.PHONY : src/network/core/http_none.cpp.s
+
 src/network/core/os_abstraction.o: src/network/core/os_abstraction.cpp.o
 
 .PHONY : src/network/core/os_abstraction.o
@@ -4741,33 +4876,6 @@ src/network/core/tcp_game.s: src/network/core/tcp_game.cpp.s
 src/network/core/tcp_game.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_game.cpp.s
 .PHONY : src/network/core/tcp_game.cpp.s
-
-src/network/core/tcp_http.o: src/network/core/tcp_http.cpp.o
-
-.PHONY : src/network/core/tcp_http.o
-
-# target to build an object file
-src/network/core/tcp_http.cpp.o:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.o
-.PHONY : src/network/core/tcp_http.cpp.o
-
-src/network/core/tcp_http.i: src/network/core/tcp_http.cpp.i
-
-.PHONY : src/network/core/tcp_http.i
-
-# target to preprocess a source file
-src/network/core/tcp_http.cpp.i:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.i
-.PHONY : src/network/core/tcp_http.cpp.i
-
-src/network/core/tcp_http.s: src/network/core/tcp_http.cpp.s
-
-.PHONY : src/network/core/tcp_http.s
-
-# target to generate assembly for a file
-src/network/core/tcp_http.cpp.s:
-	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/network/core/tcp_http.cpp.s
-.PHONY : src/network/core/tcp_http.cpp.s
 
 src/network/core/tcp_stun.o: src/network/core/tcp_stun.cpp.o
 
@@ -7577,6 +7685,33 @@ src/saveload/labelmaps_sl.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/labelmaps_sl.cpp.s
 .PHONY : src/saveload/labelmaps_sl.cpp.s
 
+src/saveload/league_sl.o: src/saveload/league_sl.cpp.o
+
+.PHONY : src/saveload/league_sl.o
+
+# target to build an object file
+src/saveload/league_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/league_sl.cpp.o
+.PHONY : src/saveload/league_sl.cpp.o
+
+src/saveload/league_sl.i: src/saveload/league_sl.cpp.i
+
+.PHONY : src/saveload/league_sl.i
+
+# target to preprocess a source file
+src/saveload/league_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/league_sl.cpp.i
+.PHONY : src/saveload/league_sl.cpp.i
+
+src/saveload/league_sl.s: src/saveload/league_sl.cpp.s
+
+.PHONY : src/saveload/league_sl.s
+
+# target to generate assembly for a file
+src/saveload/league_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/league_sl.cpp.s
+.PHONY : src/saveload/league_sl.cpp.s
+
 src/saveload/linkgraph_sl.o: src/saveload/linkgraph_sl.cpp.o
 
 .PHONY : src/saveload/linkgraph_sl.o
@@ -8683,6 +8818,33 @@ src/saveload/upstream/labelmaps_sl.s: src/saveload/upstream/labelmaps_sl.cpp.s
 src/saveload/upstream/labelmaps_sl.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/labelmaps_sl.cpp.s
 .PHONY : src/saveload/upstream/labelmaps_sl.cpp.s
+
+src/saveload/upstream/league_sl.o: src/saveload/upstream/league_sl.cpp.o
+
+.PHONY : src/saveload/upstream/league_sl.o
+
+# target to build an object file
+src/saveload/upstream/league_sl.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/league_sl.cpp.o
+.PHONY : src/saveload/upstream/league_sl.cpp.o
+
+src/saveload/upstream/league_sl.i: src/saveload/upstream/league_sl.cpp.i
+
+.PHONY : src/saveload/upstream/league_sl.i
+
+# target to preprocess a source file
+src/saveload/upstream/league_sl.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/league_sl.cpp.i
+.PHONY : src/saveload/upstream/league_sl.cpp.i
+
+src/saveload/upstream/league_sl.s: src/saveload/upstream/league_sl.cpp.s
+
+.PHONY : src/saveload/upstream/league_sl.s
+
+# target to generate assembly for a file
+src/saveload/upstream/league_sl.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/saveload/upstream/league_sl.cpp.s
+.PHONY : src/saveload/upstream/league_sl.cpp.s
 
 src/saveload/upstream/linkgraph_sl.o: src/saveload/upstream/linkgraph_sl.cpp.o
 
@@ -10196,6 +10358,33 @@ src/script/api/script_infrastructure.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_infrastructure.cpp.s
 .PHONY : src/script/api/script_infrastructure.cpp.s
 
+src/script/api/script_league.o: src/script/api/script_league.cpp.o
+
+.PHONY : src/script/api/script_league.o
+
+# target to build an object file
+src/script/api/script_league.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_league.cpp.o
+.PHONY : src/script/api/script_league.cpp.o
+
+src/script/api/script_league.i: src/script/api/script_league.cpp.i
+
+.PHONY : src/script/api/script_league.i
+
+# target to preprocess a source file
+src/script/api/script_league.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_league.cpp.i
+.PHONY : src/script/api/script_league.cpp.i
+
+src/script/api/script_league.s: src/script/api/script_league.cpp.s
+
+.PHONY : src/script/api/script_league.s
+
+# target to generate assembly for a file
+src/script/api/script_league.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/api/script_league.cpp.s
+.PHONY : src/script/api/script_league.cpp.s
+
 src/script/api/script_list.o: src/script/api/script_list.cpp.o
 
 .PHONY : src/script/api/script_list.o
@@ -11221,6 +11410,33 @@ src/script/script_config.s: src/script/script_config.cpp.s
 src/script/script_config.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/script_config.cpp.s
 .PHONY : src/script/script_config.cpp.s
+
+src/script/script_gui.o: src/script/script_gui.cpp.o
+
+.PHONY : src/script/script_gui.o
+
+# target to build an object file
+src/script/script_gui.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/script_gui.cpp.o
+.PHONY : src/script/script_gui.cpp.o
+
+src/script/script_gui.i: src/script/script_gui.cpp.i
+
+.PHONY : src/script/script_gui.i
+
+# target to preprocess a source file
+src/script/script_gui.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/script_gui.cpp.i
+.PHONY : src/script/script_gui.cpp.i
+
+src/script/script_gui.s: src/script/script_gui.cpp.s
+
+.PHONY : src/script/script_gui.s
+
+# target to generate assembly for a file
+src/script/script_gui.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/script/script_gui.cpp.s
+.PHONY : src/script/script_gui.cpp.s
 
 src/script/script_info.o: src/script/script_info.cpp.o
 
@@ -13463,6 +13679,33 @@ src/window.cpp.s:
 	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/window.cpp.s
 .PHONY : src/window.cpp.s
 
+src/worker_thread.o: src/worker_thread.cpp.o
+
+.PHONY : src/worker_thread.o
+
+# target to build an object file
+src/worker_thread.cpp.o:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/worker_thread.cpp.o
+.PHONY : src/worker_thread.cpp.o
+
+src/worker_thread.i: src/worker_thread.cpp.i
+
+.PHONY : src/worker_thread.i
+
+# target to preprocess a source file
+src/worker_thread.cpp.i:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/worker_thread.cpp.i
+.PHONY : src/worker_thread.cpp.i
+
+src/worker_thread.s: src/worker_thread.cpp.s
+
+.PHONY : src/worker_thread.s
+
+# target to generate assembly for a file
+src/worker_thread.cpp.s:
+	$(MAKE) -f CMakeFiles/openttd.dir/build.make CMakeFiles/openttd.dir/src/worker_thread.cpp.s
+.PHONY : src/worker_thread.cpp.s
+
 src/zoning_cmd.o: src/zoning_cmd.cpp.o
 
 .PHONY : src/zoning_cmd.o
@@ -13750,6 +13993,9 @@ help:
 	@echo "... src/core/random_func.o"
 	@echo "... src/core/random_func.i"
 	@echo "... src/core/random_func.s"
+	@echo "... src/core/serialisation.o"
+	@echo "... src/core/serialisation.i"
+	@echo "... src/core/serialisation.s"
 	@echo "... src/cpu.o"
 	@echo "... src/cpu.i"
 	@echo "... src/cpu.s"
@@ -13843,6 +14089,9 @@ help:
 	@echo "... src/game/game_core.o"
 	@echo "... src/game/game_core.i"
 	@echo "... src/game/game_core.s"
+	@echo "... src/game/game_gui.o"
+	@echo "... src/game/game_gui.i"
+	@echo "... src/game/game_gui.s"
 	@echo "... src/game/game_info.o"
 	@echo "... src/game/game_info.i"
 	@echo "... src/game/game_info.s"
@@ -13924,6 +14173,12 @@ help:
 	@echo "... src/landscape.o"
 	@echo "... src/landscape.i"
 	@echo "... src/landscape.s"
+	@echo "... src/league_cmd.o"
+	@echo "... src/league_cmd.i"
+	@echo "... src/league_cmd.s"
+	@echo "... src/league_gui.o"
+	@echo "... src/league_gui.i"
+	@echo "... src/league_gui.s"
 	@echo "... src/linkgraph/demands.o"
 	@echo "... src/linkgraph/demands.i"
 	@echo "... src/linkgraph/demands.s"
@@ -14005,6 +14260,9 @@ help:
 	@echo "... src/network/core/host.o"
 	@echo "... src/network/core/host.i"
 	@echo "... src/network/core/host.s"
+	@echo "... src/network/core/http_none.o"
+	@echo "... src/network/core/http_none.i"
+	@echo "... src/network/core/http_none.s"
 	@echo "... src/network/core/os_abstraction.o"
 	@echo "... src/network/core/os_abstraction.i"
 	@echo "... src/network/core/os_abstraction.s"
@@ -14029,9 +14287,6 @@ help:
 	@echo "... src/network/core/tcp_game.o"
 	@echo "... src/network/core/tcp_game.i"
 	@echo "... src/network/core/tcp_game.s"
-	@echo "... src/network/core/tcp_http.o"
-	@echo "... src/network/core/tcp_http.i"
-	@echo "... src/network/core/tcp_http.s"
 	@echo "... src/network/core/tcp_stun.o"
 	@echo "... src/network/core/tcp_stun.i"
 	@echo "... src/network/core/tcp_stun.s"
@@ -14344,6 +14599,9 @@ help:
 	@echo "... src/saveload/labelmaps_sl.o"
 	@echo "... src/saveload/labelmaps_sl.i"
 	@echo "... src/saveload/labelmaps_sl.s"
+	@echo "... src/saveload/league_sl.o"
+	@echo "... src/saveload/league_sl.i"
+	@echo "... src/saveload/league_sl.s"
 	@echo "... src/saveload/linkgraph_sl.o"
 	@echo "... src/saveload/linkgraph_sl.i"
 	@echo "... src/saveload/linkgraph_sl.s"
@@ -14467,6 +14725,9 @@ help:
 	@echo "... src/saveload/upstream/labelmaps_sl.o"
 	@echo "... src/saveload/upstream/labelmaps_sl.i"
 	@echo "... src/saveload/upstream/labelmaps_sl.s"
+	@echo "... src/saveload/upstream/league_sl.o"
+	@echo "... src/saveload/upstream/league_sl.i"
+	@echo "... src/saveload/upstream/league_sl.s"
 	@echo "... src/saveload/upstream/linkgraph_sl.o"
 	@echo "... src/saveload/upstream/linkgraph_sl.i"
 	@echo "... src/saveload/upstream/linkgraph_sl.s"
@@ -14635,6 +14896,9 @@ help:
 	@echo "... src/script/api/script_infrastructure.o"
 	@echo "... src/script/api/script_infrastructure.i"
 	@echo "... src/script/api/script_infrastructure.s"
+	@echo "... src/script/api/script_league.o"
+	@echo "... src/script/api/script_league.i"
+	@echo "... src/script/api/script_league.s"
 	@echo "... src/script/api/script_list.o"
 	@echo "... src/script/api/script_list.i"
 	@echo "... src/script/api/script_list.s"
@@ -14749,6 +15013,9 @@ help:
 	@echo "... src/script/script_config.o"
 	@echo "... src/script/script_config.i"
 	@echo "... src/script/script_config.s"
+	@echo "... src/script/script_gui.o"
+	@echo "... src/script/script_gui.i"
+	@echo "... src/script/script_gui.s"
 	@echo "... src/script/script_info.o"
 	@echo "... src/script/script_info.i"
 	@echo "... src/script/script_info.s"
@@ -14998,6 +15265,9 @@ help:
 	@echo "... src/window.o"
 	@echo "... src/window.i"
 	@echo "... src/window.s"
+	@echo "... src/worker_thread.o"
+	@echo "... src/worker_thread.i"
+	@echo "... src/worker_thread.s"
 	@echo "... src/zoning_cmd.o"
 	@echo "... src/zoning_cmd.i"
 	@echo "... src/zoning_cmd.s"

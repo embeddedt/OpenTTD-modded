@@ -1,5 +1,5 @@
 # Hashes of file build rules.
-7197dfb1fe37c57354c57a4466203ea8 CMakeFiles/find_version
+4ff710dd9ac163643fd1d9a247f653e5 CMakeFiles/find_version
 7b5c09d01b7ace0cc878d6309b108a3e CMakeFiles/regression
 7b5c09d01b7ace0cc878d6309b108a3e CMakeFiles/regression_files
 00d68048a1a13dae75c8f9c58510b190 CMakeFiles/regression_regression
@@ -19,6 +19,7 @@ f94d815c7cee848a6e6beddd252280c8 ai/compat_1.5.nut
 fff079d9da04b6aeb3073ff210ee8b71 ai/compat_1.9.nut
 75ddb0c468539b4698d5a631371f135f ai/compat_12.nut
 c247ad3763ea49711e9c16e815d50e15 ai/compat_13.nut
+776ca7d47e575f4fbb37be881bcf82c8 ai/compat_14.nut
 3d75f5e93e67c2a05174cde34fbc8f1f ai/regression/info.nut
 7bcec8f36e8f2456c6ddf9362817edb6 ai/regression/main.nut
 18f5355793c8a61c74bb38b9dade7aba ai/regression/require.nut
@@ -52,6 +53,7 @@ c50b24539089902d0609186f5806dc01 game/compat_1.2.nut
 11def806ebb921534d7835737b7dbfea game/compat_1.9.nut
 821e0f9a879c35c42bf8544c8861d8b3 game/compat_12.nut
 5fca8f74fd8283c17b8a54edaea5e4dc game/compat_13.nut
+465b8dceaed0265f6e234fb3f0d7e37c game/compat_14.nut
 91c5212aea5019bdf031fb0b8f9ec3c9 game/compat_brgs.nut
 a67a6a243a630d4ece2dc32e09c621dd lang/afrikaans.lng
 721d6b765f1a8c74aeb86f5a930feb9a lang/arabic_egypt.lng
@@ -121,23 +123,23 @@ b154f53552ed2d44180faf2a4044595d lang/vietnamese.lng
 e8797778c4d7f997e5fb5c6b6edac8f0 media/CMakeFiles/desktop_file
 e8797778c4d7f997e5fb5c6b6edac8f0 media/CMakeFiles/media_files
 ed0a1642095609a7b51675448914b5f7 media/baseset/CMakeFiles/baseset_files
-a57e8c5131547a98bcce71f310e690e0 media/baseset/no_music.obm.timestamp
-297fb26c3e231e95e36a14ce46ad7009 media/baseset/no_sound.obs.timestamp
-a3f210cbd487c0a7623ff7ef1a8312ea media/baseset/orig_dos.obg.timestamp
-465eeec76c872dcd80cd5474fddca557 media/baseset/orig_dos.obm.timestamp
-d2644275c6a1b5799f91f06ecb1e8396 media/baseset/orig_dos.obs.timestamp
-33c65753f7f1ad9b78cbed1ce9330ea0 media/baseset/orig_dos_de.obg.timestamp
-0c7649d5247ad27149d8ef63bbb4e578 media/baseset/orig_tto.obm.timestamp
-6ca735782c2bae14ebac4c895ab55ebb media/baseset/orig_win.obg.timestamp
-61541e9b713ca3696c9363bd9567e881 media/baseset/orig_win.obm.timestamp
-a71510b8d75e676cef41878c82071d47 media/baseset/orig_win.obs.timestamp
+fff1ad90afd6b2fea2951dec62386c5d media/baseset/no_music.obm.timestamp
+f3864f6357242a523a90ddcccb0f3431 media/baseset/no_sound.obs.timestamp
+377b08cb80231ac532afa497dc820bbc media/baseset/orig_dos.obg.timestamp
+4cbae394f7ab66cf261a87d036012383 media/baseset/orig_dos.obm.timestamp
+b40e87b92a0ab6c2019a511b3e310132 media/baseset/orig_dos.obs.timestamp
+688dd5ae15f0762e438dae53f0a56edb media/baseset/orig_dos_de.obg.timestamp
+8c1062ddab98a4b45b7d86f7ff21a3ee media/baseset/orig_tto.obm.timestamp
+46fccf8bf5623b302b65d1961397dfc5 media/baseset/orig_win.obg.timestamp
+2c8144ed70f0564406b5e89e3fb78dd2 media/baseset/orig_win.obm.timestamp
+8db5ecc230dd923858c00e757ba809d6 media/baseset/orig_win.obs.timestamp
 d3e25a211f303fb050c75f7d67ba3888 media/icons/hicolor/128x128/apps/openttd.png
 132c57790c104261ce2a27d9aa24149d media/icons/hicolor/16x16/apps/openttd.png
 a2e0c3c372a4958d2a6601faf6d7c1a4 media/icons/hicolor/256x256/apps/openttd.png
 e8a7aa9694b5b353a7c440d17138ce8c media/icons/hicolor/32x32/apps/openttd.png
 95b4efbe835a5e62bc66db890447d721 media/icons/hicolor/48x48/apps/openttd.png
 2d4a40affa21a5941faf903d5b96cc99 media/icons/hicolor/64x64/apps/openttd.png
-c601b13d3e54e434218211203a14770e media/openttd.desktop.timestamp
+79d122b6260cd24ae69c2963eaee8179 media/openttd.desktop.timestamp
 00807741cb03fce991d9b665a949addf media/pixmaps/openttd.32.xpm
 075d74b81380fc9b18d7e6a6c06b2918 media/pixmaps/openttd.64.xpm
 bf98ccd616694f754f98a19d58b82094 regression/regression.cfg
@@ -194,6 +196,7 @@ e37b48e7c085f53baad03165e152f930 src/script/api/ai_industrylist.hpp.sq.timestamp
 3e38c08ced00a9e5f309e5615c485336 src/script/api/ai_inflation.hpp.sq.timestamp
 3a0597bee08068b231163a2572d2c1cb src/script/api/ai_info_docs.hpp.sq.timestamp
 f8722351947764da20389984c847a817 src/script/api/ai_infrastructure.hpp.sq.timestamp
+3be83e82cf6640826c88c6f6b8d4dce4 src/script/api/ai_league.hpp.sq.timestamp
 adca913b6e517b014bca9ab0770ad20e src/script/api/ai_list.hpp.sq.timestamp
 33c2b472f3be863ef2a87c58b52c42bb src/script/api/ai_log.hpp.sq.timestamp
 c06e0da9edc7289be52ddea3c441b849 src/script/api/ai_map.hpp.sq.timestamp
@@ -267,6 +270,7 @@ f67b51b3bfe1836c8cc20a74f3fa72f2 src/script/api/game_industrylist.hpp.sq.timesta
 6f7627ba563e54665596bcae9fbdaeb1 src/script/api/game_inflation.hpp.sq.timestamp
 f14e094fdd62959651135d3aa5e61b7f src/script/api/game_info_docs.hpp.sq.timestamp
 46404ee596e98cb38668ad5c5706681c src/script/api/game_infrastructure.hpp.sq.timestamp
+2195625e29376c9785754b378dd7a90d src/script/api/game_league.hpp.sq.timestamp
 d93b6be91f9f71cc7f4e193b280038f3 src/script/api/game_list.hpp.sq.timestamp
 4b50aafc46f15e7ba81003080527d3c4 src/script/api/game_log.hpp.sq.timestamp
 63fced463593afbdd465b8d2c12d0e52 src/script/api/game_map.hpp.sq.timestamp
@@ -340,6 +344,7 @@ b28dfef41bed8ec1c71faac29b0144d7 src/script/api/template_industrytypelist.hpp.sq
 c139c7b974adc0ec100f575441f2677f src/script/api/template_inflation.hpp.sq.timestamp
 080d76f7c0f9ec2973e7dc48caf70d88 src/script/api/template_info_docs.hpp.sq.timestamp
 047c93d387866e4e40844ab366a75c56 src/script/api/template_infrastructure.hpp.sq.timestamp
+5832e220844c8cdbc508847bdcef0638 src/script/api/template_league.hpp.sq.timestamp
 eacacd5a7b6b3773205930a0cb693bd4 src/script/api/template_list.hpp.sq.timestamp
 bd835eac0f964619b3ec6f024ff7c201 src/script/api/template_log.hpp.sq.timestamp
 784d3de2078f38eada6383195b0d3b24 src/script/api/template_map.hpp.sq.timestamp

@@ -190,7 +190,7 @@ Module['FS_createPath']('/', 'game', true, true);
     }
   
    }
-   loadPackage({"files": [{"filename": "/baseset/tracerestrict.grf", "start": 0, "end": 526, "audio": 0}, {"filename": "/baseset/orig_win.obg", "start": 526, "end": 6345, "audio": 0}, {"filename": "/baseset/misc_gui.grf", "start": 6345, "end": 6399, "audio": 0}, {"filename": "/baseset/no_music.obm", "start": 6399, "end": 10376, "audio": 0}, {"filename": "/baseset/openttd.32.bmp", "start": 10376, "end": 12480, "audio": 0}, {"filename": "/baseset/orig_extra.grf", "start": 12480, "end": 341156, "audio": 0}, {"filename": "/baseset/openttd.grf", "start": 341156, "end": 849872, "audio": 0}, {"filename": "/baseset/extra_signals.grf", "start": 849872, "end": 851443, "audio": 0}, {"filename": "/baseset/orig_win.obs", "start": 851443, "end": 857008, "audio": 0}, {"filename": "/baseset/orig_dos.obs", "start": 857008, "end": 862032, "audio": 0}, {"filename": "/baseset/innerhighlight.grf", "start": 862032, "end": 869765, "audio": 0}, {"filename": "/baseset/orig_dos_de.obg", "start": 869765, "end": 876028, "audio": 0}, {"filename": "/baseset/orig_dos.obm", "start": 876028, "end": 881049, "audio": 0}, {"filename": "/baseset/route_step.grf", "start": 881049, "end": 881304, "audio": 0}, {"filename": "/baseset/orig_dos.obg", "start": 881304, "end": 886967, "audio": 0}, {"filename": "/baseset/road_waypoints.grf", "start": 886967, "end": 888426, "audio": 0}, {"filename": "/baseset/orig_tto.obm", "start": 888426, "end": 894256, "audio": 0}, {"filename": "/baseset/opntitle.dat", "start": 894256, "end": 1032966, "audio": 0}, {"filename": "/baseset/no_sound.obs", "start": 1032966, "end": 1036568, "audio": 0}, {"filename": "/baseset/progsignals.grf", "start": 1036568, "end": 1039771, "audio": 0}, {"filename": "/baseset/orig_win.obm", "start": 1039771, "end": 1047696, "audio": 0}, {"filename": "/lang/english.lng", "start": 1047696, "end": 1255383, "audio": 0}, {"filename": "/ai/compat_12.nut", "start": 1255383, "end": 1256326, "audio": 0}, {"filename": "/ai/compat_1.9.nut", "start": 1256326, "end": 1257270, "audio": 0}, {"filename": "/ai/compat_1.6.nut", "start": 1257270, "end": 1258614, "audio": 0}, {"filename": "/ai/compat_1.3.nut", "start": 1258614, "end": 1259958, "audio": 0}, {"filename": "/ai/compat_1.0.nut", "start": 1259958, "end": 1265741, "audio": 0}, {"filename": "/ai/compat_1.2.nut", "start": 1265741, "end": 1267085, "audio": 0}, {"filename": "/ai/compat_1.10.nut", "start": 1267085, "end": 1268030, "audio": 0}, {"filename": "/ai/compat_13.nut", "start": 1268030, "end": 1268611, "audio": 0}, {"filename": "/ai/compat_1.1.nut", "start": 1268611, "end": 1272490, "audio": 0}, {"filename": "/ai/compat_1.5.nut", "start": 1272490, "end": 1273834, "audio": 0}, {"filename": "/ai/compat_1.11.nut", "start": 1273834, "end": 1274779, "audio": 0}, {"filename": "/ai/compat_1.7.nut", "start": 1274779, "end": 1276123, "audio": 0}, {"filename": "/ai/compat_1.8.nut", "start": 1276123, "end": 1277467, "audio": 0}, {"filename": "/ai/compat_1.4.nut", "start": 1277467, "end": 1278811, "audio": 0}, {"filename": "/ai/compat_0.7.nut", "start": 1278811, "end": 1291341, "audio": 0}, {"filename": "/game/compat_12.nut", "start": 1291341, "end": 1292284, "audio": 0}, {"filename": "/game/compat_1.9.nut", "start": 1292284, "end": 1293488, "audio": 0}, {"filename": "/game/compat_1.6.nut", "start": 1293488, "end": 1294874, "audio": 0}, {"filename": "/game/compat_1.3.nut", "start": 1294874, "end": 1296864, "audio": 0}, {"filename": "/game/compat_1.2.nut", "start": 1296864, "end": 1298854, "audio": 0}, {"filename": "/game/compat_1.10.nut", "start": 1298854, "end": 1300059, "audio": 0}, {"filename": "/game/compat_13.nut", "start": 1300059, "end": 1300640, "audio": 0}, {"filename": "/game/compat_1.5.nut", "start": 1300640, "end": 1302026, "audio": 0}, {"filename": "/game/compat_1.11.nut", "start": 1302026, "end": 1302971, "audio": 0}, {"filename": "/game/compat_1.7.nut", "start": 1302971, "end": 1304357, "audio": 0}, {"filename": "/game/compat_1.8.nut", "start": 1304357, "end": 1305743, "audio": 0}, {"filename": "/game/compat_brgs.nut", "start": 1305743, "end": 1306080, "audio": 0}, {"filename": "/game/compat_1.4.nut", "start": 1306080, "end": 1307671, "audio": 0}], "remote_package_size": 1307671, "package_uuid": "538822db-1929-406c-87e3-20c2296e2265"});
+   loadPackage({"files": [{"filename": "/baseset/misc_gui.grf", "start": 0, "end": 54, "audio": 0}, {"filename": "/baseset/openttd.grf", "start": 54, "end": 509922, "audio": 0}, {"filename": "/baseset/road_waypoints.grf", "start": 509922, "end": 511381, "audio": 0}, {"filename": "/baseset/orig_dos.obs", "start": 511381, "end": 516405, "audio": 0}, {"filename": "/baseset/orig_win.obm", "start": 516405, "end": 524330, "audio": 0}, {"filename": "/baseset/orig_extra.grf", "start": 524330, "end": 853793, "audio": 0}, {"filename": "/baseset/orig_dos.obm", "start": 853793, "end": 858814, "audio": 0}, {"filename": "/baseset/opntitle.dat", "start": 858814, "end": 997524, "audio": 0}, {"filename": "/baseset/extra_signals.grf", "start": 997524, "end": 999095, "audio": 0}, {"filename": "/baseset/no_music.obm", "start": 999095, "end": 1003072, "audio": 0}, {"filename": "/baseset/route_step.grf", "start": 1003072, "end": 1003327, "audio": 0}, {"filename": "/baseset/orig_tto.obm", "start": 1003327, "end": 1009157, "audio": 0}, {"filename": "/baseset/orig_win.obg", "start": 1009157, "end": 1014976, "audio": 0}, {"filename": "/baseset/innerhighlight.grf", "start": 1014976, "end": 1022709, "audio": 0}, {"filename": "/baseset/orig_win.obs", "start": 1022709, "end": 1028274, "audio": 0}, {"filename": "/baseset/no_sound.obs", "start": 1028274, "end": 1031876, "audio": 0}, {"filename": "/baseset/orig_dos.obg", "start": 1031876, "end": 1037539, "audio": 0}, {"filename": "/baseset/openttd.32.bmp", "start": 1037539, "end": 1039643, "audio": 0}, {"filename": "/baseset/tracerestrict.grf", "start": 1039643, "end": 1040169, "audio": 0}, {"filename": "/baseset/progsignals.grf", "start": 1040169, "end": 1043372, "audio": 0}, {"filename": "/baseset/orig_dos_de.obg", "start": 1043372, "end": 1049635, "audio": 0}, {"filename": "/lang/english.lng", "start": 1049635, "end": 1261970, "audio": 0}, {"filename": "/ai/compat_1.7.nut", "start": 1261970, "end": 1263314, "audio": 0}, {"filename": "/ai/compat_12.nut", "start": 1263314, "end": 1264257, "audio": 0}, {"filename": "/ai/compat_0.7.nut", "start": 1264257, "end": 1276787, "audio": 0}, {"filename": "/ai/compat_14.nut", "start": 1276787, "end": 1277368, "audio": 0}, {"filename": "/ai/compat_1.10.nut", "start": 1277368, "end": 1278313, "audio": 0}, {"filename": "/ai/compat_1.4.nut", "start": 1278313, "end": 1279657, "audio": 0}, {"filename": "/ai/compat_1.3.nut", "start": 1279657, "end": 1281001, "audio": 0}, {"filename": "/ai/compat_1.11.nut", "start": 1281001, "end": 1281946, "audio": 0}, {"filename": "/ai/compat_1.2.nut", "start": 1281946, "end": 1283290, "audio": 0}, {"filename": "/ai/compat_1.5.nut", "start": 1283290, "end": 1284634, "audio": 0}, {"filename": "/ai/compat_13.nut", "start": 1284634, "end": 1285263, "audio": 0}, {"filename": "/ai/compat_1.9.nut", "start": 1285263, "end": 1286207, "audio": 0}, {"filename": "/ai/compat_1.1.nut", "start": 1286207, "end": 1290086, "audio": 0}, {"filename": "/ai/compat_1.6.nut", "start": 1290086, "end": 1291430, "audio": 0}, {"filename": "/ai/compat_1.0.nut", "start": 1291430, "end": 1297213, "audio": 0}, {"filename": "/ai/compat_1.8.nut", "start": 1297213, "end": 1298557, "audio": 0}, {"filename": "/game/compat_1.7.nut", "start": 1298557, "end": 1299943, "audio": 0}, {"filename": "/game/compat_12.nut", "start": 1299943, "end": 1300886, "audio": 0}, {"filename": "/game/compat_brgs.nut", "start": 1300886, "end": 1301223, "audio": 0}, {"filename": "/game/compat_14.nut", "start": 1301223, "end": 1301804, "audio": 0}, {"filename": "/game/compat_1.10.nut", "start": 1301804, "end": 1303009, "audio": 0}, {"filename": "/game/compat_1.4.nut", "start": 1303009, "end": 1304600, "audio": 0}, {"filename": "/game/compat_1.3.nut", "start": 1304600, "end": 1306590, "audio": 0}, {"filename": "/game/compat_1.11.nut", "start": 1306590, "end": 1307535, "audio": 0}, {"filename": "/game/compat_1.2.nut", "start": 1307535, "end": 1309525, "audio": 0}, {"filename": "/game/compat_1.5.nut", "start": 1309525, "end": 1310911, "audio": 0}, {"filename": "/game/compat_13.nut", "start": 1310911, "end": 1311540, "audio": 0}, {"filename": "/game/compat_1.9.nut", "start": 1311540, "end": 1312744, "audio": 0}, {"filename": "/game/compat_1.6.nut", "start": 1312744, "end": 1314130, "audio": 0}, {"filename": "/game/compat_1.8.nut", "start": 1314130, "end": 1315516, "audio": 0}], "remote_package_size": 1315516, "package_uuid": "a4e49a40-9e58-45df-adc0-026d7fbcad88"});
   
   })();
   
@@ -1896,35 +1896,35 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  43744: function($0, $1) {var crypto; try { crypto = require('crypto'); } catch (error) { return -2; } try { writeArrayToMemory(crypto.randomBytes($1), $0); return 0; } catch (error) { return -1; }},  
- 154413: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 160308: function() {if (window["openttd_server_list"]) openttd_server_list()},  
- 169284: function($0, $1) {if(window["openttd_open_url"]) window.openttd_open_url($0, $1)},  
- 267088: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 279091: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 279138: function() {if (window["openttd_exit"]) openttd_exit()},  
- 496685: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 607341: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
- 607388: function() {if (window["openttd_abort"]) openttd_abort()},  
- 949290: function($0) {var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return allocate(intArrayFromString(reply), 'i8', ALLOC_NORMAL);},  
- 988252: function($0, $1, $2) {var w = $0; var h = $1; var pixels = $2; if (!Module['SDL2']) Module['SDL2'] = {}; var SDL2 = Module['SDL2']; if (SDL2.ctxCanvas !== Module['canvas']) { SDL2.ctx = Module['createContext'](Module['canvas'], false, true); SDL2.ctxCanvas = Module['canvas']; } if (SDL2.w !== w || SDL2.h !== h || SDL2.imageCtx !== SDL2.ctx) { SDL2.image = SDL2.ctx.createImageData(w, h); SDL2.w = w; SDL2.h = h; SDL2.imageCtx = SDL2.ctx; } var data = SDL2.image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = 0xff; src++; dst += 4; } } else { if (SDL2.data32Data !== data) { SDL2.data32 = new Int32Array(data.buffer); SDL2.data8 = new Uint8Array(data.buffer); } var data32 = SDL2.data32; num = data32.length; data32.set(HEAP32.subarray(src, src + num)); var data8 = SDL2.data8; var i = 3; var j = i + 4*num; if (num % 8 == 0) { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; } } else { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; } } } SDL2.ctx.putImageData(SDL2.image, 0, 0); return 0;},  
- 989731: function($0, $1, $2, $3, $4) {var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = (val >> 24) & 0xff; src++; dst += 4; } } else { var data32 = new Int32Array(data.buffer); num = data32.length; data32.set(HEAP32.subarray(src, src + num)); } ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf;},  
- 990720: function($0) {if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } return 0;},  
- 990813: function() {if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; }},  
- 992038: function() {return screen.width;},  
- 992065: function() {return screen.height;},  
- 992093: function() {return window.innerWidth;},  
- 992125: function() {return window.innerHeight;},  
- 992203: function($0) {if (typeof setWindowTitle !== 'undefined') { setWindowTitle(UTF8ToString($0)); } return 0;},  
- 992337: function() {if (typeof(AudioContext) !== 'undefined') { return 1; } else if (typeof(webkitAudioContext) !== 'undefined') { return 1; } return 0;},  
- 992503: function() {if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return 1; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return 1; } return 0;},  
- 992729: function($0) {if(typeof(Module['SDL2']) === 'undefined') { Module['SDL2'] = {}; } var SDL2 = Module['SDL2']; if (!$0) { SDL2.audio = {}; } else { SDL2.capture = {}; } if (!SDL2.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL2.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL2.audioContext = new webkitAudioContext(); } if (SDL2.audioContext) { autoResumeAudioContext(SDL2.audioContext); } } return SDL2.audioContext === undefined ? -1 : 0;},  
- 993282: function() {var SDL2 = Module['SDL2']; return SDL2.audioContext.sampleRate;},  
- 993352: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; var have_microphone = function(stream) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); SDL2.capture.silenceTimer = undefined; } SDL2.capture.mediaStreamNode = SDL2.audioContext.createMediaStreamSource(stream); SDL2.capture.scriptProcessorNode = SDL2.audioContext.createScriptProcessor($1, $0, 1); SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL2 === undefined) || (SDL2.capture === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL2.capture.currentCaptureBuffer = audioProcessingEvent.inputBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.mediaStreamNode.connect(SDL2.capture.scriptProcessorNode); SDL2.capture.scriptProcessorNode.connect(SDL2.audioContext.destination); SDL2.capture.stream = stream; }; var no_microphone = function(error) { }; SDL2.capture.silenceBuffer = SDL2.audioContext.createBuffer($0, $1, SDL2.audioContext.sampleRate); SDL2.capture.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL2.capture.currentCaptureBuffer = SDL2.capture.silenceBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.silenceTimer = setTimeout(silence_callback, ($1 / SDL2.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); }},  
- 995004: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; SDL2.audio.scriptProcessorNode = SDL2.audioContext['createScriptProcessor']($1, 0, $0); SDL2.audio.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL2 === undefined) || (SDL2.audio === undefined)) { return; } SDL2.audio.currentOutputBuffer = e['outputBuffer']; dynCall('vi', $2, [$3]); }; SDL2.audio.scriptProcessorNode['connect'](SDL2.audioContext['destination']);},  
- 995414: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.capture.currentCaptureBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.capture.currentCaptureBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio capture buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } }},  
- 996019: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.audio.currentOutputBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.audio.currentOutputBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio output buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[$0 + ((j*numChannels + c) << 2) >> 2]; } }},  
- 996499: function($0) {var SDL2 = Module['SDL2']; if ($0) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); } if (SDL2.capture.stream !== undefined) { var tracks = SDL2.capture.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL2.capture.stream.removeTrack(tracks[i]); } SDL2.capture.stream = undefined; } if (SDL2.capture.scriptProcessorNode !== undefined) { SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL2.capture.scriptProcessorNode.disconnect(); SDL2.capture.scriptProcessorNode = undefined; } if (SDL2.capture.mediaStreamNode !== undefined) { SDL2.capture.mediaStreamNode.disconnect(); SDL2.capture.mediaStreamNode = undefined; } if (SDL2.capture.silenceBuffer !== undefined) { SDL2.capture.silenceBuffer = undefined } SDL2.capture = undefined; } else { if (SDL2.audio.scriptProcessorNode != undefined) { SDL2.audio.scriptProcessorNode.disconnect(); SDL2.audio.scriptProcessorNode = undefined; } SDL2.audio = undefined; } if ((SDL2.audioContext !== undefined) && (SDL2.audio === undefined) && (SDL2.capture === undefined)) { SDL2.audioContext.close(); SDL2.audioContext = undefined; }}
+  51712: function($0, $1) {var crypto; try { crypto = require('crypto'); } catch (error) { return -2; } try { writeArrayToMemory(crypto.randomBytes($1), $0); return 0; } catch (error) { return -1; }},  
+ 162405: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 168328: function() {if (window["openttd_server_list"]) openttd_server_list()},  
+ 177396: function($0, $1) {if(window["openttd_open_url"]) window.openttd_open_url($0, $1)},  
+ 278154: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 291367: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 291414: function() {if (window["openttd_exit"]) openttd_exit()},  
+ 513261: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 631809: function() {if (window["openttd_syncfs"]) openttd_syncfs()},  
+ 631856: function() {if (window["openttd_abort"]) openttd_abort()},  
+ 978394: function($0) {var str = UTF8ToString($0) + '\n\n' + 'Abort/Retry/Ignore/AlwaysIgnore? [ariA] :'; var reply = window.prompt(str, "i"); if (reply === null) { reply = "i"; } return allocate(intArrayFromString(reply), 'i8', ALLOC_NORMAL);},  
+ 1017356: function($0, $1, $2) {var w = $0; var h = $1; var pixels = $2; if (!Module['SDL2']) Module['SDL2'] = {}; var SDL2 = Module['SDL2']; if (SDL2.ctxCanvas !== Module['canvas']) { SDL2.ctx = Module['createContext'](Module['canvas'], false, true); SDL2.ctxCanvas = Module['canvas']; } if (SDL2.w !== w || SDL2.h !== h || SDL2.imageCtx !== SDL2.ctx) { SDL2.image = SDL2.ctx.createImageData(w, h); SDL2.w = w; SDL2.h = h; SDL2.imageCtx = SDL2.ctx; } var data = SDL2.image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = 0xff; src++; dst += 4; } } else { if (SDL2.data32Data !== data) { SDL2.data32 = new Int32Array(data.buffer); SDL2.data8 = new Uint8Array(data.buffer); } var data32 = SDL2.data32; num = data32.length; data32.set(HEAP32.subarray(src, src + num)); var data8 = SDL2.data8; var i = 3; var j = i + 4*num; if (num % 8 == 0) { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; data8[i] = 0xff; i = i + 4 | 0; } } else { while (i < j) { data8[i] = 0xff; i = i + 4 | 0; } } } SDL2.ctx.putImageData(SDL2.image, 0, 0); return 0;},  
+ 1018835: function($0, $1, $2, $3, $4) {var w = $0; var h = $1; var hot_x = $2; var hot_y = $3; var pixels = $4; var canvas = document.createElement("canvas"); canvas.width = w; canvas.height = h; var ctx = canvas.getContext("2d"); var image = ctx.createImageData(w, h); var data = image.data; var src = pixels >> 2; var dst = 0; var num; if (typeof CanvasPixelArray !== 'undefined' && data instanceof CanvasPixelArray) { num = data.length; while (dst < num) { var val = HEAP32[src]; data[dst ] = val & 0xff; data[dst+1] = (val >> 8) & 0xff; data[dst+2] = (val >> 16) & 0xff; data[dst+3] = (val >> 24) & 0xff; src++; dst += 4; } } else { var data32 = new Int32Array(data.buffer); num = data32.length; data32.set(HEAP32.subarray(src, src + num)); } ctx.putImageData(image, 0, 0); var url = hot_x === 0 && hot_y === 0 ? "url(" + canvas.toDataURL() + "), auto" : "url(" + canvas.toDataURL() + ") " + hot_x + " " + hot_y + ", auto"; var urlBuf = _malloc(url.length + 1); stringToUTF8(url, urlBuf, url.length + 1); return urlBuf;},  
+ 1019824: function($0) {if (Module['canvas']) { Module['canvas'].style['cursor'] = UTF8ToString($0); } return 0;},  
+ 1019917: function() {if (Module['canvas']) { Module['canvas'].style['cursor'] = 'none'; }},  
+ 1021142: function() {return screen.width;},  
+ 1021169: function() {return screen.height;},  
+ 1021197: function() {return window.innerWidth;},  
+ 1021229: function() {return window.innerHeight;},  
+ 1021307: function($0) {if (typeof setWindowTitle !== 'undefined') { setWindowTitle(UTF8ToString($0)); } return 0;},  
+ 1021441: function() {if (typeof(AudioContext) !== 'undefined') { return 1; } else if (typeof(webkitAudioContext) !== 'undefined') { return 1; } return 0;},  
+ 1021607: function() {if ((typeof(navigator.mediaDevices) !== 'undefined') && (typeof(navigator.mediaDevices.getUserMedia) !== 'undefined')) { return 1; } else if (typeof(navigator.webkitGetUserMedia) !== 'undefined') { return 1; } return 0;},  
+ 1021833: function($0) {if(typeof(Module['SDL2']) === 'undefined') { Module['SDL2'] = {}; } var SDL2 = Module['SDL2']; if (!$0) { SDL2.audio = {}; } else { SDL2.capture = {}; } if (!SDL2.audioContext) { if (typeof(AudioContext) !== 'undefined') { SDL2.audioContext = new AudioContext(); } else if (typeof(webkitAudioContext) !== 'undefined') { SDL2.audioContext = new webkitAudioContext(); } if (SDL2.audioContext) { autoResumeAudioContext(SDL2.audioContext); } } return SDL2.audioContext === undefined ? -1 : 0;},  
+ 1022386: function() {var SDL2 = Module['SDL2']; return SDL2.audioContext.sampleRate;},  
+ 1022456: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; var have_microphone = function(stream) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); SDL2.capture.silenceTimer = undefined; } SDL2.capture.mediaStreamNode = SDL2.audioContext.createMediaStreamSource(stream); SDL2.capture.scriptProcessorNode = SDL2.audioContext.createScriptProcessor($1, $0, 1); SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) { if ((SDL2 === undefined) || (SDL2.capture === undefined)) { return; } audioProcessingEvent.outputBuffer.getChannelData(0).fill(0.0); SDL2.capture.currentCaptureBuffer = audioProcessingEvent.inputBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.mediaStreamNode.connect(SDL2.capture.scriptProcessorNode); SDL2.capture.scriptProcessorNode.connect(SDL2.audioContext.destination); SDL2.capture.stream = stream; }; var no_microphone = function(error) { }; SDL2.capture.silenceBuffer = SDL2.audioContext.createBuffer($0, $1, SDL2.audioContext.sampleRate); SDL2.capture.silenceBuffer.getChannelData(0).fill(0.0); var silence_callback = function() { SDL2.capture.currentCaptureBuffer = SDL2.capture.silenceBuffer; dynCall('vi', $2, [$3]); }; SDL2.capture.silenceTimer = setTimeout(silence_callback, ($1 / SDL2.audioContext.sampleRate) * 1000); if ((navigator.mediaDevices !== undefined) && (navigator.mediaDevices.getUserMedia !== undefined)) { navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then(have_microphone).catch(no_microphone); } else if (navigator.webkitGetUserMedia !== undefined) { navigator.webkitGetUserMedia({ audio: true, video: false }, have_microphone, no_microphone); }},  
+ 1024108: function($0, $1, $2, $3) {var SDL2 = Module['SDL2']; SDL2.audio.scriptProcessorNode = SDL2.audioContext['createScriptProcessor']($1, 0, $0); SDL2.audio.scriptProcessorNode['onaudioprocess'] = function (e) { if ((SDL2 === undefined) || (SDL2.audio === undefined)) { return; } SDL2.audio.currentOutputBuffer = e['outputBuffer']; dynCall('vi', $2, [$3]); }; SDL2.audio.scriptProcessorNode['connect'](SDL2.audioContext['destination']);},  
+ 1024518: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.capture.currentCaptureBuffer.numberOfChannels; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.capture.currentCaptureBuffer.getChannelData(c); if (channelData.length != $1) { throw 'Web Audio capture buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } if (numChannels == 1) { for (var j = 0; j < $1; ++j) { setValue($0 + (j * 4), channelData[j], 'float'); } } else { for (var j = 0; j < $1; ++j) { setValue($0 + (((j * numChannels) + c) * 4), channelData[j], 'float'); } } }},  
+ 1025123: function($0, $1) {var SDL2 = Module['SDL2']; var numChannels = SDL2.audio.currentOutputBuffer['numberOfChannels']; for (var c = 0; c < numChannels; ++c) { var channelData = SDL2.audio.currentOutputBuffer['getChannelData'](c); if (channelData.length != $1) { throw 'Web Audio output buffer length mismatch! Destination size: ' + channelData.length + ' samples vs expected ' + $1 + ' samples!'; } for (var j = 0; j < $1; ++j) { channelData[j] = HEAPF32[$0 + ((j*numChannels + c) << 2) >> 2]; } }},  
+ 1025603: function($0) {var SDL2 = Module['SDL2']; if ($0) { if (SDL2.capture.silenceTimer !== undefined) { clearTimeout(SDL2.capture.silenceTimer); } if (SDL2.capture.stream !== undefined) { var tracks = SDL2.capture.stream.getAudioTracks(); for (var i = 0; i < tracks.length; i++) { SDL2.capture.stream.removeTrack(tracks[i]); } SDL2.capture.stream = undefined; } if (SDL2.capture.scriptProcessorNode !== undefined) { SDL2.capture.scriptProcessorNode.onaudioprocess = function(audioProcessingEvent) {}; SDL2.capture.scriptProcessorNode.disconnect(); SDL2.capture.scriptProcessorNode = undefined; } if (SDL2.capture.mediaStreamNode !== undefined) { SDL2.capture.mediaStreamNode.disconnect(); SDL2.capture.mediaStreamNode = undefined; } if (SDL2.capture.silenceBuffer !== undefined) { SDL2.capture.silenceBuffer = undefined } SDL2.capture = undefined; } else { if (SDL2.audio.scriptProcessorNode != undefined) { SDL2.audio.scriptProcessorNode.disconnect(); SDL2.audio.scriptProcessorNode = undefined; } SDL2.audio = undefined; } if ((SDL2.audioContext !== undefined) && (SDL2.audio === undefined) && (SDL2.capture === undefined)) { SDL2.audioContext.close(); SDL2.audioContext = undefined; }}
 };
 
 
@@ -2035,121 +2035,6 @@ var ASM_CONSTS = {
       if (Module['extraStackTrace']) js += '\n' + Module['extraStackTrace']();
       return demangleAll(js);
     }
-
-  function _tzset() {
-      // TODO: Use (malleable) environment variables instead of system settings.
-      if (_tzset.called) return;
-      _tzset.called = true;
-  
-      var currentYear = new Date().getFullYear();
-      var winter = new Date(currentYear, 0, 1);
-      var summer = new Date(currentYear, 6, 1);
-      var winterOffset = winter.getTimezoneOffset();
-      var summerOffset = summer.getTimezoneOffset();
-  
-      // Local standard timezone offset. Local standard time is not adjusted for daylight savings.
-      // This code uses the fact that getTimezoneOffset returns a greater value during Standard Time versus Daylight Saving Time (DST). 
-      // Thus it determines the expected output during Standard Time, and it compares whether the output of the given date the same (Standard) or less (DST).
-      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
-  
-      // timezone is specified as seconds west of UTC ("The external variable
-      // `timezone` shall be set to the difference, in seconds, between
-      // Coordinated Universal Time (UTC) and local standard time."), the same
-      // as returned by stdTimezoneOffset.
-      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
-      HEAP32[((__get_timezone())>>2)]=stdTimezoneOffset * 60;
-  
-      HEAP32[((__get_daylight())>>2)]=Number(winterOffset != summerOffset);
-  
-      function extractZone(date) {
-        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
-        return match ? match[1] : "GMT";
-      };
-      var winterName = extractZone(winter);
-      var summerName = extractZone(summer);
-      var winterNamePtr = allocateUTF8(winterName);
-      var summerNamePtr = allocateUTF8(summerName);
-      if (summerOffset < winterOffset) {
-        // Northern hemisphere
-        HEAP32[((__get_tzname())>>2)]=winterNamePtr;
-        HEAP32[(((__get_tzname())+(4))>>2)]=summerNamePtr;
-      } else {
-        HEAP32[((__get_tzname())>>2)]=summerNamePtr;
-        HEAP32[(((__get_tzname())+(4))>>2)]=winterNamePtr;
-      }
-    }
-  function _mktime(tmPtr) {
-      _tzset();
-      var date = new Date(HEAP32[(((tmPtr)+(20))>>2)] + 1900,
-                          HEAP32[(((tmPtr)+(16))>>2)],
-                          HEAP32[(((tmPtr)+(12))>>2)],
-                          HEAP32[(((tmPtr)+(8))>>2)],
-                          HEAP32[(((tmPtr)+(4))>>2)],
-                          HEAP32[((tmPtr)>>2)],
-                          0);
-  
-      // There's an ambiguous hour when the time goes back; the tm_isdst field is
-      // used to disambiguate it.  Date() basically guesses, so we fix it up if it
-      // guessed wrong, or fill in tm_isdst with the guess if it's -1.
-      var dst = HEAP32[(((tmPtr)+(32))>>2)];
-      var guessedOffset = date.getTimezoneOffset();
-      var start = new Date(date.getFullYear(), 0, 1);
-      var summerOffset = new Date(date.getFullYear(), 6, 1).getTimezoneOffset();
-      var winterOffset = start.getTimezoneOffset();
-      var dstOffset = Math.min(winterOffset, summerOffset); // DST is in December in South
-      if (dst < 0) {
-        // Attention: some regions don't have DST at all.
-        HEAP32[(((tmPtr)+(32))>>2)]=Number(summerOffset != winterOffset && dstOffset == guessedOffset);
-      } else if ((dst > 0) != (dstOffset == guessedOffset)) {
-        var nonDstOffset = Math.max(winterOffset, summerOffset);
-        var trueOffset = dst > 0 ? dstOffset : nonDstOffset;
-        // Don't try setMinutes(date.getMinutes() + ...) -- it's messed up.
-        date.setTime(date.getTime() + (trueOffset - guessedOffset)*60000);
-      }
-  
-      HEAP32[(((tmPtr)+(24))>>2)]=date.getDay();
-      var yday = ((date.getTime() - start.getTime()) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)]=yday;
-      // To match expected behavior, update fields from date
-      HEAP32[((tmPtr)>>2)]=date.getSeconds();
-      HEAP32[(((tmPtr)+(4))>>2)]=date.getMinutes();
-      HEAP32[(((tmPtr)+(8))>>2)]=date.getHours();
-      HEAP32[(((tmPtr)+(12))>>2)]=date.getDate();
-      HEAP32[(((tmPtr)+(16))>>2)]=date.getMonth();
-  
-      return (date.getTime() / 1000)|0;
-    }
-  function _asctime_r(tmPtr, buf) {
-      var date = {
-        tm_sec: HEAP32[((tmPtr)>>2)],
-        tm_min: HEAP32[(((tmPtr)+(4))>>2)],
-        tm_hour: HEAP32[(((tmPtr)+(8))>>2)],
-        tm_mday: HEAP32[(((tmPtr)+(12))>>2)],
-        tm_mon: HEAP32[(((tmPtr)+(16))>>2)],
-        tm_year: HEAP32[(((tmPtr)+(20))>>2)],
-        tm_wday: HEAP32[(((tmPtr)+(24))>>2)]
-      };
-      var days = [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ];
-      var months = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
-      var s = days[date.tm_wday] + ' ' + months[date.tm_mon] +
-          (date.tm_mday < 10 ? '  ' : ' ') + date.tm_mday +
-          (date.tm_hour < 10 ? ' 0' : ' ') + date.tm_hour +
-          (date.tm_min < 10 ? ':0' : ':') + date.tm_min +
-          (date.tm_sec < 10 ? ':0' : ':') + date.tm_sec +
-          ' ' + (1900 + date.tm_year) + "\n";
-  
-      // asctime_r is specced to behave in an undefined manner if the algorithm would attempt
-      // to write out more than 26 bytes (including the null terminator).
-      // See http://pubs.opengroup.org/onlinepubs/9699919799/functions/asctime.html
-      // Our undefined behavior is to truncate the write to at most 26 bytes, including null terminator.
-      stringToUTF8(s, buf, 26);
-      return buf;
-    }
-  function ___asctime_r(a0,a1
-  ) {
-  return _asctime_r(a0,a1);
-  }
 
   var _emscripten_get_now;if (ENVIRONMENT_IS_NODE) {
     _emscripten_get_now = function() {
@@ -2535,30 +2420,6 @@ var ASM_CONSTS = {
   function ___cxa_uncaught_exceptions() {
       return uncaughtExceptionCount;
     }
-
-  function _gmtime_r(time, tmPtr) {
-      var date = new Date(HEAP32[((time)>>2)]*1000);
-      HEAP32[((tmPtr)>>2)]=date.getUTCSeconds();
-      HEAP32[(((tmPtr)+(4))>>2)]=date.getUTCMinutes();
-      HEAP32[(((tmPtr)+(8))>>2)]=date.getUTCHours();
-      HEAP32[(((tmPtr)+(12))>>2)]=date.getUTCDate();
-      HEAP32[(((tmPtr)+(16))>>2)]=date.getUTCMonth();
-      HEAP32[(((tmPtr)+(20))>>2)]=date.getUTCFullYear()-1900;
-      HEAP32[(((tmPtr)+(24))>>2)]=date.getUTCDay();
-      HEAP32[(((tmPtr)+(36))>>2)]=0;
-      HEAP32[(((tmPtr)+(32))>>2)]=0;
-      var start = Date.UTC(date.getUTCFullYear(), 0, 1, 0, 0, 0, 0);
-      var yday = ((date.getTime() - start) / (1000 * 60 * 60 * 24))|0;
-      HEAP32[(((tmPtr)+(28))>>2)]=yday;
-      // Allocate a string "GMT" for us to point to.
-      if (!_gmtime_r.GMTString) _gmtime_r.GMTString = allocateUTF8("GMT");
-      HEAP32[(((tmPtr)+(40))>>2)]=_gmtime_r.GMTString;
-      return tmPtr;
-    }
-  function ___gmtime_r(a0,a1
-  ) {
-  return _gmtime_r(a0,a1);
-  }
 
 
   var PATH={splitPath:function(filename) {
@@ -11295,6 +11156,25 @@ var ASM_CONSTS = {
       return 0;
     }
 
+  function _gmtime_r(time, tmPtr) {
+      var date = new Date(HEAP32[((time)>>2)]*1000);
+      HEAP32[((tmPtr)>>2)]=date.getUTCSeconds();
+      HEAP32[(((tmPtr)+(4))>>2)]=date.getUTCMinutes();
+      HEAP32[(((tmPtr)+(8))>>2)]=date.getUTCHours();
+      HEAP32[(((tmPtr)+(12))>>2)]=date.getUTCDate();
+      HEAP32[(((tmPtr)+(16))>>2)]=date.getUTCMonth();
+      HEAP32[(((tmPtr)+(20))>>2)]=date.getUTCFullYear()-1900;
+      HEAP32[(((tmPtr)+(24))>>2)]=date.getUTCDay();
+      HEAP32[(((tmPtr)+(36))>>2)]=0;
+      HEAP32[(((tmPtr)+(32))>>2)]=0;
+      var start = Date.UTC(date.getUTCFullYear(), 0, 1, 0, 0, 0, 0);
+      var yday = ((date.getTime() - start) / (1000 * 60 * 60 * 24))|0;
+      HEAP32[(((tmPtr)+(28))>>2)]=yday;
+      // Allocate a string "GMT" for us to point to.
+      if (!_gmtime_r.GMTString) _gmtime_r.GMTString = allocateUTF8("GMT");
+      HEAP32[(((tmPtr)+(40))>>2)]=_gmtime_r.GMTString;
+      return tmPtr;
+    }
 
   function _kill(pid, sig) {
       // http://pubs.opengroup.org/onlinepubs/000095399/functions/kill.html
@@ -11309,6 +11189,48 @@ var ASM_CONSTS = {
       return type;
     }
 
+  function _tzset() {
+      // TODO: Use (malleable) environment variables instead of system settings.
+      if (_tzset.called) return;
+      _tzset.called = true;
+  
+      var currentYear = new Date().getFullYear();
+      var winter = new Date(currentYear, 0, 1);
+      var summer = new Date(currentYear, 6, 1);
+      var winterOffset = winter.getTimezoneOffset();
+      var summerOffset = summer.getTimezoneOffset();
+  
+      // Local standard timezone offset. Local standard time is not adjusted for daylight savings.
+      // This code uses the fact that getTimezoneOffset returns a greater value during Standard Time versus Daylight Saving Time (DST). 
+      // Thus it determines the expected output during Standard Time, and it compares whether the output of the given date the same (Standard) or less (DST).
+      var stdTimezoneOffset = Math.max(winterOffset, summerOffset);
+  
+      // timezone is specified as seconds west of UTC ("The external variable
+      // `timezone` shall be set to the difference, in seconds, between
+      // Coordinated Universal Time (UTC) and local standard time."), the same
+      // as returned by stdTimezoneOffset.
+      // See http://pubs.opengroup.org/onlinepubs/009695399/functions/tzset.html
+      HEAP32[((__get_timezone())>>2)]=stdTimezoneOffset * 60;
+  
+      HEAP32[((__get_daylight())>>2)]=Number(winterOffset != summerOffset);
+  
+      function extractZone(date) {
+        var match = date.toTimeString().match(/\(([A-Za-z ]+)\)$/);
+        return match ? match[1] : "GMT";
+      };
+      var winterName = extractZone(winter);
+      var summerName = extractZone(summer);
+      var winterNamePtr = allocateUTF8(winterName);
+      var summerNamePtr = allocateUTF8(summerName);
+      if (summerOffset < winterOffset) {
+        // Northern hemisphere
+        HEAP32[((__get_tzname())>>2)]=winterNamePtr;
+        HEAP32[(((__get_tzname())+(4))>>2)]=summerNamePtr;
+      } else {
+        HEAP32[((__get_tzname())>>2)]=summerNamePtr;
+        HEAP32[(((__get_tzname())+(4))>>2)]=winterNamePtr;
+      }
+    }
   function _localtime_r(time, tmPtr) {
       _tzset();
       var date = new Date(HEAP32[((time)>>2)]*1000);
@@ -12004,7 +11926,6 @@ function intArrayToString(array) {
 
 __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 var asmLibraryArg = {
-  "__asctime_r": ___asctime_r,
   "__clock_gettime": ___clock_gettime,
   "__cxa_allocate_exception": ___cxa_allocate_exception,
   "__cxa_atexit": ___cxa_atexit,
@@ -12017,7 +11938,6 @@ var asmLibraryArg = {
   "__cxa_rethrow": ___cxa_rethrow,
   "__cxa_throw": ___cxa_throw,
   "__cxa_uncaught_exceptions": ___cxa_uncaught_exceptions,
-  "__gmtime_r": ___gmtime_r,
   "__resumeException": ___resumeException,
   "__sys__newselect": ___sys__newselect,
   "__sys_access": ___sys_access,
@@ -12285,6 +12205,7 @@ var asmLibraryArg = {
   "invoke_diii": invoke_diii,
   "invoke_fiii": invoke_fiii,
   "invoke_i": invoke_i,
+  "invoke_idiii": invoke_idiii,
   "invoke_ii": invoke_ii,
   "invoke_iii": invoke_iii,
   "invoke_iiii": invoke_iiii,
@@ -12301,26 +12222,37 @@ var asmLibraryArg = {
   "invoke_iiiiiiiiij": invoke_iiiiiiiiij,
   "invoke_iiiiiij": invoke_iiiiiij,
   "invoke_iiiiiijii": invoke_iiiiiijii,
+  "invoke_iiiiij": invoke_iiiiij,
   "invoke_iiiij": invoke_iiiij,
   "invoke_iiiiji": invoke_iiiiji,
   "invoke_iiiijiiii": invoke_iiiijiiii,
   "invoke_iiiijiiiii": invoke_iiiijiiiii,
   "invoke_iiij": invoke_iiij,
+  "invoke_iiiji": invoke_iiiji,
   "invoke_iiijiiii": invoke_iiijiiii,
+  "invoke_iiijij": invoke_iiijij,
   "invoke_iiijj": invoke_iiijj,
+  "invoke_iiijji": invoke_iiijji,
   "invoke_iiijjii": invoke_iiijjii,
   "invoke_iiijjijj": invoke_iiijjijj,
   "invoke_iiijjji": invoke_iiijjji,
   "invoke_iiijjjiji": invoke_iiijjjiji,
   "invoke_iij": invoke_iij,
+  "invoke_iiji": invoke_iiji,
   "invoke_iijii": invoke_iijii,
   "invoke_iijiii": invoke_iijiii,
   "invoke_iijiiii": invoke_iijiiii,
   "invoke_iijiiiii": invoke_iijiiiii,
   "invoke_iijj": invoke_iijj,
   "invoke_iijji": invoke_iijji,
+  "invoke_iijjii": invoke_iijjii,
+  "invoke_iijjj": invoke_iijjj,
   "invoke_iijjjjjjjj": invoke_iijjjjjjjj,
   "invoke_ij": invoke_ij,
+  "invoke_ijiiij": invoke_ijiiij,
+  "invoke_ijj": invoke_ijj,
+  "invoke_ijjiii": invoke_ijjiii,
+  "invoke_ijjj": invoke_ijjj,
   "invoke_j": invoke_j,
   "invoke_ji": invoke_ji,
   "invoke_jii": invoke_jii,
@@ -12330,12 +12262,15 @@ var asmLibraryArg = {
   "invoke_jiiiij": invoke_jiiiij,
   "invoke_jiiij": invoke_jiiij,
   "invoke_jiij": invoke_jiij,
+  "invoke_jiijjj": invoke_jiijjj,
   "invoke_jij": invoke_jij,
   "invoke_jiji": invoke_jiji,
   "invoke_jijii": invoke_jijii,
   "invoke_jijj": invoke_jijj,
   "invoke_jijjji": invoke_jijjji,
   "invoke_jijjjj": invoke_jijjjj,
+  "invoke_jj": invoke_jj,
+  "invoke_jjj": invoke_jjj,
   "invoke_v": invoke_v,
   "invoke_vi": invoke_vi,
   "invoke_vid": invoke_vid,
@@ -12350,7 +12285,7 @@ var asmLibraryArg = {
   "invoke_viiiiiiiiii": invoke_viiiiiiiiii,
   "invoke_viiiiiiiiiii": invoke_viiiiiiiiiii,
   "invoke_viiiiiiiiiiiiiii": invoke_viiiiiiiiiiiiiii,
-  "invoke_viiiiiijji": invoke_viiiiiijji,
+  "invoke_viiiiiiijji": invoke_viiiiiiijji,
   "invoke_viiiiijii": invoke_viiiiijii,
   "invoke_viiiiji": invoke_viiiiji,
   "invoke_viiiijiii": invoke_viiiijiii,
@@ -12362,10 +12297,12 @@ var asmLibraryArg = {
   "invoke_viiijiiiii": invoke_viiijiiiii,
   "invoke_viiijj": invoke_viiijj,
   "invoke_viij": invoke_viij,
+  "invoke_viijj": invoke_viijj,
   "invoke_vij": invoke_vij,
   "invoke_viji": invoke_viji,
   "invoke_vijii": invoke_vijii,
   "invoke_vijj": invoke_vijj,
+  "invoke_vijji": invoke_vijji,
   "invoke_vijjj": invoke_vijjj,
   "invoke_vijjjjj": invoke_vijjjjj,
   "kill": _kill,
@@ -12389,13 +12326,13 @@ var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__w
 var _memcpy = Module["_memcpy"] = createExportWrapper("memcpy");
 
 /** @type {function(...*):?} */
+var _memset = Module["_memset"] = createExportWrapper("memset");
+
+/** @type {function(...*):?} */
 var _malloc = Module["_malloc"] = createExportWrapper("malloc");
 
 /** @type {function(...*):?} */
 var _free = Module["_free"] = createExportWrapper("free");
-
-/** @type {function(...*):?} */
-var _memset = Module["_memset"] = createExportWrapper("memset");
 
 /** @type {function(...*):?} */
 var _strstr = Module["_strstr"] = createExportWrapper("strstr");
@@ -12488,19 +12425,31 @@ var dynCall_iijii = Module["dynCall_iijii"] = createExportWrapper("dynCall_iijii
 var dynCall_vij = Module["dynCall_vij"] = createExportWrapper("dynCall_vij");
 
 /** @type {function(...*):?} */
+var dynCall_iijjii = Module["dynCall_iijjii"] = createExportWrapper("dynCall_iijjii");
+
+/** @type {function(...*):?} */
+var dynCall_ijj = Module["dynCall_ijj"] = createExportWrapper("dynCall_ijj");
+
+/** @type {function(...*):?} */
+var dynCall_ijjiii = Module["dynCall_ijjiii"] = createExportWrapper("dynCall_ijjiii");
+
+/** @type {function(...*):?} */
 var dynCall_iiiijiiii = Module["dynCall_iiiijiiii"] = createExportWrapper("dynCall_iiiijiiii");
 
 /** @type {function(...*):?} */
 var dynCall_vijj = Module["dynCall_vijj"] = createExportWrapper("dynCall_vijj");
 
 /** @type {function(...*):?} */
-var dynCall_jii = Module["dynCall_jii"] = createExportWrapper("dynCall_jii");
-
-/** @type {function(...*):?} */
 var dynCall_ji = Module["dynCall_ji"] = createExportWrapper("dynCall_ji");
 
 /** @type {function(...*):?} */
+var dynCall_jii = Module["dynCall_jii"] = createExportWrapper("dynCall_jii");
+
+/** @type {function(...*):?} */
 var dynCall_viiiijiiiiii = Module["dynCall_viiiijiiiiii"] = createExportWrapper("dynCall_viiiijiiiiii");
+
+/** @type {function(...*):?} */
+var dynCall_jiiii = Module["dynCall_jiiii"] = createExportWrapper("dynCall_jiiii");
 
 /** @type {function(...*):?} */
 var dynCall_iij = Module["dynCall_iij"] = createExportWrapper("dynCall_iij");
@@ -12518,13 +12467,16 @@ var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");
 var dynCall_jiii = Module["dynCall_jiii"] = createExportWrapper("dynCall_jiii");
 
 /** @type {function(...*):?} */
+var dynCall_viji = Module["dynCall_viji"] = createExportWrapper("dynCall_viji");
+
+/** @type {function(...*):?} */
+var dynCall_viij = Module["dynCall_viij"] = createExportWrapper("dynCall_viij");
+
+/** @type {function(...*):?} */
 var dynCall_iiiiji = Module["dynCall_iiiiji"] = createExportWrapper("dynCall_iiiiji");
 
 /** @type {function(...*):?} */
 var dynCall_viiiji = Module["dynCall_viiiji"] = createExportWrapper("dynCall_viiiji");
-
-/** @type {function(...*):?} */
-var dynCall_viij = Module["dynCall_viij"] = createExportWrapper("dynCall_viij");
 
 /** @type {function(...*):?} */
 var dynCall_jijj = Module["dynCall_jijj"] = createExportWrapper("dynCall_jijj");
@@ -12551,9 +12503,6 @@ var dynCall_jiiij = Module["dynCall_jiiij"] = createExportWrapper("dynCall_jiiij
 var dynCall_iiij = Module["dynCall_iiij"] = createExportWrapper("dynCall_iiij");
 
 /** @type {function(...*):?} */
-var dynCall_viji = Module["dynCall_viji"] = createExportWrapper("dynCall_viji");
-
-/** @type {function(...*):?} */
 var dynCall_iiijjijj = Module["dynCall_iiijjijj"] = createExportWrapper("dynCall_iiijjijj");
 
 /** @type {function(...*):?} */
@@ -12564,9 +12513,6 @@ var dynCall_iiiiiijii = Module["dynCall_iiiiiijii"] = createExportWrapper("dynCa
 
 /** @type {function(...*):?} */
 var dynCall_jijjjj = Module["dynCall_jijjjj"] = createExportWrapper("dynCall_jijjjj");
-
-/** @type {function(...*):?} */
-var dynCall_iiiij = Module["dynCall_iiiij"] = createExportWrapper("dynCall_iiiij");
 
 /** @type {function(...*):?} */
 var dynCall_jiiiii = Module["dynCall_jiiiii"] = createExportWrapper("dynCall_jiiiii");
@@ -12608,10 +12554,55 @@ var dynCall_iijiiiii = Module["dynCall_iijiiiii"] = createExportWrapper("dynCall
 var dynCall_j = Module["dynCall_j"] = createExportWrapper("dynCall_j");
 
 /** @type {function(...*):?} */
+var dynCall_jj = Module["dynCall_jj"] = createExportWrapper("dynCall_jj");
+
+/** @type {function(...*):?} */
+var dynCall_jjj = Module["dynCall_jjj"] = createExportWrapper("dynCall_jjj");
+
+/** @type {function(...*):?} */
+var dynCall_ijjj = Module["dynCall_ijjj"] = createExportWrapper("dynCall_ijjj");
+
+/** @type {function(...*):?} */
+var dynCall_viijj = Module["dynCall_viijj"] = createExportWrapper("dynCall_viijj");
+
+/** @type {function(...*):?} */
 var dynCall_jijii = Module["dynCall_jijii"] = createExportWrapper("dynCall_jijii");
 
 /** @type {function(...*):?} */
+var dynCall_iiji = Module["dynCall_iiji"] = createExportWrapper("dynCall_iiji");
+
+/** @type {function(...*):?} */
+var dynCall_iiijji = Module["dynCall_iiijji"] = createExportWrapper("dynCall_iiijji");
+
+/** @type {function(...*):?} */
+var dynCall_iiijjiiiiji = Module["dynCall_iiijjiiiiji"] = createExportWrapper("dynCall_iiijjiiiiji");
+
+/** @type {function(...*):?} */
+var dynCall_jiijjj = Module["dynCall_jiijjj"] = createExportWrapper("dynCall_jiijjj");
+
+/** @type {function(...*):?} */
+var dynCall_iijjj = Module["dynCall_iijjj"] = createExportWrapper("dynCall_iijjj");
+
+/** @type {function(...*):?} */
 var dynCall_viiiiji = Module["dynCall_viiiiji"] = createExportWrapper("dynCall_viiiiji");
+
+/** @type {function(...*):?} */
+var dynCall_iiiij = Module["dynCall_iiiij"] = createExportWrapper("dynCall_iiiij");
+
+/** @type {function(...*):?} */
+var dynCall_ijiiij = Module["dynCall_ijiiij"] = createExportWrapper("dynCall_ijiiij");
+
+/** @type {function(...*):?} */
+var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iiiiij");
+
+/** @type {function(...*):?} */
+var dynCall_iiiji = Module["dynCall_iiiji"] = createExportWrapper("dynCall_iiiji");
+
+/** @type {function(...*):?} */
+var dynCall_iiijij = Module["dynCall_iiijij"] = createExportWrapper("dynCall_iiijij");
+
+/** @type {function(...*):?} */
+var dynCall_vijji = Module["dynCall_vijji"] = createExportWrapper("dynCall_vijji");
 
 /** @type {function(...*):?} */
 var dynCall_iiiiiij = Module["dynCall_iiiiiij"] = createExportWrapper("dynCall_iiiiiij");
@@ -12641,22 +12632,13 @@ var dynCall_viiiiijii = Module["dynCall_viiiiijii"] = createExportWrapper("dynCa
 var dynCall_iiijiiii = Module["dynCall_iiijiiii"] = createExportWrapper("dynCall_iiijiiii");
 
 /** @type {function(...*):?} */
-var dynCall_jj = Module["dynCall_jj"] = createExportWrapper("dynCall_jj");
-
-/** @type {function(...*):?} */
 var dynCall_iijiiii = Module["dynCall_iijiiii"] = createExportWrapper("dynCall_iijiiii");
 
 /** @type {function(...*):?} */
 var dynCall_iiiiiiiiij = Module["dynCall_iiiiiiiiij"] = createExportWrapper("dynCall_iiiiiiiiij");
 
 /** @type {function(...*):?} */
-var dynCall_viiiiiijji = Module["dynCall_viiiiiijji"] = createExportWrapper("dynCall_viiiiiijji");
-
-/** @type {function(...*):?} */
-var dynCall_jiiii = Module["dynCall_jiiii"] = createExportWrapper("dynCall_jiiii");
-
-/** @type {function(...*):?} */
-var dynCall_iiiiij = Module["dynCall_iiiiij"] = createExportWrapper("dynCall_iiiiij");
+var dynCall_viiiiiiijji = Module["dynCall_viiiiiiijji"] = createExportWrapper("dynCall_viiiiiiijji");
 
 /** @type {function(...*):?} */
 var dynCall_iiiiijj = Module["dynCall_iiiiijj"] = createExportWrapper("dynCall_iiiiijj");
@@ -12698,54 +12680,10 @@ function invoke_iiii(index,a1,a2,a3) {
   }
 }
 
-function invoke_iii(index,a1,a2) {
+function invoke_iiiii(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
-    return wasmTable.get(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_i(index) {
-  var sp = stackSave();
-  try {
-    return wasmTable.get(index)();
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_vii(index,a1,a2) {
-  var sp = stackSave();
-  try {
-    wasmTable.get(index)(a1,a2);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6) {
-  var sp = stackSave();
-  try {
-    wasmTable.get(index)(a1,a2,a3,a4,a5,a6);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viii(index,a1,a2,a3) {
-  var sp = stackSave();
-  try {
-    wasmTable.get(index)(a1,a2,a3);
+    return wasmTable.get(index)(a1,a2,a3,a4);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -12764,6 +12702,28 @@ function invoke_iiiiii(index,a1,a2,a3,a4,a5) {
   }
 }
 
+function invoke_iii(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return wasmTable.get(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viii(index,a1,a2,a3) {
+  var sp = stackSave();
+  try {
+    wasmTable.get(index)(a1,a2,a3);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_viiii(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
@@ -12775,10 +12735,54 @@ function invoke_viiii(index,a1,a2,a3,a4) {
   }
 }
 
-function invoke_iiiii(index,a1,a2,a3,a4) {
+function invoke_vii(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    wasmTable.get(index)(a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_idiii(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
     return wasmTable.get(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_i(index) {
+  var sp = stackSave();
+  try {
+    return wasmTable.get(index)();
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiiii(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    wasmTable.get(index)(a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
+  var sp = stackSave();
+  try {
+    wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -12812,17 +12816,6 @@ function invoke_iiiiiiii(index,a1,a2,a3,a4,a5,a6,a7) {
   var sp = stackSave();
   try {
     return wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
-  var sp = stackSave();
-  try {
-    wasmTable.get(index)(a1,a2,a3,a4,a5,a6,a7,a8,a9);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13017,6 +13010,39 @@ function invoke_vij(index,a1,a2,a3) {
   }
 }
 
+function invoke_iijjii(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_iijjii(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ijj(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return dynCall_ijj(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ijjiii(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_ijjiii(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_iiiijiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   var sp = stackSave();
   try {
@@ -13032,6 +13058,17 @@ function invoke_vijj(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
     dynCall_vijj(index,a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ji(index,a1) {
+  var sp = stackSave();
+  try {
+    return dynCall_ji(index,a1);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13061,10 +13098,10 @@ function invoke_viiiijiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
   }
 }
 
-function invoke_ji(index,a1) {
+function invoke_jiiii(index,a1,a2,a3,a4) {
   var sp = stackSave();
   try {
-    return dynCall_ji(index,a1);
+    return dynCall_jiiii(index,a1,a2,a3,a4);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13127,6 +13164,28 @@ function invoke_jiii(index,a1,a2,a3) {
   }
 }
 
+function invoke_viji(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    dynCall_viji(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_viij(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    dynCall_viij(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_iiiiji(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
@@ -13142,17 +13201,6 @@ function invoke_viiiji(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
     dynCall_viiiji(index,a1,a2,a3,a4,a5,a6);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viij(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    dynCall_viij(index,a1,a2,a3,a4);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13226,17 +13274,6 @@ function invoke_iiij(index,a1,a2,a3,a4) {
   }
 }
 
-function invoke_viji(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    dynCall_viji(index,a1,a2,a3,a4);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_iiijjijj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11) {
   var sp = stackSave();
   try {
@@ -13285,17 +13322,6 @@ function invoke_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9) {
   var sp = stackSave();
   try {
     return dynCall_jijjjj(index,a1,a2,a3,a4,a5,a6,a7,a8,a9);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_iiiij(index,a1,a2,a3,a4,a5) {
-  var sp = stackSave();
-  try {
-    return dynCall_iiiij(index,a1,a2,a3,a4,a5);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13446,6 +13472,50 @@ function invoke_iijiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   }
 }
 
+function invoke_j(index) {
+  var sp = stackSave();
+  try {
+    return dynCall_j(index);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jj(index,a1,a2) {
+  var sp = stackSave();
+  try {
+    return dynCall_jj(index,a1,a2);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jjj(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return dynCall_jjj(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ijjj(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    return dynCall_ijjj(index,a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_jijii(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
@@ -13457,10 +13527,120 @@ function invoke_jijii(index,a1,a2,a3,a4,a5) {
   }
 }
 
-function invoke_j(index) {
+function invoke_viijj(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
-    return dynCall_j(index);
+    dynCall_viijj(index,a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiji(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiji(index,a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiijji(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiijji(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_jiijjj(index,a1,a2,a3,a4,a5,a6,a7,a8) {
+  var sp = stackSave();
+  try {
+    return dynCall_jiijjj(index,a1,a2,a3,a4,a5,a6,a7,a8);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iijjj(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_iijjj(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiij(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiij(index,a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_ijiiij(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_ijiiij(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiiij(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiiij(index,a1,a2,a3,a4,a5,a6);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiiji(index,a1,a2,a3,a4,a5) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiiji(index,a1,a2,a3,a4,a5);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_iiijij(index,a1,a2,a3,a4,a5,a6,a7) {
+  var sp = stackSave();
+  try {
+    return dynCall_iiijij(index,a1,a2,a3,a4,a5,a6,a7);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0 && e !== 'longjmp') throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_vijji(index,a1,a2,a3,a4,a5,a6) {
+  var sp = stackSave();
+  try {
+    dynCall_vijji(index,a1,a2,a3,a4,a5,a6);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;
@@ -13589,21 +13769,10 @@ function invoke_iiiiiiiiij(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10) {
   }
 }
 
-function invoke_viiiiiijji(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11) {
+function invoke_viiiiiiijji(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12) {
   var sp = stackSave();
   try {
-    dynCall_viiiiiijji(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0 && e !== 'longjmp') throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_jiiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    return dynCall_jiiii(index,a1,a2,a3,a4);
+    dynCall_viiiiiiijji(index,a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0 && e !== 'longjmp') throw e;

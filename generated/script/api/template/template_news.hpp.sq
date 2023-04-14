@@ -11,15 +11,15 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptNews::NewsType GetParam(ForceType<ScriptNews::NewsType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptNews::NewsType)tmp; }
-	template <> inline int Return<ScriptNews::NewsType>(HSQUIRRELVM vm, ScriptNews::NewsType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptNews::NewsReferenceType GetParam(ForceType<ScriptNews::NewsReferenceType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptNews::NewsReferenceType)tmp; }
-	template <> inline int Return<ScriptNews::NewsReferenceType>(HSQUIRRELVM vm, ScriptNews::NewsReferenceType res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptNews::NewsType> { static inline ScriptNews::NewsType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptNews::NewsType)tmp; } };
+	template <> struct Return<ScriptNews::NewsType> { static inline int Set(HSQUIRRELVM vm, ScriptNews::NewsType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptNews::NewsReferenceType> { static inline ScriptNews::NewsReferenceType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptNews::NewsReferenceType)tmp; } };
+	template <> struct Return<ScriptNews::NewsReferenceType> { static inline int Set(HSQUIRRELVM vm, ScriptNews::NewsReferenceType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptNews to be used as Squirrel parameter */
-	template <> inline ScriptNews *GetParam(ForceType<ScriptNews *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptNews *)instance; }
-	template <> inline ScriptNews &GetParam(ForceType<ScriptNews &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptNews *)instance; }
-	template <> inline const ScriptNews *GetParam(ForceType<const ScriptNews *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptNews *)instance; }
-	template <> inline const ScriptNews &GetParam(ForceType<const ScriptNews &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptNews *)instance; }
-	template <> inline int Return<ScriptNews *>(HSQUIRRELVM vm, ScriptNews *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "News", res, nullptr, DefSQDestructorCallback<ScriptNews>, true); return 1; }
+	template <> struct Param<ScriptNews *> { static inline ScriptNews *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptNews *)instance; } };
+	template <> struct Param<ScriptNews &> { static inline ScriptNews &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptNews *)instance; } };
+	template <> struct Param<const ScriptNews *> { static inline const ScriptNews *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptNews *)instance; } };
+	template <> struct Param<const ScriptNews &> { static inline const ScriptNews &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptNews *)instance; } };
+	template <> struct Return<ScriptNews *> { static inline int Set(HSQUIRRELVM vm, ScriptNews *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "News", res, nullptr, DefSQDestructorCallback<ScriptNews>, true); return 1; } };
 } // namespace SQConvert

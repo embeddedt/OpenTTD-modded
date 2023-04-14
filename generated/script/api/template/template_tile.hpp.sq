@@ -11,23 +11,23 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptTile::ErrorMessages GetParam(ForceType<ScriptTile::ErrorMessages>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::ErrorMessages)tmp; }
-	template <> inline int Return<ScriptTile::ErrorMessages>(HSQUIRRELVM vm, ScriptTile::ErrorMessages res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptTile::Corner GetParam(ForceType<ScriptTile::Corner>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::Corner)tmp; }
-	template <> inline int Return<ScriptTile::Corner>(HSQUIRRELVM vm, ScriptTile::Corner res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptTile::Slope GetParam(ForceType<ScriptTile::Slope>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::Slope)tmp; }
-	template <> inline int Return<ScriptTile::Slope>(HSQUIRRELVM vm, ScriptTile::Slope res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptTile::TransportType GetParam(ForceType<ScriptTile::TransportType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::TransportType)tmp; }
-	template <> inline int Return<ScriptTile::TransportType>(HSQUIRRELVM vm, ScriptTile::TransportType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptTile::BuildType GetParam(ForceType<ScriptTile::BuildType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::BuildType)tmp; }
-	template <> inline int Return<ScriptTile::BuildType>(HSQUIRRELVM vm, ScriptTile::BuildType res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptTile::TerrainType GetParam(ForceType<ScriptTile::TerrainType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::TerrainType)tmp; }
-	template <> inline int Return<ScriptTile::TerrainType>(HSQUIRRELVM vm, ScriptTile::TerrainType res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptTile::ErrorMessages> { static inline ScriptTile::ErrorMessages Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::ErrorMessages)tmp; } };
+	template <> struct Return<ScriptTile::ErrorMessages> { static inline int Set(HSQUIRRELVM vm, ScriptTile::ErrorMessages res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptTile::Corner> { static inline ScriptTile::Corner Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::Corner)tmp; } };
+	template <> struct Return<ScriptTile::Corner> { static inline int Set(HSQUIRRELVM vm, ScriptTile::Corner res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptTile::Slope> { static inline ScriptTile::Slope Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::Slope)tmp; } };
+	template <> struct Return<ScriptTile::Slope> { static inline int Set(HSQUIRRELVM vm, ScriptTile::Slope res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptTile::TransportType> { static inline ScriptTile::TransportType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::TransportType)tmp; } };
+	template <> struct Return<ScriptTile::TransportType> { static inline int Set(HSQUIRRELVM vm, ScriptTile::TransportType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptTile::BuildType> { static inline ScriptTile::BuildType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::BuildType)tmp; } };
+	template <> struct Return<ScriptTile::BuildType> { static inline int Set(HSQUIRRELVM vm, ScriptTile::BuildType res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptTile::TerrainType> { static inline ScriptTile::TerrainType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTile::TerrainType)tmp; } };
+	template <> struct Return<ScriptTile::TerrainType> { static inline int Set(HSQUIRRELVM vm, ScriptTile::TerrainType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptTile to be used as Squirrel parameter */
-	template <> inline ScriptTile *GetParam(ForceType<ScriptTile *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTile *)instance; }
-	template <> inline ScriptTile &GetParam(ForceType<ScriptTile &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTile *)instance; }
-	template <> inline const ScriptTile *GetParam(ForceType<const ScriptTile *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTile *)instance; }
-	template <> inline const ScriptTile &GetParam(ForceType<const ScriptTile &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTile *)instance; }
-	template <> inline int Return<ScriptTile *>(HSQUIRRELVM vm, ScriptTile *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Tile", res, nullptr, DefSQDestructorCallback<ScriptTile>, true); return 1; }
+	template <> struct Param<ScriptTile *> { static inline ScriptTile *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTile *)instance; } };
+	template <> struct Param<ScriptTile &> { static inline ScriptTile &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTile *)instance; } };
+	template <> struct Param<const ScriptTile *> { static inline const ScriptTile *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTile *)instance; } };
+	template <> struct Param<const ScriptTile &> { static inline const ScriptTile &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTile *)instance; } };
+	template <> struct Return<ScriptTile *> { static inline int Set(HSQUIRRELVM vm, ScriptTile *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Tile", res, nullptr, DefSQDestructorCallback<ScriptTile>, true); return 1; } };
 } // namespace SQConvert

@@ -68,6 +68,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/game/game_info_docs.hpp.sq"
   "game_infrastructure.hpp.sq.timestamp"
   "../../../generated/script/api/game/game_infrastructure.hpp.sq"
+  "game_league.hpp.sq.timestamp"
+  "../../../generated/script/api/game/game_league.hpp.sq"
   "game_list.hpp.sq.timestamp"
   "../../../generated/script/api/game/game_list.hpp.sq"
   "game_log.hpp.sq.timestamp"

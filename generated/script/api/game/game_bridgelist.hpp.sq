@@ -29,7 +29,7 @@ void SQGSBridgeList_Length_Register(Squirrel *engine)
 {
 	DefSQClass<ScriptBridgeList_Length, ST_GS> SQGSBridgeList_Length("GSBridgeList_Length");
 	SQGSBridgeList_Length.PreRegister(engine, "GSList");
-	SQGSBridgeList_Length.AddConstructor<void (ScriptBridgeList_Length::*)(uint length), 2>(engine, "xi");
+	SQGSBridgeList_Length.AddConstructor<void (ScriptBridgeList_Length::*)(SQInteger length), 2>(engine, "xi");
 
 	SQGSBridgeList_Length.PostRegister(engine);
 }

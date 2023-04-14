@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptEngineList to be used as Squirrel parameter */
-	template <> inline ScriptEngineList *GetParam(ForceType<ScriptEngineList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEngineList *)instance; }
-	template <> inline ScriptEngineList &GetParam(ForceType<ScriptEngineList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEngineList *)instance; }
-	template <> inline const ScriptEngineList *GetParam(ForceType<const ScriptEngineList *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEngineList *)instance; }
-	template <> inline const ScriptEngineList &GetParam(ForceType<const ScriptEngineList &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEngineList *)instance; }
-	template <> inline int Return<ScriptEngineList *>(HSQUIRRELVM vm, ScriptEngineList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "EngineList", res, nullptr, DefSQDestructorCallback<ScriptEngineList>, true); return 1; }
+	template <> struct Param<ScriptEngineList *> { static inline ScriptEngineList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEngineList *)instance; } };
+	template <> struct Param<ScriptEngineList &> { static inline ScriptEngineList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEngineList *)instance; } };
+	template <> struct Param<const ScriptEngineList *> { static inline const ScriptEngineList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptEngineList *)instance; } };
+	template <> struct Param<const ScriptEngineList &> { static inline const ScriptEngineList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptEngineList *)instance; } };
+	template <> struct Return<ScriptEngineList *> { static inline int Set(HSQUIRRELVM vm, ScriptEngineList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "EngineList", res, nullptr, DefSQDestructorCallback<ScriptEngineList>, true); return 1; } };
 } // namespace SQConvert

@@ -11,13 +11,13 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptSubsidy::SubsidyParticipantType GetParam(ForceType<ScriptSubsidy::SubsidyParticipantType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptSubsidy::SubsidyParticipantType)tmp; }
-	template <> inline int Return<ScriptSubsidy::SubsidyParticipantType>(HSQUIRRELVM vm, ScriptSubsidy::SubsidyParticipantType res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptSubsidy::SubsidyParticipantType> { static inline ScriptSubsidy::SubsidyParticipantType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptSubsidy::SubsidyParticipantType)tmp; } };
+	template <> struct Return<ScriptSubsidy::SubsidyParticipantType> { static inline int Set(HSQUIRRELVM vm, ScriptSubsidy::SubsidyParticipantType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptSubsidy to be used as Squirrel parameter */
-	template <> inline ScriptSubsidy *GetParam(ForceType<ScriptSubsidy *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidy *)instance; }
-	template <> inline ScriptSubsidy &GetParam(ForceType<ScriptSubsidy &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidy *)instance; }
-	template <> inline const ScriptSubsidy *GetParam(ForceType<const ScriptSubsidy *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidy *)instance; }
-	template <> inline const ScriptSubsidy &GetParam(ForceType<const ScriptSubsidy &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidy *)instance; }
-	template <> inline int Return<ScriptSubsidy *>(HSQUIRRELVM vm, ScriptSubsidy *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Subsidy", res, nullptr, DefSQDestructorCallback<ScriptSubsidy>, true); return 1; }
+	template <> struct Param<ScriptSubsidy *> { static inline ScriptSubsidy *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidy *)instance; } };
+	template <> struct Param<ScriptSubsidy &> { static inline ScriptSubsidy &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidy *)instance; } };
+	template <> struct Param<const ScriptSubsidy *> { static inline const ScriptSubsidy *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidy *)instance; } };
+	template <> struct Param<const ScriptSubsidy &> { static inline const ScriptSubsidy &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidy *)instance; } };
+	template <> struct Return<ScriptSubsidy *> { static inline int Set(HSQUIRRELVM vm, ScriptSubsidy *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Subsidy", res, nullptr, DefSQDestructorCallback<ScriptSubsidy>, true); return 1; } };
 } // namespace SQConvert

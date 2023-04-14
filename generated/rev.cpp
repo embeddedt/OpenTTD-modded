@@ -35,9 +35,9 @@ bool IsReleasedVersion()
  *
  * <modified> shows a "M", if the binary is made from modified source code.
  */
-const char _openttd_revision[] = "20221028-stock_jgr-g8b5524b85d";
+const char _openttd_revision[] = "20230414-stock_jgr-g9e33bad646";
 
-const char _openttd_release_version[] = "0.49.0";
+const char _openttd_release_version[] = "0.52.1";
 
 /**
  * The text version of OpenTTD's build date.
@@ -55,12 +55,12 @@ const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGAC
 /**
  * The git revision hash of this version.
  */
-const char _openttd_revision_hash[] = "8b5524b85d5c7c034fcf9626b37aca17f27a5d02";
+const char _openttd_revision_hash[] = "9e33bad64662f32227968e9adfd3c1e506453253";
 
 /**
  * The year of this version.
  */
-const char _openttd_revision_year[] = "2022";
+const char _openttd_revision_year[] = "2023";
 
 /**
  * Let us know if current build was modified. This detection
@@ -84,7 +84,7 @@ const byte _openttd_revision_tagged = 0;
  * It should never contain things like "beta", but only the release version
  * we are compatible with.
  */
-const char _openttd_content_version[] = "12.0";
+const char _openttd_content_version[] = "13.0";
 
 /**
  * The NewGRF revision of OTTD:
@@ -103,4 +103,4 @@ const char _openttd_content_version[] = "12.0";
  * have to adjust the major by 16.
  */
 /** 0 removed */
-const uint32 _openttd_newgrf_version = (13 + 16) << 24 | 0 << 20 | 0 << 19 | 28004;
+const uint32 _openttd_newgrf_version = (14 + 16) << 24 | 0 << 20 | 0 << 19 | 28004;

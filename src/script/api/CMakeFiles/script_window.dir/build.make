@@ -76,6 +76,7 @@ src/script/api/script_window.hpp.timestamp: ../src/widgets/engine_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/error_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/fios_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/framerate_widget.h
+src/script/api/script_window.hpp.timestamp: ../src/widgets/game_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/genworld_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/goal_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/graph_widget.h
@@ -83,6 +84,7 @@ src/script/api/script_window.hpp.timestamp: ../src/widgets/group_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/highscore_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/industry_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/intro_widget.h
+src/script/api/script_window.hpp.timestamp: ../src/widgets/league_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/link_graph_legend_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/main_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/misc_widget.h
@@ -100,6 +102,7 @@ src/script/api/script_window.hpp.timestamp: ../src/widgets/plans_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/rail_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/road_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/screenshot_widget.h
+src/script/api/script_window.hpp.timestamp: ../src/widgets/script_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/settings_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/sign_widget.h
 src/script/api/script_window.hpp.timestamp: ../src/widgets/smallmap_widget.h

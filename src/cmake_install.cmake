@@ -54,6 +54,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/sound/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/spriteloader/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/tests/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/video/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/widgets/cmake_install.cmake")
 

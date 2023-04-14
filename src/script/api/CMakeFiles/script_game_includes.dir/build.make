@@ -90,6 +90,7 @@ src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_indus
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_inflation.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_info_docs.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_infrastructure.hpp.sq
+src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_league.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_list.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_log.hpp.sq
 src/script/api/game_includes.hpp.timestamp: generated/script/api/game/game_map.hpp.sq

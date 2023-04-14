@@ -34,7 +34,7 @@ void SQAITileList_IndustryAccepting_Register(Squirrel *engine)
 {
 	DefSQClass<ScriptTileList_IndustryAccepting, ST_AI> SQAITileList_IndustryAccepting("AITileList_IndustryAccepting");
 	SQAITileList_IndustryAccepting.PreRegister(engine, "AITileList");
-	SQAITileList_IndustryAccepting.AddConstructor<void (ScriptTileList_IndustryAccepting::*)(IndustryID industry_id, int radius), 3>(engine, "xii");
+	SQAITileList_IndustryAccepting.AddConstructor<void (ScriptTileList_IndustryAccepting::*)(IndustryID industry_id, SQInteger radius), 3>(engine, "xii");
 
 	SQAITileList_IndustryAccepting.PostRegister(engine);
 }
@@ -46,7 +46,7 @@ void SQAITileList_IndustryProducing_Register(Squirrel *engine)
 {
 	DefSQClass<ScriptTileList_IndustryProducing, ST_AI> SQAITileList_IndustryProducing("AITileList_IndustryProducing");
 	SQAITileList_IndustryProducing.PreRegister(engine, "AITileList");
-	SQAITileList_IndustryProducing.AddConstructor<void (ScriptTileList_IndustryProducing::*)(IndustryID industry_id, int radius), 3>(engine, "xii");
+	SQAITileList_IndustryProducing.AddConstructor<void (ScriptTileList_IndustryProducing::*)(IndustryID industry_id, SQInteger radius), 3>(engine, "xii");
 
 	SQAITileList_IndustryProducing.PostRegister(engine);
 }

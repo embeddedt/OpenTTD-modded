@@ -11,23 +11,23 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> inline ScriptCompany::Quarter GetParam(ForceType<ScriptCompany::Quarter>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Quarter)tmp; }
-	template <> inline int Return<ScriptCompany::Quarter>(HSQUIRRELVM vm, ScriptCompany::Quarter res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptCompany::CompanyID GetParam(ForceType<ScriptCompany::CompanyID>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::CompanyID)tmp; }
-	template <> inline int Return<ScriptCompany::CompanyID>(HSQUIRRELVM vm, ScriptCompany::CompanyID res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptCompany::Gender GetParam(ForceType<ScriptCompany::Gender>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Gender)tmp; }
-	template <> inline int Return<ScriptCompany::Gender>(HSQUIRRELVM vm, ScriptCompany::Gender res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptCompany::LiveryScheme GetParam(ForceType<ScriptCompany::LiveryScheme>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::LiveryScheme)tmp; }
-	template <> inline int Return<ScriptCompany::LiveryScheme>(HSQUIRRELVM vm, ScriptCompany::LiveryScheme res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptCompany::Colours GetParam(ForceType<ScriptCompany::Colours>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Colours)tmp; }
-	template <> inline int Return<ScriptCompany::Colours>(HSQUIRRELVM vm, ScriptCompany::Colours res) { sq_pushinteger(vm, (int32)res); return 1; }
-	template <> inline ScriptCompany::ExpensesType GetParam(ForceType<ScriptCompany::ExpensesType>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::ExpensesType)tmp; }
-	template <> inline int Return<ScriptCompany::ExpensesType>(HSQUIRRELVM vm, ScriptCompany::ExpensesType res) { sq_pushinteger(vm, (int32)res); return 1; }
+	template <> struct Param<ScriptCompany::Quarter> { static inline ScriptCompany::Quarter Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Quarter)tmp; } };
+	template <> struct Return<ScriptCompany::Quarter> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::Quarter res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptCompany::CompanyID> { static inline ScriptCompany::CompanyID Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::CompanyID)tmp; } };
+	template <> struct Return<ScriptCompany::CompanyID> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::CompanyID res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptCompany::Gender> { static inline ScriptCompany::Gender Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Gender)tmp; } };
+	template <> struct Return<ScriptCompany::Gender> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::Gender res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptCompany::LiveryScheme> { static inline ScriptCompany::LiveryScheme Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::LiveryScheme)tmp; } };
+	template <> struct Return<ScriptCompany::LiveryScheme> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::LiveryScheme res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptCompany::Colours> { static inline ScriptCompany::Colours Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::Colours)tmp; } };
+	template <> struct Return<ScriptCompany::Colours> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::Colours res) { sq_pushinteger(vm, res); return 1; } };
+	template <> struct Param<ScriptCompany::ExpensesType> { static inline ScriptCompany::ExpensesType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptCompany::ExpensesType)tmp; } };
+	template <> struct Return<ScriptCompany::ExpensesType> { static inline int Set(HSQUIRRELVM vm, ScriptCompany::ExpensesType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptCompany to be used as Squirrel parameter */
-	template <> inline ScriptCompany *GetParam(ForceType<ScriptCompany *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCompany *)instance; }
-	template <> inline ScriptCompany &GetParam(ForceType<ScriptCompany &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCompany *)instance; }
-	template <> inline const ScriptCompany *GetParam(ForceType<const ScriptCompany *>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCompany *)instance; }
-	template <> inline const ScriptCompany &GetParam(ForceType<const ScriptCompany &>, HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCompany *)instance; }
-	template <> inline int Return<ScriptCompany *>(HSQUIRRELVM vm, ScriptCompany *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Company", res, nullptr, DefSQDestructorCallback<ScriptCompany>, true); return 1; }
+	template <> struct Param<ScriptCompany *> { static inline ScriptCompany *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCompany *)instance; } };
+	template <> struct Param<ScriptCompany &> { static inline ScriptCompany &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCompany *)instance; } };
+	template <> struct Param<const ScriptCompany *> { static inline const ScriptCompany *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptCompany *)instance; } };
+	template <> struct Param<const ScriptCompany &> { static inline const ScriptCompany &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptCompany *)instance; } };
+	template <> struct Return<ScriptCompany *> { static inline int Set(HSQUIRRELVM vm, ScriptCompany *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Company", res, nullptr, DefSQDestructorCallback<ScriptCompany>, true); return 1; } };
 } // namespace SQConvert

@@ -17,7 +17,10 @@ void SQGSCompanyMode_Register(Squirrel *engine)
 {
 	DefSQClass<ScriptCompanyMode, ST_GS> SQGSCompanyMode("GSCompanyMode");
 	SQGSCompanyMode.PreRegister(engine);
-	SQGSCompanyMode.AddConstructor<void (ScriptCompanyMode::*)(int company), 2>(engine, "xi");
+	SQGSCompanyMode.AddConstructor<void (ScriptCompanyMode::*)(SQInteger company), 2>(engine, "xi");
+
+	SQGSCompanyMode.DefSQStaticMethod(engine, &ScriptCompanyMode::IsValid, "IsValid", 1, ".");
+	SQGSCompanyMode.DefSQStaticMethod(engine, &ScriptCompanyMode::IsDeity, "IsDeity", 1, ".");
 
 	SQGSCompanyMode.PostRegister(engine);
 }

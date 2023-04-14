@@ -14,6 +14,7 @@
 #include "../../window_type.h"
 #include "../../gfx_type.h"
 
+#include "../../window_type.h"
 #include "../../widgets/ai_widget.h"
 #include "../../widgets/airport_widget.h"
 #include "../../widgets/autoreplace_widget.h"
@@ -23,8 +24,8 @@
 #include "../../widgets/cheat_widget.h"
 #include "../../widgets/company_widget.h"
 #include "../../widgets/console_widget.h"
-#include "../../widgets/departures_widget.h"
 #include "../../widgets/date_widget.h"
+#include "../../widgets/departures_widget.h"
 #include "../../widgets/depot_widget.h"
 #include "../../widgets/dock_widget.h"
 #include "../../widgets/dropdown_widget.h"
@@ -32,6 +33,7 @@
 #include "../../widgets/error_widget.h"
 #include "../../widgets/fios_widget.h"
 #include "../../widgets/framerate_widget.h"
+#include "../../widgets/game_widget.h"
 #include "../../widgets/genworld_widget.h"
 #include "../../widgets/goal_widget.h"
 #include "../../widgets/graph_widget.h"
@@ -39,6 +41,8 @@
 #include "../../widgets/highscore_widget.h"
 #include "../../widgets/industry_widget.h"
 #include "../../widgets/intro_widget.h"
+#include "../../widgets/league_widget.h"
+#include "../../widgets/link_graph_legend_widget.h"
 #include "../../widgets/main_widget.h"
 #include "../../widgets/misc_widget.h"
 #include "../../widgets/music_widget.h"
@@ -55,11 +59,13 @@
 #include "../../widgets/rail_widget.h"
 #include "../../widgets/road_widget.h"
 #include "../../widgets/screenshot_widget.h"
+#include "../../widgets/script_widget.h"
 #include "../../widgets/settings_widget.h"
 #include "../../widgets/sign_widget.h"
 #include "../../widgets/smallmap_widget.h"
 #include "../../widgets/station_widget.h"
 #include "../../widgets/statusbar_widget.h"
+#include "../../widgets/story_widget.h"
 #include "../../widgets/subsidy_widget.h"
 #include "../../widgets/terraform_widget.h"
 #include "../../widgets/timetable_widget.h"
@@ -70,11 +76,9 @@
 #include "../../widgets/vehicle_widget.h"
 #include "../../widgets/viewport_widget.h"
 #include "../../widgets/waypoint_widget.h"
-#include "../../widgets/link_graph_legend_widget.h"
-#include "../../widgets/story_widget.h"
 
 /**
- * Class that handles window interaction. A Window in OpenTTD has two imporant
+ * Class that handles window interaction. A Window in OpenTTD has two important
  *  values. The WindowClass, and a Window number. The first indicates roughly
  *  which window it is. WC_TOWN_VIEW for example, is the view of a town.
  * The Window number is a bit more complex, as it depends mostly on the
@@ -96,6 +100,7 @@ public:
 	/** %Window numbers. */
 	enum WindowNumberEnum {
 		WN_GAME_OPTIONS_AI                           = ::WN_GAME_OPTIONS_AI,                           ///< AI settings.
+		WN_GAME_OPTIONS_GS                           = ::WN_GAME_OPTIONS_GS,                           ///< GS settings.
 		WN_GAME_OPTIONS_ABOUT                        = ::WN_GAME_OPTIONS_ABOUT,                        ///< About window.
 		WN_GAME_OPTIONS_NEWGRF_STATE                 = ::WN_GAME_OPTIONS_NEWGRF_STATE,                 ///< NewGRF settings.
 		WN_GAME_OPTIONS_GAME_OPTIONS                 = ::WN_GAME_OPTIONS_GAME_OPTIONS,                 ///< Game options.
@@ -254,10 +259,10 @@ public:
 
 
 		/**
-		 * AI settings; %Window numbers:
-		 *   - 0 = #AISettingsWidgets
+		 * Script settings; %Window numbers:
+		 *   - 0 = #ScriptSettingsWidgets
 		 */
-		WC_AI_SETTINGS                               = ::WC_AI_SETTINGS,
+		WC_SCRIPT_SETTINGS                           = ::WC_SCRIPT_SETTINGS,
 
 		/**
 		 * NewGRF parameters; %Window numbers:
@@ -387,10 +392,10 @@ public:
 		WC_SIGN_LIST                                 = ::WC_SIGN_LIST,
 
 		/**
-		 * AI list; %Window numbers:
-		 *   - 0 = #AIListWidgets
+		 * Scripts list; %Window numbers:
+		 *   - 0 = #ScriptListWidgets
 		 */
-		WC_AI_LIST                                   = ::WC_AI_LIST,
+		WC_SCRIPT_LIST                               = ::WC_SCRIPT_LIST,
 
 		/**
 		 * Goals list; %Window numbers:
@@ -731,6 +736,7 @@ public:
 		/**
 		 * Game options window; %Window numbers:
 		 *   - #WN_GAME_OPTIONS_AI = #AIConfigWidgets
+		 *   - #WN_GAME_OPTIONS_GS = #GSConfigWidgets
 		 *   - #WN_GAME_OPTIONS_ABOUT = #AboutWidgets
 		 *   - #WN_GAME_OPTIONS_NEWGRF_STATE = #NewGRFStateWidgets
 		 *   - #WN_GAME_OPTIONS_GAME_OPTIONS = #GameOptionsWidgets
@@ -783,10 +789,10 @@ public:
 
 
 		/**
-		 * AI debug window; %Window numbers:
-		 *   - 0 = #AIDebugWidgets
+		 * Script debug window; %Window numbers:
+		 *   - 0 = #ScriptDebugWidgets
 		 */
-		WC_AI_DEBUG                                  = ::WC_AI_DEBUG,
+		WC_SCRIPT_DEBUG                              = ::WC_SCRIPT_DEBUG,
 
 		/**
 		 * NewGRF inspect (debug); %Window numbers:
@@ -912,74 +918,58 @@ public:
 	 * Special number values.
 	 */
 	enum NumberType {
-		NUMBER_ALL = 0xFFFFFFFF, ///< Value to select all windows of a class.
+		NUMBER_ALL = -1, ///< Value to select all windows of a class.
 	};
 
 	/**
 	 * Special widget values.
 	 */
 	enum WidgetType {
-		WIDGET_ALL = 0xFF, ///< Value to select all widgets of a window.
+		WIDGET_ALL = -1, ///< Value to select all widgets of a window.
 	};
 
 	/**
 	 * Close a window.
 	 * @param window The class of the window to close.
 	 * @param number The number of the window to close, or NUMBER_ALL to close all of this class.
+	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 */
-	static void Close(WindowClass window, uint32 number);
+	static void Close(WindowClass window, SQInteger number);
 
 	/**
 	 * Check if a window is open.
 	 * @param window The class of the window to check for.
 	 * @param number The number of the window to check for, or NUMBER_ALL to check for any in the class.
+	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 * @return True if the window is open.
 	 */
-	static bool IsOpen(WindowClass window, uint32 number);
+	static bool IsOpen(WindowClass window, SQInteger number);
 
 	/**
 	 * Highlight a widget in a window.
 	 * @param window The class of the window to highlight a widget in.
 	 * @param number The number of the window to highlight a widget in.
+	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
 	 * @param widget The widget in the window to highlight, or WIDGET_ALL (in combination with TC_INVALID) to disable all widget highlighting on this window.
+	 *               The value will be clamped to 0 .. MAX(uint8) when value is not WIDGET_ALL.
 	 * @param colour The colour of the highlight, or TC_INVALID for disabling.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 * @pre number != NUMBER_ALL.
 	 * @pre colour < TC_END || (widget == WIDGET_ALL && colour == TC_INVALID).
 	 * @pre IsOpen(window, number).
 	 */
-	static void Highlight(WindowClass window, uint32 number, uint8 widget, TextColour colour);
+	static void Highlight(WindowClass window, SQInteger number, SQInteger widget, TextColour colour);
 
 	// @enum .*Widgets ../../widgets/*_widget.h
 	/* automatically generated from ../../widgets/ai_widget.h */
-	/** Widgets of the #AIListWindow class. */
-	enum AIListWidgets {
-		WID_AIL_CAPTION                              = ::WID_AIL_CAPTION,                              ///< Caption of the window.
-		WID_AIL_LIST                                 = ::WID_AIL_LIST,                                 ///< The matrix with all available AIs.
-		WID_AIL_SCROLLBAR                            = ::WID_AIL_SCROLLBAR,                            ///< Scrollbar next to the AI list.
-		WID_AIL_INFO_BG                              = ::WID_AIL_INFO_BG,                              ///< Panel to draw some AI information on.
-		WID_AIL_ACCEPT                               = ::WID_AIL_ACCEPT,                               ///< Accept button.
-		WID_AIL_CANCEL                               = ::WID_AIL_CANCEL,                               ///< Cancel button.
-	};
-
-	/** Widgets of the #AISettingsWindow class. */
-	enum AISettingsWidgets {
-		WID_AIS_CAPTION                              = ::WID_AIS_CAPTION,                              ///< Caption of the window.
-		WID_AIS_BACKGROUND                           = ::WID_AIS_BACKGROUND,                           ///< Panel to draw the settings on.
-		WID_AIS_SCROLLBAR                            = ::WID_AIS_SCROLLBAR,                            ///< Scrollbar to scroll through all settings.
-		WID_AIS_ACCEPT                               = ::WID_AIS_ACCEPT,                               ///< Accept button.
-		WID_AIS_RESET                                = ::WID_AIS_RESET,                                ///< Reset button.
-	};
-
 	/** Widgets of the #AIConfigWindow class. */
 	enum AIConfigWidgets {
 		WID_AIC_BACKGROUND                           = ::WID_AIC_BACKGROUND,                           ///< Window background.
 		WID_AIC_DECREASE                             = ::WID_AIC_DECREASE,                             ///< Decrease the number of AIs.
 		WID_AIC_INCREASE                             = ::WID_AIC_INCREASE,                             ///< Increase the number of AIs.
 		WID_AIC_NUMBER                               = ::WID_AIC_NUMBER,                               ///< Number of AIs.
-		WID_AIC_GAMELIST                             = ::WID_AIC_GAMELIST,                             ///< List with current selected GameScript.
 		WID_AIC_LIST                                 = ::WID_AIC_LIST,                                 ///< List with currently selected AIs.
 		WID_AIC_SCROLLBAR                            = ::WID_AIC_SCROLLBAR,                            ///< Scrollbar to scroll through the selected AIs.
 		WID_AIC_MOVE_UP                              = ::WID_AIC_MOVE_UP,                              ///< Move up button.
@@ -989,24 +979,6 @@ public:
 		WID_AIC_CLOSE                                = ::WID_AIC_CLOSE,                                ///< Close window button.
 		WID_AIC_TEXTFILE                             = ::WID_AIC_TEXTFILE,                             ///< Open AI readme, changelog (+1) or license (+2).
 		WID_AIC_CONTENT_DOWNLOAD                     = ::WID_AIC_CONTENT_DOWNLOAD,                     ///< Download content button.
-	};
-
-	/** Widgets of the #AIDebugWindow class. */
-	enum AIDebugWidgets {
-		WID_AID_VIEW                                 = ::WID_AID_VIEW,                                 ///< The row of company buttons.
-		WID_AID_NAME_TEXT                            = ::WID_AID_NAME_TEXT,                            ///< Name of the current selected.
-		WID_AID_SETTINGS                             = ::WID_AID_SETTINGS,                             ///< Settings button.
-		WID_AID_SCRIPT_GAME                          = ::WID_AID_SCRIPT_GAME,                          ///< Game Script button.
-		WID_AID_RELOAD_TOGGLE                        = ::WID_AID_RELOAD_TOGGLE,                        ///< Reload button.
-		WID_AID_LOG_PANEL                            = ::WID_AID_LOG_PANEL,                            ///< Panel where the log is in.
-		WID_AID_SCROLLBAR                            = ::WID_AID_SCROLLBAR,                            ///< Scrollbar of the log panel.
-		WID_AID_COMPANY_BUTTON_START                 = ::WID_AID_COMPANY_BUTTON_START,                 ///< Buttons in the VIEW.
-		WID_AID_COMPANY_BUTTON_END                   = ::WID_AID_COMPANY_BUTTON_END,                   ///< Last possible button in the VIEW.
-		WID_AID_BREAK_STRING_WIDGETS                 = ::WID_AID_BREAK_STRING_WIDGETS,                 ///< The panel to handle the breaking on string.
-		WID_AID_BREAK_STR_ON_OFF_BTN                 = ::WID_AID_BREAK_STR_ON_OFF_BTN,                 ///< Enable breaking on string.
-		WID_AID_BREAK_STR_EDIT_BOX                   = ::WID_AID_BREAK_STR_EDIT_BOX,                   ///< Edit box for the string to break on.
-		WID_AID_MATCH_CASE_BTN                       = ::WID_AID_MATCH_CASE_BTN,                       ///< Checkbox to use match caching or not.
-		WID_AID_CONTINUE_BTN                         = ::WID_AID_CONTINUE_BTN,                         ///< Continue button.
 	};
 
 	/* automatically generated from ../../widgets/airport_widget.h */
@@ -1111,7 +1083,7 @@ public:
 		WID_BV_RENAME                                = ::WID_BV_RENAME,                                ///< Rename button.
 
 		WID_BV_CAPTION_LOCO                          = ::WID_BV_CAPTION_LOCO,                          ///< Caption of locomotive half of the window.
-		WID_BV_SORT_ASSENDING_DESCENDING_LOCO        = ::WID_BV_SORT_ASSENDING_DESCENDING_LOCO,        ///< Sort direction.
+		WID_BV_SORT_ASCENDING_DESCENDING_LOCO        = ::WID_BV_SORT_ASCENDING_DESCENDING_LOCO,        ///< Sort direction.
 		WID_BV_SORT_DROPDOWN_LOCO                    = ::WID_BV_SORT_DROPDOWN_LOCO,                    ///< Criteria of sorting dropdown.
 		WID_BV_CARGO_FILTER_DROPDOWN_LOCO            = ::WID_BV_CARGO_FILTER_DROPDOWN_LOCO,            ///< Cargo filter dropdown.
 		WID_BV_SHOW_HIDDEN_LOCOS                     = ::WID_BV_SHOW_HIDDEN_LOCOS,                     ///< Toggle whether to display the hidden locomotives.
@@ -1124,7 +1096,7 @@ public:
 		WID_BV_RENAME_LOCO                           = ::WID_BV_RENAME_LOCO,                           ///< Rename button.
 
 		WID_BV_CAPTION_WAGON                         = ::WID_BV_CAPTION_WAGON,                         ///< Caption of wagon half of the window.
-		WID_BV_SORT_ASSENDING_DESCENDING_WAGON       = ::WID_BV_SORT_ASSENDING_DESCENDING_WAGON,       ///< Sort direction.
+		WID_BV_SORT_ASCENDING_DESCENDING_WAGON       = ::WID_BV_SORT_ASCENDING_DESCENDING_WAGON,       ///< Sort direction.
 		WID_BV_SORT_DROPDOWN_WAGON                   = ::WID_BV_SORT_DROPDOWN_WAGON,                   ///< Criteria of sorting dropdown.
 		WID_BV_CARGO_FILTER_DROPDOWN_WAGON           = ::WID_BV_CARGO_FILTER_DROPDOWN_WAGON,           ///< Cargo filter dropdown.
 		WID_BV_SHOW_HIDDEN_WAGONS                    = ::WID_BV_SHOW_HIDDEN_WAGONS,                    ///< Toggle whether to display the hidden wagons.
@@ -1135,6 +1107,15 @@ public:
 		WID_BV_BUILD_WAGON                           = ::WID_BV_BUILD_WAGON,                           ///< Build panel.
 		WID_BV_BUILD_SEL_WAGON                       = ::WID_BV_BUILD_SEL_WAGON,                       ///< Build button.
 		WID_BV_RENAME_WAGON                          = ::WID_BV_RENAME_WAGON,                          ///< Rename button.
+
+		WID_BV_LOCO_BUTTONS_SEL                      = ::WID_BV_LOCO_BUTTONS_SEL,                      ///< Locomotive buttons selector.
+		WID_BV_WAGON_BUTTONS_SEL                     = ::WID_BV_WAGON_BUTTONS_SEL,                     ///< Wagon buttons selector.
+
+		WID_BV_COMB_BUTTONS_SEL                      = ::WID_BV_COMB_BUTTONS_SEL,                      ///< Combined buttons: section selector.
+		WID_BV_COMB_BUILD_SEL                        = ::WID_BV_COMB_BUILD_SEL,                        ///< Combined buttons: build button selector.
+		WID_BV_COMB_BUILD                            = ::WID_BV_COMB_BUILD,                            ///< Combined buttons: build button.
+		WID_BV_COMB_SHOW_HIDE                        = ::WID_BV_COMB_SHOW_HIDE,                        ///< Combined buttons: show/hide button.
+		WID_BV_COMB_RENAME                           = ::WID_BV_COMB_RENAME,                           ///< Combined buttons: rename button.
 	};
 
 	/* automatically generated from ../../widgets/cheat_widget.h */
@@ -1468,6 +1449,20 @@ public:
 		WID_FGW_GRAPH                                = ::WID_FGW_GRAPH,
 	};
 
+	/* automatically generated from ../../widgets/game_widget.h */
+	/** Widgets of the #GSConfigWindow class. */
+	enum GSConfigWidgets {
+		WID_GSC_BACKGROUND                           = ::WID_GSC_BACKGROUND,                           ///< Window background.
+		WID_GSC_GSLIST                               = ::WID_GSC_GSLIST,                               ///< List with current selected Game Script.
+		WID_GSC_SETTINGS                             = ::WID_GSC_SETTINGS,                             ///< Panel to draw the Game Script settings on
+		WID_GSC_SCROLLBAR                            = ::WID_GSC_SCROLLBAR,                            ///< Scrollbar to scroll through the selected AIs.
+		WID_GSC_CHANGE                               = ::WID_GSC_CHANGE,                               ///< Select another Game Script button.
+		WID_GSC_TEXTFILE                             = ::WID_GSC_TEXTFILE,                             ///< Open GS readme, changelog (+1) or license (+2).
+		WID_GSC_CONTENT_DOWNLOAD                     = ::WID_GSC_CONTENT_DOWNLOAD,                     ///< Download content button.
+		WID_GSC_ACCEPT                               = ::WID_GSC_ACCEPT,                               ///< Accept ("Close") button
+		WID_GSC_RESET                                = ::WID_GSC_RESET,                                ///< Reset button.
+	};
+
 	/* automatically generated from ../../widgets/genworld_widget.h */
 	/** Widgets of the #GenerateLandscapeWindow class. */
 	enum GenerateLandscapeWidgets {
@@ -1526,6 +1521,10 @@ public:
 		WID_GL_WATER_NE                              = ::WID_GL_WATER_NE,                              ///< NE 'Water'/'Freeform'.
 		WID_GL_WATER_SE                              = ::WID_GL_WATER_SE,                              ///< SE 'Water'/'Freeform'.
 		WID_GL_WATER_SW                              = ::WID_GL_WATER_SW,                              ///< SW 'Water'/'Freeform'.
+
+		WID_GL_AI_BUTTON                             = ::WID_GL_AI_BUTTON,                             ///< 'AI Settings' button.
+		WID_GL_GS_BUTTON                             = ::WID_GL_GS_BUTTON,                             ///< 'Game Script Settings' button.
+		WID_GL_NEWGRF_BUTTON                         = ::WID_GL_NEWGRF_BUTTON,                         ///< 'NewGRF Settings' button.
 
 		WID_GL_CLIMATE_SEL_LABEL                     = ::WID_GL_CLIMATE_SEL_LABEL,                     ///< NWID_SELECTION for snow or desert coverage label
 		WID_GL_CLIMATE_SEL_SELECTOR                  = ::WID_GL_CLIMATE_SEL_SELECTOR,                  ///< NWID_SELECTION for snow or desert coverage selector
@@ -1633,11 +1632,6 @@ public:
 		WID_SCG_MATRIX_SCROLLBAR                     = ::WID_SCG_MATRIX_SCROLLBAR,                     ///< Cargo list scrollbar.
 	};
 
-	/** Widget of the #CompanyLeagueWindow class. */
-	enum CompanyLeagueWidgets {
-		WID_CL_BACKGROUND                            = ::WID_CL_BACKGROUND,                            ///< Background of the window.
-	};
-
 	/** Widget of the #PerformanceRatingDetailWindow class. */
 	enum PerformanceRatingDetailsWidgets {
 		WID_PRD_SCORE_FIRST                          = ::WID_PRD_SCORE_FIRST,                          ///< First entry in the score list.
@@ -1725,6 +1719,7 @@ public:
 		WID_ID_DROPDOWN_CRITERIA                     = ::WID_ID_DROPDOWN_CRITERIA,                     ///< Dropdown for the criteria of the sort.
 		WID_ID_FILTER_BY_ACC_CARGO                   = ::WID_ID_FILTER_BY_ACC_CARGO,                   ///< Accepted cargo filter dropdown list.
 		WID_ID_FILTER_BY_PROD_CARGO                  = ::WID_ID_FILTER_BY_PROD_CARGO,                  ///< Produced cargo filter dropdown list.
+		WID_ID_FILTER                                = ::WID_ID_FILTER,                                ///< Textbox to filter industry name.
 		WID_ID_INDUSTRY_LIST                         = ::WID_ID_INDUSTRY_LIST,                         ///< Industry list.
 		WID_ID_SCROLLBAR                             = ::WID_ID_SCROLLBAR,                             ///< Scrollbar of the list.
 	};
@@ -1762,7 +1757,20 @@ public:
 		WID_SGI_GRF_SETTINGS                         = ::WID_SGI_GRF_SETTINGS,                         ///< NewGRF button.
 		WID_SGI_CONTENT_DOWNLOAD                     = ::WID_SGI_CONTENT_DOWNLOAD,                     ///< Content Download button.
 		WID_SGI_AI_SETTINGS                          = ::WID_SGI_AI_SETTINGS,                          ///< AI button.
+		WID_SGI_GS_SETTINGS                          = ::WID_SGI_GS_SETTINGS,                          ///< Game Script button.
 		WID_SGI_EXIT                                 = ::WID_SGI_EXIT,                                 ///< Exit button.
+	};
+
+	/* automatically generated from ../../widgets/league_widget.h */
+	/** Widget of the #PerformanceLeagueWindow class. */
+	enum PerformanceLeagueWidgets {
+		WID_PLT_BACKGROUND                           = ::WID_PLT_BACKGROUND,                           ///< Background of the window.
+	};
+
+	/** Widget of the #ScriptLeagueWindow class. */
+	enum ScriptLeagueWidgets {
+		WID_SLT_CAPTION                              = ::WID_SLT_CAPTION,                              ///< Caption of the window.
+		WID_SLT_BACKGROUND                           = ::WID_SLT_BACKGROUND,                           ///< Background of the window.
 	};
 
 	/* automatically generated from ../../widgets/link_graph_legend_widget.h */
@@ -1899,7 +1907,8 @@ public:
 	/* automatically generated from ../../widgets/network_content_widget.h */
 	/** Widgets of the #NetworkContentDownloadStatusWindow class. */
 	enum NetworkContentDownloadStatusWidgets {
-		WID_NCDS_BACKGROUND                          = ::WID_NCDS_BACKGROUND,                          ///< Background of the window.
+		WID_NCDS_PROGRESS_BAR                        = ::WID_NCDS_PROGRESS_BAR,                        ///< Simple progress bar.
+		WID_NCDS_PROGRESS_TEXT                       = ::WID_NCDS_PROGRESS_TEXT,                       ///< Text explaining what is happening.
 		WID_NCDS_CANCELOK                            = ::WID_NCDS_CANCELOK,                            ///< (Optional) Cancel/OK button.
 	};
 
@@ -2016,7 +2025,8 @@ public:
 
 	/** Widgets of the #NetworkJoinStatusWindow class. */
 	enum NetworkJoinStatusWidgets {
-		WID_NJS_BACKGROUND                           = ::WID_NJS_BACKGROUND,                           ///< Background of the window.
+		WID_NJS_PROGRESS_BAR                         = ::WID_NJS_PROGRESS_BAR,                         ///< Simple progress bar.
+		WID_NJS_PROGRESS_TEXT                        = ::WID_NJS_PROGRESS_TEXT,                        ///< Text explaining what is happening.
 		WID_NJS_CANCELOK                             = ::WID_NJS_CANCELOK,                             ///< Cancel / OK button.
 	};
 
@@ -2078,6 +2088,8 @@ public:
 		WID_SA_LIST                                  = ::WID_SA_LIST,                                  ///< Queried sprite list.
 		WID_SA_SCROLLBAR                             = ::WID_SA_SCROLLBAR,                             ///< Scrollbar for sprite list.
 		WID_SA_RESET_REL                             = ::WID_SA_RESET_REL,                             ///< Reset relative sprite offset
+		WID_SA_CENTRE                                = ::WID_SA_CENTRE,                                ///< Toggle centre sprite.
+		WID_SA_CROSSHAIR                             = ::WID_SA_CROSSHAIR,                             ///< Toggle crosshair.
 	};
 
 	/* automatically generated from ../../widgets/newgrf_widget.h */
@@ -2227,6 +2239,7 @@ public:
 		WID_O_COUNTER_OP                             = ::WID_O_COUNTER_OP,                             ///< Choose counter operation.
 		WID_O_CHANGE_COUNTER                         = ::WID_O_CHANGE_COUNTER,                         ///< Choose counter to change.
 		WID_O_COUNTER_VALUE                          = ::WID_O_COUNTER_VALUE,                          ///< Choose counter value.
+		WID_O_TEXT_LABEL                             = ::WID_O_TEXT_LABEL,                             ///< Choose text label.
 		WID_O_SEL_COND_VALUE                         = ::WID_O_SEL_COND_VALUE,                         ///< Widget for conditional value or conditional cargo type.
 		WID_O_SEL_COND_AUX                           = ::WID_O_SEL_COND_AUX,                           ///< Widget for auxiliary conditional cargo type.
 		WID_O_SEL_COND_AUX2                          = ::WID_O_SEL_COND_AUX2,                          ///< Widget for auxiliary conditional via button.
@@ -2520,6 +2533,44 @@ public:
 		WID_SC_TAKE_INDUSTRY                         = ::WID_SC_TAKE_INDUSTRY,                         ///< Button for taking a industry screenshot
 	};
 
+	/* automatically generated from ../../widgets/script_widget.h */
+	/** Widgets of the #ScriptListWindow class. */
+	enum ScriptListWidgets {
+		WID_SCRL_CAPTION                             = ::WID_SCRL_CAPTION,                             ///< Caption of the window.
+		WID_SCRL_LIST                                = ::WID_SCRL_LIST,                                ///< The matrix with all available Scripts.
+		WID_SCRL_SCROLLBAR                           = ::WID_SCRL_SCROLLBAR,                           ///< Scrollbar next to the Script list.
+		WID_SCRL_INFO_BG                             = ::WID_SCRL_INFO_BG,                             ///< Panel to draw some Script information on.
+		WID_SCRL_ACCEPT                              = ::WID_SCRL_ACCEPT,                              ///< Accept button.
+		WID_SCRL_CANCEL                              = ::WID_SCRL_CANCEL,                              ///< Cancel button.
+	};
+
+	/** Widgets of the #ScriptSettingsWindow class. */
+	enum ScriptSettingsWidgets {
+		WID_SCRS_CAPTION                             = ::WID_SCRS_CAPTION,                             ///< Caption of the window.
+		WID_SCRS_BACKGROUND                          = ::WID_SCRS_BACKGROUND,                          ///< Panel to draw the settings on.
+		WID_SCRS_SCROLLBAR                           = ::WID_SCRS_SCROLLBAR,                           ///< Scrollbar to scroll through all settings.
+		WID_SCRS_ACCEPT                              = ::WID_SCRS_ACCEPT,                              ///< Accept button.
+		WID_SCRS_RESET                               = ::WID_SCRS_RESET,                               ///< Reset button.
+	};
+
+	/** Widgets of the #ScriptDebugWindow class. */
+	enum ScriptDebugWidgets {
+		WID_SCRD_VIEW                                = ::WID_SCRD_VIEW,                                ///< The row of company buttons.
+		WID_SCRD_NAME_TEXT                           = ::WID_SCRD_NAME_TEXT,                           ///< Name of the current selected.
+		WID_SCRD_SETTINGS                            = ::WID_SCRD_SETTINGS,                            ///< Settings button.
+		WID_SCRD_SCRIPT_GAME                         = ::WID_SCRD_SCRIPT_GAME,                         ///< Game Script button.
+		WID_SCRD_RELOAD_TOGGLE                       = ::WID_SCRD_RELOAD_TOGGLE,                       ///< Reload button.
+		WID_SCRD_LOG_PANEL                           = ::WID_SCRD_LOG_PANEL,                           ///< Panel where the log is in.
+		WID_SCRD_SCROLLBAR                           = ::WID_SCRD_SCROLLBAR,                           ///< Scrollbar of the log panel.
+		WID_SCRD_COMPANY_BUTTON_START                = ::WID_SCRD_COMPANY_BUTTON_START,                ///< Buttons in the VIEW.
+		WID_SCRD_COMPANY_BUTTON_END                  = ::WID_SCRD_COMPANY_BUTTON_END,                  ///< Last possible button in the VIEW.
+		WID_SCRD_BREAK_STRING_WIDGETS                = ::WID_SCRD_BREAK_STRING_WIDGETS,                ///< The panel to handle the breaking on string.
+		WID_SCRD_BREAK_STR_ON_OFF_BTN                = ::WID_SCRD_BREAK_STR_ON_OFF_BTN,                ///< Enable breaking on string.
+		WID_SCRD_BREAK_STR_EDIT_BOX                  = ::WID_SCRD_BREAK_STR_EDIT_BOX,                  ///< Edit box for the string to break on.
+		WID_SCRD_MATCH_CASE_BTN                      = ::WID_SCRD_MATCH_CASE_BTN,                      ///< Checkbox to use match caching or not.
+		WID_SCRD_CONTINUE_BTN                        = ::WID_SCRD_CONTINUE_BTN,                        ///< Continue button.
+	};
+
 	/* automatically generated from ../../widgets/settings_widget.h */
 	/** Widgets of the #GameOptionsWindow class. */
 	enum GameOptionsWidgets {
@@ -2530,7 +2581,9 @@ public:
 		WID_GO_LANG_DROPDOWN                         = ::WID_GO_LANG_DROPDOWN,                         ///< Language dropdown.
 		WID_GO_RESOLUTION_DROPDOWN                   = ::WID_GO_RESOLUTION_DROPDOWN,                   ///< Dropdown for the resolution.
 		WID_GO_FULLSCREEN_BUTTON                     = ::WID_GO_FULLSCREEN_BUTTON,                     ///< Toggle fullscreen.
-		WID_GO_GUI_ZOOM_DROPDOWN                     = ::WID_GO_GUI_ZOOM_DROPDOWN,                     ///< Dropdown for the GUI zoom level.
+		WID_GO_GUI_SCALE                             = ::WID_GO_GUI_SCALE,                             ///< GUI Scale slider.
+		WID_GO_GUI_SCALE_AUTO                        = ::WID_GO_GUI_SCALE_AUTO,                        ///< Autodetect GUI scale button.
+		WID_GO_GUI_SCALE_BEVEL_BUTTON                = ::WID_GO_GUI_SCALE_BEVEL_BUTTON,                ///< Toggle for chunky bevels.
 		WID_GO_BASE_GRF_DROPDOWN                     = ::WID_GO_BASE_GRF_DROPDOWN,                     ///< Use to select a base GRF.
 		WID_GO_BASE_GRF_STATUS                       = ::WID_GO_BASE_GRF_STATUS,                       ///< Info about missing files etc.
 		WID_GO_BASE_GRF_TEXTFILE                     = ::WID_GO_BASE_GRF_TEXTFILE,                     ///< Open base GRF readme, changelog (+1) or license (+2).
@@ -2541,10 +2594,10 @@ public:
 		WID_GO_BASE_SFX_DESCRIPTION                  = ::WID_GO_BASE_SFX_DESCRIPTION,                  ///< Description of selected base SFX.
 		WID_GO_BASE_MUSIC_DROPDOWN                   = ::WID_GO_BASE_MUSIC_DROPDOWN,                   ///< Use to select a base music set.
 		WID_GO_BASE_MUSIC_VOLUME                     = ::WID_GO_BASE_MUSIC_VOLUME,                     ///< Change music volume.
+		WID_GO_BASE_MUSIC_JUKEBOX                    = ::WID_GO_BASE_MUSIC_JUKEBOX,                    ///< Open the jukebox.
 		WID_GO_BASE_MUSIC_STATUS                     = ::WID_GO_BASE_MUSIC_STATUS,                     ///< Info about corrupted files etc.
 		WID_GO_BASE_MUSIC_TEXTFILE                   = ::WID_GO_BASE_MUSIC_TEXTFILE,                   ///< Open base music readme, changelog (+1) or license (+2).
 		WID_GO_BASE_MUSIC_DESCRIPTION                = ::WID_GO_BASE_MUSIC_DESCRIPTION,                ///< Description of selected base music set.
-		WID_GO_FONT_ZOOM_DROPDOWN                    = ::WID_GO_FONT_ZOOM_DROPDOWN,                    ///< Dropdown for the font zoom level.
 		WID_GO_VIDEO_ACCEL_BUTTON                    = ::WID_GO_VIDEO_ACCEL_BUTTON,                    ///< Toggle for video acceleration.
 		WID_GO_VIDEO_VSYNC_BUTTON                    = ::WID_GO_VIDEO_VSYNC_BUTTON,                    ///< Toggle for video vsync.
 		WID_GO_REFRESH_RATE_DROPDOWN                 = ::WID_GO_REFRESH_RATE_DROPDOWN,                 ///< Dropdown for all available refresh rates.
@@ -2894,6 +2947,7 @@ public:
 		WID_TF_NEW_TOWN                              = ::WID_TF_NEW_TOWN,                              ///< Create a new town.
 		WID_TF_RANDOM_TOWN                           = ::WID_TF_RANDOM_TOWN,                           ///< Randomly place a town.
 		WID_TF_MANY_RANDOM_TOWNS                     = ::WID_TF_MANY_RANDOM_TOWNS,                     ///< Randomly place many towns.
+		WID_TF_EXPAND_ALL_TOWNS                      = ::WID_TF_EXPAND_ALL_TOWNS,                      ///< Make all towns grow slightly.
 		WID_TF_TOWN_NAME_EDITBOX                     = ::WID_TF_TOWN_NAME_EDITBOX,                     ///< Editor for the town name.
 		WID_TF_TOWN_NAME_RANDOM                      = ::WID_TF_TOWN_NAME_RANDOM,                      ///< Generate a random town name.
 		WID_TF_SIZE_SMALL                            = ::WID_TF_SIZE_SMALL,                            ///< Selection for a small town.
@@ -2988,6 +3042,7 @@ public:
 		WID_VV_SELECT_REFIT_TURN                     = ::WID_VV_SELECT_REFIT_TURN,                     ///< Selection widget between 'refit' and 'turn around' buttons.
 		WID_VV_TURN_AROUND                           = ::WID_VV_TURN_AROUND,                           ///< Turn this vehicle around.
 		WID_VV_FORCE_PROCEED                         = ::WID_VV_FORCE_PROCEED,                         ///< Force this vehicle to pass a signal at danger.
+		WID_VV_HONK_HORN                             = ::WID_VV_HONK_HORN,                             ///< Honk the vehicles horn (not drawn on UI, only used for hotkey).
 	};
 
 	/** Widgets of the #RefitWindow class. */
@@ -2996,6 +3051,7 @@ public:
 		WID_VR_VEHICLE_PANEL_DISPLAY                 = ::WID_VR_VEHICLE_PANEL_DISPLAY,                 ///< Display with a representation of the vehicle to refit.
 		WID_VR_SHOW_HSCROLLBAR                       = ::WID_VR_SHOW_HSCROLLBAR,                       ///< Selection widget for the horizontal scrollbar.
 		WID_VR_HSCROLLBAR                            = ::WID_VR_HSCROLLBAR,                            ///< Horizontal scrollbar or the vehicle display.
+		WID_VR_VEHICLE_DROPDOWN                      = ::WID_VR_VEHICLE_DROPDOWN,                      ///< Dropdown for the vehicle display.
 		WID_VR_SELECT_HEADER                         = ::WID_VR_SELECT_HEADER,                         ///< Header with question about the cargo to carry.
 		WID_VR_MATRIX                                = ::WID_VR_MATRIX,                                ///< Options to refit to.
 		WID_VR_SCROLLBAR                             = ::WID_VR_SCROLLBAR,                             ///< Scrollbar for the refit options.

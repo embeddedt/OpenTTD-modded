@@ -385,6 +385,7 @@ src/all: src/saveload/all
 src/all: src/sound/all
 src/all: src/spriteloader/all
 src/all: src/table/all
+src/all: src/tests/all
 src/all: src/video/all
 src/all: src/widgets/all
 
@@ -411,6 +412,7 @@ src/clean: src/saveload/clean
 src/clean: src/sound/clean
 src/clean: src/spriteloader/clean
 src/clean: src/table/clean
+src/clean: src/tests/clean
 src/clean: src/video/clean
 src/clean: src/widgets/clean
 
@@ -437,6 +439,7 @@ src/preinstall: src/saveload/preinstall
 src/preinstall: src/sound/preinstall
 src/preinstall: src/spriteloader/preinstall
 src/preinstall: src/table/preinstall
+src/preinstall: src/tests/preinstall
 src/preinstall: src/video/preinstall
 src/preinstall: src/widgets/preinstall
 
@@ -715,6 +718,7 @@ src/strgen/preinstall:
 # Directory level rules for directory src/3rdparty
 
 # Convenience name for "all" pass in the directory.
+src/3rdparty/all: src/3rdparty/fmt/all
 src/3rdparty/all: src/3rdparty/md5/all
 src/3rdparty/all: src/3rdparty/squirrel/all
 src/3rdparty/all: src/3rdparty/opengl/all
@@ -723,10 +727,13 @@ src/3rdparty/all: src/3rdparty/cpp-btree/all
 src/3rdparty/all: src/3rdparty/mingw-std-threads/all
 src/3rdparty/all: src/3rdparty/monocypher/all
 src/3rdparty/all: src/3rdparty/randombytes/all
+src/3rdparty/all: src/3rdparty/optional/all
+src/3rdparty/all: src/3rdparty/robin_hood/all
 
 .PHONY : src/3rdparty/all
 
 # Convenience name for "clean" pass in the directory.
+src/3rdparty/clean: src/3rdparty/fmt/clean
 src/3rdparty/clean: src/3rdparty/md5/clean
 src/3rdparty/clean: src/3rdparty/squirrel/clean
 src/3rdparty/clean: src/3rdparty/opengl/clean
@@ -735,10 +742,13 @@ src/3rdparty/clean: src/3rdparty/cpp-btree/clean
 src/3rdparty/clean: src/3rdparty/mingw-std-threads/clean
 src/3rdparty/clean: src/3rdparty/monocypher/clean
 src/3rdparty/clean: src/3rdparty/randombytes/clean
+src/3rdparty/clean: src/3rdparty/optional/clean
+src/3rdparty/clean: src/3rdparty/robin_hood/clean
 
 .PHONY : src/3rdparty/clean
 
 # Convenience name for "preinstall" pass in the directory.
+src/3rdparty/preinstall: src/3rdparty/fmt/preinstall
 src/3rdparty/preinstall: src/3rdparty/md5/preinstall
 src/3rdparty/preinstall: src/3rdparty/squirrel/preinstall
 src/3rdparty/preinstall: src/3rdparty/opengl/preinstall
@@ -747,8 +757,28 @@ src/3rdparty/preinstall: src/3rdparty/cpp-btree/preinstall
 src/3rdparty/preinstall: src/3rdparty/mingw-std-threads/preinstall
 src/3rdparty/preinstall: src/3rdparty/monocypher/preinstall
 src/3rdparty/preinstall: src/3rdparty/randombytes/preinstall
+src/3rdparty/preinstall: src/3rdparty/optional/preinstall
+src/3rdparty/preinstall: src/3rdparty/robin_hood/preinstall
 
 .PHONY : src/3rdparty/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/3rdparty/fmt
+
+# Convenience name for "all" pass in the directory.
+src/3rdparty/fmt/all:
+
+.PHONY : src/3rdparty/fmt/all
+
+# Convenience name for "clean" pass in the directory.
+src/3rdparty/fmt/clean:
+
+.PHONY : src/3rdparty/fmt/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/3rdparty/fmt/preinstall:
+
+.PHONY : src/3rdparty/fmt/preinstall
 
 #=============================================================================
 # Directory level rules for directory src/3rdparty/md5
@@ -955,6 +985,42 @@ src/3rdparty/randombytes/preinstall:
 .PHONY : src/3rdparty/randombytes/preinstall
 
 #=============================================================================
+# Directory level rules for directory src/3rdparty/optional
+
+# Convenience name for "all" pass in the directory.
+src/3rdparty/optional/all:
+
+.PHONY : src/3rdparty/optional/all
+
+# Convenience name for "clean" pass in the directory.
+src/3rdparty/optional/clean:
+
+.PHONY : src/3rdparty/optional/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/3rdparty/optional/preinstall:
+
+.PHONY : src/3rdparty/optional/preinstall
+
+#=============================================================================
+# Directory level rules for directory src/3rdparty/robin_hood
+
+# Convenience name for "all" pass in the directory.
+src/3rdparty/robin_hood/all:
+
+.PHONY : src/3rdparty/robin_hood/all
+
+# Convenience name for "clean" pass in the directory.
+src/3rdparty/robin_hood/clean:
+
+.PHONY : src/3rdparty/robin_hood/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/3rdparty/robin_hood/preinstall:
+
+.PHONY : src/3rdparty/robin_hood/preinstall
+
+#=============================================================================
 # Directory level rules for directory src/ai
 
 # Convenience name for "all" pass in the directory.
@@ -1070,12 +1136,12 @@ src/lang/preinstall:
 src/lang/CMakeFiles/language_files.dir/all:
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/depend
 	$(MAKE) -f src/lang/CMakeFiles/language_files.dir/build.make src/lang/CMakeFiles/language_files.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7,8,9,10,11,12,13,14 "Built target language_files"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=8,9,10,11,12,13,14 "Built target language_files"
 .PHONY : src/lang/CMakeFiles/language_files.dir/all
 
 # Build rule for subdir invocation for target.
 src/lang/CMakeFiles/language_files.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 src/lang/CMakeFiles/language_files.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : src/lang/CMakeFiles/language_files.dir/rule
@@ -1532,6 +1598,24 @@ clean: src/table/settings/CMakeFiles/table_settings.dir/clean
 .PHONY : clean
 
 #=============================================================================
+# Directory level rules for directory src/tests
+
+# Convenience name for "all" pass in the directory.
+src/tests/all:
+
+.PHONY : src/tests/all
+
+# Convenience name for "clean" pass in the directory.
+src/tests/clean:
+
+.PHONY : src/tests/clean
+
+# Convenience name for "preinstall" pass in the directory.
+src/tests/preinstall:
+
+.PHONY : src/tests/preinstall
+
+#=============================================================================
 # Directory level rules for directory src/video
 
 # Convenience name for "all" pass in the directory.
@@ -1644,12 +1728,12 @@ clean: media/CMakeFiles/media_files.dir/clean
 media/CMakeFiles/desktop_file.dir/all:
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/depend
 	$(MAKE) -f media/CMakeFiles/desktop_file.dir/build.make media/CMakeFiles/desktop_file.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num= "Built target desktop_file"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=7 "Built target desktop_file"
 .PHONY : media/CMakeFiles/desktop_file.dir/all
 
 # Build rule for subdir invocation for target.
 media/CMakeFiles/desktop_file.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 1
 	$(MAKE) -f CMakeFiles/Makefile2 media/CMakeFiles/desktop_file.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles 0
 .PHONY : media/CMakeFiles/desktop_file.dir/rule

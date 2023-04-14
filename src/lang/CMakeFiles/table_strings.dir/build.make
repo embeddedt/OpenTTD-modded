@@ -58,6 +58,7 @@ src/lang/CMakeFiles/table_strings: src/lang/strings.h.timestamp
 
 src/lang/strings.h.timestamp: ../build-host/src/strgen/strgen
 src/lang/strings.h.timestamp: ../src/lang/english.txt
+src/lang/strings.h.timestamp: ../src/lang/extra/english.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating table/strings.h"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/table
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /__w/OpenTTD-modded/OpenTTD-modded/build-host/src/strgen/strgen -s /__w/OpenTTD-modded/OpenTTD-modded/src/lang -d /__w/OpenTTD-modded/OpenTTD-modded/em_build/generated/table

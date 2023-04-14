@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /__w/OpenTTD-modded/OpenTTD-modded/em_build
 include src/lang/CMakeFiles/language_files.dir/progress.make
 
 src/lang/CMakeFiles/language_files: lang/english.lng
+src/lang/CMakeFiles/language_files: lang/english.lng
 src/lang/CMakeFiles/language_files: lang/afrikaans.lng
 src/lang/CMakeFiles/language_files: lang/arabic_egypt.lng
 src/lang/CMakeFiles/language_files: lang/basque.lng
@@ -122,7 +123,9 @@ src/lang/CMakeFiles/language_files: lang/welsh.lng
 
 lang/english.lng: ../build-host/src/strgen/strgen
 lang/english.lng: ../src/lang/english.txt
+lang/english.lng: ../src/lang/extra/english.txt
 lang/english.lng: ../src/lang/english.txt
+lang/english.lng: ../src/lang/extra/english.txt
 lang/english.lng: ../src/lang/english.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Compiling language english"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -130,7 +133,9 @@ lang/english.lng: ../src/lang/english.txt
 
 lang/afrikaans.lng: ../build-host/src/strgen/strgen
 lang/afrikaans.lng: ../src/lang/english.txt
+lang/afrikaans.lng: ../src/lang/extra/english.txt
 lang/afrikaans.lng: ../src/lang/english.txt
+lang/afrikaans.lng: ../src/lang/extra/afrikaans.txt
 lang/afrikaans.lng: ../src/lang/afrikaans.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Compiling language afrikaans"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -138,7 +143,9 @@ lang/afrikaans.lng: ../src/lang/afrikaans.txt
 
 lang/arabic_egypt.lng: ../build-host/src/strgen/strgen
 lang/arabic_egypt.lng: ../src/lang/english.txt
+lang/arabic_egypt.lng: ../src/lang/extra/english.txt
 lang/arabic_egypt.lng: ../src/lang/english.txt
+lang/arabic_egypt.lng: ../src/lang/extra/arabic_egypt.txt
 lang/arabic_egypt.lng: ../src/lang/arabic_egypt.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Compiling language arabic_egypt"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -146,7 +153,9 @@ lang/arabic_egypt.lng: ../src/lang/arabic_egypt.txt
 
 lang/basque.lng: ../build-host/src/strgen/strgen
 lang/basque.lng: ../src/lang/english.txt
+lang/basque.lng: ../src/lang/extra/english.txt
 lang/basque.lng: ../src/lang/english.txt
+lang/basque.lng: ../src/lang/extra/basque.txt
 lang/basque.lng: ../src/lang/basque.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Compiling language basque"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -154,7 +163,9 @@ lang/basque.lng: ../src/lang/basque.txt
 
 lang/belarusian.lng: ../build-host/src/strgen/strgen
 lang/belarusian.lng: ../src/lang/english.txt
+lang/belarusian.lng: ../src/lang/extra/english.txt
 lang/belarusian.lng: ../src/lang/english.txt
+lang/belarusian.lng: ../src/lang/extra/belarusian.txt
 lang/belarusian.lng: ../src/lang/belarusian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Compiling language belarusian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -162,7 +173,9 @@ lang/belarusian.lng: ../src/lang/belarusian.txt
 
 lang/brazilian_portuguese.lng: ../build-host/src/strgen/strgen
 lang/brazilian_portuguese.lng: ../src/lang/english.txt
+lang/brazilian_portuguese.lng: ../src/lang/extra/english.txt
 lang/brazilian_portuguese.lng: ../src/lang/english.txt
+lang/brazilian_portuguese.lng: ../src/lang/extra/brazilian_portuguese.txt
 lang/brazilian_portuguese.lng: ../src/lang/brazilian_portuguese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Compiling language brazilian_portuguese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -170,7 +183,9 @@ lang/brazilian_portuguese.lng: ../src/lang/brazilian_portuguese.txt
 
 lang/bulgarian.lng: ../build-host/src/strgen/strgen
 lang/bulgarian.lng: ../src/lang/english.txt
+lang/bulgarian.lng: ../src/lang/extra/english.txt
 lang/bulgarian.lng: ../src/lang/english.txt
+lang/bulgarian.lng: ../src/lang/extra/bulgarian.txt
 lang/bulgarian.lng: ../src/lang/bulgarian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Compiling language bulgarian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -178,7 +193,9 @@ lang/bulgarian.lng: ../src/lang/bulgarian.txt
 
 lang/catalan.lng: ../build-host/src/strgen/strgen
 lang/catalan.lng: ../src/lang/english.txt
+lang/catalan.lng: ../src/lang/extra/english.txt
 lang/catalan.lng: ../src/lang/english.txt
+lang/catalan.lng: ../src/lang/extra/catalan.txt
 lang/catalan.lng: ../src/lang/catalan.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Compiling language catalan"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -186,7 +203,9 @@ lang/catalan.lng: ../src/lang/catalan.txt
 
 lang/chuvash.lng: ../build-host/src/strgen/strgen
 lang/chuvash.lng: ../src/lang/english.txt
+lang/chuvash.lng: ../src/lang/extra/english.txt
 lang/chuvash.lng: ../src/lang/english.txt
+lang/chuvash.lng: ../src/lang/extra/chuvash.txt
 lang/chuvash.lng: ../src/lang/chuvash.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Compiling language chuvash"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -194,7 +213,9 @@ lang/chuvash.lng: ../src/lang/chuvash.txt
 
 lang/croatian.lng: ../build-host/src/strgen/strgen
 lang/croatian.lng: ../src/lang/english.txt
+lang/croatian.lng: ../src/lang/extra/english.txt
 lang/croatian.lng: ../src/lang/english.txt
+lang/croatian.lng: ../src/lang/extra/croatian.txt
 lang/croatian.lng: ../src/lang/croatian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Compiling language croatian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -202,7 +223,9 @@ lang/croatian.lng: ../src/lang/croatian.txt
 
 lang/czech.lng: ../build-host/src/strgen/strgen
 lang/czech.lng: ../src/lang/english.txt
+lang/czech.lng: ../src/lang/extra/english.txt
 lang/czech.lng: ../src/lang/english.txt
+lang/czech.lng: ../src/lang/extra/czech.txt
 lang/czech.lng: ../src/lang/czech.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Compiling language czech"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -210,7 +233,9 @@ lang/czech.lng: ../src/lang/czech.txt
 
 lang/danish.lng: ../build-host/src/strgen/strgen
 lang/danish.lng: ../src/lang/english.txt
+lang/danish.lng: ../src/lang/extra/english.txt
 lang/danish.lng: ../src/lang/english.txt
+lang/danish.lng: ../src/lang/extra/danish.txt
 lang/danish.lng: ../src/lang/danish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Compiling language danish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -218,7 +243,9 @@ lang/danish.lng: ../src/lang/danish.txt
 
 lang/dutch.lng: ../build-host/src/strgen/strgen
 lang/dutch.lng: ../src/lang/english.txt
+lang/dutch.lng: ../src/lang/extra/english.txt
 lang/dutch.lng: ../src/lang/english.txt
+lang/dutch.lng: ../src/lang/extra/dutch.txt
 lang/dutch.lng: ../src/lang/dutch.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Compiling language dutch"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -226,7 +253,9 @@ lang/dutch.lng: ../src/lang/dutch.txt
 
 lang/english_AU.lng: ../build-host/src/strgen/strgen
 lang/english_AU.lng: ../src/lang/english.txt
+lang/english_AU.lng: ../src/lang/extra/english.txt
 lang/english_AU.lng: ../src/lang/english.txt
+lang/english_AU.lng: ../src/lang/extra/english_AU.txt
 lang/english_AU.lng: ../src/lang/english_AU.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Compiling language english_AU"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -234,7 +263,9 @@ lang/english_AU.lng: ../src/lang/english_AU.txt
 
 lang/english_US.lng: ../build-host/src/strgen/strgen
 lang/english_US.lng: ../src/lang/english.txt
+lang/english_US.lng: ../src/lang/extra/english.txt
 lang/english_US.lng: ../src/lang/english.txt
+lang/english_US.lng: ../src/lang/extra/english_US.txt
 lang/english_US.lng: ../src/lang/english_US.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Compiling language english_US"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -242,7 +273,9 @@ lang/english_US.lng: ../src/lang/english_US.txt
 
 lang/esperanto.lng: ../build-host/src/strgen/strgen
 lang/esperanto.lng: ../src/lang/english.txt
+lang/esperanto.lng: ../src/lang/extra/english.txt
 lang/esperanto.lng: ../src/lang/english.txt
+lang/esperanto.lng: ../src/lang/extra/esperanto.txt
 lang/esperanto.lng: ../src/lang/esperanto.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Compiling language esperanto"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -250,7 +283,9 @@ lang/esperanto.lng: ../src/lang/esperanto.txt
 
 lang/estonian.lng: ../build-host/src/strgen/strgen
 lang/estonian.lng: ../src/lang/english.txt
+lang/estonian.lng: ../src/lang/extra/english.txt
 lang/estonian.lng: ../src/lang/english.txt
+lang/estonian.lng: ../src/lang/extra/estonian.txt
 lang/estonian.lng: ../src/lang/estonian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Compiling language estonian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -258,7 +293,9 @@ lang/estonian.lng: ../src/lang/estonian.txt
 
 lang/faroese.lng: ../build-host/src/strgen/strgen
 lang/faroese.lng: ../src/lang/english.txt
+lang/faroese.lng: ../src/lang/extra/english.txt
 lang/faroese.lng: ../src/lang/english.txt
+lang/faroese.lng: ../src/lang/extra/faroese.txt
 lang/faroese.lng: ../src/lang/faroese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Compiling language faroese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -266,7 +303,9 @@ lang/faroese.lng: ../src/lang/faroese.txt
 
 lang/finnish.lng: ../build-host/src/strgen/strgen
 lang/finnish.lng: ../src/lang/english.txt
+lang/finnish.lng: ../src/lang/extra/english.txt
 lang/finnish.lng: ../src/lang/english.txt
+lang/finnish.lng: ../src/lang/extra/finnish.txt
 lang/finnish.lng: ../src/lang/finnish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Compiling language finnish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -274,7 +313,9 @@ lang/finnish.lng: ../src/lang/finnish.txt
 
 lang/french.lng: ../build-host/src/strgen/strgen
 lang/french.lng: ../src/lang/english.txt
+lang/french.lng: ../src/lang/extra/english.txt
 lang/french.lng: ../src/lang/english.txt
+lang/french.lng: ../src/lang/extra/french.txt
 lang/french.lng: ../src/lang/french.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Compiling language french"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -282,7 +323,9 @@ lang/french.lng: ../src/lang/french.txt
 
 lang/frisian.lng: ../build-host/src/strgen/strgen
 lang/frisian.lng: ../src/lang/english.txt
+lang/frisian.lng: ../src/lang/extra/english.txt
 lang/frisian.lng: ../src/lang/english.txt
+lang/frisian.lng: ../src/lang/extra/frisian.txt
 lang/frisian.lng: ../src/lang/frisian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Compiling language frisian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -290,7 +333,9 @@ lang/frisian.lng: ../src/lang/frisian.txt
 
 lang/gaelic.lng: ../build-host/src/strgen/strgen
 lang/gaelic.lng: ../src/lang/english.txt
+lang/gaelic.lng: ../src/lang/extra/english.txt
 lang/gaelic.lng: ../src/lang/english.txt
+lang/gaelic.lng: ../src/lang/extra/gaelic.txt
 lang/gaelic.lng: ../src/lang/gaelic.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Compiling language gaelic"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -298,7 +343,9 @@ lang/gaelic.lng: ../src/lang/gaelic.txt
 
 lang/galician.lng: ../build-host/src/strgen/strgen
 lang/galician.lng: ../src/lang/english.txt
+lang/galician.lng: ../src/lang/extra/english.txt
 lang/galician.lng: ../src/lang/english.txt
+lang/galician.lng: ../src/lang/extra/galician.txt
 lang/galician.lng: ../src/lang/galician.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Compiling language galician"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -306,7 +353,9 @@ lang/galician.lng: ../src/lang/galician.txt
 
 lang/german.lng: ../build-host/src/strgen/strgen
 lang/german.lng: ../src/lang/english.txt
+lang/german.lng: ../src/lang/extra/english.txt
 lang/german.lng: ../src/lang/english.txt
+lang/german.lng: ../src/lang/extra/german.txt
 lang/german.lng: ../src/lang/german.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Compiling language german"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -314,7 +363,9 @@ lang/german.lng: ../src/lang/german.txt
 
 lang/greek.lng: ../build-host/src/strgen/strgen
 lang/greek.lng: ../src/lang/english.txt
+lang/greek.lng: ../src/lang/extra/english.txt
 lang/greek.lng: ../src/lang/english.txt
+lang/greek.lng: ../src/lang/extra/greek.txt
 lang/greek.lng: ../src/lang/greek.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Compiling language greek"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -322,7 +373,9 @@ lang/greek.lng: ../src/lang/greek.txt
 
 lang/hebrew.lng: ../build-host/src/strgen/strgen
 lang/hebrew.lng: ../src/lang/english.txt
+lang/hebrew.lng: ../src/lang/extra/english.txt
 lang/hebrew.lng: ../src/lang/english.txt
+lang/hebrew.lng: ../src/lang/extra/hebrew.txt
 lang/hebrew.lng: ../src/lang/hebrew.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Compiling language hebrew"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -330,7 +383,9 @@ lang/hebrew.lng: ../src/lang/hebrew.txt
 
 lang/hindi.lng: ../build-host/src/strgen/strgen
 lang/hindi.lng: ../src/lang/english.txt
+lang/hindi.lng: ../src/lang/extra/english.txt
 lang/hindi.lng: ../src/lang/english.txt
+lang/hindi.lng: ../src/lang/extra/hindi.txt
 lang/hindi.lng: ../src/lang/hindi.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Compiling language hindi"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -338,7 +393,9 @@ lang/hindi.lng: ../src/lang/hindi.txt
 
 lang/hungarian.lng: ../build-host/src/strgen/strgen
 lang/hungarian.lng: ../src/lang/english.txt
+lang/hungarian.lng: ../src/lang/extra/english.txt
 lang/hungarian.lng: ../src/lang/english.txt
+lang/hungarian.lng: ../src/lang/extra/hungarian.txt
 lang/hungarian.lng: ../src/lang/hungarian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Compiling language hungarian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -346,7 +403,9 @@ lang/hungarian.lng: ../src/lang/hungarian.txt
 
 lang/icelandic.lng: ../build-host/src/strgen/strgen
 lang/icelandic.lng: ../src/lang/english.txt
+lang/icelandic.lng: ../src/lang/extra/english.txt
 lang/icelandic.lng: ../src/lang/english.txt
+lang/icelandic.lng: ../src/lang/extra/icelandic.txt
 lang/icelandic.lng: ../src/lang/icelandic.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Compiling language icelandic"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -354,7 +413,9 @@ lang/icelandic.lng: ../src/lang/icelandic.txt
 
 lang/ido.lng: ../build-host/src/strgen/strgen
 lang/ido.lng: ../src/lang/english.txt
+lang/ido.lng: ../src/lang/extra/english.txt
 lang/ido.lng: ../src/lang/english.txt
+lang/ido.lng: ../src/lang/extra/ido.txt
 lang/ido.lng: ../src/lang/ido.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Compiling language ido"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -362,7 +423,9 @@ lang/ido.lng: ../src/lang/ido.txt
 
 lang/indonesian.lng: ../build-host/src/strgen/strgen
 lang/indonesian.lng: ../src/lang/english.txt
+lang/indonesian.lng: ../src/lang/extra/english.txt
 lang/indonesian.lng: ../src/lang/english.txt
+lang/indonesian.lng: ../src/lang/extra/indonesian.txt
 lang/indonesian.lng: ../src/lang/indonesian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Compiling language indonesian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -370,7 +433,9 @@ lang/indonesian.lng: ../src/lang/indonesian.txt
 
 lang/irish.lng: ../build-host/src/strgen/strgen
 lang/irish.lng: ../src/lang/english.txt
+lang/irish.lng: ../src/lang/extra/english.txt
 lang/irish.lng: ../src/lang/english.txt
+lang/irish.lng: ../src/lang/extra/irish.txt
 lang/irish.lng: ../src/lang/irish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Compiling language irish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -378,7 +443,9 @@ lang/irish.lng: ../src/lang/irish.txt
 
 lang/italian.lng: ../build-host/src/strgen/strgen
 lang/italian.lng: ../src/lang/english.txt
+lang/italian.lng: ../src/lang/extra/english.txt
 lang/italian.lng: ../src/lang/english.txt
+lang/italian.lng: ../src/lang/extra/italian.txt
 lang/italian.lng: ../src/lang/italian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Compiling language italian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -386,7 +453,9 @@ lang/italian.lng: ../src/lang/italian.txt
 
 lang/japanese.lng: ../build-host/src/strgen/strgen
 lang/japanese.lng: ../src/lang/english.txt
+lang/japanese.lng: ../src/lang/extra/english.txt
 lang/japanese.lng: ../src/lang/english.txt
+lang/japanese.lng: ../src/lang/extra/japanese.txt
 lang/japanese.lng: ../src/lang/japanese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Compiling language japanese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -394,7 +463,9 @@ lang/japanese.lng: ../src/lang/japanese.txt
 
 lang/korean.lng: ../build-host/src/strgen/strgen
 lang/korean.lng: ../src/lang/english.txt
+lang/korean.lng: ../src/lang/extra/english.txt
 lang/korean.lng: ../src/lang/english.txt
+lang/korean.lng: ../src/lang/extra/korean.txt
 lang/korean.lng: ../src/lang/korean.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Compiling language korean"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -402,7 +473,9 @@ lang/korean.lng: ../src/lang/korean.txt
 
 lang/latin.lng: ../build-host/src/strgen/strgen
 lang/latin.lng: ../src/lang/english.txt
+lang/latin.lng: ../src/lang/extra/english.txt
 lang/latin.lng: ../src/lang/english.txt
+lang/latin.lng: ../src/lang/extra/latin.txt
 lang/latin.lng: ../src/lang/latin.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Compiling language latin"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -410,7 +483,9 @@ lang/latin.lng: ../src/lang/latin.txt
 
 lang/latvian.lng: ../build-host/src/strgen/strgen
 lang/latvian.lng: ../src/lang/english.txt
+lang/latvian.lng: ../src/lang/extra/english.txt
 lang/latvian.lng: ../src/lang/english.txt
+lang/latvian.lng: ../src/lang/extra/latvian.txt
 lang/latvian.lng: ../src/lang/latvian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Compiling language latvian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -418,7 +493,9 @@ lang/latvian.lng: ../src/lang/latvian.txt
 
 lang/lithuanian.lng: ../build-host/src/strgen/strgen
 lang/lithuanian.lng: ../src/lang/english.txt
+lang/lithuanian.lng: ../src/lang/extra/english.txt
 lang/lithuanian.lng: ../src/lang/english.txt
+lang/lithuanian.lng: ../src/lang/extra/lithuanian.txt
 lang/lithuanian.lng: ../src/lang/lithuanian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Compiling language lithuanian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -426,7 +503,9 @@ lang/lithuanian.lng: ../src/lang/lithuanian.txt
 
 lang/luxembourgish.lng: ../build-host/src/strgen/strgen
 lang/luxembourgish.lng: ../src/lang/english.txt
+lang/luxembourgish.lng: ../src/lang/extra/english.txt
 lang/luxembourgish.lng: ../src/lang/english.txt
+lang/luxembourgish.lng: ../src/lang/extra/luxembourgish.txt
 lang/luxembourgish.lng: ../src/lang/luxembourgish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Compiling language luxembourgish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -434,7 +513,9 @@ lang/luxembourgish.lng: ../src/lang/luxembourgish.txt
 
 lang/macedonian.lng: ../build-host/src/strgen/strgen
 lang/macedonian.lng: ../src/lang/english.txt
+lang/macedonian.lng: ../src/lang/extra/english.txt
 lang/macedonian.lng: ../src/lang/english.txt
+lang/macedonian.lng: ../src/lang/extra/macedonian.txt
 lang/macedonian.lng: ../src/lang/macedonian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Compiling language macedonian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -442,7 +523,9 @@ lang/macedonian.lng: ../src/lang/macedonian.txt
 
 lang/malay.lng: ../build-host/src/strgen/strgen
 lang/malay.lng: ../src/lang/english.txt
+lang/malay.lng: ../src/lang/extra/english.txt
 lang/malay.lng: ../src/lang/english.txt
+lang/malay.lng: ../src/lang/extra/malay.txt
 lang/malay.lng: ../src/lang/malay.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Compiling language malay"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -450,7 +533,9 @@ lang/malay.lng: ../src/lang/malay.txt
 
 lang/maltese.lng: ../build-host/src/strgen/strgen
 lang/maltese.lng: ../src/lang/english.txt
+lang/maltese.lng: ../src/lang/extra/english.txt
 lang/maltese.lng: ../src/lang/english.txt
+lang/maltese.lng: ../src/lang/extra/maltese.txt
 lang/maltese.lng: ../src/lang/maltese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Compiling language maltese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -458,7 +543,9 @@ lang/maltese.lng: ../src/lang/maltese.txt
 
 lang/marathi.lng: ../build-host/src/strgen/strgen
 lang/marathi.lng: ../src/lang/english.txt
+lang/marathi.lng: ../src/lang/extra/english.txt
 lang/marathi.lng: ../src/lang/english.txt
+lang/marathi.lng: ../src/lang/extra/marathi.txt
 lang/marathi.lng: ../src/lang/marathi.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Compiling language marathi"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -466,7 +553,9 @@ lang/marathi.lng: ../src/lang/marathi.txt
 
 lang/norwegian_bokmal.lng: ../build-host/src/strgen/strgen
 lang/norwegian_bokmal.lng: ../src/lang/english.txt
+lang/norwegian_bokmal.lng: ../src/lang/extra/english.txt
 lang/norwegian_bokmal.lng: ../src/lang/english.txt
+lang/norwegian_bokmal.lng: ../src/lang/extra/norwegian_bokmal.txt
 lang/norwegian_bokmal.lng: ../src/lang/norwegian_bokmal.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Compiling language norwegian_bokmal"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -474,7 +563,9 @@ lang/norwegian_bokmal.lng: ../src/lang/norwegian_bokmal.txt
 
 lang/norwegian_nynorsk.lng: ../build-host/src/strgen/strgen
 lang/norwegian_nynorsk.lng: ../src/lang/english.txt
+lang/norwegian_nynorsk.lng: ../src/lang/extra/english.txt
 lang/norwegian_nynorsk.lng: ../src/lang/english.txt
+lang/norwegian_nynorsk.lng: ../src/lang/extra/norwegian_nynorsk.txt
 lang/norwegian_nynorsk.lng: ../src/lang/norwegian_nynorsk.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Compiling language norwegian_nynorsk"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -482,7 +573,9 @@ lang/norwegian_nynorsk.lng: ../src/lang/norwegian_nynorsk.txt
 
 lang/persian.lng: ../build-host/src/strgen/strgen
 lang/persian.lng: ../src/lang/english.txt
+lang/persian.lng: ../src/lang/extra/english.txt
 lang/persian.lng: ../src/lang/english.txt
+lang/persian.lng: ../src/lang/extra/persian.txt
 lang/persian.lng: ../src/lang/persian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Compiling language persian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -490,7 +583,9 @@ lang/persian.lng: ../src/lang/persian.txt
 
 lang/polish.lng: ../build-host/src/strgen/strgen
 lang/polish.lng: ../src/lang/english.txt
+lang/polish.lng: ../src/lang/extra/english.txt
 lang/polish.lng: ../src/lang/english.txt
+lang/polish.lng: ../src/lang/extra/polish.txt
 lang/polish.lng: ../src/lang/polish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Compiling language polish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -498,7 +593,9 @@ lang/polish.lng: ../src/lang/polish.txt
 
 lang/portuguese.lng: ../build-host/src/strgen/strgen
 lang/portuguese.lng: ../src/lang/english.txt
+lang/portuguese.lng: ../src/lang/extra/english.txt
 lang/portuguese.lng: ../src/lang/english.txt
+lang/portuguese.lng: ../src/lang/extra/portuguese.txt
 lang/portuguese.lng: ../src/lang/portuguese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Compiling language portuguese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -506,7 +603,9 @@ lang/portuguese.lng: ../src/lang/portuguese.txt
 
 lang/romanian.lng: ../build-host/src/strgen/strgen
 lang/romanian.lng: ../src/lang/english.txt
+lang/romanian.lng: ../src/lang/extra/english.txt
 lang/romanian.lng: ../src/lang/english.txt
+lang/romanian.lng: ../src/lang/extra/romanian.txt
 lang/romanian.lng: ../src/lang/romanian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Compiling language romanian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -514,7 +613,9 @@ lang/romanian.lng: ../src/lang/romanian.txt
 
 lang/russian.lng: ../build-host/src/strgen/strgen
 lang/russian.lng: ../src/lang/english.txt
+lang/russian.lng: ../src/lang/extra/english.txt
 lang/russian.lng: ../src/lang/english.txt
+lang/russian.lng: ../src/lang/extra/russian.txt
 lang/russian.lng: ../src/lang/russian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Compiling language russian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -522,7 +623,9 @@ lang/russian.lng: ../src/lang/russian.txt
 
 lang/serbian.lng: ../build-host/src/strgen/strgen
 lang/serbian.lng: ../src/lang/english.txt
+lang/serbian.lng: ../src/lang/extra/english.txt
 lang/serbian.lng: ../src/lang/english.txt
+lang/serbian.lng: ../src/lang/extra/serbian.txt
 lang/serbian.lng: ../src/lang/serbian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Compiling language serbian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -530,7 +633,9 @@ lang/serbian.lng: ../src/lang/serbian.txt
 
 lang/simplified_chinese.lng: ../build-host/src/strgen/strgen
 lang/simplified_chinese.lng: ../src/lang/english.txt
+lang/simplified_chinese.lng: ../src/lang/extra/english.txt
 lang/simplified_chinese.lng: ../src/lang/english.txt
+lang/simplified_chinese.lng: ../src/lang/extra/simplified_chinese.txt
 lang/simplified_chinese.lng: ../src/lang/simplified_chinese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Compiling language simplified_chinese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -538,7 +643,9 @@ lang/simplified_chinese.lng: ../src/lang/simplified_chinese.txt
 
 lang/slovak.lng: ../build-host/src/strgen/strgen
 lang/slovak.lng: ../src/lang/english.txt
+lang/slovak.lng: ../src/lang/extra/english.txt
 lang/slovak.lng: ../src/lang/english.txt
+lang/slovak.lng: ../src/lang/extra/slovak.txt
 lang/slovak.lng: ../src/lang/slovak.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Compiling language slovak"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -546,7 +653,9 @@ lang/slovak.lng: ../src/lang/slovak.txt
 
 lang/slovenian.lng: ../build-host/src/strgen/strgen
 lang/slovenian.lng: ../src/lang/english.txt
+lang/slovenian.lng: ../src/lang/extra/english.txt
 lang/slovenian.lng: ../src/lang/english.txt
+lang/slovenian.lng: ../src/lang/extra/slovenian.txt
 lang/slovenian.lng: ../src/lang/slovenian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Compiling language slovenian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -554,7 +663,9 @@ lang/slovenian.lng: ../src/lang/slovenian.txt
 
 lang/spanish.lng: ../build-host/src/strgen/strgen
 lang/spanish.lng: ../src/lang/english.txt
+lang/spanish.lng: ../src/lang/extra/english.txt
 lang/spanish.lng: ../src/lang/english.txt
+lang/spanish.lng: ../src/lang/extra/spanish.txt
 lang/spanish.lng: ../src/lang/spanish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Compiling language spanish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -562,7 +673,9 @@ lang/spanish.lng: ../src/lang/spanish.txt
 
 lang/spanish_MX.lng: ../build-host/src/strgen/strgen
 lang/spanish_MX.lng: ../src/lang/english.txt
+lang/spanish_MX.lng: ../src/lang/extra/english.txt
 lang/spanish_MX.lng: ../src/lang/english.txt
+lang/spanish_MX.lng: ../src/lang/extra/spanish_MX.txt
 lang/spanish_MX.lng: ../src/lang/spanish_MX.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Compiling language spanish_MX"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -570,7 +683,9 @@ lang/spanish_MX.lng: ../src/lang/spanish_MX.txt
 
 lang/swedish.lng: ../build-host/src/strgen/strgen
 lang/swedish.lng: ../src/lang/english.txt
+lang/swedish.lng: ../src/lang/extra/english.txt
 lang/swedish.lng: ../src/lang/english.txt
+lang/swedish.lng: ../src/lang/extra/swedish.txt
 lang/swedish.lng: ../src/lang/swedish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Compiling language swedish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -578,7 +693,9 @@ lang/swedish.lng: ../src/lang/swedish.txt
 
 lang/tamil.lng: ../build-host/src/strgen/strgen
 lang/tamil.lng: ../src/lang/english.txt
+lang/tamil.lng: ../src/lang/extra/english.txt
 lang/tamil.lng: ../src/lang/english.txt
+lang/tamil.lng: ../src/lang/extra/tamil.txt
 lang/tamil.lng: ../src/lang/tamil.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Compiling language tamil"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -586,7 +703,9 @@ lang/tamil.lng: ../src/lang/tamil.txt
 
 lang/thai.lng: ../build-host/src/strgen/strgen
 lang/thai.lng: ../src/lang/english.txt
+lang/thai.lng: ../src/lang/extra/english.txt
 lang/thai.lng: ../src/lang/english.txt
+lang/thai.lng: ../src/lang/extra/thai.txt
 lang/thai.lng: ../src/lang/thai.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Compiling language thai"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -594,7 +713,9 @@ lang/thai.lng: ../src/lang/thai.txt
 
 lang/traditional_chinese.lng: ../build-host/src/strgen/strgen
 lang/traditional_chinese.lng: ../src/lang/english.txt
+lang/traditional_chinese.lng: ../src/lang/extra/english.txt
 lang/traditional_chinese.lng: ../src/lang/english.txt
+lang/traditional_chinese.lng: ../src/lang/extra/traditional_chinese.txt
 lang/traditional_chinese.lng: ../src/lang/traditional_chinese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Compiling language traditional_chinese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -602,7 +723,9 @@ lang/traditional_chinese.lng: ../src/lang/traditional_chinese.txt
 
 lang/turkish.lng: ../build-host/src/strgen/strgen
 lang/turkish.lng: ../src/lang/english.txt
+lang/turkish.lng: ../src/lang/extra/english.txt
 lang/turkish.lng: ../src/lang/english.txt
+lang/turkish.lng: ../src/lang/extra/turkish.txt
 lang/turkish.lng: ../src/lang/turkish.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Compiling language turkish"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -610,7 +733,9 @@ lang/turkish.lng: ../src/lang/turkish.txt
 
 lang/urdu.lng: ../build-host/src/strgen/strgen
 lang/urdu.lng: ../src/lang/english.txt
+lang/urdu.lng: ../src/lang/extra/english.txt
 lang/urdu.lng: ../src/lang/english.txt
+lang/urdu.lng: ../src/lang/extra/urdu.txt
 lang/urdu.lng: ../src/lang/urdu.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Compiling language urdu"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -618,7 +743,9 @@ lang/urdu.lng: ../src/lang/urdu.txt
 
 lang/ukrainian.lng: ../build-host/src/strgen/strgen
 lang/ukrainian.lng: ../src/lang/english.txt
+lang/ukrainian.lng: ../src/lang/extra/english.txt
 lang/ukrainian.lng: ../src/lang/english.txt
+lang/ukrainian.lng: ../src/lang/extra/ukrainian.txt
 lang/ukrainian.lng: ../src/lang/ukrainian.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Compiling language ukrainian"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -626,7 +753,9 @@ lang/ukrainian.lng: ../src/lang/ukrainian.txt
 
 lang/vietnamese.lng: ../build-host/src/strgen/strgen
 lang/vietnamese.lng: ../src/lang/english.txt
+lang/vietnamese.lng: ../src/lang/extra/english.txt
 lang/vietnamese.lng: ../src/lang/english.txt
+lang/vietnamese.lng: ../src/lang/extra/vietnamese.txt
 lang/vietnamese.lng: ../src/lang/vietnamese.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Compiling language vietnamese"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang
@@ -634,7 +763,9 @@ lang/vietnamese.lng: ../src/lang/vietnamese.txt
 
 lang/welsh.lng: ../build-host/src/strgen/strgen
 lang/welsh.lng: ../src/lang/english.txt
+lang/welsh.lng: ../src/lang/extra/english.txt
 lang/welsh.lng: ../src/lang/english.txt
+lang/welsh.lng: ../src/lang/extra/welsh.txt
 lang/welsh.lng: ../src/lang/welsh.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/__w/OpenTTD-modded/OpenTTD-modded/em_build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Compiling language welsh"
 	cd /__w/OpenTTD-modded/OpenTTD-modded/em_build/src/lang && /usr/bin/cmake -E make_directory /__w/OpenTTD-modded/OpenTTD-modded/em_build/lang

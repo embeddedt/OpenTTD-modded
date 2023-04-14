@@ -68,6 +68,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/template/template_info_docs.hpp.sq"
   "template_infrastructure.hpp.sq.timestamp"
   "../../../generated/script/api/template/template_infrastructure.hpp.sq"
+  "template_league.hpp.sq.timestamp"
+  "../../../generated/script/api/template/template_league.hpp.sq"
   "template_list.hpp.sq.timestamp"
   "../../../generated/script/api/template/template_list.hpp.sq"
   "template_log.hpp.sq.timestamp"

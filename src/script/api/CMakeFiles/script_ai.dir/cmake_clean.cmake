@@ -68,6 +68,8 @@ file(REMOVE_RECURSE
   "../../../generated/script/api/ai/ai_info_docs.hpp.sq"
   "ai_infrastructure.hpp.sq.timestamp"
   "../../../generated/script/api/ai/ai_infrastructure.hpp.sq"
+  "ai_league.hpp.sq.timestamp"
+  "../../../generated/script/api/ai/ai_league.hpp.sq"
   "ai_list.hpp.sq.timestamp"
   "../../../generated/script/api/ai/ai_list.hpp.sq"
   "ai_log.hpp.sq.timestamp"
