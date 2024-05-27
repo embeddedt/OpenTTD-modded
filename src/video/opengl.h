@@ -19,7 +19,7 @@
 typedef void (*OGLProc)();
 typedef OGLProc (*GetOGLProcAddressProc)(const char *proc);
 
-bool IsOpenGLVersionAtLeast(byte major, byte minor);
+bool IsOpenGLVersionAtLeast(uint8_t major, uint8_t minor);
 const char *FindStringInExtensionList(const char *string, const char *substring);
 
 class OpenGLSprite;
@@ -101,14 +101,14 @@ public:
 	void ClearCursorCache();
 
 	void *GetVideoBuffer();
-	uint8 *GetAnimBuffer();
+	uint8_t *GetAnimBuffer();
 	void ReleaseVideoBuffer(const Rect &update_rect);
 	void ReleaseAnimBuffer(const Rect &update_rect);
 
 	/* SpriteEncoder */
 
 	uint GetSpriteAlignment() override { return 1u << (ZOOM_LVL_SPR_COUNT - 1); }
-	Sprite *Encode(const SpriteLoader::Sprite *sprite, AllocatorProc *allocator) override;
+	Sprite *Encode(const SpriteLoader::SpriteCollection &sprite, AllocatorProc *allocator) override;
 };
 
 

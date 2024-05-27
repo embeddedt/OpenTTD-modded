@@ -21,6 +21,11 @@
 struct Point {
 	int x;
 	int y;
+
+	constexpr Point() : x(0), y(0) {}
+	constexpr Point(int x, int y) : x(x), y(y) {}
+
+	bool operator==(const Point&) const = default;
 };
 
 /** Dimensions (a width and height) of a rectangle in 2D */
@@ -28,7 +33,8 @@ struct Dimension {
 	uint width;
 	uint height;
 
-	Dimension(uint w = 0, uint h = 0) : width(w), height(h) {};
+	constexpr Dimension() : width(0), height(0) {}
+	constexpr Dimension(uint w, uint h) : width(w), height(h) {}
 
 	bool operator< (const Dimension &other) const
 	{
@@ -45,10 +51,10 @@ struct Dimension {
 
 /** Padding dimensions to apply to each side of a Rect. */
 struct RectPadding {
-	uint8 left;
-	uint8 top;
-	uint8 right;
-	uint8 bottom;
+	uint8_t left;
+	uint8_t top;
+	uint8_t right;
+	uint8_t bottom;
 
 	static const RectPadding zero;
 
@@ -56,14 +62,16 @@ struct RectPadding {
 	 * Get total horizontal padding of RectPadding.
 	 * @return total horizontal padding.
 	 */
-	inline uint Horizontal() const { return this->left + this->right; }
+	constexpr uint Horizontal() const { return this->left + this->right; }
 
 	/**
 	 * Get total vertical padding of RectPadding.
 	 * @return total vertical padding.
 	 */
-	inline uint Vertical() const { return this->top + this->bottom; }
+	constexpr uint Vertical() const { return this->top + this->bottom; }
 };
+
+inline const RectPadding RectPadding::zero{};
 
 /** Specification of a rectangle with absolute coordinates of all edges */
 struct Rect {
@@ -212,7 +220,7 @@ struct Rect {
 	/**
 	 * Test if a point falls inside this Rect.
 	 * @param pt the point to test.
-	 * @return true iif the point falls inside the Rect.
+	 * @return true iff the point falls inside the Rect.
 	 */
 	inline bool Contains(const Point &pt) const
 	{
@@ -222,10 +230,10 @@ struct Rect {
 };
 
 struct Rect16 {
-	int16 left;
-	int16 top;
-	int16 right;
-	int16 bottom;
+	int16_t left;
+	int16_t top;
+	int16_t right;
+	int16_t bottom;
 };
 
 template <typename InT, typename OutT>

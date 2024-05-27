@@ -34,7 +34,7 @@ template <typename Tspec, typename Tid, Tid Tmax>
 }
 
 template <typename Tspec, typename Tid, Tid Tmax>
-bool NewGRFClass<Tspec, Tid, Tmax>::IsUIAvailable(uint index) const
+bool NewGRFClass<Tspec, Tid, Tmax>::IsUIAvailable(uint) const
 {
 	return true;
 }
@@ -52,13 +52,13 @@ AirportSpec AirportSpec::specs[NUM_AIRPORTS]; ///< Airport specifications.
  * @param type index of airport
  * @return A pointer to the corresponding AirportSpec
  */
-/* static */ const AirportSpec *AirportSpec::Get(byte type)
+/* static */ const AirportSpec *AirportSpec::Get(uint8_t type)
 {
 	assert(type < lengthof(AirportSpec::specs));
 	const AirportSpec *as = &AirportSpec::specs[type];
 	if (type >= NEW_AIRPORT_OFFSET && !as->enabled) {
 		if (_airport_mngr.GetGRFID(type) == 0) return as;
-		byte subst_id = _airport_mngr.GetSubstituteID(type);
+		uint8_t subst_id = _airport_mngr.GetSubstituteID(type);
 		if (subst_id == AT_INVALID) return as;
 		as = &AirportSpec::specs[subst_id];
 	}
@@ -72,7 +72,7 @@ AirportSpec AirportSpec::specs[NUM_AIRPORTS]; ///< Airport specifications.
  * @param type index of airport
  * @return A pointer to the corresponding AirportSpec
  */
-/* static */ AirportSpec *AirportSpec::GetWithoutOverride(byte type)
+/* static */ AirportSpec *AirportSpec::GetWithoutOverride(uint8_t type)
 {
 	assert(type < lengthof(AirportSpec::specs));
 	return &AirportSpec::specs[type];
@@ -82,9 +82,9 @@ AirportSpec AirportSpec::specs[NUM_AIRPORTS]; ///< Airport specifications.
 bool AirportSpec::IsAvailable() const
 {
 	if (!this->enabled) return false;
-	if (_cur_year < this->min_year) return false;
+	if (CalTime::CurYear() < this->min_year) return false;
 	if (_settings_game.station.never_expire_airports) return true;
-	return _cur_year <= this->max_year;
+	return CalTime::CurYear() <= this->max_year;
 }
 
 /**
@@ -93,12 +93,12 @@ bool AirportSpec::IsAvailable() const
  * @param tile Top corner of the airport.
  * @return true iff the airport would be within the map bounds at the given tile.
  */
-bool AirportSpec::IsWithinMapBounds(byte table, TileIndex tile) const
+bool AirportSpec::IsWithinMapBounds(uint8_t table, TileIndex tile) const
 {
 	if (table >= this->num_table) return false;
 
-	byte w = this->size_x;
-	byte h = this->size_y;
+	uint8_t w = this->size_x;
+	uint8_t h = this->size_y;
 	if (this->rotation[table] == DIR_E || this->rotation[table] == DIR_W) Swap(w, h);
 
 	return TileX(tile) + w < MapSizeX() &&
@@ -132,7 +132,7 @@ void BindAirportSpecs()
 
 void AirportOverrideManager::SetEntitySpec(AirportSpec *as)
 {
-	byte airport_id = this->AddEntityID(as->grf_prop.local_id, as->grf_prop.grffile->grfid, as->grf_prop.subst_id);
+	uint8_t airport_id = this->AddEntityID(as->grf_prop.local_id, as->grf_prop.grffile->grfid, as->grf_prop.subst_id);
 
 	if (airport_id == this->invalid_id) {
 		grfmsg(1, "Airport.SetEntitySpec: Too many airports allocated. Ignoring.");
@@ -154,7 +154,7 @@ void AirportOverrideManager::SetEntitySpec(AirportSpec *as)
 	}
 }
 
-/* virtual */ uint32 AirportScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
+/* virtual */ uint32_t AirportScopeResolver::GetVariable(uint16_t variable, uint32_t parameter, GetVariableExtra *extra) const
 {
 	switch (variable) {
 		case 0x40: return this->layout;
@@ -170,7 +170,7 @@ void AirportOverrideManager::SetEntitySpec(AirportSpec *as)
 		case 0x7C: return (this->st->airport.psa != nullptr) ? this->st->airport.psa->GetValue(parameter) : 0;
 
 		case 0xF0: return this->st->facilities;
-		case 0xFA: return ClampTo<uint16_t>(this->st->build_date - DAYS_TILL_ORIGINAL_BASE_YEAR);
+		case 0xFA: return ClampTo<uint16_t>((this->st->build_date - CalTime::DAYS_TILL_ORIGINAL_BASE_YEAR).base());
 	}
 
 	return this->st->GetNewGRFVariable(this->ro, variable, parameter, &(extra->available));
@@ -181,12 +181,12 @@ GrfSpecFeature AirportResolverObject::GetFeature() const
 	return GSF_AIRPORTS;
 }
 
-uint32 AirportResolverObject::GetDebugID() const
+uint32_t AirportResolverObject::GetDebugID() const
 {
 	return AirportSpec::Get(this->airport_scope.airport_id)->grf_prop.local_id;
 }
 
-/* virtual */ uint32 AirportScopeResolver::GetRandomBits() const
+/* virtual */ uint32_t AirportScopeResolver::GetRandomBits() const
 {
 	return this->st == nullptr ? 0 : this->st->random_bits;
 }
@@ -196,7 +196,7 @@ uint32 AirportResolverObject::GetDebugID() const
  * @param pos Position in the persistent storage to use.
  * @param value Value to store.
  */
-/* virtual */ void AirportScopeResolver::StorePSA(uint pos, int32 value)
+/* virtual */ void AirportScopeResolver::StorePSA(uint pos, int32_t value)
 {
 	if (this->st == nullptr) return;
 
@@ -205,7 +205,7 @@ uint32 AirportResolverObject::GetDebugID() const
 		if (value == 0) return;
 
 		/* Create storage on first modification. */
-		uint32 grfid = (this->ro.grffile != nullptr) ? this->ro.grffile->grfid : 0;
+		uint32_t grfid = (this->ro.grffile != nullptr) ? this->ro.grffile->grfid : 0;
 		assert(PersistentStorage::CanAllocateItem());
 		this->st->airport.psa = new PersistentStorage(grfid, GSF_AIRPORTS, this->st->airport.tile);
 	}
@@ -242,14 +242,14 @@ TownScopeResolver *AirportResolverObject::GetTown()
  * @param param1 First parameter (var 10) of the callback.
  * @param param2 Second parameter (var 18) of the callback.
  */
-AirportResolverObject::AirportResolverObject(TileIndex tile, Station *st, byte airport_id, byte layout,
-		CallbackID callback, uint32 param1, uint32 param2)
+AirportResolverObject::AirportResolverObject(TileIndex tile, Station *st, uint8_t airport_id, uint8_t layout,
+		CallbackID callback, uint32_t param1, uint32_t param2)
 	: ResolverObject(AirportSpec::Get(airport_id)->grf_prop.grffile, callback, param1, param2), airport_scope(*this, tile, st, airport_id, layout)
 {
 	this->root_spritegroup = AirportSpec::Get(airport_id)->grf_prop.spritegroup[0];
 }
 
-SpriteID GetCustomAirportSprite(const AirportSpec *as, byte layout)
+SpriteID GetCustomAirportSprite(const AirportSpec *as, uint8_t layout)
 {
 	AirportResolverObject object(INVALID_TILE, nullptr, as->GetIndex(), layout);
 	const SpriteGroup *group = object.Resolve();
@@ -258,7 +258,7 @@ SpriteID GetCustomAirportSprite(const AirportSpec *as, byte layout)
 	return group->GetResult();
 }
 
-uint16 GetAirportCallback(CallbackID callback, uint32 param1, uint32 param2, Station *st, TileIndex tile)
+uint16_t GetAirportCallback(CallbackID callback, uint32_t param1, uint32_t param2, Station *st, TileIndex tile)
 {
 	AirportResolverObject object(tile, st, st->airport.type, st->airport.layout, callback, param1, param2);
 	return object.ResolveCallback();
@@ -271,10 +271,10 @@ uint16 GetAirportCallback(CallbackID callback, uint32 param1, uint32 param2, Sta
  * @param callback The callback to call.
  * @return The custom text.
  */
-StringID GetAirportTextCallback(const AirportSpec *as, byte layout, uint16 callback)
+StringID GetAirportTextCallback(const AirportSpec *as, uint8_t layout, uint16_t callback)
 {
 	AirportResolverObject object(INVALID_TILE, nullptr, as->GetIndex(), layout, (CallbackID)callback);
-	uint16 cb_res = object.ResolveCallback();
+	uint16_t cb_res = object.ResolveCallback();
 	if (cb_res == CALLBACK_FAILED || cb_res == 0x400) return STR_UNDEFINED;
 	if (cb_res > 0x400) {
 		ErrorUnknownCallbackResult(as->grf_prop.grffile->grfid, callback, cb_res);

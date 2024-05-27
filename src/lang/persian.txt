@@ -159,7 +159,6 @@ STR_ABBREV_TOFFEE                                               :آبنبات
 STR_ABBREV_BATTERIES                                            :BA
 STR_ABBREV_PLASTIC                                              :PL
 STR_ABBREV_FIZZY_DRINKS                                         :FZ
-STR_ABBREV_NONE                                                 :NO
 STR_ABBREV_ALL                                                  :همه
 
 # 'Mode' of transport for cargoes
@@ -189,6 +188,7 @@ STR_COLOUR_GREY                                                 :خاکستری
 STR_COLOUR_WHITE                                                :سفید
 
 ###length 17
+STR_COLOUR_SECONDARY_SAME_AS_PRIMARY                            :همانند اصلی
 
 
 # Units used in OpenTTD
@@ -200,6 +200,9 @@ STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}{NBSP}
 STR_UNITS_POWER_METRIC                                          :{DECIMAL}{NBSP}اسب بخار
 STR_UNITS_POWER_SI                                              :{DECIMAL}{NBSP}کیلووات
 
+STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}{NBSP}hp/t
+STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}{NBSP}hp/t
+STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_SI                           :{DECIMAL}{NBSP}hp/Mg
 
 STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}{NBSP}تن
 STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}{NBSP}کیلوگرم
@@ -217,6 +220,10 @@ STR_UNITS_FORCE_SI                                              :{DECIMAL}{NBSP}
 
 STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}{NBSP}پا
 STR_UNITS_HEIGHT_SI                                             :{DECIMAL}{NBSP}متر
+
+# Time units used in string control characters
+
+
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}متن فیلتر:
@@ -370,7 +377,7 @@ STR_SCENEDIT_FILE_MENU_SEPARATOR                                :
 STR_SCENEDIT_FILE_MENU_QUIT                                     :خروج
 
 # Settings menu
-###length 15
+###length 16
 STR_SETTINGS_MENU_GAME_OPTIONS                                  :تنظیمات بازی
 STR_SETTINGS_MENU_NEWGRF_SETTINGS                               :تنظیمات NewGRF
 STR_SETTINGS_MENU_TRANSPARENCY_OPTIONS                          :گزینه های شفافیت
@@ -385,31 +392,25 @@ STR_SETTINGS_MENU_TRANSPARENT_BUILDINGS                         :ساختمان 
 STR_SETTINGS_MENU_TRANSPARENT_SIGNS                             :شفاف کردن نشان های ایستگاه ها
 
 # File menu
-###length 5
 STR_FILE_MENU_SAVE_GAME                                         :ذخیره بازی
 STR_FILE_MENU_LOAD_GAME                                         :فراخوانی بازی
 STR_FILE_MENU_QUIT_GAME                                         :رها کردن بازی
-STR_FILE_MENU_SEPARATOR                                         :
 STR_FILE_MENU_EXIT                                              :خروج
 
 # Map menu
-###length 4
 STR_MAP_MENU_MAP_OF_WORLD                                       :نقشه ی دنیا
 STR_MAP_MENU_EXTRA_VIEWPORT                                     :نمای اضافه
 STR_MAP_MENU_LINGRAPH_LEGEND                                    :میزان حمل بار
 STR_MAP_MENU_SIGN_LIST                                          :لیست نشانه
 
 # Town menu
-###length 2
 STR_TOWN_MENU_TOWN_DIRECTORY                                    :لیست شهر ها
 STR_TOWN_MENU_FOUND_TOWN                                        :ساخت شهر
 
 # Subsidies menu
-###length 1
 STR_SUBSIDIES_MENU_SUBSIDIES                                    :یارانه ها
 
 # Graph menu
-###length 6
 STR_GRAPH_MENU_OPERATING_PROFIT_GRAPH                           :نمودار سود خالص
 STR_GRAPH_MENU_INCOME_GRAPH                                     :نمودار درآمد
 STR_GRAPH_MENU_DELIVERED_CARGO_GRAPH                            :نمودار محموله های رسانده شده
@@ -418,56 +419,45 @@ STR_GRAPH_MENU_COMPANY_VALUE_GRAPH                              :نمودار ا
 STR_GRAPH_MENU_CARGO_PAYMENT_RATES                              :نمودار قیمت پرداختی محموله ها
 
 # Company league menu
-###length 3
 STR_GRAPH_MENU_COMPANY_LEAGUE_TABLE                             :جدول اتحادیه شرکتها
 STR_GRAPH_MENU_DETAILED_PERFORMANCE_RATING                      :جزییات امتیازهای کارایی
 STR_GRAPH_MENU_HIGHSCORE                                        :جدول بالاترین امتیازها
 
 # Industry menu
-###length 3
 STR_INDUSTRY_MENU_INDUSTRY_DIRECTORY                            :فهرست صنایع
 STR_INDUSTRY_MENU_INDUSTRY_CHAIN                                :زنجیره تولید
 STR_INDUSTRY_MENU_FUND_NEW_INDUSTRY                             :ساخت کارخانه جدید
 
 # URailway construction menu
-###length 4
 STR_RAIL_MENU_RAILROAD_CONSTRUCTION                             :ساخت راه آهن
 STR_RAIL_MENU_ELRAIL_CONSTRUCTION                               :ساخت و ساز ریل برقی
 STR_RAIL_MENU_MONORAIL_CONSTRUCTION                             :ساخت مونوریل
 STR_RAIL_MENU_MAGLEV_CONSTRUCTION                               :ساخت ریل مغناطیسی
 
 # Road construction menu
-###length 2
 STR_ROAD_MENU_ROAD_CONSTRUCTION                                 :ساخت جاده
 STR_ROAD_MENU_TRAM_CONSTRUCTION                                 :ساخت ساز تراموا
 
 # Waterways construction menu
-###length 1
 STR_WATERWAYS_MENU_WATERWAYS_CONSTRUCTION                       :ساخت ساز آبراهه
 
 # Aairport construction menu
-###length 1
 STR_AIRCRAFT_MENU_AIRPORT_CONSTRUCTION                          :ساختمان فرودگاه
 
 # Landscaping menu
-###length 3
 STR_LANDSCAPING_MENU_LANDSCAPING                                :محوطه سازی
 STR_LANDSCAPING_MENU_PLANT_TREES                                :کاشتن درخت
 STR_LANDSCAPING_MENU_PLACE_SIGN                                 :قرار دادن علامت
 
 # Music menu
-###length 1
 STR_TOOLBAR_SOUND_MUSIC                                         :صدا/موسیقی
 
 # Message menu
-###length 3
 STR_NEWS_MENU_LAST_MESSAGE_NEWS_REPORT                          :گزارش آخرین پیام/خبر
 STR_NEWS_MENU_MESSAGE_HISTORY_MENU                              :تاریخچه پیام ها
 
 # About menu
-###length 10
 STR_ABOUT_MENU_LAND_BLOCK_INFO                                  :اطلاعات زمین ها
-STR_ABOUT_MENU_SEPARATOR                                        :
 STR_ABOUT_MENU_TOGGLE_CONSOLE                                   :باز و بسته کردن کنسول
 STR_ABOUT_MENU_AI_DEBUG                                         :خطایابی هوش مصنوعی
 STR_ABOUT_MENU_SCREENSHOT                                       :تصویر از بازی
@@ -476,24 +466,6 @@ STR_ABOUT_MENU_ABOUT_OPENTTD                                    :'OpenTTD' در�
 STR_ABOUT_MENU_SPRITE_ALIGNER                                   :تراز کردن تصویر گرافیکی
 STR_ABOUT_MENU_TOGGLE_BOUNDING_BOXES                            :باز/بسته کردن محدوده جعبه ها
 STR_ABOUT_MENU_TOGGLE_DIRTY_BLOCKS                              :نمایش/حذف بلوکهای کثیف
-
-# Place in highscore window
-###length 15
-STR_ORDINAL_NUMBER_1ST                                          :1
-STR_ORDINAL_NUMBER_2ND                                          :2
-STR_ORDINAL_NUMBER_3RD                                          :3
-STR_ORDINAL_NUMBER_4TH                                          :4
-STR_ORDINAL_NUMBER_5TH                                          :5
-STR_ORDINAL_NUMBER_6TH                                          :6
-STR_ORDINAL_NUMBER_7TH                                          :7
-STR_ORDINAL_NUMBER_8TH                                          :8
-STR_ORDINAL_NUMBER_9TH                                          :9
-STR_ORDINAL_NUMBER_10TH                                         :10
-STR_ORDINAL_NUMBER_11TH                                         :11
-STR_ORDINAL_NUMBER_12TH                                         :12
-STR_ORDINAL_NUMBER_13TH                                         :13
-STR_ORDINAL_NUMBER_14TH                                         :14
-STR_ORDINAL_NUMBER_15TH                                         :15
 
 ###length 31
 STR_DAY_NUMBER_1ST                                              :1
@@ -570,8 +542,8 @@ STR_GRAPH_CARGO_DELIVERED_CAPTION                               :{WHITE}تعدا
 STR_GRAPH_COMPANY_PERFORMANCE_RATINGS_CAPTION                   :{WHITE}رتبه بندی راندمان شرکت (رتبه بیشینه = 1000)
 STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}ارزش نقدی شرکت
 
+
 STR_GRAPH_CARGO_PAYMENT_RATES_CAPTION                           :{WHITE}مبلغ پرداختی محموله ها
-STR_GRAPH_CARGO_PAYMENT_RATES_X_LABEL                           :{TINY_FONT}{BLACK}روز های گذشته در حمل
 STR_GRAPH_CARGO_PAYMENT_RATES_TITLE                             :{TINY_FONT}{BLACK}مبلغ پرداختی برای 10 واحد (یا 10000لیتر) به ازای 20 مربع
 STR_GRAPH_CARGO_ENABLE_ALL                                      :{TINY_FONT}{BLACK}فعال سازی همه
 STR_GRAPH_CARGO_DISABLE_ALL                                     :{TINY_FONT}{BLACK}غیر فعال سازی همه
@@ -618,11 +590,9 @@ STR_PERFORMANCE_DETAIL_CARGO                                    :{BLACK}بار:
 STR_PERFORMANCE_DETAIL_MONEY                                    :{BLACK}پول:
 STR_PERFORMANCE_DETAIL_LOAN                                     :{BLACK}وام:
 STR_PERFORMANCE_DETAIL_TOTAL                                    :{BLACK}مجموع:
+###next-name-looks-similar
 
-###length 10
-STR_PERFORMANCE_DETAIL_VEHICLES_TOOLTIP                         :{BLACK}تعداد خودروهای که سال گذشته سوددهی داشته اند. این شامل وسایل نقلیه جاده ای ، قطار ، کشتی ها و هواپیما می باشد
 STR_PERFORMANCE_DETAIL_STATIONS_TOOLTIP                         :{BLACK} تعداد قطعات تازه سرویس شده ایستگاه. هر بخشی از یک ایستگاه (به عنوان مثال ایستگاه قطار، ایستگاه اتوبوس، فرودگاه) شمارش شده است، حتی اگر آنها به عنوان یک ایستگاه متصل باشند
-STR_PERFORMANCE_DETAIL_MIN_PROFIT_TOOLTIP                       :{BLACK}سود از خودرو با کمترین درآمد (تنها وسایل نقلیه بزرگتر از دو سال در نظر گرفته)
 STR_PERFORMANCE_DETAIL_MIN_INCOME_TOOLTIP                       :{BLACK} مقدار پول نقد در سه ماهه با کمترین سود از 12 سه ماهه آخر
 STR_PERFORMANCE_DETAIL_MAX_INCOME_TOOLTIP                       :{BLACK} مقدار پول نقد درآمده در این سه ماهه با بیشترین سود از 12 سه ماهه گذشته
 STR_PERFORMANCE_DETAIL_DELIVERED_TOOLTIP                        :{BLACK}تعداد محموله هایی که در چهار فصل گذشته تحویل شدند
@@ -673,8 +643,6 @@ STR_PLAYLIST_TOOLTIP_CLICK_TO_ADD_TRACK                         :{BLACK}روی �
 STR_PLAYLIST_TOOLTIP_CLICK_TO_REMOVE_TRACK                      :{BLACK}روی آهنگ کلیک کنید تا از برنامه فعلی پاک شوند (فقط لیست سفارشی 1 و سفارشی 2)
 
 # Highscore window
-STR_HIGHSCORE_TOP_COMPANIES_WHO_REACHED                         :{BIG_FONT}{BLACK}بالانرین شرکت هایی که به مرحله {NUM}
-STR_HIGHSCORE_TOP_COMPANIES_NETWORK_GAME                        :{BIG_FONT}{BLACK}جدول اتحادیه شرکت ها در {NUM}
 STR_HIGHSCORE_POSITION                                          :{BIG_FONT}{BLACK}{COMMA}.
 STR_HIGHSCORE_PERFORMANCE_TITLE_BUSINESSMAN                     :تاجر
 STR_HIGHSCORE_PERFORMANCE_TITLE_ENTREPRENEUR                    :موسس شرکت
@@ -847,7 +815,6 @@ STR_NEWS_VEHICLE_IS_GETTING_VERY_OLD                            :{WHITE}{VEHICLE
 STR_NEWS_VEHICLE_IS_GETTING_VERY_OLD_AND                        :{WHITE}{VEHICLE} بسیار قدیمی شده و سریعا احتیاج به جایگزینی دارد
 STR_NEWS_TRAIN_IS_STUCK                                         :{WHITE}{VEHICLE} نمی تواند مسیری برای ادامه دادن پیدا کند
 STR_NEWS_VEHICLE_IS_LOST                                        :{WHITE}{VEHICLE} گمشده
-STR_NEWS_VEHICLE_IS_UNPROFITABLE                                :سود سال گذشته {WHITE}{VEHICLE}به مقدار {CURRENCY_LONG} بوده است
 STR_NEWS_AIRCRAFT_DEST_TOO_FAR                                  :{WHITE}{VEHICLE} نمی توان به مقصد بعدی رسید.مقصد دور از دسترس است
 
 STR_NEWS_ORDER_REFIT_FAILED                                     :{WHITE}{VEHICLE} متوقف گردید چون تغییر کاربرد با شکست مواجه شد
@@ -858,18 +825,12 @@ STR_NEWS_NEW_VEHICLE_TYPE                                       :{BIG_FONT}{BLAC
 STR_NEWS_NEW_VEHICLE_NOW_AVAILABLE_WITH_TYPE                    :{BLACK} {STRING} جدید هم اکنون قابل دسترسی است!  -  {ENGINE}
 
 
-STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO                        :{WHITE}{STATION} دیگر {STRING} قبول نمی کند
-STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO_OR_CARGO               :{WHITE}{STATION} دیگر {STRING} و {STRING} قبول نمی کند
-STR_NEWS_STATION_NOW_ACCEPTS_CARGO                              :{WHITE}{STATION} از این پس {STRING} را هم قبول می کند
-STR_NEWS_STATION_NOW_ACCEPTS_CARGO_AND_CARGO                    :{WHITE}{STATION} {STRING} و {STRING} را از این به بعد قبول می کند
 
 STR_NEWS_OFFER_OF_SUBSIDY_EXPIRED                               :{BIG_FONT}{BLACK}پیشنهاد یارانه باطل شد:{}{}{STRING} از {STRING} به {STRING} دیگر یارانه ای به همراه نخواهد داشت
 STR_NEWS_SUBSIDY_WITHDRAWN_SERVICE                              :{BIG_FONT}{BLACK}یارانه بازپس گرفته شد:{}{}{STRING} خدمات از {STRING} به {STRING} دیگر شامل یارانه نمی باشند
 ###length 4
 
-STR_NEWS_ROAD_REBUILDING                                        :{BIG_FONT}{BLACK}ترافیک شدید در {TOWN}!{}{}هزینه روکش کردن آسفالت توسط {STRING} پرداخت گردیده و باعث 6 ماه بدبختی و دردسر برای رانندگان شده است!
 STR_NEWS_EXCLUSIVE_RIGHTS_TITLE                                 :{BIG_FONT}{BLACK}حمل و نقل انحصاری!
-STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION                           :{BIG_FONT}{BLACK}مقامات محلی {TOWN} قرارداد حمل و نقل انحصاری را با {STRING} به مدت یکسال امضاء کردند!
 
 # Extra view window
 STR_EXTRA_VIEWPORT_TITLE                                        :{WHITE}نمای اضافه {COMMA}
@@ -881,6 +842,14 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}موقع
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}تنظیمات بازی
 
+STR_GAME_OPTIONS_TAB_GENERAL                                    :عمومی
+STR_GAME_OPTIONS_TAB_GENERAL_TT                                 :{BLACK}تنظیمات عمومی خود را انتخاب کنید
+STR_GAME_OPTIONS_TAB_GRAPHICS                                   :گرافیک
+STR_GAME_OPTIONS_TAB_GRAPHICS_TT                                :{BLACK}تنظیمات گرافیکی خود را انتخاب کنید
+STR_GAME_OPTIONS_TAB_SOUND                                      :صدا
+STR_GAME_OPTIONS_TAB_SOUND_TT                                   :{BLACK}تنظیمات صدا و موسیقی خود را انتخاب کنید
+STR_GAME_OPTIONS_TAB_SOCIAL                                     :اجتماعی
+STR_GAME_OPTIONS_TAB_SOCIAL_TT                                  :{BLACK}تنظیمات ادغام اجتماعی خود را انتخاب کنید
 
 
 
@@ -888,7 +857,7 @@ STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}واحد
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}انتخب واحد پول
 
 
-###length 42
+###length 44
 STR_GAME_OPTIONS_CURRENCY_GBP                                   :پوند
 STR_GAME_OPTIONS_CURRENCY_USD                                   :دلار
 STR_GAME_OPTIONS_CURRENCY_EUR                                   :یورو
@@ -950,9 +919,9 @@ STR_GAME_OPTIONS_RESOLUTION_OTHER                               :دیگر
 
 
 
+
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}بسته گرافیک پایه
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}بسته گرافیک پایه را انتخاب کنید
-STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} فایل وجود ندارد یا خراب است
 STR_GAME_OPTIONS_BASE_GRF_DESCRIPTION_TOOLTIP                   :{BLACK} اطلاعات اضافه در مورد بسته ی گرافیکی پایه
 
 STR_GAME_OPTIONS_BASE_SFX                                       :{BLACK}بسته صدای پایه را انتخاب کنید
@@ -961,8 +930,11 @@ STR_GAME_OPTIONS_BASE_SFX_DESCRIPTION_TOOLTIP                   :{BLACK}اطلا
 
 STR_GAME_OPTIONS_BASE_MUSIC                                     :{BLACK}بسته موسیقی پایه
 STR_GAME_OPTIONS_BASE_MUSIC_TOOLTIP                             :{BLACK}بسته موسیقی پایه را انتخاب کنید
-STR_GAME_OPTIONS_BASE_MUSIC_STATUS                              :{RED}{NUM} فایل خراب است
 STR_GAME_OPTIONS_BASE_MUSIC_DESCRIPTION_TOOLTIP                 :{BLACK}اطلاعات اضافه درباره بسته ی موسیقی پایه
+
+
+
+
 
 STR_ERROR_RESOLUTION_LIST_FAILED                                :{WHITE}ناتوان در گرفتن تنظیمات نمایش
 STR_ERROR_FULLSCREEN_FAILED                                     :{WHITE}حالت تمام صفحه با شکست مواجه شد
@@ -975,8 +947,6 @@ STR_CURRENCY_DECREASE_EXCHANGE_RATE_TOOLTIP                     :{BLACK}کم ک�
 STR_CURRENCY_INCREASE_EXCHANGE_RATE_TOOLTIP                     :{BLACK}زیاد کردن ارزش واحد پول در ازای یک پوند (£)
 STR_CURRENCY_SET_EXCHANGE_RATE_TOOLTIP                          :{BLACK}نرخ ارز واحد پول را در ازای یک پوند تنظیم کنید (£)
 
-STR_CURRENCY_SEPARATOR                                          :{LTBLUE}جدا کننده: {ORANGE}{STRING}
-STR_CURRENCY_SET_CUSTOM_CURRENCY_SEPARATOR_TOOLTIP              :{BLACK}حرف جداکننده را انتخاب کنید
 
 STR_CURRENCY_PREFIX                                             :{LTBLUE}پیشوند: {ORANGE}{STRING}
 STR_CURRENCY_SET_CUSTOM_CURRENCY_PREFIX_TOOLTIP                 :{BLACK}پیشوند واحد پولتان را انتخاب کنید
@@ -1110,6 +1080,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :مرکز
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :راست
 
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :حداکثر اعتبار اولیه: {STRING}
 ###setting-zero-is-special
 
@@ -1123,6 +1094,7 @@ STR_CONFIG_SETTING_VEHICLE_BREAKDOWNS                           :خرابی وس
 
 STR_CONFIG_SETTING_SUBSIDY_MULTIPLIER                           :ضریب سوبسید: {STRING}
 
+###length 2
 
 ###setting-zero-is-special
 
@@ -1181,7 +1153,10 @@ STR_CONFIG_SETTING_SIGNALSIDE_LEFT                              :به سمت چ�
 STR_CONFIG_SETTING_SIGNALSIDE_DRIVING_SIDE                      :به سمت جهت رانندگی
 STR_CONFIG_SETTING_SIGNALSIDE_RIGHT                             :به سمت راست
 
+###length 2
 STR_CONFIG_SETTING_SHOWFINANCES                                 :نمایش پنجره مالی در پایان سال: {STRING}
+
+###length 2
 
 STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT                           :برنامه های حرکت به طور پیش فرض «بدون توقف» باشند: {STRING}
 
@@ -1195,8 +1170,10 @@ STR_CONFIG_SETTING_AUTOSCROLL                                   :جابجا‌ش
 ###length 4
 
 STR_CONFIG_SETTING_BRIBE                                        :قابلیت رشوه دادن به مقامات محلی: {STRING}
+###length 2
 
 STR_CONFIG_SETTING_ALLOW_EXCLUSIVE                              :قابلیت انحصاری کردن حقوق حمل و نقل: {STRING}
+###length 2
 STR_CONFIG_SETTING_ALLOW_EXCLUSIVE_HELPTEXT                     :اگز یک شرکت حقوق انحصاری حمل و نقل یک شهر را بخرد، ایستگاه های دیگر بازیکنان(از جمله مسافربری و باربری) دیگر هیچگونه باری را طی یکسال قبول نمی کنند
 
 STR_CONFIG_SETTING_ALLOW_FUND_BUILDINGS                         :اجازه ساخت و ساز ساختمان: {STRING}
@@ -1213,6 +1190,7 @@ STR_CONFIG_SETTING_PLANE_CRASHES                                :تعداد سو
 STR_CONFIG_SETTING_PLANE_CRASHES_NONE                           :هیچکدام
 STR_CONFIG_SETTING_PLANE_CRASHES_REDUCED                        :کاهش
 STR_CONFIG_SETTING_PLANE_CRASHES_NORMAL                         :عادی
+
 
 STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD                            :اجازه رانندگی در خیابان‌های شهر{STRING}
 STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD                      :اجازه استفاده از جاده یک بازیکن توسط دیگر رقیبان: {STRING}
@@ -1233,8 +1211,15 @@ STR_CONFIG_SETTING_ORDER_REVIEW_EXDEPOT                         :بله، ولی
 STR_CONFIG_SETTING_ORDER_REVIEW_ON                              :از همه خودرو‌ها
 
 STR_CONFIG_SETTING_WARN_INCOME_LESS                             :هشدار هنگام منفی بودن درآمد خودرو: {STRING}
+###length 2
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES                        :وسایل نقلیه هیچگاه از بین نروند: {STRING}
+
+###length 2
+
+
+###setting-zero-is-special
+
 
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE                            :نوکردن خودکار وسایل نقلیه کهنه شده: {STRING}
 
@@ -1265,7 +1250,8 @@ STR_CONFIG_SETTING_TERRAIN_TYPE_HELPTEXT                        :(فقط ترا�
 STR_CONFIG_SETTING_INDUSTRY_DENSITY                             :تراکم مراکز تولید: {STRING}
 STR_CONFIG_SETTING_INDUSTRY_DENSITY_HELPTEXT                    :چند کارخانه باید ایجاد شود و در چه درجه ای باید در بازی نگهداری شود
 
-STR_CONFIG_SETTING_OIL_REF_EDGE_DISTANCE_HELPTEXT               :تمام پالایشگاه ها در لبه های تقشه ساخته می شوند که ساحل جزیره است
+STR_CONFIG_SETTING_OIL_REF_EDGE_DISTANCE                        :حداکثر فاصله از لبه برای صنایع نفتی: {STRING}
+STR_CONFIG_SETTING_OIL_REF_EDGE_DISTANCE_HELPTEXT               :محدودیت برای میزان فاصله ای که نسبت به مرز نقشه سکو های نفتی و پالایشگاه نفت می‌توانند بنا شوند. در نقشه های جزیره ای این اطمینان حاصل میکند که کنار ساحل باشند. در نقشه های بزرگتر از ۲۵۶ کاشی، این مقدار افزایش می یابد
 
 STR_CONFIG_SETTING_SNOWLINE_HEIGHT                              :ارتفاع خط برف: {STRING}
 STR_CONFIG_SETTING_SNOWLINE_HEIGHT_HELPTEXT                     :ارتفاع خط برف را در مناطق نیمه قطبی کنترل کنید. وجود برف بر ایجاد صنایع و اقلام ضروری رشد شهر تاثیر میگذارد.
@@ -1375,10 +1361,11 @@ STR_CONFIG_SETTING_COMMAND_PAUSE_LEVEL_ALL_NON_LANDSCAPING      :همه کاره
 STR_CONFIG_SETTING_COMMAND_PAUSE_LEVEL_ALL_ACTIONS              :همه کارها
 
 STR_CONFIG_SETTING_ADVANCED_VEHICLE_LISTS                       :اسنفاده گروهی از لیست خودرو: {STRING}
+STR_CONFIG_SETTING_ADVANCED_VEHICLE_LISTS_HELPTEXT              :فعال سازی استفاده از لیست های وسایل نقلیه پیشرفته برای گروه بندی
 
 STR_CONFIG_SETTING_LOADING_INDICATORS                           :استفاده از نشانه‌های بارگیری/بارگذاری: {STRING}
 
-STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :استفاده از تیک(هزارم ثانیه) به جای روز در برنامه ساعتی: {STRING}
+###length 3
 
 STR_CONFIG_SETTING_TIMETABLE_SHOW_ARRIVAL_DEPARTURE             :نشان دادن ورود و خروج در جدول زمانی: {STRING}
 
@@ -1399,6 +1386,9 @@ STR_CONFIG_SETTING_PERSISTENT_BUILDINGTOOLS                     :فعال مان
 
 
 
+###length 2
+
+###length 2
 
 
 STR_CONFIG_SETTING_SOUND_CLICK_HELPTEXT                         :هنگام کلیک دکمه ها بوق بزن
@@ -1422,8 +1412,6 @@ STR_CONFIG_SETTING_AI_BUILDS_AIRCRAFT                           :غیر‌فعا
 
 STR_CONFIG_SETTING_AI_BUILDS_SHIPS                              :غیر فعال بودن کشتی برای رایانه: {STRING}
 
-###length 3
-
 STR_CONFIG_SETTING_AI_IN_MULTIPLAYER                            :امکان حضور هوش مصنوعی در بازی چندنفره: {STRING}
 
 STR_CONFIG_SETTING_SCRIPT_MAX_OPCODES                           :#opcodes before scripts are suspended: {STRING}
@@ -1433,6 +1421,7 @@ STR_CONFIG_SETTING_SERVINT_ISPERCENT                            :درصد زما
 ###setting-zero-is-special
 
 STR_CONFIG_SETTING_NOSERVICE                                    :غیرفعال کردن تعمیر/بازنگری کلیه وسایل نقلیه وقتی که طبق تنظیمات بازی خودرو ها خراب نشوند : {STRING}
+
 
 STR_CONFIG_SETTING_WAGONSPEEDLIMITS                             :فعال کردن حد برای سرعت واگن: {STRING}
 
@@ -1487,7 +1476,6 @@ STR_CONFIG_SETTING_SEMAPHORE_BUILD_BEFORE_DATE                  :نصب علمک
 
 STR_CONFIG_SETTING_CYCLE_SIGNAL_TYPES                           :]تغییر نوع نشانگرها: {STRING}
 ###length 2
-STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :فقط نشانگرهای مسیر
 STR_CONFIG_SETTING_CYCLE_SIGNAL_ALL                             :همه
 
 ###length 2
@@ -1553,7 +1541,6 @@ STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :مضرب ابت
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY                  :واحدهای سرعت: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_HELPTEXT         :هر زمان که سرعت در محیط بازی نمایش داده شود، آن را با واحد انتخاب شده نمایش بده
-###length 5
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_IMPERIAL         :امپریال (mph)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_METRIC           :متریک (km/h)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_SI               :SI (m/s)
@@ -1603,6 +1590,7 @@ STR_CONFIG_SETTING_AI_NPC                                       :بازیگرا�
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :مسیریاب برای قطارها: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_ROAD_VEHICLES                 :مسیریاب برای خودروهای جاده ای: {STRING}
+STR_CONFIG_SETTING_PATHFINDER_FOR_ROAD_VEHICLES_HELPTEXT        :مسیریاب برای خودروهای جاده ای
 STR_CONFIG_SETTING_PATHFINDER_FOR_SHIPS                         :مسیریاب برای کشتی ها: {STRING}
 STR_CONFIG_SETTING_REVERSE_AT_SIGNALS                           :برگشت خودکار با رسیدن به نشانه ها: {STRING}
 ###length 2
@@ -1674,9 +1662,10 @@ STR_ABANDON_GAME_CAPTION                                        :{WHITE}رها �
 STR_ABANDON_GAME_QUERY                                          :{YELLOW}آیا مطمئن هستی که میخواهی این بازی را از بین ببری؟
 STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}آیا مطمئنید که می خواهید این سناریو را رها کنید؟
 
+# Help window
+
 # Cheat window
 STR_CHEATS                                                      :{WHITE}تقلبها
-STR_CHEATS_TOOLTIP                                              :{BLACK}جعبه انتخاب ها نشان می دهند که قبلا از چه تقلبی استفاده کردید
 STR_CHEAT_MONEY                                                 :{LTBLUE}اضافه کردن پول به مقدار {CURRENCY_LONG}
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}بازی به عنوان شرکت: {ORANGE}{COMMA}
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}بولدوزر جادویی(ازبین بردن صنایع و اشیاء غیرقابل حرکت): {ORANGE}{STRING}
@@ -1797,8 +1786,6 @@ STR_NETWORK_SERVER_LIST_MAP_SIZE_CAPTION                        :{BLACK}اندا
 STR_NETWORK_SERVER_LIST_MAP_SIZE_CAPTION_TOOLTIP                :{BLACK}اندازه نقشه بازی{}برای مرتب سازی بر اساس محیط کلیک کنید
 STR_NETWORK_SERVER_LIST_DATE_CAPTION                            :{BLACK}تاریخ
 STR_NETWORK_SERVER_LIST_DATE_CAPTION_TOOLTIP                    :{BLACK}تاریخ فعلی
-STR_NETWORK_SERVER_LIST_YEARS_CAPTION                           :{BLACK}سال
-STR_NETWORK_SERVER_LIST_YEARS_CAPTION_TOOLTIP                   :{BLACK}تعداد سالهایی{}که بازی در حال اجراست
 STR_NETWORK_SERVER_LIST_INFO_ICONS_TOOLTIP                      :{BLACK}زبان، ویرایش برنامه سرویس دهنده و غیره.
 
 STR_NETWORK_SERVER_LIST_CLICK_GAME_TO_SELECT                    :{BLACK}برای انتخاب روی یک بازی از لیست کلیک کنید
@@ -1873,6 +1860,8 @@ STR_NETWORK_NEED_COMPANY_PASSWORD_CAPTION                       :{WHITE}شرکت
 STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :{WHITE}لیست سرویس گیرنده ها
 
 # Network client list
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_SELF_TOOLTIP                :{BLACK}این شمایید
+STR_NETWORK_CLIENT_LIST_PLAYER_ICON_HOST_TOOLTIP                :{BLACK}این شخص میزبان بازی است
 
 # Matches ConnectionType
 ###length 5
@@ -1980,6 +1969,7 @@ STR_NETWORK_MESSAGE_CLIENT_COMPANY_SPECTATE                     :*** {STRING} ب
 STR_NETWORK_MESSAGE_CLIENT_COMPANY_NEW                          :*** {STRING} یک شرکت جدید آغاز کرد (#{2:NUM})
 STR_NETWORK_MESSAGE_CLIENT_LEFT                                 :*** {STRING} از بازی بیرون رفت ({2:STRING})
 STR_NETWORK_MESSAGE_NAME_CHANGE                                 :*** {STRING} نامش را به {STRING} تغییر داد
+STR_NETWORK_MESSAGE_GIVE_MONEY                                  :*** {0:STRING} داد {2:CURRENCY_LONG} به {1:STRING}
 STR_NETWORK_MESSAGE_SERVER_SHUTDOWN                             :{WHITE}سرویس دهنده جلسه را تعطیل کرد
 STR_NETWORK_MESSAGE_SERVER_REBOOT                               :{WHITE}راه اندازی مجدد سرویس دهنده...{}لطفا صبر کنید...
 
@@ -2286,7 +2276,12 @@ STR_TREES_RANDOM_TYPE                                           :{BLACK}درخت
 STR_TREES_RANDOM_TYPE_TOOLTIP                                   :{BLACK}نشاندن درختان با نوع تصادفی.گرفتن دکمه شیفت برآورد هزینه ساخت را نمایش می دهد
 STR_TREES_RANDOM_TREES_BUTTON                                   :{BLACK} درخت های تصادفی
 STR_TREES_RANDOM_TREES_TOOLTIP                                  :{BLACK} به شکل تصافی در تمام محل درخت بکار
-STR_TREES_MODE_NORMAL_TOOLTIP                                   :{BLACK} با کشیدن بر روی زمین به شکل تکی درخت بکار
+STR_TREES_MODE_NORMAL_BUTTON                                    :{BLACK}عادی
+STR_TREES_MODE_NORMAL_TOOLTIP                                   :{BLACK} کاشتن درخت ها بصورت تکی با کشیدن روی منظره
+STR_TREES_MODE_FOREST_SM_BUTTON                                 :{BLACK}بیشه
+STR_TREES_MODE_FOREST_SM_TOOLTIP                                :{BLACK}کاشتن جنگل های کوچک با کشیدن روی منظره
+STR_TREES_MODE_FOREST_LG_BUTTON                                 :{BLACK}جنگل
+STR_TREES_MODE_FOREST_LG_TOOLTIP                                :{BLACK}کاشتن جنگل های بزرگ با کشیدن روی منظره
 
 # Land generation window (SE)
 STR_TERRAFORM_TOOLBAR_LAND_GENERATION_CAPTION                   :{WHITE}طراحی اتوماتیک سرزمین
@@ -2356,6 +2351,9 @@ STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}نمای
 STR_INDUSTRY_DISPLAY_CHAIN_TOOLTIP                              :{BLACK}نمایش صنایعی که بار را تولید و قبول می کنند
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP                            :{BLACK}پیوند به نقشه کوچک
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP_TOOLTIP                    :{BLACK}انتخاب صنایع نشان داده شده در نقشه کوچک
+STR_INDUSTRY_CARGOES_SELECT_CARGO                               :{BLACK}محموله را انتخاب کنید
+STR_INDUSTRY_CARGOES_SELECT_CARGO_TOOLTIP                       :{BLACK}محموله ای که میخواهید نشان داده شود را انتخاب کنید
+STR_INDUSTRY_CARGOES_SELECT_INDUSTRY                            :{BLACK}صنعت موردنظر را انتخاب کنید
 
 # Land area window
 STR_LAND_AREA_INFORMATION_CAPTION                               :{WHITE}اطلاعات زمین
@@ -2369,7 +2367,7 @@ STR_LAND_AREA_INFORMATION_TRAM_OWNER                            :{BLACK}مالک
 STR_LAND_AREA_INFORMATION_RAIL_OWNER                            :{BLACK}مالک ریل راه آهن: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_LOCAL_AUTHORITY                       :{BLACK}فرماندار محلی: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_LOCAL_AUTHORITY_NONE                  :هیچکدام
-STR_LAND_AREA_INFORMATION_LANDINFO_COORDS                       :{BLACK}مختصات: {LTBLUE}{NUM} x {NUM} x {NUM} ({STRING})
+STR_LAND_AREA_INFORMATION_LANDINFO_COORDS                       :{BLACK}Coordinates: {LTBLUE}{NUM} x {NUM} x {NUM}
 STR_LAND_AREA_INFORMATION_BUILD_DATE                            :{BLACK}ساخته شده در: {LTBLUE}{DATE_LONG}
 STR_LAND_AREA_INFORMATION_STATION_CLASS                         :{BLACK}کلاس ایستگاه: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_STATION_TYPE                          :{BLACK}نوع ایستگاه: {LTBLUE}{STRING}
@@ -2700,6 +2698,7 @@ STR_NEWGRF_ERROR_MSG_INFO                                       :{SILVER}{STRING
 STR_NEWGRF_ERROR_MSG_WARNING                                    :{RED}هشدار: {SILVER}{STRING}
 STR_NEWGRF_ERROR_MSG_ERROR                                      :{RED}خطا: {SILVER}{STRING}
 STR_NEWGRF_ERROR_MSG_FATAL                                      :{RED}خطای وخیم: {SILVER}{STRING}
+STR_NEWGRF_ERROR_FATAL_POPUP                                    :{WHITE}The NewGRF "{STRING}" با یک خطای مهلک مواجه شده :{}{STRING}
 STR_NEWGRF_ERROR_VERSION_NUMBER                                 :{1:STRING} با TTDPatch که ویرایش آن توسط OpenTTD گزارش شده کار نمی کند
 STR_NEWGRF_ERROR_DOS_OR_WINDOWS                                 :{1:STRING} برای ویرایش {STRING}TTD می باشد
 STR_NEWGRF_ERROR_UNSET_SWITCH                                   :{1:STRING} طراحی شده برای استفاده با {STRING}
@@ -2788,8 +2787,6 @@ STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED_WINTER              :{ORANGE}{STRING
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED_GENERAL            :{ORANGE}{STRING}{GREEN} دریافت گردید
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED                     :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{RED} (هنوز نیاز است)
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED                    :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{GREEN} (دریافت گردیده)
-STR_TOWN_VIEW_TOWN_GROWS_EVERY                                  :{BLACK}رشد شهر هر {ORANGE}{COMMA}{BLACK} روز
-STR_TOWN_VIEW_TOWN_GROWS_EVERY_FUNDED                           :{BLACK}رشد شهر هر {ORANGE}{COMMA}{BLACK} روز (بنیان شده)
 STR_TOWN_VIEW_TOWN_GROW_STOPPED                                 :{BLACK}شهر رشد {RED}نمی {BLACK} کند
 STR_TOWN_VIEW_NOISE_IN_TOWN                                     :{BLACK}حد سروصدا در شهر: {ORANGE}{COMMA}{BLACK}  بیشینه: {ORANGE}{COMMA}
 STR_TOWN_VIEW_CENTER_TOOLTIP                                    :{BLACK}نمایش شهر در وسط صفحه نمایش. کنترل+کلیک یک نمای اضافه از شهر باز می کند
@@ -2822,15 +2819,13 @@ STR_LOCAL_AUTHORITY_ACTION_STATUE_OF_COMPANY                    :ساخت تند
 STR_LOCAL_AUTHORITY_ACTION_NEW_BUILDINGS                        :ساخت اختمان های جدید
 STR_LOCAL_AUTHORITY_ACTION_EXCLUSIVE_TRANSPORT                  :خرید انحصاری کلیه حقوق حمل و نقل
 STR_LOCAL_AUTHORITY_ACTION_BRIBE                                :رشوه به مقامات محلی
+###next-name-looks-similar
 
-###length 8
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_SMALL_ADVERTISING            :{YELLOW}اجرای یک برنامه آگهی برای جذب بیشتر مسافر و بار به شرکت حمل و نقل شما.{}قیمت: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_MEDIUM_ADVERTISING           :{YELLOW}اجرای یک برنامه آگهی متوسط برای جذب بیشتر مسافر و بار به شرکت حمل و نقل شما.{}قیمت: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_LARGE_ADVERTISING            :{YELLOW}اجرای یک برنامه آگهی بزرگ برای جذب بیشتر مسافر و بار به شرکت حمل و نقل شما.{}قیمت: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_ROAD_RECONSTRUCTION          :{YELLOW}پرداخت هزینه بازسازی روکش آسفالت شهری. سبب ترافیک قابل ملاحظه ای تا شش ماه می شود{}قیمت: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_STATUE_OF_COMPANY            :{YELLOW}ساخت مجسمه برای بزرگداشت شرکت شما{}قیمت: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_NEW_BUILDINGS                :{YELLOW}پرداخت هزینه ساخت ساختمان های تجاری.{}قیمت: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{YELLOW}خرید انحصاری حقوق حمل و نقل به مدت یک سال. مقامات شهر به مسافران و بارها اجازه استفاده از شرکت حمل و نقل دیگری را نمی دهند{}Cost: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{YELLOW}رشوه به فرماندار محلی برای افزایش رده، با احتمال جریمه زیاد در صورت گیر افتادن.{}قیمت: {CURRENCY_LONG}
 
 # Goal window
@@ -2870,10 +2865,8 @@ STR_GOAL_QUESTION_BUTTON_CLOSE                                  :بستن
 # Subsidies window
 STR_SUBSIDIES_CAPTION                                           :{WHITE}یارانه ها
 STR_SUBSIDIES_OFFERED_TITLE                                     :{BLACK}یارانه های پیشنهادی برای انجام سرویس های:
-STR_SUBSIDIES_OFFERED_FROM_TO                                   :{ORANGE}{STRING} از {STRING} به {STRING}{YELLOW} (توسط {DATE_SHORT})
 STR_SUBSIDIES_NONE                                              :{ORANGE}- هیچکدام-
 STR_SUBSIDIES_SUBSIDISED_TITLE                                  :{BLACK}سرویس هایی که قبلا یارانه ای بوده:
-STR_SUBSIDIES_SUBSIDISED_FROM_TO                                :{ORANGE}{STRING} از {STRING} به {STRING}{YELLOW} ({COMPANY}{YELLOW}, تا {DATE_SHORT})
 STR_SUBSIDIES_TOOLTIP_CLICK_ON_SERVICE_TO_CENTER                :{BLACK}روی سرویس کلیک کنید تا آن شهر/صنایع در مرکز صفحه نمایش نشان داده شود. کنترل+کلیک یک صفحه نمایش تازه برای محل شهر/صنایع باز خواهد کرد
 
 # Story book window
@@ -2889,8 +2882,6 @@ STR_STATION_LIST_STATION                                        :{YELLOW}{STATIO
 STR_STATION_LIST_WAYPOINT                                       :{YELLOW}{WAYPOINT}
 STR_STATION_LIST_NONE                                           :{YELLOW}- هیچکدام -
 STR_STATION_LIST_SELECT_ALL_FACILITIES                          :{BLACK}انتخاب تمامی تسهیلات
-STR_STATION_LIST_SELECT_ALL_TYPES                               :{BLACK}انتخاب همه ی انواع محموله ها (شامل محموله های در انتظار)
-STR_STATION_LIST_NO_WAITING_CARGO                               :{BLACK}هیچ نوع محموله در انتظار نیست
 
 # Station view window
 STR_STATION_VIEW_CAPTION                                        :{WHITE}{STATION} {STATION_FEATURES}
@@ -2900,10 +2891,11 @@ STR_STATION_VIEW_ACCEPTS_BUTTON                                 :{BLACK}قبول
 STR_STATION_VIEW_ACCEPTS_TOOLTIP                                :{BLACK}نشان دادن لیست کالاهای قابل دریافت
 STR_STATION_VIEW_ACCEPTS_CARGO                                  :{BLACK}قبول می کند: {WHITE}{CARGO_LIST}
 
+STR_STATION_VIEW_EXCLUSIVE_RIGHTS_SELF                          :{BLACK}این ایستگاه حقوق انحصاری حمل و نقل در این شهر دارد.
+STR_STATION_VIEW_EXCLUSIVE_RIGHTS_COMPANY                       :{YELLOW}{COMPANY}{BLACK} حقوق انحصاری حمل و نقل این شهر را خرید.
 
 STR_STATION_VIEW_RATINGS_BUTTON                                 :{BLACK}رده بندی
 STR_STATION_VIEW_RATINGS_TOOLTIP                                :{BLACK}نشان دادن رتبه بندی ایستگاه
-STR_STATION_VIEW_SUPPLY_RATINGS_TITLE                           :{BLACK}تولید ماهیانه و رتبه و محلی:
 STR_STATION_VIEW_CARGO_SUPPLY_RATING                            :{WHITE}{STRING}: {YELLOW}{COMMA} / {STRING} ({COMMA}%)
 
 STR_STATION_VIEW_GROUP                                          :{BLACK}همگروه با
@@ -3000,7 +2992,6 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_CANALS                          :{WHITE}کانا
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATION_SECT                    :{GOLD}ایستگاه ها:
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATIONS                        :{WHITE}قطعه های ایستگاه
 STR_COMPANY_INFRASTRUCTURE_VIEW_AIRPORTS                        :{WHITE}فرودگاه ها
-STR_COMPANY_INFRASTRUCTURE_VIEW_TOTAL                           :{WHITE}{CURRENCY_LONG}/سال
 
 # Industry directory
 STR_INDUSTRY_DIRECTORY_CAPTION                                  :کارخانه ها
@@ -3200,7 +3191,6 @@ STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :ماشین جا
 STR_ENGINE_PREVIEW_AIRCRAFT                                     :هواپیما
 STR_ENGINE_PREVIEW_SHIP                                         :کشتی
 
-STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE               :{BLACK}قیمت: {CURRENCY_LONG} وزن: {WEIGHT_SHORT}{}سرعت: {VELOCITY}  قدرت: {POWER}  Max. T.E.: {6:FORCE}{}هزینه استهلاک {4:CURRENCY_LONG}/yr{}ظرفیت: {5:CARGO_LONG}
 
 # Autoreplace window
 
@@ -3288,9 +3278,6 @@ STR_VEHICLE_INFO_AGE_RED                                        :{RED}{COMMA} س
 STR_VEHICLE_INFO_CAPACITY_CAPACITY                              :{BLACK}ظرفیت: {LTBLUE}{CARGO_LONG}, {CARGO_LONG}{STRING}
 
 
-STR_VEHICLE_DETAILS_SERVICING_INTERVAL_DAYS                     :{BLACK}فاصله ی زمانی بین تعمیرات دوره ای: {LTBLUE}{COMMA}روز {BLACK}   آخیرین تعمیرات: {LTBLUE}{DATE_LONG}
-STR_VEHICLE_DETAILS_INCREASE_SERVICING_INTERVAL_TOOLTIP         :{BLACK}افزایش مدت سرویس به مقدار 10. برای افزایش به مقدار 5 باید Ctrl+Click کنید
-STR_VEHICLE_DETAILS_DECREASE_SERVICING_INTERVAL_TOOLTIP         :{BLACK}کاهش مدت سرویس به مقدار 10، برای کاهش به مقدار 5 باید Ctrl+Click کنید
 
 
 ###length VEHICLE_TYPES
@@ -3322,6 +3309,7 @@ STR_VEHICLE_DETAIL_TAB_TOTAL_CARGO                              :{BLACK}مجمو
 STR_REFIT_CAPTION                                               :{WHITE}{VEHICLE} (تعمیر مجدد)
 STR_REFIT_TITLE                                                 :{GOLD}انتخاب محموله قابل حمل:
 STR_REFIT_NEW_CAPACITY_COST_OF_REFIT                            :{BLACK}ظرفیت جدید : {GOLD}{CARGO_LONG}{}{BLACK} بهای تعمیر مجدد: {RED}{CURRENCY_LONG}
+STR_REFIT_NEW_CAPACITY_COST_OF_AIRCRAFT_REFIT                   :{BLACK}ظرفیت جدید: {GOLD}{CARGO_LONG}, {GOLD}{CARGO_LONG}{}{BLACK}هزینه بازسازی: {RED}{CURRENCY_LONG}
 
 ###length VEHICLE_TYPES
 STR_REFIT_SHIP_LIST_TOOLTIP                                     :{BLACK}انتخاب نوع محموله ای که این کشتی باید حمل کند
@@ -3340,7 +3328,6 @@ STR_ORDERS_CAPTION                                              :{WHITE}{VEHICLE
 
 STR_ORDERS_LIST_TOOLTIP                                         :{BLACK}لیست دستورات - برای مشخص کردن دستور روی آن کلیک کنید. Ctrl+click به ایستگاه میرود
 STR_ORDER_INDEX                                                 :{COMMA}:{NBSP}
-STR_ORDER_TEXT                                                  :{STRING} {STRING} {STRING}
 
 STR_ORDERS_END_OF_ORDERS                                        :- - پایان دستورها - -
 
@@ -3350,6 +3337,10 @@ STR_ORDERS_END_OF_ORDERS                                        :- - پایان 
 STR_ORDER_DROP_UNLOAD_IF_ACCEPTED                               :درصورت پذیرش تخلیه کن
 
 
+
+# Depot action tooltips, one per vehicle type
+###length VEHICLE_TYPES
+###next-name-looks-similar
 
 
 # Conditional order variables, must follow order of OrderConditionVariable enum
@@ -3382,6 +3373,7 @@ STR_ORDER_GO_TO_NEAREST_DEPOT_FORMAT                            :{STRING} {STRIN
 STR_ORDER_GO_TO_DEPOT_FORMAT                                    :{STRING} {DEPOT}
 
 
+
 STR_ORDER_GO_TO_STATION                                         :{STRING} {STATION} {STRING}
 
 STR_ORDER_IMPLICIT                                              :(ضمنی)
@@ -3404,6 +3396,7 @@ STR_TIMETABLE_TRAVEL_FOR_ESTIMATED                              :حرکت ({STRI
 STR_TIMETABLE_TRAVEL_FOR_SPEED_ESTIMATED                        :حرکت ({STRING}, برنامه ریزی نشده است) با حداکثر {VELOCITY}
 STR_TIMETABLE_STAY_FOR_ESTIMATED                                :(توقف برای {STRING}, برنامه ریزی نشده است)
 STR_TIMETABLE_AND_TRAVEL_FOR_ESTIMATED                          :(دستور کار {STRING}, برنامه ریزی نشده است)
+
 
 
 
@@ -3483,7 +3476,7 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}متن �
 STR_TEXTFILE_VIEW_README                                        :{BLACK}مشاهده راهنما
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}گزارش تغییر
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}گواهی
-###length 4
+###length 5
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}راهنمای {STRING} {STRING}
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING} گزارش تغییرات {STRING}
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} گواهی {STRING}
@@ -3614,6 +3607,8 @@ STR_ERROR_UNABLE_TO_FIND_ROUTE_TO                               :{WHITE}مسیر
 STR_ERROR_UNABLE_TO_FIND_LOCAL_DEPOT                            :{WHITE}مخزن یافت نشد
 
 STR_ERROR_DEPOT_WRONG_DEPOT_TYPE                                :نوع تعمیرگاه اشتباه
+
+# Depot unbunching related errors
 
 # Autoreplace related errors
 STR_ERROR_TRAIN_TOO_LONG_AFTER_REPLACEMENT                      :{WHITE}{VEHICLE} بعد از تغییر بسیار طولانی شده است
@@ -4264,6 +4259,7 @@ STR_STATION_NAME                                                :{STATION}
 STR_TOWN_NAME                                                   :{TOWN}
 STR_VEHICLE_NAME                                                :{VEHICLE}
 STR_WAYPOINT_NAME                                               :{WAYPOINT}
+
 
 STR_JUST_CARGO                                                  :{CARGO_LONG}
 STR_JUST_CHECKMARK                                              :{CHECKMARK}

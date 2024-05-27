@@ -20,7 +20,6 @@
 #include "../network/network.h"
 #include "../network/network_func.h"
 #include "../network/network_server.h"
-#include "../3rdparty/randombytes/randombytes.h"
 #include "../3rdparty/monocypher/monocypher.h"
 
 #include "saveload.h"
@@ -48,7 +47,7 @@
  * @param face the face in the old format
  * @return the face in the new format
  */
-CompanyManagerFace ConvertFromOldCompanyManagerFace(uint32 face)
+CompanyManagerFace ConvertFromOldCompanyManagerFace(uint32_t face)
 {
 	CompanyManagerFace cmf = 0;
 	GenderEthnicity ge = GE_WM;
@@ -197,7 +196,7 @@ void AfterLoadCompanyStats()
 						}
 					}
 				}
-				FALLTHROUGH;
+				[[fallthrough]];
 
 			case MP_OBJECT:
 				if (GetWaterClass(tile) == WATER_CLASS_CANAL) {
@@ -277,6 +276,8 @@ static const SaveLoad _company_desc[] = {
 	SLE_CONDVAR(CompanyProperties, last_build_coordinate, SLE_UINT32,                  SLV_6, SL_MAX_VERSION),
 	SLE_CONDVAR(CompanyProperties, inaugurated_year,      SLE_FILE_U8  | SLE_VAR_I32,  SL_MIN_VERSION, SLV_31),
 	SLE_CONDVAR(CompanyProperties, inaugurated_year,      SLE_INT32,                  SLV_31, SL_MAX_VERSION),
+	SLE_CONDVAR_X(CompanyProperties, display_inaugurated_period, SLE_INT32,   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VARIABLE_DAY_LENGTH, 6)),
+	SLE_CONDVAR_X(CompanyProperties, age_years,           SLE_INT32,          SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VARIABLE_DAY_LENGTH, 6)),
 
 	    SLE_ARR(CompanyProperties, share_owners,          SLE_UINT8, 4),
 
@@ -365,7 +366,7 @@ static const SaveLoad _company_economy_desc[] = {
 
 /* We do need to read this single value, as the bigger it gets, the more data is stored */
 struct CompanyOldAI {
-	uint8 num_build_rec;
+	uint8_t num_build_rec;
 };
 
 static const SaveLoad _company_ai_desc[] = {
@@ -584,7 +585,7 @@ static void Load_PLYP()
 	}
 	if (!_network_server) {
 		extern CompanyMask _saved_PLYP_invalid_mask;
-		extern std::vector<uint8> _saved_PLYP_data;
+		extern std::vector<uint8_t> _saved_PLYP_data;
 
 		_saved_PLYP_invalid_mask = invalid_mask;
 		_saved_PLYP_data.resize(size);
@@ -592,33 +593,33 @@ static void Load_PLYP()
 		return;
 	}
 
-	uint8 token[16];
-	ReadBuffer::GetCurrent()->CopyBytes(token, 16);
-	if (memcmp(token, _network_company_password_storage_token, 16) != 0) {
+	std::array<uint8_t, 16> token;
+	ReadBuffer::GetCurrent()->CopyBytes(token.data(), 16);
+	if (token != _network_company_password_storage_token) {
 		DEBUG(sl, 2, "Skipping encrypted company passwords");
 		SlSkipBytes(size - 16);
 		return;
 	}
 
-	uint8 nonce[24];
-	uint8 mac[16];
-	ReadBuffer::GetCurrent()->CopyBytes(nonce, 24);
-	ReadBuffer::GetCurrent()->CopyBytes(mac, 16);
+	std::array<uint8_t, 16> mac;
+	std::array<uint8_t, 24> nonce;
+	ReadBuffer::GetCurrent()->CopyBytes(nonce.data(), 24);
+	ReadBuffer::GetCurrent()->CopyBytes(mac.data(), 16);
 
-	std::vector<uint8> buffer(size - 16 - 24 - 16);
+	std::vector<uint8_t> buffer(size - 16 - 24 - 16);
 	ReadBuffer::GetCurrent()->CopyBytes(buffer.data(), buffer.size());
 
-	if (crypto_aead_unlock(buffer.data(), mac, _network_company_password_storage_key, nonce, nullptr, 0, buffer.data(), buffer.size()) == 0) {
+	if (crypto_aead_unlock(buffer.data(), mac.data(), _network_company_password_storage_key.data(), nonce.data(), nullptr, 0, buffer.data(), buffer.size()) == 0) {
 		SlLoadFromBuffer(buffer.data(), buffer.size(), [invalid_mask]() {
 			_network_company_server_id.resize(SlReadUint32());
-			ReadBuffer::GetCurrent()->CopyBytes((uint8 *)_network_company_server_id.data(), _network_company_server_id.size());
+			ReadBuffer::GetCurrent()->CopyBytes((uint8_t *)_network_company_server_id.data(), _network_company_server_id.size());
 
 			while (true) {
-				uint16 cid = SlReadUint16();
+				uint16_t cid = SlReadUint16();
 				if (cid >= MAX_COMPANIES) break;
 				std::string password;
 				password.resize(SlReadUint32());
-				ReadBuffer::GetCurrent()->CopyBytes((uint8 *)password.data(), password.size());
+				ReadBuffer::GetCurrent()->CopyBytes((uint8_t *)password.data(), password.size());
 				if (!HasBit(invalid_mask, cid)) {
 					NetworkServerSetCompanyPassword((CompanyID)cid, password, true);
 				}
@@ -640,61 +641,57 @@ static void Save_PLYP()
 	}
 	if (!_network_server) {
 		extern CompanyMask _saved_PLYP_invalid_mask;
-		extern std::vector<uint8> _saved_PLYP_data;
+		extern std::vector<uint8_t> _saved_PLYP_data;
 
 		if (_saved_PLYP_data.empty()) {
 			SlSetLength(0);
 		} else {
 			SlSetLength(2 + _saved_PLYP_data.size());
 			SlWriteUint16(_saved_PLYP_invalid_mask);
-			MemoryDumper::GetCurrent()->CopyBytes((const uint8 *)_saved_PLYP_data.data(), _saved_PLYP_data.size());
+			MemoryDumper::GetCurrent()->CopyBytes((const uint8_t *)_saved_PLYP_data.data(), _saved_PLYP_data.size());
 		}
 		return;
 	}
 
-	uint8 nonce[24];    /* Use only once per key: random */
-	if (randombytes(nonce, 24) < 0) {
-		/* Can't get a random nonce, just give up */
-		SlSetLength(0);
-		return;
-	}
-
-	std::vector<byte> buffer = SlSaveToVector([]() {
-		SlWriteUint32((uint32)_network_company_server_id.size());
-		MemoryDumper::GetCurrent()->CopyBytes((const uint8 *)_network_company_server_id.data(), _network_company_server_id.size());
+	std::vector<uint8_t> buffer = SlSaveToVector([]() {
+		SlWriteUint32((uint32_t)_network_company_server_id.size());
+		MemoryDumper::GetCurrent()->CopyBytes((const uint8_t *)_network_company_server_id.data(), _network_company_server_id.size());
 
 		for (const Company *c : Company::Iterate()) {
 			SlWriteUint16(c->index);
 
 			const std::string &password = _network_company_states[c->index].password;
-			SlWriteUint32((uint32)password.size());
-			MemoryDumper::GetCurrent()->CopyBytes((const uint8 *)password.data(), password.size());
+			SlWriteUint32((uint32_t)password.size());
+			MemoryDumper::GetCurrent()->CopyBytes((const uint8_t *)password.data(), password.size());
 		}
 
 		SlWriteUint16(0xFFFF);
 
 		/* Add some random length padding to not make it too obvious from the length whether passwords are set or not */
-		uint8 padding[256];
-		if (randombytes(padding, 256) >= 0) {
-			SlWriteByte(padding[0]);
-			MemoryDumper::GetCurrent()->CopyBytes(padding + 1, padding[0]);
-		} else {
-			SlWriteByte(0);
-		}
+		std::array<uint8_t, 256> padding;
+		RandomBytesWithFallback(padding);
+		SlWriteByte(padding[0]);
+		MemoryDumper::GetCurrent()->CopyBytes(padding.data() + 1, padding[0]);
 	});
 
 
-	uint8 mac[16];    /* Message authentication code */
+	/* Message authentication code */
+	std::array<uint8_t, 16> mac;
+
+	/* Use only once per key: random */
+	std::array<uint8_t, 24> nonce;
+	RandomBytesWithFallback(nonce);
 
 	/* Encrypt in place */
-	crypto_aead_lock(buffer.data(), mac, _network_company_password_storage_key, nonce, nullptr, 0, buffer.data(), buffer.size());
+	crypto_aead_lock(buffer.data(), mac.data(), _network_company_password_storage_key.data(), nonce.data(), nullptr, 0, buffer.data(), buffer.size());
 
 	SlSetLength(2 + 16 + 24 + 16 + buffer.size());
 	SlWriteUint16(0); // Invalid mask
-	MemoryDumper::GetCurrent()->CopyBytes(_network_company_password_storage_token, 16);
-	MemoryDumper::GetCurrent()->CopyBytes(nonce, 24);
-	MemoryDumper::GetCurrent()->CopyBytes(mac, 16);
-	MemoryDumper::GetCurrent()->CopyBytes(buffer.data(), buffer.size());
+	static_assert(_network_company_password_storage_token.size() == 16);
+	MemoryDumper::GetCurrent()->CopyBytes(_network_company_password_storage_token.data(), 16);
+	MemoryDumper::GetCurrent()->CopyBytes(nonce);
+	MemoryDumper::GetCurrent()->CopyBytes(mac);
+	MemoryDumper::GetCurrent()->CopyBytes(buffer);
 }
 
 static const ChunkHandler company_chunk_handlers[] = {

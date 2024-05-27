@@ -10,12 +10,9 @@
 #ifndef TIMER_GAME_TICK_H
 #define TIMER_GAME_TICK_H
 
-#include "gfx_type.h"
+#include "../gfx_type.h"
 
 #include <chrono>
-
-/** Estimation of how many ticks fit in a single second. */
-static const uint TICKS_PER_SECOND = 1000 / 27 /*MILLISECONDS_PER_TICK*/;
 
 /**
  * Timer that represents the game-ticks. It will pause when the game is paused.
@@ -24,7 +21,34 @@ static const uint TICKS_PER_SECOND = 1000 / 27 /*MILLISECONDS_PER_TICK*/;
  */
 class TimerGameTick {
 public:
-	using TPeriod = uint;
+	enum Priority {
+		NONE, ///< These timers can be executed in any order; the order is not relevant.
+
+		/* For all other priorities, the order is important.
+		 * For safety, you can only setup a single timer on a single priority. */
+		COMPETITOR_TIMEOUT,
+	};
+
+	struct TPeriod {
+		Priority priority;
+		uint value;
+
+		TPeriod(Priority priority, uint value) : priority(priority), value(value)
+		{}
+
+		bool operator < (const TPeriod &other) const
+		{
+			/* Sort by priority before value, such that changes in value for priorities other than NONE do not change the container order */
+			if (this->priority != other.priority) return this->priority < other.priority;
+			return this->value < other.value;
+		}
+
+		bool operator == (const TPeriod &other) const
+		{
+			return this->priority == other.priority && this->value == other.value;
+		}
+	};
+
 	using TElapsed = uint;
 	struct TStorage {
 		uint elapsed;

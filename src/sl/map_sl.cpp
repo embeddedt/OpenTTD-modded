@@ -21,26 +21,26 @@
 
 #include "../safeguards.h"
 
-static uint32 _map_dim_x;
-static uint32 _map_dim_y;
+static uint32_t _map_dim_x;
+static uint32_t _map_dim_y;
 
 extern bool _sl_maybe_chillpp;
 
-static const SaveLoad _map_dimensions[] = {
-	SLEG_CONDVAR(_map_dim_x, SLE_UINT32, SLV_6, SL_MAX_VERSION),
-	SLEG_CONDVAR(_map_dim_y, SLE_UINT32, SLV_6, SL_MAX_VERSION),
+static const NamedSaveLoad _map_dimensions[] = {
+	NSL("dim_x", SLEG_CONDVAR(_map_dim_x, SLE_UINT32, SLV_6, SL_MAX_VERSION)),
+	NSL("dim_y", SLEG_CONDVAR(_map_dim_y, SLE_UINT32, SLV_6, SL_MAX_VERSION)),
 };
 
 static void Save_MAPS()
 {
 	_map_dim_x = MapSizeX();
 	_map_dim_y = MapSizeY();
-	SlGlobList(_map_dimensions);
+	SlSaveTableObjectChunk(_map_dimensions);
 }
 
 static void Load_MAPS()
 {
-	SlGlobList(_map_dimensions);
+	SlLoadTableOrRiffFiltered(_map_dimensions);
 	if (!ValidateMapSize(_map_dim_x, _map_dim_y)) {
 		SlErrorCorruptFmt("Invalid map size: %u x %u", _map_dim_x, _map_dim_y);
 	}
@@ -49,7 +49,7 @@ static void Load_MAPS()
 
 static void Check_MAPS()
 {
-	SlGlobList(_map_dimensions);
+	SlLoadTableOrRiffFiltered(_map_dimensions);
 	_load_check_data.map_size_x = _map_dim_x;
 	_load_check_data.map_size_y = _map_dim_y;
 }
@@ -58,7 +58,7 @@ static const uint MAP_SL_BUF_SIZE = 4096;
 
 static void Load_MAPT()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -88,7 +88,7 @@ static void Load_MAPH()
 	if (SlXvIsFeaturePresent(XSLFI_CHILLPP)) {
 		if (SlGetFieldLength() != 0) {
 			_sl_xv_feature_versions[XSLFI_HEIGHT_8_BIT] = 2;
-			std::array<uint16, MAP_SL_BUF_SIZE> buf;
+			std::array<uint16_t, MAP_SL_BUF_SIZE> buf;
 			TileIndex size = MapSize();
 
 			for (TileIndex i = 0; i != size;) {
@@ -99,7 +99,7 @@ static void Load_MAPH()
 		return;
 	}
 
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -110,7 +110,7 @@ static void Load_MAPH()
 
 static void Load_MAP1()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -121,7 +121,7 @@ static void Load_MAP1()
 
 static void Load_MAP2()
 {
-	std::array<uint16, MAP_SL_BUF_SIZE> buf;
+	std::array<uint16_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -135,7 +135,7 @@ static void Load_MAP2()
 
 static void Load_MAP3()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -146,7 +146,7 @@ static void Load_MAP3()
 
 static void Load_MAP4()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -157,7 +157,7 @@ static void Load_MAP4()
 
 static void Load_MAP5()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -168,7 +168,7 @@ static void Load_MAP5()
 
 static void Load_MAP6()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	if (IsSavegameVersionBefore(SLV_42)) {
@@ -192,7 +192,7 @@ static void Load_MAP6()
 
 static void Load_MAP7()
 {
-	std::array<byte, MAP_SL_BUF_SIZE> buf;
+	std::array<uint8_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -203,7 +203,7 @@ static void Load_MAP7()
 
 static void Load_MAP8()
 {
-	std::array<uint16, MAP_SL_BUF_SIZE> buf;
+	std::array<uint16_t, MAP_SL_BUF_SIZE> buf;
 	TileIndex size = MapSize();
 
 	for (TileIndex i = 0; i != size;) {
@@ -222,14 +222,14 @@ static void Load_WMAP()
 	const TileIndex size = MapSize();
 
 #if TTD_ENDIAN == TTD_LITTLE_ENDIAN
-	reader->CopyBytes((byte *) _m, size * 8);
+	reader->CopyBytes((uint8_t *) _m, size * 8);
 #else
 	for (TileIndex i = 0; i != size; i++) {
 		reader->CheckBytes(8);
 		_m[i].type = reader->RawReadByte();
 		_m[i].height = reader->RawReadByte();
-		uint16 m2 = reader->RawReadByte();
-		m2 |= ((uint16) reader->RawReadByte()) << 8;
+		uint16_t m2 = reader->RawReadByte();
+		m2 |= ((uint16_t) reader->RawReadByte()) << 8;
 		_m[i].m2 = m2;
 		_m[i].m1 = reader->RawReadByte();
 		_m[i].m3 = reader->RawReadByte();
@@ -246,14 +246,14 @@ static void Load_WMAP()
 		}
 	} else if (_sl_xv_feature_versions[XSLFI_WHOLE_MAP_CHUNK] == 2) {
 #if TTD_ENDIAN == TTD_LITTLE_ENDIAN
-		reader->CopyBytes((byte *) _me, size * 4);
+		reader->CopyBytes((uint8_t *) _me, size * 4);
 #else
 		for (TileIndex i = 0; i != size; i++) {
 			reader->CheckBytes(4);
 			_me[i].m6 = reader->RawReadByte();
 			_me[i].m7 = reader->RawReadByte();
-			uint16 m8 = reader->RawReadByte();
-			m8 |= ((uint16) reader->RawReadByte()) << 8;
+			uint16_t m8 = reader->RawReadByte();
+			m8 |= ((uint16_t) reader->RawReadByte()) << 8;
 			_me[i].m8 = m8;
 		}
 #endif
@@ -273,8 +273,8 @@ static void Save_WMAP()
 	SlSetLength(size * 12);
 
 #if TTD_ENDIAN == TTD_LITTLE_ENDIAN
-	dumper->CopyBytes((byte *) _m, size * 8);
-	dumper->CopyBytes((byte *) _me, size * 4);
+	dumper->CopyBytes((uint8_t *) _m, size * 8);
+	dumper->CopyBytes((uint8_t *) _me, size * 4);
 #else
 	for (TileIndex i = 0; i != size; i++) {
 		dumper->CheckBytes(8);
@@ -298,52 +298,52 @@ static void Save_WMAP()
 }
 
 struct MAPT {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].type; }
 };
 
 struct MAPH {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].height; }
 };
 
 struct MAP1 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].m1; }
 };
 
 struct MAP2 {
-	typedef uint16 FieldT;
+	typedef uint16_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].m2; }
 };
 
 struct MAP3 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].m3; }
 };
 
 struct MAP4 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].m4; }
 };
 
 struct MAP5 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _m[t].m5; }
 };
 
 struct MAP6 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _me[t].m6; }
 };
 
 struct MAP7 {
-	typedef uint8 FieldT;
+	typedef uint8_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _me[t].m7; }
 };
 
 struct MAP8 {
-	typedef uint16 FieldT;
+	typedef uint16_t FieldT;
 	static const FieldT &GetField(TileIndex t) { return _me[t].m8; }
 };
 
@@ -351,13 +351,13 @@ template <typename T>
 struct MAP_VarType {};
 
 template <>
-struct MAP_VarType<uint8>
+struct MAP_VarType<uint8_t>
 {
 	static const VarType var_type = SLE_UINT8;
 };
 
 template <>
-struct MAP_VarType<uint16>
+struct MAP_VarType<uint16_t>
 {
 	static const VarType var_type = SLE_UINT16;
 };
@@ -377,7 +377,7 @@ static void Save_MAP()
 	}
 }
 
-static ChunkSaveLoadSpecialOpResult Special_WMAP(uint32 chunk_id, ChunkSaveLoadSpecialOp op)
+static ChunkSaveLoadSpecialOpResult Special_WMAP(uint32_t chunk_id, ChunkSaveLoadSpecialOp op)
 {
 	switch (op) {
 		case CSLSO_SHOULD_SAVE_CHUNK:
@@ -390,7 +390,7 @@ static ChunkSaveLoadSpecialOpResult Special_WMAP(uint32 chunk_id, ChunkSaveLoadS
 	return CSLSOR_NONE;
 }
 
-static ChunkSaveLoadSpecialOpResult Special_MAP_Chunks(uint32 chunk_id, ChunkSaveLoadSpecialOp op)
+static ChunkSaveLoadSpecialOpResult Special_MAP_Chunks(uint32_t chunk_id, ChunkSaveLoadSpecialOp op)
 {
 	switch (op) {
 		case CSLSO_SHOULD_SAVE_CHUNK:
@@ -404,7 +404,7 @@ static ChunkSaveLoadSpecialOpResult Special_MAP_Chunks(uint32 chunk_id, ChunkSav
 }
 
 static const ChunkHandler map_chunk_handlers[] = {
-	{ 'MAPS', Save_MAPS,      Load_MAPS, nullptr, Check_MAPS, CH_RIFF },
+	{ 'MAPS', Save_MAPS,      Load_MAPS, nullptr, Check_MAPS, CH_TABLE },
 	{ 'MAPT', Save_MAP<MAPT>, Load_MAPT, nullptr, nullptr,    CH_RIFF, Special_MAP_Chunks },
 	{ 'MAPH', Save_MAP<MAPH>, Load_MAPH, nullptr, Check_MAPH, CH_RIFF, Special_MAP_Chunks },
 	{ 'MAPO', Save_MAP<MAP1>, Load_MAP1, nullptr, nullptr,    CH_RIFF, Special_MAP_Chunks },

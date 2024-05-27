@@ -26,17 +26,17 @@ static const size_t MEMORY_CHUNK_SIZE = 128 * 1024;
 
 /** A buffer for reading (and buffering) savegame data. */
 struct ReadBuffer {
-	byte buf[MEMORY_CHUNK_SIZE]; ///< Buffer we're going to read from.
-	byte *bufp;                  ///< Location we're at reading the buffer.
-	byte *bufe;                  ///< End of the buffer we can read from.
-	LoadFilter *reader;          ///< The filter used to actually read.
-	size_t read;                 ///< The amount of read bytes so far from the filter.
+	uint8_t buf[MEMORY_CHUNK_SIZE];     ///< Buffer we're going to read from.
+	uint8_t *bufp;                      ///< Location we're at reading the buffer.
+	uint8_t *bufe;                      ///< End of the buffer we can read from.
+	std::shared_ptr<LoadFilter> reader; ///< The filter used to actually read.
+	size_t read;                        ///< The amount of read bytes so far from the filter.
 
 	/**
 	 * Initialise our variables.
 	 * @param reader The filter to actually read data.
 	 */
-	ReadBuffer(LoadFilter *reader) : bufp(nullptr), bufe(nullptr), reader(reader), read(0)
+	ReadBuffer(std::shared_ptr<LoadFilter> reader) : bufp(nullptr), bufe(nullptr), reader(std::move(reader)), read(0)
 	{
 	}
 
@@ -47,7 +47,7 @@ struct ReadBuffer {
 
 	inline void SkipBytes(size_t bytes)
 	{
-		byte *b = this->bufp + bytes;
+		uint8_t *b = this->bufp + bytes;
 		if (likely(b <= this->bufe)) {
 			this->bufp = b;
 		} else {
@@ -55,18 +55,27 @@ struct ReadBuffer {
 		}
 	}
 
-	inline byte RawReadByte()
+	inline uint8_t RawReadByte()
 	{
 		return *this->bufp++;
 	}
 
-	inline byte ReadByte()
+	inline uint8_t ReadByte()
 	{
 		if (unlikely(this->bufp == this->bufe)) {
 			this->AcquireBytes();
 		}
 
 		return RawReadByte();
+	}
+
+	inline uint8_t PeekByte()
+	{
+		if (unlikely(this->bufp == this->bufe)) {
+			this->AcquireBytes();
+		}
+
+		return *this->bufp;
 	}
 
 	inline void CheckBytes(size_t bytes)
@@ -77,7 +86,7 @@ struct ReadBuffer {
 	inline int RawReadUint16()
 	{
 #if OTTD_ALIGNMENT == 0
-		int x = FROM_BE16(*((const unaligned_uint16*) this->bufp));
+		int x = FROM_BE16(*((const unaligned_uint16 *) this->bufp));
 		this->bufp += 2;
 		return x;
 #else
@@ -86,32 +95,32 @@ struct ReadBuffer {
 #endif
 	}
 
-	inline uint32 RawReadUint32()
+	inline uint32_t RawReadUint32()
 	{
 #if OTTD_ALIGNMENT == 0
-		uint32 x = FROM_BE32(*((const unaligned_uint32*) this->bufp));
+		uint32_t x = FROM_BE32(*((const unaligned_uint32 *) this->bufp));
 		this->bufp += 4;
 		return x;
 #else
-		uint32 x = this->RawReadUint16() << 16;
+		uint32_t x = this->RawReadUint16() << 16;
 		return x | this->RawReadUint16();
 #endif
 	}
 
-	inline uint64 RawReadUint64()
+	inline uint64_t RawReadUint64()
 	{
 #if OTTD_ALIGNMENT == 0
-		uint64 x = FROM_BE64(*((const unaligned_uint64*) this->bufp));
+		uint64_t x = FROM_BE64(*((const unaligned_uint64 *) this->bufp));
 		this->bufp += 8;
 		return x;
 #else
-		uint32 x = this->RawReadUint32();
-		uint32 y = this->RawReadUint32();
-		return (uint64)x << 32 | y;
+		uint32_t x = this->RawReadUint32();
+		uint32_t y = this->RawReadUint32();
+		return (uint64_t)x << 32 | y;
 #endif
 	}
 
-	inline void CopyBytes(byte *ptr, size_t length)
+	inline void CopyBytes(uint8_t *ptr, size_t length)
 	{
 		while (length) {
 			if (unlikely(this->bufp == this->bufe)) {
@@ -123,6 +132,11 @@ struct ReadBuffer {
 			ptr += to_copy;
 			length -= to_copy;
 		}
+	}
+
+	inline void CopyBytes(std::span<uint8_t> buffer)
+	{
+		this->CopyBytes(buffer.data(), buffer.size());
 	}
 
 	/**
@@ -139,10 +153,10 @@ struct ReadBuffer {
 /** Container for dumping the savegame (quickly) to memory. */
 struct MemoryDumper {
 	struct BufferInfo {
-		byte *data;
+		uint8_t *data;
 		size_t size = 0;
 
-		BufferInfo(byte *d) : data(d) {}
+		BufferInfo(uint8_t *d) : data(d) {}
 		~BufferInfo() { free(this->data); }
 
 		BufferInfo(const BufferInfo &) = delete;
@@ -150,19 +164,19 @@ struct MemoryDumper {
 	};
 
 	std::vector<BufferInfo> blocks;         ///< Buffer with blocks of allocated memory.
-	byte *buf = nullptr;                    ///< Buffer we're going to write to.
-	byte *bufe = nullptr;                   ///< End of the buffer we write to.
+	uint8_t *buf = nullptr;                 ///< Buffer we're going to write to.
+	uint8_t *bufe = nullptr;                ///< End of the buffer we write to.
 	size_t completed_block_bytes = 0;       ///< Total byte count of completed blocks.
 
-	byte *autolen_buf = nullptr;
-	byte *autolen_buf_end = nullptr;
-	byte *saved_buf = nullptr;
-	byte *saved_bufe = nullptr;
+	uint8_t *autolen_buf = nullptr;
+	uint8_t *autolen_buf_end = nullptr;
+	uint8_t *saved_buf = nullptr;
+	uint8_t *saved_bufe = nullptr;
 
 	MemoryDumper()
 	{
 		const size_t size = 8192;
-		this->autolen_buf = CallocT<byte>(size);
+		this->autolen_buf = CallocT<uint8_t>(size);
 		this->autolen_buf_end = this->autolen_buf + size;
 	}
 
@@ -185,7 +199,7 @@ struct MemoryDumper {
 	 * Write a single byte into the dumper.
 	 * @param b The byte to write.
 	 */
-	inline void WriteByte(byte b)
+	inline void WriteByte(uint8_t b)
 	{
 		/* Are we at the end of this chunk? */
 		if (unlikely(this->buf == this->bufe)) {
@@ -195,7 +209,7 @@ struct MemoryDumper {
 		*this->buf++ = b;
 	}
 
-	inline void CopyBytes(const byte *ptr, size_t length)
+	inline void CopyBytes(const uint8_t *ptr, size_t length)
 	{
 		while (length) {
 			if (unlikely(this->buf == this->bufe)) {
@@ -209,12 +223,17 @@ struct MemoryDumper {
 		}
 	}
 
-	inline void RawWriteByte(byte b)
+	inline void CopyBytes(std::span<const uint8_t> buffer)
+	{
+		this->CopyBytes(buffer.data(), buffer.size());
+	}
+
+	inline void RawWriteByte(uint8_t b)
 	{
 		*this->buf++ = b;
 	}
 
-	inline void RawWriteUint16(uint16 v)
+	inline void RawWriteUint16(uint16_t v)
 	{
 #if OTTD_ALIGNMENT == 0
 		*((unaligned_uint16 *) this->buf) = TO_BE16(v);
@@ -225,7 +244,7 @@ struct MemoryDumper {
 		this->buf += 2;
 	}
 
-	inline void RawWriteUint32(uint32 v)
+	inline void RawWriteUint32(uint32_t v)
 	{
 #if OTTD_ALIGNMENT == 0
 		*((unaligned_uint32 *) this->buf) = TO_BE32(v);
@@ -238,7 +257,7 @@ struct MemoryDumper {
 		this->buf += 4;
 	}
 
-	inline void RawWriteUint64(uint64 v)
+	inline void RawWriteUint64(uint64_t v)
 	{
 #if OTTD_ALIGNMENT == 0
 		*((unaligned_uint64 *) this->buf) = TO_BE64(v);
@@ -255,10 +274,10 @@ struct MemoryDumper {
 		this->buf += 8;
 	}
 
-	void Flush(SaveFilter *writer);
+	void Flush(SaveFilter &writer);
 	size_t GetSize() const;
 	void StartAutoLength();
-	std::pair<byte *, size_t> StopAutoLength();
+	std::span<uint8_t> StopAutoLength();
 	bool IsAutoLengthActive() const { return this->saved_buf != nullptr; }
 };
 

@@ -97,8 +97,8 @@ ScriptTileList_IndustryAccepting::ScriptTileList_IndustryAccepting(IndustryID in
 		CargoArray acceptance = ::GetAcceptanceAroundTiles(cur_tile, 1, 1, radius);
 		{
 			bool cargo_accepts = false;
-			for (byte j = 0; j < lengthof(i->accepts_cargo); j++) {
-				if (i->accepts_cargo[j] != CT_INVALID && acceptance[i->accepts_cargo[j]] != 0) cargo_accepts = true;
+			for (size_t j = 0; j < i->accepts_cargo.size(); j++) {
+				if (i->accepts_cargo[j] != INVALID_CARGO && acceptance[i->accepts_cargo[j]] != 0) cargo_accepts = true;
 			}
 			if (!cargo_accepts) continue;
 		}
@@ -151,5 +151,18 @@ ScriptTileList_StationType::ScriptTileList_StationType(StationID station_id, Scr
 		if (::GetStationIndex(cur_tile) != station_id) continue;
 		if (!HasBit(station_type_value, ::GetStationType(cur_tile))) continue;
 		this->AddTile(cur_tile);
+	}
+}
+
+ScriptTileList_StationCoverage::ScriptTileList_StationCoverage(StationID station_id)
+{
+	if (!ScriptStation::IsValidStation(station_id)) return;
+
+	const BitmapTileArea &ta = ::Station::Get(station_id)->catchment_tiles;
+	if (ta.tile == INVALID_TILE) return;
+
+	BitmapTileIterator it(ta);
+	for (TileIndex tile = it; tile != INVALID_TILE; tile = ++it) {
+		this->AddTile(tile);
 	}
 }

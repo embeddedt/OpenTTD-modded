@@ -25,7 +25,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         ref: ${{ github.event.pull_request.head.sha }}
 
@@ -35,16 +35,15 @@ jobs:
         git checkout -b pr${{ github.event.pull_request.number }}
 
     - name: Setup cache
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: /emsdk/upstream/emscripten/cache
         key: 3.1.42-${{ runner.os }}
 
-    - name: Patch Emscripten to support LZMA and nlohmann_json
+    - name: Patch Emscripten to support LZMA
       run: |
         cd /emsdk/upstream/emscripten
         patch -p1 < ${GITHUB_WORKSPACE}/os/emscripten/emsdk-liblzma.patch
-        patch -p1 < ${GITHUB_WORKSPACE}/os/emscripten/emsdk-nlohmann-json.patch
 
     - name: Build (host tools)
       run: |
@@ -91,7 +90,8 @@ jobs:
 
         # Ensure we use the latest version of npm; the one we get with current
         # emscripten doesn't allow running "npx wrangler" as root.
-        npm install -g npm
+        # Current emscripten can't install npm>=10.0.0 because node is too old.
+        npm install -g npm@9
 
     - name: Publish preview
       uses: cloudflare/pages-action@v1

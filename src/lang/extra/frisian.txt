@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Fleantugen
 STR_CONFIG_SETTING_AUTOSAVE                                     :Automatysk bewarje: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Selektearje de tiid tusken automatysk bewarje fan it spul
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Toan tsjinstregeling yn tikken yn stee fan yn dagen: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Lit reistiden sjen in tikken yn stee fan yn dagen op tsjinstregelings
+
 # Tracerestrict GUI
 
 # Programmable Pre-Signals
@@ -28,6 +31,13 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{BLACK}Sniehich
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Ûntwurpen: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Stoppet, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Ûnderweis nei {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Ûnderweis nei {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Ûnderweis nei{DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}ûnderhâld yn {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Kin {DEPOT}, {VELOCITY} net berikke
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :F:
@@ -63,3 +73,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Ferkeapj
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kin net 25% oandielen fan dit bedriuw keapje...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Kin net 25% oandielen fan dit bedriuw ferkeapje...
 STR_ERROR_PROTECTED                                             :{WHITE}Dit bedriuw is noch net âld genoch om oandielen te ferhannelje...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :route seinen allinech

@@ -159,7 +159,6 @@ STR_ABBREV_TOFFEE                                               :ลูกอม
 STR_ABBREV_BATTERIES                                            :ถ่าน
 STR_ABBREV_PLASTIC                                              :พลาสติก
 STR_ABBREV_FIZZY_DRINKS                                         :น้ำอัดลม
-STR_ABBREV_NONE                                                 :ว่าง
 STR_ABBREV_ALL                                                  :ทั้งหมด
 
 # 'Mode' of transport for cargoes
@@ -225,6 +224,10 @@ STR_UNITS_FORCE_SI                                              :{DECIMAL} ก�
 STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL} ฟุต
 STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL} เมตร
 STR_UNITS_HEIGHT_SI                                             :{DECIMAL} ม.
+
+# Time units used in string control characters
+
+
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}คำกรอง:
@@ -383,7 +386,7 @@ STR_SCENEDIT_FILE_MENU_SEPARATOR                                :
 STR_SCENEDIT_FILE_MENU_QUIT                                     :ออก
 
 # Settings menu
-###length 15
+###length 16
 STR_SETTINGS_MENU_GAME_OPTIONS                                  :ตัวเลือกเกม
 STR_SETTINGS_MENU_CONFIG_SETTINGS_TREE                          :การตั้งค่า
 STR_SETTINGS_MENU_NEWGRF_SETTINGS                               :กำหนดค่า NewGRF
@@ -399,31 +402,25 @@ STR_SETTINGS_MENU_TRANSPARENT_BUILDINGS                         :สิ่งก
 STR_SETTINGS_MENU_TRANSPARENT_SIGNS                             :ป้ายแบบโปร่งใส
 
 # File menu
-###length 5
 STR_FILE_MENU_SAVE_GAME                                         :บันทึกเกม
 STR_FILE_MENU_LOAD_GAME                                         :โหลดเกม
 STR_FILE_MENU_QUIT_GAME                                         :กลับไปยังเมนูหลักของเกม
-STR_FILE_MENU_SEPARATOR                                         :
 STR_FILE_MENU_EXIT                                              :ออกจากเกม
 
 # Map menu
-###length 4
 STR_MAP_MENU_MAP_OF_WORLD                                       :แผนที่โลก
 STR_MAP_MENU_EXTRA_VIEWPORT                                     :มุมมองเพิ่มเติม
 STR_MAP_MENU_LINGRAPH_LEGEND                                    :เส้นทางการกระจายสินค้า
 STR_MAP_MENU_SIGN_LIST                                          :รายการป้าย
 
 # Town menu
-###length 2
 STR_TOWN_MENU_TOWN_DIRECTORY                                    :ทำเนียบชื่อเมือง
 STR_TOWN_MENU_FOUND_TOWN                                        :ตั้งเมือง
 
 # Subsidies menu
-###length 1
 STR_SUBSIDIES_MENU_SUBSIDIES                                    :การสนับสนุน
 
 # Graph menu
-###length 6
 STR_GRAPH_MENU_OPERATING_PROFIT_GRAPH                           :กราฟแสดงผลประกอบการ
 STR_GRAPH_MENU_INCOME_GRAPH                                     :กราฟแสดงรายได้
 STR_GRAPH_MENU_DELIVERED_CARGO_GRAPH                            :กราฟแสดงปริมาณการขนส่งสินค้า
@@ -432,56 +429,45 @@ STR_GRAPH_MENU_COMPANY_VALUE_GRAPH                              :กราฟแ
 STR_GRAPH_MENU_CARGO_PAYMENT_RATES                              :อัตราผลตอบแทนของการส่งสินค้า
 
 # Company league menu
-###length 3
 STR_GRAPH_MENU_COMPANY_LEAGUE_TABLE                             :ตารางแสดงอันดับบริษัท
 STR_GRAPH_MENU_DETAILED_PERFORMANCE_RATING                      :การวัดผลประสิทธิภาพอย่างละเอียด
 STR_GRAPH_MENU_HIGHSCORE                                        :ตารางคะแนนสูงสุด
 
 # Industry menu
-###length 3
 STR_INDUSTRY_MENU_INDUSTRY_DIRECTORY                            :ทำเนียบอุตสาหกรรม
 STR_INDUSTRY_MENU_INDUSTRY_CHAIN                                :ห่วงโซ่อุตสาหกรรม
 STR_INDUSTRY_MENU_FUND_NEW_INDUSTRY                             :ลงทุนอุตสาหกรรมใหม่
 
 # URailway construction menu
-###length 4
 STR_RAIL_MENU_RAILROAD_CONSTRUCTION                             :การก่อสร้างทางรถไฟ
 STR_RAIL_MENU_ELRAIL_CONSTRUCTION                               :การก่อสร้างทางรถไฟพลังไฟฟ้า
 STR_RAIL_MENU_MONORAIL_CONSTRUCTION                             :การก่อสร้างทางรถไฟรางเดี่ยว
 STR_RAIL_MENU_MAGLEV_CONSTRUCTION                               :การก่อสร้างทางรถไฟพลังแม่เหล็ก
 
 # Road construction menu
-###length 2
 STR_ROAD_MENU_ROAD_CONSTRUCTION                                 :การก่อสร้างถนน
 STR_ROAD_MENU_TRAM_CONSTRUCTION                                 :การก่อสร้างทางรถราง
 
 # Waterways construction menu
-###length 1
 STR_WATERWAYS_MENU_WATERWAYS_CONSTRUCTION                       :การก่อสร้างคลอง
 
 # Aairport construction menu
-###length 1
 STR_AIRCRAFT_MENU_AIRPORT_CONSTRUCTION                          :การก่อสร้างท่าอากาศยาน
 
 # Landscaping menu
-###length 3
 STR_LANDSCAPING_MENU_LANDSCAPING                                :การปรับพื้นที่
 STR_LANDSCAPING_MENU_PLANT_TREES                                :ปลูกต้นไม้
 STR_LANDSCAPING_MENU_PLACE_SIGN                                 :ปักป้าย
 
 # Music menu
-###length 1
 STR_TOOLBAR_SOUND_MUSIC                                         :เสียงและดนตรี
 
 # Message menu
-###length 3
 STR_NEWS_MENU_LAST_MESSAGE_NEWS_REPORT                          :ข้อความล่าสุด/รายงานข่าว
 STR_NEWS_MENU_MESSAGE_HISTORY_MENU                              :ดูข้อความย้อนหลัง
 
 # About menu
-###length 10
 STR_ABOUT_MENU_LAND_BLOCK_INFO                                  :ข้อมูลพื้นที่
-STR_ABOUT_MENU_SEPARATOR                                        :
 STR_ABOUT_MENU_TOGGLE_CONSOLE                                   :เปิด/ปิด คอนโซล
 STR_ABOUT_MENU_AI_DEBUG                                         :ดีบัก สคริปต์ AI/Game
 STR_ABOUT_MENU_SCREENSHOT                                       :จับภาพหน้าจอ (Ctrl+S)
@@ -490,24 +476,6 @@ STR_ABOUT_MENU_ABOUT_OPENTTD                                    :เกี่ย
 STR_ABOUT_MENU_SPRITE_ALIGNER                                   :ตัวจัดแนว Sprite
 STR_ABOUT_MENU_TOGGLE_BOUNDING_BOXES                            :เปิด/ปิด bounding boxes
 STR_ABOUT_MENU_TOGGLE_DIRTY_BLOCKS                              :เปิด/เปิด สีของ dirty blocks
-
-# Place in highscore window
-###length 15
-STR_ORDINAL_NUMBER_1ST                                          :วันที่ 1
-STR_ORDINAL_NUMBER_2ND                                          :วันที่ 2
-STR_ORDINAL_NUMBER_3RD                                          :วันที่ 3
-STR_ORDINAL_NUMBER_4TH                                          :วันที่ 4
-STR_ORDINAL_NUMBER_5TH                                          :วันที่ 5
-STR_ORDINAL_NUMBER_6TH                                          :วันที่ 6
-STR_ORDINAL_NUMBER_7TH                                          :วันที่ 7
-STR_ORDINAL_NUMBER_8TH                                          :วันที่ 8
-STR_ORDINAL_NUMBER_9TH                                          :วันที่ 9
-STR_ORDINAL_NUMBER_10TH                                         :วันที่ 10
-STR_ORDINAL_NUMBER_11TH                                         :วันที่ 11
-STR_ORDINAL_NUMBER_12TH                                         :วันที่ 12
-STR_ORDINAL_NUMBER_13TH                                         :วันที่ 13
-STR_ORDINAL_NUMBER_14TH                                         :วันที่ 14
-STR_ORDINAL_NUMBER_15TH                                         :วันที่ 15
 
 ###length 31
 STR_DAY_NUMBER_1ST                                              :วันที่ 1
@@ -584,8 +552,8 @@ STR_GRAPH_CARGO_DELIVERED_CAPTION                               :{WHITE}หน�
 STR_GRAPH_COMPANY_PERFORMANCE_RATINGS_CAPTION                   :{WHITE}คะแนนประสิทธิภาพของบริษัท (คะแนนสูงสุด=1000)
 STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}มูลค่าทรัพย์สินบริษัท
 
+
 STR_GRAPH_CARGO_PAYMENT_RATES_CAPTION                           :{WHITE}อัตราค่าตอบแทนการขนส่ง
-STR_GRAPH_CARGO_PAYMENT_RATES_X_LABEL                           :{TINY_FONT}{BLACK}จำนวนวันในการเดินทาง
 STR_GRAPH_CARGO_PAYMENT_RATES_TITLE                             :{TINY_FONT}{BLACK}ค่าขนส่งจากการขนส่งสินค้า 10 หน่วย (หรือ 10,000 ลิตร) ต่อระยะทาง 20 ช่องตาราง
 STR_GRAPH_CARGO_ENABLE_ALL                                      :{TINY_FONT}{BLACK}เปิดทั้งหมด
 STR_GRAPH_CARGO_DISABLE_ALL                                     :{TINY_FONT}{BLACK}ปิดทั้งหมด all
@@ -632,11 +600,9 @@ STR_PERFORMANCE_DETAIL_CARGO                                    :{BLACK}ปร�
 STR_PERFORMANCE_DETAIL_MONEY                                    :{BLACK}เงินในธนาคาร
 STR_PERFORMANCE_DETAIL_LOAN                                     :{BLACK}หนี้สิน
 STR_PERFORMANCE_DETAIL_TOTAL                                    :{BLACK}รวมทั้งสิ้น
+###next-name-looks-similar
 
-###length 10
-STR_PERFORMANCE_DETAIL_VEHICLES_TOOLTIP                         :{BLACK}จำนวนของยานพาหนะที่ทำกำไรในปีที่ผ่านมา ทั้ง รถ รถไฟ เรือ และ เครื่องบิน
 STR_PERFORMANCE_DETAIL_STATIONS_TOOLTIP                         :{BLACK}ตัวเลขแสดงสถานีที่รองรับการซ่อมแซมในปัจจุบัน สถานีรถไฟ ป้ายรถประจำทาง ท่าอากาศยาน และอื่นๆ จะนับแยกกันจนกระทั่งสถานีเหล่านั้นจะรวมกันเป็นสถานีเดียว
-STR_PERFORMANCE_DETAIL_MIN_PROFIT_TOOLTIP                       :{BLACK}รายได้จากยานพาหนะนี้รวมกับรายได้ต่ำสุด (แสดงเฉพาะยานพาหนะที่มีอายุมากกว่าสองปีขึ้นไป)
 STR_PERFORMANCE_DETAIL_MIN_INCOME_TOOLTIP                       :{BLACK}รายได้รวมทั้งหมดในฟนึ่งไตรมาส กับรายได้ต่ำสุดในรอบ 12 ไตรมาส
 STR_PERFORMANCE_DETAIL_MAX_INCOME_TOOLTIP                       :{BLACK}รายได้รวมทั้งหมดในหนึ่งไตรมาส กับรายได้สูงสุดในรอบ 12 ไตรมาส
 STR_PERFORMANCE_DETAIL_DELIVERED_TOOLTIP                        :{BLACK}หน่วยของสินค้าที่ส่งถึงปลายทางในรอบหนึ่งปี
@@ -688,8 +654,6 @@ STR_PLAYLIST_TOOLTIP_CLICK_TO_ADD_TRACK                         :{BLACK}คล�
 STR_PLAYLIST_TOOLTIP_CLICK_TO_REMOVE_TRACK                      :{BLACK}คลิกที่ชื่อเพลงเพื่อลบออกจากโปรแกรม (Custom1 or Custom2 เท่านั้น)
 
 # Highscore window
-STR_HIGHSCORE_TOP_COMPANIES_WHO_REACHED                         :{BIG_FONT}{BLACK}บริษัทชั้นนำที่ก้าวไปสู่ {NUM}
-STR_HIGHSCORE_TOP_COMPANIES_NETWORK_GAME                        :{BIG_FONT}{BLACK}ตารางแสดงการแข่งขันของบริษัทใน {NUM}
 STR_HIGHSCORE_POSITION                                          :{BIG_FONT}{BLACK}{COMMA}.
 STR_HIGHSCORE_PERFORMANCE_TITLE_BUSINESSMAN                     :นักธุรกิจ
 STR_HIGHSCORE_PERFORMANCE_TITLE_ENTREPRENEUR                    :ผู้ประกอบการ
@@ -864,7 +828,6 @@ STR_NEWS_VEHICLE_IS_GETTING_VERY_OLD                            :{WHITE}{VEHICLE
 STR_NEWS_VEHICLE_IS_GETTING_VERY_OLD_AND                        :{WHITE}{VEHICLE} เก่ามากแล้ว และควรเปลี่ยนใหม่ในทันที
 STR_NEWS_TRAIN_IS_STUCK                                         :{WHITE}{VEHICLE} ไม่สามารถหาเส้นทางไปต่อได้.
 STR_NEWS_VEHICLE_IS_LOST                                        :{WHITE}{VEHICLE} กำลังหลงทาง.
-STR_NEWS_VEHICLE_IS_UNPROFITABLE                                :{WHITE}กำไรของ {VEHICLE} เมื่อปีที่ผ่านมา {CURRENCY_LONG}
 STR_NEWS_AIRCRAFT_DEST_TOO_FAR                                  :{WHITE}{VEHICLE} ไม่สามารถไปยังจุดหมายถัดไปได้เนื่องจากไม่อยู่ในระยะ
 
 STR_NEWS_ORDER_REFIT_FAILED                                     :{WHITE}{VEHICLE} หยุดเนื่องจากการดัดแปลงไม่สำเร็จ
@@ -876,23 +839,12 @@ STR_NEWS_NEW_VEHICLE_NOW_AVAILABLE_WITH_TYPE                    :{BLACK}ให�
 
 STR_NEWS_SHOW_VEHICLE_GROUP_TOOLTIP                             :{BLACK}เปิดแถบกลุ่มยาพาหนะที่ได้เลือกไว้
 
-STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO                        :{WHITE}{STATION} ไม่ต้องการรับ {STRING} อีกต่อไป
-STR_NEWS_STATION_NO_LONGER_ACCEPTS_CARGO_OR_CARGO               :{WHITE}{STATION} ไม่รับ {STRING} หรือ {STRING} แล้ว
-STR_NEWS_STATION_NOW_ACCEPTS_CARGO                              :{WHITE}{STATION} ขณะนี้ยอมรับ {STRING}
-STR_NEWS_STATION_NOW_ACCEPTS_CARGO_AND_CARGO                    :{WHITE}{STATION} ขณะนี้ยอมรับ {STRING} และ {STRING}
 
 STR_NEWS_OFFER_OF_SUBSIDY_EXPIRED                               :{BIG_FONT}{BLACK}ข้อเสนอสำหรับการอุดหนุนสิ้นสุด:{}{}{STRING} จาก {STRING} ถึง {STRING} จะไม่ได้รับการอุดหนุนอีกต่อไป.
 STR_NEWS_SUBSIDY_WITHDRAWN_SERVICE                              :{BIG_FONT}{BLACK}การอุดหนุนถูกถอดถอน:{}{}บริการ {STRING} จาก {STRING} ถึง {STRING} จะไม่ได้รับการสนับสนุนอีกต่อไป.
-STR_NEWS_SERVICE_SUBSIDY_OFFERED                                :{BIG_FONT}{BLACK}มีการสนับสนุนในการทำโครงการ:{}{} ขนส่ง {STRING} จาก {STRING} ถึง {STRING} หากดำเนินการจะได้รับเงินอุดหนุนพิเศษ {NUM}  ปีจากเจ้าหน้าที่ในท้องถิ่น!
 ###length 4
-STR_NEWS_SERVICE_SUBSIDY_AWARDED_HALF                           :{BIG_FONT}{BLACK}เงินสนับสนุนโครงการถูกมอบให้กับ {STRING}!{}{}{STRING} โดยการขนส่งจาก{STRING} ถึง {STRING} จะได้รับเงินอุดหนุนเพิ่มขึ้น 50% สำหรับ {NUM} ปีหน้า!
-STR_NEWS_SERVICE_SUBSIDY_AWARDED_DOUBLE                         :{BIG_FONT}{BLACK}การอุดหนุนบริการถูกมอบแก่ {STRING}!{}{}{STRING} บริการจาก {STRING} ถึง {STRING} จะได้รับเงินสองเท่าใน {NUM} ปีหน้า!
-STR_NEWS_SERVICE_SUBSIDY_AWARDED_TRIPLE                         :{BIG_FONT}{BLACK}การอุดหนุนบริการถูกมอบแก่ {STRING}!{}{}{STRING} บริการจาก {STRING} ถึง {STRING} จะได้รับเงินสามเท่าใน {NUM} ปีหน้า!
-STR_NEWS_SERVICE_SUBSIDY_AWARDED_QUADRUPLE                      :{BIG_FONT}{BLACK}การอุดหนุนบริการถูกมอบแก่ {STRING}!{}{}{STRING} บริการจาก {STRING} ถึง {STRING} จะได้รับเงินสี่เท่าใน {NUM} ปีหน้า!
 
-STR_NEWS_ROAD_REBUILDING                                        :{BIG_FONT}{BLACK}การจราจรยุ่งเหยิงใน {TOWN}!{}{}การสร้างถนนใหม่ที่ได้รับการสนับสนุนโดย {STRING} นำมาซึ่งหกเดือนแห่งความสงสัยแก่ผู้ใช้ถนน!
 STR_NEWS_EXCLUSIVE_RIGHTS_TITLE                                 :{BIG_FONT}{BLACK}เจ้าพ่อวงการขนส่ง!
-STR_NEWS_EXCLUSIVE_RIGHTS_DESCRIPTION                           :{BIG_FONT}{BLACK}ฝ่ายบริหารของเมือง {TOWN} ลงนามสัญญากับ {STRING} เป็นะระยเวลา 1 ปีสำหรับสัมปทานขนส่งพิเศษ
 
 # Extra view window
 STR_EXTRA_VIEWPORT_TITLE                                        :{WHITE}มุมมอง {COMMA}
@@ -911,7 +863,7 @@ STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}หน�
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}การเลือกสกุลเงิน
 
 
-###length 42
+###length 44
 STR_GAME_OPTIONS_CURRENCY_GBP                                   :ปอนด์สเตอร์ลิง
 STR_GAME_OPTIONS_CURRENCY_USD                                   :ดอลลาร์สหรัฐ
 STR_GAME_OPTIONS_CURRENCY_EUR                                   :ยูโร
@@ -974,12 +926,12 @@ STR_GAME_OPTIONS_RESOLUTION_OTHER                               :อื่นๆ
 
 
 
+
 STR_GAME_OPTIONS_REFRESH_RATE                                   :{BLACK}รีเฟรชเรทของหน้าจอ
 STR_GAME_OPTIONS_REFRESH_RATE_WARNING                           :{WHITE}หากตั้งรีเฟรชเรทไว้มากกว่า 60Hz ขึ้นไป อาจมีผลต่อประสิทธิภาพของเกมได้
 
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}ตั้งค่า Graphic พื้นฐาน
 STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}เลือกและตั้งค่าฐานกราฟิกที่จะใช้
-STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} ไฟล์สูญหายหรือไม่สมบูรณ์
 STR_GAME_OPTIONS_BASE_GRF_DESCRIPTION_TOOLTIP                   :{BLACK}ข้อมูลเพิ่มเติมเกี่ยวกับชุดกราฟฟิคพื้นฐาน
 
 STR_GAME_OPTIONS_BASE_SFX                                       :{BLACK}เลือกชุด Effect เสียงประกอบ
@@ -988,8 +940,11 @@ STR_GAME_OPTIONS_BASE_SFX_DESCRIPTION_TOOLTIP                   :{BLACK}ปร�
 
 STR_GAME_OPTIONS_BASE_MUSIC                                     :{BLACK}ชุดเพลงประกอบพื้นฐาน
 STR_GAME_OPTIONS_BASE_MUSIC_TOOLTIP                             :{BLACK}เลือกเพลงประกอบพื้นฐานเพื่อใช้งาน
-STR_GAME_OPTIONS_BASE_MUSIC_STATUS                              :{RED}{NUM} ไฟล์ไม่สมบูรณ์
 STR_GAME_OPTIONS_BASE_MUSIC_DESCRIPTION_TOOLTIP                 :{BLACK}ข้อมูลเพิ่มเติมเกี่ยวกับชุดเพลงประกอบพื้นฐาน
+
+
+
+
 
 STR_ERROR_FULLSCREEN_FAILED                                     :{WHITE}Fullscreen โหมดล้มเหลว
 
@@ -1001,8 +956,6 @@ STR_CURRENCY_DECREASE_EXCHANGE_RATE_TOOLTIP                     :{BLACK}ลด�
 STR_CURRENCY_INCREASE_EXCHANGE_RATE_TOOLTIP                     :{BLACK}เพิ่มจำนวนสกุลเงินของคุณสำหรับหนึ่งปอนด์ (£)
 STR_CURRENCY_SET_EXCHANGE_RATE_TOOLTIP                          :{BLACK}กำหนดอัตราแลกเปลี่ยนของสกุลเงินหนึ่งปอนด์ (£)
 
-STR_CURRENCY_SEPARATOR                                          :{LTBLUE}ตัวแบ่ง: {ORANGE}{STRING}
-STR_CURRENCY_SET_CUSTOM_CURRENCY_SEPARATOR_TOOLTIP              :{BLACK}สัญลักษณ์แบ่งหลักสกุลเงินของท่าน
 
 STR_CURRENCY_PREFIX                                             :{LTBLUE}คำนำหน้า: {ORANGE}{STRING}
 STR_CURRENCY_SET_CUSTOM_CURRENCY_PREFIX_TOOLTIP                 :{BLACK}สัญลักษณ์หน้าสกุลเงินของท่าน
@@ -1145,6 +1098,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :กลาง
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :ขวา
 
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :เงินกู้เริ่มต้นสูงสุด: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :บริษัท สามารถกู้ยืมเงินจำนวนสูงสุด (โดยไม่คำนึงถึงอัตราเงินเฟ้อเข้าบัญชี)
 ###setting-zero-is-special
@@ -1164,6 +1118,7 @@ STR_CONFIG_SETTING_VEHICLE_BREAKDOWNS_HELPTEXT                  :ควบคุ
 STR_CONFIG_SETTING_SUBSIDY_MULTIPLIER                           :อัตราของการให้เงินสนับสนุนโครงการ: {STRING}
 STR_CONFIG_SETTING_SUBSIDY_MULTIPLIER_HELPTEXT                  :ตั้งค่าเงินสนับสนุนสำหรับการเชื่อมต่อ
 
+###length 2
 STR_CONFIG_SETTING_SUBSIDY_DURATION_HELPTEXT                    :กำหนดปีที่จะได้รับเงินสนับสนุน
 
 ###setting-zero-is-special
@@ -1253,7 +1208,10 @@ STR_CONFIG_SETTING_SIGNALSIDE_LEFT                              :ฝั่งซ
 STR_CONFIG_SETTING_SIGNALSIDE_DRIVING_SIDE                      :ฝั่งเดียวกับการขับขี่
 STR_CONFIG_SETTING_SIGNALSIDE_RIGHT                             :ฝั่งขวา
 
+###length 2
 STR_CONFIG_SETTING_SHOWFINANCES                                 :แสดงหน้าต่างสภาวะการเงินบริษัทเมื่อสิ้นสุดแต่ละปี: {STRING}
+
+###length 2
 STR_CONFIG_SETTING_SHOWFINANCES_HELPTEXT                        :เมื่อเปิดใช้งาน จะแสดงรายงานผลประกอบการมาให้ชมทุกสิ้นปี
 
 STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT                           :ตั้งให้คำสั่งที่เพิ่มใหม่เป็น 'ไม่หยุด' โดยปริยาย: {STRING}
@@ -1275,9 +1233,11 @@ STR_CONFIG_SETTING_AUTOSCROLL_MAIN_VIEWPORT                     :มุมมอ
 STR_CONFIG_SETTING_AUTOSCROLL_EVERY_VIEWPORT                    :ทุกๆมุมมอง
 
 STR_CONFIG_SETTING_BRIBE                                        :อนุญาตให้ติดสินบนเจ้าหน้าที่ในท้องถิ่น: {STRING}
+###length 2
 STR_CONFIG_SETTING_BRIBE_HELPTEXT                               :อนุญาตให้สามารถใส่เงินใต้โต๊ะกับเจ้าหน้าที่ท้องถิ่นได้ เพื่อเพิ่มระดับความถึงพอใจ
 
 STR_CONFIG_SETTING_ALLOW_EXCLUSIVE                              :อนุญาตให้ซื้อสัมปทานการขนส่งแต่เพียงผู้เดียว: {STRING}
+###length 2
 STR_CONFIG_SETTING_ALLOW_EXCLUSIVE_HELPTEXT                     :เมื่อบริษัทซื้อสัมปทานขนส่ง สินค้าและผู้โดยสารจะใช้งานในสถานีของบริษัทนั้นๆบริษัทเดียว
 
 STR_CONFIG_SETTING_ALLOW_FUND_BUILDINGS                         :อนุญาตให้สามารถบริจาคเงินเพื่อสร้างสิ่งปลูกสร้างในเมือง: {STRING}
@@ -1302,6 +1262,7 @@ STR_CONFIG_SETTING_PLANE_CRASHES_HELPTEXT                       :ตั้งค
 STR_CONFIG_SETTING_PLANE_CRASHES_NONE                           :ไม่มี
 STR_CONFIG_SETTING_PLANE_CRASHES_REDUCED                        :ลดลง
 STR_CONFIG_SETTING_PLANE_CRASHES_NORMAL                         :ปกติ
+
 
 STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD                            :อนุญาตให้มีที่หยุดรถแบบขับผ่านบนถนนที่เมืองเป็นเจ้าของ: {STRING}
 STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD_HELPTEXT                   :สามารถสร้างป้ายหยุดรถบนถนนของเมืองได้
@@ -1328,10 +1289,17 @@ STR_CONFIG_SETTING_ORDER_REVIEW_EXDEPOT                         :ให้เต
 STR_CONFIG_SETTING_ORDER_REVIEW_ON                              :แจ้งเตือนทั้งหมด
 
 STR_CONFIG_SETTING_WARN_INCOME_LESS                             :เตือนเมื่อรายได้ของยานพาหนะติดลบ: {STRING}
+###length 2
 STR_CONFIG_SETTING_WARN_INCOME_LESS_HELPTEXT                    :เมื่อเปิดใช้งาน จะแสดงข้อความแจ้งเตือนเมื่อพาหนะไม่สามารถทำกำไรได้เมื่อครบกำหนดสิ้นปี
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES                        :ยานพาหนะไม่หมดอายุ: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_VEHICLES_HELPTEXT               :เมื่อเปิดใช้งาน พาหนะทั้งหมดจะยังสามารถซื้อได้ตลอดไปหลังจากหมดช่วงระยะเวลา
+
+###length 2
+
+
+###setting-zero-is-special
+
 
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE                            :เปลี่ยนยานพาหนะใหม่โดยอัตโนมัติเมื่อเก่าเกินไป: {STRING}
 STR_CONFIG_SETTING_AUTORENEW_VEHICLE_HELPTEXT                   :เมื่อเปิดใช้งาน พาหนะที่ใกล้หมดอายุการใช้งาน จะทำการแทนที่ใหม่เอง
@@ -1511,8 +1479,7 @@ STR_CONFIG_SETTING_ADVANCED_VEHICLE_LISTS_HELPTEXT              :เปิดใ
 STR_CONFIG_SETTING_LOADING_INDICATORS                           :แสดงสถานะการขนถ่ายเมื่อกำลังขนถ่ายที่สถานี: {STRING}
 STR_CONFIG_SETTING_LOADING_INDICATORS_HELPTEXT                  :เลือกเพื่อแสดงตัวเลขปริมาณการบรรทุกขณะขนถ่ายที่สถานีของพาหนะ
 
-STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :แสดงตารางเวลาในแบบติ๊กแทนแบบวัน: {STRING}
-STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :แสดงเวลาในการเดินทางในตารางเวลาเป็น ticks แทนที่ days
+###length 3
 
 STR_CONFIG_SETTING_TIMETABLE_SHOW_ARRIVAL_DEPARTURE             :แสดงเวลามาถึงและออกไปในตารางเวลา: {STRING}
 STR_CONFIG_SETTING_TIMETABLE_SHOW_ARRIVAL_DEPARTURE_HELPTEXT    :แสดงการคาดการณ์เวลาในการเดินทางไปถึงหรือเวลาออกของยานพาหนะในตารางเวลา
@@ -1544,7 +1511,10 @@ STR_CONFIG_SETTING_SOUND_TICKER_HELPTEXT                        :เล่นเ
 STR_CONFIG_SETTING_SOUND_NEWS                                   :หนังสือพิมพ์: {STRING}
 STR_CONFIG_SETTING_SOUND_NEWS_HELPTEXT                          :เล่นเสียงเมื่อแสดงหน้าหนังสือพิมพ์
 
+###length 2
 STR_CONFIG_SETTING_SOUND_NEW_YEAR                               :เสียงเตือนเมื่อถึงสิ้นปี: {STRING}
+
+###length 2
 STR_CONFIG_SETTING_SOUND_NEW_YEAR_HELPTEXT                      :เล่นเสียงเมื่อแสดงรายงานผลประกอบการเปรียบเทียบกับปีที่แล้ว
 
 STR_CONFIG_SETTING_SOUND_CONFIRM                                :การก่อสร้าง: {STRING}
@@ -1586,13 +1556,6 @@ STR_CONFIG_SETTING_AI_BUILDS_AIRCRAFT_HELPTEXT                  :เมื่อ
 STR_CONFIG_SETTING_AI_BUILDS_SHIPS                              :ไม่ยอมให้มีเรือสำหรับคอมพิวเตอร์: {STRING}
 STR_CONFIG_SETTING_AI_BUILDS_SHIPS_HELPTEXT                     :เมื่อเปิดใช้งาน จะทำให้ AI สามารถสร้างยานพาหนะทางน้ำได้
 
-STR_CONFIG_SETTING_AI_PROFILE                                   :รูปแบบการตั้งค่าพื้นฐาน: {STRING}
-STR_CONFIG_SETTING_AI_PROFILE_HELPTEXT                          :เลือกที่ตั้งค่าโปรไฟล์ที่จะใช้สำหรับเอไอเอสแบบสุ่มหรือค่าเริ่มต้นสำหรับการเพิ่มสคริปต์ AI หรือเกมใหม่
-###length 3
-STR_CONFIG_SETTING_AI_PROFILE_EASY                              :ง่าย
-STR_CONFIG_SETTING_AI_PROFILE_MEDIUM                            :ปานกลาง
-STR_CONFIG_SETTING_AI_PROFILE_HARD                              :ยาก
-
 STR_CONFIG_SETTING_AI_IN_MULTIPLAYER                            :อนุญาตให้ใช้ปัญญาประดิษฐ์ (AI) สำหรับหลายผู้เล่น: {STRING}
 STR_CONFIG_SETTING_AI_IN_MULTIPLAYER_HELPTEXT                   :อนุญาตให้มี AI ในโหมดผู้เล่นหลายคน
 
@@ -1618,6 +1581,7 @@ STR_CONFIG_SETTING_SERVINT_DISABLED                             :ไม่ตั
 
 STR_CONFIG_SETTING_NOSERVICE                                    :ไม่ใช้งานการซ่อมบำรุงเมื่อตั้งเป็นไม่มีการขัดข้อง: {STRING}
 STR_CONFIG_SETTING_NOSERVICE_HELPTEXT                           :เมื่อเปิดใช้งาน ยานพาหนะจะไม่เข้ารับการซ่อมบำรุงหากตั้งค่าไว้ไม่ให้มีการชำรุด
+
 
 STR_CONFIG_SETTING_WAGONSPEEDLIMITS                             :จำกัดความเร็วของรถจักร/รถพ่วง: {STRING}
 STR_CONFIG_SETTING_WAGONSPEEDLIMITS_HELPTEXT                    :เมื่อเปิดใช้งาน จะทำให้มีจำกัดความเร็วสูงสุดของยานพาหนะและรถพ่วงต่างๆ
@@ -1704,7 +1668,6 @@ STR_CONFIG_SETTING_SEMAPHORE_BUILD_BEFORE_DATE_HELPTEXT         :เลือก
 STR_CONFIG_SETTING_CYCLE_SIGNAL_TYPES                           :วนชนิดเสาอาณัติสัญญาณ: {STRING}
 STR_CONFIG_SETTING_CYCLE_SIGNAL_TYPES_HELPTEXT                  :เลือกประเภทเสาอาณัติสัญญาณในทิศทางที่ต้องการ หากกด Ctrl+คลิ๊กซ้าย จะเป็นการสร้างเสาสัญญาณด้วยเครื่องมือสร้างเสาสัญญาณ
 ###length 2
-STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :เสาอาณัติสัญญาณตอนอัตโนมัติ แบบทางเดียว
 STR_CONFIG_SETTING_CYCLE_SIGNAL_ALL                             :แสดงทั้งหมด
 
 STR_CONFIG_SETTING_SIGNAL_GUI_MODE                              :แสดงประเภทขของเสาอาณัติสัญญาณ: {STRING}
@@ -1818,7 +1781,6 @@ STR_CONFIG_SETTING_SHORT_PATH_SATURATION_HELPTEXT               :ความถ
 
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY                  :หน่วยวัดความเร็ว: {STRING}
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_HELPTEXT         :หน่วยวัดความเร็ว แสดงผลในหน้าต่างรายละเอียดยานพาหนะ
-###length 5
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_IMPERIAL         :อิมพิเรียล (ไมล์ต่อชั่วโมง)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_METRIC           :เมตริก (กิโลเมตรต่อชั่วโมง)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_SI               :มาตรฐานสากล (เมตร/วินาที)
@@ -1962,10 +1924,10 @@ STR_ABANDON_GAME_CAPTION                                        :{WHITE}ออ�
 STR_ABANDON_GAME_QUERY                                          :{YELLOW}เกมยังดำเนินอยู่แน่ใจหรือไม่ว่าจะกลับไปสู่เมนูหลัก?
 STR_ABANDON_SCENARIO_QUERY                                      :{YELLOW}คุณแน่ใจหรือที่จะยกเลิกแผนที่นี้?
 
+# Help window
+
 # Cheat window
 STR_CHEATS                                                      :{WHITE}สูตรโกงเกม
-STR_CHEATS_TOOLTIP                                              :{BLACK}กล่องตัวเลือกจะแสดงว่าคุณโกงมาก่อนหรือไม่
-STR_CHEATS_NOTE                                                 :{BLACK}โน๊ต: การตั้งค่าทั้งหมดในนี้จะถูกบันทึกเข้าสู่เกมด้วย
 STR_CHEAT_MONEY                                                 :{LTBLUE}เพิ่มเงิน {CURRENCY_LONG}
 STR_CHEAT_CHANGE_COMPANY                                        :{LTBLUE}เล่นเป็นบริษัท: {ORANGE}{COMMA}
 STR_CHEAT_EXTRA_DYNAMITE                                        :{LTBLUE}เครื่องมือทำลายพิเศษ (ทำลายส่วนอุตสาหกรรม, ของที่เคลื่อนย้ายไม่ได้): {ORANGE}{STRING}
@@ -2090,8 +2052,6 @@ STR_NETWORK_SERVER_LIST_MAP_SIZE_CAPTION                        :{BLACK}ขน�
 STR_NETWORK_SERVER_LIST_MAP_SIZE_CAPTION_TOOLTIP                :{BLACK}ขนาดแผนที่ของเกม{}คลิกเพื่อเรียงตามขนาดพื้นที่
 STR_NETWORK_SERVER_LIST_DATE_CAPTION                            :{BLACK}วันที่
 STR_NETWORK_SERVER_LIST_DATE_CAPTION_TOOLTIP                    :{BLACK}วันที่ปัจจุบัน
-STR_NETWORK_SERVER_LIST_YEARS_CAPTION                           :{BLACK}ปี
-STR_NETWORK_SERVER_LIST_YEARS_CAPTION_TOOLTIP                   :{BLACK}จำนวนปีที่ผ่านไปในเกม{}ตั้งแต่เริ่มเล่น
 STR_NETWORK_SERVER_LIST_INFO_ICONS_TOOLTIP                      :{BLACK}ภาษา, เวอร์ชันของเซิร์ฟเวอร์, และอื่นๆ
 
 STR_NETWORK_SERVER_LIST_CLICK_GAME_TO_SELECT                    :{BLACK}คลิกที่เกมจากรายการเพื่อเลือก
@@ -2710,7 +2670,6 @@ STR_LAND_AREA_INFORMATION_TRAM_OWNER                            :{BLACK}ผู�
 STR_LAND_AREA_INFORMATION_RAIL_OWNER                            :{BLACK}ผู้ครอบครองทางรถไฟ: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_LOCAL_AUTHORITY                       :{BLACK}ขึ้นตรงกับผู้ดูแลในท้องถิ่น: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_LOCAL_AUTHORITY_NONE                  :ไม่มี
-STR_LAND_AREA_INFORMATION_LANDINFO_COORDS                       :{BLACK}ตำแหน่ง: {LTBLUE}{NUM} x {NUM} x {NUM} ({STRING})
 STR_LAND_AREA_INFORMATION_BUILD_DATE                            :{BLACK}สร้างเมื่อ: {LTBLUE}{DATE_LONG}
 STR_LAND_AREA_INFORMATION_STATION_CLASS                         :{BLACK}ประเภทของสถานี: {LTBLUE}{STRING}
 STR_LAND_AREA_INFORMATION_STATION_TYPE                          :{BLACK}รูปแบบของสถานี: {LTBLUE}{STRING}
@@ -3177,8 +3136,6 @@ STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED_WINTER              :{ORANGE}{STRING
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED_GENERAL            :{ORANGE}{STRING}{GREEN} จัดส่งมา
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_REQUIRED                     :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{RED} (still required)
 STR_TOWN_VIEW_CARGO_FOR_TOWNGROWTH_DELIVERED                    :{ORANGE}{CARGO_TINY} / {CARGO_LONG}{GREEN} (delivered)
-STR_TOWN_VIEW_TOWN_GROWS_EVERY                                  :{BLACK}เมืองขยายตัวทุกๆ {ORANGE}{COMMA}{BLACK} วัน
-STR_TOWN_VIEW_TOWN_GROWS_EVERY_FUNDED                           :{BLACK}เมืองเติบโตทุกๆ {ORANGE}{COMMA}{BLACK} วัน (funded)
 STR_TOWN_VIEW_TOWN_GROW_STOPPED                                 :{BLACK}เมือง {RED}ไม่{BLACK} ขยายตัว
 STR_TOWN_VIEW_NOISE_IN_TOWN                                     :{BLACK}มีมลภาวะทางเสียง: {ORANGE}{COMMA}{BLACK} สูงสุดที่มีได้: {ORANGE}{COMMA}
 STR_TOWN_VIEW_CENTER_TOOLTIP                                    :{BLACK}กดไปยังมุมมองใจกลางเมือง กด Ctrl+คลิ๊กซ้าย เพื่อเปิดมุมมองใหม่สำหรับใจกลางเมือง
@@ -3211,15 +3168,13 @@ STR_LOCAL_AUTHORITY_ACTION_STATUE_OF_COMPANY                    :จ่ายเ
 STR_LOCAL_AUTHORITY_ACTION_NEW_BUILDINGS                        :บริจาคเงินให้แก่เมืองเพื่อสร้างสิ่งก่อสร้างใหม่ๆ
 STR_LOCAL_AUTHORITY_ACTION_EXCLUSIVE_TRANSPORT                  :ลงนามซื้อสัมปทานขนส่ง
 STR_LOCAL_AUTHORITY_ACTION_BRIBE                                :ติดสินบนกับเจ้าหน้าที่ท้องถิ่น
+###next-name-looks-similar
 
-###length 8
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_SMALL_ADVERTISING            :{YELLOW}บริษัทจะทำการโฆษณาและแนะนำแคมเปญต่างๆแบบประหยัดงบ อาจจะไม่ทำเข้าถึงประชาชนได้มาก แต่ก็ดีกว่าไม่ได้โปรโมตล่ะนะ{}เพิ่มปริมาณผู้โดยสารและจำนวนสินค้าส่งออกของเมืองในปริมาณเล็กน้อย{}ใช้งบประมาณ: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_MEDIUM_ADVERTISING           :{YELLOW}การโฆษณาระดับกลาง บริษัทจะทำการโฆษณาและแนะนำแคมเปญต่างๆผ่านสื่อ ทำให้เข้าถึงประชาชนได้{}เพิ่มปริมาณผู้โดยสารและจำนวนสินค้าส่งออกของเมืองในปริมาณระดับกลาง.{}ใช้งบประมาณ: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_LARGE_ADVERTISING            :{YELLOW}บริษัทจะทำการโฆษณาและแนะนำแคมเปญต่างๆในวงกว้าง ทำให้เข้าถึงประชาชนได้มากกว่าเดิม{}เพิ่มปริมาณผู้โดยสารและจำนวนสินค้าส่งออกของเมืองในปริมาณที่สูงมากขึ้น{}ใช้งบประมาณ: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_ROAD_RECONSTRUCTION          :{YELLOW}มอบทุนสนับสนุนกับเมืองเพื่อปรับปรุงถนนใหม่{}ส่งผลทำให้การจราจรในเมืองเป็นอัมพาธเป็นเวลา 6 เดือน{}ใช้งบประมาณ: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_STATUE_OF_COMPANY            :{YELLOW}สร้างอนุเสาวรีย์แห่งความภาคภูมิใจของบริษัท{}เพิ่มปริมาณการส่งออกของทุกสถานีในเมืองนั้นแบบถาวร{}ใช้งบประมาณ: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_NEW_BUILDINGS                :{YELLOW}มอบทุนสนับสนุนในการสร้างสิ่งปลูกสร้างใหม่ๆของเมืองดังกล่าว{}ลดวันและเวลาความเจริญของเมืองนั้นได้ในระยะเวลาหนึ่ง{}ใช้งบประมาณ: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{YELLOW}ซื้อสัมปทานพิเศษเป็นเวลา 1 ปีสำหรับเมืองเมืองนี้ เจ้าหน้าที่เมืองกังกล่าวจะไม่ให้ผู้โดยสารและสินค้าในเมืองใช้บริการบริษัทคู่แข่งของคุณเลย{} ใช้งบประมาณ: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{YELLOW}จ่ายเงินใต้โต๊ะติดสินบนให้เจ้าหน้าที่ในท้องถิ่น เพื่อเพิ่มความพึงพอใจ ทำให้สามารถสร้างสิ่งก่อสร้าง รื้อถอนสิ่งก่อสร้างของเมืองได้โดยไม่ติดขัด.{}ใช้งบประมาณ: {CURRENCY_LONG}
 
 # Goal window
@@ -3264,10 +3219,8 @@ STR_GOAL_QUESTION_BUTTON_CLOSE                                  :ปิด
 # Subsidies window
 STR_SUBSIDIES_CAPTION                                           :{WHITE}เงินอุดหนุน
 STR_SUBSIDIES_OFFERED_TITLE                                     :{BLACK}โครงการที่จะได้รับเงินทุนสนับสนุน:
-STR_SUBSIDIES_OFFERED_FROM_TO                                   :{ORANGE}{STRING} จาก {STRING} ถึง {STRING}{YELLOW} (ก่อน {DATE_SHORT})
 STR_SUBSIDIES_NONE                                              :{ORANGE}- ไม่มี -
 STR_SUBSIDIES_SUBSIDISED_TITLE                                  :{BLACK}โครงการที่ได้เงินสนับสนุนเรียบร้อยแล้ว:
-STR_SUBSIDIES_SUBSIDISED_FROM_TO                                :{ORANGE}{STRING} จาก {STRING} ถึง {STRING}{YELLOW} ({COMPANY}{YELLOW}, จนกว่าจะถึง {DATE_SHORT})
 STR_SUBSIDIES_TOOLTIP_CLICK_ON_SERVICE_TO_CENTER                :{BLACK}กดที่บริการเพื่อไปยังจุดกึ่งกลางของจุดเริ่มต้น
 
 # Story book window
@@ -3291,8 +3244,6 @@ STR_STATION_LIST_STATION                                        :{YELLOW}{STATIO
 STR_STATION_LIST_WAYPOINT                                       :{YELLOW}{WAYPOINT}
 STR_STATION_LIST_NONE                                           :{YELLOW}- ไม่มี -
 STR_STATION_LIST_SELECT_ALL_FACILITIES                          :{BLACK}เลือกทั้งหมด
-STR_STATION_LIST_SELECT_ALL_TYPES                               :{BLACK}เลือกประเภทสินค้าทั้งหมด (รวมถึงสินค้าที่ไม่ได้รอการส่ง)
-STR_STATION_LIST_NO_WAITING_CARGO                               :{BLACK}ไม่มีสินค้ารออยู่เลย
 
 # Station view window
 STR_STATION_VIEW_CAPTION                                        :{WHITE}{STATION} {STATION_FEATURES}
@@ -3308,7 +3259,6 @@ STR_STATION_VIEW_EXCLUSIVE_RIGHTS_COMPANY                       :{YELLOW}{COMPAN
 
 STR_STATION_VIEW_RATINGS_BUTTON                                 :{BLACK}ความพึงพอใจ
 STR_STATION_VIEW_RATINGS_TOOLTIP                                :{BLACK}แสดงความพึงพอใจของสถานี
-STR_STATION_VIEW_SUPPLY_RATINGS_TITLE                           :{BLACK}อัตราของการขนส่งและความพึงพอใจในท้องถิ่น:
 STR_STATION_VIEW_CARGO_SUPPLY_RATING                            :{WHITE}{STRING}: {YELLOW}{COMMA} / {STRING} ({COMMA}%)
 
 STR_STATION_VIEW_GROUP                                          :{BLACK}จัดกลุ่มโดย
@@ -3452,7 +3402,6 @@ STR_COMPANY_INFRASTRUCTURE_VIEW_CANALS                          :{WHITE}คล�
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATION_SECT                    :{GOLD}สถานี:
 STR_COMPANY_INFRASTRUCTURE_VIEW_STATIONS                        :{WHITE}ชิ้นส่วนสถานี
 STR_COMPANY_INFRASTRUCTURE_VIEW_AIRPORTS                        :{WHITE}ท่าอากาศยาน
-STR_COMPANY_INFRASTRUCTURE_VIEW_TOTAL                           :{WHITE}{CURRENCY_LONG}/ปี
 
 # Industry directory
 STR_INDUSTRY_DIRECTORY_CAPTION                                  :{WHITE}อุตสาหกรรม
@@ -3565,7 +3514,6 @@ STR_PURCHASE_INFO_SPEED_POWER                                   :{BLACK}คว�
 STR_PURCHASE_INFO_SPEED                                         :{BLACK}ความเร็ว: {GOLD}{VELOCITY}
 STR_PURCHASE_INFO_SPEED_OCEAN                                   :{BLACK}ความเร็วบนทะเล: {GOLD}{VELOCITY}
 STR_PURCHASE_INFO_SPEED_CANAL                                   :{BLACK}ความเร็วบนคลอง/แม่น้ำ: {GOLD}{VELOCITY}
-STR_PURCHASE_INFO_RUNNINGCOST                                   :{BLACK}ค่าปฏิบัติการ: {GOLD}{CURRENCY_LONG}/ปี
 STR_PURCHASE_INFO_CAPACITY                                      :{BLACK}ความจุ: {GOLD}{CARGO_LONG} {STRING}
 STR_PURCHASE_INFO_REFITTABLE                                    :(ดัดแปลงได้)
 STR_PURCHASE_INFO_DESIGNED_LIFE                                 :{BLACK}สร้างครั้งแรก: {GOLD}{NUM}{BLACK} อายุการใช้งาน: {GOLD}{COMMA} ปี
@@ -3744,11 +3692,6 @@ STR_ENGINE_PREVIEW_ROAD_VEHICLE                                 :ยานพา
 STR_ENGINE_PREVIEW_AIRCRAFT                                     :อากาศยาน
 STR_ENGINE_PREVIEW_SHIP                                         :ยานพาหนะทางน้ำ
 
-STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER                      :{BLACK}มูลค่า: {CURRENCY_LONG} น้ำหนัก: {WEIGHT_SHORT}{}ความเร็ว: {VELOCITY}พลังขับเคลื่อน: {POWER}{}ค่าปฏิบัติการ: {CURRENCY_LONG}/ปี{}ความจุ: {CARGO_LONG}
-STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE               :{BLACK}มูลค่า: {CURRENCY_LONG} น้ำหนัก: {WEIGHT_SHORT}{}ความเร็ว: {VELOCITY}พลังขับเคลื่อน: {POWER}  กำัลังลากจูงสูงสุด: {6:FORCE}{}ค่าปฎิบัติการ: {4:CURRENCY_LONG}/ปี{}ความจุ: {5:CARGO_LONG}
-STR_ENGINE_PREVIEW_COST_MAX_SPEED_CAP_RUNCOST                   :{BLACK}มูลค่า: {CURRENCY_LONG} ความเร็วสูงสุด: {VELOCITY}{}ความจุ: {CARGO_LONG}{}ค่าปฏิบัติการ: {CURRENCY_LONG}/ปี
-STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_CAP_CAP_RUNCOST          :{BLACK}มูลค่า: {CURRENCY_LONG} ความเร็วสูงสุด: {VELOCITY}{}อากาศยานสำหรับ: {STRING}{}ความจุ: {CARGO_LONG}, {CARGO_LONG}{}ค่าปฏิบัติการ: {CURRENCY_LONG}/ปี
-STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_RANGE_CAP_CAP_RUNCOST    :{BLACK}มูลค่า: {CURRENCY_LONG} ความเร็วสูงสุด: {VELOCITY}{}อากาศยานสำหรับ: {STRING} ความสูงจากพื้นที่บินได้: {COMMA} ช่อง{}ความจุ: {CARGO_LONG}, {CARGO_LONG}{}ค่าปฏิบัติการ: {CURRENCY_LONG}/ปี
 
 # Autoreplace window
 STR_REPLACE_VEHICLES_WHITE                                      :{WHITE}เปลี่ยน {STRING} - {STRING}
@@ -3881,9 +3824,9 @@ STR_VEHICLE_DETAILS_ROAD_VEHICLE_RENAME                         :{BLACK}ชื�
 STR_VEHICLE_DETAILS_SHIP_RENAME                                 :{BLACK}ชื่อ
 STR_VEHICLE_DETAILS_AIRCRAFT_RENAME                             :{BLACK}ชื่อ
 
-STR_VEHICLE_INFO_AGE_RUNNING_COST_YR                            :{BLACK}ใช้งานมาแล้ว: {LTBLUE}{STRING}{BLACK}   ค่าปฏิบัติการ: {LTBLUE}{CURRENCY_LONG}/ปี
 STR_VEHICLE_INFO_AGE                                            :{COMMA} ปี ({COMMA})
 STR_VEHICLE_INFO_AGE_RED                                        :{RED}{COMMA} ปี ({COMMA})
+STR_VEHICLE_INFO_AGE_RUNNING_COST_YR                            :{BLACK}ใช้งานมาแล้ว: {LTBLUE}{STRING}{BLACK}   ค่าปฏิบัติการ: {LTBLUE}{CURRENCY_LONG}/ปี
 
 STR_VEHICLE_INFO_MAX_SPEED                                      :{BLACK}ความเร็วสูงสุด: {LTBLUE}{VELOCITY}
 STR_VEHICLE_INFO_MAX_SPEED_TYPE                                 :{BLACK}ความเร็วสูงสุด: {LTBLUE}{VELOCITY} {BLACK}อากาศยานชนิด: {LTBLUE}{STRING}
@@ -3901,14 +3844,9 @@ STR_VEHICLE_INFO_CAPACITY_CAPACITY                              :{BLACK}บร�
 
 STR_VEHICLE_INFO_FEEDER_CARGO_VALUE                             :{BLACK}รายได้จากการส่งต่อ: {LTBLUE}{CURRENCY_LONG}
 
-STR_VEHICLE_DETAILS_SERVICING_INTERVAL_DAYS                     :{BLACK}เข้าซ่อมบำรุงทุก: {LTBLUE}{COMMA}วัน{BLACK}   ครั้งสุดท้ายเมื่อ: {LTBLUE}{DATE_LONG}
-STR_VEHICLE_DETAILS_SERVICING_INTERVAL_PERCENT                  :{BLACK}เข้าซ่อมบำรุงเมื่อประสิทธิภาพ: {LTBLUE}{COMMA}%{BLACK}   เข้าซ่อมบำรุงครั้งสุดท้ายเมื่อ: {LTBLUE}{DATE_LONG}
-STR_VEHICLE_DETAILS_INCREASE_SERVICING_INTERVAL_TOOLTIP         :{BLACK}เพิ่มระยะการซ่อมบำรุงครั้งละ 10 . Ctrl+Click เพิ่มทีละ5
-STR_VEHICLE_DETAILS_DECREASE_SERVICING_INTERVAL_TOOLTIP         :{BLACK}ลดระยะการซ่อมบำรุงครั้งละ 10 . Ctrl+Click ลดทีละ5
 
 STR_SERVICE_INTERVAL_DROPDOWN_TOOLTIP                           :{BLACK}ปรับเปลี่ยนประเภทการวัดค่าที่ควรซ่อมบำรุง
 STR_VEHICLE_DETAILS_DEFAULT                                     :ค่าเริ่มต้น
-STR_VEHICLE_DETAILS_DAYS                                        :วัน
 STR_VEHICLE_DETAILS_PERCENT                                     :เปอร์เซนต์
 
 ###length VEHICLE_TYPES
@@ -3974,7 +3912,6 @@ STR_ORDERS_TIMETABLE_VIEW_TOOLTIP                               :{BLACK}สล�
 
 STR_ORDERS_LIST_TOOLTIP                                         :{BLACK}รายการต้นทางปลายทาง
 STR_ORDER_INDEX                                                 :{COMMA}:{NBSP}
-STR_ORDER_TEXT                                                  :{STRING} {STRING} {STRING}
 
 STR_ORDERS_END_OF_ORDERS                                        :- - สิ้นสุดรายการ - -
 STR_ORDERS_END_OF_SHARED_ORDERS                                 :- - สิ้นสุดคำสั่งที่ใช้ร่วมกัน - -
@@ -4008,11 +3945,13 @@ STR_ORDER_REFIT_AUTO_TOOLTIP                                    :{BLACK}ดั�
 STR_ORDER_DROP_REFIT_AUTO                                       :เลือกประเภทตามกำหนด
 STR_ORDER_DROP_REFIT_AUTO_ANY                                   :ตามสินค้าที่ต้องการการขนส่ง
 
-STR_ORDER_SERVICE                                               :{BLACK}ซ่อมบำรุง
 STR_ORDER_DROP_GO_ALWAYS_DEPOT                                  :ไปทุกครั้ง
 STR_ORDER_DROP_SERVICE_DEPOT                                    :เข้าซ่อมบำรุงหากต้องการ
 STR_ORDER_DROP_HALT_DEPOT                                       :หยุด
-STR_ORDER_SERVICE_TOOLTIP                                       :{BLACK}จะข้ามรายการนี้ไปเมื่อยังไม่มีความต้องการซ่อมบำรุง
+
+# Depot action tooltips, one per vehicle type
+###length VEHICLE_TYPES
+###next-name-looks-similar
 
 STR_ORDER_CONDITIONAL_VARIABLE_TOOLTIP                          :{BLACK}ข้อมูลยานพาหนะที่จะข้ามไป
 
@@ -4081,6 +4020,7 @@ STR_ORDER_REFIT_ORDER                                           :(ดัดแ�
 STR_ORDER_REFIT_STOP_ORDER                                      :(ดัดแปลงเป็น {STRING} และหยุด)
 STR_ORDER_STOP_ORDER                                            :(หยุด)
 
+
 STR_ORDER_GO_TO_STATION                                         :{STRING} {STATION} {STRING}
 
 STR_ORDER_IMPLICIT                                              :(อัตโนมัติ)
@@ -4147,8 +4087,6 @@ STR_TIMETABLE_STAY_FOR_ESTIMATED                                :(ตารา�
 STR_TIMETABLE_AND_TRAVEL_FOR_ESTIMATED                          :(ตารางการเดินทางของ {STRING}, ไม่ได้ถูกกำหนดเวลาไว้)
 STR_TIMETABLE_STAY_FOR                                          :หยุดเป็นเวลา {STRING}
 STR_TIMETABLE_AND_TRAVEL_FOR                                    :และเดินทาง {STRING}
-STR_TIMETABLE_DAYS                                              :{COMMA} วัน
-STR_TIMETABLE_TICKS                                             :{COMMA} tick
 
 STR_TIMETABLE_TOTAL_TIME                                        :{BLACK}ตารางเวลานี้เสร็จสิ้นโดยใช้เวลาทั้งหมด {STRING}
 STR_TIMETABLE_TOTAL_TIME_INCOMPLETE                             :{BLACK}ตารางเวลานี้ใช้เวลารวมทั้งสิ้น {STRING} (และยังไม่สมบูรณ์)
@@ -4157,10 +4095,8 @@ STR_TIMETABLE_STATUS_ON_TIME                                    :{BLACK}ยา�
 STR_TIMETABLE_STATUS_LATE                                       :{BLACK}ยานพาหนะนี้เดินทางช้ากว่าเวลาปกติอยู่ {STRING}
 STR_TIMETABLE_STATUS_EARLY                                      :{BLACK}ยานพาหนะนี้เดินทางเร็วกว่าเวลาปกติอยู่ {STRING}
 STR_TIMETABLE_STATUS_NOT_STARTED                                :{BLACK}ตารางเวลายังไม่เริ่มต้น
-STR_TIMETABLE_STATUS_START_AT                                   :{BLACK}ตารางเวลานี้จะเริ่มใน {STRING}
 
-STR_TIMETABLE_STARTING_DATE                                     :{BLACK}วันที่เริ่มต้น
-STR_TIMETABLE_STARTING_DATE_TOOLTIP                             :{BLACK}เลือกวันที่ที่จะให้เริ่มต้นตารางเวลา. Ctrl+Click เพื่อให้ยานพาหนะที่ใช้ตารางเวลานี้เริ่มต้นที่จุดเดียวกัน, ถ้าตารางเวลาสมบูรณ์แล้ว
+
 
 STR_TIMETABLE_CHANGE_TIME                                       :{BLACK}ปรับเปลี่ยนเวลา
 STR_TIMETABLE_WAIT_TIME_TOOLTIP                                 :{BLACK}เปลี่ยนเวลาที่ตำแหน่งไฮไลท์ในรายการ
@@ -4272,7 +4208,7 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}จั�
 STR_TEXTFILE_VIEW_README                                        :{BLACK}แสดง readme
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}ข้อมูลการอัพเดต
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}การอนุญาต
-###length 4
+###length 5
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING} readme ของ {STRING}
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING} changelog ของ {STRING}
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} การอนุญาตของ {STRING}
@@ -4408,7 +4344,6 @@ STR_ERROR_TOO_CLOSE_TO_EDGE_OF_MAP_SUB                          :{WHITE}... ต�
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_TOWN                             :{WHITE}... ใกล้กับเมืองอื่นมากเกินไป
 STR_ERROR_TOO_MANY_TOWNS                                        :{WHITE}... มีเมืองมากเกินไป
 STR_ERROR_NO_SPACE_FOR_TOWN                                     :{WHITE}... มีพื้นที่บนแผนที่ไม่มากพอ
-STR_ERROR_TOWN_EXPAND_WARN_NO_ROADS                             :{WHITE}เมืองจะไม่สามารถสร้างถนนได้ในอนาคต. คุณสามารถเปิดใช้งานสร้างถนนของเมือง ใน Advanced Settings->Economy->Towns
 STR_ERROR_ROAD_WORKS_IN_PROGRESS                                :{WHITE}กำลังอยู่ระหว่างการปรับปรุงถนน
 STR_ERROR_TOWN_CAN_T_DELETE                                     :{WHITE}ไม่สามารถทำลายเมืองได้{}สถานีหรือโรงเก็บนี้เป็นทรัพย์สินของเมืองไม่สามารถทำลายหรือเคลื่อนย้ายได้
 STR_ERROR_STATUE_NO_SUITABLE_PLACE                              :{WHITE}... ที่นี่ไม่มีสถานที่เหมาะสมในการสร้างอนุเสาวรีย์ในใจกลางเมือง
@@ -4513,6 +4448,8 @@ STR_ERROR_UNABLE_TO_FIND_ROUTE_TO                               :{WHITE}ไม�
 STR_ERROR_UNABLE_TO_FIND_LOCAL_DEPOT                            :{WHITE}ไม่สามารถค้นหาอู่ในละแวกได้
 
 STR_ERROR_DEPOT_WRONG_DEPOT_TYPE                                :อู่ผิดประเภท
+
+# Depot unbunching related errors
 
 # Autoreplace related errors
 STR_ERROR_TRAIN_TOO_LONG_AFTER_REPLACEMENT                      :{WHITE}{VEHICLE} จะยาวเกินไปหลังจากแทนที่ใหม่
@@ -5176,6 +5113,7 @@ STR_STATION_NAME                                                :{STATION}
 STR_TOWN_NAME                                                   :{TOWN}
 STR_VEHICLE_NAME                                                :{VEHICLE}
 STR_WAYPOINT_NAME                                               :{WAYPOINT}
+
 
 STR_JUST_CARGO                                                  :{CARGO_LONG}
 STR_JUST_CHECKMARK                                              :{CHECKMARK}

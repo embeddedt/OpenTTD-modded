@@ -36,6 +36,7 @@
 #include "order_backup.h"
 #include "core/ring_buffer.hpp"
 #include "core/checksum_func.hpp"
+#include "3rdparty/nlohmann/json.hpp"
 #include <array>
 
 #include "table/strings.h"
@@ -128,11 +129,10 @@ CommandProc CmdSetCompanyColour;
 
 CommandProc CmdIncreaseLoan;
 CommandProc CmdDecreaseLoan;
+CommandProcEx CmdSetCompanyMaxLoan;
 
 CommandProc CmdWantEnginePreview;
 CommandProc CmdEngineCtrl;
-
-CommandProc CmdSetVehicleUnitNumber;
 
 CommandProc CmdRenameVehicle;
 CommandProc CmdRenameEngine;
@@ -211,8 +211,8 @@ CommandProc CmdStoryPageButton;
 
 CommandProc CmdLevelLand;
 
-CommandProc CmdBuildSignalTrack;
-CommandProc CmdRemoveSignalTrack;
+CommandProcEx CmdBuildSignalTrack;
+CommandProcEx CmdRemoveSignalTrack;
 
 CommandProc CmdSetAutoReplace;
 
@@ -244,6 +244,7 @@ CommandProc CmdAutoreplaceVehicle;
 CommandProc CmdTemplateReplaceVehicle;
 CommandProc CmdDepotSellAllVehicles;
 CommandProc CmdDepotMassAutoReplace;
+CommandProc CmdSetTrainSpeedRestriction;
 
 CommandProc CmdCreateGroup;
 CommandProc CmdAlterGroup;
@@ -263,7 +264,7 @@ CommandProc CmdSetVehicleOnTime;
 CommandProc CmdAutofillTimetable;
 CommandProc CmdAutomateTimetable;
 CommandProc CmdTimetableSeparation;
-CommandProc CmdSetTimetableStart;
+CommandProcEx CmdSetTimetableStart;
 
 CommandProc CmdOpenCloseAirport;
 
@@ -294,6 +295,7 @@ CommandProc CmdScheduledDispatchRemove;
 CommandProc CmdScheduledDispatchSetDuration;
 CommandProcEx CmdScheduledDispatchSetStartDate;
 CommandProc CmdScheduledDispatchSetDelay;
+CommandProc CmdScheduledDispatchSetReuseSlots;
 CommandProc CmdScheduledDispatchResetLastDispatch;
 CommandProc CmdScheduledDispatchClear;
 CommandProcEx CmdScheduledDispatchAddNewSchedule;
@@ -303,6 +305,7 @@ CommandProc CmdScheduledDispatchDuplicateSchedule;
 CommandProc CmdScheduledDispatchAppendVehicleSchedules;
 CommandProc CmdScheduledDispatchAdjust;
 CommandProc CmdScheduledDispatchSwapSchedules;
+CommandProcEx CmdScheduledDispatchSetSlotFlags;
 
 CommandProc CmdAddPlan;
 CommandProcEx CmdAddPlanLine;
@@ -311,6 +314,7 @@ CommandProc CmdRemovePlanLine;
 CommandProc CmdChangePlanVisibility;
 CommandProc CmdChangePlanColour;
 CommandProc CmdRenamePlan;
+CommandProc CmdAcquireUnownedPlan;
 
 CommandProc CmdDesyncCheck;
 
@@ -394,11 +398,10 @@ static const Command _command_proc_table[] = {
 
 	DEF_CMD(CmdIncreaseLoan,                                   0, CMDT_MONEY_MANAGEMENT      ), // CMD_INCREASE_LOAN
 	DEF_CMD(CmdDecreaseLoan,                                   0, CMDT_MONEY_MANAGEMENT      ), // CMD_DECREASE_LOAN
+	DEF_CMD(CmdSetCompanyMaxLoan,                      CMD_DEITY, CMDT_MONEY_MANAGEMENT      ), // CMD_SET_COMPANY_MAX_LOAN
 
 	DEF_CMD(CmdWantEnginePreview,                              0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_WANT_ENGINE_PREVIEW
 	DEF_CMD(CmdEngineCtrl,                             CMD_DEITY, CMDT_VEHICLE_MANAGEMENT    ), // CMD_ENGINE_CTRL
-
-	DEF_CMD(CmdSetVehicleUnitNumber,                           0, CMDT_OTHER_MANAGEMENT      ), // CMD_SET_VEHICLE_UNIT_NUMBER
 
 	DEF_CMD(CmdRenameVehicle,                                  0, CMDT_OTHER_MANAGEMENT      ), // CMD_RENAME_VEHICLE
 	DEF_CMD(CmdRenameEngine,                          CMD_SERVER, CMDT_OTHER_MANAGEMENT      ), // CMD_RENAME_ENGINE
@@ -509,6 +512,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdTemplateReplaceVehicle,               CMD_NO_TEST, CMDT_VEHICLE_MANAGEMENT    ), // CMD_TEMPLATE_REPLACE_VEHICLE
 	DEF_CMD(CmdDepotSellAllVehicles,                           0, CMDT_VEHICLE_CONSTRUCTION  ), // CMD_DEPOT_SELL_ALL_VEHICLES
 	DEF_CMD(CmdDepotMassAutoReplace,                 CMD_NO_TEST, CMDT_VEHICLE_CONSTRUCTION  ), // CMD_DEPOT_MASS_AUTOREPLACE
+	DEF_CMD(CmdSetTrainSpeedRestriction,                       0, CMDT_VEHICLE_MANAGEMENT    ), // CMD_SET_TRAIN_SPEED_RESTRICTION
 	DEF_CMD(CmdCreateGroup,                                    0, CMDT_ROUTE_MANAGEMENT      ), // CMD_CREATE_GROUP
 	DEF_CMD(CmdDeleteGroup,                                    0, CMDT_ROUTE_MANAGEMENT      ), // CMD_DELETE_GROUP
 	DEF_CMD(CmdAlterGroup,                                     0, CMDT_OTHER_MANAGEMENT      ), // CMD_ALTER_GROUP
@@ -557,6 +561,7 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdScheduledDispatchSetDuration,                   0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_DURATION
 	DEF_CMD(CmdScheduledDispatchSetStartDate,                  0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_START_DATE
 	DEF_CMD(CmdScheduledDispatchSetDelay,                      0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_DELAY
+	DEF_CMD(CmdScheduledDispatchSetReuseSlots,                 0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_REUSE_SLOTS
 	DEF_CMD(CmdScheduledDispatchResetLastDispatch,             0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_RESET_LAST_DISPATCH
 	DEF_CMD(CmdScheduledDispatchClear,                         0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_CLEAR
 	DEF_CMD(CmdScheduledDispatchAddNewSchedule,                0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_ADD_NEW_SCHEDULE
@@ -566,14 +571,16 @@ static const Command _command_proc_table[] = {
 	DEF_CMD(CmdScheduledDispatchAppendVehicleSchedules,        0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_APPEND_VEHICLE_SCHEDULE
 	DEF_CMD(CmdScheduledDispatchAdjust,                        0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_ADJUST
 	DEF_CMD(CmdScheduledDispatchSwapSchedules,                 0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SWAP_SCHEDULES
+	DEF_CMD(CmdScheduledDispatchSetSlotFlags,                  0, CMDT_ROUTE_MANAGEMENT      ), // CMD_SCHEDULED_DISPATCH_SET_SLOT_FLAGS
 
-	DEF_CMD(CmdAddPlan,                              CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_ADD_PLAN
+	DEF_CMD(CmdAddPlan,                                        0, CMDT_OTHER_MANAGEMENT      ), // CMD_ADD_PLAN
 	DEF_CMD(CmdAddPlanLine,                          CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_ADD_PLAN_LINE
-	DEF_CMD(CmdRemovePlan,                           CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_REMOVE_PLAN
-	DEF_CMD(CmdRemovePlanLine,                       CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_REMOVE_PLAN_LINE
-	DEF_CMD(CmdChangePlanVisibility,                 CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_CHANGE_PLAN_VISIBILITY
-	DEF_CMD(CmdChangePlanColour,                     CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_CHANGE_PLAN_COLOUR
-	DEF_CMD(CmdRenamePlan,                           CMD_NO_TEST, CMDT_OTHER_MANAGEMENT      ), // CMD_RENAME_PLAN
+	DEF_CMD(CmdRemovePlan,                                     0, CMDT_OTHER_MANAGEMENT      ), // CMD_REMOVE_PLAN
+	DEF_CMD(CmdRemovePlanLine,                                 0, CMDT_OTHER_MANAGEMENT      ), // CMD_REMOVE_PLAN_LINE
+	DEF_CMD(CmdChangePlanVisibility,                           0, CMDT_OTHER_MANAGEMENT      ), // CMD_CHANGE_PLAN_VISIBILITY
+	DEF_CMD(CmdChangePlanColour,                               0, CMDT_OTHER_MANAGEMENT      ), // CMD_CHANGE_PLAN_COLOUR
+	DEF_CMD(CmdRenamePlan,                                     0, CMDT_OTHER_MANAGEMENT      ), // CMD_RENAME_PLAN
+	DEF_CMD(CmdAcquireUnownedPlan,                 CMD_SERVER_NS, CMDT_OTHER_MANAGEMENT      ), // CMD_ACQUIRE_UNOWNED_PLAN
 
 	DEF_CMD(CmdDesyncCheck,                           CMD_SERVER, CMDT_SERVER_SETTING        ), // CMD_DESYNC_CHECK
 };
@@ -584,7 +591,7 @@ ClientID _cmd_client_id = INVALID_CLIENT_ID;
 /**
  * List of flags for a command log entry
  */
-enum CommandLogEntryFlag : uint16 {
+enum CommandLogEntryFlag : uint16_t {
 	CLEF_NONE                =  0x00, ///< no flag is set
 	CLEF_CMD_FAILED          =  0x01, ///< command failed
 	CLEF_GENERATING_WORLD    =  0x02, ///< generating world
@@ -601,28 +608,28 @@ enum CommandLogEntryFlag : uint16 {
 };
 DECLARE_ENUM_AS_BIT_SET(CommandLogEntryFlag)
 
-extern uint32 _frame_counter;
+extern uint32_t _frame_counter;
 
 struct CommandLogEntry {
 	std::string text;
 	TileIndex tile;
-	uint32 p1;
-	uint32 p2;
-	uint32 cmd;
-	uint64 p3;
-	Date date;
-	DateFract date_fract;
-	uint8 tick_skip_counter;
+	uint32_t p1;
+	uint32_t p2;
+	uint32_t cmd;
+	uint64_t p3;
+	EconTime::Date date;
+	EconTime::DateFract date_fract;
+	uint8_t tick_skip_counter;
 	CompanyID current_company;
 	CompanyID local_company;
 	CommandLogEntryFlag log_flags;
 	ClientID client_id;
-	uint32 frame_counter;
+	uint32_t frame_counter;
 
 	CommandLogEntry() { }
 
-	CommandLogEntry(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, CommandLogEntryFlag log_flags, std::string text)
-			: text(text), tile(tile), p1(p1), p2(p2), cmd(cmd), p3(p3), date(_date), date_fract(_date_fract), tick_skip_counter(_tick_skip_counter),
+	CommandLogEntry(TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd, CommandLogEntryFlag log_flags, std::string text)
+			: text(text), tile(tile), p1(p1), p2(p2), cmd(cmd), p3(p3), date(EconTime::CurDate()), date_fract(EconTime::CurDateFract()), tick_skip_counter(TickSkipCounter()),
 			current_company(_current_company), local_company(_local_company), log_flags(log_flags), client_id(_cmd_client_id), frame_counter(_frame_counter) { }
 };
 
@@ -664,9 +671,8 @@ static void DumpSubCommandLogEntry(char *&buffer, const char *last, const Comman
 			return (entry.log_flags & CLEF_SCRIPT_ASYNC) ? 'A' : 'a';
 		};
 
-		YearMonthDay ymd;
-		ConvertDateToYMD(entry.date, &ymd);
-		buffer += seprintf(buffer, last, "%4i-%02i-%02i, %2i, %3i", ymd.year, ymd.month + 1, ymd.day, entry.date_fract, entry.tick_skip_counter);
+		EconTime::YearMonthDay ymd = EconTime::ConvertDateToYMD(entry.date);
+		buffer += seprintf(buffer, last, "%4i-%02i-%02i, %2i, %3i", ymd.year.base(), ymd.month + 1, ymd.day, entry.date_fract, entry.tick_skip_counter);
 		if (_networking) {
 			buffer += seprintf(buffer, last, ", %08X", entry.frame_counter);
 		}
@@ -728,41 +734,41 @@ char *DumpCommandLog(char *buffer, const char *last, std::function<char *(char *
 	return buffer;
 }
 
-/*!
+/**
  * This function range-checks a cmd, and checks if the cmd is not nullptr
  *
  * @param cmd The integer value of a command
  * @return true if the command is valid (and got a CommandProc function)
  */
-bool IsValidCommand(uint32 cmd)
+bool IsValidCommand(uint32_t cmd)
 {
 	cmd &= CMD_ID_MASK;
 
 	return cmd < lengthof(_command_proc_table) && _command_proc_table[cmd].proc != nullptr;
 }
 
-/*!
+/**
  * This function mask the parameter with CMD_ID_MASK and returns
  * the flags which belongs to the given command.
  *
  * @param cmd The integer value of the command
  * @return The flags for this command
  */
-CommandFlags GetCommandFlags(uint32 cmd)
+CommandFlags GetCommandFlags(uint32_t cmd)
 {
 	assert(IsValidCommand(cmd));
 
 	return _command_proc_table[cmd & CMD_ID_MASK].flags;
 }
 
-/*!
+/**
  * This function mask the parameter with CMD_ID_MASK and returns
  * the name which belongs to the given command.
  *
  * @param cmd The integer value of the command
  * @return The name for this command
  */
-const char *GetCommandName(uint32 cmd)
+const char *GetCommandName(uint32_t cmd)
 {
 	assert(IsValidCommand(cmd));
 
@@ -774,7 +780,7 @@ const char *GetCommandName(uint32 cmd)
  * @param cmd The command to check.
  * @return True if the command is allowed while paused, false otherwise.
  */
-bool IsCommandAllowedWhilePaused(uint32 cmd)
+bool IsCommandAllowedWhilePaused(uint32_t cmd)
 {
 	/* Lookup table for the command types that are allowed for a given pause level setting. */
 	static const int command_type_lookup[] = {
@@ -815,7 +821,7 @@ private:
 	char buffer[64];
 };
 
-/*!
+/**
  * This function executes a given command with the parameters from the #CommandProc parameter list.
  * Depending on the flags parameter it execute or test a command.
  *
@@ -829,7 +835,7 @@ private:
  * @see CommandProc
  * @return the cost
  */
-CommandCost DoCommandEx(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, DoCommandFlag flags, uint32 cmd, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost DoCommandEx(TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, DoCommandFlag flags, uint32_t cmd, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	SCOPE_INFO_FMT([=], "DoCommand: tile: %X (%d x %d), p1: 0x%X, p2: 0x%X, p3: " OTTD_PRINTFHEX64 ", flags: 0x%X, company: %s, cmd: 0x%X (%s)%s",
 			tile, TileX(tile), TileY(tile), p1, p2, p3, flags, scope_dumper().CompanyInfo(_current_company), cmd, GetCommandName(cmd), cmd_text_info_dumper().CommandTextInfo(text, aux_data));
@@ -885,20 +891,6 @@ error:
 	return res;
 }
 
-/*!
- * This functions returns the money which can be used to execute a command.
- * This is either the money of the current company or INT64_MAX if there
- * is no such a company "at the moment" like the server itself.
- *
- * @return The available money of a company or INT64_MAX
- */
-Money GetAvailableMoneyForCommand()
-{
-	CompanyID company = _current_company;
-	if (!Company::IsValidID(company)) return INT64_MAX;
-	return Company::Get(company)->money;
-}
-
 static void DebugLogCommandLogEntry(const CommandLogEntry &entry)
 {
 	if (_debug_command_level <= 0) return;
@@ -906,10 +898,10 @@ static void DebugLogCommandLogEntry(const CommandLogEntry &entry)
 	char buffer[256];
 	char *b = buffer;
 	DumpSubCommandLogEntry(b, lastof(buffer), entry);
-	debug_print("command", buffer);
+	debug_print("command", 0, buffer);
 }
 
-static void AppendCommandLogEntry(const CommandCost &res, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, CommandLogEntryFlag log_flags, const char *text)
+static void AppendCommandLogEntry(const CommandCost &res, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd, CommandLogEntryFlag log_flags, const char *text)
 {
 	if (res.Failed()) log_flags |= CLEF_CMD_FAILED;
 	if (_generating_world) log_flags |= CLEF_GENERATING_WORLD;
@@ -919,8 +911,9 @@ static void AppendCommandLogEntry(const CommandCost &res, TileIndex tile, uint32
 	if (_networking && cmd_log.count > 0) {
 		CommandLogEntry &current = cmd_log.log[(cmd_log.next - 1) % cmd_log.log.size()];
 		if (current.log_flags & CLEF_ONLY_SENDING && ((current.log_flags ^ log_flags) & ~(CLEF_SCRIPT | CLEF_MY_CMD)) == CLEF_ONLY_SENDING &&
-				current.tile == tile && current.p1 == p1 && current.p2 == p2 && current.p3 == p3 && ((current.cmd ^ cmd) & ~CMD_NETWORK_COMMAND) == 0 && current.date == _date &&
-				current.date_fract == _date_fract && current.tick_skip_counter == _tick_skip_counter &&
+				current.tile == tile && current.p1 == p1 && current.p2 == p2 && current.p3 == p3 && ((current.cmd ^ cmd) & ~CMD_NETWORK_COMMAND) == 0 &&
+				current.date == EconTime::CurDate() && current.date_fract == EconTime::CurDateFract() &&
+				current.tick_skip_counter == TickSkipCounter() &&
 				current.frame_counter == _frame_counter &&
 				current.current_company == _current_company && current.local_company == _local_company) {
 			current.log_flags |= log_flags | CLEF_TWICE;
@@ -944,7 +937,7 @@ static void AppendCommandLogEntry(const CommandCost &res, TileIndex tile, uint32
 	cmd_log.count++;
 }
 
-/*!
+/**
  * Toplevel network safe docommand function for the current company. Must not be called recursively.
  * The callback is called when the command succeeded or failed. The parameters
  * \a tile, \a p1, and \a p2 are from the #CommandProc function. The parameter \a cmd is the command to execute.
@@ -961,7 +954,7 @@ static void AppendCommandLogEntry(const CommandCost &res, TileIndex tile, uint32
  * @param binary_length The length of binary data in text
  * @return \c true if the command succeeded, else \c false.
  */
-bool DoCommandPEx(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, CommandCallback *callback, const char *text, const CommandAuxiliaryBase *aux_data, bool my_cmd)
+bool DoCommandPEx(TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd, CommandCallback *callback, const char *text, const CommandAuxiliaryBase *aux_data, bool my_cmd)
 {
 	SCOPE_INFO_FMT([=], "DoCommandP: tile: %X (%d x %d), p1: 0x%X, p2: 0x%X, p3: 0x" OTTD_PRINTFHEX64 ", company: %s, cmd: 0x%X (%s), my_cmd: %d%s",
 			tile, TileX(tile), TileY(tile), p1, p2, p3, scope_dumper().CompanyInfo(_current_company), cmd, GetCommandName(cmd), my_cmd, cmd_text_info_dumper().CommandTextInfo(text, aux_data));
@@ -1040,7 +1033,7 @@ bool DoCommandPEx(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, C
 	return res.Succeeded();
 }
 
-CommandCost DoCommandPScript(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, CommandCallback *callback, const char *text, bool my_cmd, bool estimate_only, bool asynchronous, const CommandAuxiliaryBase *aux_data)
+CommandCost DoCommandPScript(TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd, CommandCallback *callback, const char *text, bool my_cmd, bool estimate_only, bool asynchronous, const CommandAuxiliaryBase *aux_data)
 {
 	GameRandomSeedChecker random_state;
 	uint order_backup_update_counter = OrderBackup::GetUpdateCounter();
@@ -1102,7 +1095,7 @@ void EnqueueDoCommandP(CommandContainer cmd)
  */
 #define return_dcpi(cmd) { _docommand_recursive = 0; return cmd; }
 
-/*!
+/**
  * Helper function for the toplevel network safe docommand function for the current company.
  *
  * @param tile The tile to perform a command on (see #CommandProc)
@@ -1116,7 +1109,7 @@ void EnqueueDoCommandP(CommandContainer cmd)
  * @param estimate_only whether to give only the estimate or also execute the command
  * @return the command cost of this function.
  */
-CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd, CommandCallback *callback, const char *text, bool my_cmd, bool estimate_only, const CommandAuxiliaryBase *aux_data)
+CommandCost DoCommandPInternal(TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd, CommandCallback *callback, const char *text, bool my_cmd, bool estimate_only, const CommandAuxiliaryBase *aux_data)
 {
 	/* Prevent recursion; it gives a mess over the network */
 	assert(_docommand_recursive == 0);
@@ -1126,7 +1119,7 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 	_additional_cash_required = 0;
 
 	/* Get pointer to command handler */
-	byte cmd_id = cmd & CMD_ID_MASK;
+	uint cmd_id = cmd & CMD_ID_MASK;
 	assert(cmd_id < lengthof(_command_proc_table));
 
 	const Command &command = _command_proc_table[cmd_id];
@@ -1173,12 +1166,37 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 	if (!random_state.Check()) {
 		std::string msg = stdstr_fmt("Random seed changed in test command: company: %02x; tile: %06x (%u x %u); p1: %08x; p2: %08x; p3: " OTTD_PRINTFHEX64PAD "; cmd: %08x; \"%s\"%s (%s)",
 				(int)_current_company, tile, TileX(tile), TileY(tile), p1, p2, p3, cmd & ~CMD_NETWORK_COMMAND, text, aux_data != nullptr ? ", aux data present" : "", GetCommandName(cmd));
-		DEBUG(desync, 0, "msg: date{%08x; %02x; %02x}; %s", _date, _date_fract, _tick_skip_counter, msg.c_str());
+		DEBUG(desync, 0, "msg: %s; %s", debug_date_dumper().HexDate(), msg.c_str());
 		LogDesyncMsg(std::move(msg));
 	}
 
 	/* Make sure we're not messing things up here. */
 	assert(exec_as_spectator ? _current_company == COMPANY_SPECTATOR : cur_company.Verify());
+
+	auto log_desync_cmd = [&](const char *prefix) {
+		if (_debug_desync_level >= 1) {
+			std::string aux_str;
+			if (aux_data != nullptr) {
+				std::vector<uint8_t> buffer;
+				CommandSerialisationBuffer serialiser(buffer, SHRT_MAX);
+				aux_data->Serialise(serialiser);
+				aux_str = FormatArrayAsHex(buffer, false);
+			}
+			std::string text_buf;
+			if (text != nullptr) {
+				nlohmann::json j_string = text;
+				text_buf = j_string.dump(-1, ' ', true);
+			} else {
+				text_buf = "\"\"";
+			}
+
+			/* Use stdstr_fmt and debug_print to avoid truncation limits of DEBUG, text/aux_data may be very large */
+			std::string dbg_info = stdstr_fmt("%s: %s; company: %02x; tile: %06x (%u x %u); p1: %08x; p2: %08x; p3: " OTTD_PRINTFHEX64PAD "; cmd: %08x; %s <%s> (%s)",
+					prefix, debug_date_dumper().HexDate(), (int)_current_company, tile, TileX(tile), TileY(tile), p1, p2, p3,
+					cmd & ~CMD_NETWORK_COMMAND, text_buf.c_str(), aux_str.c_str(), GetCommandName(cmd));
+			debug_print("desync", 1, dbg_info.c_str());
+		}
+	};
 
 	/* If the command fails, we're doing an estimate
 	 * or the player does not have enough money
@@ -1190,8 +1208,7 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 		if (!_networking || _generating_world || (cmd & CMD_NETWORK_COMMAND) != 0) {
 			/* Log the failed command as well. Just to be able to be find
 			 * causes of desyncs due to bad command test implementations. */
-			DEBUG(desync, 1, "cmdf: date{%08x; %02x; %02x}; company: %02x; tile: %06x (%u x %u); p1: %08x; p2: %08x; p3: " OTTD_PRINTFHEX64PAD "; cmd: %08x; \"%s\"%s (%s)",
-					_date, _date_fract, _tick_skip_counter, (int)_current_company, tile, TileX(tile), TileY(tile), p1, p2, p3, cmd & ~CMD_NETWORK_COMMAND, text, aux_data != nullptr ? ", aux data present" : "", GetCommandName(cmd));
+			log_desync_cmd("cmdf");
 		}
 		cur_company.Restore();
 		return_dcpi(res);
@@ -1211,8 +1228,7 @@ CommandCost DoCommandPInternal(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, 
 		 * reset the storages as we've not executed the command. */
 		return_dcpi(CommandCost());
 	}
-	DEBUG(desync, 1, "cmd: date{%08x; %02x; %02x}; company: %02x; tile: %06x (%u x %u); p1: %08x; p2: %08x; p3: " OTTD_PRINTFHEX64PAD "; cmd: %08x; \"%s\"%s(%s)",
-			_date, _date_fract, _tick_skip_counter, (int)_current_company, tile, TileX(tile), TileY(tile), p1, p2, p3, cmd & ~CMD_NETWORK_COMMAND, text, aux_data != nullptr ? ", aux data present" : "", GetCommandName(cmd));
+	log_desync_cmd("cmd");
 
 	/* Actually try and execute the command. If no cost-type is given
 	 * use the construction one */
@@ -1315,7 +1331,7 @@ void CommandCost::AddCost(const CommandCost &ret)
  */
 void CommandCost::UseTextRefStack(const GRFFile *grffile, uint num_registers)
 {
-	extern TemporaryStorageArray<int32, 0x110> _temp_store;
+	extern TemporaryStorageArray<int32_t, 0x110> _temp_store;
 
 	if (!this->aux_data) {
 		this->AllocAuxData();
@@ -1331,33 +1347,25 @@ void CommandCost::UseTextRefStack(const GRFFile *grffile, uint num_registers)
 
 std::string CommandCost::SummaryMessage(StringID cmd_msg) const
 {
-	char buf[DRAW_STRING_BUFFER];
-	this->WriteSummaryMessage(buf, lastof(buf), cmd_msg);
-	return buf;
-}
-
-int CommandCost::WriteSummaryMessage(char *buf, char *last, StringID cmd_msg) const
-{
 	if (this->Succeeded()) {
-		return seprintf(buf, last, "Success: cost: " OTTD_PRINTF64, (int64) this->GetCost());
+		return stdstr_fmt("Success: cost: " OTTD_PRINTF64, (int64_t) this->GetCost());
 	} else {
 		const uint textref_stack_size = this->GetTextRefStackSize();
 		if (textref_stack_size > 0) StartTextRefStackUsage(this->GetTextRefStackGRF(), textref_stack_size, this->GetTextRefStack());
 
-		char *b = buf;
-		b += seprintf(b, last, "Failed: cost: " OTTD_PRINTF64, (int64) this->GetCost());
+		std::string buf = stdstr_fmt("Failed: cost: " OTTD_PRINTF64, (int64_t) this->GetCost());
 		if (cmd_msg != 0) {
-			b += seprintf(b, last, " ");
-			b = GetString(b, cmd_msg, last);
+			buf += ' ';
+			GetString(StringBuilder(buf), cmd_msg);
 		}
 		if (this->message != INVALID_STRING_ID) {
-			b += seprintf(b, last, " ");
-			b = GetString(b, this->message, last);
+			buf += ' ';
+			GetString(StringBuilder(buf), this->message);
 		}
 
 		if (textref_stack_size > 0) StopTextRefStackUsage();
 
-		return b - buf;
+		return buf;
 	}
 }
 
@@ -1401,7 +1409,7 @@ void CommandCost::SetTile(TileIndex tile)
 	}
 }
 
-void CommandCost::SetResultData(uint32 result)
+void CommandCost::SetResultData(uint32_t result)
 {
 	this->flags |= CCIF_VALID_RESULT;
 

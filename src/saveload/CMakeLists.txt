@@ -27,6 +27,7 @@ add_files(
     newgrf_sl.h
     object_sl.cpp
     order_sl.cpp
+    randomizer_sl.cpp
     saveload.cpp
     saveload.h
     settings_sl.cpp
@@ -37,4 +38,5 @@ add_files(
     subsidy_sl.cpp
     town_sl.cpp
     vehicle_sl.cpp
+    water_regions_sl.cpp
 )

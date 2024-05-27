@@ -22,6 +22,9 @@
 #include "core/geometry_func.hpp"
 #include "core/random_func.hpp"
 #include "zoning.h"
+#include "debug_settings.h"
+
+#include <initializer_list>
 
 enum ZoningToolbarWidgets {
 	ZTW_OUTER_DROPDOWN,
@@ -29,47 +32,39 @@ enum ZoningToolbarWidgets {
 	ZTW_CAPTION
 };
 
-static const StringID _zone_type_strings[] = {
-	STR_ZONING_NO_ZONING,
-	STR_ZONING_AUTHORITY,
-	STR_ZONING_CAN_BUILD,
-	STR_ZONING_STA_CATCH,
-	STR_ZONING_STA_CATCH_OPEN,
-	STR_ZONING_BUL_UNSER,
-	STR_ZONING_IND_UNSER,
-	STR_ZONING_TRACERESTRICT,
-	STR_ZONING_2x2_GRID,
-	STR_ZONING_3x3_GRID,
-	STR_ZONING_ONE_WAY_ROAD,
-	INVALID_STRING_ID
+struct ZoningModeInfo {
+	ZoningEvaluationMode mode;
+	StringID str;
+	const char *param;
+	bool debug;
+
+	ZoningModeInfo(ZoningEvaluationMode mode, StringID str) : mode(mode), str(str), param(""), debug(false) {}
+	ZoningModeInfo(ZoningEvaluationMode mode, const char *param, bool debug = true) : mode(mode), str(STR_JUST_RAW_STRING), param(param), debug(debug) {}
 };
 
-static const ZoningEvaluationMode _zone_type_modes[] = {
-	ZEM_NOTHING,
-	ZEM_AUTHORITY,
-	ZEM_CAN_BUILD,
-	ZEM_STA_CATCH,
-	ZEM_STA_CATCH_WIN,
-	ZEM_BUL_UNSER,
-	ZEM_IND_UNSER,
-	ZEM_TRACERESTRICT,
-	ZEM_2x2_GRID,
-	ZEM_3x3_GRID,
-	ZEM_ONE_WAY_ROAD,
+static const std::initializer_list<ZoningModeInfo> _zone_modes = {
+	ZoningModeInfo(ZEM_NOTHING,          STR_ZONING_NO_ZONING),
+	ZoningModeInfo(ZEM_AUTHORITY,        STR_ZONING_AUTHORITY),
+	ZoningModeInfo(ZEM_CAN_BUILD,        STR_ZONING_CAN_BUILD),
+	ZoningModeInfo(ZEM_STA_CATCH,        STR_ZONING_STA_CATCH),
+	ZoningModeInfo(ZEM_STA_CATCH_WIN,    STR_ZONING_STA_CATCH_OPEN),
+	ZoningModeInfo(ZEM_BUL_UNSER,        STR_ZONING_BUL_UNSER),
+	ZoningModeInfo(ZEM_IND_UNSER,        STR_ZONING_IND_UNSER),
+	ZoningModeInfo(ZEM_TRACERESTRICT,    STR_ZONING_TRACERESTRICT),
+	ZoningModeInfo(ZEM_2x2_GRID,         STR_ZONING_2x2_GRID),
+	ZoningModeInfo(ZEM_3x3_GRID,         STR_ZONING_3x3_GRID),
+	ZoningModeInfo(ZEM_ONE_WAY_ROAD,     STR_ZONING_ONE_WAY_ROAD),
+
+	ZoningModeInfo(ZEM_DBG_WATER_FLOOD,   "Debug: Flooding"),
+	ZoningModeInfo(ZEM_DBG_WATER_REGION,  "Debug: Water regions"),
+	ZoningModeInfo(ZEM_DBG_TROPIC_ZONE,   "Debug: Tropic zones"),
+	ZoningModeInfo(ZEM_DBG_ANIMATED_TILE, "Debug: Animated tiles"),
 };
 
-static ZoningEvaluationMode DropDownIndexToZoningEvaluationMode(int index)
+static const ZoningModeInfo &ZoningEvaluationModeToInfo(ZoningEvaluationMode ev_mode)
 {
-	if (index < 0 || index >= (int) lengthof(_zone_type_modes)) {
-		return ZEM_NOTHING;
-	}
-	return _zone_type_modes[index];
-}
-
-static int ZoningEvaluationModeToDropDownIndex(ZoningEvaluationMode ev_mode)
-{
-	for (int i = 0; i < (int) lengthof(_zone_type_modes); i++) {
-		if (_zone_type_modes[i] == ev_mode) return i;
+	for (const ZoningModeInfo &info : _zone_modes) {
+		if (info.mode == ev_mode) return info;
 	}
 	NOT_REACHED();
 }
@@ -83,74 +78,87 @@ struct ZoningWindow : public Window {
 		this->InvalidateData();
 	}
 
-	virtual void OnPaint()
+	static inline bool IsDebugEnabled()
+	{
+		return HasBit(_misc_debug_flags, MDF_ZONING_DEBUG_MODES);
+	}
+
+	void OnPaint() override
 	{
 		this->DrawWidgets();
 	}
 
-	virtual void OnClick(Point pt, int widget, int click_count)
+	void ShowZoningDropDown(WidgetID widget, ZoningEvaluationMode current)
+	{
+		DropDownList list;
+		for (const ZoningModeInfo &info : _zone_modes) {
+			if (info.debug && !IsDebugEnabled()) continue;
+			SetDParamStr(0, info.param);
+			list.push_back(std::make_unique<DropDownListStringItem>(info.str, info.mode, false));
+		}
+		ShowDropDownList(this, std::move(list), current, widget);
+	}
+
+	void OnClick(Point pt, WidgetID widget, int click_count) override
 	{
 		switch (widget) {
 			case ZTW_OUTER_DROPDOWN:
-				ShowDropDownMenu(this, _zone_type_strings, ZoningEvaluationModeToDropDownIndex(_zoning.outer), ZTW_OUTER_DROPDOWN, 0, 0);
+				this->ShowZoningDropDown(ZTW_OUTER_DROPDOWN, _zoning.outer);
 				break;
 
 			case ZTW_INNER_DROPDOWN:
-				ShowDropDownMenu(this, _zone_type_strings, ZoningEvaluationModeToDropDownIndex(_zoning.inner), ZTW_INNER_DROPDOWN, 0, 0);
+				this->ShowZoningDropDown(ZTW_INNER_DROPDOWN, _zoning.inner);
 				break;
 		}
 	}
 
-	virtual void OnDropdownSelect(int widget, int index)
+	void OnDropdownSelect(WidgetID widget, int index) override
 	{
 		switch(widget) {
 			case ZTW_OUTER_DROPDOWN:
-				SetZoningMode(false, DropDownIndexToZoningEvaluationMode(index));
+				SetZoningMode(false, (ZoningEvaluationMode)index);
 				break;
 
 			case ZTW_INNER_DROPDOWN:
-				SetZoningMode(true, DropDownIndexToZoningEvaluationMode(index));
+				SetZoningMode(true, (ZoningEvaluationMode)index);
 				break;
 		}
 		this->InvalidateData();
 	}
 
-	virtual void SetStringParameters(int widget) const
+	void SetStringParameters(WidgetID widget) const override
 	{
 		switch (widget) {
 			case ZTW_OUTER_DROPDOWN:
-				SetDParam(0, _zone_type_strings[ZoningEvaluationModeToDropDownIndex(_zoning.outer)]);
+			case ZTW_INNER_DROPDOWN: {
+				const ZoningModeInfo &info = ZoningEvaluationModeToInfo(widget == ZTW_OUTER_DROPDOWN ? _zoning.outer : _zoning.inner);
+				SetDParam(0, info.str);
+				SetDParamStr(1, info.param);
 				break;
-
-			case ZTW_INNER_DROPDOWN:
-				SetDParam(0, _zone_type_strings[ZoningEvaluationModeToDropDownIndex(_zoning.inner)]);
-				break;
+			}
 		}
 	}
 
-	virtual void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize)
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
-		const StringID *strs = nullptr;
 		switch (widget) {
 			case ZTW_OUTER_DROPDOWN:
 			case ZTW_INNER_DROPDOWN:
-				strs = _zone_type_strings;
+				for (const ZoningModeInfo &info : _zone_modes) {
+					SetDParamStr(0, info.param);
+					*size = maxdim(*size, GetStringBoundingBox(info.str));
+				}
 				break;
 
 			default:
 				return;
 		}
-		if (strs != nullptr) {
-			while (*strs != INVALID_STRING_ID) {
-				*size = maxdim(*size, GetStringBoundingBox(*strs++));
-			}
-		}
 		size->width += padding.width;
-		size->height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.dropdowntext.Vertical();
+		size->height = GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.dropdowntext.Vertical();
 	}
 };
 
-static const NWidgetPart _nested_zoning_widgets[] = {
+static constexpr NWidgetPart _nested_zoning_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
 		NWidget(WWT_CAPTION, COLOUR_GREY, ZTW_CAPTION), SetDataTip(STR_ZONING_TOOLBAR, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -165,18 +173,18 @@ static const NWidgetPart _nested_zoning_widgets[] = {
 				NWidget(WWT_TEXT, COLOUR_GREY), SetDataTip(STR_ZONING_INNER, STR_ZONING_INNER_INFO), SetResize(1, 0), SetPadding(1, 6, 1, 6),
 			EndContainer(),
 			NWidget(NWID_VERTICAL, COLOUR_GREY), SetPadding(5, 0, 5, 0), SetPIP(0, 5, 0),
-				NWidget(WWT_DROPDOWN, COLOUR_GREY, ZTW_OUTER_DROPDOWN), SetDataTip(STR_JUST_STRING, STR_NULL), SetFill(1, 0),
-				NWidget(WWT_DROPDOWN, COLOUR_GREY, ZTW_INNER_DROPDOWN), SetDataTip(STR_JUST_STRING, STR_NULL), SetFill(1, 0),
+				NWidget(WWT_DROPDOWN, COLOUR_GREY, ZTW_OUTER_DROPDOWN), SetDataTip(STR_JUST_STRING1, STR_NULL), SetFill(1, 0),
+				NWidget(WWT_DROPDOWN, COLOUR_GREY, ZTW_INNER_DROPDOWN), SetDataTip(STR_JUST_STRING1, STR_NULL), SetFill(1, 0),
 			EndContainer(),
 		EndContainer(),
 	EndContainer()
 };
 
-static WindowDesc _zoning_desc (
+static WindowDesc _zoning_desc (__FILE__, __LINE__,
 	WDP_CENTER, "zoning_gui", 0, 0,
 	WC_ZONING_TOOLBAR, WC_NONE,
 	0,
-	_nested_zoning_widgets, lengthof(_nested_zoning_widgets)
+	std::begin(_nested_zoning_widgets), std::end(_nested_zoning_widgets)
 );
 
 void ShowZoningToolbar()

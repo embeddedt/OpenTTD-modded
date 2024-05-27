@@ -16,6 +16,7 @@
 
 #include "strgen.h"
 
+#include <bit>
 
 #include "../table/strgen_tables.h"
 
@@ -109,7 +110,7 @@ LangString *StringData::Find(const std::string_view s)
 uint StringData::VersionHashStr(uint hash, const char *s) const
 {
 	for (; *s != '\0'; s++) {
-		hash = ROL(hash, 3) ^ *s;
+		hash = std::rotl(hash, 3) ^ *s;
 		hash = (hash & 1 ? hash >> 1 ^ 0xDEADBEEF : hash >> 1);
 	}
 	return hash;
@@ -169,12 +170,12 @@ static ParsedCommandStruct _cur_pcs;
 static int _cur_argidx;
 
 /** The buffer for writing a single string. */
-struct Buffer : std::vector<byte> {
+struct Buffer : std::vector<uint8_t> {
 	/**
 	 * Convenience method for adding a byte.
 	 * @param value The value to add.
 	 */
-	void AppendByte(byte value)
+	void AppendByte(uint8_t value)
 	{
 		this->push_back(value);
 	}
@@ -183,7 +184,7 @@ struct Buffer : std::vector<byte> {
 	 * Add an Unicode character encoded in UTF-8 to the buffer.
 	 * @param value The character to add.
 	 */
-	void AppendUtf8(uint32 value)
+	void AppendUtf8(uint32_t value)
 	{
 		if (value < 0x80) {
 			this->push_back(value);
@@ -207,7 +208,7 @@ struct Buffer : std::vector<byte> {
 
 size_t Utf8Validate(const char *s)
 {
-	uint32 c;
+	uint32_t c;
 
 	if (!HasBit(s[0], 7)) {
 		/* 1 byte */
@@ -312,14 +313,14 @@ static int TranslateArgumentIdx(int arg, int offset = 0);
 static void EmitWordList(Buffer *buffer, const char * const *words, uint nw)
 {
 	buffer->AppendByte(nw);
-	for (uint i = 0; i < nw; i++) buffer->AppendByte((byte)strlen(words[i]) + 1);
+	for (uint i = 0; i < nw; i++) buffer->AppendByte((uint8_t)strlen(words[i]) + 1);
 	for (uint i = 0; i < nw; i++) {
 		for (uint j = 0; words[i][j] != '\0'; j++) buffer->AppendByte(words[i][j]);
 		buffer->AppendByte(0);
 	}
 }
 
-void EmitPlural(Buffer *buffer, char *buf, int value)
+void EmitPlural(Buffer *buffer, char *buf, int)
 {
 	int argidx = _cur_argidx;
 	int offset = -1;
@@ -372,7 +373,7 @@ void EmitPlural(Buffer *buffer, char *buf, int value)
 }
 
 
-void EmitGender(Buffer *buffer, char *buf, int value)
+void EmitGender(Buffer *buffer, char *buf, int)
 {
 	int argidx = _cur_argidx;
 	int offset = 0;
@@ -429,7 +430,7 @@ static uint ResolveCaseName(const char *str, size_t len)
 	memcpy(case_str, str, len);
 	case_str[len] = '\0';
 
-	uint8 case_idx = _lang.GetCaseIndex(case_str);
+	uint8_t case_idx = _lang.GetCaseIndex(case_str);
 	if (case_idx >= MAX_NUM_CASES) strgen_fatal("Invalid case-name '%s'", case_str);
 	return case_idx + 1;
 }
@@ -524,7 +525,7 @@ StringReader::StringReader(StringData &data, std::string file, bool master, bool
 {
 }
 
-ParsedCommandStruct ExtractCommandString(const char *s, bool warnings)
+ParsedCommandStruct ExtractCommandString(const char *s, bool)
 {
 	char param[MAX_COMMAND_PARAM_SIZE];
 	int argno;
@@ -657,7 +658,7 @@ void StringReader::HandleString(char *str)
 		size_t len = Utf8Validate(tmp);
 		if (len == 0) strgen_fatal("Invalid UTF-8 sequence in '%s'", s);
 
-		WChar c;
+		char32_t c;
 		Utf8Decode(&c, tmp);
 		if (c <= 0x001F || // ASCII control character range
 				c == 0x200B || // Zero width space
@@ -942,7 +943,7 @@ void LanguageWriter::WriteLength(uint length)
 		buffer[offs++] = (length >> 8) | 0xC0;
 	}
 	buffer[offs++] = length & 0xFF;
-	this->Write((byte*)buffer, offs);
+	this->Write((uint8_t*)buffer, offs);
 }
 
 /**
@@ -1019,7 +1020,7 @@ void LanguageWriter::WriteLang(const StringData &data)
 				 * <0x9E> <NUM CASES> <CASE1> <LEN1> <STRING1> <CASE2> <LEN2> <STRING2> <CASE3> <LEN3> <STRING3> <STRINGDEFAULT>
 				 * Each LEN is printed using 2 bytes in big endian order. */
 				buffer.AppendUtf8(SCC_SWITCH_CASE);
-				buffer.AppendByte((byte)ls->translated_cases.size());
+				buffer.AppendByte((uint8_t)ls->translated_cases.size());
 
 				/* Write each case */
 				for (const Case &c : ls->translated_cases) {

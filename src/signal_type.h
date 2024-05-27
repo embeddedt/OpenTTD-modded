@@ -16,15 +16,15 @@
 #include "zoom_type.h"
 
 /** Variant of the signal, i.e. how does the signal look? */
-enum SignalVariant {
+enum SignalVariant : uint8_t {
 	SIG_ELECTRIC  = 0, ///< Light signal
 	SIG_SEMAPHORE = 1, ///< Old-fashioned semaphore signal
 };
 
 
 /** Type of signal, i.e. how does the signal behave? */
-enum SignalType {
-	SIGTYPE_NORMAL     = 0, ///< normal signal
+enum SignalType : uint8_t {
+	SIGTYPE_BLOCK      = 0, ///< block signal
 	SIGTYPE_ENTRY      = 1, ///< presignal block entry
 	SIGTYPE_EXIT       = 2, ///< presignal block exit
 	SIGTYPE_COMBO      = 3, ///< presignal inter-block
@@ -38,7 +38,7 @@ enum SignalType {
 	SIGTYPE_FIRST_PBS_SPRITE = SIGTYPE_PBS,
 };
 /** Helper information for extract tool. */
-template <> struct EnumPropsT<SignalType> : MakeEnumPropsT<SignalType, byte, SIGTYPE_NORMAL, SIGTYPE_END, SIGTYPE_END, 3> {};
+template <> struct EnumPropsT<SignalType> : MakeEnumPropsT<SignalType, uint8_t, SIGTYPE_BLOCK, SIGTYPE_END, SIGTYPE_END, 3> {};
 
 /** Reference to a signal
  *
@@ -53,6 +53,7 @@ struct SignalReference {
 	TileIndex tile;
 	Track track;
 };
+DECLARE_ENUM_AS_ADDABLE(SignalType)
 
 /**
  * These are states in which a signal can be. Currently these are only two, so
@@ -64,6 +65,14 @@ enum SignalState {
 	SIGNAL_STATE_GREEN = 1, ///< The signal is green
 	SIGNAL_STATE_MAX = SIGNAL_STATE_GREEN,
 };
+
+/** Signal groups to cycle through. */
+enum SignalCycleGroups : uint8_t {
+	SCG_CURRENT_GROUP = 0,
+	SCG_BLOCK         = 1 << 0,
+	SCG_PBS           = 1 << 1,
+};
+DECLARE_ENUM_AS_BIT_SET(SignalCycleGroups)
 
 static const int SIGNAL_DIRTY_LEFT   = 14 * ZOOM_LVL_BASE;
 static const int SIGNAL_DIRTY_RIGHT  = 14 * ZOOM_LVL_BASE;

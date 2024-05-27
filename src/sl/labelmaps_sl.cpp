@@ -27,7 +27,7 @@ static bool NeedRailTypeConversion()
 {
 	for (uint i = 0; i < _railtype_list.size(); i++) {
 		if ((RailType)i < RAILTYPE_END) {
-			const RailtypeInfo *rti = GetRailTypeInfo((RailType)i);
+			const RailTypeInfo *rti = GetRailTypeInfo((RailType)i);
 			if (rti->label != _railtype_list[i]) return true;
 		} else {
 			if (_railtype_list[i] != 0) return true;
@@ -97,41 +97,8 @@ void ResetLabelMaps()
 	_railtype_list.clear();
 }
 
-/** Container for a label for SaveLoad system */
-struct LabelObject {
-	uint32 label;
-};
-
-static const SaveLoad _label_object_desc[] = {
-	SLE_VAR(LabelObject, label, SLE_UINT32),
-};
-
-static void Save_RAIL()
-{
-	LabelObject lo;
-
-	for (RailType r = RAILTYPE_BEGIN; r != RAILTYPE_END; r++) {
-		lo.label = GetRailTypeInfo(r)->label;
-
-		SlSetArrayIndex(r);
-		SlObject(&lo, _label_object_desc);
-	}
-}
-
-static void Load_RAIL()
-{
-	ResetLabelMaps();
-
-	LabelObject lo;
-
-	while (SlIterateArray() != -1) {
-		SlObject(&lo, _label_object_desc);
-		_railtype_list.push_back((RailTypeLabel)lo.label);
-	}
-}
-
 static const ChunkHandler labelmaps_chunk_handlers[] = {
-	{ 'RAIL', Save_RAIL, Load_RAIL, nullptr, nullptr, CH_ARRAY },
+	MakeUpstreamChunkHandler<'RAIL', GeneralUpstreamChunkLoadInfo>(),
 };
 
 extern const ChunkHandlerTable _labelmaps_chunk_handlers(labelmaps_chunk_handlers);

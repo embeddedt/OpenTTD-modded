@@ -26,7 +26,7 @@ struct WagonOverride {
 };
 
 /** Flags used client-side in the purchase/autorenew engine list. */
-enum class EngineDisplayFlags : byte {
+enum class EngineDisplayFlags : uint8_t {
 	None        = 0,         ///< No flag set.
 	HasVariants = (1U << 0), ///< Set if engine has variants.
 	IsFolded    = (1U << 1), ///< Set if display of variants should be folded (hidden).
@@ -39,29 +39,29 @@ extern EnginePool _engine_pool;
 
 struct EngineRefitCapacityValue {
 	CargoTypes cargoes;
-	uint32 capacity;
+	uint32_t capacity;
 };
 
 struct Engine : EnginePool::PoolItem<&_engine_pool> {
-	TinyString name;            ///< Custom name of engine.
-	Date intro_date;            ///< Date of introduction of the engine.
-	int32 age;                  ///< Age of the engine in months.
-	uint16 reliability;         ///< Current reliability of the engine.
-	uint16 reliability_spd_dec; ///< Speed of reliability decay between services (per day).
-	uint16 reliability_start;   ///< Initial reliability of the engine.
-	uint16 reliability_max;     ///< Maximal reliability of the engine.
-	uint16 reliability_final;   ///< Final reliability of the engine.
-	uint16 duration_phase_1;    ///< First reliability phase in months, increasing reliability from #reliability_start to #reliability_max.
-	uint16 duration_phase_2;    ///< Second reliability phase in months, keeping #reliability_max.
-	uint16 duration_phase_3;    ///< Third reliability phase in months, decaying to #reliability_final.
-	byte flags;                 ///< Flags of the engine. @see EngineFlags
-	CompanyMask preview_asked;  ///< Bit for each company which has already been offered a preview.
-	CompanyID preview_company;  ///< Company which is currently being offered a preview \c INVALID_COMPANY means no company.
-	byte preview_wait;          ///< Daily countdown timer for timeout of offering the engine to the #preview_company company.
-	CompanyMask company_avail;  ///< Bit for each company whether the engine is available for that company.
-	CompanyMask company_hidden; ///< Bit for each company whether the engine is normally hidden in the build gui for that company.
-	uint8 original_image_index; ///< Original vehicle image index, thus the image index of the overridden vehicle
-	VehicleType type;           ///< %Vehicle type, ie #VEH_ROAD, #VEH_TRAIN, etc.
+	TinyString name;              ///< Custom name of engine.
+	CalTime::Date intro_date;     ///< Date of introduction of the engine.
+	int32_t age;                  ///< Age of the engine in months.
+	uint16_t reliability;         ///< Current reliability of the engine.
+	uint16_t reliability_spd_dec; ///< Speed of reliability decay between services (per day).
+	uint16_t reliability_start;   ///< Initial reliability of the engine.
+	uint16_t reliability_max;     ///< Maximal reliability of the engine.
+	uint16_t reliability_final;   ///< Final reliability of the engine.
+	uint16_t duration_phase_1;    ///< First reliability phase in months, increasing reliability from #reliability_start to #reliability_max.
+	uint16_t duration_phase_2;    ///< Second reliability phase in months, keeping #reliability_max.
+	uint16_t duration_phase_3;    ///< Third reliability phase in months, decaying to #reliability_final.
+	uint8_t flags;                ///< Flags of the engine. @see EngineFlags
+	CompanyMask preview_asked;    ///< Bit for each company which has already been offered a preview.
+	CompanyID preview_company;    ///< Company which is currently being offered a preview \c INVALID_COMPANY means no company.
+	uint8_t preview_wait;         ///< Daily countdown timer for timeout of offering the engine to the #preview_company company.
+	CompanyMask company_avail;    ///< Bit for each company whether the engine is available for that company.
+	CompanyMask company_hidden;   ///< Bit for each company whether the engine is normally hidden in the build gui for that company.
+	uint8_t original_image_index; ///< Original vehicle image index, thus the image index of the overridden vehicle
+	VehicleType type;             ///< %Vehicle type, ie #VEH_ROAD, #VEH_TRAIN, etc.
 
 	EngineDisplayFlags display_flags; ///< NOSAVE client-side-only display flags for build engine list.
 	EngineID display_last_variant;    ///< NOSAVE client-side-only last variant selected.
@@ -84,11 +84,11 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	 */
 	GRFFilePropsBase<NUM_CARGO + 2> grf_prop;
 	std::vector<WagonOverride> overrides;
-	uint16 list_position;
+	uint16_t list_position;
 
 	SpriteGroupCallbacksUsed callbacks_used = SGCU_ALL;
-	uint64 cb36_properties_used = UINT64_MAX;
-	btree::btree_map<const SpriteGroup *, uint64> sprite_group_cb36_properties_used;
+	uint64_t cb36_properties_used = UINT64_MAX;
+	btree::btree_map<const SpriteGroup *, uint64_t> sprite_group_cb36_properties_used;
 
 	std::unique_ptr<EngineRefitCapacityValue, FreeDeleter> refit_capacity_values;
 
@@ -102,7 +102,7 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	 * Usually a valid cargo is returned, even though the vehicle has zero capacity, and can therefore not carry anything. But the cargotype is still used
 	 * for livery selection etc..
 	 *
-	 * Vehicles with CT_INVALID as default cargo are usually not available, but it can appear as default cargo of articulated parts.
+	 * Vehicles with INVALID_CARGO as default cargo are usually not available, but it can appear as default cargo of articulated parts.
 	 *
 	 * @return The default cargo type.
 	 * @see CanCarryCargo
@@ -112,7 +112,7 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 		return this->info.cargo_type;
 	}
 
-	uint DetermineCapacity(const Vehicle *v, uint16 *mail_capacity = nullptr) const;
+	uint DetermineCapacity(const Vehicle *v, uint16_t *mail_capacity = nullptr, CargoID attempt_refit = INVALID_CARGO) const;
 
 	bool CanCarryCargo() const;
 	bool CanPossiblyCarryCargo() const;
@@ -125,12 +125,13 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	 * For articulated engines use GetCapacityOfArticulatedParts
 	 *
 	 * @param mail_capacity returns secondary cargo (mail) capacity of aircraft
+	 * @param attempt_refit cargo ID to attempt to use
 	 * @return The default capacity
 	 * @see GetDefaultCargoType
 	 */
-	uint GetDisplayDefaultCapacity(uint16 *mail_capacity = nullptr) const
+	uint GetDisplayDefaultCapacity(uint16_t *mail_capacity = nullptr, CargoID attempt_refit = INVALID_CARGO) const
 	{
-		return this->DetermineCapacity(nullptr, mail_capacity);
+		return this->DetermineCapacity(nullptr, mail_capacity, attempt_refit);
 	}
 
 	Money GetRunningCost() const;
@@ -140,8 +141,8 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	uint GetPower() const;
 	uint GetDisplayWeight() const;
 	uint GetDisplayMaxTractiveEffort() const;
-	Date GetLifeLengthInDays() const;
-	uint16 GetRange() const;
+	DateDelta GetLifeLengthInDays() const;
+	uint16_t GetRange() const;
 	StringID GetAircraftTypeText() const;
 
 	/**
@@ -194,7 +195,7 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 		return this->grf_prop.grffile;
 	}
 
-	uint32 GetGRFID() const;
+	uint32_t GetGRFID() const;
 
 	struct EngineTypeFilter {
 		VehicleType vt;
@@ -215,10 +216,10 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 };
 
 struct EngineIDMapping {
-	uint32 grfid;          ///< The GRF ID of the file the entity belongs to
-	uint16 internal_id;    ///< The internal ID within the GRF file
-	VehicleType type;      ///< The engine type
-	uint8  substitute_id;  ///< The (original) entity ID to use if this GRF is not available (currently not used)
+	uint32_t grfid;          ///< The GRF ID of the file the entity belongs to
+	uint16_t internal_id;    ///< The internal ID within the GRF file
+	VehicleType type;        ///< The engine type
+	uint8_t  substitute_id;  ///< The (original) entity ID to use if this GRF is not available (currently not used)
 };
 
 /**
@@ -229,34 +230,34 @@ struct EngineOverrideManager : std::vector<EngineIDMapping> {
 	static const uint NUM_DEFAULT_ENGINES; ///< Number of default entries
 
 	void ResetToDefaultMapping();
-	EngineID GetID(VehicleType type, uint16 grf_local_id, uint32 grfid);
+	EngineID GetID(VehicleType type, uint16_t grf_local_id, uint32_t grfid);
 
 	static bool ResetToCurrentNewGRFConfig();
 };
 
 extern EngineOverrideManager _engine_mngr;
 
-static inline const EngineInfo *EngInfo(EngineID e)
+inline const EngineInfo *EngInfo(EngineID e)
 {
 	return &Engine::Get(e)->info;
 }
 
-static inline const RailVehicleInfo *RailVehInfo(EngineID e)
+inline const RailVehicleInfo *RailVehInfo(EngineID e)
 {
 	return &Engine::Get(e)->u.rail;
 }
 
-static inline const RoadVehicleInfo *RoadVehInfo(EngineID e)
+inline const RoadVehicleInfo *RoadVehInfo(EngineID e)
 {
 	return &Engine::Get(e)->u.road;
 }
 
-static inline const ShipVehicleInfo *ShipVehInfo(EngineID e)
+inline const ShipVehicleInfo *ShipVehInfo(EngineID e)
 {
 	return &Engine::Get(e)->u.ship;
 }
 
-static inline const AircraftVehicleInfo *AircraftVehInfo(EngineID e)
+inline const AircraftVehicleInfo *AircraftVehInfo(EngineID e)
 {
 	return &Engine::Get(e)->u.air;
 }

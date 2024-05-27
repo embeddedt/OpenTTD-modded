@@ -16,9 +16,13 @@
 
 #include "../safeguards.h"
 
-static uint32 _jokerpp_separation_mode;
+static uint32_t _jokerpp_separation_mode;
 std::vector<OrderList *> _jokerpp_auto_separation;
 std::vector<OrderList *> _jokerpp_non_auto_separation;
+
+static uint16_t _old_scheduled_dispatch_start_full_date_fract;
+btree::btree_map<DispatchSchedule *, uint16_t> _old_scheduled_dispatch_start_full_date_fract_map;
+static std::vector<uint32_t> _old_scheduled_dispatch_slots;
 
 /**
  * Converts this order from an old savegame's version;
@@ -26,7 +30,7 @@ std::vector<OrderList *> _jokerpp_non_auto_separation;
  */
 void Order::ConvertFromOldSavegame()
 {
-	uint8 old_flags = this->flags;
+	uint8_t old_flags = this->flags;
 	this->flags = 0;
 
 	/* First handle non-stop - use value from savegame if possible, else use value from config file */
@@ -80,9 +84,9 @@ void Order::ConvertFromOldSavegame()
  * @param packed packed order
  * @return unpacked order
  */
-static Order UnpackVersion4Order(uint16 packed)
+static Order UnpackVersion4Order(uint16_t packed)
 {
-	return Order(((uint64) GB(packed, 8, 8)) << 24 | ((uint64) GB(packed, 4, 4)) << 8 | ((uint64) GB(packed, 0, 4)));
+	return Order(((uint64_t) GB(packed, 8, 8)) << 24 | ((uint64_t) GB(packed, 4, 4)) << 8 | ((uint64_t) GB(packed, 0, 4)));
 }
 
 /**
@@ -90,9 +94,9 @@ static Order UnpackVersion4Order(uint16 packed)
  * @param packed packed order
  * @return unpacked order
  */
-static Order UnpackVersion5Order(uint32 packed)
+static Order UnpackVersion5Order(uint32_t packed)
 {
-	return Order(((uint64) GB(packed, 16, 16)) << 24 | ((uint64) GB(packed, 8, 8)) << 8 | ((uint64) GB(packed, 0, 8)));
+	return Order(((uint64_t) GB(packed, 16, 16)) << 24 | ((uint64_t) GB(packed, 8, 8)) << 8 | ((uint64_t) GB(packed, 0, 8)));
 }
 
 /**
@@ -100,7 +104,7 @@ static Order UnpackVersion5Order(uint32 packed)
  * @param packed packed order
  * @return unpacked order
  */
-Order UnpackOldOrder(uint16 packed)
+Order UnpackOldOrder(uint16_t packed)
 {
 	Order order = UnpackVersion4Order(packed);
 
@@ -160,9 +164,9 @@ static void Load_ORDR()
 
 		if (IsSavegameVersionBefore(SLV_5)) {
 			/* Pre-version 5 had another layout for orders
-			 * (uint16 instead of uint32) */
-			len /= sizeof(uint16);
-			uint16 *orders = MallocT<uint16>(len + 1);
+			 * (uint16_t instead of uint32_t) */
+			len /= sizeof(uint16_t);
+			uint16_t *orders = MallocT<uint16_t>(len + 1);
 
 			SlArray(orders, len, SLE_UINT16);
 
@@ -173,8 +177,8 @@ static void Load_ORDR()
 
 			free(orders);
 		} else if (IsSavegameVersionBefore(SLV_5, 2)) {
-			len /= sizeof(uint32);
-			uint32 *orders = MallocT<uint32>(len + 1);
+			len /= sizeof(uint32_t);
+			uint32_t *orders = MallocT<uint32_t>(len + 1);
 
 			SlArray(orders, len, SLE_UINT32);
 
@@ -260,17 +264,29 @@ static void Ptrs_ORDR()
 
 SaveLoadTable GetDispatchScheduleDescription()
 {
-	static const SaveLoad _order_extra_info_desc[] = {
-		SLE_VARVEC(DispatchSchedule, scheduled_dispatch,                    SLE_UINT32),
+	static const SaveLoad _dispatch_scheduled_info_desc[] = {
+		SLEG_CONDVARVEC_X(_old_scheduled_dispatch_slots,                    SLE_UINT32,                 SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 1, 6)),
 		SLE_VAR(DispatchSchedule, scheduled_dispatch_duration,              SLE_UINT32),
-		SLE_VAR(DispatchSchedule, scheduled_dispatch_start_date,            SLE_INT32),
-		SLE_VAR(DispatchSchedule, scheduled_dispatch_start_full_date_fract, SLE_UINT16),
+		SLE_CONDVAR_X(DispatchSchedule, scheduled_dispatch_start_tick,      SLE_FILE_I32 | SLE_VAR_I64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 1, 4)),
+		SLEG_CONDVAR_X(_old_scheduled_dispatch_start_full_date_fract,       SLE_UINT16,                 SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 1, 4)),
+		SLE_CONDVAR_X(DispatchSchedule, scheduled_dispatch_start_tick,      SLE_INT64,                  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 5)),
 		SLE_VAR(DispatchSchedule, scheduled_dispatch_last_dispatch,         SLE_INT32),
 		SLE_VAR(DispatchSchedule, scheduled_dispatch_max_delay,             SLE_INT32),
-		SLE_CONDSSTR_X(DispatchSchedule, name, 0, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 4)),
+		SLE_CONDSSTR_X(DispatchSchedule, name,                                 SLE_STR,                 SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 4)),
+		SLE_CONDVAR_X(DispatchSchedule, scheduled_dispatch_flags,           SLE_FILE_U32 | SLE_VAR_U8,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_SCHEDULED_DISPATCH, 6)),
 	};
 
-	return _order_extra_info_desc;
+	return _dispatch_scheduled_info_desc;
+}
+
+SaveLoadTable GetDispatchSlotDescription()
+{
+	static const SaveLoad _dispatch_slot_info_desc[] = {
+		SLE_VAR(DispatchSlot, offset,                                       SLE_UINT32),
+		SLE_VAR(DispatchSlot, flags,                                        SLE_UINT16),
+	};
+
+	return _dispatch_slot_info_desc;
 }
 
 SaveLoadTable GetOrderListDescription()
@@ -284,16 +300,33 @@ SaveLoadTable GetOrderListDescription()
 	return _orderlist_desc;
 }
 
+static std::vector<SaveLoad> _filtered_ordl_desc;
+static std::vector<SaveLoad> _filtered_ordl_sd_desc;
+static std::vector<SaveLoad> _filtered_ordl_slot_desc;
+
+static void SetupDescs_ORDL()
+{
+	_filtered_ordl_desc = SlFilterObject(GetOrderListDescription());
+	_filtered_ordl_sd_desc = SlFilterObject(GetDispatchScheduleDescription());
+	_filtered_ordl_slot_desc = SlFilterObject(GetDispatchSlotDescription());
+}
+
 static void Save_ORDL()
 {
+	SetupDescs_ORDL();
 	for (OrderList *list : OrderList::Iterate()) {
 		SlSetArrayIndex(list->index);
 		SlAutolength([](void *data) {
 			OrderList *list = static_cast<OrderList *>(data);
-			SlObject(list, GetOrderListDescription());
+			SlObjectSaveFiltered(list, _filtered_ordl_desc);
 			SlWriteUint32(list->GetScheduledDispatchScheduleCount());
 			for (DispatchSchedule &ds : list->GetScheduledDispatchScheduleSet()) {
-				SlObject(&ds, GetDispatchScheduleDescription());
+				SlObjectSaveFiltered(&ds, _filtered_ordl_sd_desc);
+
+				SlWriteUint32((uint32_t)ds.GetScheduledDispatchMutable().size());
+				for (DispatchSlot &slot : ds.GetScheduledDispatchMutable()) {
+					SlObjectSaveFiltered(&slot, _filtered_ordl_slot_desc);
+				}
 			}
 		}, list);
 	}
@@ -301,14 +334,19 @@ static void Save_ORDL()
 
 static void Load_ORDL()
 {
+	SetupDescs_ORDL();
+
 	_jokerpp_auto_separation.clear();
 	_jokerpp_non_auto_separation.clear();
-	int index;
 
+	_old_scheduled_dispatch_start_full_date_fract = 0;
+	_old_scheduled_dispatch_start_full_date_fract_map.clear();
+
+	int index;
 	while ((index = SlIterateArray()) != -1) {
 		/* set num_orders to 0 so it's a valid OrderList */
 		OrderList *list = new (index) OrderList(0);
-		SlObject(list, GetOrderListDescription());
+		SlObjectLoadFiltered(list, _filtered_ordl_desc);
 		if (SlXvIsFeaturePresent(XSLFI_JOKERPP)) {
 			if (_jokerpp_separation_mode == 0) {
 				_jokerpp_auto_separation.push_back(list);
@@ -320,16 +358,34 @@ static void Load_ORDL()
 			uint count = SlXvIsFeaturePresent(XSLFI_SCHEDULED_DISPATCH, 3) ? SlReadUint32() : 1;
 			list->GetScheduledDispatchScheduleSet().resize(count);
 			for (DispatchSchedule &ds : list->GetScheduledDispatchScheduleSet()) {
-				SlObject(&ds, GetDispatchScheduleDescription());
+				SlObjectLoadFiltered(&ds, _filtered_ordl_sd_desc);
+				if (SlXvIsFeaturePresent(XSLFI_SCHEDULED_DISPATCH, 1, 4) && _old_scheduled_dispatch_start_full_date_fract != 0) {
+					_old_scheduled_dispatch_start_full_date_fract_map[&ds] = _old_scheduled_dispatch_start_full_date_fract;
+				}
+
+				if (SlXvIsFeaturePresent(XSLFI_SCHEDULED_DISPATCH, 1, 6)) {
+					ds.GetScheduledDispatchMutable().reserve(_old_scheduled_dispatch_slots.size());
+					for (uint32_t slot : _old_scheduled_dispatch_slots) {
+						ds.GetScheduledDispatchMutable().push_back({ slot, 0 });
+					}
+				} else {
+					ds.GetScheduledDispatchMutable().resize(SlReadUint32());
+					for (DispatchSlot &slot : ds.GetScheduledDispatchMutable()) {
+						SlObjectLoadFiltered(&slot, _filtered_ordl_slot_desc);
+					}
+				}
 			}
 		}
 	}
+
+	_old_scheduled_dispatch_slots.clear();
 }
 
 void Ptrs_ORDL()
 {
+	std::vector<SaveLoad> filtered_desc = SlFilterObject(GetOrderListDescription());
 	for (OrderList *list : OrderList::Iterate()) {
-		SlObject(list, GetOrderListDescription());
+		SlObjectPtrOrNullFiltered(list, filtered_desc);
 		list->ReindexOrderList();
 	}
 }
@@ -350,8 +406,9 @@ SaveLoadTable GetOrderBackupDescription()
 		SLE_CONDVAR_X(OrderBackup, cur_timetable_order_index, SLE_VEHORDERID,   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TIMETABLE_EXTRA)),
 		 SLE_CONDVAR(OrderBackup, current_order_time,       SLE_UINT32,                SLV_176, SL_MAX_VERSION),
 		 SLE_CONDVAR(OrderBackup, lateness_counter,         SLE_INT32,                 SLV_176, SL_MAX_VERSION),
-		 SLE_CONDVAR(OrderBackup, timetable_start,          SLE_INT32,                 SLV_176, SL_MAX_VERSION),
-		SLE_CONDVAR_X(OrderBackup,timetable_start_subticks, SLE_UINT16,         SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TIMETABLES_START_TICKS, 2)),
+		SLE_CONDVAR_X(OrderBackup, timetable_start,         SLE_FILE_I32 | SLE_VAR_I64, SLV_176, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TIMETABLES_START_TICKS, 0, 2)),
+		SLE_CONDVAR_X(OrderBackup, timetable_start,         SLE_INT64,                  SLV_176, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TIMETABLES_START_TICKS, 3)),
+		SLE_CONDNULL_X(2,                                                       SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_TIMETABLES_START_TICKS, 2, 2)),
 		 SLE_CONDVAR(OrderBackup, vehicle_flags,            SLE_FILE_U8  | SLE_VAR_U32,  SLV_176, SLV_180),
 		SLE_CONDVAR_X(OrderBackup, vehicle_flags,           SLE_FILE_U16 | SLE_VAR_U32,          SLV_180, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VEHICLE_FLAGS_EXTRA, 0, 0)),
 		SLE_CONDVAR_X(OrderBackup, vehicle_flags,           SLE_UINT32,                   SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_VEHICLE_FLAGS_EXTRA, 1)),

@@ -20,21 +20,21 @@
 std::vector<const GRFFile *> _new_signals_grfs;
 std::array<NewSignalStyle, MAX_NEW_SIGNAL_STYLES> _new_signal_styles;
 std::array<NewSignalStyleMapping, MAX_NEW_SIGNAL_STYLES> _new_signal_style_mapping;
-uint8 _num_new_signal_styles = 0;
-uint16 _enabled_new_signal_styles_mask = 0;
+uint8_t _num_new_signal_styles = 0;
+uint16_t _enabled_new_signal_styles_mask = 0;
 
-/* virtual */ uint32 NewSignalsScopeResolver::GetRandomBits() const
+/* virtual */ uint32_t NewSignalsScopeResolver::GetRandomBits() const
 {
 	uint tmp = CountBits(this->tile + (TileX(this->tile) + TileY(this->tile)) * TILE_SIZE);
 	return GB(tmp, 0, 2);
 }
 
-static uint8 MapSignalStyle(uint8 style)
+static uint8_t MapSignalStyle(uint8_t style)
 {
 	return style != 0 ? _new_signal_styles[style - 1].grf_local_id : 0;
 }
 
-uint32 GetNewSignalsSideVariable()
+uint32_t GetNewSignalsSideVariable()
 {
 	bool side;
 	switch (_settings_game.construction.train_signal_side) {
@@ -45,13 +45,13 @@ uint32 GetNewSignalsSideVariable()
 	return side ? 1 : 0;
 }
 
-/* virtual */ uint32 NewSignalsScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
+/* virtual */ uint32_t NewSignalsScopeResolver::GetVariable(uint16_t variable, uint32_t parameter, GetVariableExtra *extra) const
 {
 	if (this->tile == INVALID_TILE) {
 		switch (variable) {
 			case 0x40: return 0;
 			case A2VRI_SIGNALS_SIGNAL_RESTRICTION_INFO: return 0;
-			case A2VRI_SIGNALS_SIGNAL_CONTEXT: return this->signal_context;
+			case A2VRI_SIGNALS_SIGNAL_CONTEXT: return GetNewSignalsSignalContext(this->signal_context);
 			case A2VRI_SIGNALS_SIGNAL_STYLE: return MapSignalStyle(this->signal_style);
 			case A2VRI_SIGNALS_SIGNAL_SIDE: return GetNewSignalsSideVariable();
 			case A2VRI_SIGNALS_SIGNAL_VERTICAL_CLEARANCE: return 0xFF;
@@ -63,7 +63,7 @@ uint32 GetNewSignalsSideVariable()
 		case A2VRI_SIGNALS_SIGNAL_RESTRICTION_INFO:
 			return GetNewSignalsRestrictedSignalsInfo(this->prog, this->tile, this->signal_style);
 		case A2VRI_SIGNALS_SIGNAL_CONTEXT:
-			return GetNewSignalsSignalContext(this->signal_context, this->tile);
+			return GetNewSignalsSignalContext(this->signal_context);
 		case A2VRI_SIGNALS_SIGNAL_STYLE: return MapSignalStyle(this->signal_style);
 		case A2VRI_SIGNALS_SIGNAL_SIDE: return GetNewSignalsSideVariable();
 		case A2VRI_SIGNALS_SIGNAL_VERTICAL_CLEARANCE: return GetNewSignalsVerticalClearanceInfo(this->tile, this->z);
@@ -98,14 +98,14 @@ GrfSpecFeature NewSignalsResolverObject::GetFeature() const
  * @param prog Routing restriction program.
  * @param z Signal pixel z.
  */
-NewSignalsResolverObject::NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32 param1, uint32 param2,
-		CustomSignalSpriteContext signal_context, uint8 signal_style, const TraceRestrictProgram *prog, uint z)
+NewSignalsResolverObject::NewSignalsResolverObject(const GRFFile *grffile, TileIndex tile, TileContext context, uint32_t param1, uint32_t param2,
+		CustomSignalSpriteContext signal_context, uint8_t signal_style, const TraceRestrictProgram *prog, uint z)
 	: ResolverObject(grffile, CBID_NO_CALLBACK, param1, param2), newsignals_scope(*this, tile, context, signal_context, signal_style, prog, z)
 {
 	this->root_spritegroup = grffile != nullptr ? grffile->new_signals_group : nullptr;
 }
 
-uint GetNewSignalsRestrictedSignalsInfo(const TraceRestrictProgram *prog, TileIndex tile, uint8 signal_style)
+uint GetNewSignalsRestrictedSignalsInfo(const TraceRestrictProgram *prog, TileIndex tile, uint8_t signal_style)
 {
 	uint result = 0;
 	if (signal_style != 0 && HasBit(_signal_style_masks.always_reserve_through, signal_style)) result |= 2;
@@ -127,15 +127,14 @@ uint GetNewSignalsVerticalClearanceInfo(TileIndex tile, uint z)
 	}
 }
 
-void DumpNewSignalsSpriteGroups(DumpSpriteGroupPrinter print)
+void DumpNewSignalsSpriteGroups(SpriteGroupDumper &dumper)
 {
-	SpriteGroupDumper dumper(print);
 	bool first = true;
 	for (const GRFFile *grf : _new_signals_grfs) {
-		if (!first) print(nullptr, DSGPO_PRINT, 0, "");
+		if (!first) dumper.Print("");
 		char buffer[64];
 		seprintf(buffer, lastof(buffer), "GRF: %08X", BSWAP32(grf->grfid));
-		print(nullptr, DSGPO_PRINT, 0, buffer);
+		dumper.Print(buffer);
 		first = false;
 		dumper.DumpSpriteGroup(grf->new_signals_group, 0);
 	}

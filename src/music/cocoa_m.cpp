@@ -37,7 +37,7 @@ static MusicPlayer    _player = nullptr;
 static MusicSequence  _sequence = nullptr;
 static MusicTimeStamp _seq_length = 0;
 static bool           _playing = false;
-static byte           _volume = 127;
+static uint8_t        _volume = 127;
 
 
 /** Set the volume of the current sequence. */
@@ -79,7 +79,7 @@ static void DoSetVolume()
 /**
  * Initialized the MIDI player, including QuickTime initialization.
  */
-const char *MusicDriver_Cocoa::Start(const StringList &parm)
+const char *MusicDriver_Cocoa::Start(const StringList &)
 {
 	if (NewMusicPlayer(&_player) != noErr) return "failed to create music player";
 
@@ -193,7 +193,7 @@ void MusicDriver_Cocoa::StopSong()
  *
  * @param vol The desired volume, range of the value is @c 0-127
  */
-void MusicDriver_Cocoa::SetVolume(byte vol)
+void MusicDriver_Cocoa::SetVolume(uint8_t vol)
 {
 	_volume = vol;
 	DoSetVolume();

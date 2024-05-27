@@ -47,7 +47,7 @@ INSTANTIATE_POOL_METHODS(TemplateReplacement)
 
 robin_hood::unordered_flat_map<GroupID, TemplateID> _template_replacement_index;
 robin_hood::unordered_flat_map<GroupID, TemplateID> _template_replacement_index_recursive;
-static uint32 _template_replacement_index_recursive_guard = 0;
+static uint32_t _template_replacement_index_recursive_guard = 0;
 
 static void MarkTrainsInGroupAsPendingTemplateReplacement(GroupID gid, const TemplateVehicle *tv);
 
@@ -160,6 +160,7 @@ bool ShouldServiceTrainForTemplateReplacement(const Train *t, const TemplateVehi
 	if (needed_money > c->money) return false;
 	TBTRDiffFlags diff = TrainTemplateDifference(t, tv);
 	if (diff & TBTRDF_CONSIST) {
+		if (_settings_game.difficulty.infinite_money) return true;
 		/* Check money.
 		 * We want 2*(the price of the whole template) without looking at the value of the vehicle(s) we are going to sell, or not need to buy. */
 		for (const TemplateVehicle *tv_unit = tv; tv_unit != nullptr; tv_unit = tv_unit->GetNextUnit()) {
@@ -204,7 +205,7 @@ static void MarkTrainsInGroupAsPendingTemplateReplacement(GroupID gid, const Tem
 
 	std::sort(groups.begin(), groups.end());
 
-	for (Train *t : Train::Iterate()) {
+	for (Train *t : Train::IterateFrontOnly()) {
 		if (!t->IsFrontEngine() || t->owner != owner || t->group_id >= NEW_GROUP) continue;
 
 		if (std::binary_search(groups.begin(), groups.end(), t->group_id)) {
@@ -217,7 +218,7 @@ void MarkTrainsUsingTemplateAsPendingTemplateReplacement(const TemplateVehicle *
 {
 	Owner owner = tv->owner;
 
-	for (Train *t : Train::Iterate()) {
+	for (Train *t : Train::IterateFrontOnly()) {
 		if (!t->IsFrontEngine() || t->owner != owner || t->group_id >= NEW_GROUP) continue;
 
 		if (GetTemplateIDByGroupIDRecursive(t->group_id) == tv->index) {

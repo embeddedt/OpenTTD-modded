@@ -26,9 +26,13 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.55.3
+## JGR's Patchpack version 0.59.1
 
-This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
+This is a collection of features and other modifications applied to [OpenTTD](http://www.openttd.org/).
+It's a separate version of the game which can be installed and played alongside the standard game, not a loadable mod (NewGRF, script, or so on).
+
+This is mainly intended to be used by players who are already familiar with the standard game and how to play it.
+It is not aimed at beginner/novice players. Some features and settings are there for very experienced players and so may have a steep learning curve.
 
 * * *
 
@@ -44,13 +48,13 @@ section "Licensing" below for details,
 
 See [below](#openttd) for the original OpenTTD readme.
 
-The thread for this patchpack can be found [here](http://www.tt-forums.net/viewtopic.php?f=33&t=73469).
-
 See [jgrpp-changelog.md](jgrpp-changelog.md) for the changelog.
 
 See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on how to use some of the included features.
 
 See [installation.md](/installation.md) for instructions on how to install.
+
+The TT-Forums thread for this patchpack can be found [here](http://www.tt-forums.net/viewtopic.php?f=33&t=73469).
 
 (Nearly all of the patches which are listed below have been modified, fixed or extended in some way, and so are not the same as the originals which are linked).
 
@@ -86,6 +90,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Remember the last-used signal type between games.
 * Add client setting to show the introduction year for train wagons.
 * Add setting for rail depot maximum speed.
+* Add setting to allow auto-fill signal dragging to skip over stations/waypoints.
 
 #### Roads and Road Vehicles
 
@@ -143,7 +148,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Open train vehicle details window on total cargo tab if shift pressed.
 * Add news/advice setting to warn if no depot order in vehicle schedule.
 * [Add buttons to collapse/expand all groups](http://www.tt-forums.net/viewtopic.php?f=33&t=74365).
-* Add a menu item to the vehicle list to assign all listed vehicles to a new group.
 * Add a setting to include the train length and group name in the vehicle details window.
 * Add a setting for whether to open the new vehicle GUI when share-cloning.
 * Add setting to disable mass action buttons for top-level vehicle lists.
@@ -159,7 +163,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 * [Automated timetables and separation](http://www.tt-forums.net/viewtopic.php?f=33&t=46391).
 * Allow clearing of timetable time fields which are at 0. Allow explicitly setting timetable time fields to 0 without clearing them.
-* Allow changing/clearing the timetabled waiting time and max speed of all of a vehicle's orders at once.
 * Add client setting to show the remainder ticks in timetable, after dividing to days or minutes.
 * Add a company setting to control the number of ticks used in auto-fill timetable rounding.
 * [Cargo type orders](https://www.tt-forums.net/viewtopic.php?p=1047749).
@@ -194,7 +197,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 * [Departure boards](https://www.tt-forums.net/viewtopic.php?f=33&t=49956).
 * Add road waypoints.
-* Add NewGRF road stops.
 * Add a setting to increase the station catchment radius.
 * Station rating: track "last visited vehicle type" separately per cargo.
 * Add setting to scale station cargo capacity and rating tolerance by size.
@@ -215,7 +217,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 #### Towns
 
-* [Town cargo generation factor](http://www.tt-forums.net/viewtopic.php?t=46399).
 * [Rating in town label](http://www.tt-forums.net/viewtopic.php?f=33&t=42598).
 * [Random town road reconstruction](https://www.tt-forums.net/viewtopic.php?f=33&t=36438). This defaults to off.
 * Add very and extremely slow options to town growth rate setting.
@@ -232,7 +233,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 #### Industries
 
-* Industry cargo generation factor.
 * Allow linking only inputs or outputs to the smallmap and map mode viewports in the industry chain window.
 
 #### Map and Landscaping
@@ -242,14 +242,13 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add a new tree placement mode (perfect).
 * [Minimum town distance](https://www.tt-forums.net/viewtopic.php?f=33&t=33625).
 * Add map generation settings to control river/lake, rocky patch, and tropic zone generation.
-* Add generation of wide rivers.
 * Add settings to customise the size of town zones, and city zones.
+* Add setting to show purchased land using clear tile ground sprites (dirt, grass, snow, desert, etc).
 
 #### Construction
 
 * Enable building rivers in game. Off by default.
 * Add a setting to disable removing sea/rivers.
-* Allow building objects by area (1x1 objects only).
 * Allow purchasing a region of tiles at once, by dragging.
 * Add setting to control if and how land purchasing is permitted.
 * Add a company rate limit for land purchasing.
@@ -287,6 +286,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add zoom in support to the minimap window.
 * Add setting to increase the size of the main toolbar.
 * Add cargo filtering and a show by cargo mode to the company delivered cargo graph.
+* Add setting to display the area outside of the map as water.
 
 #### Limits
 
@@ -330,7 +330,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to allow non server admins to use the money cheat in multiplayer.
 * Allow clicking the money text in the cheats window to enter a quantity.
 * Add cheats to set inflation income and cost factors.
-* Add cheat to set all station ratings to 100%.
 * Add cheat to set all town local authority ratings to Outstanding.
 
 #### Cargo Distribution and Link Graph
@@ -349,7 +348,6 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 #### Console and Scripts
 
-* Add basic tab-completion to the console window.
 * Add console commands for conditional execution from game date.
 * [Daily/monthly/yearly scripts](http://www.tt-forums.net/viewtopic.php?f=33&t=49595)
 
@@ -427,9 +425,10 @@ The *feature-sx* branches use the savegame framework in the *save_ext* branch.
     - 1.6) [OpenTTD directories](#16-openttd-directories)
     - 1.7) [Compiling OpenTTD](#17-compiling-openttd)
 - 2.0) [Contact and community](#20-contact-and-community)
-    - 2.1) [Contributing to OpenTTD](#21-contributing-to-openttd)
-    - 2.2) [Reporting bugs](#22-reporting-bugs)
-    - 2.3) [Translating](#23-translating)
+    - 2.1) [Multiplayer games](#21-multiplayer-games)
+    - 2.2) [Contributing to OpenTTD](#22-contributing-to-openttd)
+    - 2.3) [Reporting bugs](#23-reporting-bugs)
+    - 2.4) [Translating](#24-translating)
 - 3.0) [Licensing](#30-licensing)
 - 4.0) [Credits](#40-credits)
 
@@ -493,9 +492,9 @@ For some platforms, you will need to refer to [the installation guide](https://w
 The free data files, split into OpenGFX for graphics, OpenSFX for sounds and
 OpenMSX for music can be found at:
 
-- https://www.openttd.org/downloads/opengfx-releases/latest for OpenGFX
-- https://www.openttd.org/downloads/opensfx-releases/latest for OpenSFX
-- https://www.openttd.org/downloads/openmsx-releases/latest for OpenMSX
+- [OpenGFX](https://www.openttd.org/downloads/opengfx-releases/latest)
+- [OpenSFX](https://www.openttd.org/downloads/opensfx-releases/latest)
+- [OpenMSX](https://www.openttd.org/downloads/openmsx-releases/latest)
 
 Please follow the readme of these packages about the installation procedure.
 The Windows installer can optionally download and install these packages.
@@ -533,6 +532,15 @@ Most types of add-on content can be downloaded within OpenTTD via the 'Check Onl
 Add-on content can also be installed manually, but that's more complicated; the [OpenTTD wiki](https://wiki.openttd.org/) may offer help with that, or the [OpenTTD directory structure guide](./docs/directory_structure.md).
 
 
+### 1.5.1) Social Integration
+
+OpenTTD has the ability to load plugins to integrate with Social Platforms like Steam, Discord, etc.
+
+To enable such integration, the plugin for the specific platform has to be downloaded and stored in the `social_integration` folder.
+
+See [OpenTTD's website](https://www.openttd.org), under Downloads, for what plugins are available.
+
+
 ### 1.6) OpenTTD directories
 
 OpenTTD uses its own directory structure to store game data, add-on content etc.
@@ -560,12 +568,19 @@ If you want to compile OpenTTD from source, instructions can be found in [COMPIL
 - the OpenTTD wiki has a [page listing OpenTTD communities](https://wiki.openttd.org/en/Community/Community) including some in languages other than English
 
 
-### 2.1) Contributing to OpenTTD
+### 2.1) Multiplayer games
+
+You can play OpenTTD with others, either cooperatively or competitively.
+
+See the [multiplayer documentation](./docs/multiplayer.md) for more details.
+
+
+### 2.2) Contributing to OpenTTD
 
 We welcome contributors to OpenTTD.  More information for contributors can be found in [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 
-### 2.2) Reporting bugs
+### 2.3) Reporting bugs
 
 Good bug reports are very helpful.  We have a [guide to reporting bugs](./CONTRIBUTING.md#bug-reports) to help with this.
 
@@ -573,7 +588,7 @@ Desyncs in multiplayer are complex to debug and report (some software developmen
 Instructions can be found in [debugging and reporting desyncs](./docs/debugging_desyncs.md).
 
 
-### 2.3) Translating
+### 2.4) Translating
 
 OpenTTD is translated into many languages.  Translations are added and updated via the [online translation tool](https://translator.openttd.org).
 
@@ -593,11 +608,23 @@ See the comments in the source files in `src/3rdparty/md5` for the complete lice
 The fmt implementation in `src/3rdparty/fmt` is licensed under the MIT license.
 See `src/3rdparty/fmt/LICENSE.rst` for the complete license text.
 
+The nlohmann json implementation in `src/3rdparty/nlohmann` is licensed under the MIT license.
+See `src/3rdparty/nlohmann/LICENSE.MIT` for the complete license text.
+
+The OpenGL API in `src/3rdparty/opengl` is licensed under the MIT license.
+See `src/3rdparty/opengl/khrplatform.h` for the complete license text.
+
 The catch2 implementation in `src/3rdparty/catch2` is licensed under the Boost Software License, Version 1.0.
 See `src/3rdparty/catch2/LICENSE.txt` for the complete license text.
 
 The icu scriptrun implementation in `src/3rdparty/icu` is licensed under the Unicode license.
 See `src/3rdparty/icu/LICENSE` for the complete license text.
+
+The monocypher implementation in `src/3rdparty/monocypher` is licensed under the 2-clause BSD and CC-0 license.
+See `src/3rdparty/monocypher/LICENSE.md` for the complete license text.
+
+The OpenTTD Social Integration API in `src/3rdparty/openttd_social_integration_api` is licensed under the MIT license.
+See `src/3rdparty/openttd_social_integration_api/LICENSE` for the complete license text.
 
 ## 4.0 Credits
 

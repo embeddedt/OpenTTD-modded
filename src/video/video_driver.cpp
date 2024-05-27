@@ -22,19 +22,21 @@
 #include "../window_func.h"
 #include "video_driver.hpp"
 
-bool _video_hw_accel; ///< Whether to consider hardware accelerated video drivers.
-bool _video_vsync; ///< Whether we should use vsync (only if _video_hw_accel is enabled).
+bool _video_hw_accel; ///< Whether to consider hardware accelerated video drivers on startup.
+bool _video_vsync; ///< Whether we should use vsync (only if active video driver supports HW acceleration).
 
 void VideoDriver::GameLoop()
 {
-	this->next_game_tick += this->GetGameInterval();
-
-	/* Avoid next_game_tick getting behind more and more if it cannot keep up. */
 	auto now = std::chrono::steady_clock::now();
-	if (this->next_game_tick < now - ALLOWED_DRIFT * this->GetGameInterval()) this->next_game_tick = now;
 
 	{
 		std::lock_guard<std::recursive_mutex> lock(this->game_state_mutex);
+
+		const auto interval = this->GetGameInterval();
+		this->next_game_tick += interval;
+
+		/* Avoid next_game_tick getting behind more and more if it cannot keep up. */
+		if (this->next_game_tick < now - ALLOWED_DRIFT * interval) this->next_game_tick = now;
 
 		::GameLoop();
 	}

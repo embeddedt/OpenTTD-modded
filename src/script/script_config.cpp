@@ -19,7 +19,7 @@
 
 #include "../safeguards.h"
 
-void ScriptConfig::Change(std::optional<const std::string> name, int version, bool force_exact_match, bool is_random)
+void ScriptConfig::Change(std::optional<const std::string> name, int version, bool force_exact_match)
 {
 	if (name.has_value()) {
 		this->name = std::move(name.value());
@@ -28,23 +28,10 @@ void ScriptConfig::Change(std::optional<const std::string> name, int version, bo
 		this->info = nullptr;
 	}
 	this->version = (info == nullptr) ? -1 : info->GetVersion();
-	this->is_random = is_random;
 	this->config_list.reset();
 	this->to_load_data.reset();
 
 	this->ClearConfigList();
-
-	if (_game_mode == GM_NORMAL && this->info != nullptr) {
-		/* If we're in an existing game and the Script is changed, set all settings
-		 *  for the Script that have the random flag to a random value. */
-		for (const auto &item : *this->info->GetConfigList()) {
-			if (item.flags & SCRIPTCONFIG_RANDOM) {
-				this->SetSetting(item.name, ScriptObject::GetRandomizer(OWNER_NONE).Next(item.max_value + 1 - item.min_value) + item.min_value);
-			}
-		}
-
-		this->AddRandomDeviation();
-	}
 }
 
 ScriptConfig::ScriptConfig(const ScriptConfig *config)
@@ -52,15 +39,11 @@ ScriptConfig::ScriptConfig(const ScriptConfig *config)
 	this->name = config->name;
 	this->info = config->info;
 	this->version = config->version;
-	this->is_random = config->is_random;
 	this->to_load_data.reset();
 
 	for (const auto &item : config->settings) {
 		this->settings[item.first] = item.second;
 	}
-
-	/* Virtual functions get called statically in constructors, so make it explicit to remove any confusion. */
-	this->ScriptConfig::AddRandomDeviation();
 }
 
 ScriptConfig::~ScriptConfig()
@@ -141,23 +124,9 @@ void ScriptConfig::ResetEditableSettings(bool yet_to_start)
 	}
 }
 
-void ScriptConfig::AddRandomDeviation()
-{
-	for (const auto &item : *this->GetConfigList()) {
-		if (item.random_deviation != 0) {
-			this->SetSetting(item.name, ScriptObject::GetRandomizer(OWNER_NONE).Next(item.random_deviation * 2 + 1) - item.random_deviation + this->GetSetting(item.name));
-		}
-	}
-}
-
 bool ScriptConfig::HasScript() const
 {
 	return this->info != nullptr;
-}
-
-bool ScriptConfig::IsRandom() const
-{
-	return this->is_random;
 }
 
 const std::string &ScriptConfig::GetName() const

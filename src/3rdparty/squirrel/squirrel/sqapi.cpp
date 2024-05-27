@@ -1258,9 +1258,9 @@ struct BufState{
 	SQInteger size;
 };
 
-WChar buf_lexfeed(SQUserPointer file)
+char32_t buf_lexfeed(SQUserPointer file)
 {
-	/* Convert an UTF-8 character into a WChar */
+	/* Convert an UTF-8 character into a char32_t */
 	BufState *buf = (BufState *)file;
 	const char *p = &buf->buf[buf->ptr];
 
@@ -1278,7 +1278,7 @@ WChar buf_lexfeed(SQUserPointer file)
 	buf->ptr += len;
 
 	/* Convert the character, and when definitely invalid, bail out as well. */
-	WChar c;
+	char32_t c;
 	if (Utf8Decode(&c, p) != len) return -1;
 
 	return c;
@@ -1322,3 +1322,16 @@ void sq_free(void *p,SQUnsignedInteger size)
 	SQ_FREE(p,size);
 }
 
+SQOpsLimiter::SQOpsLimiter(HSQUIRRELVM v, SQInteger ops, const char *label) : _v(v)
+{
+	this->_ops = v->_ops_till_suspend_error_threshold;
+	if (this->_ops == INT64_MIN) {
+		v->_ops_till_suspend_error_threshold = v->_ops_till_suspend - ops;
+		v->_ops_till_suspend_error_label = label;
+	}
+}
+
+SQOpsLimiter::~SQOpsLimiter()
+{
+	this->_v->_ops_till_suspend_error_threshold = this->_ops;
+}

@@ -3,7 +3,7 @@ add_files(
     alloc_func.hpp
     alloc_type.hpp
     backup_type.hpp
-    bitmath_func.cpp
+    bit_cast.hpp
     bitmath_func.hpp
     checksum_func.hpp
     container_func.hpp
@@ -33,6 +33,7 @@ add_files(
     serialisation.cpp
     serialisation.hpp
     smallstack_type.hpp
+    strong_typedef_type.hpp
     tinystring_type.hpp
     y_combinator.hpp
 )

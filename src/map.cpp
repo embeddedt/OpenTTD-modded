@@ -14,6 +14,7 @@
 #include "string_func.h"
 #include "rail_map.h"
 #include "tunnelbridge_map.h"
+#include "pathfinder/water_regions.h"
 #include "3rdparty/cpp-btree/btree_map.h"
 #include "core/ring_buffer.hpp"
 #include <array>
@@ -24,11 +25,6 @@
 #endif
 
 #include "safeguards.h"
-
-#if defined(_MSC_VER)
-/* Why the hell is that not in all MSVC headers?? */
-extern "C" _CRTIMP void __cdecl _assert(void *, void *, unsigned);
-#endif
 
 uint _map_log_x;     ///< 2^_map_log_x == _map_size_x
 uint _map_log_y;     ///< 2^_map_log_y == _map_size_y
@@ -97,7 +93,7 @@ void AllocateMap(uint size_x, uint size_y)
 
 	const size_t total_size = (sizeof(Tile) + sizeof(TileExtended)) * _map_size;
 
-	byte *buf = nullptr;
+	uint8_t *buf = nullptr;
 #if defined(__linux__) && defined(MADV_HUGEPAGE)
 	const size_t alignment = 2 * 1024 * 1024;
 	/* First try mmap with a 2MB alignment, if that fails, just use calloc */
@@ -110,7 +106,7 @@ void AllocateMap(uint size_x, uint size_y)
 
 			/* target is now aligned, allocated has been adjusted accordingly */
 
-			const size_t remove_front = static_cast<byte *>(target) - static_cast<byte *>(ret);
+			const size_t remove_front = static_cast<uint8_t *>(target) - static_cast<uint8_t *>(ret);
 			if (remove_front != 0) {
 				munmap(ret, remove_front);
 			}
@@ -123,48 +119,34 @@ void AllocateMap(uint size_x, uint size_y)
 			madvise(target, total_size, MADV_HUGEPAGE);
 			DEBUG(map, 2, "Using mmap for map allocation");
 
-			buf = static_cast<byte *>(target);
+			buf = static_cast<uint8_t *>(target);
 			_munmap_size = total_size;
 		}
 	}
 #endif
 
-	if (buf == nullptr) buf = CallocT<byte>(total_size);
+	if (buf == nullptr) buf = CallocT<uint8_t>(total_size);
 
 	_m = reinterpret_cast<Tile *>(buf);
 	_me = reinterpret_cast<TileExtended *>(buf + (_map_size * sizeof(Tile)));
+
+	InitializeWaterRegions();
 }
 
 
 #ifdef _DEBUG
-TileIndex TileAdd(TileIndex tile, TileIndexDiff add,
-	const char *exp, const char *file, int line)
+TileIndex TileAdd(TileIndex tile, TileIndexDiff offset)
 {
-	int dx;
-	int dy;
-	uint x;
-	uint y;
-
-	dx = add & MapMaxX();
+	int dx = offset & MapMaxX();
 	if (dx >= (int)MapSizeX() / 2) dx -= MapSizeX();
-	dy = (add - dx) / (int)MapSizeX();
+	int dy = (offset - dx) / (int)MapSizeX();
 
-	x = TileX(tile) + dx;
-	y = TileY(tile) + dy;
+	uint32_t x = TileX(tile) + dx;
+	uint32_t y = TileY(tile) + dy;
 
-	if (x >= MapSizeX() || y >= MapSizeY()) {
-		char buf[512];
-
-		seprintf(buf, lastof(buf), "TILE_ADD(%s) when adding 0x%.4X and 0x%.4X failed",
-			exp, tile, add);
-#if !defined(_MSC_VER)
-		fprintf(stderr, "%s:%d %s\n", file, line, buf);
-#else
-		_assert(buf, (char*)file, line);
-#endif
-	}
-
-	dbg_assert(TileXY(x, y) == TILE_MASK(tile + add));
+	assert(x < MapSizeX());
+	assert(y < MapSizeY());
+	assert(TileXY(x, y) == TILE_MASK(tile + offset));
 
 	return TileXY(x, y);
 }
@@ -441,8 +423,8 @@ bool EnoughContiguousTilesMatchingCondition(TileIndex tile, uint threshold, Test
 
 	static_assert(MAX_MAP_TILES_BITS <= 30);
 
-	btree::btree_set<uint32> processed_tiles;
-	ring_buffer<uint32> candidates;
+	btree::btree_set<uint32_t> processed_tiles;
+	ring_buffer<uint32_t> candidates;
 	uint matching_count = 0;
 
 	auto process_tile = [&](TileIndex t, DiagDirection exclude_onward_dir) {
@@ -466,13 +448,46 @@ bool EnoughContiguousTilesMatchingCondition(TileIndex tile, uint threshold, Test
 	process_tile(tile, INVALID_DIAGDIR);
 
 	while (matching_count < threshold && !candidates.empty()) {
-		uint32 next = candidates.front();
+		uint32_t next = candidates.front();
 		candidates.pop_front();
 		TileIndex t = GB(next, 0, 30);
 		DiagDirection exclude_onward_dir = (DiagDirection)GB(next, 30, 2);
 		process_tile(t, exclude_onward_dir);
 	}
 	return matching_count >= threshold;
+}
+
+void IterateCurvedCircularTileArea(TileIndex centre_tile, uint diameter, TileIteratorProc proc, void *user_data)
+{
+	const uint radius_sq = ((diameter * diameter) + 2) / 4;
+	const uint centre_radius = (diameter + 1) / 2;
+
+	const int centre_x = TileX(centre_tile);
+	const int centre_y = TileY(centre_tile);
+
+	/* Centre row */
+	for (int x = std::max<int>(0, centre_x - centre_radius); x <= std::min<int>(MapMaxX(), centre_x + centre_radius); x++) {
+		proc(TileXY(x, centre_y), user_data);
+	}
+
+	/* Other (shorter) rows */
+	for (uint offset = 1; offset <= centre_radius; offset++) {
+		const uint offset_sq = offset * offset;
+		uint half_width = 0;
+		while (offset_sq + (half_width * half_width) < radius_sq) {
+			half_width++;
+		}
+		const int x_left = std::max<int>(0, centre_x - half_width);
+		const int x_right = std::min<int>(MapMaxX(), centre_x + half_width);
+		auto iterate_row = [&](int y) {
+			if (y < 0 || y > (int)MapMaxY()) return;
+			for (int x = x_left; x <= x_right; x++) {
+				proc(TileXY(x, y), user_data);
+			}
+		};
+		iterate_row(centre_y - offset);
+		iterate_row(centre_y + offset);
+	}
 }
 
 /**
@@ -501,8 +516,8 @@ uint GetClosestWaterDistance(TileIndex tile, bool water)
 
 		/* going counter-clockwise around this square */
 		for (DiagDirection dir = DIAGDIR_BEGIN; dir < DIAGDIR_END; dir++) {
-			static const int8 ddx[DIAGDIR_END] = { -1,  1,  1, -1};
-			static const int8 ddy[DIAGDIR_END] = {  1,  1, -1, -1};
+			static const int8_t ddx[DIAGDIR_END] = { -1,  1,  1, -1};
+			static const int8_t ddy[DIAGDIR_END] = {  1,  1, -1, -1};
 
 			int dx = ddx[dir];
 			int dy = ddy[dir];

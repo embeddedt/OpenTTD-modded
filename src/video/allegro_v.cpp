@@ -199,7 +199,7 @@ static bool CreateMainSurface(uint w, uint h)
 	_allegro_screen = create_bitmap_ex(bpp, screen->cr - screen->cl, screen->cb - screen->ct);
 	_screen.width = _allegro_screen->w;
 	_screen.height = _allegro_screen->h;
-	_screen.pitch = ((byte*)screen->line[1] - (byte*)screen->line[0]) / (bpp / 8);
+	_screen.pitch = ((uint8_t*)screen->line[1] - (uint8_t*)screen->line[0]) / (bpp / 8);
 	_screen.dst_ptr = _allegro_screen->line[0];
 
 	/* Initialise the screen so we don't blit garbage to the screen */
@@ -245,9 +245,9 @@ std::vector<int> VideoDriver_Allegro::GetListOfMonitorRefreshRates()
 }
 
 struct AllegroVkMapping {
-	uint16 vk_from;
-	byte vk_count;
-	byte map_to;
+	uint16_t vk_from;
+	uint8_t vk_count;
+	uint8_t map_to;
 };
 
 #define AS(x, z) {x, 0, z}
@@ -306,7 +306,7 @@ static const AllegroVkMapping _vk_mapping[] = {
 	AS(KEY_TILDE,   WKC_BACKQUOTE),
 };
 
-static uint32 ConvertAllegroKeyIntoMy(WChar *character)
+static uint32_t ConvertAllegroKeyIntoMy(char32_t *character)
 {
 	int scancode;
 	int unicode = ureadkey(&scancode);
@@ -406,7 +406,7 @@ bool VideoDriver_Allegro::PollEvent()
 	if ((key_shifts & KB_ALT_FLAG) && (key[KEY_ENTER] || key[KEY_F])) {
 		ToggleFullScreen(!_fullscreen);
 	} else if (keypressed()) {
-		WChar character;
+		char32_t character;
 		uint keycode = ConvertAllegroKeyIntoMy(&character);
 		HandleKeypress(keycode, character);
 	}

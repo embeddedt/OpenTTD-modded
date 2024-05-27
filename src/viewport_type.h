@@ -31,7 +31,7 @@ enum ViewportMapType {
 };
 
 struct ViewPortMapDrawVehiclesCache {
-	uint64 done_hash_bits[64];
+	uint64_t done_hash_bits[64];
 	std::vector<bool> vehicle_pixels;
 };
 
@@ -57,12 +57,16 @@ struct Viewport {
 	std::vector<bool> dirty_blocks;
 	uint dirty_blocks_per_column;
 	uint dirty_blocks_per_row;
-	uint8 dirty_block_left_margin;
+	uint8_t dirty_block_left_margin;
 	bool is_dirty = false;
 	bool is_drawn = false;
 	bool update_vehicles = false;
+	uint64_t last_overlay_rebuild_counter = 0;
+	uint64_t last_plan_update_number = 0;
 	ViewPortMapDrawVehiclesCache map_draw_vehicles_cache;
-	std::vector<byte> land_pixel_cache;
+	std::vector<uint8_t> land_pixel_cache;
+	std::vector<uint8_t> overlay_pixel_cache;
+	std::vector<uint8_t> plan_pixel_cache;
 
 	uint GetDirtyBlockWidthShift() const { return this->GetDirtyBlockShift(); }
 	uint GetDirtyBlockHeightShift() const { return this->GetDirtyBlockShift(); }
@@ -95,10 +99,10 @@ private:
 
 /** Location information about a sign as seen on the viewport */
 struct ViewportSign {
-	int32 center;        ///< The center position of the sign
-	int32 top;           ///< The top of the sign
-	uint16 width_normal; ///< The width when not zoomed out (normal font)
-	uint16 width_small;  ///< The width when zoomed out (small font)
+	int32_t center;        ///< The center position of the sign
+	int32_t top;           ///< The top of the sign
+	uint16_t width_normal; ///< The width when not zoomed out (normal font)
+	uint16_t width_small;  ///< The width when zoomed out (small font)
 
 	void UpdatePosition(ZoomLevel maxzoom, int center, int top, StringID str, StringID str_small = STR_NULL);
 	void MarkDirty(ZoomLevel maxzoom) const;
@@ -205,7 +209,7 @@ enum ViewportDragDropSelectionProcess {
 /**
  * Target of the viewport scrolling GS method
  */
-enum ViewportScrollTarget {
+enum ViewportScrollTarget : uint8_t {
 	VST_EVERYONE, ///< All players
 	VST_COMPANY,  ///< All players in specific company
 	VST_CLIENT,   ///< Single player
@@ -219,7 +223,7 @@ enum FoundationPart {
 	FOUNDATION_PART_END
 };
 
-enum ViewportMarkDirtyFlags : byte {
+enum ViewportMarkDirtyFlags : uint8_t {
 	VMDF_NONE                  = 0,
 	VMDF_NOT_MAP_MODE          = 0x1,
 	VMDF_NOT_MAP_MODE_NON_VEG  = 0x2,
@@ -227,7 +231,7 @@ enum ViewportMarkDirtyFlags : byte {
 };
 DECLARE_ENUM_AS_BIT_SET(ViewportMarkDirtyFlags)
 
-enum class ChildScreenSpritePositionMode : uint8 {
+enum class ChildScreenSpritePositionMode : uint8_t {
 	Relative,
 	NonRelative,
 	Absolute,

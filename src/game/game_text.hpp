@@ -11,16 +11,18 @@
 #define GAME_TEXT_HPP
 
 struct StringParam {
-	enum ParamType {
+	enum ParamType : uint8_t {
+		UNUSED,
 		RAW_STRING,
 		STRING,
 		OTHER
 	};
 
 	ParamType type;
-	uint8 consumes;
+	uint8_t consumes;
+	const char *cmd;
 
-	StringParam(ParamType type, uint8 consumes) : type(type), consumes(consumes) {}
+	StringParam(ParamType type, uint8_t consumes, const char *cmd) : type(type), consumes(consumes), cmd(cmd) {}
 };
 using StringParams = std::vector<StringParam>;
 using StringParamsList = std::vector<StringParams>;

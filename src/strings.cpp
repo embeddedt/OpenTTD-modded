@@ -32,6 +32,7 @@
 #include "smallmap_gui.h"
 #include "window_func.h"
 #include "debug.h"
+#include "debug_fmt.h"
 #include "unit_conversion.h"
 #include "tracerestrict.h"
 #include "game/game_text.hpp"
@@ -39,8 +40,10 @@
 #include "newgrf_engine.h"
 #include "tbtr_template_vehicle_func.h"
 #include "core/backup_type.hpp"
+#include "gfx_layout.h"
 #include "core/y_combinator.hpp"
 #include <stack>
+#include <charconv>
 #include <cmath>
 #include <optional>
 
@@ -59,7 +62,7 @@ TextDirection _current_text_dir = TD_LTR; ///< Text direction of the currently s
 std::unique_ptr<icu::Collator> _current_collator;    ///< Collator for the language currently in use.
 #endif /* WITH_ICU_I18N */
 
-ArrayStringParameters<20> _global_string_params; ///< Global array of string parameters. To access, use #SetDParam.
+ArrayStringParameters<20> _global_string_params;
 
 std::string _temp_special_strings[16];
 
@@ -73,6 +76,7 @@ void StringParameters::PrepareForNextRun()
 	this->offset = 0;
 }
 
+
 /**
  * Get the next parameter from our parameters.
  * This updates the offset, so the next time this is called the next parameter
@@ -83,15 +87,13 @@ StringParameter *StringParameters::GetNextParameterPointer()
 {
 	assert(this->next_type == 0 || (SCC_CONTROL_START <= this->next_type && this->next_type <= SCC_CONTROL_END));
 	if (this->offset >= this->parameters.size()) {
-		DEBUG(misc, 0, "Trying to read invalid string parameter");
-		return nullptr;
+		throw std::out_of_range("Trying to read invalid string parameter");
 	}
 
 	auto &param = this->parameters[this->offset++];
 	if (param.type != 0 && param.type != this->next_type) {
-		DEBUG(misc, 0, "Trying to read string parameter with wrong type");
 		this->next_type = 0;
-		return nullptr;
+		throw std::out_of_range("Trying to read string parameter with wrong type");
 	}
 	param.type = this->next_type;
 	this->next_type = 0;
@@ -106,7 +108,7 @@ StringParameter *StringParameters::GetNextParameterPointer()
  * @param min_count Minimum number of digits independent of \a max.
  * @param size  Font of the number
  */
-void SetDParamMaxValue(size_t n, uint64 max_value, uint min_count, FontSize size)
+void SetDParamMaxValue(size_t n, uint64_t max_value, uint min_count, FontSize size)
 {
 	uint num_digits = 1;
 	while (max_value >= 10) {
@@ -131,7 +133,7 @@ void SetDParamMaxDigits(size_t n, uint count, FontSize size)
  * Copy the parameters from the backup into the global string parameter array.
  * @param backup The backup to copy from.
  */
-void CopyInDParam(const span<const StringParameterBackup> backup, uint offset)
+void CopyInDParam(const std::span<const StringParameterBackup> backup, uint offset)
 {
 	for (size_t i = 0; i < backup.size(); i++) {
 		auto &value = backup[i];
@@ -182,11 +184,11 @@ bool HaveDParamChanged(const std::vector<StringParameterBackup> &backup)
 	return changed;
 }
 
-static char *StationGetSpecialString(char *buff, StationFacility x, const char *last);
-static char *GetSpecialTownNameString(char *buff, int ind, uint32 seed, const char *last);
-static char *GetSpecialNameString(char *buff, int ind, StringParameters &args, const char *last);
+static void StationGetSpecialString(StringBuilder builder, StationFacility x);
+static void GetSpecialTownNameString(StringBuilder builder, int ind, uint32_t seed);
+static void GetSpecialNameString(StringBuilder builder, int ind, StringParameters &args);
 
-static char *FormatString(char *buff, const char *str, StringParameters &args, const char *last, uint case_index = 0, bool game_script = false, bool dry_run = false);
+static void FormatString(StringBuilder builder, const char *str, StringParameters &args, uint case_index = 0, bool game_script = false, bool dry_run = false);
 
 struct LanguagePack : public LanguagePackHeader {
 	char data[]; // list of strings
@@ -229,17 +231,18 @@ const char *GetStringPtr(StringID string)
 
 /**
  * Get a parsed string with most special stringcodes replaced by the string parameters.
- * @param buffr  Pointer to a string buffer where the formatted string should be written to.
- * @param string
- * @param args   Arguments for the string.
- * @param last   Pointer just past the end of \a buffr.
+ * @param builder     The builder of the string.
+ * @param string      The ID of the string to parse.
+ * @param args        Arguments for the string.
  * @param case_index  The "case index". This will only be set when FormatString wants to print the string in a different case.
  * @param game_script The string is coming directly from a game script.
- * @return       Pointer to the final zero byte of the formatted string.
  */
-char *GetStringWithArgs(char *buffr, StringID string, StringParameters &args, const char *last, uint case_index, bool game_script)
+void GetStringWithArgs(StringBuilder builder, StringID string, StringParameters &args, uint case_index, bool game_script)
 {
-	if (string == 0) return GetStringWithArgs(buffr, STR_UNDEFINED, args, last);
+	if (string == 0) {
+		GetStringWithArgs(builder, STR_UNDEFINED, args);
+		return;
+	}
 
 	uint index = GetStringIndex(string);
 	StringTab tab = GetStringTab(string);
@@ -247,16 +250,19 @@ char *GetStringWithArgs(char *buffr, StringID string, StringParameters &args, co
 	switch (tab) {
 		case TEXT_TAB_TOWN:
 			if (index >= 0xC0 && !game_script) {
-				return GetSpecialTownNameString(buffr, index - 0xC0, args.GetNextParameter<uint32>(), last);
+				GetSpecialTownNameString(builder, index - 0xC0, args.GetNextParameter<uint32_t>());
+				return;
 			}
 			break;
 
 		case TEXT_TAB_SPECIAL:
 			if (index >= 0xE4 && !game_script) {
-				return GetSpecialNameString(buffr, index - 0xE4, args, last);
+				GetSpecialNameString(builder, index - 0xE4, args);
+				return;
 			}
 			if (index < lengthof(_temp_special_strings) && !game_script) {
-				return FormatString(buffr, _temp_special_strings[index].c_str(), args, last, case_index);
+				FormatString(builder, _temp_special_strings[index].c_str(), args, case_index);
+				return;
 			}
 			break;
 
@@ -267,14 +273,18 @@ char *GetStringWithArgs(char *buffr, StringID string, StringParameters &args, co
 			}
 			break;
 
-		case TEXT_TAB_GAMESCRIPT_START:
-			return FormatString(buffr, GetGameStringPtr(index), args, last, case_index, true);
+		case TEXT_TAB_GAMESCRIPT_START: {
+			FormatString(builder, GetGameStringPtr(index), args, case_index, true);
+			return;
+		}
 
 		case TEXT_TAB_OLD_NEWGRF:
 			NOT_REACHED();
 
-		case TEXT_TAB_NEWGRF_START:
-			return FormatString(buffr, GetGRFStringPtr(index), args, last, case_index);
+		case TEXT_TAB_NEWGRF_START: {
+			FormatString(builder, GetGRFStringPtr(index), args, case_index);
+			return;
+		}
 
 		default:
 			break;
@@ -282,19 +292,14 @@ char *GetStringWithArgs(char *buffr, StringID string, StringParameters &args, co
 
 	if (index >= _langpack.langtab_num[tab]) {
 		if (game_script) {
-			return GetStringWithArgs(buffr, STR_UNDEFINED, args, last);
+			return GetStringWithArgs(builder, STR_UNDEFINED, args);
 		}
 		error("String 0x%X is invalid. You are probably using an old version of the .lng file.\n", string);
 	}
 
-	return FormatString(buffr, GetStringPtr(string), args, last, case_index);
+	FormatString(builder, GetStringPtr(string), args, case_index);
 }
 
-char *GetString(char *buffr, StringID string, const char *last)
-{
-	_global_string_params.PrepareForNextRun();
-	return GetStringWithArgs(buffr, string, _global_string_params, last);
-}
 
 /**
  * Resolve the given StringID into a std::string with all the associated
@@ -304,9 +309,34 @@ char *GetString(char *buffr, StringID string, const char *last)
  */
 std::string GetString(StringID string)
 {
-	char buffer[DRAW_STRING_BUFFER];
-	char *last = GetString(buffer, string, lastof(buffer));
-	return { buffer, last };
+	_global_string_params.PrepareForNextRun();
+	return GetStringWithArgs(string, _global_string_params);
+}
+
+/**
+ * Resolve the given StringID into a std::string with all the associated
+ * DParam lookups and formatting.
+ * @param builder   the string builder to write to
+ * @param string The unique identifier of the translatable string.
+ */
+void GetString(StringBuilder builder, StringID string)
+{
+	_global_string_params.PrepareForNextRun();
+	GetStringWithArgs(builder, string, _global_string_params);
+}
+
+/**
+ * Get a parsed string with most special stringcodes replaced by the string parameters.
+ * @param string The ID of the string to parse.
+ * @param args   Arguments for the string.
+ * @return The parsed string.
+ */
+std::string GetStringWithArgs(StringID string, StringParameters &args)
+{
+	std::string result;
+	StringBuilder builder(result);
+	GetStringWithArgs(builder, string, args);
+	return result;
 }
 
 /**
@@ -333,79 +363,74 @@ void SetDParamStr(size_t n, std::string str)
 
 /**
  * Format a number into a string.
- * @param buff      the buffer to write to
+ * @param builder   the string builder to write to
  * @param number    the number to write down
  * @param last      the last element in the buffer
  * @param separator the thousands-separator to use
  * @param zerofill  minimum number of digits to print for the integer part. The number will be filled with zeros at the front if necessary.
  * @param fractional_digits number of fractional digits to display after a decimal separator. The decimal separator is inserted
  *                          in front of the \a fractional_digits last digit of \a number.
- * @return till where we wrote
  */
-static char *FormatNumber(char *buff, int64 number, const char *last, const char *separator, int zerofill = 1, int fractional_digits = 0)
+static void FormatNumber(StringBuilder builder, int64_t number, const char *separator, int zerofill = 1, int fractional_digits = 0)
 {
 	static const int max_digits = 20;
-	uint64 divisor = 10000000000000000000ULL;
+	uint64_t divisor = 10000000000000000000ULL;
 	zerofill += fractional_digits;
 	int thousands_offset = (max_digits - fractional_digits - 1) % 3;
 
 	if (number < 0) {
-		if (buff != last) *buff++ = '-';
+		builder += '-';
 		number = -number;
 	}
 
-	uint64 num = number;
-	uint64 tot = 0;
+	uint64_t num = number;
+	uint64_t tot = 0;
 	for (int i = 0; i < max_digits; i++) {
 		if (i == max_digits - fractional_digits) {
 			const char *decimal_separator = _settings_game.locale.digit_decimal_separator.c_str();
 			if (StrEmpty(decimal_separator)) decimal_separator = _langpack.langpack->digit_decimal_separator;
-			buff = strecpy(buff, decimal_separator, last);
+			builder += decimal_separator;
 		}
 
-		uint64 quot = 0;
+		uint64_t quot = 0;
 		if (num >= divisor) {
 			quot = num / divisor;
 			num = num % divisor;
 		}
 		if ((tot |= quot) || i >= max_digits - zerofill) {
-			if (buff != last) *buff++ = '0' + quot; // quot is a single digit
-			if ((i % 3) == thousands_offset && i < max_digits - 1 - fractional_digits) buff = strecpy(buff, separator, last);
+			builder += '0' + quot; // quot is a single digit
+			if ((i % 3) == thousands_offset && i < max_digits - 1 - fractional_digits) builder += separator;
 		}
 
 		divisor /= 10;
 	}
-
-	*buff = '\0';
-
-	return buff;
 }
 
-static char *FormatCommaNumber(char *buff, int64 number, const char *last, int fractional_digits = 0)
+static void FormatCommaNumber(StringBuilder builder, int64_t number, int fractional_digits = 0)
 {
 	const char *separator = _settings_game.locale.digit_group_separator.c_str();
 	if (StrEmpty(separator)) separator = _langpack.langpack->digit_group_separator;
-	return FormatNumber(buff, number, last, separator, 1, fractional_digits);
+	FormatNumber(builder, number, separator, 1, fractional_digits);
 }
 
-static char *FormatNoCommaNumber(char *buff, int64 number, const char *last)
+static void FormatNoCommaNumber(StringBuilder builder, int64_t number)
 {
-	return FormatNumber(buff, number, last, "");
+	FormatNumber(builder, number, "");
 }
 
-static char *FormatZerofillNumber(char *buff, int64 number, int count, const char *last)
+static void FormatZerofillNumber(StringBuilder builder, int64_t number, int count)
 {
-	return FormatNumber(buff, number, last, "", count);
+	FormatNumber(builder, number, "", count);
 }
 
-static char *FormatHexNumber(char *buff, uint64 number, const char *last)
+static void FormatHexNumber(StringBuilder builder, uint64_t number)
 {
-	return buff + seprintf(buff, last, "0x" OTTD_PRINTFHEX64, number);
+	fmt::format_to(builder, "0x{:X}", number);
 }
 
-WChar GetDecimalSeparatorChar()
+char32_t GetDecimalSeparatorChar()
 {
-	WChar decimal_char = '.';
+	char32_t decimal_char = '.';
 	const char *decimal_separator = _settings_game.locale.digit_decimal_separator.c_str();
 	if (StrEmpty(decimal_separator)) decimal_separator = _langpack.langpack->digit_decimal_separator;
 	if (!StrEmpty(decimal_separator)) Utf8Decode(&decimal_char, decimal_separator);
@@ -414,12 +439,10 @@ WChar GetDecimalSeparatorChar()
 
 /**
  * Format a given number as a number of bytes with the SI prefix.
- * @param buff   the buffer to write to
- * @param number the number of bytes to write down
- * @param last   the last element in the buffer
- * @return till where we wrote
+ * @param builder the string builder to write to
+ * @param number  the number of bytes to write down
  */
-static char *FormatBytes(char *buff, int64 number, const char *last)
+static void FormatBytes(StringBuilder builder, int64_t number)
 {
 	assert(number >= 0);
 
@@ -436,135 +459,123 @@ static char *FormatBytes(char *buff, int64 number, const char *last)
 
 	if (number < 1024) {
 		id = 0;
-		buff += seprintf(buff, last, "%i", (int)number);
+		fmt::format_to(builder, "{}", number);
 	} else if (number < 1024 * 10) {
-		buff += seprintf(buff, last, "%i%s%02i", (int)number / 1024, decimal_separator, (int)(number % 1024) * 100 / 1024);
+		fmt::format_to(builder, "{}{}{:02}", number / 1024, decimal_separator, (number % 1024) * 100 / 1024);
 	} else if (number < 1024 * 100) {
-		buff += seprintf(buff, last, "%i%s%01i", (int)number / 1024, decimal_separator, (int)(number % 1024) * 10 / 1024);
+		fmt::format_to(builder, "{}{}{:01}", number / 1024, decimal_separator, (number % 1024) * 10 / 1024);
 	} else {
 		assert(number < 1024 * 1024);
-		buff += seprintf(buff, last, "%i", (int)number / 1024);
+		fmt::format_to(builder, "{}", number / 1024);
 	}
 
 	assert(id < lengthof(iec_prefixes));
-	buff += seprintf(buff, last, NBSP "%sB", iec_prefixes[id]);
-
-	return buff;
+	fmt::format_to(builder, NBSP "{}B", iec_prefixes[id]);
 }
 
-static char *FormatWallClockString(char *buff, DateTicksScaled ticks, const char *last, bool show_date, uint case_index)
+static void FormatStateTicksHHMMString(StringBuilder builder, StateTicks ticks, uint case_index)
 {
-	Minutes minutes = ticks / _settings_time.ticks_per_minute + _settings_time.clock_offset;
+	TickMinutes minutes = _settings_time.ToTickMinutes(ticks);
 	char hour[3], minute[3];
-	seprintf(hour,   lastof(hour),   "%02i", (int) MINUTES_HOUR(minutes)  );
-	seprintf(minute, lastof(minute), "%02i", (int) MINUTES_MINUTE(minutes));
-	if (show_date) {
-		int64 final_arg = ScaledDateTicksToDate(ticks);
-		if (_settings_client.gui.date_with_time == 1) {
-			YearMonthDay ymd;
-			ConvertDateToYMD(final_arg, &ymd);
-			final_arg = ymd.year;
-		}
-		auto tmp_params = MakeParameters(hour, minute, final_arg);
-		return FormatString(buff, GetStringPtr(STR_FORMAT_DATE_MINUTES + _settings_client.gui.date_with_time), tmp_params, last, case_index);
-	} else {
-		auto tmp_params = MakeParameters(hour, minute);
-		return FormatString(buff, GetStringPtr(STR_FORMAT_DATE_MINUTES), tmp_params, last, case_index);
-	}
+	seprintf(hour,   lastof(hour),   "%02i", minutes.ClockHour());
+	seprintf(minute, lastof(minute), "%02i", minutes.ClockMinute());
+	auto tmp_params = MakeParameters(hour, minute);
+	FormatString(builder, GetStringPtr(STR_FORMAT_DATE_MINUTES), tmp_params, case_index);
 }
 
-static char *FormatTimeHHMMString(char *buff, uint time, const char *last, uint case_index)
+static void FormatTimeHHMMString(StringBuilder builder, uint time, uint case_index)
 {
 	char hour[9], minute[3];
 	seprintf(hour,   lastof(hour),   "%02i", (int) time / 100);
 	seprintf(minute, lastof(minute), "%02i", (int) time % 100);
 	auto tmp_params = MakeParameters(hour, minute);
-	return FormatString(buff, GetStringPtr(STR_FORMAT_DATE_MINUTES), tmp_params, last, case_index);
+	return FormatString(builder, GetStringPtr(STR_FORMAT_DATE_MINUTES), tmp_params, case_index);
 }
 
-static char *FormatYmdString(char *buff, Date date, const char *last, uint case_index)
+static void FormatYmdString(StringBuilder builder, CalTime::Date date, uint case_index)
 {
-	YearMonthDay ymd;
-	ConvertDateToYMD(date, &ymd);
+	CalTime::YearMonthDay ymd = CalTime::ConvertDateToYMD(date);
 
 	auto tmp_params = MakeParameters(ymd.day + STR_DAY_NUMBER_1ST - 1, STR_MONTH_ABBREV_JAN + ymd.month, ymd.year);
-	return FormatString(buff, GetStringPtr(STR_FORMAT_DATE_LONG), tmp_params, last, case_index);
+	FormatString(builder, GetStringPtr(STR_FORMAT_DATE_LONG), tmp_params, case_index);
 }
 
-static char *FormatMonthAndYear(char *buff, Date date, const char *last, uint case_index)
+static void FormatMonthAndYear(StringBuilder builder, CalTime::Date date, uint case_index)
 {
-	YearMonthDay ymd;
-	ConvertDateToYMD(date, &ymd);
+	CalTime::YearMonthDay ymd = CalTime::ConvertDateToYMD(date);
 
 	auto tmp_params = MakeParameters(STR_MONTH_JAN + ymd.month, ymd.year);
-	return FormatString(buff, GetStringPtr(STR_FORMAT_DATE_SHORT), tmp_params, last, case_index);
+	FormatString(builder, GetStringPtr(STR_FORMAT_DATE_SHORT), tmp_params, case_index);
 }
 
-static char *FormatTinyOrISODate(char *buff, Date date, StringID str, const char *last)
+static void FormatTinyOrISODate(StringBuilder builder, CalTime::Date date, StringID str)
 {
-	YearMonthDay ymd;
-	ConvertDateToYMD(date, &ymd);
+	CalTime::YearMonthDay ymd = CalTime::ConvertDateToYMD(date);
 
 	/* Day and month are zero-padded with ZEROFILL_NUM, hence the two 2s. */
 	auto tmp_params = MakeParameters(ymd.day, 2, ymd.month + 1, 2, ymd.year);
-	return FormatString(buff, GetStringPtr(str), tmp_params, last);
+	FormatString(builder, GetStringPtr(str), tmp_params);
 }
 
-static char *FormatGenericCurrency(char *buff, const CurrencySpec *spec, Money number, bool compact, const char *last)
+static void FormatGenericCurrency(StringBuilder builder, const CurrencySpec *spec, Money number, bool compact)
 {
 	/* We are going to make number absolute for printing, so
 	 * keep this piece of data as we need it later on */
 	bool negative = number < 0;
-	const char *multiplier = "";
 
 	number *= spec->rate;
 
 	/* convert from negative */
 	if (number < 0) {
-		if (buff + Utf8CharLen(SCC_PUSH_COLOUR) > last) return buff;
-		buff += Utf8Encode(buff, SCC_PUSH_COLOUR);
-		if (buff + Utf8CharLen(SCC_RED) > last) return buff;
-		buff += Utf8Encode(buff, SCC_RED);
-		buff = strecpy(buff, "-", last);
+		builder.Utf8Encode(SCC_PUSH_COLOUR);
+		builder.Utf8Encode(SCC_RED);
+		builder += '-';
 		number = -number;
 	}
 
 	/* Add prefix part, following symbol_pos specification.
 	 * Here, it can can be either 0 (prefix) or 2 (both prefix and suffix).
 	 * The only remaining value is 1 (suffix), so everything that is not 1 */
-	if (spec->symbol_pos != 1) buff = strecpy(buff, spec->prefix.c_str(), last);
+	if (spec->symbol_pos != 1) builder += spec->prefix;
 
-	/* for huge numbers, compact the number into k or M */
+	StringID number_str = STR_NULL;
+
+	/* For huge numbers, compact the number. */
 	if (compact) {
-		/* Take care of the 'k' rounding. Having 1 000 000 k
+		/* Take care of the thousand rounding. Having 1 000 000 k
 		 * and 1 000 M is inconsistent, so always use 1 000 M. */
-		if (number >= 1000000000 - 500) {
-			number = (number + 500000) / 1000000;
-			multiplier = NBSP "M";
-		} else if (number >= 1000000) {
-			number = (number + 500) / 1000;
-			multiplier = NBSP "k";
+		if (number >= Money(1'000'000'000'000'000) - 500'000'000) {
+			number = (number + Money(500'000'000'000)) / Money(1'000'000'000'000);
+			number_str = STR_CURRENCY_SHORT_TERA;
+		} else if (number >= Money(1'000'000'000'000) - 500'000) {
+			number = (number + 500'000'000) / 1'000'000'000;
+			number_str = STR_CURRENCY_SHORT_GIGA;
+		} else if (number >= 1'000'000'000 - 500) {
+			number = (number + 500'000) / 1'000'000;
+			number_str = STR_CURRENCY_SHORT_MEGA;
+		} else if (number >= 1'000'000) {
+			number = (number + 500) / 1'000;
+			number_str = STR_CURRENCY_SHORT_KILO;
 		}
 	}
 
 	const char *separator = _settings_game.locale.digit_group_separator_currency.c_str();
 	if (StrEmpty(separator)) separator = _currency->separator.c_str();
 	if (StrEmpty(separator)) separator = _langpack.langpack->digit_group_separator_currency;
-	buff = FormatNumber(buff, number, last, separator);
-	buff = strecpy(buff, multiplier, last);
+	FormatNumber(builder, number, separator);
+	if (number_str != STR_NULL) {
+		auto tmp_params = ArrayStringParameters<0>();
+		FormatString(builder, GetStringPtr(number_str), tmp_params);
+	}
 
 	/* Add suffix part, following symbol_pos specification.
 	 * Here, it can can be either 1 (suffix) or 2 (both prefix and suffix).
 	 * The only remaining value is 1 (prefix), so everything that is not 0 */
-	if (spec->symbol_pos != 0) buff = strecpy(buff, spec->suffix.c_str(), last);
+	if (spec->symbol_pos != 0) builder += spec->suffix;
 
 	if (negative) {
-		if (buff + Utf8CharLen(SCC_POP_COLOUR) > last) return buff;
-		buff += Utf8Encode(buff, SCC_POP_COLOUR);
-		*buff = '\0';
+		builder.Utf8Encode(SCC_POP_COLOUR);
 	}
-
-	return buff;
 }
 
 /**
@@ -573,10 +584,10 @@ static char *FormatGenericCurrency(char *buff, const CurrencySpec *spec, Money n
  * @param plural_form The plural form we want an index for.
  * @return The plural index for the given form.
  */
-static int DeterminePluralForm(int64 count, int plural_form)
+static int DeterminePluralForm(int64_t count, int plural_form)
 {
 	/* The absolute value determines plurality */
-	uint64 n = abs(count);
+	uint64_t n = abs(count);
 
 	switch (plural_form) {
 		default:
@@ -694,19 +705,19 @@ static int DeterminePluralForm(int64 count, int plural_form)
 	}
 }
 
-static const char *ParseStringChoice(const char *b, uint form, char **dst, const char *last)
+static const char *ParseStringChoice(const char *b, uint form, StringBuilder builder)
 {
 	/* <NUM> {Length of each string} {each string} */
-	uint n = (byte)*b++;
+	uint n = (uint8_t)*b++;
 	uint pos, i, mypos = 0;
 
 	for (i = pos = 0; i != n; i++) {
-		uint len = (byte)*b++;
+		uint len = (uint8_t)*b++;
 		if (i == form) mypos = pos;
 		pos += len;
 	}
 
-	*dst += seprintf(*dst, last, "%s", b + mypos);
+	builder += b + mypos;
 	return b + pos;
 }
 
@@ -720,7 +731,7 @@ struct UnitConversion {
 	 * @param round Whether to round the value or not.
 	 * @return The converted value.
 	 */
-	int64 ToDisplay(int64 input, bool round = true) const
+	int64_t ToDisplay(int64_t input, bool round = true) const
 	{
 		return round
 			? (int64_t)std::round(input * this->factor)
@@ -734,7 +745,7 @@ struct UnitConversion {
 	 * @param divider Divide the return value by this.
 	 * @return The converted value.
 	 */
-	int64 FromDisplay(int64 input, bool round = true, int64 divider = 1) const
+	int64_t FromDisplay(int64_t input, bool round = true, int64_t divider = 1) const
 	{
 		return round
 			? (int64_t)std::round(input / this->factor / divider)
@@ -758,12 +769,21 @@ struct UnitsLong {
 };
 
 /** Unit conversions for velocity. */
-static const Units _units_velocity[] = {
-	{ { 1.0      }, STR_UNITS_VELOCITY_IMPERIAL,  0 },
-	{ { 1.609344 }, STR_UNITS_VELOCITY_METRIC,    0 },
-	{ { 0.44704  }, STR_UNITS_VELOCITY_SI,        0 },
-	{ { 0.578125 }, STR_UNITS_VELOCITY_GAMEUNITS, 1 },
-	{ { 0.868976 }, STR_UNITS_VELOCITY_KNOTS,     0 },
+static const Units _units_velocity_calendar[] = {
+	{ { 1.0      }, STR_UNITS_VELOCITY_IMPERIAL,      0 },
+	{ { 1.609344 }, STR_UNITS_VELOCITY_METRIC,        0 },
+	{ { 0.44704  }, STR_UNITS_VELOCITY_SI,            0 },
+	{ { 0.578125 }, STR_UNITS_VELOCITY_GAMEUNITS_DAY, 1 },
+	{ { 0.868976 }, STR_UNITS_VELOCITY_KNOTS,         0 },
+};
+
+/** Unit conversions for velocity. */
+static const Units _units_velocity_realtime[] = {
+	{ { 1.0      }, STR_UNITS_VELOCITY_IMPERIAL,      0 },
+	{ { 1.609344 }, STR_UNITS_VELOCITY_METRIC,        0 },
+	{ { 0.44704  }, STR_UNITS_VELOCITY_SI,            0 },
+	{ { 0.289352 }, STR_UNITS_VELOCITY_GAMEUNITS_SEC, 1 },
+	{ { 0.868976 }, STR_UNITS_VELOCITY_KNOTS,         0 },
 };
 
 /** Unit conversions for power. */
@@ -814,16 +834,72 @@ static const Units _units_height[] = {
 	{ { 1.0 }, STR_UNITS_HEIGHT_SI,       0 },
 };
 
-/**
- * Get index for velocity conversion units for a vehicle type.
- * @param type VehicleType to convert velocity for.
- * @return Index within velocity conversion units for vehicle type.
- */
-static byte GetVelocityUnits(VehicleType type)
-{
-	if (type == VEH_SHIP || type == VEH_AIRCRAFT) return _settings_game.locale.units_velocity_nautical;
+/** Unit conversions for time in calendar days or wallclock seconds */
+static const Units _units_time_days_or_seconds[] = {
+	{ { 1 }, STR_UNITS_DAYS,    0 },
+	{ { 2 }, STR_UNITS_SECONDS, 0 },
+};
 
-	return _settings_game.locale.units_velocity;
+/** Unit conversions for time in calendar months or wallclock minutes */
+static const Units _units_time_months_or_minutes[] = {
+	{ { 1 }, STR_UNITS_MONTHS,  0 },
+	{ { 1 }, STR_UNITS_MINUTES, 0 },
+	{ { 1 }, STR_UNITS_PRODUCTION_INTERVALS, 0 },
+};
+
+/** Unit conversions for time in calendar years or economic periods */
+static const Units _units_time_years_or_periods[] = {
+	{ { 1 }, STR_UNITS_YEARS,  0 },
+	{ { 1 }, STR_UNITS_PERIODS, 0 },
+};
+
+/** Unit conversions for time in calendar years or wallclock minutes */
+static const Units _units_time_years_or_minutes[] = {
+	{ { 1  }, STR_UNITS_YEARS,  0 },
+	{ { 12 }, STR_UNITS_MINUTES, 0 },
+	{ { 1  }, STR_UNITS_PERIODS, 0 },
+};
+
+StringID GetVelocityUnitName(VehicleType type)
+{
+	uint8_t setting = (type == VEH_SHIP || type == VEH_AIRCRAFT) ? _settings_game.locale.units_velocity_nautical : _settings_game.locale.units_velocity;
+
+	assert(setting < lengthof(_units_velocity_calendar));
+	assert(setting < lengthof(_units_velocity_realtime));
+	static_assert(lengthof(_units_velocity_calendar) == 5 && lengthof(_units_velocity_realtime) == 5);
+
+	switch (setting) {
+		case 0:
+		case 1:
+		case 2:
+			return STR_UNIT_NAME_VELOCITY_IMPERIAL + setting;
+
+		case 3:
+			return EconTime::UsingWallclockUnits() ? STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK : STR_UNIT_NAME_VELOCITY_GAMEUNITS;
+
+		case 4:
+			return STR_CONFIG_SETTING_LOCALISATION_UNITS_VELOCITY_KNOTS;
+
+		default:
+			NOT_REACHED();
+	}
+}
+
+/**
+ * Get the correct velocity units depending on the vehicle type and whether we're using real-time units.
+ * @param type VehicleType to convert velocity for.
+ * @return The Units for the proper vehicle and time mode.
+ */
+static const Units GetVelocityUnits(VehicleType type)
+{
+	uint8_t setting = (type == VEH_SHIP || type == VEH_AIRCRAFT) ? _settings_game.locale.units_velocity_nautical : _settings_game.locale.units_velocity;
+
+	assert(setting < lengthof(_units_velocity_calendar));
+	assert(setting < lengthof(_units_velocity_realtime));
+
+	if (EconTime::UsingWallclockUnits()) return _units_velocity_realtime[setting];
+
+	return _units_velocity_calendar[setting];
 }
 
 /**
@@ -836,7 +912,7 @@ uint ConvertSpeedToDisplaySpeed(uint speed, VehicleType type)
 	/* For historical reasons we don't want to mess with the
 	 * conversion for speed. So, don't round it and keep the
 	 * original conversion factors instead of the real ones. */
-	return _units_velocity[GetVelocityUnits(type)].c.ToDisplay(speed, false);
+	return GetVelocityUnits(type).c.ToDisplay(speed, false);
 }
 
 /**
@@ -846,8 +922,9 @@ uint ConvertSpeedToDisplaySpeed(uint speed, VehicleType type)
  */
 uint ConvertSpeedToUnitDisplaySpeed(uint speed, VehicleType type)
 {
-	uint result = ConvertSpeedToDisplaySpeed(speed, type);
-	for (uint i = 0; i < _units_velocity[_settings_game.locale.units_velocity].decimal_places; i++) {
+	const Units &units = GetVelocityUnits(type);
+	uint result = units.c.ToDisplay(speed, false);
+	for (uint i = 0; i < units.decimal_places; i++) {
 		result /= 10;
 	}
 	return result;
@@ -860,7 +937,7 @@ uint ConvertSpeedToUnitDisplaySpeed(uint speed, VehicleType type)
  */
 uint ConvertDisplaySpeedToSpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[GetVelocityUnits(type)].c.FromDisplay(speed);
+	return GetVelocityUnits(type).c.FromDisplay(speed);
 }
 
 /**
@@ -870,7 +947,7 @@ uint ConvertDisplaySpeedToSpeed(uint speed, VehicleType type)
  */
 uint ConvertKmhishSpeedToDisplaySpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[GetVelocityUnits(type)].c.ToDisplay(speed * 10, false) / 16;
+	return GetVelocityUnits(type).c.ToDisplay(speed * 10, false) / 16;
 }
 
 /**
@@ -880,7 +957,7 @@ uint ConvertKmhishSpeedToDisplaySpeed(uint speed, VehicleType type)
  */
 uint ConvertDisplaySpeedToKmhishSpeed(uint speed, VehicleType type)
 {
-	return _units_velocity[GetVelocityUnits(type)].c.FromDisplay(speed * 16, true, 10);
+	return GetVelocityUnits(type).c.FromDisplay(speed * 16, true, 10);
 }
 
 /**
@@ -928,7 +1005,7 @@ uint ConvertDisplayPowerToPower(uint power)
  * @param force the force to convert
  * @return the converted force.
  */
-int64 ConvertForceToDisplayForce(int64 force)
+int64_t ConvertForceToDisplayForce(int64_t force)
 {
 	return _units_force[_settings_game.locale.units_force].c.ToDisplay(force);
 }
@@ -938,14 +1015,14 @@ int64 ConvertForceToDisplayForce(int64 force)
  * @param force the force to convert
  * @return the converted force.
  */
-int64 ConvertDisplayForceToForce(int64 force)
+int64_t ConvertDisplayForceToForce(int64_t force)
 {
 	return _units_force[_settings_game.locale.units_force].c.FromDisplay(force);
 }
 
-static void ConvertWeightRatioToDisplay(const Units &unit, int64 ratio, int64 &value, int64 &decimals)
+static void ConvertWeightRatioToDisplay(const Units &unit, int64_t ratio, int64_t &value, int64_t &decimals)
 {
-	int64 input = ratio;
+	int64_t input = ratio;
 	decimals = 2;
 	if (_settings_game.locale.units_weight == 2) {
 		input *= 1000;
@@ -969,12 +1046,12 @@ static uint ConvertDisplayToWeightRatio(const Units &unit, double in)
 	const UnitConversion &weight_conv = _units_weight[_settings_game.locale.units_weight].c;
 	UnitConversion conv = unit.c;
 	conv.factor /= weight_conv.factor;
-	int64 multiplier = _settings_game.locale.units_weight == 2 ? 1000 : 1;
+	int64_t multiplier = _settings_game.locale.units_weight == 2 ? 1000 : 1;
 
 	return conv.FromDisplay(in * 100 * multiplier, true, multiplier);
 }
 
-static char *FormatUnitWeightRatio(char *buff, const char *last, const Units &unit, int64 raw_value)
+static void FormatUnitWeightRatio(StringBuilder builder, const Units &unit, int64_t raw_value)
 {
 	const char *unit_str = GetStringPtr(unit.s);
 	const char *weight_str = GetStringPtr(_units_weight[_settings_game.locale.units_weight].s);
@@ -985,12 +1062,11 @@ static char *FormatUnitWeightRatio(char *buff, const char *last, const Units &un
 	str_replace_wchar(insert_pt, lastof(tmp_buffer), SCC_DECIMAL, '/');
 	str_replace_wchar(insert_pt, lastof(tmp_buffer), 0xA0 /* NBSP */, 0);
 
-	int64 value, decimals;
+	int64_t value, decimals;
 	ConvertWeightRatioToDisplay(unit, raw_value, value, decimals);
 
 	auto tmp_params = MakeParameters(value, decimals);
-	buff = FormatString(buff, tmp_buffer, tmp_params, last);
-	return buff;
+	FormatString(builder, tmp_buffer, tmp_params);
 }
 
 /**
@@ -999,7 +1075,7 @@ static char *FormatUnitWeightRatio(char *buff, const char *last, const Units &un
  * @param value the output value
  * @param decimals the output decimal offset
  */
-void ConvertPowerWeightRatioToDisplay(int64 ratio, int64 &value, int64 &decimals)
+void ConvertPowerWeightRatioToDisplay(int64_t ratio, int64_t &value, int64_t &decimals)
 {
 	ConvertWeightRatioToDisplay(_units_power[_settings_game.locale.units_power], ratio, value, decimals);
 }
@@ -1010,7 +1086,7 @@ void ConvertPowerWeightRatioToDisplay(int64 ratio, int64 &value, int64 &decimals
  * @param value the output value
  * @param decimals the output decimal offset
  */
-void ConvertForceWeightRatioToDisplay(int64 ratio, int64 &value, int64 &decimals)
+void ConvertForceWeightRatioToDisplay(int64_t ratio, int64_t &value, int64_t &decimals)
 {
 	ConvertWeightRatioToDisplay(_units_force[_settings_game.locale.units_force], ratio, value, decimals);
 }
@@ -1067,18 +1143,26 @@ uint ConvertDisplayQuantityToCargoQuantity(CargoID cargo, uint quantity)
 
 /**
  * Parse most format codes within a string and write the result to a buffer.
- * @param buff    The buffer to write the final string to.
+ * @param builder The string builder to write the final string to.
  * @param str_arg The original string with format codes.
  * @param args    Pointer to extra arguments used by various string codes.
- * @param last    Pointer to just past the end of the buff array.
- * @param dry_run True when the argt array is not yet initialized.
+ * @param dry_run True when the args' type data is not yet initialized.
  */
-static char *FormatString(char *buff, const char *str_arg, StringParameters &args, const char *last, uint case_index, bool game_script, bool dry_run)
+static void FormatString(StringBuilder builder, const char *str_arg, StringParameters &args, uint case_index, bool game_script, bool dry_run)
 {
 	size_t orig_offset = args.GetOffset();
 
-	/* When there is no array with types there is no need to do a dry run. */
 	if (!dry_run) {
+		/*
+		 * This function is normally called with `dry_run` false, then we call this function again
+		 * with `dry_run` being true. The dry run is required for the gender formatting. For the
+		 * gender determination we need to format a sub string to get the gender, but for that we
+		 * need to know as what string control code type the specific parameter is encoded. Since
+		 * gendered words can be before the "parameter" words, this needs to be determined before
+		 * the actual formatting.
+		 */
+		std::string buffer;
+		StringBuilder dry_run_builder(buffer);
 		if (UsingNewGRFTextStack()) {
 			/* Values from the NewGRF text stack are only copied to the normal
 			 * argv array at the time they are encountered. That means that if
@@ -1087,944 +1171,958 @@ static char *FormatString(char *buff, const char *str_arg, StringParameters &arg
 			 * pass makes sure the argv array is correctly filled and the second
 			 * pass can reference later values without problems. */
 			struct TextRefStack *backup = CreateTextRefStackBackup();
-			FormatString(buff, str_arg, args, last, case_index, game_script, true);
+			FormatString(dry_run_builder, str_arg, args, case_index, game_script, true);
 			RestoreTextRefStackBackup(backup);
 		} else {
-			FormatString(buff, str_arg, args, last, case_index, game_script, true);
+			FormatString(dry_run_builder, str_arg, args, case_index, game_script, true);
 		}
 		/* We have to restore the original offset here to to read the correct values. */
 		args.SetOffset(orig_offset);
 	}
-	WChar b = '\0';
+	char32_t b = '\0';
 	uint next_substr_case_index = 0;
-	char *buf_start = buff;
 	std::stack<const char *, std::vector<const char *>> str_stack;
 	str_stack.push(str_arg);
 
 	for (;;) {
-		while (!str_stack.empty() && (b = Utf8Consume(&str_stack.top())) == '\0') {
-			str_stack.pop();
-		}
-		if (str_stack.empty()) break;
-		const char *&str = str_stack.top();
+		try {
+			while (!str_stack.empty() && (b = Utf8Consume(&str_stack.top())) == '\0') {
+				str_stack.pop();
+			}
+			if (str_stack.empty()) break;
+			const char *&str = str_stack.top();
 
-		if (SCC_NEWGRF_FIRST <= b && b <= SCC_NEWGRF_LAST) {
-			/* We need to pass some stuff as it might be modified. */
-			StringParameters remaining = args.GetRemainingParameters();
-			b = RemapNewGRFStringControlCode(b, buf_start, &buff, &str, remaining, dry_run);
-			if (b == 0) continue;
-		}
+			if (_scan_for_gender_data && !builder.GetTargetString()->empty()) {
+				/* Early exit when scanning for gender data if target string is already non-empty */
+				return;
+			}
 
-		if (b < SCC_CONTROL_START || b > SCC_CONTROL_END) {
-			if (buff + Utf8CharLen(b) < last) buff += Utf8Encode(buff, b);
-			continue;
-		}
+			if (SCC_NEWGRF_FIRST <= b && b <= SCC_NEWGRF_LAST) {
+				/* We need to pass some stuff as it might be modified. */
+				StringParameters remaining = args.GetRemainingParameters();
+				b = RemapNewGRFStringControlCode(b, builder.GetTargetString(), &str, remaining, dry_run);
+				if (b == 0) continue;
+			}
 
-		args.SetTypeOfNextParameter(b);
-		switch (b) {
-			case SCC_ENCODED: {
-				ArrayStringParameters<20> sub_args;
+			if (b < SCC_CONTROL_START || b > SCC_CONTROL_END) {
+				builder.Utf8Encode(b);
+				continue;
+			}
 
-				char *p;
-				uint32 stringid = std::strtoul(str, &p, 16);
-				if (*p != ':' && *p != '\0') {
-					while (*p != '\0') p++;
-					str = p;
-					buff = strecat(buff, "(invalid SCC_ENCODED)", last);
-					break;
-				}
-				if (stringid >= TAB_SIZE_GAMESCRIPT) {
-					while (*p != '\0') p++;
-					str = p;
-					buff = strecat(buff, "(invalid StringID)", last);
-					break;
-				}
+			args.SetTypeOfNextParameter(b);
+			switch (b) {
+				case SCC_ENCODED: {
+					ArrayStringParameters<20> sub_args;
 
-				int i = 0;
-				while (*p != '\0' && i < 20) {
-					uint64 param;
-					const char *s = ++p;
-
-					/* Find the next value */
-					bool instring = false;
-					bool escape = false;
-					for (;; p++) {
-						if (*p == '\\') {
-							escape = true;
-							continue;
-						}
-						if (*p == '"' && escape) {
-							escape = false;
-							continue;
-						}
-						escape = false;
-
-						if (*p == '"') {
-							instring = !instring;
-							continue;
-						}
-						if (instring) {
-							continue;
-						}
-
-						if (*p == ':') break;
-						if (*p == '\0') break;
+					char *p;
+					uint32_t stringid = std::strtoul(str, &p, 16);
+					if (*p != ':' && *p != '\0') {
+						while (*p != '\0') p++;
+						str = p;
+						builder += "(invalid SCC_ENCODED)";
+						break;
+					}
+					if (stringid >= TAB_SIZE_GAMESCRIPT) {
+						while (*p != '\0') p++;
+						str = p;
+						builder += "(invalid StringID)";
+						break;
 					}
 
-					if (*s != '"') {
-						/* Check if we want to look up another string */
-						WChar l;
-						size_t len = Utf8Decode(&l, s);
-						bool lookup = (l == SCC_ENCODED);
-						if (lookup) s += len;
+					int i = 0;
+					while (*p != '\0' && i < 20) {
+						uint64_t param;
+						const char *s = ++p;
 
-						param = std::strtoull(s, &p, 16);
-
-						if (lookup) {
-							if (param >= TAB_SIZE_GAMESCRIPT) {
-								while (*p != '\0') p++;
-								str = p;
-								buff = strecat(buff, "(invalid sub-StringID)", last);
-								break;
+						/* Find the next value */
+						bool instring = false;
+						bool escape = false;
+						for (;; p++) {
+							if (*p == '\\') {
+								escape = true;
+								continue;
 							}
-							param = MakeStringID(TEXT_TAB_GAMESCRIPT_START, param);
+							if (*p == '"' && escape) {
+								escape = false;
+								continue;
+							}
+							escape = false;
+
+							if (*p == '"') {
+								instring = !instring;
+								continue;
+							}
+							if (instring) {
+								continue;
+							}
+
+							if (*p == ':') break;
+							if (*p == '\0') break;
 						}
 
-						sub_args.SetParam(i++, param);
-					} else {
-						s++; // skip the leading \"
-						sub_args.SetParam(i++, std::string(s, p - s - 1)); // also skip the trailing \".
-					}
-				}
-				/* If we didn't error out, we can actually print the string. */
-				if (*str != '\0') {
-					str = p;
-					buff = GetStringWithArgs(buff, MakeStringID(TEXT_TAB_GAMESCRIPT_START, stringid), sub_args, last, true);
-				}
-				break;
-			}
-
-			case SCC_NEWGRF_STRINL: {
-				StringID substr = Utf8Consume(&str);
-				str_stack.push(GetStringPtr(substr));
-				break;
-			}
-
-			case SCC_NEWGRF_PRINT_WORD_STRING_ID: {
-				StringID substr = args.GetNextParameter<StringID>();
-				str_stack.push(GetStringPtr(substr));
-				case_index = next_substr_case_index;
-				next_substr_case_index = 0;
-				break;
-			}
-
-
-			case SCC_GENDER_LIST: { // {G 0 Der Die Das}
-				/* First read the meta data from the language file. */
-				size_t offset = orig_offset + (byte)*str++;
-				int gender = 0;
-				if (!dry_run && args.GetTypeAtOffset(offset) != 0) {
-					/* Now we need to figure out what text to resolve, i.e.
-					 * what do we need to draw? So get the actual raw string
-					 * first using the control code to get said string. */
-					char input[4 + 1];
-					char *p = input + Utf8Encode(input, args.GetTypeAtOffset(offset));
-					*p = '\0';
-
-					/* Now do the string formatting. */
-					char buf[256];
-					bool old_sgd = _scan_for_gender_data;
-					_scan_for_gender_data = true;
-					StringParameters tmp_params = args.GetRemainingParameters(offset);
-					p = FormatString(buf, input, tmp_params, lastof(buf));
-					_scan_for_gender_data = old_sgd;
-					*p = '\0';
-
-					/* And determine the string. */
-					const char *s = buf;
-					WChar c = Utf8Consume(&s);
-					/* Does this string have a gender, if so, set it */
-					if (c == SCC_GENDER_INDEX) gender = (byte)s[0];
-				}
-				str = ParseStringChoice(str, gender, &buff, last);
-				break;
-			}
-
-			/* This sets up the gender for the string.
-			 * We just ignore this one. It's used in {G 0 Der Die Das} to determine the case. */
-			case SCC_GENDER_INDEX: // {GENDER 0}
-				if (_scan_for_gender_data) {
-					buff += Utf8Encode(buff, SCC_GENDER_INDEX);
-					*buff++ = *str++;
-				} else {
-					str++;
-				}
-				break;
-
-			case SCC_PLURAL_LIST: { // {P}
-				int plural_form = *str++;          // contains the plural form for this string
-				size_t offset = orig_offset + (byte)*str++;
-				int64 v = args.GetParam(offset); // contains the number that determines plural
-				str = ParseStringChoice(str, DeterminePluralForm(v, plural_form), &buff, last);
-				break;
-			}
-
-			case SCC_ARG_INDEX: { // Move argument pointer
-				args.SetOffset(orig_offset + (byte)*str++);
-				break;
-			}
-
-			case SCC_SET_CASE: { // {SET_CASE}
-				/* This is a pseudo command, it's outputted when someone does {STRING.ack}
-				 * The modifier is added to all subsequent GetStringWithArgs that accept the modifier. */
-				next_substr_case_index = (byte)*str++;
-				break;
-			}
-
-			case SCC_SWITCH_CASE: { // {Used to implement case switching}
-				/* <0x9E> <NUM CASES> <CASE1> <LEN1> <STRING1> <CASE2> <LEN2> <STRING2> <CASE3> <LEN3> <STRING3> <STRINGDEFAULT>
-				 * Each LEN is printed using 2 bytes in big endian order. */
-				uint num = (byte)*str++;
-				while (num) {
-					if ((byte)str[0] == case_index) {
-						/* Found the case, adjust str pointer and continue */
-						str += 3;
-						break;
-					}
-					/* Otherwise skip to the next case */
-					str += 3 + (str[1] << 8) + str[2];
-					num--;
-				}
-				break;
-			}
-
-			case SCC_REVISION: // {REV}
-				buff = strecpy(buff, _openttd_revision, last);
-				break;
-
-			case SCC_RAW_STRING_POINTER: { // {RAW_STRING}
-				const char *raw_string = args.GetNextParameterString();
-				/* raw_string can be(come) nullptr when the parameter is out of range and 0 is returned instead. */
-				if (raw_string == nullptr) {
-					buff = strecat(buff, "(invalid RAW_STRING parameter)", last);
-					break;
-				}
-				buff = FormatString(buff, raw_string, args, last);
-				break;
-			}
-
-			case SCC_STRING: {// {STRING}
-				StringID string_id = args.GetNextParameter<StringID>();
-				if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
-				/* WARNING. It's prohibited for the included string to consume any arguments.
-				 * For included strings that consume argument, you should use STRING1, STRING2 etc.
-				 * To debug stuff you can set argv to nullptr and it will tell you */
-				StringParameters tmp_params(args, 0);
-				buff = GetStringWithArgs(buff, string_id, tmp_params, last, next_substr_case_index, game_script);
-				next_substr_case_index = 0;
-				break;
-			}
-
-			case SCC_STRING1:
-			case SCC_STRING2:
-			case SCC_STRING3:
-			case SCC_STRING4:
-			case SCC_STRING5:
-			case SCC_STRING6:
-			case SCC_STRING7:
-			case SCC_STRING8: { // {STRING1..8}
-				/* Strings that consume arguments */
-				StringID string_id = args.GetNextParameter<StringID>();
-				if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
-				uint size = b - SCC_STRING1 + 1;
-				if (game_script && size > args.GetDataLeft()) {
-					buff = strecat(buff, "(too many parameters)", last);
-				} else {
-					StringParameters sub_args(args, size);
-					buff = GetStringWithArgs(buff, string_id, sub_args, last, next_substr_case_index, game_script);
-				}
-				next_substr_case_index = 0;
-				break;
-			}
-
-			case SCC_COMMA: // {COMMA}
-				buff = FormatCommaNumber(buff, args.GetNextParameter<int64>(), last);
-				break;
-
-			case SCC_DECIMAL: {// {DECIMAL}
-				int64 number = args.GetNextParameter<int64>();
-				int digits = args.GetNextParameter<int>();
-				buff = FormatCommaNumber(buff, number, last, digits);
-				break;
-			}
-
-			case SCC_DECIMAL1: {// {DECIMAL1}
-				int64 number = args.GetNextParameter<int64>();
-				buff = FormatCommaNumber(buff, number, last, 1);
-				break;
-			}
-
-			case SCC_NUM: // {NUM}
-				buff = FormatNoCommaNumber(buff, args.GetNextParameter<int64>(), last);
-				break;
-
-			case SCC_PLUS_NUM: { // {PLUS_NUM}
-				int64 num = args.GetNextParameter<int64>();
-				if (num > 0) {
-					buff += seprintf(buff, last, "+");
-				}
-				buff = FormatNoCommaNumber(buff, num, last);
-				break;
-			}
-
-			case SCC_ZEROFILL_NUM: { // {ZEROFILL_NUM}
-				int64 num = args.GetNextParameter<int64>();
-				buff = FormatZerofillNumber(buff, num, args.GetNextParameter<int>(), last);
-				break;
-			}
-
-			case SCC_HEX: // {HEX}
-				buff = FormatHexNumber(buff, args.GetNextParameter<uint64>(), last);
-				break;
-
-			case SCC_BYTES: // {BYTES}
-				buff = FormatBytes(buff, args.GetNextParameter<int64>(), last);
-				break;
-
-			case SCC_CARGO_TINY: { // {CARGO_TINY}
-				/* Tiny description of cargotypes. Layout:
-				 * param 1: cargo type
-				 * param 2: cargo count */
-				CargoID cargo = args.GetNextParameter<CargoID>();
-				if (cargo >= CargoSpec::GetArraySize()) break;
-
-				StringID cargo_str = CargoSpec::Get(cargo)->units_volume;
-				int64 amount = 0;
-				switch (cargo_str) {
-					case STR_TONS:
-						amount = _units_weight[_settings_game.locale.units_weight].c.ToDisplay(args.GetNextParameter<int64>());
-						break;
-
-					case STR_LITERS:
-						amount = _units_volume[_settings_game.locale.units_volume].c.ToDisplay(args.GetNextParameter<int64>());
-						break;
-
-					default: {
-						amount = args.GetNextParameter<int64>();
-						break;
-					}
-				}
-
-				buff = FormatCommaNumber(buff, amount, last);
-				break;
-			}
-
-			case SCC_CARGO_SHORT: { // {CARGO_SHORT}
-				/* Short description of cargotypes. Layout:
-				 * param 1: cargo type
-				 * param 2: cargo count */
-				CargoID cargo = args.GetNextParameter<CargoID>();
-				if (cargo >= CargoSpec::GetArraySize()) break;
-
-				StringID cargo_str = CargoSpec::Get(cargo)->units_volume;
-				switch (cargo_str) {
-					case STR_TONS: {
-						assert(_settings_game.locale.units_weight < lengthof(_units_weight));
-						const auto &x = _units_weight[_settings_game.locale.units_weight];
-						auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-						buff = FormatString(buff, GetStringPtr(x.l), tmp_params, last);
-						break;
-					}
-
-					case STR_LITERS: {
-						assert(_settings_game.locale.units_volume < lengthof(_units_volume));
-						const auto &x = _units_volume[_settings_game.locale.units_volume];
-						auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-						buff = FormatString(buff, GetStringPtr(x.l), tmp_params, last);
-						break;
-					}
-
-					default: {
-						StringParameters tmp_params(args, 1);
-						buff = GetStringWithArgs(buff, cargo_str, tmp_params, last);
-						break;
-					}
-				}
-				break;
-			}
-
-			case SCC_CARGO_LONG: { // {CARGO_LONG}
-				/* First parameter is cargo type, second parameter is cargo count */
-				CargoID cargo = args.GetNextParameter<CargoID>();
-				if (cargo != CT_INVALID && cargo >= CargoSpec::GetArraySize()) break;
-
-				StringID cargo_str = (cargo == CT_INVALID) ? STR_QUANTITY_N_A : CargoSpec::Get(cargo)->quantifier;
-				StringParameters tmp_args(args, 1);
-				buff = GetStringWithArgs(buff, cargo_str, tmp_args, last);
-				break;
-			}
-
-			case SCC_CARGO_LIST: { // {CARGO_LIST}
-				CargoTypes cmask = args.GetNextParameter<CargoTypes>();
-				bool first = true;
-
-				for (const auto &cs : _sorted_cargo_specs) {
-					if (!HasBit(cmask, cs->Index())) continue;
-
-					if (buff >= last - 2) break; // ',' and ' '
-
-					if (first) {
-						first = false;
-					} else {
-						/* Add a comma if this is not the first item */
-						*buff++ = ',';
-						*buff++ = ' ';
-					}
-
-					buff = GetStringWithArgs(buff, cs->name, args, last, next_substr_case_index, game_script);
-				}
-
-				/* If first is still true then no cargo is accepted */
-				if (first) buff = GetStringWithArgs(buff, STR_JUST_NOTHING, args, last, next_substr_case_index, game_script);
-
-				*buff = '\0';
-				next_substr_case_index = 0;
-
-				/* Make sure we detect any buffer overflow */
-				assert(buff < last);
-				break;
-			}
-
-			case SCC_CURRENCY_SHORT: // {CURRENCY_SHORT}
-				buff = FormatGenericCurrency(buff, _currency, args.GetNextParameter<int64>(), true, last);
-				break;
-
-			case SCC_CURRENCY_LONG: // {CURRENCY_LONG}
-				buff = FormatGenericCurrency(buff, _currency, args.GetNextParameter<int64>(), false, last);
-				break;
-
-			case SCC_DATE_TINY: // {DATE_TINY}
-				buff = FormatTinyOrISODate(buff, args.GetNextParameter<Date>(), STR_FORMAT_DATE_TINY, last);
-				break;
-
-			case SCC_DATE_SHORT: // {DATE_SHORT}
-				buff = FormatMonthAndYear(buff, args.GetNextParameter<Date>(), last, next_substr_case_index);
-				next_substr_case_index = 0;
-				break;
-
-			case SCC_DATE_LONG: // {DATE_LONG}
-				buff = FormatYmdString(buff, args.GetNextParameter<Date>(), last, next_substr_case_index);
-				next_substr_case_index = 0;
-				break;
-
-			case SCC_DATE_WALLCLOCK_LONG: { // {DATE_WALLCLOCK_LONG}
-				if (_settings_time.time_in_minutes) {
-					buff = FormatWallClockString(buff, args.GetNextParameter<DateTicksScaled>(), last, _settings_client.gui.date_with_time, next_substr_case_index);
-				} else {
-					buff = FormatYmdString(buff, ScaledDateTicksToDate(args.GetNextParameter<DateTicksScaled>()), last, next_substr_case_index);
-				}
-				break;
-			}
-
-			case SCC_DATE_WALLCLOCK_SHORT: { // {DATE_WALLCLOCK_SHORT}
-				if (_settings_time.time_in_minutes) {
-					buff = FormatWallClockString(buff, args.GetNextParameter<DateTicksScaled>(), last, _settings_client.gui.date_with_time, next_substr_case_index);
-				} else {
-					buff = FormatYmdString(buff, ScaledDateTicksToDate(args.GetNextParameter<DateTicksScaled>()), last, next_substr_case_index);
-				}
-				break;
-			}
-
-			case SCC_DATE_WALLCLOCK_TINY: { // {DATE_WALLCLOCK_TINY}
-				if (_settings_time.time_in_minutes) {
-					buff = FormatWallClockString(buff, args.GetNextParameter<DateTicksScaled>(), last, false, next_substr_case_index);
-				} else {
-					buff = FormatTinyOrISODate(buff, ScaledDateTicksToDate(args.GetNextParameter<DateTicksScaled>()), STR_FORMAT_DATE_TINY, last);
-				}
-				break;
-			}
-
-			case SCC_DATE_WALLCLOCK_ISO: { // {DATE_WALLCLOCK_ISO}
-				if (_settings_time.time_in_minutes) {
-					buff = FormatWallClockString(buff, args.GetNextParameter<DateTicksScaled>(), last, false, next_substr_case_index);
-				} else {
-					buff = FormatTinyOrISODate(buff, ScaledDateTicksToDate(args.GetNextParameter<DateTicksScaled>()), STR_FORMAT_DATE_ISO, last);
-				}
-				break;
-			}
-
-			case SCC_DATE_ISO: // {DATE_ISO}
-				buff = FormatTinyOrISODate(buff, args.GetNextParameter<Date>(), STR_FORMAT_DATE_ISO, last);
-				break;
-
-			case SCC_TIME_HHMM: // {TIME_HHMM}
-				buff = FormatTimeHHMMString(buff, args.GetNextParameter<uint>(), last, next_substr_case_index);
-				break;
-
-			case SCC_TT_TICKS:      // {TT_TICKS}
-			case SCC_TT_TICKS_LONG: // {TT_TICKS_LONG}
-				if (_settings_client.gui.timetable_in_ticks) {
-					auto tmp_params = MakeParameters(args.GetNextParameter<int64>());
-					buff = FormatString(buff, GetStringPtr(STR_TIMETABLE_TICKS), tmp_params, last);
-				} else {
-					StringID str = _settings_time.time_in_minutes ? STR_TIMETABLE_MINUTES : STR_TIMETABLE_DAYS;
-					int64 ticks = args.GetNextParameter<int64>();
-					int64 ratio = DATE_UNIT_SIZE;
-					int64 units = ticks / ratio;
-					int64 leftover = _settings_client.gui.timetable_leftover_ticks ? ticks % ratio : 0;
-					auto tmp_params = MakeParameters(units);
-					buff = FormatString(buff, GetStringPtr(str), tmp_params, last);
-					if (b == SCC_TT_TICKS_LONG && _settings_time.time_in_minutes && units > 59) {
-						int64 hours = units / 60;
-						int64 minutes = units % 60;
-						auto tmp_params = MakeParameters(
-							(minutes != 0) ? STR_TIMETABLE_HOURS_MINUTES : STR_TIMETABLE_HOURS,
-							hours,
-							minutes
-						);
-						buff = FormatString(buff, GetStringPtr(STR_TIMETABLE_MINUTES_SUFFIX), tmp_params, last);
-					}
-					if (leftover != 0) {
-						auto tmp_params = MakeParameters(leftover);
-						buff = FormatString(buff, GetStringPtr(STR_TIMETABLE_LEFTOVER_TICKS), tmp_params, last);
-					}
-				}
-				break;
-
-			case SCC_FORCE: { // {FORCE}
-				assert(_settings_game.locale.units_force < lengthof(_units_force));
-				const auto &x = _units_force[_settings_game.locale.units_force];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_HEIGHT: { // {HEIGHT}
-				assert(_settings_game.locale.units_height < lengthof(_units_height));
-				const auto &x = _units_height[_settings_game.locale.units_height];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_POWER: { // {POWER}
-				assert(_settings_game.locale.units_power < lengthof(_units_power));
-				const auto &x = _units_power[_settings_game.locale.units_power];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_POWER_TO_WEIGHT: { // {POWER_TO_WEIGHT}
-				auto setting = _settings_game.locale.units_power * 3u + _settings_game.locale.units_weight;
-				assert(setting < lengthof(_units_power_to_weight));
-				const auto &x = _units_power_to_weight[setting];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_VELOCITY: { // {VELOCITY}
-				int64 arg = args.GetNextParameter<int64>();
-				// Unpack vehicle type from packed argument to get desired units.
-				VehicleType vt = static_cast<VehicleType>(GB(arg, 56, 8));
-				byte units = GetVelocityUnits(vt);
-				assert(units < lengthof(_units_velocity));
-				const auto &x = _units_velocity[units];
-				auto tmp_params = MakeParameters(ConvertKmhishSpeedToDisplaySpeed(GB(arg, 0, 56), vt), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_VOLUME_SHORT: { // {VOLUME_SHORT}
-				assert(_settings_game.locale.units_volume < lengthof(_units_volume));
-				const auto &x = _units_volume[_settings_game.locale.units_volume];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_VOLUME_LONG: { // {VOLUME_LONG}
-				assert(_settings_game.locale.units_volume < lengthof(_units_volume));
-				const auto &x = _units_volume[_settings_game.locale.units_volume];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.l), tmp_params, last);
-				break;
-			}
-
-			case SCC_WEIGHT_SHORT: { // {WEIGHT_SHORT}
-				assert(_settings_game.locale.units_weight < lengthof(_units_weight));
-				const auto &x = _units_weight[_settings_game.locale.units_weight];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.s), tmp_params, last);
-				break;
-			}
-
-			case SCC_WEIGHT_LONG: { // {WEIGHT_LONG}
-				assert(_settings_game.locale.units_weight < lengthof(_units_weight));
-				const auto &x = _units_weight[_settings_game.locale.units_weight];
-				auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64>()), x.decimal_places);
-				buff = FormatString(buff, GetStringPtr(x.l), tmp_params, last);
-				break;
-			}
-
-			case SCC_POWER_WEIGHT_RATIO: { // {POWER_WEIGHT_RATIO}
-				assert(_settings_game.locale.units_power < lengthof(_units_power));
-				assert(_settings_game.locale.units_weight < lengthof(_units_weight));
-
-				buff = FormatUnitWeightRatio(buff, last, _units_power[_settings_game.locale.units_power], args.GetNextParameter<int64>());
-				break;
-			}
-
-			case SCC_FORCE_WEIGHT_RATIO: { // {FORCE_WEIGHT_RATIO}
-				assert(_settings_game.locale.units_force < lengthof(_units_force));
-				assert(_settings_game.locale.units_weight < lengthof(_units_weight));
-
-				buff = FormatUnitWeightRatio(buff, last, _units_force[_settings_game.locale.units_force], args.GetNextParameter<int64>());
-				break;
-			}
-
-			case SCC_COMPANY_NAME: { // {COMPANY}
-				const Company *c = Company::GetIfValid(args.GetNextParameter<CompanyID>());
-				if (c == nullptr) break;
-
-				if (!c->name.empty()) {
-					auto tmp_params = MakeParameters(c->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					auto tmp_params = MakeParameters(c->name_2);
-					buff = GetStringWithArgs(buff, c->name_1, tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_COMPANY_NUM: { // {COMPANY_NUM}
-				CompanyID company = args.GetNextParameter<CompanyID>();
-
-				/* Nothing is added for AI or inactive companies */
-				if (Company::IsValidHumanID(company)) {
-					auto tmp_params = MakeParameters(company + 1);
-					buff = GetStringWithArgs(buff, STR_FORMAT_COMPANY_NUM, tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_DEPOT_NAME: { // {DEPOT}
-				VehicleType vt = args.GetNextParameter<VehicleType>();
-				if (vt == VEH_AIRCRAFT) {
-					StringParameters tmp_params = StringParameters(args, 1);
-					buff = GetStringWithArgs(buff, STR_FORMAT_DEPOT_NAME_AIRCRAFT, tmp_params, last);
-					break;
-				}
-
-				const Depot *d = Depot::Get(args.GetNextParameter<DepotID>());
-				if (!d->name.empty()) {
-					auto tmp_params = MakeParameters(d->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					auto tmp_params = MakeParameters(d->town->index, d->town_cn + 1);
-					buff = GetStringWithArgs(buff, STR_FORMAT_DEPOT_NAME_TRAIN + 2 * vt + (d->town_cn == 0 ? 0 : 1), tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_ENGINE_NAME: { // {ENGINE}
-				int64 arg = args.GetNextParameter<int64>();
-				const Engine *e = Engine::GetIfValid(static_cast<EngineID>(arg));
-				if (e == nullptr) break;
-
-				if (!e->name.empty() && e->IsEnabled()) {
-					auto tmp_params = MakeParameters(e->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-
-					break;
-				}
-
-				if (HasBit(e->info.callback_mask, CBM_VEHICLE_NAME)) {
-					uint16 callback = GetVehicleCallback(CBID_VEHICLE_NAME, static_cast<uint32>(arg >> 32), 0, e->index, nullptr);
-					/* Not calling ErrorUnknownCallbackResult due to being inside string processing. */
-					if (callback != CALLBACK_FAILED && callback < 0x400) {
-						const GRFFile *grffile = e->GetGRF();
-						assert(grffile != nullptr);
-
-						StartTextRefStackUsage(grffile, 6);
-						ArrayStringParameters<6> tmp_params;
-						buff = GetStringWithArgs(buff, GetGRFStringID(grffile->grfid, 0xD000 + callback), tmp_params, last);
-						StopTextRefStackUsage();
-
-						break;
-					}
-				}
-
-				auto tmp_params = MakeParameters();
-				buff = GetStringWithArgs(buff, e->info.string_id, tmp_params, last);
-				break;
-			}
-
-			case SCC_GROUP_NAME: { // {GROUP}
-				uint32 id = args.GetNextParameter<uint32>();
-				bool recurse = _settings_client.gui.show_group_hierarchy_name && (id & GROUP_NAME_HIERARCHY);
-				id &= ~GROUP_NAME_HIERARCHY;
-				const Group *group = Group::GetIfValid(id);
-				if (group == nullptr) break;
-
-				auto handle_group = y_combinator([&](auto handle_group, const Group *g) -> void {
-					if (recurse && g->parent != INVALID_GROUP) {
-						handle_group(Group::Get(g->parent));
-						auto tmp_params = MakeParameters();
-						buff = GetStringWithArgs(buff, STR_HIERARCHY_SEPARATOR, tmp_params, last);
-					}
-					if (!g->name.empty()) {
-						auto tmp_params = MakeParameters(g->name.c_str());
-						buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-					} else {
-						auto tmp_params = MakeParameters(g->index);
-
-						buff = GetStringWithArgs(buff, STR_FORMAT_GROUP_NAME, tmp_params, last);
-					}
-				});
-				handle_group(group);
-				break;
-			}
-
-			case SCC_INDUSTRY_NAME: { // {INDUSTRY}
-				const Industry *i = Industry::GetIfValid(args.GetNextParameter<IndustryID>());
-				if (i == nullptr) break;
-
-				static bool use_cache = true;
-				if (use_cache) { // Use cached version if first call
-					AutoRestoreBackup cache_backup(use_cache, false);
-					buff = strecpy(buff, i->GetCachedName().c_str(), last);
-				} else if (_scan_for_gender_data) {
-					/* Gender is defined by the industry type.
-					 * STR_FORMAT_INDUSTRY_NAME may have the town first, so it would result in the gender of the town name */
-					auto tmp_params = MakeParameters();
-					buff = FormatString(buff, GetStringPtr(GetIndustrySpec(i->type)->name), tmp_params, last, next_substr_case_index);
-				} else {
-					/* First print the town name and the industry type name. */
-					auto tmp_params = MakeParameters(i->town->index, GetIndustrySpec(i->type)->name);
-
-					buff = FormatString(buff, GetStringPtr(STR_FORMAT_INDUSTRY_NAME), tmp_params, last, next_substr_case_index);
-				}
-				next_substr_case_index = 0;
-				break;
-			}
-
-			case SCC_PRESIDENT_NAME: { // {PRESIDENT_NAME}
-				const Company *c = Company::GetIfValid(args.GetNextParameter<CompanyID>());
-				if (c == nullptr) break;
-
-				if (!c->president_name.empty()) {
-					auto tmp_params = MakeParameters(c->president_name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					auto tmp_params = MakeParameters(c->president_name_2);
-					buff = GetStringWithArgs(buff, c->president_name_1, tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_STATION_NAME: { // {STATION}
-				StationID sid = args.GetNextParameter<StationID>();
-				const Station *st = Station::GetIfValid(sid);
-
-				if (st == nullptr) {
-					/* The station doesn't exist anymore. The only place where we might
-					 * be "drawing" an invalid station is in the case of cargo that is
-					 * in transit. */
-					auto tmp_params = MakeParameters();
-					buff = GetStringWithArgs(buff, STR_UNKNOWN_STATION, tmp_params, last);
-					break;
-				}
-
-				static bool use_cache = true;
-				if (use_cache) { // Use cached version if first call
-					AutoRestoreBackup cache_backup(use_cache, false);
-					buff = strecpy(buff, st->GetCachedName(), last);
-				} else if (!st->name.empty()) {
-					auto tmp_params = MakeParameters(st->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					StringID string_id = st->string_id;
-					if (st->indtype != IT_INVALID) {
-						/* Special case where the industry provides the name for the station */
-						const IndustrySpec *indsp = GetIndustrySpec(st->indtype);
-
-						/* Industry GRFs can change which might remove the station name and
-						 * thus cause very strange things. Here we check for that before we
-						 * actually set the station name. */
-						if (indsp->station_name != STR_NULL && indsp->station_name != STR_UNDEFINED) {
-							string_id = indsp->station_name;
+						if (*s != '"') {
+							/* Check if we want to look up another string */
+							char32_t l;
+							size_t len = Utf8Decode(&l, s);
+							bool lookup = (l == SCC_ENCODED);
+							if (lookup) s += len;
+
+							param = std::strtoull(s, &p, 16);
+
+							if (lookup) {
+								if (param >= TAB_SIZE_GAMESCRIPT) {
+									while (*p != '\0') p++;
+									str = p;
+									builder += "(invalid sub-StringID)";
+									break;
+								}
+								param = MakeStringID(TEXT_TAB_GAMESCRIPT_START, param);
+							}
+
+							sub_args.SetParam(i++, param);
+						} else {
+							s++; // skip the leading \"
+							sub_args.SetParam(i++, std::string(s, p - s - 1)); // also skip the trailing \".
 						}
 					}
-					if (st->extra_name_index != UINT16_MAX && st->extra_name_index < _extra_station_names_used) {
-						string_id = _extra_station_names[st->extra_name_index].str;
+					/* If we didn't error out, we can actually print the string. */
+					if (*str != '\0') {
+						str = p;
+						GetStringWithArgs(builder, MakeStringID(TEXT_TAB_GAMESCRIPT_START, stringid), sub_args, true);
 					}
-
-					auto tmp_params = MakeParameters(STR_TOWN_NAME, st->town->index, st->index);
-					buff = GetStringWithArgs(buff, string_id, tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_TOWN_NAME: { // {TOWN}
-				const Town *t = Town::GetIfValid(args.GetNextParameter<TownID>());
-				if (t == nullptr) break;
-
-				static bool use_cache = true;
-				if (use_cache) { // Use cached version if first call
-					AutoRestoreBackup cache_backup(use_cache, false);
-					buff = strecpy(buff, t->GetCachedName(), last);
-				} else if (!t->name.empty()) {
-					auto tmp_params = MakeParameters(t->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					buff = GetTownName(buff, t, last);
-				}
-				break;
-			}
-
-			case SCC_VIEWPORT_TOWN_LABEL1:
-			case SCC_VIEWPORT_TOWN_LABEL2: { // {VIEWPORT_TOWN_LABEL1..2}
-				int32 t = args.GetNextParameter<int32>();
-				uint64 data = args.GetNextParameter<uint64>();
-
-				bool tiny = (b == SCC_VIEWPORT_TOWN_LABEL2);
-				StringID string_id = STR_VIEWPORT_TOWN_COLOUR;
-				if (!tiny) string_id += GB(data, 40, 2);
-				auto tmp_params = MakeParameters(t, GB(data, 32, 8), GB(data, 0, 32));
-				buff = GetStringWithArgs(buff, string_id, tmp_params, last);
-				break;
-			}
-
-			case SCC_WAYPOINT_NAME: { // {WAYPOINT}
-				Waypoint *wp = Waypoint::GetIfValid(args.GetNextParameter<StationID>());
-				if (wp == nullptr) break;
-
-				if (!wp->name.empty()) {
-					auto tmp_params = MakeParameters(wp->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					auto tmp_params = MakeParameters(wp->town->index, wp->town_cn + 1);
-					StringID string_id = ((wp->string_id == STR_SV_STNAME_BUOY) ? STR_FORMAT_BUOY_NAME : STR_FORMAT_WAYPOINT_NAME);
-					if (wp->town_cn != 0) string_id++;
-					buff = GetStringWithArgs(buff, string_id, tmp_params, last);
-				}
-				break;
-			}
-
-			case SCC_VEHICLE_NAME: { // {VEHICLE}
-				uint32 id = args.GetNextParameter<uint32>();
-				uint8 vehicle_names = _settings_client.gui.vehicle_names;
-				if (id & VEHICLE_NAME_NO_GROUP) {
-					id &= ~VEHICLE_NAME_NO_GROUP;
-					/* Change format from long to traditional */
-					if (vehicle_names == 2) vehicle_names = 0;
+					break;
 				}
 
-				const Vehicle *v = Vehicle::GetIfValid(id);
-				if (v == nullptr) break;
+				case SCC_NEWGRF_STRINL: {
+					StringID substr = Utf8Consume(&str);
+					str_stack.push(GetStringPtr(substr));
+					break;
+				}
 
-				if (!v->name.empty()) {
-					auto tmp_params = MakeParameters(v->name.c_str());
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else if (v->group_id != DEFAULT_GROUP && vehicle_names != 0 && v->type < VEH_COMPANY_END) {
-					/* The vehicle has no name, but is member of a group, so print group name */
-					uint32 group_name = v->group_id;
-					if (_settings_client.gui.show_vehicle_group_hierarchy_name) group_name |= GROUP_NAME_HIERARCHY;
-					if (vehicle_names == 1) {
-						auto tmp_params = MakeParameters(group_name, v->unitnumber);
-						buff = GetStringWithArgs(buff, STR_FORMAT_GROUP_VEHICLE_NAME, tmp_params, last);
+				case SCC_NEWGRF_PRINT_WORD_STRING_ID: {
+					StringID substr = args.GetNextParameter<StringID>();
+					str_stack.push(GetStringPtr(substr));
+					case_index = next_substr_case_index;
+					next_substr_case_index = 0;
+					break;
+				}
+
+
+				case SCC_GENDER_LIST: { // {G 0 Der Die Das}
+					/* First read the meta data from the language file. */
+					size_t offset = orig_offset + (uint8_t)*str++;
+					int gender = 0;
+					if (!dry_run && args.GetTypeAtOffset(offset) != 0) {
+						/* Now we need to figure out what text to resolve, i.e.
+						 * what do we need to draw? So get the actual raw string
+						 * first using the control code to get said string. */
+						char input[4 + 1];
+						char *p = input + Utf8Encode(input, args.GetTypeAtOffset(offset));
+						*p = '\0';
+
+						/* The gender is stored at the start of the formatted string. */
+						bool old_sgd = _scan_for_gender_data;
+						_scan_for_gender_data = true;
+						std::string buffer;
+						StringBuilder tmp_builder(buffer);
+						StringParameters tmp_params = args.GetRemainingParameters(offset);
+						FormatString(tmp_builder, input, tmp_params);
+						_scan_for_gender_data = old_sgd;
+
+						/* And determine the string. */
+						const char *s = buffer.c_str();
+						char32_t c = Utf8Consume(&s);
+						/* Does this string have a gender, if so, set it */
+						if (c == SCC_GENDER_INDEX) gender = (uint8_t)s[0];
+					}
+					str = ParseStringChoice(str, gender, builder);
+					break;
+				}
+
+				/* This sets up the gender for the string.
+				 * We just ignore this one. It's used in {G 0 Der Die Das} to determine the case. */
+				case SCC_GENDER_INDEX: // {GENDER 0}
+					if (_scan_for_gender_data) {
+						builder.Utf8Encode(SCC_GENDER_INDEX);
+						builder += *str++;
+						return; // Exit early
 					} else {
-						auto tmp_params = MakeParameters(group_name, STR_TRADITIONAL_TRAIN_NAME + v->type, v->unitnumber);
-						buff = GetStringWithArgs(buff, STR_FORMAT_GROUP_VEHICLE_NAME_LONG, tmp_params, last);
+						str++;
 					}
-				} else {
-					auto tmp_params = MakeParameters(v->unitnumber);
+					break;
 
-					StringID string_id;
-					if (v->type < VEH_COMPANY_END) {
-						string_id = ((vehicle_names == 1) ? STR_SV_TRAIN_NAME : STR_TRADITIONAL_TRAIN_NAME) + v->type;
+				case SCC_PLURAL_LIST: { // {P}
+					int plural_form = *str++;          // contains the plural form for this string
+					size_t offset = orig_offset + (uint8_t)*str++;
+					int64_t v = args.GetParam(offset); // contains the number that determines plural
+					str = ParseStringChoice(str, DeterminePluralForm(v, plural_form), builder);
+					break;
+				}
+
+				case SCC_ARG_INDEX: { // Move argument pointer
+					args.SetOffset(orig_offset + (uint8_t)*str++);
+					break;
+				}
+
+				case SCC_SET_CASE: { // {SET_CASE}
+					/* This is a pseudo command, it's outputted when someone does {STRING.ack}
+					 * The modifier is added to all subsequent GetStringWithArgs that accept the modifier. */
+					next_substr_case_index = (uint8_t)*str++;
+					break;
+				}
+
+				case SCC_SWITCH_CASE: { // {Used to implement case switching}
+					/* <0x9E> <NUM CASES> <CASE1> <LEN1> <STRING1> <CASE2> <LEN2> <STRING2> <CASE3> <LEN3> <STRING3> <STRINGDEFAULT>
+					 * Each LEN is printed using 2 bytes in big endian order. */
+					uint num = (uint8_t)*str++;
+					while (num) {
+						if ((uint8_t)str[0] == case_index) {
+							/* Found the case, adjust str pointer and continue */
+							str += 3;
+							break;
+						}
+						/* Otherwise skip to the next case */
+						str += 3 + (str[1] << 8) + str[2];
+						num--;
+					}
+					break;
+				}
+
+				case SCC_REVISION: // {REV}
+					builder += _openttd_revision;
+					break;
+
+				case SCC_RAW_STRING_POINTER: { // {RAW_STRING}
+					const char *raw_string = args.GetNextParameterString();
+					/* raw_string can be nullptr. */
+					if (raw_string == nullptr) {
+						builder += "(invalid RAW_STRING parameter)";
+						break;
+					}
+					FormatString(builder, raw_string, args);
+					break;
+				}
+
+				case SCC_STRING: {// {STRING}
+					StringID string_id = args.GetNextParameter<StringID>();
+					if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
+					/* It's prohibited for the included string to consume any arguments. */
+					StringParameters tmp_params(args, game_script ? args.GetDataLeft() : 0);
+					GetStringWithArgs(builder, string_id, tmp_params, next_substr_case_index, game_script);
+					next_substr_case_index = 0;
+					break;
+				}
+
+				case SCC_STRING1:
+				case SCC_STRING2:
+				case SCC_STRING3:
+				case SCC_STRING4:
+				case SCC_STRING5:
+				case SCC_STRING6:
+				case SCC_STRING7:
+				case SCC_STRING8: { // {STRING1..8}
+					/* Strings that consume arguments */
+					StringID string_id = args.GetNextParameter<StringID>();
+					if (game_script && GetStringTab(string_id) != TEXT_TAB_GAMESCRIPT_START) break;
+					uint size = b - SCC_STRING1 + 1;
+					if (game_script && size > args.GetDataLeft()) {
+						builder += "(too many parameters)";
 					} else {
-						string_id = STR_INVALID_VEHICLE;
+						StringParameters sub_args(args, game_script ? args.GetDataLeft() : size);
+						GetStringWithArgs(builder, string_id, sub_args, next_substr_case_index, game_script);
+						args.AdvanceOffset(size);
+					}
+					next_substr_case_index = 0;
+					break;
+				}
+
+				case SCC_COMMA: // {COMMA}
+					FormatCommaNumber(builder, args.GetNextParameter<int64_t>());
+					break;
+
+				case SCC_DECIMAL: { // {DECIMAL}
+					int64_t number = args.GetNextParameter<int64_t>();
+					int digits = args.GetNextParameter<int>();
+					FormatCommaNumber(builder, number, digits);
+					break;
+				}
+
+				case SCC_DECIMAL1: {// {DECIMAL1}
+					int64_t number = args.GetNextParameter<int64_t>();
+					FormatCommaNumber(builder, number, 1);
+					break;
+				}
+
+				case SCC_NUM: // {NUM}
+					FormatNoCommaNumber(builder, args.GetNextParameter<int64_t>());
+					break;
+
+				case SCC_PLUS_NUM: { // {PLUS_NUM}
+					int64_t number = args.GetNextParameter<int64_t>();
+					if (number > 0) {
+						builder += '+';
+					}
+					FormatNoCommaNumber(builder, number);
+					break;
+				}
+
+				case SCC_ZEROFILL_NUM: { // {ZEROFILL_NUM}
+					int64_t num = args.GetNextParameter<int64_t>();
+					FormatZerofillNumber(builder, num, args.GetNextParameter<int>());
+					break;
+				}
+
+				case SCC_HEX: // {HEX}
+					FormatHexNumber(builder, args.GetNextParameter<uint64_t>());
+					break;
+
+				case SCC_BYTES: // {BYTES}
+					FormatBytes(builder, args.GetNextParameter<int64_t>());
+					break;
+
+				case SCC_CARGO_TINY: { // {CARGO_TINY}
+					/* Tiny description of cargotypes. Layout:
+					 * param 1: cargo type
+					 * param 2: cargo count */
+					CargoID cargo = args.GetNextParameter<CargoID>();
+					if (cargo >= CargoSpec::GetArraySize()) break;
+
+					StringID cargo_str = CargoSpec::Get(cargo)->units_volume;
+					int64_t amount = 0;
+					switch (cargo_str) {
+						case STR_TONS:
+							amount = _units_weight[_settings_game.locale.units_weight].c.ToDisplay(args.GetNextParameter<int64_t>());
+							break;
+
+						case STR_LITERS:
+							amount = _units_volume[_settings_game.locale.units_volume].c.ToDisplay(args.GetNextParameter<int64_t>());
+							break;
+
+						default: {
+							amount = args.GetNextParameter<int64_t>();
+							break;
+						}
 					}
 
-					buff = GetStringWithArgs(buff, string_id, tmp_params, last);
+					FormatCommaNumber(builder, amount);
+					break;
 				}
-				break;
-			}
 
-			case SCC_SIGN_NAME: { // {SIGN}
-				const Sign *si = Sign::GetIfValid(args.GetNextParameter<SignID>());
-				if (si == nullptr) break;
+				case SCC_CARGO_SHORT: { // {CARGO_SHORT}
+					/* Short description of cargotypes. Layout:
+					 * param 1: cargo type
+					 * param 2: cargo count */
+					CargoID cargo = args.GetNextParameter<CargoID>();
+					if (cargo >= CargoSpec::GetArraySize()) break;
 
-				if (!si->name.empty()) {
-					auto tmp_params = MakeParameters(si->name);
-					buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				} else {
-					auto tmp_params = MakeParameters();
-					buff = GetStringWithArgs(buff, STR_DEFAULT_SIGN_NAME, tmp_params, last);
+					StringID cargo_str = CargoSpec::Get(cargo)->units_volume;
+					switch (cargo_str) {
+						case STR_TONS: {
+							assert(_settings_game.locale.units_weight < lengthof(_units_weight));
+							const auto &x = _units_weight[_settings_game.locale.units_weight];
+							auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+							FormatString(builder, GetStringPtr(x.l), tmp_params);
+							break;
+						}
+
+						case STR_LITERS: {
+							assert(_settings_game.locale.units_volume < lengthof(_units_volume));
+							const auto &x = _units_volume[_settings_game.locale.units_volume];
+							auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+							FormatString(builder, GetStringPtr(x.l), tmp_params);
+							break;
+						}
+
+						default: {
+							auto tmp_params = MakeParameters(args.GetNextParameter<int64_t>());
+							GetStringWithArgs(builder, cargo_str, tmp_params);
+							break;
+						}
+					}
+					break;
 				}
-				break;
-			}
 
-			case SCC_TR_SLOT_NAME: { // {TRSLOT}
-				const TraceRestrictSlot *slot = TraceRestrictSlot::GetIfValid(args.GetNextParameter<uint32>());
-				if (slot == nullptr) break;
-				auto tmp_params = MakeParameters(slot->name.c_str());
-				buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				break;
-			}
+				case SCC_CARGO_LONG: { // {CARGO_LONG}
+					/* First parameter is cargo type, second parameter is cargo count */
+					CargoID cargo = args.GetNextParameter<CargoID>();
+					if (cargo != INVALID_CARGO && cargo >= CargoSpec::GetArraySize()) break;
 
-			case SCC_TR_COUNTER_NAME: { // {TRCOUNTER}
-				const TraceRestrictCounter *ctr = TraceRestrictCounter::GetIfValid(args.GetNextParameter<uint32>());
-				if (ctr == nullptr) break;
-				auto tmp_params = MakeParameters(ctr->name.c_str());
-				buff = GetStringWithArgs(buff, STR_JUST_RAW_STRING, tmp_params, last);
-				break;
-			}
-
-			case SCC_STATION_FEATURES: { // {STATIONFEATURES}
-				buff = StationGetSpecialString(buff, args.GetNextParameter<StationFacility>(), last);
-				break;
-			}
-
-			case SCC_COLOUR: {// {COLOUR}
-				int64 tc = args.GetNextParameter<Colours>();
-				if (tc >= 0 && tc < TC_END) {
-					buff += Utf8Encode(buff, SCC_BLUE + tc);
+					StringID cargo_str = (cargo == INVALID_CARGO) ? STR_QUANTITY_N_A : CargoSpec::Get(cargo)->quantifier;
+					auto tmp_args = MakeParameters(args.GetNextParameter<int64_t>());
+					GetStringWithArgs(builder, cargo_str, tmp_args);
+					break;
 				}
-				break;
+
+				case SCC_CARGO_LIST: { // {CARGO_LIST}
+					CargoTypes cmask = args.GetNextParameter<CargoTypes>();
+					bool first = true;
+
+					for (const auto &cs : _sorted_cargo_specs) {
+						if (!HasBit(cmask, cs->Index())) continue;
+
+						if (first) {
+							first = false;
+						} else {
+							/* Add a comma if this is not the first item */
+							builder += ", ";
+						}
+
+						GetStringWithArgs(builder, cs->name, args, next_substr_case_index, game_script);
+					}
+
+					/* If first is still true then no cargo is accepted */
+					if (first) GetStringWithArgs(builder, STR_JUST_NOTHING, args, next_substr_case_index, game_script);
+
+					next_substr_case_index = 0;
+					break;
+				}
+
+				case SCC_CURRENCY_SHORT: // {CURRENCY_SHORT}
+					FormatGenericCurrency(builder, _currency, args.GetNextParameter<int64_t>(), true);
+					break;
+
+				case SCC_CURRENCY_LONG: // {CURRENCY_LONG}
+					FormatGenericCurrency(builder, _currency, args.GetNextParameter<int64_t>(), false);
+					break;
+
+				case SCC_DATE_TINY: // {DATE_TINY}
+					FormatTinyOrISODate(builder, args.GetNextParameter<CalTime::Date>(), STR_FORMAT_DATE_TINY);
+					break;
+
+				case SCC_DATE_SHORT: // {DATE_SHORT}
+					FormatMonthAndYear(builder, args.GetNextParameter<CalTime::Date>(), next_substr_case_index);
+					next_substr_case_index = 0;
+					break;
+
+				case SCC_DATE_LONG: // {DATE_LONG}
+					FormatYmdString(builder, args.GetNextParameter<CalTime::Date>(), next_substr_case_index);
+					next_substr_case_index = 0;
+					break;
+
+				case SCC_DATE_ISO: // {DATE_ISO}
+					FormatTinyOrISODate(builder, args.GetNextParameter<CalTime::Date>(), STR_FORMAT_DATE_ISO);
+					break;
+
+				case SCC_TIME_HHMM: // {TIME_HHMM}
+					FormatTimeHHMMString(builder, args.GetNextParameter<uint>(), next_substr_case_index);
+					break;
+
+				case SCC_TT_TICKS:      // {TT_TICKS}
+				case SCC_TT_TICKS_LONG: // {TT_TICKS_LONG}
+					if (_settings_client.gui.timetable_in_ticks) {
+						auto tmp_params = MakeParameters(args.GetNextParameter<int64_t>());
+						FormatString(builder, GetStringPtr(STR_UNITS_TICKS), tmp_params);
+					} else {
+						StringID str;
+						if (_settings_time.time_in_minutes) {
+							str = STR_TIMETABLE_MINUTES;
+						} else if (EconTime::UsingWallclockUnits()) {
+							str = STR_UNITS_SECONDS;
+						} else {
+							str = STR_UNITS_DAYS;
+						}
+						const int64_t ticks = args.GetNextParameter<int64_t>();
+						const int64_t ratio = TimetableDisplayUnitSize();
+						const int64_t units = ticks / ratio;
+						const int64_t leftover = _settings_client.gui.timetable_leftover_ticks ? ticks % ratio : 0;
+						auto tmp_params = MakeParameters(units);
+						FormatString(builder, GetStringPtr(str), tmp_params);
+						if (b == SCC_TT_TICKS_LONG && _settings_time.time_in_minutes && units > 59) {
+							int64_t hours = units / 60;
+							int64_t minutes = units % 60;
+							auto tmp_params = MakeParameters(
+								(minutes != 0) ? STR_TIMETABLE_HOURS_MINUTES : STR_TIMETABLE_HOURS,
+								hours,
+								minutes
+							);
+							FormatString(builder, GetStringPtr(STR_TIMETABLE_MINUTES_SUFFIX), tmp_params);
+						}
+						if (leftover != 0) {
+							auto tmp_params = MakeParameters(leftover);
+							FormatString(builder, GetStringPtr(STR_TIMETABLE_LEFTOVER_TICKS), tmp_params);
+						}
+					}
+					break;
+
+				case SCC_TT_TIME:       // {TT_TIME}
+				case SCC_TT_TIME_ABS: { // {TT_TIME_ABS}
+					if (_settings_time.time_in_minutes) {
+						FormatStateTicksHHMMString(builder, args.GetNextParameter<StateTicks>(), next_substr_case_index);
+					} else if (EconTime::UsingWallclockUnits() && b == SCC_TT_TIME) {
+						StateTicks tick = args.GetNextParameter<StateTicks>();
+						StateTicksDelta offset = tick - _state_ticks;
+						auto tmp_params = MakeParameters(offset / TICKS_PER_SECOND);
+						FormatString(builder, GetStringPtr(STR_UNITS_SECONDS_SHORT), tmp_params);
+					} else {
+						FormatTinyOrISODate(builder, StateTicksToCalendarDate(args.GetNextParameter<StateTicks>()), STR_FORMAT_DATE_TINY);
+					}
+					break;
+				}
+
+				case SCC_FORCE: { // {FORCE}
+					assert(_settings_game.locale.units_force < lengthof(_units_force));
+					const auto &x = _units_force[_settings_game.locale.units_force];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_HEIGHT: { // {HEIGHT}
+					assert(_settings_game.locale.units_height < lengthof(_units_height));
+					const auto &x = _units_height[_settings_game.locale.units_height];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_POWER: { // {POWER}
+					assert(_settings_game.locale.units_power < lengthof(_units_power));
+					const auto &x = _units_power[_settings_game.locale.units_power];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_POWER_TO_WEIGHT: { // {POWER_TO_WEIGHT}
+					auto setting = _settings_game.locale.units_power * 3u + _settings_game.locale.units_weight;
+					assert(setting < lengthof(_units_power_to_weight));
+					const auto &x = _units_power_to_weight[setting];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_VELOCITY: { // {VELOCITY}
+					int64_t arg = args.GetNextParameter<int64_t>();
+					// Unpack vehicle type from packed argument to get desired units.
+					VehicleType vt = static_cast<VehicleType>(GB(arg, 56, 8));
+					const auto &x = GetVelocityUnits(vt);
+					auto tmp_params = MakeParameters(ConvertKmhishSpeedToDisplaySpeed(GB(arg, 0, 56), vt), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_VOLUME_SHORT: { // {VOLUME_SHORT}
+					assert(_settings_game.locale.units_volume < lengthof(_units_volume));
+					const auto &x = _units_volume[_settings_game.locale.units_volume];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_VOLUME_LONG: { // {VOLUME_LONG}
+					assert(_settings_game.locale.units_volume < lengthof(_units_volume));
+					const auto &x = _units_volume[_settings_game.locale.units_volume];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.l), tmp_params);
+					break;
+				}
+
+				case SCC_WEIGHT_SHORT: { // {WEIGHT_SHORT}
+					assert(_settings_game.locale.units_weight < lengthof(_units_weight));
+					const auto &x = _units_weight[_settings_game.locale.units_weight];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_WEIGHT_LONG: { // {WEIGHT_LONG}
+					assert(_settings_game.locale.units_weight < lengthof(_units_weight));
+					const auto &x = _units_weight[_settings_game.locale.units_weight];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.l), tmp_params);
+					break;
+				}
+
+				case SCC_POWER_WEIGHT_RATIO: { // {POWER_WEIGHT_RATIO}
+					assert(_settings_game.locale.units_power < lengthof(_units_power));
+					assert(_settings_game.locale.units_weight < lengthof(_units_weight));
+
+					FormatUnitWeightRatio(builder, _units_power[_settings_game.locale.units_power], args.GetNextParameter<int64_t>());
+					break;
+				}
+
+				case SCC_FORCE_WEIGHT_RATIO: { // {FORCE_WEIGHT_RATIO}
+					assert(_settings_game.locale.units_force < lengthof(_units_force));
+					assert(_settings_game.locale.units_weight < lengthof(_units_weight));
+
+					FormatUnitWeightRatio(builder, _units_force[_settings_game.locale.units_force], args.GetNextParameter<int64_t>());
+					break;
+				}
+
+				case SCC_UNITS_DAYS_OR_SECONDS: { // {UNITS_DAYS_OR_SECONDS}
+					uint8_t realtime = EconTime::UsingWallclockUnits(_game_mode == GM_MENU);
+					const auto &x = _units_time_days_or_seconds[realtime];
+					int64_t duration = args.GetNextParameter<int64_t>();
+					if (realtime) duration *= DayLengthFactor();
+					auto tmp_params = MakeParameters(x.c.ToDisplay(duration), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_UNITS_MONTHS_OR_MINUTES: { // {UNITS_MONTHS_OR_MINUTES}
+					uint8_t realtime = EconTime::UsingWallclockUnits(_game_mode == GM_MENU);
+					if (realtime > 0 && DayLengthFactor() > 1) realtime++;
+					const auto &x = _units_time_months_or_minutes[realtime];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_UNITS_YEARS_OR_PERIODS: { // {UNITS_YEARS_OR_PERIODS}
+					uint8_t realtime = EconTime::UsingWallclockUnits(_game_mode == GM_MENU);
+					const auto &x = _units_time_years_or_periods[realtime];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_UNITS_YEARS_OR_MINUTES: { // {UNITS_YEARS_OR_MINUTES}
+					uint8_t realtime = EconTime::UsingWallclockUnits(_game_mode == GM_MENU);
+					if (realtime > 0 && DayLengthFactor() > 1) realtime++;
+					const auto &x = _units_time_years_or_minutes[realtime];
+					auto tmp_params = MakeParameters(x.c.ToDisplay(args.GetNextParameter<int64_t>()), x.decimal_places);
+					FormatString(builder, GetStringPtr(x.s), tmp_params);
+					break;
+				}
+
+				case SCC_COMPANY_NAME: { // {COMPANY}
+					const Company *c = Company::GetIfValid(args.GetNextParameter<CompanyID>());
+					if (c == nullptr) break;
+
+					if (!c->name.empty()) {
+						auto tmp_params = MakeParameters(c->name);
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						auto tmp_params = MakeParameters(c->name_2);
+						GetStringWithArgs(builder, c->name_1, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_COMPANY_NUM: { // {COMPANY_NUM}
+					CompanyID company = args.GetNextParameter<CompanyID>();
+
+					/* Nothing is added for AI or inactive companies */
+					if (Company::IsValidHumanID(company)) {
+						auto tmp_params = MakeParameters(company + 1);
+						GetStringWithArgs(builder, STR_FORMAT_COMPANY_NUM, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_DEPOT_NAME: { // {DEPOT}
+					VehicleType vt = args.GetNextParameter<VehicleType>();
+					if (vt == VEH_AIRCRAFT) {
+						auto tmp_params = MakeParameters(args.GetNextParameter<StationID>());
+						GetStringWithArgs(builder, STR_FORMAT_DEPOT_NAME_AIRCRAFT, tmp_params);
+						break;
+					}
+
+					const Depot *d = Depot::Get(args.GetNextParameter<DepotID>());
+					if (!d->name.empty()) {
+						auto tmp_params = MakeParameters(d->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						auto tmp_params = MakeParameters(d->town->index, d->town_cn + 1);
+						GetStringWithArgs(builder, STR_FORMAT_DEPOT_NAME_TRAIN + 2 * vt + (d->town_cn == 0 ? 0 : 1), tmp_params);
+					}
+					break;
+				}
+
+				case SCC_ENGINE_NAME: { // {ENGINE}
+					int64_t arg = args.GetNextParameter<int64_t>();
+					const Engine *e = Engine::GetIfValid(static_cast<EngineID>(arg));
+					if (e == nullptr) break;
+
+					if (!e->name.empty() && e->IsEnabled()) {
+						auto tmp_params = MakeParameters(e->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+						break;
+					}
+
+					if (HasBit(e->info.callback_mask, CBM_VEHICLE_NAME)) {
+						uint16_t callback = GetVehicleCallback(CBID_VEHICLE_NAME, static_cast<uint32_t>(arg >> 32), 0, e->index, nullptr);
+						/* Not calling ErrorUnknownCallbackResult due to being inside string processing. */
+						if (callback != CALLBACK_FAILED && callback < 0x400) {
+							const GRFFile *grffile = e->GetGRF();
+							assert(grffile != nullptr);
+
+							StartTextRefStackUsage(grffile, 6);
+							ArrayStringParameters<6> tmp_params;
+							GetStringWithArgs(builder, GetGRFStringID(grffile->grfid, 0xD000 + callback), tmp_params);
+							StopTextRefStackUsage();
+
+							break;
+						}
+					}
+
+					auto tmp_params = ArrayStringParameters<0>();
+					GetStringWithArgs(builder, e->info.string_id, tmp_params);
+					break;
+				}
+
+				case SCC_GROUP_NAME: { // {GROUP}
+					uint32_t id = args.GetNextParameter<uint32_t>();
+					bool recurse = _settings_client.gui.show_group_hierarchy_name && (id & GROUP_NAME_HIERARCHY);
+					id &= ~GROUP_NAME_HIERARCHY;
+					const Group *group = Group::GetIfValid(id);
+					if (group == nullptr) break;
+
+					auto handle_group = y_combinator([&](auto handle_group, const Group *g) -> void {
+						if (recurse && g->parent != INVALID_GROUP) {
+							handle_group(Group::Get(g->parent));
+							auto tmp_params = MakeParameters();
+							GetStringWithArgs(builder, STR_HIERARCHY_SEPARATOR, tmp_params);
+						}
+						if (!g->name.empty()) {
+							auto tmp_params = MakeParameters(g->name.c_str());
+							GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+						} else {
+							auto tmp_params = MakeParameters(g->index);
+
+							GetStringWithArgs(builder, STR_FORMAT_GROUP_NAME, tmp_params);
+						}
+					});
+					handle_group(group);
+					break;
+				}
+
+				case SCC_INDUSTRY_NAME: { // {INDUSTRY}
+					const Industry *i = Industry::GetIfValid(args.GetNextParameter<IndustryID>());
+					if (i == nullptr) break;
+
+					static bool use_cache = true;
+					if (_scan_for_gender_data) {
+						/* Gender is defined by the industry type.
+						 * STR_FORMAT_INDUSTRY_NAME may have the town first, so it would result in the gender of the town name */
+						auto tmp_params = ArrayStringParameters<0>();
+						FormatString(builder, GetStringPtr(GetIndustrySpec(i->type)->name), tmp_params, next_substr_case_index);
+					} else if (use_cache) { // Use cached version if first call
+						AutoRestoreBackup cache_backup(use_cache, false);
+						builder += i->GetCachedName();
+					} else {
+						/* First print the town name and the industry type name. */
+						auto tmp_params = MakeParameters(i->town->index, GetIndustrySpec(i->type)->name);
+						FormatString(builder, GetStringPtr(STR_FORMAT_INDUSTRY_NAME), tmp_params, next_substr_case_index);
+					}
+					next_substr_case_index = 0;
+					break;
+				}
+
+				case SCC_PRESIDENT_NAME: { // {PRESIDENT_NAME}
+					const Company *c = Company::GetIfValid(args.GetNextParameter<CompanyID>());
+					if (c == nullptr) break;
+
+					if (!c->president_name.empty()) {
+						auto tmp_params = MakeParameters(c->president_name);
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						auto tmp_params = MakeParameters(c->president_name_2);
+						GetStringWithArgs(builder, c->president_name_1, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_STATION_NAME: { // {STATION}
+					StationID sid = args.GetNextParameter<StationID>();
+					const Station *st = Station::GetIfValid(sid);
+
+					if (st == nullptr) {
+						/* The station doesn't exist anymore. The only place where we might
+						 * be "drawing" an invalid station is in the case of cargo that is
+						 * in transit. */
+						auto tmp_params = ArrayStringParameters<0>();
+						GetStringWithArgs(builder, STR_UNKNOWN_STATION, tmp_params);
+						break;
+					}
+
+					static bool use_cache = true;
+					if (use_cache) { // Use cached version if first call
+						AutoRestoreBackup cache_backup(use_cache, false);
+						builder += st->GetCachedName();
+					} else if (!st->name.empty()) {
+						auto tmp_params = MakeParameters(st->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						StringID string_id = st->string_id;
+						if (st->indtype != IT_INVALID) {
+							/* Special case where the industry provides the name for the station */
+							const IndustrySpec *indsp = GetIndustrySpec(st->indtype);
+
+							/* Industry GRFs can change which might remove the station name and
+							 * thus cause very strange things. Here we check for that before we
+							 * actually set the station name. */
+							if (indsp->station_name != STR_NULL && indsp->station_name != STR_UNDEFINED) {
+								string_id = indsp->station_name;
+							}
+						}
+						if (st->extra_name_index != UINT16_MAX && st->extra_name_index < _extra_station_names_used) {
+							string_id = _extra_station_names[st->extra_name_index].str;
+						}
+
+						auto tmp_params = MakeParameters(STR_TOWN_NAME, st->town->index, st->index);
+						GetStringWithArgs(builder, string_id, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_TOWN_NAME: { // {TOWN}
+					const Town *t = Town::GetIfValid(args.GetNextParameter<TownID>());
+					if (t == nullptr) break;
+
+					static bool use_cache = true;
+					if (use_cache) { // Use cached version if first call
+						AutoRestoreBackup cache_backup(use_cache, false);
+						builder += t->GetCachedName();
+					} else if (!t->name.empty()) {
+						auto tmp_params = MakeParameters(t->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						GetTownName(builder, t);
+					}
+					break;
+				}
+
+				case SCC_VIEWPORT_TOWN_LABEL1:
+				case SCC_VIEWPORT_TOWN_LABEL2: { // {VIEWPORT_TOWN_LABEL1..2}
+					int32_t t = args.GetNextParameter<int32_t>();
+					uint64_t data = args.GetNextParameter<uint64_t>();
+
+					bool tiny = (b == SCC_VIEWPORT_TOWN_LABEL2);
+					StringID string_id = STR_VIEWPORT_TOWN_COLOUR;
+					if (!tiny) string_id += GB(data, 40, 2);
+					auto tmp_params = MakeParameters(t, GB(data, 32, 8), GB(data, 0, 32));
+					GetStringWithArgs(builder, string_id, tmp_params);
+					break;
+				}
+
+				case SCC_WAYPOINT_NAME: { // {WAYPOINT}
+					Waypoint *wp = Waypoint::GetIfValid(args.GetNextParameter<StationID>());
+					if (wp == nullptr) break;
+
+					if (!wp->name.empty()) {
+						auto tmp_params = MakeParameters(wp->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						auto tmp_params = MakeParameters(wp->town->index, wp->town_cn + 1);
+						StringID string_id = ((wp->string_id == STR_SV_STNAME_BUOY) ? STR_FORMAT_BUOY_NAME : STR_FORMAT_WAYPOINT_NAME);
+						if (wp->town_cn != 0) string_id++;
+						GetStringWithArgs(builder, string_id, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_VEHICLE_NAME: { // {VEHICLE}
+					uint32_t id = args.GetNextParameter<uint32_t>();
+					uint8_t vehicle_names = _settings_client.gui.vehicle_names;
+					if (id & VEHICLE_NAME_NO_GROUP) {
+						id &= ~VEHICLE_NAME_NO_GROUP;
+						/* Change format from long to traditional */
+						if (vehicle_names == 2) vehicle_names = 0;
+					}
+
+					const Vehicle *v = Vehicle::GetIfValid(id);
+					if (v == nullptr) break;
+
+					if (!v->name.empty()) {
+						auto tmp_params = MakeParameters(v->name.c_str());
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else if (v->group_id != DEFAULT_GROUP && vehicle_names != 0 && v->type < VEH_COMPANY_END) {
+						/* The vehicle has no name, but is member of a group, so print group name */
+						uint32_t group_name = v->group_id;
+						if (_settings_client.gui.show_vehicle_group_hierarchy_name) group_name |= GROUP_NAME_HIERARCHY;
+						if (vehicle_names == 1) {
+							auto tmp_params = MakeParameters(group_name, v->unitnumber);
+							GetStringWithArgs(builder, STR_FORMAT_GROUP_VEHICLE_NAME, tmp_params);
+						} else {
+							auto tmp_params = MakeParameters(group_name, STR_TRADITIONAL_TRAIN_NAME + v->type, v->unitnumber);
+							GetStringWithArgs(builder, STR_FORMAT_GROUP_VEHICLE_NAME_LONG, tmp_params);
+						}
+					} else {
+						auto tmp_params = MakeParameters(v->unitnumber);
+
+						StringID string_id;
+						if (v->type < VEH_COMPANY_END) {
+							string_id = ((vehicle_names == 1) ? STR_SV_TRAIN_NAME : STR_TRADITIONAL_TRAIN_NAME) + v->type;
+						} else {
+							string_id = STR_INVALID_VEHICLE;
+						}
+
+						GetStringWithArgs(builder, string_id, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_SIGN_NAME: { // {SIGN}
+					const Sign *si = Sign::GetIfValid(args.GetNextParameter<SignID>());
+					if (si == nullptr) break;
+
+					if (!si->name.empty()) {
+						auto tmp_params = MakeParameters(si->name);
+						GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					} else {
+						auto tmp_params = ArrayStringParameters<0>();
+						GetStringWithArgs(builder, STR_DEFAULT_SIGN_NAME, tmp_params);
+					}
+					break;
+				}
+
+				case SCC_TR_SLOT_NAME: { // {TRSLOT}
+					const TraceRestrictSlot *slot = TraceRestrictSlot::GetIfValid(args.GetNextParameter<uint32_t>());
+					if (slot == nullptr) break;
+					auto tmp_params = MakeParameters(slot->name.c_str());
+					GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					break;
+				}
+
+				case SCC_TR_COUNTER_NAME: { // {TRCOUNTER}
+					const TraceRestrictCounter *ctr = TraceRestrictCounter::GetIfValid(args.GetNextParameter<uint32_t>());
+					if (ctr == nullptr) break;
+					auto tmp_params = MakeParameters(ctr->name.c_str());
+					GetStringWithArgs(builder, STR_JUST_RAW_STRING, tmp_params);
+					break;
+				}
+
+				case SCC_STATION_FEATURES: { // {STATIONFEATURES}
+					StationGetSpecialString(builder, args.GetNextParameter<StationFacility>());
+					break;
+				}
+
+				case SCC_COLOUR: { // {COLOUR}
+					StringControlCode scc = (StringControlCode)(SCC_BLUE + args.GetNextParameter<Colours>());
+					if (IsInsideMM(scc, SCC_BLUE, SCC_COLOUR)) builder.Utf8Encode(scc);
+					break;
+				}
+
+				case SCC_CONSUME_ARG:
+					// do nothing
+					break;
+
+				default:
+					builder.Utf8Encode(b);
+					break;
 			}
-
-			case SCC_CONSUME_ARG:
-				// do nothing
-				break;
-
-			default:
-				if (buff + Utf8CharLen(b) < last) buff += Utf8Encode(buff, b);
-				break;
+		} catch (std::out_of_range &e) {
+			Debug(misc, 0, "FormatString: {}", e.what());
+			builder += "(invalid parameter)";
 		}
 	}
-	*buff = '\0';
-	return buff;
 }
 
 
-static char *StationGetSpecialString(char *buff, StationFacility x, const char *last)
+static void StationGetSpecialString(StringBuilder builder, StationFacility x)
 {
-	if ((x & FACIL_TRAIN)      && (buff + Utf8CharLen(SCC_TRAIN) < last)) buff += Utf8Encode(buff, SCC_TRAIN);
-	if ((x & FACIL_TRUCK_STOP) && (buff + Utf8CharLen(SCC_LORRY) < last)) buff += Utf8Encode(buff, SCC_LORRY);
-	if ((x & FACIL_BUS_STOP)   && (buff + Utf8CharLen(SCC_BUS)   < last)) buff += Utf8Encode(buff, SCC_BUS);
-	if ((x & FACIL_DOCK)       && (buff + Utf8CharLen(SCC_SHIP)  < last)) buff += Utf8Encode(buff, SCC_SHIP);
-	if ((x & FACIL_AIRPORT)    && (buff + Utf8CharLen(SCC_PLANE) < last)) buff += Utf8Encode(buff, SCC_PLANE);
-	*buff = '\0';
-	return buff;
+	if ((x & FACIL_TRAIN) != 0) builder.Utf8Encode(SCC_TRAIN);
+	if ((x & FACIL_TRUCK_STOP) != 0) builder.Utf8Encode(SCC_LORRY);
+	if ((x & FACIL_BUS_STOP) != 0) builder.Utf8Encode(SCC_BUS);
+	if ((x & FACIL_DOCK) != 0) builder.Utf8Encode(SCC_SHIP);
+	if ((x & FACIL_AIRPORT) != 0) builder.Utf8Encode(SCC_PLANE);
 }
 
-static char *GetSpecialTownNameString(char *buff, int ind, uint32 seed, const char *last)
+static void GetSpecialTownNameString(StringBuilder builder, int ind, uint32_t seed)
 {
-	return GenerateTownNameString(buff, last, ind, seed);
+	GenerateTownNameString(builder, ind, seed);
 }
 
 static const char * const _silly_company_names[] = {
@@ -2095,7 +2193,7 @@ static const char _initial_name_letters[] = {
 	'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W',
 };
 
-static char *GenAndCoName(char *buff, uint32 arg, const char *last)
+static void GenAndCoName(StringBuilder builder, uint32_t arg)
 {
 	const char * const *base;
 	uint num;
@@ -2108,13 +2206,11 @@ static char *GenAndCoName(char *buff, uint32 arg, const char *last)
 		num  = lengthof(_surname_list);
 	}
 
-	buff = strecpy(buff, base[num * GB(arg, 16, 8) >> 8], last);
-	buff = strecpy(buff, " & Co.", last);
-
-	return buff;
+	builder += base[num * GB(arg, 16, 8) >> 8];
+	builder += " & Co.";
 }
 
-static char *GenPresidentName(char *buff, uint32 x, const char *last)
+static void GenPresidentName(StringBuilder builder, uint32_t x)
 {
 	char initial[] = "?. ";
 	const char * const *base;
@@ -2122,12 +2218,12 @@ static char *GenPresidentName(char *buff, uint32 x, const char *last)
 	uint i;
 
 	initial[0] = _initial_name_letters[sizeof(_initial_name_letters) * GB(x, 0, 8) >> 8];
-	buff = strecpy(buff, initial, last);
+	builder += initial;
 
 	i = (sizeof(_initial_name_letters) + 35) * GB(x, 8, 8) >> 8;
 	if (i < sizeof(_initial_name_letters)) {
 		initial[0] = _initial_name_letters[i];
-		buff = strecpy(buff, initial, last);
+		builder += initial;
 	}
 
 	if (_settings_game.game_creation.landscape == LT_TOYLAND) {
@@ -2138,28 +2234,30 @@ static char *GenPresidentName(char *buff, uint32 x, const char *last)
 		num  = lengthof(_surname_list);
 	}
 
-	buff = strecpy(buff, base[num * GB(x, 16, 8) >> 8], last);
-
-	return buff;
+	builder += base[num * GB(x, 16, 8) >> 8];
 }
 
-static char *GetSpecialNameString(char *buff, int ind, StringParameters &args, const char *last)
+static void GetSpecialNameString(StringBuilder builder, int ind, StringParameters &args)
 {
 	switch (ind) {
 		case 1: // not used
-			return strecpy(buff, _silly_company_names[std::min<uint>(args.GetNextParameter<uint32>() & 0xFFFF, lengthof(_silly_company_names) - 1)], last);
+			builder += _silly_company_names[std::min<uint>(args.GetNextParameter<uint16_t>(), lengthof(_silly_company_names) - 1)];
+			return;
 
 		case 2: // used for Foobar & Co company names
-			return GenAndCoName(buff, args.GetNextParameter<uint32>(), last);
+			GenAndCoName(builder, args.GetNextParameter<uint32_t>());
+			return;
 
 		case 3: // President name
-			return GenPresidentName(buff, args.GetNextParameter<uint32>(), last);
+			GenPresidentName(builder, args.GetNextParameter<uint32_t>());
+			return;
 	}
 
 	/* town name? */
 	if (IsInsideMM(ind - 6, 0, SPECSTR_TOWNNAME_LAST - SPECSTR_TOWNNAME_START + 1)) {
-		buff = GetSpecialTownNameString(buff, ind - 6, args.GetNextParameter<uint32>(), last);
-		return strecpy(buff, " Transport", last);
+		GetSpecialTownNameString(builder, ind - 6, args.GetNextParameter<uint32_t>());
+		builder += " Transport";
+		return;
 	}
 
 	NOT_REACHED();
@@ -2215,17 +2313,11 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 		return false;
 	}
 
-#if TTD_ENDIAN == TTD_BIG_ENDIAN
-	for (uint i = 0; i < TEXT_TAB_END; i++) {
-		lang_pack->offsets[i] = ReadLE16Aligned(&lang_pack->offsets[i]);
-	}
-#endif /* TTD_ENDIAN == TTD_BIG_ENDIAN */
-
 	std::array<uint, TEXT_TAB_END> tab_start, tab_num;
 
 	uint count = 0;
 	for (uint i = 0; i < TEXT_TAB_END; i++) {
-		uint16 num = lang_pack->offsets[i];
+		uint16_t num = FROM_LE16(lang_pack->offsets[i]);
 		if (num > TAB_SIZE) return false;
 
 		tab_start[i] = count;
@@ -2238,17 +2330,17 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 
 	/* Fill offsets */
 	char *s = lang_pack->data;
-	len = (byte)*s++;
+	len = (uint8_t)*s++;
 	for (uint i = 0; i < count; i++) {
 		if (s + len >= end) return false;
 
 		if (len >= 0xC0) {
-			len = ((len & 0x3F) << 8) + (byte)*s++;
+			len = ((len & 0x3F) << 8) + (uint8_t)*s++;
 			if (s + len >= end) return false;
 		}
 		offs[i] = s;
 		s += len;
-		len = (byte)*s;
+		len = (uint8_t)*s;
 		*s++ = '\0'; // zero terminate the string
 	}
 
@@ -2260,7 +2352,7 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 	_current_language = lang;
 	const TextDirection old_text_dir = _current_text_dir;
 	_current_text_dir = (TextDirection)_current_language->text_dir;
-	const char *c_file = strrchr(_current_language->file, PATHSEPCHAR) + 1;
+	const char *c_file = StrLastPathSegment(_current_language->file);
 	_config_language_file = c_file;
 	SetCurrentGrfLangID(_current_language->newgrflangid);
 
@@ -2285,6 +2377,8 @@ bool ReadLanguagePack(const LanguageMetadata *lang)
 		_current_collator.reset();
 	}
 #endif /* WITH_ICU_I18N */
+
+	Layouter::Initialize();
 
 	/* Some lists need to be sorted again after a language change. */
 	ReconsiderGameScriptLanguage();
@@ -2341,22 +2435,12 @@ const char *GetCurrentLocale(const char *param)
 const char *GetCurrentLocale(const char *param);
 #endif /* !(defined(_WIN32) || defined(__APPLE__)) */
 
-bool StringIDSorter(const StringID &a, const StringID &b)
-{
-	char stra[DRAW_STRING_BUFFER];
-	char strb[DRAW_STRING_BUFFER];
-	char *lasta = GetString(stra, a, lastof(stra));
-	char *lastb = GetString(strb, b, lastof(strb));
-
-	return StrNaturalCompare({ stra, (size_t)(lasta - stra) }, { strb, (size_t)(lastb - strb) }) < 0;
-}
-
 /**
  * Get the language with the given NewGRF language ID.
  * @param newgrflangid NewGRF languages ID to check.
  * @return The language's metadata, or nullptr if it is not known.
  */
-const LanguageMetadata *GetLanguage(byte newgrflangid)
+const LanguageMetadata *GetLanguage(uint8_t newgrflangid)
 {
 	for (const LanguageMetadata &lang : _languages) {
 		if (newgrflangid == lang.newgrflangid) return &lang;
@@ -2406,13 +2490,14 @@ static void GetLanguageList(const char *path)
 			if (extension == nullptr || strcmp(extension, ".lng") != 0) continue;
 
 			LanguageMetadata lmd;
-			seprintf(lmd.file, lastof(lmd.file), "%s%s", path, d_name.c_str());
+			lmd.file = path;
+			lmd.file += d_name;
 
 			/* Check whether the file is of the correct version */
-			if (!GetLanguageFileHeader(lmd.file, &lmd)) {
-				DEBUG(misc, 3, "%s is not a valid language file", lmd.file);
+			if (!GetLanguageFileHeader(lmd.file.c_str(), &lmd)) {
+				DEBUG(misc, 3, "%s is not a valid language file", lmd.file.c_str());
 			} else if (GetLanguage(lmd.newgrflangid) != nullptr) {
-				DEBUG(misc, 3, "%s's language ID is already known", lmd.file);
+				DEBUG(misc, 3, "%s's language ID is already known", lmd.file.c_str());
 			} else {
 				_languages.push_back(lmd);
 			}
@@ -2431,7 +2516,7 @@ void InitializeLanguagePacks()
 		std::string path = FioGetDirectory(sp, LANG_DIR);
 		GetLanguageList(path.c_str());
 	}
-	if (_languages.size() == 0) usererror("No available language packs (invalid versions?)");
+	if (_languages.empty()) usererror("No available language packs (invalid versions?)");
 
 	/* Acquire the locale of the current system */
 	const char *lang = GetCurrentLocale("LC_MESSAGES");
@@ -2446,7 +2531,7 @@ void InitializeLanguagePacks()
 		/* We are trying to find a default language. The priority is by
 		 * configuration file, local environment and last, if nothing found,
 		 * English. */
-		const char *lang_file = strrchr(lng.file, PATHSEPCHAR) + 1;
+		const char *lang_file = StrLastPathSegment(lng.file);
 		if (_config_language_file == lang_file) {
 			chosen_language = &lng;
 			break;
@@ -2467,7 +2552,7 @@ void InitializeLanguagePacks()
 		chosen_language = (language_fallback != nullptr) ? language_fallback : en_GB_fallback;
 	}
 
-	if (!ReadLanguagePack(chosen_language)) usererror("Can't read language pack '%s'", chosen_language->file);
+	if (!ReadLanguagePack(chosen_language)) UserError("Can't read language pack '{}'", chosen_language->file);
 }
 
 /**
@@ -2498,7 +2583,7 @@ bool MissingGlyphSearcher::FindMissingGlyphs()
 
 		FontSize size = this->DefaultSize();
 		while (src != text->cend()) {
-			WChar c = Utf8Consume(src);
+			char32_t c = Utf8Consume(src);
 
 			if (c >= SCC_FIRST_FONT && c <= SCC_LAST_FONT) {
 				size = (FontSize)(c - SCC_FIRST_FONT);
@@ -2514,7 +2599,7 @@ bool MissingGlyphSearcher::FindMissingGlyphs()
 					default: NOT_REACHED();
 				}
 
-				DEBUG(fontcache, 0, "Font is missing glyphs to display char 0x%X in %s font size", c, size_name.c_str());
+				Debug(fontcache, 0, "Font is missing glyphs to display char 0x{:X} in {} font size", (int)c, size_name);
 				return true;
 			}
 		}
@@ -2558,7 +2643,7 @@ class LanguagePackGlyphSearcher : public MissingGlyphSearcher {
 		return false;
 	}
 
-	void SetFontNames(FontCacheSettings *settings, const char *font_name, const void *os_data) override
+	void SetFontNames([[maybe_unused]] FontCacheSettings *settings, [[maybe_unused]] const char *font_name, [[maybe_unused]] const void *os_data) override
 	{
 #if defined(WITH_FREETYPE) || defined(_WIN32) || defined(WITH_COCOA)
 		settings->small.font = font_name;

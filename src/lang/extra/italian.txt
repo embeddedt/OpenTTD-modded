@@ -1,7 +1,8 @@
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
-STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :riquadri/giorno
+STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :caselle/giorno
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :caselle/sec
 
 STR_BUTTON_RENAME                                               :{BLACK}Rinomina
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Aeromobili
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Salvataggi automatici: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Seleziona l'intervallo fra i salvataggi automatici della partita
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Mostra le tabelle orarie in tick piuttosto che in giorni: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Mostra il tempo di viaggio in tick del simulatore invece che in giorni
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Attiva/disattiva la trasparenza degli indicatori di caricamento. CTRL+clic per bloccare
 
@@ -34,6 +38,20 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Cambia l
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Progettato nel: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}In frenata, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Diretto {G "a " all' "alla "}{STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Nessun ordine, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Diretto a {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Diretto {G "al " all' "alla "}{DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Manutenzione {G "al " all' "alla "}{DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_UNBUNCH_VEL_END            :{LTBLUE}Sganciamento e manutenzione presso {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Impossibile raggiungere {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Impossibile raggiungere {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Impossibile raggiungere {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Impossibile raggiungere {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Inserisci un nuovo ordine prima dell'ordine evidenziato o aggiungi alla fine della lista. CTRL+Clic su una stazione per 'carico completo di qualsiasi carico', su un punto di passaggio per invertire l'impostazione 'non-stop di default', o su un deposito per 'servizio'. Clic su un altro veicolo per copiare i suoi ordini o CTRL+Clic per condividere gli ordini. Un ordine di deposito disabilita la manutenzione automatica del veicolo.
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :P:
@@ -73,3 +91,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Vende un
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Impossibile comprare il 25% delle azioni...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Impossibile vendere il 25% delle azioni...
 STR_ERROR_PROTECTED                                             :{WHITE}Questa compagnia non è abbastanza vecchia per scambiare azioni...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Solo segnali di percorso

@@ -10,98 +10,11 @@
 #include "stdafx.h"
 #include "core/bitmath_func.hpp"
 
-#include "safeguards.h"
-
-#undef RDTSC_AVAILABLE
-
-/* rdtsc for MSC_VER, uses simple inline assembly, or _rdtsc
- * from external win64.asm because VS2005 does not support inline assembly */
-#if defined(_MSC_VER) && !defined(RDTSC_AVAILABLE)
+#if defined(_MSC_VER)
 #include <intrin.h>
-#include <windows.h>
-uint64 ottd_rdtsc()
-{
-#if defined(_M_ARM)
-	return __rdpmccntr64();
-#elif defined(_M_ARM64)
-	return _ReadStatusReg(ARM64_PMCCNTR_EL0);
-#else
-	return __rdtsc();
-#endif
-}
-#define RDTSC_AVAILABLE
 #endif
 
-/* rdtsc for all other *nix-en (hopefully). Use GCC syntax */
-#if (defined(__i386__) || defined(__x86_64__)) && !defined(RDTSC_AVAILABLE)
-uint64 ottd_rdtsc()
-{
-	uint32 high, low;
-	__asm__ __volatile__ ("rdtsc" : "=a" (low), "=d" (high));
-	return ((uint64)high << 32) | low;
-}
-# define RDTSC_AVAILABLE
-#endif
-
-/* rdtsc for AARCH64. Use GCC syntax */
-#if defined(__aarch64__) && !defined(RDTSC_AVAILABLE)
-uint64 ottd_rdtsc()
-{
-	uint64 val;
-	asm volatile("mrs %0, cntvct_el0" : "=r" (val));
-	return val;
-}
-# define RDTSC_AVAILABLE
-#endif
-
-/* rdtsc for PPC which has this not */
-#if (defined(__POWERPC__) || defined(__powerpc__)) && !defined(RDTSC_AVAILABLE)
-uint64 ottd_rdtsc()
-{
-	uint32 high = 0, high2 = 0, low;
-	/* PPC does not have rdtsc, so we cheat by reading the two 32-bit time-counters
-	 * it has, 'Move From Time Base (Upper)'. Since these are two reads, in the
-	 * very unlikely event that the lower part overflows to the upper part while we
-	 * read it; we double-check and reread the registers */
-	asm volatile (
-				  "mftbu %0\n"
-				  "mftb %1\n"
-				  "mftbu %2\n"
-				  "cmpw %3,%4\n"
-				  "bne- $-16\n"
-				  : "=r" (high), "=r" (low), "=r" (high2)
-				  : "0" (high), "2" (high2)
-				  );
-	return ((uint64)high << 32) | low;
-}
-# define RDTSC_AVAILABLE
-#endif
-
-/* rdtsc for MCST Elbrus 2000 */
-#if defined(__e2k__) && !defined(RDTSC_AVAILABLE)
-uint64 ottd_rdtsc()
-{
-	uint64_t dst;
-# pragma asm_inline
-	asm("rrd %%clkr, %0" : "=r" (dst));
-	return dst;
-}
-# define RDTSC_AVAILABLE
-#endif
-
-#if defined(__EMSCRIPTEN__) && !defined(RDTSC_AVAILABLE)
-/* On emscripten doing TIC/TOC would be ill-advised */
-uint64 ottd_rdtsc() {return 0;}
-# define RDTSC_AVAILABLE
-#endif
-
-/* In all other cases we have no support for rdtsc. No major issue,
- * you just won't be able to profile your code with TIC()/TOC() */
-#if !defined(RDTSC_AVAILABLE)
-#warning "(non-fatal) No support for rdtsc(), you won't be able to profile with TIC/TOC"
-uint64 ottd_rdtsc() {return 0;}
-#endif
-
+#include "safeguards.h"
 
 /**
  * Definitions for CPU detection:
@@ -166,7 +79,7 @@ void ottd_cpuid(int info[4], int type)
 	}
 }
 #else
-void ottd_cpuid(int info[4], int type)
+void ottd_cpuid(int info[4], int)
 {
 	info[0] = info[1] = info[2] = info[3] = 0;
 }

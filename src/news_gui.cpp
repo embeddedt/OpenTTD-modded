@@ -68,7 +68,7 @@ static const NewsItem *_current_news = nullptr;
  * @param ref     The reference.
  * @return A tile for the referenced object, or INVALID_TILE if none.
  */
-static TileIndex GetReferenceTile(NewsReferenceType reftype, uint32 ref)
+static TileIndex GetReferenceTile(NewsReferenceType reftype, uint32_t ref)
 {
 	switch (reftype) {
 		case NR_TILE:     return (TileIndex)ref;
@@ -80,7 +80,7 @@ static TileIndex GetReferenceTile(NewsReferenceType reftype, uint32 ref)
 }
 
 /* Normal news items. */
-static const NWidgetPart _nested_normal_news_widgets[] = {
+static constexpr NWidgetPart _nested_normal_news_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_WHITE, WID_N_PANEL),
 		NWidget(NWID_HORIZONTAL), SetPadding(1, 1, 0, 1),
 			NWidget(WWT_CLOSEBOX, COLOUR_WHITE, WID_N_CLOSEBOX), SetPadding(0, 0, 0, 1),
@@ -94,15 +94,15 @@ static const NWidgetPart _nested_normal_news_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _normal_news_desc(
+static WindowDesc _normal_news_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_NEWS_WINDOW, WC_NONE,
 	0,
-	_nested_normal_news_widgets, lengthof(_nested_normal_news_widgets)
+	std::begin(_nested_normal_news_widgets), std::end(_nested_normal_news_widgets)
 );
 
 /* New vehicles news items. */
-static const NWidgetPart _nested_vehicle_news_widgets[] = {
+static constexpr NWidgetPart _nested_vehicle_news_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_WHITE, WID_N_PANEL),
 		NWidget(NWID_HORIZONTAL), SetPadding(1, 1, 0, 1),
 			NWidget(NWID_VERTICAL),
@@ -121,15 +121,15 @@ static const NWidgetPart _nested_vehicle_news_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _vehicle_news_desc(
+static WindowDesc _vehicle_news_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_NEWS_WINDOW, WC_NONE,
 	0,
-	_nested_vehicle_news_widgets, lengthof(_nested_vehicle_news_widgets)
+	std::begin(_nested_vehicle_news_widgets), std::end(_nested_vehicle_news_widgets)
 );
 
 /* Company news items. */
-static const NWidgetPart _nested_company_news_widgets[] = {
+static constexpr NWidgetPart _nested_company_news_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_WHITE, WID_N_PANEL),
 		NWidget(NWID_HORIZONTAL), SetPadding(1, 1, 0, 1),
 			NWidget(NWID_VERTICAL),
@@ -149,15 +149,15 @@ static const NWidgetPart _nested_company_news_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _company_news_desc(
+static WindowDesc _company_news_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_NEWS_WINDOW, WC_NONE,
 	0,
-	_nested_company_news_widgets, lengthof(_nested_company_news_widgets)
+	std::begin(_nested_company_news_widgets), std::end(_nested_company_news_widgets)
 );
 
 /* Thin news items. */
-static const NWidgetPart _nested_thin_news_widgets[] = {
+static constexpr NWidgetPart _nested_thin_news_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_WHITE, WID_N_PANEL),
 		NWidget(NWID_HORIZONTAL), SetPadding(1, 1, 0, 1),
 			NWidget(WWT_CLOSEBOX, COLOUR_WHITE, WID_N_CLOSEBOX), SetPadding(0, 0, 0, 1),
@@ -172,15 +172,15 @@ static const NWidgetPart _nested_thin_news_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _thin_news_desc(
+static WindowDesc _thin_news_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_NEWS_WINDOW, WC_NONE,
 	0,
-	_nested_thin_news_widgets, lengthof(_nested_thin_news_widgets)
+	std::begin(_nested_thin_news_widgets), std::end(_nested_thin_news_widgets)
 );
 
 /* Small news items. */
-static const NWidgetPart _nested_small_news_widgets[] = {
+static constexpr NWidgetPart _nested_small_news_widgets[] = {
 	/* Caption + close box. The caption is no WWT_CAPTION as the window shall not be moveable and so on. */
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_LIGHT_BLUE, WID_N_CLOSEBOX),
@@ -198,17 +198,17 @@ static const NWidgetPart _nested_small_news_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _small_news_desc(
+static WindowDesc _small_news_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_NEWS_WINDOW, WC_NONE,
 	0,
-	_nested_small_news_widgets, lengthof(_nested_small_news_widgets)
+	std::begin(_nested_small_news_widgets), std::end(_nested_small_news_widgets)
 );
 
 /**
  * Window layouts for news items.
  */
-static WindowDesc* _news_window_layout[] = {
+static WindowDesc *_news_window_layout[] = {
 	&_thin_news_desc,    ///< NF_THIN
 	&_small_news_desc,   ///< NF_SMALL
 	&_normal_news_desc,  ///< NF_NORMAL
@@ -216,7 +216,7 @@ static WindowDesc* _news_window_layout[] = {
 	&_company_news_desc, ///< NF_COMPANY
 };
 
-WindowDesc* GetNewsWindowLayout(NewsFlag flags)
+WindowDesc *GetNewsWindowLayout(NewsFlag flags)
 {
 	uint layout = GB(flags, NFB_WINDOW_LAYOUT, NFB_WINDOW_LAYOUT_COUNT);
 	assert(layout < lengthof(_news_window_layout));
@@ -261,8 +261,8 @@ NewsDisplay NewsTypeData::GetDisplay() const
 
 /** Window class displaying a news item. */
 struct NewsWindow : Window {
-	uint16 chat_height;   ///< Height of the chat window.
-	uint16 status_height; ///< Height of the status bar window
+	uint16_t chat_height;   ///< Height of the chat window.
+	uint16_t status_height; ///< Height of the status bar window
 	const NewsItem *ni;   ///< News item to display.
 	static int duration;  ///< Remaining time for showing the current news message (may only be access while a news item is displayed).
 
@@ -323,7 +323,7 @@ struct NewsWindow : Window {
 
 	void OnInit() override
 	{
-		this->timer.SetInterval(TIMER_INTERVAL / FONT_HEIGHT_NORMAL);
+		this->timer.SetInterval(TIMER_INTERVAL / GetCharacterHeight(FS_NORMAL));
 	}
 
 	void DrawNewsBorder(const Rect &r) const
@@ -338,13 +338,13 @@ struct NewsWindow : Window {
 		GfxFillRect( r.left,  ir.bottom,  r.right,  r.bottom, PC_BLACK);
 	}
 
-	Point OnInitialPosition(int16 sm_width, int16 sm_height, int window_number) override
+	Point OnInitialPosition(int16_t sm_width, int16_t sm_height, int window_number) override
 	{
 		Point pt = { 0, _screen.height };
 		return pt;
 	}
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override
 	{
 		StringID str = STR_NULL;
 		switch (widget) {
@@ -418,12 +418,12 @@ struct NewsWindow : Window {
 		*size = maxdim(*size, d);
 	}
 
-	void SetStringParameters(int widget) const override
+	void SetStringParameters(WidgetID widget) const override
 	{
 		if (widget == WID_N_DATE) SetDParam(0, this->ni->date);
 	}
 
-	void DrawWidget(const Rect &r, int widget) const override
+	void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		switch (widget) {
 			case WID_N_CAPTION:
@@ -480,7 +480,7 @@ struct NewsWindow : Window {
 		}
 	}
 
-	void OnClick(Point pt, int widget, int click_count) override
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override
 	{
 		switch (widget) {
 			case WID_N_CLOSEBOX:
@@ -542,7 +542,7 @@ struct NewsWindow : Window {
 	 * @param data Information about the changed data.
 	 * @param gui_scope Whether the call is done from GUI scope. You may not do everything when not in GUI scope. See #InvalidateWindowData() for details.
 	 */
-	void OnInvalidateData(int data = 0, bool gui_scope = true) override
+	void OnInvalidateData([[maybe_unused]] int data = 0, [[maybe_unused]] bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
 		/* The chatbar has notified us that is was either created or closed */
@@ -551,7 +551,7 @@ struct NewsWindow : Window {
 		this->SetWindowTop(newtop);
 	}
 
-	void OnRealtimeTick(uint delta_ms) override
+	void OnRealtimeTick([[maybe_unused]] uint delta_ms) override
 	{
 		int count = this->timer.CountElapsed(delta_ms);
 		if (count > 0) {
@@ -588,11 +588,11 @@ private:
 	StringID GetCompanyMessageString() const
 	{
 		/* Company news with a face have a separate headline, so the normal message is shifted by two params */
-		CopyInDParam(span(this->ni->params.data() + 2, this->ni->params.size() - 2));
+		CopyInDParam(std::span(this->ni->params.data() + 2, this->ni->params.size() - 2));
 		return this->ni->params[1].data;
 	}
 
-	StringID GetNewVehicleMessageString(int widget) const
+	StringID GetNewVehicleMessageString(WidgetID widget) const
 	{
 		assert(this->ni->reftype1 == NR_ENGINE);
 		EngineID engine = this->ni->ref1;
@@ -692,7 +692,7 @@ static void MoveToNextTickerItem()
 		const NewsType type = ni->type;
 
 		/* check the date, don't show too old items */
-		if (_date - _news_type_data[type].age > ni->date) continue;
+		if (_scaled_tick_counter - ni->creation_tick > _news_type_data[type].age * DAY_TICKS) continue;
 
 		switch (_news_type_data[type].GetDisplay()) {
 			default: NOT_REACHED();
@@ -729,7 +729,7 @@ static void MoveToNextNewsItem()
 		const NewsType type = ni->type;
 
 		/* check the date, don't show too old items */
-		if (_date - _news_type_data[type].age > ni->date) continue;
+		if (_scaled_tick_counter - ni->creation_tick > _news_type_data[type].age * DAY_TICKS) continue;
 
 		switch (_news_type_data[type].GetDisplay()) {
 			default: NOT_REACHED();
@@ -805,11 +805,11 @@ static void DeleteNewsItem(NewsItem *ni)
  *
  * @see NewsSubtype
  */
-NewsItem::NewsItem(StringID string_id, NewsType type, NewsFlag flags, NewsReferenceType reftype1, uint32 ref1, NewsReferenceType reftype2, uint32 ref2, const NewsAllocatedData *data) :
-	string_id(string_id), date(_date), type(type), flags(flags), reftype1(reftype1), reftype2(reftype2), ref1(ref1), ref2(ref2), data(data)
+NewsItem::NewsItem(StringID string_id, NewsType type, NewsFlag flags, NewsReferenceType reftype1, uint32_t ref1, NewsReferenceType reftype2, uint32_t ref2, const NewsAllocatedData *data) :
+	string_id(string_id), date(CalTime::CurDate()), creation_tick(_scaled_tick_counter), type(type), flags(flags), reftype1(reftype1), reftype2(reftype2), ref1(ref1), ref2(ref2), data(data)
 {
 	/* show this news message in colour? */
-	if (_cur_year >= _settings_client.gui.coloured_news_year) this->flags |= NF_INCOLOUR;
+	if (CalTime::CurYear() >= _settings_client.gui.coloured_news_year) this->flags |= NF_INCOLOUR;
 	CopyOutDParam(this->params, 10);
 }
 
@@ -826,7 +826,7 @@ NewsItem::NewsItem(StringID string_id, NewsType type, NewsFlag flags, NewsRefere
  *
  * @see NewsSubtype
  */
-void AddNewsItem(StringID string, NewsType type, NewsFlag flags, NewsReferenceType reftype1, uint32 ref1, NewsReferenceType reftype2, uint32 ref2, const NewsAllocatedData *data)
+void AddNewsItem(StringID string, NewsType type, NewsFlag flags, NewsReferenceType reftype1, uint32_t ref1, NewsReferenceType reftype2, uint32_t ref2, const NewsAllocatedData *data)
 {
 	if (_game_mode == GM_MENU) return;
 
@@ -866,7 +866,7 @@ void AddNewsItem(StringID string, NewsType type, NewsFlag flags, NewsReferenceTy
  * @param text The text of the news message.
  * @return the cost of this operation or an error
  */
-CommandCost CmdCustomNewsItem(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdCustomNewsItem(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 
@@ -995,7 +995,7 @@ static void RemoveOldNewsItems()
 	NewsItem *next;
 	for (NewsItem *cur = _oldest_news; _total_news > MIN_NEWS_AMOUNT && cur != nullptr; cur = next) {
 		next = cur->next;
-		if (_date - _news_type_data[cur->type].age * _settings_client.gui.news_message_timeout > cur->date) DeleteNewsItem(cur);
+		if (_scaled_tick_counter - cur->creation_tick > (uint)(_news_type_data[cur->type].age * _settings_client.gui.news_message_timeout * DAY_TICKS)) DeleteNewsItem(cur);
 	}
 }
 
@@ -1019,11 +1019,11 @@ void NewsLoop()
 	/* no news item yet */
 	if (_total_news == 0) return;
 
-	static byte _last_clean_month = 0;
+	static uint8_t _last_clean_month = 0;
 
-	if (_last_clean_month != _cur_date_ymd.month) {
+	if (_last_clean_month != EconTime::CurMonth()) {
 		RemoveOldNewsItems();
-		_last_clean_month = _cur_date_ymd.month;
+		_last_clean_month = EconTime::CurMonth();
 	}
 
 	if (ReadyForNextTickerItem()) MoveToNextTickerItem();
@@ -1051,7 +1051,8 @@ static void ShowNewsMessage(const NewsItem *ni)
  * Close active news message window
  * @return true if a window was closed.
  */
-bool HideActiveNewsMessage() {
+bool HideActiveNewsMessage()
+{
 	NewsWindow *w = (NewsWindow*)FindWindowById(WC_NEWS_WINDOW, 0);
 	if (w == nullptr) return false;
 	w->Close();
@@ -1134,15 +1135,15 @@ struct MessageHistoryWindow : Window {
 		this->OnInvalidateData(0);
 	}
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override
 	{
 		if (widget == WID_MH_BACKGROUND) {
-			this->line_height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.vsep_normal;
+			this->line_height = GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.vsep_normal;
 			resize->height = this->line_height;
 
 			/* Months are off-by-one, so it's actually 8. Not using
 			 * month 12 because the 1 is usually less wide. */
-			SetDParam(0, ConvertYMDToDate(ORIGINAL_MAX_YEAR, 7, 30));
+			SetDParam(0, CalTime::ConvertYMDToDate(CalTime::ORIGINAL_MAX_YEAR, 7, 30));
 			this->date_width = GetStringBoundingBox(STR_JUST_DATE_TINY).width + WidgetDimensions::scaled.hsep_wide;
 
 			size->height = 4 * resize->height + WidgetDimensions::scaled.framerect.Vertical(); // At least 4 lines are visible.
@@ -1156,7 +1157,7 @@ struct MessageHistoryWindow : Window {
 		this->DrawWidgets();
 	}
 
-	void DrawWidget(const Rect &r, int widget) const override
+	void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		if (widget != WID_MH_BACKGROUND || _total_news == 0) return;
 
@@ -1189,13 +1190,13 @@ struct MessageHistoryWindow : Window {
 	 * @param data Information about the changed data.
 	 * @param gui_scope Whether the call is done from GUI scope. You may not do everything when not in GUI scope. See #InvalidateWindowData() for details.
 	 */
-	void OnInvalidateData(int data = 0, bool gui_scope = true) override
+	void OnInvalidateData([[maybe_unused]] int data = 0, [[maybe_unused]] bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
 		this->vscroll->SetCount(_total_news);
 	}
 
-	void OnClick(Point pt, int widget, int click_count) override
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override
 	{
 		if (widget == WID_MH_BACKGROUND) {
 			NewsItem *ni = _latest_news;
@@ -1216,7 +1217,7 @@ struct MessageHistoryWindow : Window {
 	}
 };
 
-static const NWidgetPart _nested_message_history[] = {
+static constexpr NWidgetPart _nested_message_history[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_BROWN),
 		NWidget(WWT_CAPTION, COLOUR_BROWN), SetDataTip(STR_MESSAGE_HISTORY, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -1235,11 +1236,11 @@ static const NWidgetPart _nested_message_history[] = {
 	EndContainer(),
 };
 
-static WindowDesc _message_history_desc(
+static WindowDesc _message_history_desc(__FILE__, __LINE__,
 	WDP_AUTO, "list_news", 400, 140,
 	WC_MESSAGE_HISTORY, WC_NONE,
 	0,
-	_nested_message_history, lengthof(_nested_message_history)
+	std::begin(_nested_message_history), std::end(_nested_message_history)
 );
 
 /** Display window with news messages history */

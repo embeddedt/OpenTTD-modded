@@ -20,7 +20,8 @@
 enum BlitterMode {
 	BM_NORMAL,       ///< Perform the simple blitting.
 	BM_COLOUR_REMAP, ///< Perform a colour remapping.
-	BM_TRANSPARENT,  ///< Perform transparency colour remapping.
+	BM_TRANSPARENT,  ///< Perform transparency darkening remapping.
+	BM_TRANSPARENT_REMAP, ///< Perform transparency colour remapping.
 	BM_CRASH_REMAP,  ///< Perform a crash remapping.
 	BM_BLACK_REMAP,  ///< Perform remapping to a completely blackened sprite
 	BM_NORMAL_WITH_BRIGHTNESS,       ///< Perform a simple blitting with brightness adjustment
@@ -44,10 +45,10 @@ DECLARE_ENUM_AS_BIT_SET(BlitterSpriteFlags);
  * How all blitters should look like. Extend this class to make your own.
  */
 class Blitter : public SpriteEncoder {
-	uint8 screen_depth = 0;
+	uint8_t screen_depth = 0;
 
 protected:
-	void SetScreenDepth(uint8 depth)
+	void SetScreenDepth(uint8_t depth)
 	{
 		this->screen_depth = depth;
 		this->SetIs32BppSupported(depth > 8);
@@ -57,7 +58,7 @@ public:
 	/** Parameters related to blitting. */
 	struct BlitterParams {
 		const void *sprite; ///< Pointer to the sprite how ever the encoder stored it
-		const byte *remap;  ///< XXX -- Temporary storage for remap array
+		const uint8_t *remap;  ///< XXX -- Temporary storage for remap array
 		int brightness_adjust; ///< Brightness adjustment
 
 		int skip_left;      ///< How much pixels of the source to skip on the left (based on zoom of dst)
@@ -84,7 +85,7 @@ public:
 	 * Get the screen depth this blitter works for.
 	 *  This is either: 8, 16, 24 or 32.
 	 */
-	inline uint8 GetScreenDepth() const
+	inline uint8_t GetScreenDepth() const
 	{
 		return this->screen_depth;
 	}
@@ -122,7 +123,7 @@ public:
 	 * @param y The y position within video-buffer.
 	 * @param colour A 8bpp mapping colour.
 	 */
-	virtual void SetPixel(void *video, int x, int y, uint8 colour) = 0;
+	virtual void SetPixel(void *video, int x, int y, uint8_t colour) = 0;
 
 	/**
 	 * Draw a pixel with a given 32bpp colour on the video-buffer.
@@ -133,7 +134,7 @@ public:
 	 * @param colour A 8bpp mapping colour.
 	 * @param colour32 A 32bpp colour.
 	 */
-	virtual void SetPixel32(void *video, int x, int y, uint8 colour, uint32 colour32) = 0;
+	virtual void SetPixel32(void *video, int x, int y, uint8_t colour, uint32_t colour32) = 0;
 
 	/**
 	 * Draw a rectangle of pixels on the video-buffer.
@@ -145,7 +146,7 @@ public:
 	 * @param width The length of the lines.
 	 * @param pitch The pitch of the colours buffer
 	 */
-	virtual void SetRect(void *video, int x, int y, const uint8 *colours, uint lines, uint width, uint pitch) = 0;
+	virtual void SetRect(void *video, int x, int y, const uint8_t *colours, uint lines, uint width, uint pitch) = 0;
 
 	/**
 	 * Draw a rectangle of pixels on the video-buffer (no LookupColourInPalette).
@@ -157,7 +158,19 @@ public:
 	 * @param width The length of the lines.
 	 * @param pitch The pitch of the colours buffer.
 	 */
-	virtual void SetRect32(void *video, int x, int y, const uint32 *colours, uint lines, uint width, uint pitch) { NOT_REACHED(); };
+	virtual void SetRect32(void *video, int x, int y, const uint32_t *colours, uint lines, uint width, uint pitch) { NOT_REACHED(); };
+
+	/**
+	 * Draw a rectangle of pixels on the video-buffer, skipping any pixels with the value 0xD7.
+	 * @param video The destination pointer (video-buffer).
+	 * @param x The x position within video-buffer.
+	 * @param y The y position within video-buffer.
+	 * @param colours A 8bpp colour mapping buffer.
+	 * @param lines The number of lines.
+	 * @param width The length of the lines.
+	 * @param pitch The pitch of the colours buffer
+	 */
+	virtual void SetRectNoD7(void *video, int x, int y, const uint8_t *colours, uint lines, uint width, uint pitch) = 0;
 
 	/**
 	 * Make a single horizontal line in a single colour on the video-buffer.
@@ -166,7 +179,7 @@ public:
 	 * @param height The height of the line.
 	 * @param colour A 8bpp mapping colour.
 	 */
-	virtual void DrawRect(void *video, int width, int height, uint8 colour) = 0;
+	virtual void DrawRect(void *video, int width, int height, uint8_t colour) = 0;
 
 	/**
 	 * Make a single horizontal line in a single colour on the video-buffer.
@@ -177,7 +190,7 @@ public:
 	 * @param height The height of the line.
 	 * @param colour A 8bpp mapping colour.
 	 */
-	virtual void DrawRectAt(void *video, int x, int y, int width, int height, uint8 colour) = 0;
+	virtual void DrawRectAt(void *video, int x, int y, int width, int height, uint8_t colour) = 0;
 
 	/**
 	 * Draw a line with a given colour.
@@ -192,7 +205,7 @@ public:
 	 * @param width Line width.
 	 * @param dash Length of dashes for dashed lines. 0 means solid line.
 	 */
-	virtual void DrawLine(void *video, int x, int y, int x2, int y2, int screen_width, int screen_height, uint8 colour, int width, int dash = 0) = 0;
+	virtual void DrawLine(void *video, int x, int y, int x2, int y2, int screen_width, int screen_height, uint8_t colour, int width, int dash = 0) = 0;
 
 	/**
 	 * Copy from a buffer to the screen.
@@ -269,11 +282,6 @@ public:
 	 * Get the name of the blitter, the same as the Factory-instance returns.
 	 */
 	virtual const char *GetName() = 0;
-
-	/**
-	 * Get how many bytes are needed to store a pixel.
-	 */
-	virtual int GetBytesPerPixel() = 0;
 
 	/**
 	 * Post resize event

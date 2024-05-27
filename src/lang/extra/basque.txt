@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Hegazkinak
 STR_CONFIG_SETTING_AUTOSAVE                                     :Auto-gordea: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Partida gordetze automatikoaren bitartea aukeratu
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Ordutegiak tick-etan erakutsi egunetan erakutsi ordez: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Erakutsi denbora tauletako denbora jokoaren uniteetan egunak erabili ordez
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Zama adierazleen gardentasuna aldatu. Ktrl+Klik blokeatzeko
 
 # Tracerestrict GUI
@@ -30,6 +33,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Elur gar
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Diseinatua: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Gelditzen, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE} {STATION}-ra bidean, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Agindurik ez, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE} {WAYPOINT}-ra bidean, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE} {DEPOT}-ra joaten, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Berrikuspena {DEPOT}-an, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Agindu berria sartu piztutakoaren aurretik, edo zerrendaren amaieran. Ktrl hurrengo aginduak ezartzen ditu: Geltokietan "Edozein zama osorik kargatu", bidepuntuetan "Ez gelditu" eta gordailuetan "Mantenimendua". "Aginduak konpartitu" edo Ktrl ibilgailuaren aginduak konpartituko ditu. Ibilgailu batean klik eginez aginduak kopiatuko dira. Gordailu aginduek mantenimendu automatikoa desgaitzen dute
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
@@ -64,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Konpaini
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Ezin izan da konpainiaren akzioen %25a erosi...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Ezin izan da konpainiaren akzioen %25a saldu...
 STR_ERROR_PROTECTED                                             :{WHITE}Konpainia gazteegia da akzioak izateko...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Bide-seinaleak bakarrik

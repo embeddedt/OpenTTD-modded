@@ -140,7 +140,7 @@ static const StringID _program_sigstate[] = {
 };
 
 /** Get the string for a condition */
-static char *GetConditionString(SignalCondition *cond, char *buf, char *buflast)
+static std::string GetConditionString(SignalCondition *cond)
 {
 	StringID string = INVALID_STRING_ID;
 	if (cond->ConditionCode() == PSC_SLOT_OCC || cond->ConditionCode() == PSC_SLOT_OCC_REM) {
@@ -184,7 +184,7 @@ static char *GetConditionString(SignalCondition *cond, char *buf, char *buflast)
 			}
 		}
 	}
-	return GetString(buf, string, buflast);
+	return GetString(string);
 }
 
 /**
@@ -200,8 +200,6 @@ static void DrawInstructionString(SignalInstruction *instruction, int y, bool se
 {
 	StringID instruction_string = INVALID_STRING_ID;
 
-	char condstr[512];
-
 	switch (instruction->Opcode()) {
 		case PSO_FIRST:
 			instruction_string = STR_PROGSIG_FIRST;
@@ -213,8 +211,7 @@ static void DrawInstructionString(SignalInstruction *instruction, int y, bool se
 
 		case PSO_IF: {
 			SignalIf *if_ins = static_cast<SignalIf*>(instruction);
-			GetConditionString(if_ins->condition, condstr, lastof(condstr));
-			SetDParamStr(0, condstr);
+			SetDParamStr(0, GetConditionString(if_ins->condition));
 			instruction_string = STR_PROGSIG_IF;
 			break;
 		}
@@ -257,7 +254,7 @@ public:
 		this->track = ref.track;
 		this->selected_instruction = -1;
 
-		this->CreateNestedTree(desc);
+		this->CreateNestedTree();
 		this->vscroll = this->GetScrollbar(PROGRAM_WIDGET_SCROLLBAR);
 		this->GetWidget<NWidgetStacked>(PROGRAM_WIDGET_SEL_TOP_AUX)->SetDisplayedPlane(SZSP_NONE);
 		this->current_aux_plane = SZSP_NONE;
@@ -267,7 +264,7 @@ public:
 		RebuildInstructionList();
 	}
 
-	virtual void OnClick(Point pt, int widget, int click_count) override
+	virtual void OnClick(Point pt, WidgetID widget, int click_count) override
 	{
 		switch (widget) {
 			case PROGRAM_WIDGET_INSTRUCTION_LIST: {
@@ -297,7 +294,7 @@ public:
 				SignalInstruction *ins = GetSelected();
 				if (ins == nullptr) return;
 
-				uint32 p1 = 0;
+				uint32_t p1 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
@@ -501,7 +498,7 @@ public:
 			return;
 		}
 
-		uint32 p1 = 0, p2 = 0;
+		uint32_t p1 = 0, p2 = 0;
 		SB(p1, 0, 3, this->track);
 		SB(p1, 3, 16, si->Id());
 
@@ -525,7 +522,7 @@ public:
 
 			uint value = atoi(str);
 
-			uint32 p1 = 0, p2 = 0;
+			uint32_t p1 = 0, p2 = 0;
 			SB(p1, 0, 3, this->track);
 			SB(p1, 3, 16, si->Id());
 
@@ -537,14 +534,14 @@ public:
 		}
 	}
 
-	virtual void OnDropdownSelect(int widget, int index) override
+	virtual void OnDropdownSelect(WidgetID widget, int index) override
 	{
 		SignalInstruction *ins = this->GetSelected();
 		if (!ins) return;
 
 		switch (widget) {
 			case PROGRAM_WIDGET_INSERT: {
-				uint64 p1 = 0;
+				uint64_t p1 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 				SB(p1, 19, 8, OpcodeForIndex(index));
@@ -555,7 +552,7 @@ public:
 			}
 
 			case PROGRAM_WIDGET_SET_STATE: {
-				uint64 p1 = 0;
+				uint64_t p1 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
@@ -564,7 +561,7 @@ public:
 			}
 
 			case PROGRAM_WIDGET_COND_VARIABLE: {
-				uint64 p1 = 0, p2 = 0;
+				uint64_t p1 = 0, p2 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
@@ -576,7 +573,7 @@ public:
 			}
 
 			case PROGRAM_WIDGET_COND_COMPARATOR: {
-				uint64 p1 = 0, p2 = 0;
+				uint64_t p1 = 0, p2 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
@@ -590,7 +587,7 @@ public:
 
 			case PROGRAM_WIDGET_COND_SLOT:
 			case PROGRAM_WIDGET_COND_COUNTER: {
-				uint64 p1 = 0, p2 = 0;
+				uint64_t p1 = 0, p2 = 0;
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
@@ -603,11 +600,11 @@ public:
 		}
 	}
 
-	virtual void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	virtual void UpdateWidgetSize(WidgetID widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
 		switch (widget) {
 			case PROGRAM_WIDGET_INSTRUCTION_LIST:
-				resize->height = FONT_HEIGHT_NORMAL;
+				resize->height = GetCharacterHeight(FS_NORMAL);
 				size->height = 6 * resize->height + WidgetDimensions::scaled.framerect.Vertical();
 				break;
 		}
@@ -624,7 +621,7 @@ public:
 		this->DrawWidgets();
 	}
 
-	virtual void DrawWidget(const Rect &r, int widget) const override
+	virtual void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		if (widget != PROGRAM_WIDGET_INSTRUCTION_LIST) return;
 
@@ -649,7 +646,7 @@ public:
 	}
 
 
-	virtual void SetStringParameters(int widget) const override
+	virtual void SetStringParameters(WidgetID widget) const override
 	{
 		switch (widget) {
 			case PROGRAM_WIDGET_COND_VALUE: {
@@ -702,13 +699,13 @@ private:
 	int GetInstructionFromPt(int y)
 	{
 		NWidgetBase *nwid = this->GetWidget<NWidgetBase>(PROGRAM_WIDGET_INSTRUCTION_LIST);
-		int sel = (y - nwid->pos_y - WidgetDimensions::scaled.framerect.top) / nwid->resize_y; // Selected line
+		int32_t sel = (y - nwid->pos_y - WidgetDimensions::scaled.framerect.top) / nwid->resize_y; // Selected line
 
-		if ((uint)sel >= this->vscroll->GetCapacity()) return -1;
+		if (sel >= this->vscroll->GetCapacity()) return -1;
 
 		sel += this->vscroll->GetPosition();
 
-		return (sel <= int(this->instructions.size()) && sel >= 0) ? sel : -1;
+		return (sel <= (int32_t)(this->instructions.size()) && sel >= 0) ? sel : -1;
 	}
 
 	void RebuildInstructionList()
@@ -900,7 +897,7 @@ private:
 	int current_aux_plane;
 };
 
-static const NWidgetPart _nested_program_widgets[] = {
+static constexpr NWidgetPart _nested_program_widgets[] = {
 	// Title bar
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
@@ -965,16 +962,16 @@ static const NWidgetPart _nested_program_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _program_desc(
+static WindowDesc _program_desc(__FILE__, __LINE__,
 	WDP_AUTO, "signal_program", 384, 100,
 	WC_SIGNAL_PROGRAM, WC_BUILD_SIGNAL,
 	WDF_CONSTRUCTION,
-	_nested_program_widgets, lengthof(_nested_program_widgets)
+	std::begin(_nested_program_widgets), std::end(_nested_program_widgets)
 );
 
 void ShowSignalProgramWindow(SignalReference ref)
 {
-	uint32 window_id = (ref.tile << 3) | ref.track;
+	uint32_t window_id = (ref.tile << 3) | ref.track;
 	if (BringWindowToFrontById(WC_SIGNAL_PROGRAM, window_id) != nullptr) return;
 
 	new ProgramWindow(&_program_desc, ref);

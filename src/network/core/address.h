@@ -75,7 +75,7 @@ public:
 	 * @param port the port
 	 * @param family the address family
 	 */
-	NetworkAddress(std::string_view hostname = "", uint16 port = 0, int family = AF_UNSPEC) :
+	NetworkAddress(std::string_view hostname = "", uint16_t port = 0, int family = AF_UNSPEC) :
 		address_length(0),
 		resolved(false)
 	{
@@ -106,8 +106,8 @@ public:
 		return this->address_length;
 	}
 
-	uint16 GetPort() const;
-	void SetPort(uint16 port);
+	uint16_t GetPort() const;
+	void SetPort(uint16_t port);
 
 	/**
 	 * Check whether the IP address has been resolved already
@@ -190,6 +190,11 @@ public:
 struct NetworkAddressDumper {
 	const char *GetAddressAsString(NetworkAddress *addr, bool with_family = true);
 
+	inline const char *GetAddressAsString(NetworkAddress &addr, bool with_family = true)
+	{
+		return this->GetAddressAsString(&addr, with_family);
+	}
+
 private:
 	/* 7 extra are for with_family, which adds " (IPvX)". */
 	char buf[NETWORK_HOSTNAME_PORT_LENGTH + 7];
@@ -226,7 +231,7 @@ public:
 	ServerAddressType type;        ///< The type of this ServerAddress.
 	std::string connection_string; ///< The connection string for this ServerAddress.
 
-	static ServerAddress Parse(const std::string &connection_string, uint16 default_port, CompanyID *company_id = nullptr);
+	static ServerAddress Parse(const std::string &connection_string, uint16_t default_port, CompanyID *company_id = nullptr);
 };
 
 #endif /* NETWORK_CORE_ADDRESS_H */

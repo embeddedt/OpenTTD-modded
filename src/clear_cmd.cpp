@@ -46,12 +46,12 @@ static CommandCost ClearTile_Clear(TileIndex tile, DoCommandFlag flags)
 	return price;
 }
 
-SpriteID GetSpriteIDForClearLand(const Slope slope, byte set)
+SpriteID GetSpriteIDForClearLand(const Slope slope, uint8_t set)
 {
 	return SPR_FLAT_BARE_LAND + SlopeToSpriteOffset(slope) + set * 19;
 }
 
-void DrawClearLandTile(const TileInfo *ti, byte set)
+void DrawClearLandTile(const TileInfo *ti, uint8_t set)
 {
 	DrawGroundSprite(GetSpriteIDForClearLand(ti->tileh, set), PAL_NONE);
 }
@@ -80,7 +80,7 @@ inline SpriteID GetSpriteIDForRocksUsingOffset(const uint slope_to_sprite_offset
 	return ((HasGrfMiscBit(GMB_SECOND_ROCKY_TILE_SET) && (TileHash(x, y) & 1)) ? SPR_FLAT_ROCKY_LAND_2 : SPR_FLAT_ROCKY_LAND_1) + slope_to_sprite_offset;
 }
 
-bool DrawCustomSpriteIDForRocks(const TileInfo *ti, uint8 slope_to_sprite_offset, bool require_snow_flag)
+bool DrawCustomSpriteIDForRocks(const TileInfo *ti, uint8_t slope_to_sprite_offset, bool require_snow_flag)
 {
 	for (const GRFFile *grf : _new_landscape_rocks_grfs) {
 		if (require_snow_flag && !HasBit(grf->new_landscape_ctrl_flags, NLCF_ROCKS_DRAW_SNOWY_ENABLED)) continue;
@@ -124,14 +124,14 @@ static void DrawClearLandFence(const TileInfo *ti)
 	if (fence_nw != 0) {
 		int z = GetSlopePixelZInCorner(ti->tileh, CORNER_W);
 		SpriteID sprite = _clear_land_fence_sprites[fence_nw - 1] + _fence_mod_by_tileh_nw[ti->tileh];
-		AddSortableSpriteToDraw(sprite, PAL_NONE, ti->x, ti->y - 15, 16, 31, maxz - z + 4, ti->z + z, false, 0, 15, -z);
+		AddSortableSpriteToDraw(sprite, PAL_NONE, ti->x, ti->y - 16, 16, 32, maxz - z + 4, ti->z + z, false, 0, 16, -z);
 	}
 
 	uint fence_ne = GetFence(ti->tile, DIAGDIR_NE);
 	if (fence_ne != 0) {
 		int z = GetSlopePixelZInCorner(ti->tileh, CORNER_E);
 		SpriteID sprite = _clear_land_fence_sprites[fence_ne - 1] + _fence_mod_by_tileh_ne[ti->tileh];
-		AddSortableSpriteToDraw(sprite, PAL_NONE, ti->x - 15, ti->y, 31, 16, maxz - z + 4, ti->z + z, false, 15, 0, -z);
+		AddSortableSpriteToDraw(sprite, PAL_NONE, ti->x - 16, ti->y, 32, 16, maxz - z + 4, ti->z + z, false, 16, 0, -z);
 	}
 
 	uint fence_sw = GetFence(ti->tile, DIAGDIR_SW);
@@ -166,7 +166,7 @@ static void DrawTile_Clear(TileInfo *ti, DrawTileProcParams params)
 
 		case CLEAR_ROCKS:
 			if (!params.no_ground_tiles) {
-				uint8 slope_to_sprite_offset = SlopeToSpriteOffset(ti->tileh);
+				uint8_t slope_to_sprite_offset = SlopeToSpriteOffset(ti->tileh);
 				if (DrawCustomSpriteIDForRocks(ti, slope_to_sprite_offset, false)) break;
 				DrawGroundSprite(GetSpriteIDForRocksUsingOffset(slope_to_sprite_offset, ti->x, ti->y), PAL_NONE);
 			}
@@ -181,7 +181,7 @@ static void DrawTile_Clear(TileInfo *ti, DrawTileProcParams params)
 
 		case CLEAR_SNOW:
 			if (!params.no_ground_tiles) {
-				uint8 slope_to_sprite_offset = SlopeToSpriteOffset(ti->tileh);
+				uint8_t slope_to_sprite_offset = SlopeToSpriteOffset(ti->tileh);
 				if (GetRawClearGround(ti->tile) == CLEAR_ROCKS && !_new_landscape_rocks_grfs.empty()) {
 					if (DrawCustomSpriteIDForRocks(ti, slope_to_sprite_offset, true)) break;
 				}
@@ -197,15 +197,14 @@ static void DrawTile_Clear(TileInfo *ti, DrawTileProcParams params)
 	DrawBridgeMiddle(ti);
 }
 
-static int GetSlopePixelZ_Clear(TileIndex tile, uint x, uint y, bool ground_vehicle)
+static int GetSlopePixelZ_Clear(TileIndex tile, uint x, uint y, bool)
 {
-	int z;
-	Slope tileh = GetTilePixelSlope(tile, &z);
+	auto [tileh, z] = GetTilePixelSlope(tile);
 
 	return z + GetPartialPixelZ(x & 0xF, y & 0xF, tileh);
 }
 
-static Foundation GetFoundation_Clear(TileIndex tile, Slope tileh)
+static Foundation GetFoundation_Clear(TileIndex, Slope)
 {
 	return FOUNDATION_NONE;
 }
@@ -215,25 +214,25 @@ static void UpdateFences(TileIndex tile)
 	assert_tile(IsTileType(tile, MP_CLEAR) && IsClearGround(tile, CLEAR_FIELDS), tile);
 	bool dirty = false;
 
-	bool neighbour = (IsTileType(TILE_ADDXY(tile, 1, 0), MP_CLEAR) && IsClearGround(TILE_ADDXY(tile, 1, 0), CLEAR_FIELDS));
+	bool neighbour = (IsTileType(TileAddXY(tile, 1, 0), MP_CLEAR) && IsClearGround(TileAddXY(tile, 1, 0), CLEAR_FIELDS));
 	if (!neighbour && GetFence(tile, DIAGDIR_SW) == 0) {
 		SetFence(tile, DIAGDIR_SW, 3);
 		dirty = true;
 	}
 
-	neighbour = (IsTileType(TILE_ADDXY(tile, 0, 1), MP_CLEAR) && IsClearGround(TILE_ADDXY(tile, 0, 1), CLEAR_FIELDS));
+	neighbour = (IsTileType(TileAddXY(tile, 0, 1), MP_CLEAR) && IsClearGround(TileAddXY(tile, 0, 1), CLEAR_FIELDS));
 	if (!neighbour && GetFence(tile, DIAGDIR_SE) == 0) {
 		SetFence(tile, DIAGDIR_SE, 3);
 		dirty = true;
 	}
 
-	neighbour = (IsTileType(TILE_ADDXY(tile, -1, 0), MP_CLEAR) && IsClearGround(TILE_ADDXY(tile, -1, 0), CLEAR_FIELDS));
+	neighbour = (IsTileType(TileAddXY(tile, -1, 0), MP_CLEAR) && IsClearGround(TileAddXY(tile, -1, 0), CLEAR_FIELDS));
 	if (!neighbour && GetFence(tile, DIAGDIR_NE) == 0) {
 		SetFence(tile, DIAGDIR_NE, 3);
 		dirty = true;
 	}
 
-	neighbour = (IsTileType(TILE_ADDXY(tile, 0, -1), MP_CLEAR) && IsClearGround(TILE_ADDXY(tile, 0, -1), CLEAR_FIELDS));
+	neighbour = (IsTileType(TileAddXY(tile, 0, -1), MP_CLEAR) && IsClearGround(TileAddXY(tile, 0, -1), CLEAR_FIELDS));
 	if (!neighbour && GetFence(tile, DIAGDIR_NW) == 0) {
 		SetFence(tile, DIAGDIR_NW, 3);
 		dirty = true;
@@ -401,7 +400,7 @@ void GenerateClearTile()
 	/* add rocky tiles */
 	i = gi;
 	do {
-		uint32 r = Random();
+		uint32_t r = Random();
 		tile = RandomTileSeed(r);
 
 		IncreaseGeneratingWorldProgress(GWP_ROUGH_ROCKY);
@@ -426,7 +425,7 @@ get_out:;
 	} while (--i);
 }
 
-static TrackStatus GetTileTrackStatus_Clear(TileIndex tile, TransportType mode, uint sub_mode, DiagDirection side)
+static TrackStatus GetTileTrackStatus_Clear(TileIndex, TransportType, uint, DiagDirection)
 {
 	return 0;
 }
@@ -450,12 +449,12 @@ static void GetTileDesc_Clear(TileIndex tile, TileDesc *td)
 	td->owner[0] = GetTileOwner(tile);
 }
 
-static void ChangeTileOwner_Clear(TileIndex tile, Owner old_owner, Owner new_owner)
+static void ChangeTileOwner_Clear(TileIndex, Owner, Owner)
 {
 	return;
 }
 
-static CommandCost TerraformTile_Clear(TileIndex tile, DoCommandFlag flags, int z_new, Slope tileh_new)
+static CommandCost TerraformTile_Clear(TileIndex tile, DoCommandFlag flags, int, Slope)
 {
 	return DoCommand(tile, 0, 0, flags, CMD_LANDSCAPE_CLEAR);
 }

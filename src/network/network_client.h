@@ -15,9 +15,9 @@
 /** Class for handling the client side of the game connection. */
 class ClientNetworkGameSocketHandler : public NetworkGameSocketHandler {
 private:
-	std::string connection_string; ///< Address we are connected to.
-	struct PacketReader *savegame; ///< Packet reader for reading the savegame.
-	byte token;                    ///< The token we need to send back to the server to prove we're the right client.
+	std::string connection_string;                 ///< Address we are connected to.
+	std::shared_ptr<struct PacketReader> savegame; ///< Packet reader for reading the savegame.
+	uint8_t token;                                 ///< The token we need to send back to the server to prove we're the right client.
 	NetworkSharedSecrets last_rcon_shared_secrets; ///< Keys for last rcon (and incoming replies)
 
 	/** Status of the connection with the server. */
@@ -50,35 +50,35 @@ protected:
 	friend void NetworkClose(bool close_admins);
 	static ClientNetworkGameSocketHandler *my_client; ///< This is us!
 
-	NetworkRecvStatus Receive_SERVER_FULL(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_BANNED(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_ERROR(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_CLIENT_INFO(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_NEED_GAME_PASSWORD(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_NEED_COMPANY_PASSWORD(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_SETTINGS_ACCESS(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_WELCOME(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_WAIT(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_MAP_BEGIN(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_MAP_SIZE(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_MAP_DATA(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_MAP_DONE(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_JOIN(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_FRAME(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_SYNC(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_COMMAND(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_CHAT(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_EXTERNAL_CHAT(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_QUIT(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_ERROR_QUIT(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_DESYNC_LOG(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_SHUTDOWN(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_NEWGAME(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_RCON(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_CHECK_NEWGRFS(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_MOVE(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_COMPANY_UPDATE(Packet *p) override;
-	NetworkRecvStatus Receive_SERVER_CONFIG_UPDATE(Packet *p) override;
+	NetworkRecvStatus Receive_SERVER_FULL(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_BANNED(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_ERROR(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_CLIENT_INFO(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_NEED_GAME_PASSWORD(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_NEED_COMPANY_PASSWORD(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_SETTINGS_ACCESS(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_WELCOME(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_WAIT(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_MAP_BEGIN(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_MAP_SIZE(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_MAP_DATA(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_MAP_DONE(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_JOIN(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_FRAME(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_SYNC(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_COMMAND(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_CHAT(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_EXTERNAL_CHAT(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_QUIT(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_ERROR_QUIT(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_DESYNC_LOG(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_SHUTDOWN(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_NEWGAME(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_RCON(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_CHECK_NEWGRFS(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_MOVE(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_COMPANY_UPDATE(Packet &p) override;
+	NetworkRecvStatus Receive_SERVER_CONFIG_UPDATE(Packet &p) override;
 
 	static NetworkRecvStatus SendNewGRFsOk();
 	static NetworkRecvStatus SendGetMap();
@@ -103,7 +103,7 @@ public:
 	}
 
 	static NetworkRecvStatus SendJoin();
-	static NetworkRecvStatus SendCommand(const CommandPacket *cp);
+	static NetworkRecvStatus SendCommand(const CommandPacket &cp);
 	static NetworkRecvStatus SendError(NetworkErrorCode errorno, NetworkRecvStatus recvstatus = NETWORK_RECV_STATUS_OKAY);
 	static NetworkRecvStatus SendDesyncLog(const std::string &log);
 	static NetworkRecvStatus SendDesyncMessage(const char *msg);

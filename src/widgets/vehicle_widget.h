@@ -11,7 +11,7 @@
 #define WIDGETS_VEHICLE_WIDGET_H
 
 /** Widgets of the #VehicleViewWindow class. */
-enum VehicleViewWidgets {
+enum VehicleViewWidgets : WidgetID {
 	WID_VV_CAPTION,            ///< Caption of window.
 	WID_VV_VIEWPORT,           ///< Viewport widget.
 	WID_VV_START_STOP,         ///< Start or stop this vehicle, and show information about the current state.
@@ -31,7 +31,7 @@ enum VehicleViewWidgets {
 };
 
 /** Widgets of the #RefitWindow class. */
-enum VehicleRefitWidgets {
+enum VehicleRefitWidgets : WidgetID {
 	WID_VR_CAPTION,               ///< Caption of window.
 	WID_VR_VEHICLE_PANEL_DISPLAY, ///< Display with a representation of the vehicle to refit.
 	WID_VR_SHOW_HSCROLLBAR,       ///< Selection widget for the horizontal scrollbar.
@@ -45,7 +45,7 @@ enum VehicleRefitWidgets {
 };
 
 /** Widgets of the #VehicleDetailsWindow class. */
-enum VehicleDetailsWidgets {
+enum VehicleDetailsWidgets : WidgetID {
 	WID_VD_CAPTION,                     ///< Caption of window.
 	WID_VD_TRIP_HISTORY,                ///< Show the trip history of vehicle.
 	WID_VD_TOP_DETAILS,                 ///< Panel with generic details.
@@ -60,10 +60,11 @@ enum VehicleDetailsWidgets {
 	WID_VD_DETAILS_TRAIN_VEHICLES,      ///< Show all parts of the train with their description.
 	WID_VD_DETAILS_CAPACITY_OF_EACH,    ///< Show the capacity of all train parts.
 	WID_VD_DETAILS_TOTAL_CARGO,         ///< Show the capacity and carried cargo amounts aggregated per cargo of the train.
+	WID_VD_EXTRA_ACTIONS,               ///< Extra actions drop-down.
 };
 
 /** Widgets of the #VehicleListWindow class. */
-enum VehicleListWidgets {
+enum VehicleListWidgets : WidgetID {
 	WID_VL_LIST,                     ///< List of the vehicles, this must be first, see: DirtyVehicleListWindowForVehicle
 	WID_VL_CAPTION,                  ///< Caption of window (for non shared orders windows).
 	WID_VL_CAPTION_SHARED_ORDERS,    ///< Caption of window (for shared orders windows).

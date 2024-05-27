@@ -20,22 +20,27 @@
 #include "../fileio_func.h"
 #include "../date_func.h"
 #include "../debug.h"
+#include <bit>
 #endif /* RANDOM_DEBUG */
 
 struct SimpleChecksum64 {
-	uint64 state = 0;
+	uint64_t state = 0;
 
-	void Update(uint64 input)
+	void Update(uint64_t input)
 	{
-		this->state = ROL(this->state, 1) ^ input ^ 0x123456789ABCDEF7ULL;
+		this->state = std::rotl(this->state, 1) ^ input ^ 0x123456789ABCDEF7ULL;
 	}
 };
 
 extern SimpleChecksum64 _state_checksum;
 
-inline void UpdateStateChecksum(uint64 input)
+inline void UpdateStateChecksum(uint64_t input)
 {
+#if defined(DEDICATED)
+	_state_checksum.Update(input);
+#else
 	if (_networking) _state_checksum.Update(input);
+#endif
 }
 
 #ifdef RANDOM_DEBUG
@@ -43,8 +48,8 @@ inline bool ShouldLogUpdateStateChecksum()
 {
 	return _networking && (!_network_server || (NetworkClientSocket::IsValidID(0) && NetworkClientSocket::Get(0)->status != NetworkClientSocket::STATUS_INACTIVE));
 }
-#	define DEBUG_UPDATESTATECHECKSUM(str, ...) if (ShouldLogUpdateStateChecksum()) DEBUG(statecsum, 0, "date{%08x; %02x; %02x}; %04x; %02x; " OTTD_PRINTFHEX64PAD "; %s:%d " str, \
-		_date, _date_fract, _tick_skip_counter, _frame_counter, (byte)_current_company, _state_checksum.state, __FILE__, __LINE__, __VA_ARGS__);
+#	define DEBUG_UPDATESTATECHECKSUM(str, ...) if (ShouldLogUpdateStateChecksum()) DEBUG(statecsum, 0, "%s; %04x; %02x; " OTTD_PRINTFHEX64PAD "; %s:%d " str, \
+		debug_date_dumper().HexDate(), _frame_counter, (uint8_t)_current_company, _state_checksum.state, __FILE__, __LINE__, __VA_ARGS__);
 #else
 #	define DEBUG_UPDATESTATECHECKSUM(str, ...)
 #endif /* RANDOM_DEBUG */

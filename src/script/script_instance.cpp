@@ -80,6 +80,10 @@ void ScriptInstance::Initialize(const std::string &main_script, const std::strin
 	/* Register the API functions and classes */
 	this->engine->SetGlobalPointer(this->engine);
 	this->RegisterAPI();
+	if (this->IsDead()) {
+		/* Failed to register API; a message has already been logged. */
+		return;
+	}
 
 	try {
 		ScriptObject::SetAllowDoCommand(false);
@@ -362,7 +366,7 @@ ScriptLogTypes::LogData &ScriptInstance::GetLogData()
  * First 1 byte indicating if there is a data blob at all.
  * 1 byte indicating the type of data.
  * The data itself, this differs per type:
- *  - integer: a binary representation of the integer (int32).
+ *  - integer: a binary representation of the integer (int32_t).
  *  - string:  First one byte with the string length, then a 0-terminated char
  *             array. The string can't be longer than 255 bytes (including
  *             terminating '\0').
@@ -390,7 +394,7 @@ ScriptLogTypes::LogData &ScriptInstance::GetLogData()
 			SlWriteByte(SQSL_INT);
 			SQInteger res;
 			sq_getinteger(vm, index, &res);
-			int64 value = (int64)res;
+			int64_t value = (int64_t)res;
 			SlArray(&value, 1, SLE_INT64);
 			return true;
 		}
@@ -404,7 +408,7 @@ ScriptLogTypes::LogData &ScriptInstance::GetLogData()
 				ScriptLog::Error("Maximum string length is 254 chars. No data saved.");
 				return false;
 			}
-			SlWriteByte((byte)len);
+			SlWriteByte((uint8_t)len);
 			SlArray(const_cast<char *>(buf), len, SLE_CHAR);
 			return true;
 		}
@@ -557,17 +561,17 @@ bool ScriptInstance::IsPaused()
 
 /* static */ bool ScriptInstance::LoadObjects(ScriptData *data)
 {
-	byte type = SlReadByte();
+	uint8_t type = SlReadByte();
 	switch (type) {
 		case SQSL_INT: {
-			int64 value;
+			int64_t value;
 			SlArray(&value, 1, (IsSavegameVersionBefore(SLV_SCRIPT_INT64) && SlXvIsFeatureMissing(XSLFI_SCRIPT_INT64)) ? SLE_FILE_I32 | SLE_VAR_I64 : SLE_INT64);
 			if (data != nullptr) data->push_back((SQInteger)value);
 			return true;
 		}
 
 		case SQSL_STRING: {
-			byte len = SlReadByte();
+			uint8_t len = SlReadByte();
 			static char buf[std::numeric_limits<decltype(len)>::max()];
 			SlArray(buf, len, SLE_CHAR);
 			if (data != nullptr) data->push_back(StrMakeValid(std::string_view(buf, len)));
@@ -582,7 +586,7 @@ bool ScriptInstance::IsPaused()
 		}
 
 		case SQSL_BOOL: {
-			byte sl_byte = SlReadByte();
+			uint8_t sl_byte = SlReadByte();
 			if (data != nullptr) data->push_back((SQBool)(sl_byte != 0));
 			return true;
 		}
@@ -656,7 +660,7 @@ bool ScriptInstance::IsPaused()
 
 /* static */ void ScriptInstance::LoadEmpty()
 {
-	byte sl_byte = SlReadByte();
+	uint8_t sl_byte = SlReadByte();
 	/* Check if there was anything saved at all. */
 	if (sl_byte == 0) return;
 
@@ -670,7 +674,7 @@ bool ScriptInstance::IsPaused()
 		return nullptr;
 	}
 
-	byte sl_byte = SlReadByte();
+	uint8_t sl_byte = SlReadByte();
 	/* Check if there was anything saved at all. */
 	if (sl_byte == 0) return nullptr;
 
@@ -754,16 +758,16 @@ void ScriptInstance::LimitOpsTillSuspend(SQInteger suspend)
 	}
 }
 
-uint32 ScriptInstance::GetMaxOpsTillSuspend() const
+uint32_t ScriptInstance::GetMaxOpsTillSuspend() const
 {
 	if (this->script_type == ScriptType::GS && (_pause_mode & PM_PAUSED_GAME_SCRIPT) != PM_UNPAUSED) {
 		/* Boost opcodes till suspend when paused due to game script */
-		return std::min<uint32>(250000, _settings_game.script.script_max_opcode_till_suspend * 10);
+		return std::min<uint32_t>(250000, _settings_game.script.script_max_opcode_till_suspend * 10);
 	}
 	return _settings_game.script.script_max_opcode_till_suspend;
 }
 
-bool ScriptInstance::DoCommandCallback(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+bool ScriptInstance::DoCommandCallback(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	ScriptObject::ActiveInstance active(this);
 

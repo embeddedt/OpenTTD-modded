@@ -10,16 +10,14 @@
 #ifndef STRINGS_INTERNAL_H
 #define STRINGS_INTERNAL_H
 
-#include "strings_func.h"
 #include "string_func.h"
-#include "core/span_type.hpp"
+#include "core/strong_typedef_type.hpp"
 
 #include <array>
 
 /** The data required to format and validate a single parameter of a string. */
 struct StringParameter {
 	uint64_t data; ///< The data of the parameter.
-	const char *string_view; ///< The string value, if it has any.
 	std::unique_ptr<std::string> string; ///< Copied string value, if it has any.
 	char32_t type; ///< The #StringControlCode to interpret this data with when it's the first parameter, otherwise '\0'.
 };
@@ -27,12 +25,12 @@ struct StringParameter {
 class StringParameters {
 protected:
 	StringParameters *parent = nullptr; ///< If not nullptr, this instance references data from this parent instance.
-	span<StringParameter> parameters = {}; ///< Array with the actual parameters.
+	std::span<StringParameter> parameters = {}; ///< Array with the actual parameters.
 
 	size_t offset = 0; ///< Current offset in the parameters span.
 	char32_t next_type = 0; ///< The type of the next data that is retrieved.
 
-	StringParameters(span<StringParameter> parameters = {}) :
+	StringParameters(std::span<StringParameter> parameters = {}) :
 		parameters(parameters)
 	{}
 
@@ -41,19 +39,12 @@ protected:
 public:
 	/**
 	 * Create a new StringParameters instance that can reference part of the data of
-	 * the given partent instance.
+	 * the given parent instance.
 	 */
 	StringParameters(StringParameters &parent, size_t size) :
 		parent(&parent),
 		parameters(parent.parameters.subspan(parent.offset, size))
 	{}
-
-	~StringParameters()
-	{
-		if (this->parent != nullptr) {
-			this->parent->offset += this->parameters.size();
-		}
-	}
 
 	void PrepareForNextRun();
 	void SetTypeOfNextParameter(char32_t type) { this->next_type = type; }
@@ -84,6 +75,17 @@ public:
 	}
 
 	/**
+	 * Advance the offset within the string from where to return the next result of
+	 * \c GetInt64 or \c GetInt32.
+	 * @param advance The amount to advance the offset by.
+	 */
+	void AdvanceOffset(size_t advance)
+	{
+		this->offset += advance;
+		assert(this->offset <= this->parameters.size());
+	}
+
+	/**
 	 * Get the next parameter from our parameters.
 	 * This updates the offset, so the next time this is called the next parameter
 	 * will be read.
@@ -93,7 +95,7 @@ public:
 	T GetNextParameter()
 	{
 		auto ptr = GetNextParameterPointer();
-		return static_cast<T>(ptr == nullptr ? 0 : ptr->data);
+		return static_cast<T>(ptr->data);
 	}
 
 	/**
@@ -105,8 +107,7 @@ public:
 	const char *GetNextParameterString()
 	{
 		auto ptr = GetNextParameterPointer();
-		if (ptr == nullptr) return nullptr;
-		return ptr->string != nullptr ? ptr->string->c_str() : ptr->string_view;
+		return ptr->string != nullptr ? ptr->string->c_str() : nullptr;
 	}
 
 	/**
@@ -131,7 +132,7 @@ public:
 	 */
 	StringParameters GetRemainingParameters(size_t offset)
 	{
-		return StringParameters(this->parameters.subspan(offset, GetDataLeft()));
+		return StringParameters(this->parameters.subspan(offset, this->parameters.size() - offset));
 	}
 
 	/** Return the amount of elements which can still be read. */
@@ -152,21 +153,19 @@ public:
 		assert(n < this->parameters.size());
 		this->parameters[n].data = v;
 		this->parameters[n].string.reset();
-		this->parameters[n].string_view = nullptr;
 	}
 
-	//template <typename T, std::enable_if_t<std::is_base_of<StrongTypedefBase, T>::value, int> = 0>
-	//void SetParam(size_t n, T v)
-	//{
-	//	SetParam(n, v.base());
-	//}
+	template <typename T, std::enable_if_t<std::is_base_of<StrongTypedefBase, T>::value, int> = 0>
+	void SetParam(size_t n, T v)
+	{
+		SetParam(n, v.base());
+	}
 
 	void SetParam(size_t n, const char *str)
 	{
 		assert(n < this->parameters.size());
 		this->parameters[n].data = 0;
-		this->parameters[n].string.reset();
-		this->parameters[n].string_view = str;
+		this->parameters[n].string = std::make_unique<std::string>(str);
 	}
 
 	void SetParam(size_t n, std::string str)
@@ -174,13 +173,12 @@ public:
 		assert(n < this->parameters.size());
 		this->parameters[n].data = 0;
 		this->parameters[n].string = std::make_unique<std::string>(std::move(str));
-		this->parameters[n].string_view = nullptr;
 	}
 
 	uint64_t GetParam(size_t n) const
 	{
 		assert(n < this->parameters.size());
-		assert(this->parameters[n].string_view == nullptr && this->parameters[n].string == nullptr);
+		assert(this->parameters[n].string == nullptr);
 		return this->parameters[n].data;
 	}
 
@@ -193,7 +191,7 @@ public:
 	{
 		assert(n < this->parameters.size());
 		auto &param = this->parameters[n];
-		return param.string != nullptr ? param.string->c_str() : param.string_view;
+		return param.string != nullptr ? param.string->c_str() : nullptr;
 	}
 };
 
@@ -208,7 +206,7 @@ class ArrayStringParameters : public StringParameters {
 public:
 	ArrayStringParameters()
 	{
-		this->parameters = span(params.data(), params.size());
+		this->parameters = std::span(params.data(), params.size());
 	}
 
 	ArrayStringParameters(ArrayStringParameters&& other) noexcept
@@ -221,11 +219,11 @@ public:
 		this->offset = other.offset;
 		this->next_type = other.next_type;
 		this->params = std::move(other.params);
-		this->parameters = span(params.data(), params.size());
+		this->parameters = std::span(params.data(), params.size());
 		return *this;
 	}
 
-	ArrayStringParameters(const ArrayStringParameters& other) = delete;
+	ArrayStringParameters(const ArrayStringParameters &other) = delete;
 	ArrayStringParameters& operator=(const ArrayStringParameters &other) = delete;
 };
 
@@ -243,5 +241,120 @@ static auto MakeParameters(const Args&... args)
 	(parameters.SetParam(index++, std::forward<const Args&>(args)), ...);
 	return parameters;
 }
+
+/**
+ * Equivalent to the std::back_insert_iterator in function, with some
+ * convenience helpers for string concatenation.
+ */
+class StringBuilder {
+	std::string *string;
+
+public:
+	/* Required type for this to be an output_iterator; mimics std::back_insert_iterator. */
+	using value_type = void;
+	using difference_type = void;
+	using iterator_category = std::output_iterator_tag;
+	using pointer = void;
+	using reference = void;
+
+	/**
+	 * Create the builder of an external buffer.
+	 * @param start The start location to write to.
+	 * @param last  The last location to write to.
+	 */
+	StringBuilder(std::string &string) : string(&string) {}
+
+	/* Required operators for this to be an output_iterator; mimics std::back_insert_iterator, which has no-ops. */
+	StringBuilder &operator++() { return *this; }
+	StringBuilder operator++(int) { return *this; }
+	StringBuilder &operator*() { return *this; }
+
+	/**
+	 * Operator to add a character to the end of the buffer. Like the back
+	 * insert iterators this also increases the position of the end of the
+	 * buffer.
+	 * @param value The character to add.
+	 * @return Reference to this inserter.
+	 */
+	StringBuilder &operator=(const char value)
+	{
+		return this->operator+=(value);
+	}
+
+	/**
+	 * Operator to add a character to the end of the buffer.
+	 * @param value The character to add.
+	 * @return Reference to this inserter.
+	 */
+	StringBuilder &operator+=(const char value)
+	{
+		this->string->push_back(value);
+		return *this;
+	}
+
+	/**
+	 * Operator to append the given string to the output buffer.
+	 * @param str The string to add.
+	 * @return Reference to this inserter.
+	 */
+	StringBuilder &operator+=(std::string_view str)
+	{
+		*this->string += str;
+		return *this;
+	}
+
+	/**
+	 * Encode the given Utf8 character into the output buffer.
+	 * @param c The character to encode.
+	 */
+	void Utf8Encode(char32_t c)
+	{
+		auto iterator = std::back_inserter(*this->string);
+		::Utf8Encode(iterator, c);
+	}
+
+	/**
+	 * Remove the given amount of characters from the back of the string.
+	 * @param amount The amount of characters to remove.
+	 * @return true iff there was enough space and the character got added.
+	 */
+	void RemoveElementsFromBack(size_t amount)
+	{
+		this->string->erase(this->string->size() - std::min(amount, this->string->size()));
+	}
+
+	/**
+	 * Get the current index in the string.
+	 * @return The index.
+	 */
+	size_t CurrentIndex()
+	{
+		return this->string->size();
+	}
+
+	/**
+	 * Get the reference to the character at the given index.
+	 * @return The reference to the character.
+	 */
+	char &operator[](size_t index)
+	{
+		return (*this->string)[index];
+	}
+
+	std::string *GetTargetString()
+	{
+		return this->string;
+	}
+};
+
+void GetStringWithArgs(StringBuilder builder, StringID string, StringParameters &args, uint case_index = 0, bool game_script = false);
+std::string GetStringWithArgs(StringID string, StringParameters &args);
+
+void GetString(StringBuilder builder, StringID string);
+
+/* Do not leak the StringBuilder to everywhere. */
+void GenerateTownNameString(StringBuilder builder, size_t lang, uint32_t seed);
+void GetTownName(StringBuilder builder, const struct Town *t);
+void GRFTownNameGenerate(StringBuilder builder, uint32_t grfid, uint16_t gen, uint32_t seed);
 
 #endif /* STRINGS_INTERNAL_H */

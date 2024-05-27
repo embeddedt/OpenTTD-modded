@@ -33,7 +33,7 @@
  * @param name Category
  * @param level Debugging level, higher levels means more detailed information.
  */
-#define DEBUG(name, level, ...) if ((level) == 0 || _debug_ ## name ## _level >= (level)) debug(#name, __VA_ARGS__)
+#define DEBUG(name, level, ...) do { if ((level) == 0 || _debug_ ## name ## _level >= (level)) debug(#name, level, __VA_ARGS__); } while (false)
 
 extern int _debug_driver_level;
 extern int _debug_grf_level;
@@ -64,8 +64,8 @@ extern std::string _loadgame_DBGL_data;
 extern bool _save_DBGC_data;
 extern std::string _loadgame_DBGC_data;
 
-void CDECL debug(const char *dbg, const char *format, ...) WARN_FORMAT(2, 3);
-void debug_print(const char *dbg, const char *buf);
+void CDECL debug(const char *dbg, int level, const char *format, ...) WARN_FORMAT(3, 4);
+void debug_print(const char *dbg, int level, const char *buf);
 
 char *DumpDebugFacilityNames(char *buf, char *last);
 void SetDebugString(const char *s, void (*error_func)(const char *));
@@ -74,64 +74,54 @@ std::string GetDebugString();
 /* Shorter form for passing filename and linenumber */
 #define FILE_LINE __FILE__, __LINE__
 
-/* Used for profiling
- *
+/** TicToc profiling.
  * Usage:
- * TIC();
- *   --Do your code--
- * TOC("A name", 1);
- *
- * When you run the TIC() / TOC() multiple times, you can increase the '1'
- *  to only display average stats every N values. Some things to know:
- *
- * for (int i = 0; i < 5; i++) {
- *   TIC();
- *     --Do your code--
- *   TOC("A name", 5);
- * }
- *
- * Is the correct usage for multiple TIC() / TOC() calls.
- *
- * TIC() / TOC() creates its own block, so make sure not the mangle
- *  it with another block.
- *
- * The output is counted in CPU cycles, and not comparable across
- *  machines. Mainly useful for local optimisations.
- **/
-#define TIC() {\
-	uint64 _xxx_ = ottd_rdtsc();\
-	static uint64 _sum_ = 0;\
-	static uint32 _i_ = 0;
+ * static TicToc::State state("A name", 1);
+ * TicToc tt(state);
+ * --Do your code--
+ */
+struct TicToc {
+	/** Persistent state for TicToc profiling. */
+	struct State {
+		const std::string_view name;
+		const uint32_t max_count;
+		uint32_t count = 0;
+		uint64_t chrono_sum = 0;
 
-#define TOC(str, count)\
-	_sum_ += ottd_rdtsc() - _xxx_;\
-	if (++_i_ == count) {\
-		DEBUG(misc, 0, "[%s] " OTTD_PRINTF64 " [avg: %.1f]", str, _sum_, _sum_/(double)_i_);\
-		_i_ = 0;\
-		_sum_ = 0;\
-	}\
-}
+		constexpr State(std::string_view name, uint32_t max_count) : name(name), max_count(max_count) { }
+	};
 
-/* Chrono based version. The output is in microseconds. */
-#define TICC() {\
-	auto _start_ = std::chrono::high_resolution_clock::now();\
-	static uint64 _sum_ = 0;\
-	static uint32 _i_ = 0;
+	State &state;
+	std::chrono::high_resolution_clock::time_point chrono_start; ///< real time count.
 
-#define TOCC(str, _count_)\
-	_sum_ += (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - _start_)).count();\
-	if (++_i_ == _count_) {\
-		DEBUG(misc, 0, "[%s] " OTTD_PRINTF64 " us [avg: %.1f us]", str, _sum_, _sum_/(double)_i_);\
-		_i_ = 0;\
-		_sum_ = 0;\
-	}\
-}
+	inline TicToc(State &state) : state(state), chrono_start(std::chrono::high_resolution_clock::now()) { }
 
+	inline ~TicToc()
+	{
+		this->state.chrono_sum += (std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - this->chrono_start)).count();
+		if (++this->state.count == this->state.max_count) {
+			this->PrintAndReset();
+		}
+	}
 
-void ShowInfo(const char *str);
+private:
+	void PrintAndReset();
+};
+
+void ShowInfoI(const char *str);
 void CDECL ShowInfoF(const char *str, ...) WARN_FORMAT(1, 2);
 
-const char *GetLogPrefix();
+inline void ShowInfoI(const std::string &str)
+{
+	ShowInfoI(str.c_str());
+}
+
+struct log_prefix {
+	const char *GetLogPrefix(bool force = false);
+
+private:
+	char buffer[24];
+};
 
 void ClearDesyncMsgLog();
 void LogDesyncMsg(std::string msg);

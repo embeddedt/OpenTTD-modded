@@ -95,7 +95,7 @@
 	EnforceCompanyModeValid(false);
 	EnforcePrecondition(false, IsValidGroup(group_id));
 
-	return ScriptObject::DoCommand(0, group_id | GroupFlags::GF_REPLACE_PROTECTION, enable ? 1 : 0, CMD_SET_GROUP_FLAG);
+	return ScriptObject::DoCommand(0, group_id | static_cast<uint32_t>(GroupFlags::GF_REPLACE_PROTECTION), enable ? 1 : 0, CMD_SET_GROUP_FLAG);
 }
 
 /* static */ bool ScriptGroup::GetAutoReplaceProtection(GroupID group_id)
@@ -108,7 +108,10 @@
 /* static */ SQInteger ScriptGroup::GetNumEngines(GroupID group_id, EngineID engine_id)
 {
 	EnforceCompanyModeValid(-1);
-	if (!IsValidGroup(group_id) && group_id != GROUP_DEFAULT && group_id != GROUP_ALL) return -1;
+	if (!ScriptEngine::IsValidEngine(engine_id)) return -1;
+	bool valid_group = IsValidGroup(group_id);
+	if (!valid_group && group_id != GROUP_DEFAULT && group_id != GROUP_ALL) return -1;
+	if (valid_group && ScriptEngine::GetVehicleType(engine_id) != GetVehicleType(group_id)) return -1;
 
 	return GetGroupNumEngines(ScriptObject::GetCompany(), group_id, engine_id);
 }
@@ -177,7 +180,7 @@
 
 	Money profit = 0;
 
-	for (const Vehicle *v : Vehicle::Iterate()) {
+	for (const Vehicle *v : Vehicle::IterateFrontOnly()) {
 		if (v->group_id != group_id) continue;
 		if (!v->IsPrimaryVehicle()) continue;
 
@@ -198,10 +201,10 @@
 {
 	if (!IsValidGroup(group_id)) return -1;
 
-	uint32 occupancy = 0;
-	uint32 vehicle_count = 0;
+	uint32_t occupancy = 0;
+	uint32_t vehicle_count = 0;
 
-	for (const Vehicle *v : Vehicle::Iterate()) {
+	for (const Vehicle *v : Vehicle::IterateFrontOnly()) {
 		if (v->group_id != group_id) continue;
 		if (!v->IsPrimaryVehicle()) continue;
 

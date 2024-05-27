@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Letala
 STR_CONFIG_SETTING_AUTOSAVE                                     :Samodejno shrani: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Izberi časovni interval samodejnega shranjevanja igre
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Prikaz urnikov v pikah namesto dneh: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Prikaži čase potovanja v časovnih tabelah kot enote igre namesto dni.
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Preklop na prosojnost za prikaz polnenja. Ctrl+Klik za zaklepanje
 
 # Tracerestrict GUI
@@ -30,6 +33,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Spremeni
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Zasnova: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Se ustavlja, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Pelje proti {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Brez ukazov, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Pelje proti {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Pelje proti {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Servis v {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Vstavi nov ukaz pred izbranega ali pa ga dodaj na konec seznama. Ctrl naredi ukaze postaj 'napolni kakršenkoli tovor', ukaze točk poti 'non-stop' in ukaze garaž 'servis'. 'Deli ukaze' ali Ctrl deli ukaze z drugim izbranim vozilom. Klik na vozilo kopira ukaze
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
@@ -64,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Prodaj 2
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Ni mogoče kupiti 25% delnic tega podjetja...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Ni mogoče prodati 25% delnic tega podjetja...
 STR_ERROR_PROTECTED                                             :{WHITE}Podjetje še ni dovolj staro, da bi lahko trgovalo z lastnimi delnicami...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Samo napredni

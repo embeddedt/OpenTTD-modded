@@ -30,8 +30,8 @@ struct LoadCheckData {
 	StringID error;     ///< Error message from loading. INVALID_STRING_ID if no error.
 	std::string error_msg; ///< Data to pass to SetDParamStr when displaying #error.
 
-	uint32 map_size_x, map_size_y;
-	Date current_date;
+	uint32_t map_size_x, map_size_y;
+	CalTime::Date current_date;
 
 	GameSettings settings;
 
@@ -48,6 +48,7 @@ struct LoadCheckData {
 	std::string debug_config_data;
 
 	bool sl_is_ext_version = false;
+	std::string version_name;
 
 	LoadCheckData() : grfconfig(nullptr),
 			grf_compatibility(GLC_NOT_FOUND)

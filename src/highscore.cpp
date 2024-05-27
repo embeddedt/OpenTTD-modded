@@ -60,7 +60,7 @@ int8_t SaveHighScoreValue(const Company *c)
 	if (CheatHasBeenUsed()) return -1;
 
 	auto &highscores = _highscore_table[SP_CUSTOM];
-	uint16 score = c->old_economy[0].performance_history;
+	uint16_t score = c->old_economy[0].performance_history;
 
 	auto it = std::find_if(highscores.begin(), highscores.end(), [&score](auto &highscore) { return highscore.score <= score; });
 
@@ -129,7 +129,7 @@ void SaveToHighScore()
 	for (int i = 0; i < SP_SAVED_HIGHSCORE_END; i++) {
 		for (HighScore &hs : _highscore_table[i]) {
 			/* This code is weird and old fashioned to keep compatibility with the old high score files. */
-			byte name_length = ClampTo<byte>(hs.name.size());
+			uint8_t name_length = ClampTo<uint8_t>(hs.name.size());
 			if (fwrite(&name_length, sizeof(name_length), 1, fp.get()) != 1 || // Write the string length of the name
 					fwrite(hs.name.data(), name_length, 1, fp.get()) > 1 || // Yes... could be 0 bytes too
 					fwrite(&hs.score, sizeof(hs.score), 1, fp.get()) != 1 ||
@@ -153,7 +153,7 @@ void LoadFromHighScore()
 	for (int i = 0; i < SP_SAVED_HIGHSCORE_END; i++) {
 		for (HighScore &hs : _highscore_table[i]) {
 			/* This code is weird and old fashioned to keep compatibility with the old high score files. */
-			byte name_length;
+			uint8_t name_length;
 			char buffer[std::numeric_limits<decltype(name_length)>::max() + 1];
 
 			if (fread(&name_length, sizeof(name_length), 1, fp.get()) !=  1 ||

@@ -44,14 +44,14 @@ public:
 	void LoadCheck(LoggedChange *lc) const override { this->Load(lc); }
 };
 
-static char old_revision_text[GAMELOG_REVISION_LENGTH];
-static std::string revision_test;
+static char _old_revision_text[GAMELOG_REVISION_LENGTH];
+static std::string _revision_text;
 
 class SlGamelogRevision : public DefaultSaveLoadHandler<SlGamelogRevision, LoggedChange> {
 public:
 	inline static const SaveLoad description[] = {
-		SLEG_CONDARR("revision.text", old_revision_text, SLE_UINT8, GAMELOG_REVISION_LENGTH, SL_MIN_VERSION,     SLV_STRING_GAMELOG),
-		SLEG_CONDSSTR("revision.text",    revision_test, SLE_STR,                            SLV_STRING_GAMELOG, SL_MAX_VERSION),
+		SLEG_CONDARR("revision.text", _old_revision_text, SLE_UINT8, GAMELOG_REVISION_LENGTH, SL_MIN_VERSION,     SLV_STRING_GAMELOG),
+		SLEG_CONDSSTR("revision.text",    _revision_text, SLE_STR,                            SLV_STRING_GAMELOG, SL_MAX_VERSION),
 		SLE_VAR(LoggedChange, revision.newgrf,   SLE_UINT32),
 		SLE_VAR(LoggedChange, revision.slver,    SLE_UINT16),
 		SLE_VAR(LoggedChange, revision.modified, SLE_UINT8),
@@ -61,6 +61,7 @@ public:
 	void Save(LoggedChange *lc) const override
 	{
 		if (lc->ct != GLCT_REVISION) return;
+		_revision_text = lc->revision.text != nullptr ? lc->revision.text : "";
 		SlObject(lc, this->GetDescription());
 	}
 
@@ -69,9 +70,9 @@ public:
 		if (lc->ct != GLCT_REVISION) return;
 		SlObject(lc, this->GetLoadDescription());
 		if (IsSavegameVersionBefore(SLV_STRING_GAMELOG)) {
-			lc->revision.text = stredup(old_revision_text, lastof(old_revision_text));
+			lc->revision.text = stredup(_old_revision_text, lastof(_old_revision_text));
 		} else {
-			lc->revision.text = stredup(revision_test.c_str());
+			lc->revision.text = stredup(_revision_text.c_str());
 		}
 	}
 
@@ -323,7 +324,7 @@ public:
 		la->changes.clear();
 
 		if (IsSavegameVersionBefore(SLV_RIFF_TO_ARRAY)) {
-			byte type;
+			uint8_t type;
 			while ((type = SlReadByte()) != GLCT_NONE) {
 				if (type >= GLCT_END) SlErrorCorrupt("Invalid gamelog change type");
 				GamelogChangeType ct = (GamelogChangeType)type;
@@ -369,7 +370,7 @@ struct GLOGChunkHandler : ChunkHandler {
 		const std::vector<SaveLoad> slt = SlCompatTableHeader(_gamelog_desc, _gamelog_sl_compat);
 
 		if (IsSavegameVersionBefore(SLV_RIFF_TO_ARRAY)) {
-			byte type;
+			uint8_t type;
 			while ((type = SlReadByte()) != GLAT_NONE) {
 				if (type >= GLAT_END) SlErrorCorrupt("Invalid gamelog action type");
 

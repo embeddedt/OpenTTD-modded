@@ -45,7 +45,7 @@ RoadStop *RoadStop::GetNextRoadStop(const RoadVehicle *v) const
 		/* The vehicle cannot go to this roadstop (different roadtype) */
 		if (!HasTileAnyRoadType(rs->xy, v->compatible_roadtypes)) continue;
 		/* The vehicle is articulated and can therefore not go to a standard road stop. */
-		if (IsStandardRoadStopTile(rs->xy) && v->HasArticulatedPart()) continue;
+		if (IsBayRoadStopTile(rs->xy) && v->HasArticulatedPart()) continue;
 
 		/* The vehicle can actually go to this road stop. So, return it! */
 		return rs;
@@ -312,7 +312,7 @@ void RoadStop::ChangeDriveThroughDisallowedRoadDirections(DisallowedRoadDirectio
  */
 void RoadStop::Leave(RoadVehicle *rv)
 {
-	if (IsStandardRoadStopTile(rv->tile)) {
+	if (IsBayRoadStopTile(rv->tile)) {
 		/* Vehicle is leaving a road stop tile, mark bay as free */
 		this->FreeBay(HasBit(rv->state, RVS_USING_SECOND_BAY));
 		this->SetEntranceBusy(false);
@@ -329,7 +329,7 @@ void RoadStop::Leave(RoadVehicle *rv)
  */
 bool RoadStop::Enter(RoadVehicle *rv)
 {
-	if (IsStandardRoadStopTile(this->xy)) {
+	if (IsBayRoadStopTile(this->xy)) {
 		/* For normal (non drive-through) road stops
 		 * Check if station is busy or if there are no free bays or whether it is a articulated vehicle. */
 		if (this->IsEntranceBusy() || !this->HasFreeBay() || rv->HasArticulatedPart()) return false;
@@ -368,6 +368,21 @@ bool RoadStop::Enter(RoadVehicle *rv)
 		if (rs->xy == tile) return rs;
 		assert(rs->next != nullptr);
 	}
+}
+
+void RoadStop::DebugClearOccupancy()
+{
+	SetBit(this->status, RSSFB_BAY0_FREE);
+	SetBit(this->status, RSSFB_BAY1_FREE);
+	ClrBit(this->status, RSSFB_ENTRY_BUSY);
+}
+
+void RoadStop::DebugReEnter(const RoadVehicle *rv)
+{
+	if (!IsInsideMM(rv->state, RVSB_IN_ROAD_STOP, RVSB_IN_ROAD_STOP_END)) return;
+
+	ClrBit(this->status, HasBit(rv->state, RVS_USING_SECOND_BAY) ? RSSFB_BAY1_FREE : RSSFB_BAY0_FREE);
+	if (!HasBit(rv->state, RVS_ENTERED_STOP)) SetBit(this->status, RSSFB_ENTRY_BUSY);
 }
 
 /**
@@ -482,9 +497,10 @@ void RoadStop::Entry::CheckIntegrity(const RoadStop *rs) const
 	if (!HasBit(rs->status, RSSFB_BASE_ENTRY)) return;
 
 	/* The tile 'before' the road stop must not be part of this 'line' */
-	assert(!IsDriveThroughRoadStopContinuation(rs->xy, rs->xy - abs(TileOffsByDiagDir(GetRoadStopDir(rs->xy)))));
+	assert_msg(!IsDriveThroughRoadStopContinuation(rs->xy, rs->xy - abs(TileOffsByDiagDir(GetRoadStopDir(rs->xy)))), "xy: %X, index: %u", rs->xy, rs->index);
 
 	Entry temp;
 	temp.Rebuild(rs, rs->east == this);
-	if (temp.length != this->length || temp.occupied != this->occupied) NOT_REACHED();
+	assert_msg(temp.length == this->length && temp.occupied == this->occupied, "length: %u == %u, occupied: %u == %u, xy: %X, index: %u",
+			temp.length, this->length, temp.occupied, this->occupied, rs->xy, rs->index);
 }

@@ -50,16 +50,24 @@
 #endif
 #endif /* __GLIBC__ */
 
-#if defined(__NetBSD__)
+#include <atomic>
+#include <vector>
+
+#if defined(__EMSCRIPTEN__)
+#	include <emscripten.h>
+/* We avoid abort(), as it is a SIGBART, and use _exit() instead. But emscripten doesn't know _exit(). */
+#	define _exit emscripten_force_exit
+#else
 #include <unistd.h>
 #endif
-
-#include <vector>
 
 #include "../../safeguards.h"
 
 /** The signals we want our crash handler to handle. */
 static const int _signals_to_handle[] = { SIGSEGV, SIGABRT, SIGFPE, SIGBUS, SIGILL, SIGQUIT };
+
+std::atomic<pid_t> _crash_tid;
+std::atomic<uint32_t> _crash_other_threads;
 
 #if defined(__GLIBC__) && defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
 #pragma GCC diagnostic ignored "-Wclobbered"
@@ -69,6 +77,7 @@ static const int _signals_to_handle[] = { SIGSEGV, SIGABRT, SIGFPE, SIGBUS, SIGI
 static char *internal_fault_saved_buffer;
 static jmp_buf internal_fault_jmp_buf;
 sigset_t internal_fault_old_sig_proc_mask;
+std::atomic<bool> internal_fault_use_signal_handler;
 
 static void InternalFaultSigHandler(int sig)
 {
@@ -369,6 +378,18 @@ class CrashLogUnix : public CrashLog {
 	}
 
 	/**
+	 * Log crash trailer
+	 */
+	char *LogCrashTrailer(char *buffer, const char *last) const override
+	{
+		uint32_t other_crashed_threads = _crash_other_threads.load();
+		if (other_crashed_threads > 0) {
+			buffer += seprintf(buffer, last, "\n*** %u other threads have also crashed ***\n\n", other_crashed_threads);
+		}
+		return buffer;
+	}
+
+	/**
 	 * Show registers if possible
 	 */
 	char *LogRegisters(char *buffer, const char *last) const override
@@ -517,6 +538,7 @@ class CrashLogUnix : public CrashLog {
 		char **messages = backtrace_symbols(trace, trace_size);
 
 #if defined(WITH_BFD)
+		sym_bfd_obj_cache bfd_cache;
 		bfd_init();
 #endif /* WITH_BFD */
 
@@ -570,7 +592,7 @@ class CrashLogUnix : public CrashLog {
 			/* subtract one to get the line before the return address, i.e. the function call line */
 			sym_info_bfd bfd_info(reinterpret_cast<bfd_vma>(trace[i]) - reinterpret_cast<bfd_vma>(info.dli_fbase) - 1);
 			if (dladdr_result && info.dli_fname) {
-				lookup_addr_bfd(info.dli_fname, bfd_info);
+				lookup_addr_bfd(info.dli_fname, bfd_cache, bfd_info);
 				if (bfd_info.file_name != nullptr) file_name = bfd_info.file_name;
 				if (bfd_info.function_name != nullptr) func_name = bfd_info.function_name;
 				if (bfd_info.function_addr != 0) func_addr = reinterpret_cast<void *>(bfd_info.function_addr + reinterpret_cast<bfd_vma>(info.dli_fbase));
@@ -585,18 +607,19 @@ class CrashLogUnix : public CrashLog {
 				demangled = abi::__cxa_demangle(func_name, nullptr, 0, &status);
 #endif /* WITH_DEMANGLE */
 				const char *name = (demangled != nullptr && status == 0) ? demangled : func_name;
-				buffer += seprintf(buffer, last, " [%02i] %*p %-40s %s + 0x%zx\n", i, ptr_str_size,
+				buffer += seprintf(buffer, last, " [%02i] %*p %-40s %s + 0x%zx", i, ptr_str_size,
 						trace[i], info.dli_fname, name, (char *)trace[i] - (char *)func_addr);
 				free(demangled);
 			} else if (dladdr_result && info.dli_fname) {
-				buffer += seprintf(buffer, last, " [%02i] %*p %-40s + 0x%zx\n", i, ptr_str_size,
+				buffer += seprintf(buffer, last, " [%02i] %*p %-40s + 0x%zx", i, ptr_str_size,
 						trace[i], info.dli_fname, (char *)trace[i] - (char *)info.dli_fbase);
 			} else {
 				ok = false;
 			}
-			if (file_name != nullptr) {
-				buffer += seprintf(buffer, last, "%*s%s:%u\n", 7 + ptr_str_size, "", file_name, line_num);
+			if (ok && file_name != nullptr) {
+				buffer += seprintf(buffer, last, " at %s:%u", file_name, line_num);
 			}
+			if (ok) buffer += seprintf(buffer, last, "\n");
 #if defined(WITH_BFD)
 			if (ok && bfd_info.found && bfd_info.abfd) {
 				uint iteration_limit = 32;
@@ -608,15 +631,16 @@ class CrashLogUnix : public CrashLog {
 						demangled = abi::__cxa_demangle(func_name, nullptr, 0, &status);
 #endif /* WITH_DEMANGLE */
 						const char *name = (demangled != nullptr && status == 0) ? demangled : func_name;
-						buffer += seprintf(buffer, last, " [inlined] %*s %s\n", ptr_str_size + 36, "",
+						buffer += seprintf(buffer, last, " [inlined] %*s %s", ptr_str_size + 36, "",
 								name);
 						free(demangled);
 					} else if (file_name) {
-						buffer += seprintf(buffer, last, " [inlined]\n");
+						buffer += seprintf(buffer, last, " [inlined]");
 					}
 					if (file_name != nullptr) {
-						buffer += seprintf(buffer, last, "%*s%s:%u\n", 7 + ptr_str_size, "", file_name, line_num);
+						buffer += seprintf(buffer, last, " at %s:%u", file_name, line_num);
 					}
+					buffer += seprintf(buffer, last, "\n");
 				}
 			}
 #endif /* WITH_BFD */
@@ -644,15 +668,7 @@ class CrashLogUnix : public CrashLog {
 			sigaddset(&sigs, signum);
 		}
 
-		struct sigaction sa;
-		memset(&sa, 0, sizeof(sa));
-		sa.sa_flags = SA_RESTART;
-		sa.sa_handler = InternalFaultSigHandler;
-		sa.sa_mask = sigs;
-
-		for (int signum : _signals_to_handle) {
-			sigaction(signum, &sa, nullptr);
-		}
+		internal_fault_use_signal_handler.store(true);
 		sigprocmask(SIG_UNBLOCK, &sigs, &internal_fault_old_sig_proc_mask);
 	}
 
@@ -660,9 +676,7 @@ class CrashLogUnix : public CrashLog {
 	{
 		internal_fault_saved_buffer = nullptr;
 
-		for (int signum : _signals_to_handle) {
-			signal(signum, SIG_DFL);
-		}
+		internal_fault_use_signal_handler.store(false);
 		sigprocmask(SIG_SETMASK, &internal_fault_old_sig_proc_mask, nullptr);
 	}
 
@@ -772,10 +786,44 @@ static void CDECL HandleCrash(int signum, siginfo_t *si, void *context)
 static void CDECL HandleCrash(int signum)
 #endif
 {
+	pid_t tid = 1;
+#if defined(WITH_DBG_GDB)
+	tid = syscall(SYS_gettid);
+#endif
+
+	pid_t already_crashed = _crash_tid.load();
+	do {
+		/* Is this a recursive call from the crash thread */
+		if (already_crashed == tid) {
+#if defined(__GLIBC__) && defined(WITH_SIGACTION)
+			if (internal_fault_use_signal_handler.load()) {
+				InternalFaultSigHandler(signum);
+				return;
+			}
+#endif
+
+			/* This should never be reached, just give up at this point */
+			_exit(43);
+		}
+
+		/* Is a different thread in the crash logger already? */
+		if (already_crashed != 0) {
+			/* Just sleep forever while the other thread is busy logging the crash */
+			_crash_other_threads++;
+			while (true) {
+				pause();
+			}
+		}
+
+		/* Atomically mark this thread as the crashing thread */
+	} while (!_crash_tid.compare_exchange_weak(already_crashed, tid));
+
+#ifndef WITH_SIGACTION
 	/* Disable all handling of signals by us, so we don't go into infinite loops. */
 	for (int signum : _signals_to_handle) {
 		signal(signum, SIG_DFL);
 	}
+#endif
 
 	const char *abort_reason = CrashLog::GetAbortCrashlogReason();
 	if (abort_reason != nullptr) {
@@ -810,21 +858,29 @@ static void CDECL HandleCrash(int signum)
 	ss.ss_flags = 0;
 	sigaltstack(&ss, nullptr);
 #endif
-	for (int signum : _signals_to_handle) {
+
 #ifdef WITH_SIGACTION
+	sigset_t sigs;
+	sigemptyset(&sigs);
+	for (int signum : _signals_to_handle) {
+		sigaddset(&sigs, signum);
+	}
+	for (int signum : _signals_to_handle) {
 		struct sigaction sa;
 		memset(&sa, 0, sizeof(sa));
 		sa.sa_flags = SA_SIGINFO | SA_RESTART;
 #ifdef WITH_SIGALTSTACK
 		sa.sa_flags |= SA_ONSTACK;
 #endif
-		sigemptyset(&sa.sa_mask);
+		sa.sa_mask = sigs;
 		sa.sa_sigaction = HandleCrash;
 		sigaction(signum, &sa, nullptr);
-#else
-		signal(signum, HandleCrash);
-#endif
 	}
+#else
+	for (int signum : _signals_to_handle) {
+		signal(signum, HandleCrash);
+	}
+#endif
 }
 
 /* static */ void CrashLog::InitThread()
@@ -843,8 +899,8 @@ static void CDECL HandleCrash(int signum)
 	log.MakeInconsistencyLog(info);
 }
 
-/* static */ void CrashLog::VersionInfoLog()
+/* static */ void CrashLog::VersionInfoLog(char *buffer, const char *last)
 {
 	CrashLogUnix log(CrashLogUnix::DesyncTag{});
-	log.MakeVersionInfoLog();
+	log.FillVersionInfoLog(buffer, last);
 }

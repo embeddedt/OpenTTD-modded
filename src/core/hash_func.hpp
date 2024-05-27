@@ -14,13 +14,28 @@
  * Simple 32 bit to 32 bit hash
  * From MurmurHash3
  */
-inline uint32 SimpleHash32(uint32 h)
+inline uint32_t SimpleHash32(uint32_t h)
 {
 	h ^= h >> 16;
 	h *= 0x85ebca6b;
 	h ^= h >> 13;
 	h *= 0xc2b2ae35;
 	h ^= h >> 16;
+
+	return h;
+}
+
+/**
+ * Simple 64 bit to 64 bit hash
+ * From MurmurHash3
+ */
+inline uint64_t SimpleHash64(uint64_t h)
+{
+	h ^= h >> 33;
+	h *= 0xff51afd7ed558ccdULL;
+	h ^= h >> 33;
+	h *= 0xc4ceb9fe1a85ec53ULL;
+	h ^= h >> 33;
 
 	return h;
 }

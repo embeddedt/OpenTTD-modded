@@ -26,7 +26,7 @@ namespace upstream_sl {
  * @param packed packed order
  * @return unpacked order
  */
-static Order UnpackVersion4Order(uint16 packed)
+static Order UnpackVersion4Order(uint16_t packed)
 {
 	return Order(GB(packed, 8, 8) << 16 | GB(packed, 4, 4) << 8 | GB(packed, 0, 4));
 }
@@ -36,7 +36,7 @@ static Order UnpackVersion4Order(uint16 packed)
  * @param packed packed order
  * @return unpacked order
  */
-Order UnpackOldOrder(uint16 packed)
+Order UnpackOldOrder(uint16_t packed)
 {
 	Order order = UnpackVersion4Order(packed);
 
@@ -88,9 +88,9 @@ struct ORDRChunkHandler : ChunkHandler {
 
 			if (IsSavegameVersionBefore(SLV_5)) {
 				/* Pre-version 5 had another layout for orders
-				 * (uint16 instead of uint32) */
-				len /= sizeof(uint16);
-				std::vector<uint16> orders(len);
+				 * (uint16_t instead of uint32_t) */
+				len /= sizeof(uint16_t);
+				std::vector<uint16_t> orders(len);
 
 				SlCopy(&orders[0], len, SLE_UINT16);
 
@@ -99,8 +99,8 @@ struct ORDRChunkHandler : ChunkHandler {
 					o->AssignOrder(UnpackVersion4Order(orders[i]));
 				}
 			} else if (IsSavegameVersionBefore(SLV_5, 2)) {
-				len /= sizeof(uint32);
-				std::vector<uint32> orders(len);
+				len /= sizeof(uint32_t);
+				std::vector<uint32_t> orders(len);
 
 				SlCopy(&orders[0], len, SLE_UINT32);
 
@@ -198,13 +198,14 @@ SaveLoadTable GetOrderBackupDescription()
 		     SLE_VAR(OrderBackup, group,                    SLE_UINT16),
 		 SLE_CONDVAR(OrderBackup, service_interval,         SLE_FILE_U32 | SLE_VAR_U16,  SL_MIN_VERSION, SLV_192),
 		 SLE_CONDVAR(OrderBackup, service_interval,         SLE_UINT16,                SLV_192, SL_MAX_VERSION),
-		    SLE_SSTR(OrderBackup, name,                     SLE_STR),
+		     SLE_STR(OrderBackup, name,                     SLE_STR, 0),
 		 SLE_CONDREF(OrderBackup, clone,                    REF_VEHICLE,               SLV_192, SL_MAX_VERSION),
 		     SLE_VAR(OrderBackup, cur_real_order_index,     SLE_FILE_U8 | SLE_VAR_U16),
 		 SLE_CONDVAR(OrderBackup, cur_implicit_order_index, SLE_FILE_U8 | SLE_VAR_U16, SLV_176, SL_MAX_VERSION),
 		 SLE_CONDVAR(OrderBackup, current_order_time,       SLE_UINT32,                SLV_176, SL_MAX_VERSION),
 		 SLE_CONDVAR(OrderBackup, lateness_counter,         SLE_INT32,                 SLV_176, SL_MAX_VERSION),
-		 SLE_CONDVAR(OrderBackup, timetable_start,          SLE_INT32,                 SLV_176, SL_MAX_VERSION),
+		 SLE_CONDVAR(OrderBackup, timetable_start,          SLE_FILE_I32 | SLE_VAR_I64, SLV_176, SLV_TIMETABLE_START_TICKS_FIX),
+		 SLE_CONDVAR(OrderBackup, timetable_start,          SLE_FILE_U64 | SLE_VAR_I64, SLV_TIMETABLE_START_TICKS_FIX, SL_MAX_VERSION),
 		 SLE_CONDVAR(OrderBackup, vehicle_flags,            SLE_FILE_U8  | SLE_VAR_U32, SLV_176, SLV_180),
 		 SLE_CONDVAR(OrderBackup, vehicle_flags,            SLE_FILE_U16 | SLE_VAR_U32, SLV_180, SL_MAX_VERSION),
 		     SLE_REF(OrderBackup, orders,                   REF_ORDER),

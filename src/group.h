@@ -16,6 +16,7 @@
 #include "vehicle_type.h"
 #include "engine_type.h"
 #include "livery.h"
+#include "3rdparty/cpp-btree/btree_map.h"
 #include <string>
 
 typedef Pool<Group, GroupID, 16, 64000> GroupPool;
@@ -25,14 +26,11 @@ extern GroupPool _group_pool; ///< Pool of groups.
 struct GroupStatistics {
 	Money profit_last_year;                 ///< Sum of profits for all vehicles.
 	Money profit_last_year_min_age;         ///< Sum of profits for vehicles considered for profit statistics.
-	uint16 *num_engines;                    ///< Caches the number of engines of each type the company owns.
-	uint16 num_vehicle;                     ///< Number of vehicles.
-	uint16 num_vehicle_min_age;             ///< Number of vehicles considered for profit statistics;
+	btree::btree_map<EngineID, uint16_t> num_engines; ///< Caches the number of engines of each type the company owns.
+	uint16_t num_vehicle;                   ///< Number of vehicles.
+	uint16_t num_vehicle_min_age;           ///< Number of vehicles considered for profit statistics;
 	bool autoreplace_defined;               ///< Are any autoreplace rules set?
 	bool autoreplace_finished;              ///< Have all autoreplacement finished?
-
-	GroupStatistics();
-	~GroupStatistics();
 
 	void Clear();
 
@@ -50,6 +48,8 @@ struct GroupStatistics {
 		this->autoreplace_finished = false;
 	}
 
+	uint16_t GetNumEngines(EngineID engine) const;
+
 	static GroupStatistics &Get(CompanyID company, GroupID id_g, VehicleType type);
 	static GroupStatistics &Get(const Vehicle *v);
 	static GroupStatistics &GetAllGroup(const Vehicle *v);
@@ -64,7 +64,7 @@ struct GroupStatistics {
 	static void UpdateAutoreplace(CompanyID company);
 };
 
-enum GroupFlags : uint8 {
+enum GroupFlags : uint8_t {
 	GF_REPLACE_PROTECTION,    ///< If set to true, the global autoreplace has no effect on the group
 	GF_REPLACE_WAGON_REMOVAL, ///< If set, autoreplace will perform wagon removal on vehicles in this group.
 	GF_END,
@@ -76,7 +76,7 @@ struct Group : GroupPool::PoolItem<&_group_pool> {
 	Owner owner;                ///< Group Owner
 	VehicleType vehicle_type;   ///< Vehicle type of the group
 
-	uint8 flags;                ///< Group flags
+	uint8_t flags;              ///< Group flags
 	Livery livery;              ///< Custom colour scheme for vehicles in this group
 	GroupStatistics statistics; ///< NOSAVE: Statistics and caches on the vehicles in the group.
 
@@ -88,7 +88,7 @@ struct Group : GroupPool::PoolItem<&_group_pool> {
 };
 
 
-static inline bool IsDefaultGroupID(GroupID index)
+inline bool IsDefaultGroupID(GroupID index)
 {
 	return index == DEFAULT_GROUP;
 }
@@ -98,12 +98,12 @@ static inline bool IsDefaultGroupID(GroupID index)
  * @param id_g The GroupID to check
  * @return true is id_g is identical to ALL_GROUP
  */
-static inline bool IsAllGroupID(GroupID id_g)
+inline bool IsAllGroupID(GroupID id_g)
 {
 	return id_g == ALL_GROUP;
 }
 
-static inline bool IsTopLevelGroupID(GroupID index)
+inline bool IsTopLevelGroupID(GroupID index)
 {
 	return index == DEFAULT_GROUP || index == ALL_GROUP;
 }
@@ -115,9 +115,9 @@ Money GetGroupProfitLastYearMinAge(CompanyID company, GroupID id_g, VehicleType 
 
 void SetTrainGroupID(Train *v, GroupID grp);
 void UpdateTrainGroupID(Train *v);
-void RemoveVehicleFromGroup(const Vehicle *v);
 void RemoveAllGroupsForCompany(const CompanyID company);
 bool GroupIsInGroup(GroupID search, GroupID group);
+void UpdateCompanyGroupLiveries(const Company *c);
 
 std::string GenerateAutoNameForVehicleGroup(const Vehicle *v);
 

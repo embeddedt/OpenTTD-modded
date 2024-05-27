@@ -30,33 +30,52 @@ DECLARE_ENUM_AS_BIT_SET(SortListFlags)
 /** Data structure describing how to show the list (what sort direction and criteria). */
 struct Listing {
 	bool order;    ///< Ascending/descending
-	byte criteria; ///< Sorting criteria
+	uint8_t criteria; ///< Sorting criteria
 };
 /** Data structure describing what to show in the list (filter criteria). */
 struct Filtering {
 	bool state;    ///< Filter on/off
-	byte criteria; ///< Filtering criteria
+	uint8_t criteria; ///< Filtering criteria
+};
+
+template <typename T>
+struct GUIListParamConfig {
+	using SortParameterReference = const T&;
+	static const bool constructor_init = true;
+};
+
+template <>
+struct GUIListParamConfig<std::nullptr_t>
+{
+	using SortParameterReference = const std::nullptr_t;
+	static const bool constructor_init = false;
 };
 
 /**
  * List template of 'things' \p T to sort in a GUI.
  * @tparam T Type of data stored in the list to represent each item.
+ * @tparam P Type of data passed as additional parameter to the sort function.
  * @tparam F Type of data fed as additional value to the filter function. @see FilterFunction
  */
-template <typename T, typename F = const char*>
+template <typename T, typename P = std::nullptr_t, typename F = const char*>
 class GUIList : public std::vector<T> {
 public:
-	typedef bool SortFunction(const T&, const T&);  ///< Signature of sort function.
+	using SortFunction = std::conditional_t<std::is_same_v<P, std::nullptr_t>, bool (const T&, const T&), bool (const T&, const T&, const P)>; ///< Signature of sort function.
 	typedef bool FilterFunction(const T*, F); ///< Signature of filter function.
 
 protected:
 	SortFunction * const *sort_func_list;     ///< the sort criteria functions
 	FilterFunction * const *filter_func_list; ///< the filter criteria functions
 	SortListFlags flags;                      ///< used to control sorting/resorting/etc.
-	uint8 sort_type;                          ///< what criteria to sort on
-	uint8 filter_type;                        ///< what criteria to filter on
-	uint16 resort_timer;                      ///< resort list after a given amount of ticks if set
-	uint16 resort_interval;                   ///< value to re-initialise resort_timer with after sorting
+	uint8_t sort_type;                        ///< what criteria to sort on
+	uint8_t filter_type;                      ///< what criteria to filter on
+	uint16_t resort_timer;                    ///< resort list after a given amount of ticks if set
+	uint16_t resort_interval;                 ///< value to re-initialise resort_timer with after sorting
+
+	/* If sort parameters are used then params must be a reference, however if not then params cannot be a reference as
+	 * it will not be able to reference anything. */
+	using SortParameterReference = typename GUIListParamConfig<P>::SortParameterReference;
+	SortParameterReference params;
 
 	/**
 	 * Check if the list is sortable
@@ -77,6 +96,8 @@ protected:
 	}
 
 public:
+	/* If sort parameters are not used then we don't require a reference to the params. */
+	template <typename T_ = T, typename P_ = P, typename _F = F, std::enable_if_t<!GUIListParamConfig<P_>::constructor_init>* = nullptr>
 	GUIList() :
 		sort_func_list(nullptr),
 		filter_func_list(nullptr),
@@ -84,15 +105,32 @@ public:
 		sort_type(0),
 		filter_type(0),
 		resort_timer(1),
-		resort_interval(DAY_TICKS * 10) /* Resort every 10 days by default */
+		resort_interval(DAY_TICKS * 10), /* Resort every 10 days by default */
+		params(P_())
 	{};
+
+	/* If sort parameters are used then we require a reference to the params. */
+	template <typename T_ = T, typename P_ = P, typename _F = F, std::enable_if_t<GUIListParamConfig<P_>::constructor_init>* = nullptr>
+	GUIList(SortParameterReference params) :
+		sort_func_list(nullptr),
+		filter_func_list(nullptr),
+		flags(VL_NONE),
+		sort_type(0),
+		filter_type(0),
+		resort_timer(1),
+		resort_interval(DAY_TICKS * 10), /* Resort every 10 days by default */
+		params(params)
+	{};
+
+	template <typename T_ = T, typename P_ = P, typename _F = F, std::enable_if_t<!std::is_same_v<P_, std::nullptr_t>>* = nullptr>
+	SortParameterReference &SortParameterData() { return this->params; }
 
 	/**
 	 * Get the sorttype of the list
 	 *
 	 * @return The current sorttype
 	 */
-	uint8 SortType() const
+	uint8_t SortType() const
 	{
 		return this->sort_type;
 	}
@@ -102,7 +140,7 @@ public:
 	 *
 	 * @param n_type the new sort type
 	 */
-	void SetSortType(uint8 n_type)
+	void SetSortType(uint8_t n_type)
 	{
 		if (this->sort_type != n_type) {
 			SETBITS(this->flags, VL_RESORT);
@@ -144,7 +182,7 @@ public:
 	 *
 	 * @return The current filtertype
 	 */
-	uint8 FilterType() const
+	uint8_t FilterType() const
 	{
 		return this->filter_type;
 	}
@@ -154,7 +192,7 @@ public:
 	 *
 	 * @param n_type the new filter type
 	 */
-	void SetFilterType(uint8 n_type)
+	void SetFilterType(uint8_t n_type)
 	{
 		if (this->filter_type != n_type) {
 			this->filter_type = n_type;
@@ -217,10 +255,10 @@ public:
 		SETBITS(this->flags, VL_RESORT);
 	}
 
-	void SetResortInterval(uint16 resort_interval)
+	void SetResortInterval(uint16_t resort_interval)
 	{
-		this->resort_interval = std::max<uint16>(1, resort_interval);
-		this->resort_timer = std::min<uint16>(this->resort_timer, this->resort_interval);
+		this->resort_interval = std::max<uint16_t>(1, resort_interval);
+		this->resort_timer = std::min<uint16_t>(this->resort_timer, this->resort_interval);
 	}
 
 	/**
@@ -276,7 +314,11 @@ public:
 
 		const bool desc = (this->flags & VL_DESC) != 0;
 
-		std::sort(std::vector<T>::begin(), std::vector<T>::end(), [&](const T &a, const T &b) { return desc ? compare(b, a) : compare(a, b); });
+		if constexpr (std::is_same_v<P, std::nullptr_t>) {
+			std::sort(std::vector<T>::begin(), std::vector<T>::end(), [&](const T &a, const T &b) { return desc ? compare(b, a) : compare(a, b); });
+		} else {
+			std::sort(std::vector<T>::begin(), std::vector<T>::end(), [&](const T &a, const T &b) { return desc ? compare(b, a, params) : compare(a, b, params); });
+		}
 		return true;
 	}
 

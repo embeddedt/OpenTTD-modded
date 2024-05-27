@@ -16,6 +16,7 @@
 #include "town.h"
 #include "waypoint_base.h"
 #include "pathfinder/yapf/yapf_cache.h"
+#include "pathfinder/water_regions.h"
 #include "strings_func.h"
 #include "viewport_func.h"
 #include "viewport_kdtree.h"
@@ -39,6 +40,7 @@
  */
 void Waypoint::UpdateVirtCoord()
 {
+	if (IsHeadless()) return;
 	Point pt = RemapCoords2(TileX(this->xy) * TILE_SIZE, TileY(this->xy) * TILE_SIZE);
 	if (_viewport_sign_kdtree_valid && this->sign.kdtree_valid) _viewport_sign_kdtree.Remove(ViewportSignKdtreeItem::MakeWaypoint(this->index));
 
@@ -175,10 +177,10 @@ static CommandCost IsValidTileForWaypoint(TileIndex tile, Axis axis, StationID *
 	return CommandCost();
 }
 
-extern void GetStationLayout(byte *layout, uint numtracks, uint plat_len, const StationSpec *statspec);
+extern void GetStationLayout(uint8_t *layout, uint numtracks, uint plat_len, const StationSpec *statspec);
 extern CommandCost FindJoiningWaypoint(StationID existing_station, StationID station_to_join, bool adjacent, TileArea ta, Waypoint **wp, bool is_road);
-extern CommandCost CanExpandRailStation(const BaseStation *st, TileArea &new_ta, Axis axis);
-extern CommandCost IsRailStationBridgeAboveOk(TileIndex tile, const StationSpec *statspec, byte layout);
+extern CommandCost CanExpandRailStation(const BaseStation *st, TileArea &new_ta);
+extern CommandCost IsRailStationBridgeAboveOk(TileIndex tile, const StationSpec *statspec, uint8_t layout);
 
 /**
  * Convert existing rail to waypoint. Eg build a waypoint station over
@@ -199,12 +201,12 @@ extern CommandCost IsRailStationBridgeAboveOk(TileIndex tile, const StationSpec 
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	/* Unpack parameters */
 	Axis axis      = Extract<Axis, 6, 1>(p1);
-	byte width     = GB(p1,  8, 8);
-	byte height    = GB(p1, 16, 8);
+	uint8_t width  = GB(p1,  8, 8);
+	uint8_t height = GB(p1, 16, 8);
 	bool adjacent  = HasBit(p1, 24);
 
 	StationClassID spec_class = Extract<StationClassID, 0, 8>(p2);
@@ -217,7 +219,7 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 	if (spec_index >= StationClass::Get(spec_class)->GetSpecCount()) return CMD_ERROR;
 
 	/* The number of parts to build */
-	byte count = axis == AXIS_X ? height : width;
+	uint8_t count = axis == AXIS_X ? height : width;
 
 	if ((axis == AXIS_X ? width : height) != 1) return CMD_ERROR;
 	if (count == 0 || count > _settings_game.station.station_spread) return CMD_ERROR;
@@ -229,7 +231,7 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 	if (distant_join && (!_settings_game.station.distant_join_stations || !Waypoint::IsValidID(station_to_join))) return CMD_ERROR;
 
 	const StationSpec *spec = StationClass::Get(spec_class)->GetSpec(spec_index);
-	byte *layout_ptr = AllocaM(byte, count);
+	uint8_t *layout_ptr = AllocaM(uint8_t, count);
 	if (spec == nullptr) {
 		/* The layout must be 0 for the 'normal' waypoints by design. */
 		memset(layout_ptr, 0, count);
@@ -269,7 +271,7 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 
 		/* check if we want to expand an already existing waypoint? */
 		if (wp->train_station.tile != INVALID_TILE) {
-			CommandCost ret = CanExpandRailStation(wp, new_location, axis);
+			CommandCost ret = CanExpandRailStation(wp, new_location);
 			if (ret.Failed()) return ret;
 		}
 
@@ -296,7 +298,7 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 
 		wp->delete_ctr = 0;
 		wp->facilities |= FACIL_TRAIN;
-		wp->build_date = _date;
+		wp->build_date = CalTime::CurDate();
 		wp->string_id = STR_SV_STNAME_WAYPOINT;
 		wp->train_station = new_location;
 
@@ -304,12 +306,12 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 
 		wp->UpdateVirtCoord();
 
-		byte map_spec_index = AllocateSpecToStation(spec, wp, true);
+		uint8_t map_spec_index = AllocateSpecToStation(spec, wp, true);
 
 		Company *c = Company::Get(wp->owner);
 		for (int i = 0; i < count; i++) {
 			TileIndex tile = start_tile + i * offset;
-			byte old_specindex = HasStationTileRail(tile) ? GetCustomStationSpecIndex(tile) : 0;
+			uint8_t old_specindex = HasStationTileRail(tile) ? GetCustomStationSpecIndex(tile) : 0;
 			if (!HasStationTileRail(tile)) c->infrastructure.station++;
 			bool reserved = IsTileType(tile, MP_RAILWAY) ?
 					HasBit(GetRailReservationTrackBits(tile), AxisToTrack(axis)) :
@@ -356,11 +358,11 @@ CommandCost CmdBuildRailWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
  * @param text Unused.
  * @return The cost of this operation or an error.
  */
-CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	StationID station_to_join = GB(p2, 16, 16);
-	byte width     = GB(p1, 0, 8);
-	byte height    = GB(p1, 8, 8);
+	uint8_t width  = GB(p1, 0, 8);
+	uint8_t height = GB(p1, 8, 8);
 	bool adjacent = HasBit(p1, 16);
 	Axis axis = Extract<Axis, 17, 1>(p1);
 
@@ -374,7 +376,7 @@ CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 	const RoadStopSpec *spec = RoadStopClass::Get(spec_class)->GetSpec(spec_index);
 
 	/* The number of parts to build */
-	byte count = axis == AXIS_X ? height : width;
+	uint8_t count = axis == AXIS_X ? height : width;
 
 	if ((axis == AXIS_X ? width : height) != 1) return CMD_ERROR;
 	if (count == 0 || count > _settings_game.station.station_spread) return CMD_ERROR;
@@ -446,14 +448,14 @@ CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 
 		wp->delete_ctr = 0;
 		wp->facilities |= FACIL_BUS_STOP | FACIL_TRUCK_STOP;
-		wp->build_date = _date;
+		wp->build_date = CalTime::CurDate();
 		wp->string_id = STR_SV_STNAME_WAYPOINT;
 
 		if (wp->town == nullptr) MakeDefaultName(wp);
 
 		wp->UpdateVirtCoord();
 
-		byte map_spec_index = AllocateRoadStopSpecToStation(spec, wp, true);
+		uint8_t map_spec_index = AllocateRoadStopSpecToStation(spec, wp, true);
 
 		/* Check every tile in the area. */
 		for (TileIndex cur_tile : roadstop_area) {
@@ -464,10 +466,12 @@ CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
 			Owner tram_owner = tram_rt != INVALID_ROADTYPE ? GetRoadOwner(cur_tile, RTT_TRAM) : _current_company;
 
 			DisallowedRoadDirections drd = DRD_NONE;
-			if (IsNormalRoadTile(cur_tile)){
-				drd = GetDisallowedRoadDirections(cur_tile);
-			} else if (IsDriveThroughStopTile(cur_tile)) {
-				drd = GetDriveThroughStopDisallowedRoadDirections(cur_tile);
+			if (road_rt != INVALID_ROADTYPE) {
+				if (IsNormalRoadTile(cur_tile)){
+					drd = GetDisallowedRoadDirections(cur_tile);
+				} else if (IsDriveThroughStopTile(cur_tile)) {
+					drd = GetDriveThroughStopDisallowedRoadDirections(cur_tile);
+				}
 			}
 
 			extern CommandCost RemoveRoadStop(TileIndex tile, DoCommandFlag flags, int replacement_spec_index);
@@ -514,7 +518,7 @@ CommandCost CmdBuildRoadWaypoint(TileIndex start_tile, DoCommandFlag flags, uint
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdBuildBuoy(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdBuildBuoy(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (tile == 0 || !HasTileWaterGround(tile)) return_cmd_error(STR_ERROR_SITE_UNSUITABLE);
 
@@ -546,11 +550,12 @@ CommandCost CmdBuildBuoy(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 
 		wp->facilities |= FACIL_DOCK;
 		wp->owner = OWNER_NONE;
 
-		wp->build_date = _date;
+		wp->build_date = CalTime::CurDate();
 
 		if (wp->town == nullptr) MakeDefaultName(wp);
 
 		MakeBuoy(tile, wp->index, GetWaterClass(tile));
+		InvalidateWaterRegion(tile);
 		CheckForDockingTile(tile);
 		MarkTileDirtyByTile(tile);
 		ClearNeighbourNonFloodingStates(tile);
@@ -625,7 +630,7 @@ static bool IsUniqueWaypointName(const char *name)
  * @param text the new name or an empty string when resetting to the default
  * @return the cost of this operation or an error
  */
-CommandCost CmdRenameWaypoint(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdRenameWaypoint(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	Waypoint *wp = Waypoint::GetIfValid(p1);
 	if (wp == nullptr) return CMD_ERROR;
@@ -663,7 +668,7 @@ CommandCost CmdRenameWaypoint(TileIndex tile, DoCommandFlag flags, uint32 p1, ui
  * @param text the new name or an empty string when resetting to the default
  * @return the cost of this operation or an error
  */
-CommandCost CmdSetWaypointLabelHidden(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdSetWaypointLabelHidden(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	Waypoint *wp = Waypoint::GetIfValid(p1);
 	if (wp == nullptr) return CMD_ERROR;

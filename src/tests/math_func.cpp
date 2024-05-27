@@ -5,49 +5,13 @@
  * See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with OpenTTD. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/** @file math_func_test.cpp Test functionality from core/math_func. */
+/** @file math_func.cpp Test functionality from core/math_func. */
 
-#define OPENTTD_TEST
 #include "../stdafx.h"
 
 #include "../3rdparty/catch2/catch.hpp"
 
 #include "../core/math_func.hpp"
-
-TEST_CASE("LeastCommonMultipleTest - Zero")
-{
-	CHECK(0 == LeastCommonMultiple(0, 0));
-	CHECK(0 == LeastCommonMultiple(0, 600));
-	CHECK(0 == LeastCommonMultiple(600, 0));
-}
-
-TEST_CASE("LeastCommonMultipleTest - FindLCM")
-{
-	CHECK(25 == LeastCommonMultiple(5, 25));
-	CHECK(25 == LeastCommonMultiple(25, 5));
-	CHECK(130 == LeastCommonMultiple(5, 26));
-	CHECK(130 == LeastCommonMultiple(26, 5));
-}
-
-TEST_CASE("GreatestCommonDivisorTest - Negative")
-{
-	CHECK(4 == GreatestCommonDivisor(4, -52));
-	// CHECK(3 == GreatestCommonDivisor(-27, 6)); // error - returns -3
-}
-
-TEST_CASE("GreatestCommonDivisorTest - Zero")
-{
-	CHECK(27 == GreatestCommonDivisor(0, 27));
-	CHECK(27 == GreatestCommonDivisor(27, 0));
-}
-
-TEST_CASE("GreatestCommonDivisorTest - FindGCD")
-{
-	CHECK(5 == GreatestCommonDivisor(5, 25));
-	CHECK(5 == GreatestCommonDivisor(25, 5));
-	CHECK(1 == GreatestCommonDivisor(7, 27));
-	CHECK(1 == GreatestCommonDivisor(27, 7));
-}
 
 TEST_CASE("DivideApproxTest - Negative")
 {
@@ -100,10 +64,10 @@ TEST_CASE("ClampTo")
 	CHECK(127 == ClampTo<int8_t>(127));
 	CHECK(126 == ClampTo<int8_t>(126));
 
-	CHECK(126 == ClampTo<int64_t>(static_cast<uint8>(126)));
-	CHECK(126 == ClampTo<uint64_t>(static_cast<int8>(126)));
-	CHECK(0 == ClampTo<uint64_t>(static_cast<int8>(-126)));
-	CHECK(0 == ClampTo<uint8_t>(static_cast<int8>(-126)));
+	CHECK(126 == ClampTo<int64_t>(static_cast<uint8_t>(126)));
+	CHECK(126 == ClampTo<uint64_t>(static_cast<int8_t>(126)));
+	CHECK(0 == ClampTo<uint64_t>(static_cast<int8_t>(-126)));
+	CHECK(0 == ClampTo<uint8_t>(static_cast<int8_t>(-126)));
 
 	/* The realm around 64 bits types is tricky as there is not one type/method that works for all. */
 
@@ -130,4 +94,14 @@ TEST_CASE("SoftClamp")
 	int million = 1000 * 1000;
 	CHECK(1250 * million == SoftClamp(0, 1500 * million, 1000 * million));
 	CHECK(0 == SoftClamp(0, 1500 * million, -1500 * million));
+}
+
+TEST_CASE("SaturatingAdd")
+{
+	CHECK(SaturatingAdd<uint8_t>(2, 3) == 5);
+	CHECK(SaturatingAdd<uint8_t>(200, 200) == 255);
+	CHECK(SaturatingAdd<uint8_t>(255, 255) == 255);
+	CHECK(SaturatingAdd<uint8_t>(1, 255) == 255);
+	CHECK(SaturatingAdd<uint8_t>(255, 1) == 255);
+	CHECK(SaturatingAdd<uint8_t>(0, 254) == 254);
 }

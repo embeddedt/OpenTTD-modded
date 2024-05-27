@@ -15,10 +15,16 @@
 #include "../fios.h"
 #include "../strings_type.h"
 #include "../scope.h"
+#include "../core/ring_buffer.hpp"
+#include "../core/tinystring_type.hpp"
+#include "../core/strong_typedef_type.hpp"
 
 #include <stdarg.h>
 #include <vector>
+#include <array>
+#include <list>
 #include <string>
+#include <type_traits>
 
 /** Save or load result codes. */
 enum SaveOrLoadResult {
@@ -50,7 +56,7 @@ enum SavegameType {
 	SGT_INVALID = 0xFF, ///< broken savegame (used internally)
 };
 
-enum SaveModeFlags : byte {
+enum SaveModeFlags : uint8_t {
 	SMF_NONE             = 0,
 	SMF_NET_SERVER       = 1 << 0, ///< Network server save
 	SMF_ZSTD_OK          = 1 << 1, ///< Zstd OK
@@ -60,9 +66,9 @@ DECLARE_ENUM_AS_BIT_SET(SaveModeFlags);
 
 extern FileToSaveLoad _file_to_saveload;
 
-void GenerateDefaultSaveName(char *buf, const char *last);
+std::string GenerateDefaultSaveName();
 void SetSaveLoadError(StringID str);
-const char *GetSaveLoadErrorString();
+std::string GetSaveLoadErrorString();
 SaveOrLoadResult SaveOrLoad(const std::string &filename, SaveLoadOperation fop, DetailedFileType dft, Subdirectory sb, bool threaded = true, SaveModeFlags flags = SMF_NONE);
 void WaitTillSaved();
 void ProcessAsyncSaveFinish();
@@ -70,8 +76,8 @@ void DoExitSave();
 
 void DoAutoOrNetsave(FiosNumberedSaveName &counter, bool threaded, FiosNumberedSaveName *lt_counter = nullptr);
 
-SaveOrLoadResult SaveWithFilter(struct SaveFilter *writer, bool threaded, SaveModeFlags flags);
-SaveOrLoadResult LoadWithFilter(struct LoadFilter *reader);
+SaveOrLoadResult SaveWithFilter(std::shared_ptr<struct SaveFilter> writer, bool threaded, SaveModeFlags flags);
+SaveOrLoadResult LoadWithFilter(std::shared_ptr<struct LoadFilter> reader);
 bool IsNetworkServerSave();
 bool IsScenarioSave();
 
@@ -83,28 +89,34 @@ void SlUnreachablePlaceholder();
 enum ChunkSaveLoadSpecialOp {
 	CSLSO_PRE_LOAD,
 	CSLSO_PRE_LOADCHECK,
+	CSLSO_PRE_PTRS,
+	CSLSO_PRE_NULL_PTRS,
 	CSLSO_SHOULD_SAVE_CHUNK,
 };
 enum ChunkSaveLoadSpecialOpResult {
 	CSLSOR_NONE,
 	CSLSOR_LOAD_CHUNK_CONSUMED,
 	CSLSOR_DONT_SAVE_CHUNK,
+	CSLSOR_UPSTREAM_SAVE_CHUNK,
+	CSLSOR_UPSTREAM_NULL_PTRS,
 };
-typedef ChunkSaveLoadSpecialOpResult ChunkSaveLoadSpecialProc(uint32, ChunkSaveLoadSpecialOp);
+typedef ChunkSaveLoadSpecialOpResult ChunkSaveLoadSpecialProc(uint32_t, ChunkSaveLoadSpecialOp);
 
 /** Type of a chunk. */
 enum ChunkType {
-	CH_RIFF = 0,
-	CH_ARRAY = 1,
+	CH_RIFF         = 0,
+	CH_ARRAY        = 1,
 	CH_SPARSE_ARRAY = 2,
+	CH_TABLE        = 3,
+	CH_SPARSE_TABLE = 4,
 	CH_EXT_HDR      = 15, ///< Extended chunk header
 
-	CH_UPSTREAM_SAVE = 0x80,
+	CH_UNUSED = 0x80,
 };
 
 /** Handlers and description of chunk. */
 struct ChunkHandler {
-	uint32 id;                          ///< Unique ID (4 letters).
+	uint32_t id;                        ///< Unique ID (4 letters).
 	ChunkSaveLoadProc *save_proc;       ///< Save procedure of the chunk.
 	ChunkSaveLoadProc *load_proc;       ///< Load procedure of the chunk.
 	ChunkSaveLoadProc *ptrs_proc;       ///< Manipulate pointers in the chunk.
@@ -113,39 +125,63 @@ struct ChunkHandler {
 	ChunkSaveLoadSpecialProc *special_proc = nullptr;
 };
 
+struct ChunkIDDumper {
+	const char *operator()(uint32_t id);
+
+private:
+	char buffer[5];
+};
+
 template <typename F>
 void SlExecWithSlVersion(SaveLoadVersion use_version, F proc)
 {
-	extern SaveLoadVersion _sl_version;
-	SaveLoadVersion old_ver = _sl_version;
-	_sl_version = use_version;
+	extern SaveLoadVersion SlExecWithSlVersionStart(SaveLoadVersion use_version);
+	extern void SlExecWithSlVersionEnd(SaveLoadVersion old_version);
+
+	SaveLoadVersion old_ver = SlExecWithSlVersionStart(use_version);
 	auto guard = scope_guard([&]() {
-		_sl_version = old_ver;
+		SlExecWithSlVersionEnd(old_ver);
 	});
 	proc();
 }
 
+template <SlXvFeatureIndex feature, uint16_t min_version, uint16_t max_version>
+struct SaveUpstreamFeatureConditionalLoadUpstreamChunkInfo
+{
+	static SaveLoadVersion GetLoadVersion()
+	{
+		extern SaveLoadVersion _sl_xv_upstream_version;
+		return _sl_xv_upstream_version;
+	}
+
+	static bool SaveUpstream()
+	{
+		return true;
+	}
+
+	static bool LoadUpstream()
+	{
+		return SlXvIsFeaturePresent(feature, min_version, max_version);
+	}
+};
+
 namespace upstream_sl {
-	template <uint32 id, typename F>
+	template <uint32_t id, typename F>
 	ChunkHandler MakeUpstreamChunkHandler()
 	{
-		extern void SlLoadChunkByID(uint32);
-		extern void SlLoadCheckChunkByID(uint32);
-		extern void SlFixPointerChunkByID(uint32);
+		extern void SlLoadChunkByID(uint32_t);
+		extern void SlLoadCheckChunkByID(uint32_t);
+		extern void SlFixPointerChunkByID(uint32_t);
 
 		ChunkHandler ch = {
 			id,
-			nullptr,
 			SlUnreachablePlaceholder,
-			[]() {
-				SlExecWithSlVersion(F::GetLoadVersion(), []() {
-					SlFixPointerChunkByID(id);
-				});
-			},
 			SlUnreachablePlaceholder,
-			CH_UPSTREAM_SAVE
+			SlUnreachablePlaceholder,
+			SlUnreachablePlaceholder,
+			CH_UNUSED
 		};
-		ch.special_proc = [](uint32 chunk_id, ChunkSaveLoadSpecialOp op) -> ChunkSaveLoadSpecialOpResult {
+		ch.special_proc = [](uint32_t chunk_id, ChunkSaveLoadSpecialOp op) -> ChunkSaveLoadSpecialOpResult {
 			assert(id == chunk_id);
 			switch (op) {
 				case CSLSO_PRE_LOAD:
@@ -158,22 +194,92 @@ namespace upstream_sl {
 						SlLoadCheckChunkByID(id);
 					});
 					return CSLSOR_LOAD_CHUNK_CONSUMED;
+				case CSLSO_PRE_PTRS:
+					SlExecWithSlVersion(F::GetLoadVersion(), []() {
+						SlFixPointerChunkByID(id);
+					});
+					return CSLSOR_LOAD_CHUNK_CONSUMED;
+				case CSLSO_PRE_NULL_PTRS:
+					return CSLSOR_UPSTREAM_NULL_PTRS;
+				case CSLSO_SHOULD_SAVE_CHUNK:
+					return CSLSOR_UPSTREAM_SAVE_CHUNK;
 				default:
 					return CSLSOR_NONE;
 			}
 		};
 		return ch;
 	}
+
+	template <uint32_t id, typename F>
+	ChunkHandler MakeConditionallyUpstreamChunkHandler(ChunkSaveLoadProc *save_proc, ChunkSaveLoadProc *load_proc, ChunkSaveLoadProc *ptrs_proc, ChunkSaveLoadProc *load_check_proc, ChunkType type)
+	{
+		extern void SlLoadChunkByID(uint32_t);
+		extern void SlLoadCheckChunkByID(uint32_t);
+		extern void SlFixPointerChunkByID(uint32_t);
+
+		ChunkHandler ch = {
+			id,
+			save_proc,
+			load_proc,
+			ptrs_proc,
+			load_check_proc,
+			type
+		};
+		ch.special_proc = [](uint32_t chunk_id, ChunkSaveLoadSpecialOp op) -> ChunkSaveLoadSpecialOpResult {
+			assert(id == chunk_id);
+			switch (op) {
+				case CSLSO_PRE_LOAD:
+					if (!F::LoadUpstream()) return CSLSOR_NONE;
+					SlExecWithSlVersion(F::GetLoadVersion(), []() {
+						SlLoadChunkByID(id);
+					});
+					return CSLSOR_LOAD_CHUNK_CONSUMED;
+				case CSLSO_PRE_LOADCHECK:
+					if (!F::LoadUpstream()) return CSLSOR_NONE;
+					SlExecWithSlVersion(F::GetLoadVersion(), []() {
+						SlLoadCheckChunkByID(id);
+					});
+					return CSLSOR_LOAD_CHUNK_CONSUMED;
+				case CSLSO_PRE_PTRS:
+					if (!F::LoadUpstream()) return CSLSOR_NONE;
+					SlExecWithSlVersion(F::GetLoadVersion(), []() {
+						SlFixPointerChunkByID(id);
+					});
+					return CSLSOR_LOAD_CHUNK_CONSUMED;
+				case CSLSO_PRE_NULL_PTRS:
+					if (!F::LoadUpstream()) return CSLSOR_NONE;
+					return CSLSOR_UPSTREAM_NULL_PTRS;
+				case CSLSO_SHOULD_SAVE_CHUNK:
+					return F::SaveUpstream() ? CSLSOR_UPSTREAM_SAVE_CHUNK : CSLSOR_NONE;
+				default:
+					return CSLSOR_NONE;
+			}
+		};
+		return ch;
+	}
+
+	template <uint32_t id, SlXvFeatureIndex feature, uint16_t min_version = 1, uint16_t max_version = 0xFFFF>
+	ChunkHandler MakeSaveUpstreamFeatureConditionalLoadUpstreamChunkHandler(ChunkSaveLoadProc *load_proc, ChunkSaveLoadProc *ptrs_proc, ChunkSaveLoadProc *load_check_proc)
+	{
+		return MakeConditionallyUpstreamChunkHandler<id, SaveUpstreamFeatureConditionalLoadUpstreamChunkInfo<feature, min_version, max_version>>(nullptr, load_proc, ptrs_proc, load_check_proc, CH_UNUSED);
+	}
 }
 
+struct GeneralUpstreamChunkLoadInfo
+{
+	static SaveLoadVersion GetLoadVersion();
+};
+
 using upstream_sl::MakeUpstreamChunkHandler;
+using upstream_sl::MakeConditionallyUpstreamChunkHandler;
+using upstream_sl::MakeSaveUpstreamFeatureConditionalLoadUpstreamChunkHandler;
 
 struct NullStruct {
-	byte null;
+	uint8_t null;
 };
 
 /** A table of ChunkHandler entries. */
-using ChunkHandlerTable = span<const ChunkHandler>;
+using ChunkHandlerTable = std::span<const ChunkHandler>;
 
 /** Type of reference (#SLE_REF, #SLE_CONDREF). */
 enum SLRefType {
@@ -199,6 +305,191 @@ enum SaveLoadChunkExtHeaderFlags {
 DECLARE_ENUM_AS_BIT_SET(SaveLoadChunkExtHeaderFlags)
 
 /**
+ * Get the NumberType of a setting. This describes the integer type
+ * as it is represented in memory
+ * @param type VarType holding information about the variable-type
+ * @return the SLE_VAR_* part of a variable-type description
+ */
+inline constexpr VarType GetVarMemType(VarType type)
+{
+	return type & 0xF0; // GB(type, 4, 4) << 4;
+}
+
+/**
+ * Get the FileType of a setting. This describes the integer type
+ * as it is represented in a savegame/file
+ * @param type VarType holding information about the file-type
+ * @return the SLE_FILE_* part of a variable-type description
+ */
+inline constexpr VarType GetVarFileType(VarType type)
+{
+	return type & 0xF; // GB(type, 0, 4);
+}
+
+template <class, template <class, class...> class>
+struct sl_is_instance : public std::false_type {};
+
+template <class...Ts, template <class, class...> class U>
+struct sl_is_instance<U<Ts...>, U> : public std::true_type {};
+
+template<template<class, std::size_t> class T, class U>
+struct sl_is_derived_from_array
+{
+private:
+	template<class V, std::size_t N>
+	static decltype(static_cast<T<V, N>>(std::declval<U>()), std::true_type{}) test(const T<V, N>&);
+	static std::false_type test(...);
+
+public:
+	static constexpr bool value = decltype(sl_is_derived_from_array::test(std::declval<U>()))::value;
+};
+
+/**
+ * Return expect size in bytes of a VarType
+ * @param type VarType to get size of.
+ * @return size of type in bytes.
+ */
+inline constexpr size_t SlVarSize(VarType type)
+{
+	switch (GetVarMemType(type)) {
+		case SLE_VAR_BL:
+			return sizeof(bool);
+		case SLE_VAR_I8:
+		case SLE_VAR_U8:
+			return sizeof(int8_t);
+		case SLE_VAR_I16:
+		case SLE_VAR_U16:
+			return sizeof(int16_t);
+		case SLE_VAR_I32:
+		case SLE_VAR_U32:
+			return sizeof(int32_t);
+		case SLE_VAR_I64:
+		case SLE_VAR_U64:
+			return sizeof(int64_t);
+		case SLE_VAR_NAME:
+			return sizeof(std::string);
+		default:
+			return sizeof(void *);
+	}
+}
+
+/**
+ * Check whether the variable size/type of the variable in the saveload configuration
+ * matches with the actual variable size, for primitive types.
+ */
+template <typename TYPE>
+inline constexpr bool SlCheckPrimitiveTypeVar(VarType type)
+{
+	using T = typename std::remove_reference<TYPE>::type;
+
+	if (GetVarMemType(type) == SLE_VAR_NAME) {
+		return std::is_same_v<T, std::string>;
+	}
+	if (GetVarMemType(type) == SLE_VAR_CNAME) {
+		return std::is_same_v<T, char *> || std::is_same_v<T, const char *> || std::is_same_v<T, TinyString>;
+	}
+	if (!std::is_integral_v<T> && !std::is_enum_v<T> && !sl_is_instance<T, OverflowSafeInt>{} && !std::is_base_of_v<StrongTypedefBase, T>) return false;
+	return sizeof(T) == SlVarSize(type);
+}
+
+/**
+ * Check whether the variable size/type of the variable in the saveload configuration
+ * matches with the actual variable size, for array types.
+ */
+template <typename TYPE>
+inline constexpr bool SlCheckArrayTypeVar(VarType type, size_t length, bool top_level)
+{
+	using T = typename std::remove_reference<TYPE>::type;
+
+	if constexpr (std::is_array_v<T>) {
+		return SlCheckPrimitiveTypeVar<typename std::remove_all_extents_t<T>>(type);
+	}
+	if constexpr (sl_is_derived_from_array<std::array, T>::value) {
+		return SlCheckArrayTypeVar<typename T::value_type>(type, length, false);
+	}
+	if constexpr (std::is_class_v<T>) {
+		/* If T is class/struct, assume that the array is writing all its members, so check that the total size matches.
+		 * It's impractical to check the actual struct/class fields. */
+		if (top_level && sizeof(T) == length) return true;
+	}
+	return SlCheckPrimitiveTypeVar<T>(type);
+}
+
+/**
+ * Check whether the variable size/type of the variable in the saveload configuration
+ * matches with the actual variable size.
+ */
+template <typename T>
+inline constexpr bool SlCheckVar(SaveLoadType cmd, VarType type, size_t length)
+{
+	if (GetVarMemType(type) == SLE_VAR_NULL) return true;
+
+	switch (cmd) {
+		case SL_VAR:
+			return SlCheckPrimitiveTypeVar<T>(type);
+
+		case SL_REF:
+			/* These should all be pointer sized. */
+			return sizeof(T) == sizeof(void *);
+
+		case SL_STR:
+			/* These should be pointer sized, or fixed array. */
+			if (GetVarMemType(type) == SLE_VAR_STRB) {
+				return sizeof(T) == length;
+			}
+			return std::is_same_v<T, char *> || std::is_same_v<T, const char *> || std::is_same_v<T, TinyString>;
+
+		case SL_STDSTR:
+			/* These should be all pointers to std::string. */
+			return std::is_same_v<typename std::remove_reference<T>::type, std::string>;
+
+		case SL_ARR:
+			/* Partial load of array is permitted. */
+			return SlCheckArrayTypeVar<T>(type, SlVarSize(type) * length, true) && sizeof(T) >= SlVarSize(type) * length;
+
+		case SL_REFLIST:
+			if constexpr (sl_is_instance<T, std::list>{}) {
+				return std::is_pointer_v<typename T::value_type> || sl_is_instance<typename T::value_type, std::unique_ptr>{};
+			}
+			return false;
+
+		case SL_PTRRING:
+			if constexpr (sl_is_instance<T, ring_buffer>{}) {
+				return std::is_pointer_v<typename T::value_type> || sl_is_instance<typename T::value_type, std::unique_ptr>{};
+			}
+			return false;
+
+		case SL_VEC:
+			if constexpr (sl_is_instance<T, std::vector>{}) {
+				return std::is_pointer_v<typename T::value_type> || sl_is_instance<typename T::value_type, std::unique_ptr>{};
+			}
+			return false;
+
+		case SL_RING:
+			if constexpr (sl_is_instance<T, ring_buffer>{}) {
+				return SlCheckPrimitiveTypeVar<typename T::value_type>(type);
+			}
+			return false;
+
+		case SL_VARVEC:
+			if constexpr (sl_is_instance<T, std::vector>{}) {
+				return SlCheckPrimitiveTypeVar<typename T::value_type>(type);
+			}
+			return false;
+
+		default:
+			return true;
+	}
+}
+
+template <typename T, SaveLoadType cmd, VarType type, size_t length>
+inline constexpr void *SlVarWrapper(void* ptr)
+{
+	static_assert(SlCheckVar<T>(cmd, type, length));
+	return ptr;
+}
+
+/**
  * Storage of simple variables, references (pointers), and arrays.
  * @param cmd      Load/save type. @see SaveLoadType
  * @param base     Name of the class or struct containing the variable.
@@ -209,7 +500,7 @@ DECLARE_ENUM_AS_BIT_SET(SaveLoadChunkExtHeaderFlags)
  * @param extver   SlXvFeatureTest to test (along with from and to) which savegames have the field
  * @note In general, it is better to use one of the SLE_* macros below.
  */
-#define SLE_GENERAL_X(cmd, base, variable, type, length, from, to, extver) SaveLoad {false, cmd, type, length, from, to, (void*)cpp_offsetof(base, variable), cpp_sizeof(base, variable), extver}
+#define SLE_GENERAL_X(cmd, base, variable, type, length, from, to, extver) SaveLoad {false, cmd, type, length, from, to, SlVarWrapper<decltype(base::variable), cmd, type, length>((void*)cpp_offsetof(base, variable)), sizeof(base::variable), extver}
 #define SLE_GENERAL(cmd, base, variable, type, length, from, to) SLE_GENERAL_X(cmd, base, variable, type, length, from, to, SlXvFeatureTest())
 
 /**
@@ -440,7 +731,7 @@ DECLARE_ENUM_AS_BIT_SET(SaveLoadChunkExtHeaderFlags)
  * @param extver   SlXvFeatureTest to test (along with from and to) which savegames have the field
  * @note In general, it is better to use one of the SLEG_* macros below.
  */
-#define SLEG_GENERAL_X(cmd, variable, type, length, from, to, extver) SaveLoad {true, cmd, type, length, from, to, (void*)&variable, sizeof(variable), extver}
+#define SLEG_GENERAL_X(cmd, variable, type, length, from, to, extver) SaveLoad {true, cmd, type, length, from, to, SlVarWrapper<decltype(variable), cmd, type, length>((void*)&variable), sizeof(variable), extver}
 #define SLEG_GENERAL(cmd, variable, type, length, from, to) SLEG_GENERAL_X(cmd, variable, type, length, from, to, SlXvFeatureTest())
 
 /**
@@ -614,10 +905,10 @@ DECLARE_ENUM_AS_BIT_SET(SaveLoadChunkExtHeaderFlags)
  * @param minor Minor number of the version to check against. If \a minor is 0 or not specified, only the major number is checked.
  * @return Savegame version is earlier than the specified version.
  */
-static inline bool IsSavegameVersionBefore(SaveLoadVersion major, byte minor = 0)
+inline bool IsSavegameVersionBefore(SaveLoadVersion major, uint8_t minor = 0)
 {
 	extern SaveLoadVersion _sl_version;
-	extern byte            _sl_minor_version;
+	extern uint8_t         _sl_minor_version;
 	return _sl_version < major || (minor > 0 && _sl_version == major && _sl_minor_version < minor);
 }
 
@@ -628,7 +919,7 @@ static inline bool IsSavegameVersionBefore(SaveLoadVersion major, byte minor = 0
  * @param major Major number of the version to check against.
  * @return Savegame version is at most the specified version.
  */
-static inline bool IsSavegameVersionUntil(SaveLoadVersion major)
+inline bool IsSavegameVersionBeforeOrAt(SaveLoadVersion major)
 {
 	extern SaveLoadVersion _sl_version;
 	return _sl_version <= major;
@@ -641,7 +932,7 @@ static inline bool IsSavegameVersionUntil(SaveLoadVersion major)
  * @param version_to   Exclusive savegame version upper bound. SL_MAX_VERSION if no upper bound.
  * @return Active savegame version falls within the given range.
  */
-static inline bool SlIsObjectCurrentlyValid(SaveLoadVersion version_from, SaveLoadVersion version_to, SlXvFeatureTest ext_feature_test)
+inline bool SlIsObjectCurrentlyValid(SaveLoadVersion version_from, SaveLoadVersion version_to, SlXvFeatureTest ext_feature_test)
 {
 	extern const SaveLoadVersion SAVEGAME_VERSION;
 	if (!ext_feature_test.IsFeaturePresent(_sl_xv_feature_static_versions, SAVEGAME_VERSION, version_from, version_to)) return false;
@@ -650,33 +941,11 @@ static inline bool SlIsObjectCurrentlyValid(SaveLoadVersion version_from, SaveLo
 }
 
 /**
- * Get the NumberType of a setting. This describes the integer type
- * as it is represented in memory
- * @param type VarType holding information about the variable-type
- * @return the SLE_VAR_* part of a variable-type description
- */
-static inline VarType GetVarMemType(VarType type)
-{
-	return type & 0xF0; // GB(type, 4, 4) << 4;
-}
-
-/**
- * Get the FileType of a setting. This describes the integer type
- * as it is represented in a savegame/file
- * @param type VarType holding information about the file-type
- * @return the SLE_FILE_* part of a variable-type description
- */
-static inline VarType GetVarFileType(VarType type)
-{
-	return type & 0xF; // GB(type, 0, 4);
-}
-
-/**
  * Check if the given saveload type is a numeric type.
  * @param conv the type to check
  * @return True if it's a numeric type.
  */
-static inline bool IsNumericType(VarType conv)
+inline bool IsNumericType(VarType conv)
 {
 	return GetVarMemType(conv) <= SLE_VAR_U64;
 }
@@ -687,7 +956,7 @@ static inline bool IsNumericType(VarType conv)
  * is taken. If non-null only the offset is stored in the union and we need
  * to add this to the address of the object
  */
-static inline void *GetVariableAddress(const void *object, const SaveLoad &sld)
+inline void *GetVariableAddress(const void *object, const SaveLoad &sld)
 {
 	/* Entry is a global address. */
 	if (sld.global) return sld.address;
@@ -702,11 +971,11 @@ static inline void *GetVariableAddress(const void *object, const SaveLoad &sld)
 	/* Everything else should be a non-null pointer. */
 	assert(object != nullptr);
 #endif
-	return const_cast<byte *>((const byte *)object + (ptrdiff_t)sld.address);
+	return const_cast<uint8_t *>((const uint8_t *)object + (ptrdiff_t)sld.address);
 }
 
-int64 ReadValue(const void *ptr, VarType conv);
-void WriteValue(void *ptr, VarType conv, int64 val);
+int64_t ReadValue(const void *ptr, VarType conv);
+void WriteValue(void *ptr, VarType conv, int64_t val);
 
 void SlSetArrayIndex(uint index);
 int SlIterateArray();
@@ -723,15 +992,14 @@ size_t SlCalcObjLength(const void *object, const SaveLoadTable &slt);
  * @return Span of the saved data, in the autolength temp buffer
  */
 template <typename F>
-span<byte> SlSaveToTempBuffer(F proc)
+std::span<uint8_t> SlSaveToTempBuffer(F proc)
 {
-	extern uint8 SlSaveToTempBufferSetup();
-	extern std::pair<byte *, size_t> SlSaveToTempBufferRestore(uint8 state);
+	extern uint8_t SlSaveToTempBufferSetup();
+	extern std::span<uint8_t> SlSaveToTempBufferRestore(uint8_t state);
 
-	uint8 state = SlSaveToTempBufferSetup();
+	uint8_t state = SlSaveToTempBufferSetup();
 	proc();
-	auto result = SlSaveToTempBufferRestore(state);
-	return span<byte>(result.first, result.second);
+	return SlSaveToTempBufferRestore(state);
 }
 
 /**
@@ -741,15 +1009,15 @@ span<byte> SlSaveToTempBuffer(F proc)
  * @return a vector containing the saved data
  */
 template <typename F>
-std::vector<uint8> SlSaveToVector(F proc)
+std::vector<uint8_t> SlSaveToVector(F proc)
 {
-	span<byte> result = SlSaveToTempBuffer(proc);
-	return std::vector<uint8>(result.begin(), result.end());
+	std::span<uint8_t> result = SlSaveToTempBuffer(proc);
+	return std::vector<uint8_t>(result.begin(), result.end());
 }
 
 struct SlConditionallySaveState {
 	size_t current_len;
-	uint8 need_length;
+	uint8_t need_length;
 	bool nested;
 };
 
@@ -772,8 +1040,8 @@ bool SlConditionallySave(F proc)
 
 struct SlLoadFromBufferState {
 	size_t old_obj_len;
-	byte *old_bufp;
-	byte *old_bufe;
+	uint8_t *old_bufp;
+	uint8_t *old_bufe;
 };
 
 /**
@@ -781,10 +1049,10 @@ struct SlLoadFromBufferState {
  * @param proc The callback procedure that is called
  */
 template <typename F>
-void SlLoadFromBuffer(const byte *buffer, size_t length, F proc)
+void SlLoadFromBuffer(const uint8_t *buffer, size_t length, F proc)
 {
-	extern SlLoadFromBufferState SlLoadFromBufferSetup(const byte *buffer, size_t length);
-	extern void SlLoadFromBufferRestore(const SlLoadFromBufferState &state, const byte *buffer, size_t length);
+	extern SlLoadFromBufferState SlLoadFromBufferSetup(const uint8_t *buffer, size_t length);
+	extern void SlLoadFromBufferRestore(const SlLoadFromBufferState &state, const uint8_t *buffer, size_t length);
 
 	SlLoadFromBufferState state = SlLoadFromBufferSetup(buffer, length);
 	proc();
@@ -801,7 +1069,25 @@ void SlObjectSaveFiltered(void *object, const SaveLoadTable &slt);
 void SlObjectLoadFiltered(void *object, const SaveLoadTable &slt);
 void SlObjectPtrOrNullFiltered(void *object, const SaveLoadTable &slt);
 
-void NORETURN CDECL SlErrorFmt(StringID string, const char *msg, ...) WARN_FORMAT(2, 3);
+bool SlIsTableChunk();
+void SlSkipTableHeader();
+std::vector<SaveLoad> SlTableHeader(const NamedSaveLoadTable &slt);
+std::vector<SaveLoad> SlTableHeaderOrRiff(const NamedSaveLoadTable &slt);
+void SlSaveTableObjectChunk(const SaveLoadTable &slt);
+void SlLoadTableOrRiffFiltered(const SaveLoadTable &slt);
+void SlLoadTableWithArrayLengthPrefixesMissing();
+
+inline void SlSaveTableObjectChunk(const NamedSaveLoadTable &slt)
+{
+	SlSaveTableObjectChunk(SlTableHeader(slt));
+}
+
+inline void SlLoadTableOrRiffFiltered(const NamedSaveLoadTable &slt)
+{
+	SlLoadTableOrRiffFiltered(SlTableHeaderOrRiff(slt));
+}
+
+[[noreturn]] void CDECL SlErrorFmt(StringID string, const char *msg, ...) WARN_FORMAT(2, 3);
 
 bool SaveloadCrashWithMissingNewGRFs();
 

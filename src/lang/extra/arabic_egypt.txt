@@ -13,6 +13,8 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :طائرات
 STR_CONFIG_SETTING_AUTOSAVE                                     :حفظ تلقائي : {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :اختر الوقت بين كل عملية حفظ اتوماتيكية
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :عرض جدولة الأعمال بالمهام بدلا من الأيام: {STRING}
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}غير الشفافية لنسبة التحميل. مفتاح كنترول للاغلاق.
 
 # Tracerestrict GUI
@@ -31,6 +33,16 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}غير �
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}تصميم: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}يتوقف , {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}تتوجة الى {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}لا يوجد اوامر وجهات , {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}متوجه ل {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}يتوجة الى {DEPOT} , {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}الصيانة في {DEPOT} , {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}لا يمكن الوصول إلى {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}اضافة امر قبل الامر المختار, او لاخر الاوامر
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :و:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :م:
@@ -65,3 +77,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}بيع 2
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}لا يمكن شراء 25% من اسهم الشركة ...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}لا يمكن بيع 25% من اسهم الشركة ...
 STR_ERROR_PROTECTED                                             :{WHITE}هذه الشركة ليست عريقة بقدر كافي لمشاركة الأسهم ...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :اشارات الطريق فقط

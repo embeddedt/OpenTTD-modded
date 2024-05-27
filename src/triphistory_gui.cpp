@@ -27,7 +27,7 @@ enum VehicleTripWidgets {
     VTH_SUMMARY,
 
 };
-static const NWidgetPart _vehicle_trip_history_widgets[] = {
+static constexpr NWidgetPart _vehicle_trip_history_widgets[] = {
     	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
 		NWidget(WWT_CAPTION, COLOUR_GREY, VTH_CAPTION), SetDataTip(STR_TRIP_HISTORY_CAPTION, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -62,7 +62,7 @@ static const NWidgetPart _vehicle_trip_history_widgets[] = {
 struct VehicleTripHistoryWindow : Window {
 
 private:
-	uint8 valid_rows; // number of rows in trip history
+	uint8_t valid_rows; // number of rows in trip history
 public:
 	VehicleTripHistoryWindow(WindowDesc *desc, WindowNumber window_number) :
 		Window(desc), valid_rows( 0 )
@@ -114,7 +114,7 @@ public:
 
 			case VTH_LABEL_RECEIVED:
 			case VTH_MATRIX_RECEIVED: {
-				SetDParam(0, _date);
+				SetDParam(0, CalTime::CurDate());
 				Dimension text_dim = GetStringBoundingBox(STR_TRIP_HISTORY_DATE);
 				size->width = text_dim.width + WidgetDimensions::scaled.matrix.Horizontal();
 				break;
@@ -124,7 +124,7 @@ public:
 			case VTH_MATRIX_TBT:
 			case VTH_MATRIX_DAYCHANGE:
 			case VTH_MATRIX_OCCUPANCY:
-				resize->height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.matrix.Vertical();
+				resize->height = GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.matrix.Vertical();
 				size->height = 10 * resize->height;
 				break;
 		}
@@ -132,7 +132,7 @@ public:
 	virtual void DrawWidget(const Rect &r, int widget) const {
 	    	const Vehicle *v = Vehicle::Get(this->window_number);
 		int y = WidgetDimensions::scaled.framerect.top;
-		int line_height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.matrix.Vertical();
+		int line_height = GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.matrix.Vertical();
 
 		switch( widget ) {
 		    case VTH_MATRIX_RECEIVED:
@@ -204,21 +204,21 @@ public:
 			    SetDParam(2, v->trip_history.profit_per_day);
 			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_TOTALINCOME, TC_BLACK);
 			    SetDParam(0, v->trip_history.avg_daylength);
-			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE, TC_BLACK);
+			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE, TC_BLACK);
 			    SetDParam(0, valid_rows + 1);
 			    SetDParam(1, v->trip_history.total_change);
-			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + 2*FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE_IMPROVEMENT, TC_BLACK);
+			    DrawString(r.left + WidgetDimensions::scaled.framerect.left, r.right - WidgetDimensions::scaled.framerect.right, r.top + 2*GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.framerect.top, STR_TRIP_HISTORY_DAYAVERAGE_IMPROVEMENT, TC_BLACK);
 			    break;
 		}
 	}
 };
 
-static WindowDesc _vehicle_trip_history(
+static WindowDesc _vehicle_trip_history(__FILE__, __LINE__,
 	WDP_AUTO, "trip_history", 450, 191,
 	WC_VEHICLE_TRIP_HISTORY,WC_VEHICLE_DETAILS,
 	0,
-	_vehicle_trip_history_widgets,
-	lengthof(_vehicle_trip_history_widgets)
+	std::begin(_vehicle_trip_history_widgets),
+	std::end(_vehicle_trip_history_widgets)
 );
 
 void ShowTripHistoryWindow(const Vehicle *v)

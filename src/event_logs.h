@@ -11,9 +11,10 @@
 #define EVENT_LOGS_H
 
 #include "core/enum_type.hpp"
+#include "date_type.h"
 #include <time.h>
 
-enum GameEventFlags : uint32 {
+enum GameEventFlags : uint32_t {
 	GEF_COMPANY_DELETE       = 1 << 0, ///< (d) A company has been deleted
 	GEF_COMPANY_MERGE        = 1 << 1, ///< (m) A company has been bought by another
 	GEF_RELOAD_NEWGRF        = 1 << 2, ///< (n) ReloadNewGRFData() has been called
@@ -23,11 +24,18 @@ enum GameEventFlags : uint32 {
 	GEF_INDUSTRY_CREATE      = 1 << 6, ///< (i) An industry has been created (in game)
 	GEF_INDUSTRY_DELETE      = 1 << 7, ///< (j) An industry has been deleted (in game)
 	GEF_VIRT_TRAIN           = 1 << 8, ///< (v) A virtual train has been created
+	GEF_RM_INVALID_RV        = 1 << 9, ///< (r) Removed uncorrectable road vehicle on load
 };
 DECLARE_ENUM_AS_BIT_SET(GameEventFlags)
 
 extern GameEventFlags _game_events_since_load;
 extern GameEventFlags _game_events_overall;
+
+extern time_t _game_load_time;
+extern EconTime::YearMonthDay _game_load_cur_date_ymd;
+extern EconTime::DateFract _game_load_date_fract;
+extern uint8_t _game_load_tick_skip_counter;
+extern StateTicks _game_load_state_ticks;
 
 inline void RegisterGameEvents(GameEventFlags events)
 {
@@ -37,10 +45,10 @@ inline void RegisterGameEvents(GameEventFlags events)
 
 char *DumpGameEventFlags(GameEventFlags events, char *b, const char *last);
 
-extern time_t _game_load_time;
-
 void AppendSpecialEventsLogEntry(std::string message);
 char *DumpSpecialEventsLog(char *buffer, const char *last);
 void ClearSpecialEventsLog();
+
+void LogGameLoadDateTimes(char *buffer, const char *last);
 
 #endif /* EVENT_LOGS_H */

@@ -19,7 +19,7 @@
 #include "tilearea_type.h"
 
 /** Copy from station_map.h */
-typedef byte StationGfx;
+typedef uint8_t StationGfx;
 
 /** Tile-offset / AirportTileID pair. */
 struct AirportTileTable {
@@ -43,7 +43,7 @@ public:
 	{
 	}
 
-	inline TileIterator& operator ++()
+	inline TileIterator& operator ++() override
 	{
 		this->att++;
 		if (this->att->ti.x == -0x80) {
@@ -60,7 +60,7 @@ public:
 		return this->att->gfx;
 	}
 
-	virtual std::unique_ptr<TileIterator> Clone() const
+	std::unique_ptr<TileIterator> Clone() const override
 	{
 		return std::make_unique<AirportTileTableIterator>(*this);
 	}
@@ -92,7 +92,7 @@ enum TTDPAirportType {
 struct HangarTileTable {
 	TileIndexDiffC ti; ///< Tile offset from the top-most airport tile.
 	Direction dir;     ///< Direction of the exit.
-	byte hangar_num;   ///< The hangar to which this tile belongs.
+	uint8_t hangar_num;   ///< The hangar to which this tile belongs.
 };
 
 /**
@@ -102,38 +102,38 @@ struct AirportSpec {
 	const struct AirportFTAClass *fsm;     ///< the finite statemachine for the default airports
 	const AirportTileTable * const *table; ///< list of the tiles composing the airport
 	const Direction *rotation;             ///< the rotation of each tiletable
-	byte num_table;                        ///< number of elements in the table
+	uint8_t num_table;                     ///< number of elements in the table
 	const HangarTileTable *depot_table;    ///< gives the position of the depots on the airports
-	byte nof_depots;                       ///< the number of hangar tiles in this airport
-	byte size_x;                           ///< size of airport in x direction
-	byte size_y;                           ///< size of airport in y direction
-	byte noise_level;                      ///< noise that this airport generates
-	byte catchment;                        ///< catchment area of this airport
-	Year min_year;                         ///< first year the airport is available
-	Year max_year;                         ///< last year the airport is available
+	uint8_t nof_depots;                    ///< the number of hangar tiles in this airport
+	uint8_t size_x;                        ///< size of airport in x direction
+	uint8_t size_y;                        ///< size of airport in y direction
+	uint8_t noise_level;                   ///< noise that this airport generates
+	uint8_t catchment;                     ///< catchment area of this airport
+	CalTime::Year min_year;                ///< first year the airport is available
+	CalTime::Year max_year;                ///< last year the airport is available
 	StringID name;                         ///< name of this airport
 	TTDPAirportType ttd_airport_type;      ///< ttdpatch airport type (Small/Large/Helipad/Oilrig)
 	AirportClassID cls_id;                 ///< the class to which this airport type belongs
 	SpriteID preview_sprite;               ///< preview sprite for this airport
-	uint16 maintenance_cost;               ///< maintenance cost multiplier
-	byte max_circle;                       ///< maximum amout of aircrafts in circle area of airport
+	uint16_t maintenance_cost;               ///< maintenance cost multiplier
+	uint8_t max_circle;                       ///< maximum amout of aircrafts in circle area of airport
 	/* Newgrf data */
 	bool enabled;                          ///< Entity still available (by default true). Newgrf can disable it, though.
 	struct GRFFileProps grf_prop;          ///< Properties related to the grf file.
 
-	static const AirportSpec *Get(byte type);
-	static AirportSpec *GetWithoutOverride(byte type);
+	static const AirportSpec *Get(uint8_t type);
+	static AirportSpec *GetWithoutOverride(uint8_t type);
 
 	bool IsAvailable() const;
-	bool IsWithinMapBounds(byte table, TileIndex index) const;
+	bool IsWithinMapBounds(uint8_t table, TileIndex index) const;
 
 	static void ResetAirports();
 
 	/** Get the index of this spec. */
-	byte GetIndex() const
+	uint8_t GetIndex() const
 	{
 		assert(this >= specs && this < endof(specs));
-		return (byte)(this - specs);
+		return (uint8_t)(this - specs);
 	}
 
 	static const AirportSpec dummy; ///< The dummy airport.
@@ -150,8 +150,8 @@ void BindAirportSpecs();
 /** Resolver for the airport scope. */
 struct AirportScopeResolver : public ScopeResolver {
 	struct Station *st; ///< Station of the airport for which the callback is run, or \c nullptr for build gui.
-	byte airport_id;    ///< Type of airport for which the callback is run.
-	byte layout;        ///< Layout of the airport to build.
+	uint8_t airport_id;    ///< Type of airport for which the callback is run.
+	uint8_t layout;        ///< Layout of the airport to build.
 	TileIndex tile;     ///< Tile for the callback, only valid for airporttile callbacks.
 
 	/**
@@ -162,14 +162,14 @@ struct AirportScopeResolver : public ScopeResolver {
 	 * @param airport_id Type of airport for which the callback is run.
 	 * @param layout Layout of the airport to build.
 	 */
-	AirportScopeResolver(ResolverObject &ro, TileIndex tile, Station *st, byte airport_id, byte layout)
+	AirportScopeResolver(ResolverObject &ro, TileIndex tile, Station *st, uint8_t airport_id, uint8_t layout)
 		: ScopeResolver(ro), st(st), airport_id(airport_id), layout(layout), tile(tile)
 	{
 	}
 
-	uint32 GetRandomBits() const override;
-	uint32 GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const override;
-	void StorePSA(uint pos, int32 value) override;
+	uint32_t GetRandomBits() const override;
+	uint32_t GetVariable(uint16_t variable, uint32_t parameter, GetVariableExtra *extra) const override;
+	void StorePSA(uint pos, int32_t value) override;
 };
 
 
@@ -178,8 +178,8 @@ struct AirportResolverObject : public ResolverObject {
 	AirportScopeResolver airport_scope;
 	std::unique_ptr<TownScopeResolver> town_scope; ///< The town scope resolver (created on the first call).
 
-	AirportResolverObject(TileIndex tile, Station *st, byte airport_id, byte layout,
-			CallbackID callback = CBID_NO_CALLBACK, uint32 callback_param1 = 0, uint32 callback_param2 = 0);
+	AirportResolverObject(TileIndex tile, Station *st, uint8_t airport_id, uint8_t layout,
+			CallbackID callback = CBID_NO_CALLBACK, uint32_t callback_param1 = 0, uint32_t callback_param2 = 0);
 
 	TownScopeResolver *GetTown();
 
@@ -191,16 +191,16 @@ struct AirportResolverObject : public ResolverObject {
 			{
 				TownScopeResolver *tsr = this->GetTown();
 				if (tsr != nullptr) return tsr;
-				FALLTHROUGH;
+				[[fallthrough]];
 			}
 			default: return ResolverObject::GetScope(scope, relative);
 		}
 	}
 
 	GrfSpecFeature GetFeature() const override;
-	uint32 GetDebugID() const override;
+	uint32_t GetDebugID() const override;
 };
 
-StringID GetAirportTextCallback(const AirportSpec *as, byte layout, uint16 callback);
+StringID GetAirportTextCallback(const AirportSpec *as, uint8_t layout, uint16_t callback);
 
 #endif /* NEWGRF_AIRPORT_H */

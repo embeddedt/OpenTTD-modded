@@ -1,6 +1,8 @@
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :міль/г
 STR_UNIT_NAME_VELOCITY_METRIC                                   :км/г
 STR_UNIT_NAME_VELOCITY_SI                                       :м/с
+STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :клетак/дзень
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :клетак/сек.
 
 STR_BUTTON_RENAME                                               :{BLACK}Перайменаваць
 
@@ -11,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Авіятра�
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Аўтазахаваньні: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Азначце інтэрвал паміж аўтаматычнымі захаваньнямі
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Паказваць расклад ў «ціках» замест дзён: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Паказваць у раскладзе час падарожжа ў гульнёвых "ціках" замест дзён.
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Пераключыць празрыстасьць для індыкатараў загрузкі. Ctrl+клік — заблякаваць.
 
@@ -30,6 +35,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Зьмя
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Распрацаваны ў {GOLD}{NUM} г.
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Спыняецца; {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Iдзе да {STATION}; {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Няма заданьняў; {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Iдзе да {WAYPOINT}; {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Iдзе ў {DEPOT}; {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Абслуг. у {DEPOT}; {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Уставіць новае заданьне перад вылучаным, або ў канец сьпісу. Ctrl дадае на станцыях «поўная пагрузка любым грузам», на пунктах шляху - «без прыпынку», на дэпо - «абслугоўваньне». «Агульныя заданьні» або Ctrl дазваляюць гэтаму транспарту мець агульныя заданьні з вылучаным транспартам. Пстрычка па транспарце капіюе заданьнi гэтага транспарту. Заданьне «ў дэпо» адключае аўтаматычнае абслугоўваньне гэтага транспарту.
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :П:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :А:
@@ -67,3 +81,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Прад
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Немагчыма купіць 25% акцыяў гэтай кампаніі...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Немагчыма прадаць 25% акцый гэтай кампаніі...
 STR_ERROR_PROTECTED                                             :{WHITE}Гэтая кампанія яшчэ не выпускае акцыі...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :толькі маршрутныя (PMS)

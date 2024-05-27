@@ -27,7 +27,7 @@ enum RoadTramType : bool {
 	RTT_TRAM,
 };
 
-enum RoadTramTypes : uint8 {
+enum RoadTramTypes : uint8_t {
 	RTTB_ROAD = 1 << RTT_ROAD,
 	RTTB_TRAM = 1 << RTT_TRAM,
 };
@@ -35,14 +35,17 @@ DECLARE_ENUM_AS_BIT_SET(RoadTramTypes)
 
 static const RoadTramType _roadtramtypes[] = { RTT_ROAD, RTT_TRAM };
 
-/** Roadtype flags. Starts with RO instead of R because R is used for rails */
-enum RoadTypeFlags {
+/** Roadtype flag bit numbers. Starts with RO instead of R because R is used for rails */
+enum RoadTypeFlag {
 	ROTF_CATENARY = 0,                                     ///< Bit number for adding catenary
 	ROTF_NO_LEVEL_CROSSING,                                ///< Bit number for disabling level crossing
 	ROTF_NO_HOUSES,                                        ///< Bit number for setting this roadtype as not house friendly
 	ROTF_HIDDEN,                                           ///< Bit number for hidden from construction.
 	ROTF_TOWN_BUILD,                                       ///< Bit number for allowing towns to build this roadtype.
+};
 
+/** Roadtype flags. Starts with RO instead of R because R is used for rails */
+enum RoadTypeFlags : uint8_t {
 	ROTFB_NONE = 0,                                        ///< All flags cleared.
 	ROTFB_CATENARY          = 1 << ROTF_CATENARY,          ///< Value for drawing a catenary.
 	ROTFB_NO_LEVEL_CROSSING = 1 << ROTF_NO_LEVEL_CROSSING, ///< Value for disabling a level crossing.
@@ -61,7 +64,7 @@ enum RoadTypeExtraFlag {
 };
 
 /** Roadtype extra flags. */
-enum RoadTypeExtraFlags : uint8 {
+enum RoadTypeExtraFlags : uint8_t {
 	RXTFB_NONE = 0,                                              ///< All flags cleared.
 	RXTFB_NOT_AVAILABLE_AI_GS   = 1 << RXTF_NOT_AVAILABLE_AI_GS,
 	RXTFB_NO_TOWN_MODIFICATION  = 1 << RXTF_NO_TOWN_MODIFICATION,
@@ -70,7 +73,7 @@ enum RoadTypeExtraFlags : uint8 {
 };
 DECLARE_ENUM_AS_BIT_SET(RoadTypeExtraFlags)
 
-enum RoadTypeCollisionMode : uint8 {
+enum RoadTypeCollisionMode : uint8_t {
 	RTCM_NORMAL = 0,
 	RTCM_NONE,
 	RTCM_ELEVATED,
@@ -92,7 +95,7 @@ enum RoadTypeSpriteGroup {
 	ROTSG_reserved2,      ///<           Placeholder, if we need specific level crossing sprites.
 	ROTSG_DEPOT,          ///< Optional: Depot images
 	ROTSG_reserved3,      ///<           Placeholder, if we add road fences (for highways).
-	ROTSG_ROADSTOP,       ///< Required: Drive-in stop surface
+	ROTSG_ROADSTOP,       ///< Required: Bay stop surface
 	ROTSG_ONEWAY,         ///< Optional: One-way indicator images
 	ROTSG_END,
 };
@@ -164,17 +167,17 @@ public:
 	/**
 	 * Cost multiplier for building this road type
 	 */
-	uint16 cost_multiplier;
+	uint16_t cost_multiplier;
 
 	/**
 	 * Cost multiplier for maintenance of this road type
 	 */
-	uint16 maintenance_multiplier;
+	uint16_t maintenance_multiplier;
 
 	/**
 	 * Maximum speed for vehicles travelling on this road type
 	 */
-	uint16 max_speed;
+	uint16_t max_speed;
 
 	/**
 	 * Unique 32 bit road type identifier
@@ -189,7 +192,7 @@ public:
 	/**
 	 * Colour on mini-map
 	 */
-	byte map_colour;
+	uint8_t map_colour;
 
 	/**
 	 * Introduction date.
@@ -198,7 +201,7 @@ public:
 	 * The introduction at this date is furthermore limited by the
 	 * #introduction_required_types.
 	 */
-	Date introduction_date;
+	CalTime::Date introduction_date;
 
 	/**
 	 * Bitmask of roadtypes that are required for this roadtype to be introduced
@@ -214,7 +217,7 @@ public:
 	/**
 	 * The sorting order of this roadtype for the toolbar dropdown.
 	 */
-	byte sorting_order;
+	uint8_t sorting_order;
 
 	/**
 	 * NewGRF providing the Action3 for the roadtype. nullptr if not available.
@@ -234,22 +237,22 @@ public:
 
 extern RoadTypes _roadtypes_type;
 
-static inline bool RoadTypeIsRoad(RoadType roadtype)
+inline bool RoadTypeIsRoad(RoadType roadtype)
 {
 	return !HasBit(_roadtypes_type, roadtype);
 }
 
-static inline bool RoadTypeIsTram(RoadType roadtype)
+inline bool RoadTypeIsTram(RoadType roadtype)
 {
 	return HasBit(_roadtypes_type, roadtype);
 }
 
-static inline RoadTramType GetRoadTramType(RoadType roadtype)
+inline RoadTramType GetRoadTramType(RoadType roadtype)
 {
 	return RoadTypeIsTram(roadtype) ? RTT_TRAM : RTT_ROAD;
 }
 
-static inline RoadTramType OtherRoadTramType(RoadTramType rtt)
+inline RoadTramType OtherRoadTramType(RoadTramType rtt)
 {
 	return rtt == RTT_ROAD ? RTT_TRAM : RTT_ROAD;
 }
@@ -259,7 +262,7 @@ static inline RoadTramType OtherRoadTramType(RoadTramType rtt)
  * @param roadtype the road type which the information is requested for
  * @return The pointer to the RoadTypeInfo
  */
-static inline const RoadTypeInfo *GetRoadTypeInfo(RoadType roadtype)
+inline const RoadTypeInfo *GetRoadTypeInfo(RoadType roadtype)
 {
 	extern RoadTypeInfo _roadtypes[ROADTYPE_END];
 	assert(roadtype < ROADTYPE_END);
@@ -274,7 +277,7 @@ static inline const RoadTypeInfo *GetRoadTypeInfo(RoadType roadtype)
  * @param  enginetype The RoadType of the engine we are considering.
  * @param  tiletype   The RoadType of the tile we are considering.
  */
-static inline bool HasPowerOnRoad(RoadType enginetype, RoadType tiletype)
+inline bool HasPowerOnRoad(RoadType enginetype, RoadType tiletype)
 {
 	return HasBit(GetRoadTypeInfo(enginetype)->powered_roadtypes, tiletype);
 }
@@ -284,7 +287,7 @@ static inline bool HasPowerOnRoad(RoadType enginetype, RoadType tiletype)
  * @param roadtype The roadtype being built.
  * @return The cost multiplier.
  */
-static inline Money RoadBuildCost(RoadType roadtype)
+inline Money RoadBuildCost(RoadType roadtype)
 {
 	assert(roadtype < ROADTYPE_END);
 	return (_price[PR_BUILD_ROAD] * GetRoadTypeInfo(roadtype)->cost_multiplier) >> 3;
@@ -295,7 +298,7 @@ static inline Money RoadBuildCost(RoadType roadtype)
  * @param roadtype The roadtype being removed.
  * @return The cost.
  */
-static inline Money RoadClearCost(RoadType roadtype)
+inline Money RoadClearCost(RoadType roadtype)
 {
 	assert(roadtype < ROADTYPE_END);
 
@@ -313,7 +316,7 @@ static inline Money RoadClearCost(RoadType roadtype)
  * @param to   The roadtype we are converting to
  * @return Cost per RoadBit
  */
-static inline Money RoadConvertCost(RoadType from, RoadType to)
+inline Money RoadConvertCost(RoadType from, RoadType to)
 {
 	/* Don't apply convert costs when converting to the same roadtype (ex. building a roadstop over existing road) */
 	if (from == to) return (Money)0;
@@ -327,7 +330,7 @@ static inline Money RoadConvertCost(RoadType from, RoadType to)
  * @param roadtype The roadtype we are testing
  * @return True iff the roadtype disallows level crossings
  */
-static inline bool RoadNoLevelCrossing(RoadType roadtype)
+inline bool RoadNoLevelCrossing(RoadType roadtype)
 {
 	assert(roadtype < ROADTYPE_END);
 	return HasBit(GetRoadTypeInfo(roadtype)->flags, ROTF_NO_LEVEL_CROSSING);
@@ -338,7 +341,7 @@ static inline bool RoadNoLevelCrossing(RoadType roadtype)
  * @param roadtype The roadtype we are testing
  * @return True iff the roadtype disallows tunnels
  */
-static inline bool RoadNoTunnels(RoadType roadtype)
+inline bool RoadNoTunnels(RoadType roadtype)
 {
 	assert(roadtype < ROADTYPE_END);
 	return HasBit(GetRoadTypeInfo(roadtype)->extra_flags, RXTF_NO_TUNNELS);

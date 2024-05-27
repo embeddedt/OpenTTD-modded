@@ -16,7 +16,7 @@
 typedef OverflowSafeInt64 Money;
 
 /** Type of the game economy. */
-enum EconomyType : uint8 {
+enum EconomyType : uint8_t {
 	ET_BEGIN = 0,
 	ET_ORIGINAL = 0,
 	ET_SMOOTH = 1,
@@ -26,19 +26,19 @@ enum EconomyType : uint8 {
 
 /** Data of the economy. */
 struct Economy {
-	Money max_loan;                       ///< NOSAVE: Maximum possible loan
-	int16 fluct;                          ///< Economy fluctuation status
-	byte interest_rate;                   ///< Interest
-	byte infl_amount;                     ///< inflation amount
-	byte infl_amount_pr;                  ///< inflation rate for payment rates
-	uint32 industry_daily_change_counter; ///< Bits 31-16 are number of industry to be performed, 15-0 are fractional collected daily
-	uint32 industry_daily_increment;      ///< The value which will increment industry_daily_change_counter. Computed value. NOSAVE
-	uint64 inflation_prices;              ///< Cumulated inflation of prices since game start; 16 bit fractional part
-	uint64 inflation_payment;             ///< Cumulated inflation of cargo payment since game start; 16 bit fractional part
+	Money max_loan;                         ///< NOSAVE: Maximum possible loan
+	int16_t fluct;                          ///< Economy fluctuation status
+	uint8_t interest_rate;                  ///< Interest
+	uint8_t infl_amount;                    ///< inflation amount
+	uint8_t infl_amount_pr;                 ///< inflation rate for payment rates
+	uint32_t industry_daily_change_counter; ///< Bits 31-16 are number of industry to be performed, 15-0 are fractional collected daily
+	uint32_t industry_daily_increment;      ///< The value which will increment industry_daily_change_counter. Computed value. NOSAVE
+	uint64_t inflation_prices;              ///< Cumulated inflation of prices since game start; 16 bit fractional part
+	uint64_t inflation_payment;             ///< Cumulated inflation of cargo payment since game start; 16 bit fractional part
 
 	/* Old stuff for savegame conversion only */
 	Money old_max_loan_unround;           ///< Old: Unrounded max loan
-	uint16 old_max_loan_unround_fract;    ///< Old: Fraction of the unrounded max loan
+	uint16_t old_max_loan_unround_fract;    ///< Old: Fraction of the unrounded max loan
 };
 
 /** Score categories in the detailed performance rating. */
@@ -151,10 +151,10 @@ enum Price {
 DECLARE_POSTFIX_INCREMENT(Price)
 
 typedef Money Prices[PR_END]; ///< Prices of everything. @see Price
-typedef int8 PriceMultipliers[PR_END];
+typedef int8_t PriceMultipliers[PR_END];
 
 /** Types of expenses. */
-enum ExpensesType : byte {
+enum ExpensesType : uint8_t {
 	EXPENSES_CONSTRUCTION =  0,   ///< Construction costs.
 	EXPENSES_NEW_VEHICLES,        ///< New vehicles.
 	EXPENSES_TRAIN_RUN,           ///< Running costs trains.
@@ -175,7 +175,12 @@ enum ExpensesType : byte {
 };
 
 /** Define basic enum properties for ExpensesType */
-template <> struct EnumPropsT<ExpensesType> : MakeEnumPropsT<ExpensesType, byte, EXPENSES_CONSTRUCTION, EXPENSES_END, INVALID_EXPENSES, 8> {};
+template <> struct EnumPropsT<ExpensesType> : MakeEnumPropsT<ExpensesType, uint8_t, EXPENSES_CONSTRUCTION, EXPENSES_END, INVALID_EXPENSES, 8> {};
+
+/**
+ * Data type for storage of Money for each #ExpensesType category.
+ */
+using Expenses = std::array<Money, EXPENSES_END>;
 
 /**
  * Categories of a price bases.
@@ -199,17 +204,19 @@ struct PriceBaseSpec {
 /** The "steps" in loan size, in British Pounds! */
 static const int LOAN_INTERVAL = 10000;
 /** The size of loan for a new company, in British Pounds! */
-static const int64 INITIAL_LOAN = 100000;
+static const int64_t INITIAL_LOAN = 100000;
+/** The max amount possible to configure for a max loan of a company. */
+static const int64_t MAX_LOAN_LIMIT = 2000000000;
 
 /**
- * Maximum inflation (including fractional part) without causing overflows in int64 price computations.
+ * Maximum inflation (including fractional part) without causing overflows in int64_t price computations.
  * This allows for 32 bit base prices (21 are currently needed).
  * Considering the sign bit and 16 fractional bits, there are 15 bits left.
  * 170 years of 4% inflation result in a inflation of about 822, so 10 bits are actually enough.
  * Note that NewGRF multipliers share the 16 fractional bits.
  * @see MAX_PRICE_MODIFIER
  */
-static const uint64 MAX_INFLATION = (1ull << (63 - 32)) - 1;
+static const uint64_t MAX_INFLATION = (1ull << (63 - 32)) - 1;
 
 /**
  * Maximum NewGRF price modifiers.
@@ -232,20 +239,56 @@ static const uint ROAD_STOP_TRACKBIT_FACTOR = 2;
 static const uint LOCK_DEPOT_TILE_FACTOR = 2;
 
 struct CargoPayment;
-typedef uint32 CargoPaymentID;
+typedef uint32_t CargoPaymentID;
 
-enum CargoPaymentAlgorithm : byte {
+enum CargoPaymentAlgorithm : uint8_t {
 	CPA_BEGIN = 0,       ///< Used for iterations and limit testing
 	CPA_TRADITIONAL = 0, ///< Traditional algorithm
 	CPA_MODERN,          ///< Modern algorithm
 	CPA_END,             ///< Used for iterations and limit testing
 };
 
-enum TickRateMode : byte {
+enum TickRateMode : uint8_t {
 	TRM_BEGIN = 0,       ///< Used for iterations and limit testing
 	TRM_TRADITIONAL = 0, ///< Traditional value (30ms)
 	TRM_MODERN,          ///< Modern value (27ms)
 	TRM_END,             ///< Used for iterations and limit testing
+};
+
+enum CargoScalingMode : uint8_t {
+	CSM_BEGIN = 0,         ///< Used for iterations and limit testing
+	CSM_MONTHLY = 0,       ///< Traditional cargo scaling
+	CSM_DAYLENGTH,         ///< Also scale by day length
+	CSM_END,               ///< Used for iterations and limit testing
+};
+
+struct CargoScaler {
+private:
+	uint32_t scale16 = 1 << 16;
+
+	inline uint ScaleWithBias(uint num, uint32_t bias)
+	{
+		return (uint)((((uint64_t)num * (uint64_t)this->scale16) + bias) >> 16);
+	}
+
+public:
+	inline bool HasScaling() const
+	{
+		return this->scale16 != (1 << 16);
+	}
+
+	inline void SetScale(uint32_t scale16)
+	{
+		this->scale16 = scale16;
+	}
+
+	inline uint Scale(uint num)
+	{
+		if (num == 0) return 0;
+		return std::max<uint>(1, this->ScaleWithBias(num, 0x8000));
+	}
+
+	uint ScaleAllowTrunc(uint num);
 };
 
 #endif /* ECONOMY_TYPE_H */

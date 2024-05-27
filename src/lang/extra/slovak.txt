@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :políčka/deň
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :políčka/sekunda
 
 STR_BUTTON_RENAME                                               :{BLACK}Premenovať
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Lietadlá
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Automatické ukladanie: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Vyberte interval pre automatické ukladanie hry
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Zobraziť cestovné poriadky v tiknutiach namiesto dní: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Zobrazí časy cestovania v cestovnom poriadku v herných tiknutiach namiesto dní
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Prepnúť priehľadnosť ukazateľov nakladania. Ctrl+klik uzamkne nastavenie
 
@@ -34,6 +38,19 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Zmeniť 
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Vyrobené: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Zastavuje, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Smeruje do {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Bez určenia, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Smeruje do {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Smeruje do {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Servis v {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Nedokáže sa dostať do {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Nedokáže sa dostať do {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Nedokáže sa dostať do {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Nedokáže sa dostať do {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Vložiť nový príkaz pred označený príkaz, alebo na koniec zoznamu. Ctrl zmení príkazy pre stanicu na 'plne nalož čokoľvek', príkazy pre smerový bod na 'nonstop' a príkazy pre depo na 'servis'. 'Zdieľať príkazy' alebo Ctrl umožní vozidlu zdieľať príkazy s vybraným vozidlom. Kliknutím na vozidlo sa skopírujú príkazy z vozidla. Príkaz na presun do depa vypne automatický servis vozidla
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :P:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :O:
@@ -73,3 +90,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Predať 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Nemôžete kúpiť 25% podiel v tejto spoločnosti...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}25% podiel v tejto spoločnosti sa nedá predať ...
 STR_ERROR_PROTECTED                                             :{WHITE}S akciami tejto spoločnosti nie je zatiaľ možné obchodovať...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Iba trasové návestidlá

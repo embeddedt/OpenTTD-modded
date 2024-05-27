@@ -22,22 +22,20 @@
 typedef Pool<BaseStation, StationID, 32, 64000> StationPool;
 extern StationPool _station_pool;
 
-struct StationSpecList {
-	const StationSpec *spec;
-	uint32 grfid;      ///< GRF ID of this custom station
-	uint16 localidx;   ///< Station ID within GRF of station
+template <typename T>
+struct SpecMapping {
+	const T *spec;       ///< Custom spec.
+	uint32_t grfid;      ///< GRF ID of this custom station
+	uint16_t localidx;   ///< Station ID within GRF of station
 };
 
-struct RoadStopSpecList {
-	const RoadStopSpec *spec;
-	uint32 grfid;      ///< GRF ID of this custom road stop
-	uint16 localidx;   ///< Station ID within GRF of road stop
-};
+using StationSpecList = SpecMapping<StationSpec>;
+using RoadStopSpecList = SpecMapping<RoadStopSpec>;
 
 struct RoadStopTileData {
 	TileIndex tile;
-	uint8 random_bits;
-	uint8 animation_frame;
+	uint8_t random_bits;
+	uint8_t animation_frame;
 };
 
 /** StationRect - used to track station spread out rectangle - cheaper than scanning whole map */
@@ -65,27 +63,27 @@ struct StationRect : public Rect {
 
 /** Base class for all station-ish types */
 struct BaseStation : StationPool::PoolItem<&_station_pool> {
-	TileIndex xy;                   ///< Base tile of the station
-	TrackedViewportSign sign;       ///< NOSAVE: Dimensions of sign
-	byte delete_ctr;                ///< Delete counter. If greater than 0 then it is decremented until it reaches 0; the waypoint is then is deleted.
-
-	TinyString name;                ///< Custom name
-	StringID string_id;             ///< Default name (town area) of station
-	mutable std::string cached_name; ///< NOSAVE: Cache of the resolved name of the station, if not using a custom name
-
-	Town *town;                     ///< The town this station is associated with
 	Owner owner;                    ///< The owner of this station
 	StationFacility facilities;     ///< The facilities that this station has
+	TileIndex xy;                   ///< Base tile of the station
+	TrackedViewportSign sign;       ///< NOSAVE: Dimensions of sign
+
+	mutable std::string cached_name; ///< NOSAVE: Cache of the resolved name of the station, if not using a custom name
+	TinyString name;                ///< Custom name
+	StringID string_id;             ///< Default name (town area) of station
+
+	CalTime::Date build_date;       ///< Date of construction
+
+	Town *town;                     ///< The town this station is associated with
 
 	std::vector<StationSpecList> speclist;           ///< List of rail station specs of this station.
 	std::vector<RoadStopSpecList> roadstop_speclist; ///< List of road stop specs of this station
 
-	Date build_date;                ///< Date of construction
-
-	uint16 random_bits;             ///< Random bits assigned to this station
-	byte waiting_triggers;          ///< Waiting triggers (NewGRF) for this station
-	uint8 cached_anim_triggers;                ///< NOSAVE: Combined animation trigger bitmask, used to determine if trigger processing should happen.
-	uint8 cached_roadstop_anim_triggers;       ///< NOSAVE: Combined animation trigger bitmask for road stops, used to determine if trigger processing should happen.
+	uint16_t random_bits;           ///< Random bits assigned to this station
+	uint8_t waiting_triggers;       ///< Waiting triggers (NewGRF) for this station
+	uint8_t delete_ctr;             ///< Delete counter. If greater than 0 then it is decremented until it reaches 0; the waypoint is then is deleted.
+	uint8_t cached_anim_triggers;              ///< NOSAVE: Combined animation trigger bitmask, used to determine if trigger processing should happen.
+	uint8_t cached_roadstop_anim_triggers;     ///< NOSAVE: Combined animation trigger bitmask for road stops, used to determine if trigger processing should happen.
 	CargoTypes cached_cargo_triggers;          ///< NOSAVE: Combined cargo trigger bitmask
 	CargoTypes cached_roadstop_cargo_triggers; ///< NOSAVE: Combined cargo trigger bitmask for road stops
 
@@ -121,7 +119,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 	 * @param available will return false if ever the variable asked for does not exist
 	 * @return the value stored in the corresponding variable
 	 */
-	virtual uint32 GetNewGRFVariable(const struct ResolverObject &object, uint16 variable, byte parameter, bool *available) const = 0;
+	virtual uint32_t GetNewGRFVariable(const struct ResolverObject &object, uint16_t variable, uint8_t parameter, bool *available) const = 0;
 
 	/**
 	 * Update the coordinated of the sign (as shown in the viewport).
@@ -197,7 +195,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 		return (this->facilities & facilities) != 0;
 	}
 
-	inline byte GetRoadStopRandomBits(TileIndex tile) const
+	inline uint8_t GetRoadStopRandomBits(TileIndex tile) const
 	{
 		for (const RoadStopTileData &tile_data : this->custom_roadstop_tile_data) {
 			if (tile_data.tile == tile) return tile_data.random_bits;
@@ -205,7 +203,7 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 		return 0;
 	}
 
-	inline byte GetRoadStopAnimationFrame(TileIndex tile) const
+	inline uint8_t GetRoadStopAnimationFrame(TileIndex tile) const
 	{
 		for (const RoadStopTileData &tile_data : this->custom_roadstop_tile_data) {
 			if (tile_data.tile == tile) return tile_data.animation_frame;
@@ -214,11 +212,11 @@ struct BaseStation : StationPool::PoolItem<&_station_pool> {
 	}
 
 private:
-	bool SetRoadStopTileData(TileIndex tile, byte data, bool animation);
+	bool SetRoadStopTileData(TileIndex tile, uint8_t data, bool animation);
 
 public:
-	inline void SetRoadStopRandomBits(TileIndex tile, byte random_bits) { this->SetRoadStopTileData(tile, random_bits, false); }
-	inline bool SetRoadStopAnimationFrame(TileIndex tile, byte frame) { return this->SetRoadStopTileData(tile, frame, true); }
+	inline void SetRoadStopRandomBits(TileIndex tile, uint8_t random_bits) { this->SetRoadStopTileData(tile, random_bits, false); }
+	inline bool SetRoadStopAnimationFrame(TileIndex tile, uint8_t frame) { return this->SetRoadStopTileData(tile, frame, true); }
 	void RemoveRoadStopTileData(TileIndex tile);
 
 	static void PostDestructor(size_t index);
@@ -322,5 +320,15 @@ struct SpecializedStation : public BaseStation {
 	 */
 	static Pool::IterateWrapper<T> Iterate(size_t from = 0) { return Pool::IterateWrapper<T>(from); }
 };
+
+/**
+ * Get spec mapping list for each supported custom spec type.
+ * @tparam T Spec type.
+ * @param bst Station of custom spec list.
+ * @return Speclist of custom spec type.
+ */
+template <class T> std::vector<SpecMapping<T>> &GetStationSpecList(BaseStation *bst);
+template <> inline std::vector<SpecMapping<StationSpec>> &GetStationSpecList<StationSpec>(BaseStation *bst) { return bst->speclist; }
+template <> inline std::vector<SpecMapping<RoadStopSpec>> &GetStationSpecList<RoadStopSpec>(BaseStation *bst) { return bst->roadstop_speclist; }
 
 #endif /* BASE_STATION_BASE_H */

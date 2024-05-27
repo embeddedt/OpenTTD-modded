@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Aeroplana
 STR_CONFIG_SETTING_AUTOSAVE                                     :Servare automatice: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Eligere crebritatem automatice ludum servandi
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Monstrare horarium cum punctis et non cum diebus: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Monstrare tempora navigandi in horariis punctis ludi et non diebus
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Mutare perluciditatem signorum onerandi. Ctrl+Preme ut figatur (non mutabitur globulo perluciditatem mutandi presso)
 
 # Tracerestrict GUI
@@ -30,6 +33,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Mutare a
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Productum: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Sistens, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Navigans ad {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Sine iussis, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Navigans ad {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Navigans ad {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Iens ministrandum ad {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Inserere novum iussum ante iussum electum, aut ad finem indicis. Ctrl pressa, iussa stationum sunt 'plene quidquam onerare', iussa interlocorum 'continue', et iussa receptaculorum 'ministrare'. 'Iussa communicare' sive Ctrl facit ut iussa communicentur inter hoc ac electum vehiculum. Pressio in aliud vehiculum transcribit iussa ex illo vehiculo. Si adest iussum receptaculi, vehiculum non automatice ministratur
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :E:
@@ -64,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Quadrant
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Non licet quadrantem sortium huius societatis emere...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Non licet quadrantem sortium huius societatis vendere...
 STR_ERROR_PROTECTED                                             :{WHITE}Nondum licet sortes societatis mercari...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Modo signalia itineris

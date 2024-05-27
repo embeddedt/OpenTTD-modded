@@ -20,15 +20,19 @@ void ResetPriceBaseMultipliers();
 void SetPriceBaseMultiplier(Price price, int factor);
 
 extern const ScoreInfo _score_info[];
-extern int64 _score_part[MAX_COMPANIES][SCORE_END];
+extern int64_t _score_part[MAX_COMPANIES][SCORE_END];
 extern Economy _economy;
 /* Prices and also the fractional part. */
 extern Prices _price;
 
+extern CargoScaler _town_cargo_scaler;
+extern CargoScaler _industry_cargo_scaler;
+extern CargoScaler _industry_inverse_cargo_scaler;
+
 int UpdateCompanyRatingAndValue(Company *c, bool update);
 void StartupIndustryDailyChanges(bool init_counter);
 
-Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_periods, CargoID cargo_type);
+Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16_t transit_periods, CargoID cargo_type);
 uint MoveGoodsToStation(CargoID type, uint amount, SourceType source_type, SourceID source_id, const StationList *all_stations, Owner exclusivity = INVALID_OWNER);
 
 void PrepareUnload(Vehicle *front_v);
@@ -44,12 +48,16 @@ bool AddInflation(bool check_year = true);
  * Is the economy in recession?
  * @return \c True if economy is in recession, \c false otherwise.
  */
-static inline bool EconomyIsInRecession()
+inline bool EconomyIsInRecession()
 {
 	return _economy.fluct <= 0;
 }
 
 uint ScaleQuantity(uint amount, int scale_factor, bool allow_trunc = false);
 uint ScaleQuantity(uint amount, int cf, int fine, bool allow_trunc = false);
+
+int PercentageToScaleQuantityFactor(uint percentage);
+
+void UpdateCargoScalers();
 
 #endif /* ECONOMY_FUNC_H */

@@ -8,6 +8,7 @@
 /** @file articulated_vehicles.cpp Implementation of articulated vehicles. */
 
 #include "stdafx.h"
+#include "articulated_vehicles.h"
 #include "core/bitmath_func.hpp"
 #include "core/random_func.hpp"
 #include "train.h"
@@ -44,7 +45,7 @@ static EngineID GetNextArticulatedPart(uint index, EngineID front_type, Vehicle 
 		return INVALID_ENGINE;
 	}
 
-	uint16 callback = GetVehicleCallback(CBID_VEHICLE_ARTIC_ENGINE, index, 0, front_type, front);
+	uint16_t callback = GetVehicleCallback(CBID_VEHICLE_ARTIC_ENGINE, index, 0, front_type, front);
 	if (callback == CALLBACK_FAILED) return INVALID_ENGINE;
 
 	if (front_engine->GetGRF()->grf_version < 8) {
@@ -141,15 +142,23 @@ void GetArticulatedPartsEngineIDs(EngineID engine_type, bool purchase_window, st
  * Returns the default (non-refitted) capacity of a specific EngineID.
  * @param engine the EngineID of interest
  * @param cargo_type returns the default cargo type, if needed
+ * @param attempt_refit cargo ID to attempt to use
  * @return capacity
  */
-static inline uint16 GetVehicleDefaultCapacity(EngineID engine, CargoID *cargo_type)
+static inline uint16_t GetVehicleDefaultCapacity(EngineID engine, CargoID *cargo_type, CargoID attempt_refit = INVALID_CARGO)
 {
 	const Engine *e = Engine::Get(engine);
-	CargoID cargo = (e->CanCarryCargo() ? e->GetDefaultCargoType() : (CargoID)CT_INVALID);
+	CargoID cargo = INVALID_CARGO;
+	if (e->CanCarryCargo()) {
+		if (attempt_refit != INVALID_CARGO && HasBit(e->info.refit_mask, attempt_refit)) {
+			cargo = attempt_refit;
+		} else {
+			cargo = e->GetDefaultCargoType();
+		}
+	}
 	if (cargo_type != nullptr) *cargo_type = cargo;
-	if (cargo == CT_INVALID) return 0;
-	return e->GetDisplayDefaultCapacity();
+	if (cargo == INVALID_CARGO) return 0;
+	return e->GetDisplayDefaultCapacity(nullptr, cargo);
 }
 
 /**
@@ -175,16 +184,20 @@ static inline CargoTypes GetAvailableVehicleCargoTypes(EngineID engine, bool inc
 /**
  * Get the capacity of the parts of a given engine.
  * @param engine The engine to get the capacities from.
+ * @param attempt_refit Attempt to get capacity when refitting to this cargo.
  * @return The cargo capacities.
  */
-CargoArray GetCapacityOfArticulatedParts(EngineID engine)
+CargoArray GetCapacityOfArticulatedParts(EngineID engine, CargoID attempt_refit)
 {
 	CargoArray capacity{};
 	const Engine *e = Engine::Get(engine);
 
-	CargoID cargo_type;
-	uint16 cargo_capacity = GetVehicleDefaultCapacity(engine, &cargo_type);
-	if (cargo_type < NUM_CARGO) capacity[cargo_type] = cargo_capacity;
+	auto get_engine_cargo = [&capacity, attempt_refit](EngineID eng) {
+		CargoID cargo_type;
+		uint16_t cargo_capacity = GetVehicleDefaultCapacity(eng, &cargo_type, attempt_refit);
+		if (cargo_type < NUM_CARGO) capacity[cargo_type] += cargo_capacity;
+	};
+	get_engine_cargo(engine);
 
 	if (!e->IsArticulatedCallbackVehicleType()) return capacity;
 
@@ -194,8 +207,7 @@ CargoArray GetCapacityOfArticulatedParts(EngineID engine)
 		EngineID artic_engine = GetNextArticulatedPart(i, engine);
 		if (artic_engine == INVALID_ENGINE) break;
 
-		cargo_capacity = GetVehicleDefaultCapacity(artic_engine, &cargo_type);
-		if (cargo_type < NUM_CARGO) capacity[cargo_type] += cargo_capacity;
+		get_engine_cargo(artic_engine);
 	}
 
 	return capacity;
@@ -212,7 +224,7 @@ CargoTypes GetCargoTypesOfArticulatedParts(EngineID engine)
 	const Engine *e = Engine::Get(engine);
 
 	CargoID cargo_type;
-	uint16 cargo_capacity = GetVehicleDefaultCapacity(engine, &cargo_type);
+	uint16_t cargo_capacity = GetVehicleDefaultCapacity(engine, &cargo_type);
 	if (cargo_type < NUM_CARGO && cargo_capacity > 0) SetBit(cargoes, cargo_type);
 
 	if (!e->IsArticulatedCallbackVehicleType()) return cargoes;
@@ -319,37 +331,24 @@ CargoTypes GetUnionOfArticulatedRefitMasks(EngineID engine, bool include_initial
 }
 
 /**
- * Ands the refit_masks of all articulated parts.
- * @param engine the first part
- * @param include_initial_cargo_type if true the default cargo type of the vehicle is included; if false only the refit_mask
- * @return bit mask of CargoIDs which are a refit option for every articulated part (with default capacity > 0)
- */
-CargoTypes GetIntersectionOfArticulatedRefitMasks(EngineID engine, bool include_initial_cargo_type)
-{
-	CargoTypes union_mask, intersection_mask;
-	GetArticulatedRefitMasks(engine, include_initial_cargo_type, &union_mask, &intersection_mask);
-	return intersection_mask;
-}
-
-/**
  * Get cargo mask of all cargoes carried by an articulated vehicle.
  * Note: Vehicles not carrying anything are ignored
  * @param v the first vehicle in the chain
- * @param cargo_type returns the common CargoID if needed. (CT_INVALID if no part is carrying something or they are carrying different things)
+ * @param cargo_type returns the common CargoID if needed. (INVALID_CARGO if no part is carrying something or they are carrying different things)
  * @return cargo mask, may be 0 if the no vehicle parts have cargo capacity
  */
 CargoTypes GetCargoTypesOfArticulatedVehicle(const Vehicle *v, CargoID *cargo_type)
 {
 	CargoTypes cargoes = 0;
-	CargoID first_cargo = CT_INVALID;
+	CargoID first_cargo = INVALID_CARGO;
 
 	do {
-		if (v->cargo_type != CT_INVALID && v->GetEngine()->CanCarryCargo()) {
+		if (v->cargo_type != INVALID_CARGO && v->GetEngine()->CanCarryCargo()) {
 			SetBit(cargoes, v->cargo_type);
-			if (first_cargo == CT_INVALID) first_cargo = v->cargo_type;
+			if (first_cargo == INVALID_CARGO) first_cargo = v->cargo_type;
 			if (first_cargo != v->cargo_type) {
 				if (cargo_type != nullptr) {
-					*cargo_type = CT_INVALID;
+					*cargo_type = INVALID_CARGO;
 					cargo_type = nullptr;
 				}
 			}
@@ -366,7 +365,7 @@ CargoTypes GetCargoTypesOfArticulatedVehicle(const Vehicle *v, CargoID *cargo_ty
  * Returns the overall cargo of an articulated vehicle if all parts are refitted to the same cargo.
  * Note: Vehicles not carrying anything are ignored
  * @param v the first vehicle in the chain
- * @return the common CargoID. (CT_INVALID if no part is carrying something or they are carrying different things)
+ * @return the common CargoID. (INVALID_CARGO if no part is carrying something or they are carrying different things)
  */
 CargoID GetOverallCargoOfArticulatedVehicle(const Vehicle *v)
 {
@@ -393,7 +392,7 @@ void CheckConsistencyOfArticulatedVehicle(const Vehicle *v)
 
 	CargoTypes real_refit_union = 0;
 	CargoTypes real_refit_intersection = ALL_CARGOTYPES;
-	CargoArray real_default_capacity{};
+	CargoTypes real_default_cargoes = 0;
 
 	do {
 		CargoTypes refit_mask = GetAvailableVehicleCargoTypes(v->engine_type, true);
@@ -401,17 +400,15 @@ void CheckConsistencyOfArticulatedVehicle(const Vehicle *v)
 		if (refit_mask != 0) real_refit_intersection &= refit_mask;
 
 		assert(v->cargo_type < NUM_CARGO || (v->type == VEH_TRAIN && Train::From(v)->IsVirtual()));
-		if (v->cargo_type < NUM_CARGO) {
-			real_default_capacity[v->cargo_type] += v->cargo_cap;
-		}
+		if (v->cargo_cap > 0) SetBit(real_default_cargoes, v->cargo_type);
 
 		v = v->HasArticulatedPart() ? v->GetNextArticulatedPart() : nullptr;
 	} while (v != nullptr);
 
 	/* Check whether the vehicle carries more cargoes than expected */
 	bool carries_more = false;
-	for (CargoID cid = 0; cid < NUM_CARGO; cid++) {
-		if (real_default_capacity[cid] != 0 && purchase_default_capacity[cid] == 0) {
+	for (CargoID cid : SetCargoBitIterator(real_default_cargoes)) {
+		if (purchase_default_capacity[cid] == 0) {
 			carries_more = true;
 			break;
 		}
@@ -494,6 +491,7 @@ void AddArticulatedParts(Vehicle *first)
 				rv->spritenum = e_artic->u.road.image_index;
 				if (e_artic->CanCarryCargo()) {
 					rv->cargo_type = e_artic->GetDefaultCargoType();
+					assert(IsValidCargoID(rv->cargo_type));
 					rv->cargo_cap = e_artic->u.road.capacity;  // Callback 36 is called when the consist is finished
 				} else {
 					rv->cargo_type = front->cargo_type; // Needed for livery selection
@@ -554,6 +552,7 @@ void AddArticulatedParts(Vehicle *first)
 
 		if (flip_image) v->spritenum++;
 
+		if (v->type == VEH_TRAIN && TestVehicleBuildProbability(v, v->engine_type, BuildProbabilityType::Reversed)) SetBit(Train::From(v)->flags, VRF_REVERSE_DIRECTION);
 		v->UpdatePosition();
 	}
 }

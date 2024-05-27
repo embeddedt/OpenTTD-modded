@@ -15,7 +15,7 @@
 /** Blitter that does nothing. */
 class Blitter_Null : public Blitter {
 public:
-	Blitter_Null()
+	Blitter_Null(const int *screen_pitch = nullptr)
 	{
 		this->SetScreenDepth(0);
 		this->SetNoSpriteDataRequired(true);
@@ -23,15 +23,16 @@ public:
 
 	void Draw(Blitter::BlitterParams *bp, BlitterMode mode, ZoomLevel zoom) override {};
 	void DrawColourMappingRect(void *dst, int width, int height, PaletteID pal) override {};
-	Sprite *Encode(const SpriteLoader::Sprite *sprite, AllocatorProc *allocator) override;
+	Sprite *Encode(const SpriteLoader::SpriteCollection &sprite, AllocatorProc *allocator) override;
 	void *MoveTo(void *video, int x, int y) override { return nullptr; };
-	void SetPixel(void *video, int x, int y, uint8 colour) override {};
-	void SetPixel32(void *video, int x, int y, uint8 colour, uint32 colour32) override {};
-	void DrawRect(void *video, int width, int height, uint8 colour) override {};
-	void DrawRectAt(void *video, int x, int y, int width, int height, uint8 colour) override {};
-	void DrawLine(void *video, int x, int y, int x2, int y2, int screen_width, int screen_height, uint8 colour, int width, int dash) override {};
-	void SetRect(void *video, int x, int y, const uint8 *colours, uint lines, uint width, uint pitch) override {};
-	void SetRect32(void *video, int x, int y, const uint32 *colours, uint lines, uint width, uint pitch) override {};
+	void SetPixel(void *video, int x, int y, uint8_t colour) override {};
+	void SetPixel32(void *video, int x, int y, uint8_t colour, uint32_t colour32) override {};
+	void DrawRect(void *video, int width, int height, uint8_t colour) override {};
+	void DrawRectAt(void *video, int x, int y, int width, int height, uint8_t colour) override {};
+	void DrawLine(void *video, int x, int y, int x2, int y2, int screen_width, int screen_height, uint8_t colour, int width, int dash) override {};
+	void SetRect(void *video, int x, int y, const uint8_t *colours, uint lines, uint width, uint pitch) override {};
+	void SetRect32(void *video, int x, int y, const uint32_t *colours, uint lines, uint width, uint pitch) override {};
+	void SetRectNoD7(void *video, int x, int y, const uint8_t *colours, uint lines, uint width, uint pitch) override {};
 	void CopyFromBuffer(void *video, const void *src, int width, int height) override {};
 	void CopyToBuffer(const void *video, void *dst, int width, int height) override {};
 	void CopyImageToBuffer(const void *video, void *dst, int width, int height, int dst_pitch) override {};
@@ -41,7 +42,6 @@ public:
 	Blitter::PaletteAnimation UsePaletteAnimation() override { return Blitter::PALETTE_ANIMATION_NONE; };
 
 	const char *GetName() override { return "null"; }
-	int GetBytesPerPixel() override { return 0; }
 };
 
 /** Factory for the blitter that does nothing. */

@@ -5,7 +5,7 @@
 #include "table/strings.h"
 
 void
-TripHistory::AddValue( Money mvalue, Date dvalue, int8 occupancy, uint32 distance ) {
+TripHistory::AddValue( Money mvalue, EconTime::Date dvalue, int8_t occupancy, uint32_t distance ) {
 	this->occupancy_sum += distance * occupancy;
 	this->trip_length += distance;
 	if ( 0 < dvalue ) {
@@ -42,34 +42,34 @@ TripHistory::UpdateCalculated( ) {
 	uint i = 0;
 
 	//
-	while ( i < TRIP_LENGTH && t [ i ].date ) {
-		
+	while ( i < TRIP_LENGTH && t [ i ].date > 0 ) {
+
 		if ( i > 0 ) {
 			t[ i - 1 ].profit_change =
 				FindPercentChange( t [ i - 1 ].profit, t[ i ].profit );
-			t[ i - 1 ].TBT = t[ i - 1 ].date - t[ i ].date;
+			t[ i - 1 ].TBT = (t[ i - 1 ].date - t[ i ].date).base();
 
-			if ( i > 1 ) t[ i - 2 ].TBT_change = t[ i - 2 ].TBT - t[ i - 1 ].TBT;//bad line i don't like it
+			if ( i > 1 ) t[ i - 2 ].TBT_change = (t[ i - 2 ].TBT - t[ i - 1 ].TBT).base();//bad line i don't like it
 
 			//omit first -100% row
 			if ( i > 1 || t [ 0 ].profit_change != -100 )
 				this->total_change += t[ i - 1 ].profit_change;
-			this->avg_daylength += t[ i - 1 ].TBT;
+			this->avg_daylength += t[ i - 1 ].TBT.base();
 		}
 
 		// prepare summary
-		
+
 
 		this->total_profit += t[ i ].profit;
 		i++;
 	}
 
 	if ( i == 0 ) return 0 ;
-	
+
 	this->avg_daylength /= --i + 1;
 
 	if ( t[ 0 ].date != t[ i ].date ) {
-		this->profit_per_day = total_profit / ( t[ 0 ].date - t[ i ].date );
+		this->profit_per_day = total_profit / ( t[ 0 ].date - t[ i ].date ).base();
 	}
 
 	return i;

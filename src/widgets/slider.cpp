@@ -29,7 +29,7 @@ static const int SLIDER_WIDTH = 3;
 void DrawSliderWidget(Rect r, int min_value, int max_value, int value, const std::map<int, StringID> &labels)
 {
 	/* Allow space for labels. We assume they are in the small font. */
-	if (labels.size() > 0) r.bottom -= FONT_HEIGHT_SMALL + WidgetDimensions::scaled.hsep_normal;
+	if (!labels.empty()) r.bottom -= GetCharacterHeight(FS_SMALL) + WidgetDimensions::scaled.hsep_normal;
 
 	max_value -= min_value;
 
@@ -40,9 +40,9 @@ void DrawSliderWidget(Rect r, int min_value, int max_value, int value, const std
 	int wx1 = r.left  + sw / 2;
 	int wx2 = r.right - sw / 2;
 	if (_current_text_dir == TD_RTL) std::swap(wx1, wx2);
-	const uint shadow = _colour_gradient[COLOUR_GREY][3];
-	const uint fill = _colour_gradient[COLOUR_GREY][6];
-	const uint light = _colour_gradient[COLOUR_GREY][7];
+	const uint shadow = GetColourGradient(COLOUR_GREY, SHADE_DARK);
+	const uint fill = GetColourGradient(COLOUR_GREY, SHADE_LIGHTER);
+	const uint light = GetColourGradient(COLOUR_GREY, SHADE_LIGHTEST);
 	const std::vector<Point> wedge{ Point{wx1, r.bottom - ha}, Point{wx2, r.top + ha}, Point{wx2, r.bottom - ha} };
 	GfxFillPolygon(wedge, fill);
 	GfxDrawLine(wedge[0].x, wedge[0].y, wedge[2].x, wedge[2].y, light, t);

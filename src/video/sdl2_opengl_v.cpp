@@ -30,10 +30,6 @@
 #include <SDL.h>
 #include <mutex>
 #include <condition_variable>
-#if defined(__MINGW32__)
-#include "../3rdparty/mingw-std-threads/mingw.mutex.h"
-#include "../3rdparty/mingw-std-threads/mingw.condition_variable.h"
-#endif
 #include <GL/gl.h>
 #include "../3rdparty/opengl/glext.h"
 #include "opengl.h"
@@ -54,7 +50,7 @@ static OGLProc GetOGLProcAddressCallback(const char *proc)
 
 bool VideoDriver_SDL_OpenGL::CreateMainWindow(uint w, uint h, uint flags)
 {
-	return this->VideoDriver_SDL_Base::CreateMainWindow(w, h, SDL_WINDOW_OPENGL);
+	return this->VideoDriver_SDL_Base::CreateMainWindow(w, h, flags | SDL_WINDOW_OPENGL);
 }
 
 const char *VideoDriver_SDL_OpenGL::Start(const StringList &param)

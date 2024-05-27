@@ -12,11 +12,11 @@
 
 #include "core/enum_type.hpp"
 
-typedef uint16 VehicleOrderID;  ///< The index of an order within its current vehicle (not pool related)
-typedef uint32 OrderID;
-typedef uint16 OrderListID;
-typedef uint16 DestinationID;
-typedef uint32 TimetableTicks;
+typedef uint16_t VehicleOrderID;  ///< The index of an order within its current vehicle (not pool related)
+typedef uint32_t OrderID;
+typedef uint16_t OrderListID;
+typedef uint16_t DestinationID;
+typedef uint32_t TimetableTicks;
 
 /** Invalid vehicle order index (sentinel) */
 static const VehicleOrderID INVALID_VEH_ORDER_ID = 0xFFFF;
@@ -32,8 +32,11 @@ static const OrderID INVALID_ORDER = 0xFFFFFF;
  */
 static const uint IMPLICIT_ORDER_ONLY_CAP = 32;
 
+/** Invalid scheduled dispatch offset from current schedule */
+static const int32_t INVALID_SCHEDULED_DISPATCH_OFFSET = INT32_MIN;
+
 /** Order types. It needs to be 8bits, because we save and load it as such */
-enum OrderType : byte {
+enum OrderType : uint8_t {
 	OT_BEGIN         = 0,
 	OT_NOTHING       = 0,
 	OT_GOTO_STATION  = 1,
@@ -46,13 +49,18 @@ enum OrderType : byte {
 	OT_IMPLICIT      = 8,
 	OT_WAITING       = 9,
 	OT_LOADING_ADVANCE = 10,
-	OT_RELEASE_SLOT  = 11,
+	OT_SLOT          = 11,
 	OT_COUNTER       = 12,
 	OT_LABEL         = 13,
 	OT_END
 };
 
-enum OrderLabelSubType : byte {
+enum OrderSlotSubType : uint8_t {
+	OSST_RELEASE               = 0,
+	OSST_TRY_ACQUIRE           = 1,
+};
+
+enum OrderLabelSubType : uint8_t {
 	OLST_TEXT                  = 0,
 	OLST_DEPARTURES_VIA        = 1,
 	OLST_DEPARTURES_REMOVE_VIA = 2,
@@ -132,6 +140,7 @@ enum OrderDepotActionFlags {
 	ODATFB_HALT          = 1 << 0, ///< Service the vehicle and then halt it.
 	ODATFB_NEAREST_DEPOT = 1 << 1, ///< Send the vehicle to the nearest depot.
 	ODATFB_SELL          = 1 << 2, ///< Sell the vehicle on arrival at the depot.
+	ODATFB_UNBUNCH       = 1 << 3, ///< Service the vehicle and then unbunch it.
 };
 DECLARE_ENUM_AS_BIT_SET(OrderDepotActionFlags)
 
@@ -204,7 +213,7 @@ enum OrderConditionComparator {
 /**
  * Enumeration for the data to set in #CmdModifyOrder.
  */
-enum ModifyOrderFlags {
+enum ModifyOrderFlags : uint8_t {
 	MOF_NON_STOP,        ///< Passes an OrderNonStopFlags.
 	MOF_STOP_LOCATION,   ///< Passes an OrderStopLocation.
 	MOF_UNLOAD,          ///< Passes an OrderUnloadType.
@@ -230,7 +239,7 @@ enum ModifyOrderFlags {
 	MOF_DEPARTURES_SUBTYPE, ///< Change the label departures subtype
 	MOF_END
 };
-template <> struct EnumPropsT<ModifyOrderFlags> : MakeEnumPropsT<ModifyOrderFlags, byte, MOF_NON_STOP, MOF_END, MOF_END, 8> {};
+template <> struct EnumPropsT<ModifyOrderFlags> : MakeEnumPropsT<ModifyOrderFlags, uint8_t, MOF_NON_STOP, MOF_END, MOF_END, 8> {};
 
 /**
  * Depot action to switch to when doing a #MOF_DEPOT_ACTION.
@@ -239,6 +248,7 @@ enum OrderDepotAction {
 	DA_ALWAYS_GO, ///< Always go to the depot
 	DA_SERVICE,   ///< Service only if needed
 	DA_STOP,      ///< Go to the depot and stop there
+	DA_UNBUNCH,   ///< Go to the depot and unbunch
 	DA_SELL,      ///< Go to the depot and sell vehicle
 	DA_END
 };
@@ -260,18 +270,30 @@ enum OrderTimetableConditionMode {
 	OTCM_END
 };
 
-enum OrderScheduledDispatchSlotConditionMode {
-	OSDSCM_NEXT_FIRST        = 0, ///< Test if next departure is first slot
-	OSDSCM_NEXT_LAST         = 1, ///< Test if next departure is last slot
-	OSDSCM_LAST_FIRST        = 2, ///< Test if last departure was first slot
-	OSDSCM_LAST_LAST         = 3, ///< Test if last departure was last slot
-	OSDSCM_END
+enum OrderDispatchConditionBits {
+	ODCB_LAST_DISPATCHED     = 1,
+	ODCB_MODE_START          = 8,
+	ODCB_MODE_COUNT          = 3,
+};
+
+enum OrderDispatchConditionModes : uint8_t {
+	ODCM_FIRST_LAST          = 0,
+	OCDM_TAG                 = 1,
+};
+
+enum OrderDispatchFirstLastConditionBits {
+	ODFLCB_LAST_SLOT         = 0,
+};
+
+enum OrderDispatchTagConditionBits {
+	ODFLCB_TAG_START         = 4,
+	ODFLCB_TAG_COUNT         = 2,
 };
 
 /**
  * Enumeration for the data to set in #CmdChangeTimetable.
  */
-enum ModifyTimetableFlags {
+enum ModifyTimetableFlags : uint8_t {
 	MTF_WAIT_TIME,    ///< Set wait time.
 	MTF_TRAVEL_TIME,  ///< Set travel time.
 	MTF_TRAVEL_SPEED, ///< Set max travel speed.
@@ -281,11 +303,11 @@ enum ModifyTimetableFlags {
 	MTF_ASSIGN_SCHEDULE, ///< Assign a dispatch schedule.
 	MTF_END
 };
-template <> struct EnumPropsT<ModifyTimetableFlags> : MakeEnumPropsT<ModifyTimetableFlags, byte, MTF_WAIT_TIME, MTF_END, MTF_END, 3> {};
+template <> struct EnumPropsT<ModifyTimetableFlags> : MakeEnumPropsT<ModifyTimetableFlags, uint8_t, MTF_WAIT_TIME, MTF_END, MTF_END, 3> {};
 
 
 /** Clone actions. */
-enum CloneOptions {
+enum CloneOptions : uint8_t {
 	CO_SHARE   = 0,
 	CO_COPY    = 1,
 	CO_UNSHARE = 2

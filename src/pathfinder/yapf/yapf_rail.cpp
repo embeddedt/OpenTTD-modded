@@ -73,7 +73,7 @@ public:
 
 protected:
 	/** to access inherited pathfinder */
-	inline Tpf& Yapf()
+	inline Tpf &Yapf()
 	{
 		return *static_cast<Tpf *>(this);
 	}
@@ -106,7 +106,7 @@ private:
 			if (HasStationReservation(tile)) return false;
 			SetRailStationReservation(tile, true);
 			MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE);
-			tile = TILE_ADD(tile, diff);
+			tile = TileAdd(tile, diff);
 		} while (IsCompatibleTrainStationTile(tile, start) && tile != m_origin_tile);
 
 		TriggerStationRandomisation(nullptr, start, SRT_PATH_RESERVATION);
@@ -143,7 +143,7 @@ private:
 			TileIndexDiff diff = TileOffsByDiagDir(TrackdirToExitdir(ReverseTrackdir(td)));
 			while ((tile != m_res_fail_tile || td != m_res_fail_td) && IsCompatibleTrainStationTile(tile, start)) {
 				SetRailStationReservation(tile, false);
-				tile = TILE_ADD(tile, diff);
+				tile = TileAdd(tile, diff);
 			}
 		} else if (tile != m_res_fail_tile || td != m_res_fail_td) {
 			UnreserveRailTrackdir(tile, td);
@@ -186,11 +186,48 @@ public:
 		}
 
 		/* Don't bother if the target is reserved. */
-		PBSWaitingPositionRestrictedSignalInfo restricted_signal_info;
-		if (!IsWaitingPositionFree(Yapf().GetVehicle(), m_res_dest, m_res_dest_td, false, &restricted_signal_info)) return false;
+		PBSWaitingPositionRestrictedSignalState restricted_signal_state;
+		restricted_signal_state.defer_test_if_slot_conditional = true;
+		if (!IsWaitingPositionFree(Yapf().GetVehicle(), m_res_dest, m_res_dest_td, false, &restricted_signal_state)) return false;
+
+		/* The temporary slot state only needs to be pushed to the stack (i.e. activated) on first use */
+		static TraceRestrictSlotTemporaryState temporary_slot_state;
+		assert(temporary_slot_state.IsEmpty() && !temporary_slot_state.IsActive());
+
+		struct IntermediaryTraceRestrictSignalInfo {
+			const TraceRestrictProgram *prog;
+			TileIndex tile;
+			Trackdir trackdir;
+			bool front_side;
+		};
+		/* Nodes are iterated in reverse order (from the target), but tiles within the node are iterated in forward order (towards the target).
+		 * intermediary_restricted_signals is in reverse order, (the first signal to evaluate at the end).
+		 */
+		static std::vector<IntermediaryTraceRestrictSignalInfo> intermediary_restricted_signals;
+		intermediary_restricted_signals.clear();
 
 		for (Node *node = m_res_node; node->m_parent != nullptr; node = node->m_parent) {
-			node->IterateTiles(Yapf().GetVehicle(), Yapf(), *this, &CYapfReserveTrack<Types>::ReserveSingleTrack);
+			const size_t intermediary_restricted_signals_current_size = intermediary_restricted_signals.size();
+			node->template IterateTiles<CYapfReserveTrack>(Yapf().GetVehicle(), Yapf(), [&](TileIndex tile, Trackdir td) -> bool {
+				/* Cheapest tests first */
+				if (IsTileType(tile, MP_RAILWAY) && HasSignals(tile) && IsRestrictedSignal(tile) && HasSignalOnTrack(tile, TrackdirToTrack(td))) {
+					const bool front_side = HasSignalOnTrackdir(tile, td);
+
+					TraceRestrictProgramActionsUsedFlags au_flags = TRPAUF_SLOT_ACQUIRE;
+					if (front_side) {
+						/* Passing through a signal from the front side */
+						au_flags |= TRPAUF_WAIT_AT_PBS;
+					}
+
+					const TraceRestrictProgram *prog = GetExistingTraceRestrictProgram(tile, TrackdirToTrack(td));
+					if (prog != nullptr && prog->actions_used_flags & au_flags) {
+						/* Insert at intermediary_restricted_signals_current_size, such that if there are multiple signals for this node, they end up in reverse order */
+						intermediary_restricted_signals.insert(intermediary_restricted_signals.begin() + intermediary_restricted_signals_current_size, { prog, tile, td, front_side });
+					}
+				}
+
+				return this->ReserveSingleTrack(tile, td);
+			});
 			if (m_res_fail_tile != INVALID_TILE) {
 				/* Reservation failed, undo. */
 				Node *fail_node = m_res_node;
@@ -201,21 +238,54 @@ public:
 					fail_node->IterateTiles(Yapf().GetVehicle(), Yapf(), *this, &CYapfReserveTrack<Types>::UnreserveSingleTrack);
 				} while (fail_node != node && (fail_node = fail_node->m_parent) != nullptr);
 
+				if (temporary_slot_state.IsActive()) temporary_slot_state.PopFromChangeStackRevertTemporaryChanges(Yapf().GetVehicle()->index);
 				return false;
 			}
 		}
 
-		if (restricted_signal_info.tile != INVALID_TILE) {
-			const TraceRestrictProgram *prog = GetExistingTraceRestrictProgram(restricted_signal_info.tile, TrackdirToTrack(restricted_signal_info.trackdir));
-			if (prog && prog->actions_used_flags & TRPAUF_PBS_RES_END_SLOT) {
-				extern TileIndex VehiclePosTraceRestrictPreviousSignalCallback(const Train *v, const void *, TraceRestrictPBSEntrySignalAuxField mode);
+		auto undo_reservation = [&]() {
+			for (Node *node = m_res_node; node->m_parent != nullptr; node = node->m_parent) {
+				node->IterateTiles(Yapf().GetVehicle(), Yapf(), *this, &CYapfReserveTrack<Types>::UnreserveSingleTrack);
+			}
+			if (temporary_slot_state.IsActive()) temporary_slot_state.PopFromChangeStackRevertTemporaryChanges(Yapf().GetVehicle()->index);
+		};
 
-				TraceRestrictProgramResult out;
-				TraceRestrictProgramInput input(restricted_signal_info.tile, restricted_signal_info.trackdir, &VehiclePosTraceRestrictPreviousSignalCallback, nullptr);
-				input.permitted_slot_operations = TRPISP_PBS_RES_END_ACQUIRE | TRPISP_PBS_RES_END_RELEASE;
-				prog->Execute(Yapf().GetVehicle(), input, out);
+		/* Iterate in reverse order */
+		for (auto iter = intermediary_restricted_signals.rbegin(); iter != intermediary_restricted_signals.rend(); ++iter) {
+			extern TileIndex VehiclePosTraceRestrictPreviousSignalCallback(const Train *v, const void *, TraceRestrictPBSEntrySignalAuxField mode);
+
+			TraceRestrictProgramInput input(iter->tile, iter->trackdir, &VehiclePosTraceRestrictPreviousSignalCallback, nullptr);
+			if (iter->prog->actions_used_flags & TRPAUF_SLOT_ACQUIRE) {
+				input.permitted_slot_operations = TRPISP_ACQUIRE_TEMP_STATE;
+
+				if (!temporary_slot_state.IsActive()) {
+					/* The temporary slot state needs to be be pushed because permission to use it is granted by TRPISP_ACQUIRE_TEMP_STATE */
+					temporary_slot_state.PushToChangeStack();
+				}
+			}
+
+			TraceRestrictProgramResult out;
+			iter->prog->Execute(Yapf().GetVehicle(), input, out);
+			if (iter->front_side && out.flags & TRPRF_WAIT_AT_PBS) {
+				/* Wait at PBS is set, take this as waiting at the start signal */
+				undo_reservation();
+				return false;
 			}
 		}
+
+		if (restricted_signal_state.deferred_test) {
+			/* The IsWaitingPositionFree restricted signal test was deferred due to possible slot changes during reservation, test it now */
+			if (!IsWaitingPositionFreeTraceRestrictExecute(restricted_signal_state.prog, Yapf().GetVehicle(), restricted_signal_state.tile, restricted_signal_state.trackdir)) {
+				/* Target is reserved, undo reservation */
+				undo_reservation();
+				return false;
+			}
+		}
+
+		/* This must be done before calling TraceRestrictExecuteResEndSlot */
+		TraceRestrictSlotTemporaryState::ClearChangeStackApplyAllTemporaryChanges(Yapf().GetVehicle());
+
+		restricted_signal_state.TraceRestrictExecuteResEndSlot(Yapf().GetVehicle());
 
 		if (target != nullptr) target->okay = true;
 
@@ -273,7 +343,7 @@ public:
 
 protected:
 	/** to access inherited path finder */
-	inline Tpf& Yapf()
+	inline Tpf &Yapf()
 	{
 		return *static_cast<Tpf *>(this);
 	}
@@ -384,7 +454,7 @@ public:
 
 protected:
 	/** to access inherited path finder */
-	inline Tpf& Yapf()
+	inline Tpf &Yapf()
 	{
 		return *static_cast<Tpf *>(this);
 	}
@@ -471,7 +541,7 @@ public:
 
 protected:
 	/** to access inherited path finder */
-	inline Tpf& Yapf()
+	inline Tpf &Yapf()
 	{
 		return *static_cast<Tpf *>(this);
 	}
@@ -540,7 +610,7 @@ public:
 		return result1;
 	}
 
-	inline Trackdir ChooseRailTrack(const Train *v, TileIndex tile, DiagDirection enterdir, TrackBits tracks, bool &path_found, bool reserve_track, PBSTileInfo *target, TileIndex *dest)
+	inline Trackdir ChooseRailTrack(const Train *v, TileIndex, DiagDirection, TrackBits, bool &path_found, bool reserve_track, PBSTileInfo *target, TileIndex *dest)
 	{
 		if (target != nullptr) target->tile = INVALID_TILE;
 		if (dest != nullptr) *dest = INVALID_TILE;
@@ -569,6 +639,11 @@ public:
 
 				this->FindSafePositionOnNode(pPrev);
 			}
+
+			/* If the best PF node has no parent, then there is no (valid) best next trackdir to return.
+			 * This occurs when the PF is called while the train is already at its destination. */
+			if (pPrev == nullptr) return INVALID_TRACKDIR;
+
 			/* return trackdir from the best origin node (one of start nodes) */
 			Node &best_next_node = *pPrev;
 			next_trackdir = best_next_node.GetTrackdir();

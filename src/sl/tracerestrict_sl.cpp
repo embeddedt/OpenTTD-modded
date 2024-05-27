@@ -42,32 +42,40 @@ static void Save_TRRM()
 	}
 }
 
-/** program length save header struct */
-struct TraceRestrictProgramStub {
-	uint32 length;
-};
-
-static const SaveLoad _trace_restrict_program_stub_desc[] = {
-	SLE_VAR(TraceRestrictProgramStub, length, SLE_UINT32),
-};
-
 /**
  * Load program pool
  */
 static void Load_TRRP()
 {
 	int index;
-	TraceRestrictProgramStub stub;
 	while ((index = SlIterateArray()) != -1) {
 		TraceRestrictProgram *prog = new (index) TraceRestrictProgram();
-		SlObject(&stub, _trace_restrict_program_stub_desc);
-		prog->items.resize(stub.length);
-		if (stub.length > 0) SlArray(prog->items.data(), stub.length, SLE_UINT32);
+		uint32_t prog_length = SlReadUint32();
+		prog->items.resize(prog_length);
+		if (prog_length > 0) SlArray(prog->items.data(), prog_length, SLE_UINT32);
 		if (SlXvIsFeaturePresent(XSLFI_JOKERPP)) {
 			for (size_t i = 0; i < prog->items.size(); i++) {
 				TraceRestrictItem &item = prog->items[i]; // note this is a reference,
 				if (GetTraceRestrictType(item) == 19 || GetTraceRestrictType(item) == 20) {
 					SetTraceRestrictType(item, (TraceRestrictItemType)(GetTraceRestrictType(item) + 2));
+				}
+				if (IsTraceRestrictDoubleItem(item)) i++;
+			}
+		}
+		if (SlXvIsFeatureMissing(XSLFI_TRACE_RESTRICT, 17)) {
+			/* TRIT_SLOT subtype moved from cond op to combined aux and cond op field in version 17.
+			 * Do this for all previous versions to avoid cases where it is unexpectedly present despite the version,
+			 * e.g. in JokerPP and non-SLXI tracerestrict saves.
+			 */
+			for (size_t i = 0; i < prog->items.size(); i++) {
+				TraceRestrictItem &item = prog->items[i]; // note this is a reference
+				if (GetTraceRestrictType(item) == TRIT_SLOT) {
+					TraceRestrictSlotSubtypeField subtype = static_cast<TraceRestrictSlotSubtypeField>(GetTraceRestrictCondOp(item));
+					if (subtype == 7) {
+						/* Was TRSCOF_ACQUIRE_TRY_ON_RESERVE */
+						subtype = TRSCOF_ACQUIRE_TRY;
+					}
+					SetTraceRestrictCombinedAuxCondOpField(item, subtype);
 				}
 				if (IsTraceRestrictDoubleItem(item)) i++;
 			}
@@ -90,30 +98,21 @@ static void Load_TRRP()
 }
 
 /**
- * Save a program, used by SlAutolength
- */
-static void RealSave_TRRP(TraceRestrictProgram *prog)
-{
-	TraceRestrictProgramStub stub;
-	stub.length = (uint32)prog->items.size();
-	SlObject(&stub, _trace_restrict_program_stub_desc);
-	SlArray(prog->items.data(), stub.length, SLE_UINT32);
-}
-
-/**
  * Save program pool
  */
 static void Save_TRRP()
 {
 	for (TraceRestrictProgram *prog : TraceRestrictProgram::Iterate()) {
 		SlSetArrayIndex(prog->index);
-		SlAutolength((AutolengthProc*) RealSave_TRRP, prog);
+		SlSetLength(4 + (prog->items.size() * 4));
+		SlWriteUint32((uint32_t)prog->items.size());
+		SlArray(prog->items.data(), prog->items.size(), SLE_UINT32);
 	}
 }
 
 /** program length save header struct */
 struct TraceRestrictSlotStub {
-	uint32 length;
+	uint32_t length;
 };
 
 static const SaveLoad _trace_restrict_slot_stub_desc[] = {
@@ -151,7 +150,7 @@ static void RealSave_TRRS(TraceRestrictSlot *slot)
 {
 	SlObject(slot, _trace_restrict_slot_desc);
 	TraceRestrictSlotStub stub;
-	stub.length = (uint32)slot->occupants.size();
+	stub.length = (uint32_t)slot->occupants.size();
 	SlObject(&stub, _trace_restrict_slot_stub_desc);
 	if (stub.length) SlArray(slot->occupants.data(), stub.length, SLE_UINT32);
 }
@@ -186,21 +185,13 @@ static void Load_TRRC()
 }
 
 /**
- * Save a counter, used by SlAutolength
- */
-static void RealSave_TRRC(TraceRestrictCounter *ctr)
-{
-	SlObject(ctr, _trace_restrict_counter_desc);
-}
-
-/**
  * Save counter pool
  */
 static void Save_TRRC()
 {
 	for (TraceRestrictCounter *ctr : TraceRestrictCounter::Iterate()) {
 		SlSetArrayIndex(ctr->index);
-		SlAutolength((AutolengthProc*) RealSave_TRRC, ctr);
+		SlObject(ctr, _trace_restrict_counter_desc);
 	}
 }
 

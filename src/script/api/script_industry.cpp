@@ -52,7 +52,7 @@
 {
 	Industry *i = Industry::GetIfValid(industry_id);
 	if (i == nullptr) return ScriptDate::DATE_INVALID;
-	return (ScriptDate::Date)i->construction_date;
+	return (ScriptDate::Date)i->construction_date.base();
 }
 
 /* static */ bool ScriptIndustry::SetText(IndustryID industry_id, Text *text)
@@ -221,7 +221,7 @@
 {
 	Industry *i = Industry::GetIfValid(industry_id);
 	if (i == nullptr) return 0;
-	return i->last_prod_year;
+	return i->last_prod_year.base();
 }
 
 /* static */ ScriptDate::Date ScriptIndustry::GetCargoLastAcceptedDate(IndustryID industry_id, CargoID cargo_type)
@@ -229,12 +229,12 @@
 	Industry *i = Industry::GetIfValid(industry_id);
 	if (i == nullptr) return ScriptDate::DATE_INVALID;
 
-	if (cargo_type == CT_INVALID) {
-		return (ScriptDate::Date)std::accumulate(std::begin(i->last_cargo_accepted_at), std::end(i->last_cargo_accepted_at), 0, [](Date a, Date b) { return std::max(a, b); });
+	if (cargo_type == INVALID_CARGO) {
+		return (ScriptDate::Date)std::accumulate(std::begin(i->last_cargo_accepted_at), std::end(i->last_cargo_accepted_at), EconTime::Date(0), [](EconTime::Date a, EconTime::Date b) { return std::max(a, b); }).base();
 	} else {
 		int index = i->GetCargoAcceptedIndex(cargo_type);
 		if (index < 0) return ScriptDate::DATE_INVALID;
-		return (ScriptDate::Date)i->last_cargo_accepted_at[index];
+		return (ScriptDate::Date)i->last_cargo_accepted_at[index].base();
 	}
 }
 
@@ -260,7 +260,7 @@
 	auto company_id = ::Industry::Get(industry_id)->exclusive_supplier;
 	if (!::Company::IsValidID(company_id)) return ScriptCompany::COMPANY_INVALID;
 
-	return (ScriptCompany::CompanyID)((byte)company_id);
+	return (ScriptCompany::CompanyID)((uint8_t)company_id);
 }
 
 /* static */ bool ScriptIndustry::SetExclusiveSupplier(IndustryID industry_id, ScriptCompany::CompanyID company_id)
@@ -270,7 +270,7 @@
 
 	auto company = ScriptCompany::ResolveCompanyID(company_id);
 	::Owner owner = (company == ScriptCompany::COMPANY_INVALID ? ::INVALID_OWNER : (::Owner)company);
-	return ScriptObject::DoCommand(0, industry_id, (1 << 8) | ((uint8)owner), CMD_INDUSTRY_SET_EXCLUSIVITY);
+	return ScriptObject::DoCommand(0, industry_id, (1 << 8) | ((uint8_t)owner), CMD_INDUSTRY_SET_EXCLUSIVITY);
 }
 
 /* static */ ScriptCompany::CompanyID ScriptIndustry::GetExclusiveConsumer(IndustryID industry_id)
@@ -280,7 +280,7 @@
 	auto company_id = ::Industry::Get(industry_id)->exclusive_consumer;
 	if (!::Company::IsValidID(company_id)) return ScriptCompany::COMPANY_INVALID;
 
-	return (ScriptCompany::CompanyID)((byte)company_id);
+	return (ScriptCompany::CompanyID)((uint8_t)company_id);
 }
 
 /* static */ bool ScriptIndustry::SetExclusiveConsumer(IndustryID industry_id, ScriptCompany::CompanyID company_id)
@@ -290,7 +290,7 @@
 
 	auto company = ScriptCompany::ResolveCompanyID(company_id);
 	::Owner owner = (company == ScriptCompany::COMPANY_INVALID ? ::INVALID_OWNER : (::Owner)company);
-	return ScriptObject::DoCommand(0, industry_id, ((uint8)owner), CMD_INDUSTRY_SET_EXCLUSIVITY);
+	return ScriptObject::DoCommand(0, industry_id, ((uint8_t)owner), CMD_INDUSTRY_SET_EXCLUSIVITY);
 }
 
 /* static */ SQInteger ScriptIndustry::GetProductionLevel(IndustryID industry_id)
@@ -308,5 +308,5 @@
 	EnforcePrecondition(false, IsValidIndustry(industry_id));
 	EnforcePrecondition(false, prod_level >= PRODLEVEL_MINIMUM && prod_level <= PRODLEVEL_MAXIMUM);
 
-	return ScriptObject::DoCommand(0, industry_id, ((uint8)prod_level) | (show_news ? (1 << 8) : 0), CMD_INDUSTRY_SET_PRODUCTION, custom_news != nullptr ? custom_news->GetEncodedText() : std::string{});
+	return ScriptObject::DoCommand(0, industry_id, ((uint8_t)prod_level) | (show_news ? (1 << 8) : 0), CMD_INDUSTRY_SET_PRODUCTION, custom_news != nullptr ? custom_news->GetEncodedText() : std::string{});
 }

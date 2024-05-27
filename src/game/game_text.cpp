@@ -48,7 +48,7 @@ void CDECL strgen_error(const char *s, ...)
 	_errors++;
 }
 
-void NORETURN CDECL strgen_fatal(const char *s, ...)
+[[noreturn]] void CDECL strgen_fatal(const char *s, ...)
 {
 	char buf[1024];
 	va_list va;
@@ -143,22 +143,22 @@ struct TranslationWriter : LanguageWriter {
 	{
 	}
 
-	void WriteHeader(const LanguagePackHeader *header)
+	void WriteHeader(const LanguagePackHeader *) override
 	{
 		/* We don't use the header. */
 	}
 
-	void Finalise()
+	void Finalise() override
 	{
 		/* Nothing to do. */
 	}
 
-	void WriteLength(uint length)
+	void WriteLength(uint) override
 	{
 		/* We don't write the length. */
 	}
 
-	void Write(const byte *buffer, size_t length)
+	void Write(const uint8_t *buffer, size_t length) override
 	{
 		this->strings.emplace_back((const char *)buffer, length);
 	}
@@ -176,12 +176,12 @@ struct StringNameWriter : HeaderWriter {
 	{
 	}
 
-	void WriteStringID(const char *name, int stringid)
+	void WriteStringID(const char *name, int stringid) override
 	{
 		if (stringid == (int)this->strings.size()) this->strings.emplace_back(name);
 	}
 
-	void Finalise(const StringData &data)
+	void Finalise(const StringData &) override
 	{
 		/* Nothing to do. */
 	}
@@ -207,7 +207,7 @@ public:
 		this->FileScanner::Scan(".txt", directory, false);
 	}
 
-	bool AddFile(const std::string &filename, size_t basepath_length, const std::string &tar_filename) override
+	bool AddFile(const std::string &filename, size_t, const std::string &) override
 	{
 		if (exclude == filename) return true;
 
@@ -290,9 +290,15 @@ static void ExtractStringParams(const StringData &data, StringParamsList &params
 			StringParams &param = params.emplace_back();
 			ParsedCommandStruct pcs = ExtractCommandString(ls->english.c_str(), false);
 
-			for (const CmdStruct *cs : pcs.consuming_commands) {
-				if (cs == nullptr) break;
-				param.emplace_back(GetParamType(cs), cs->consumes);
+			for (auto it = pcs.consuming_commands.begin(); it != pcs.consuming_commands.end(); it++) {
+				if (*it == nullptr) {
+					/* Skip empty param unless a non empty param exist after it. */
+					if (std::all_of(it, pcs.consuming_commands.end(), [](auto cs) { return cs == nullptr; })) break;
+					param.emplace_back(StringParam::UNUSED, 1, nullptr);
+					continue;
+				}
+				const CmdStruct *cs = *it;
+				param.emplace_back(GetParamType(cs), cs->consumes, cs->cmd);
 			}
 		}
 	}
@@ -403,7 +409,7 @@ void ReconsiderGameScriptLanguage()
 	if (_current_data == nullptr) return;
 
 	char temp[MAX_PATH];
-	strecpy(temp, _current_language->file, lastof(temp));
+	strecpy(temp, _current_language->file.c_str(), lastof(temp));
 
 	/* Remove the extension */
 	char *l = strrchr(temp, '.');

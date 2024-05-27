@@ -184,7 +184,7 @@ static CommandCost TerraformTileHeight(TerraformerState *ts, TileIndex tile, int
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdTerraformLand(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdTerraformLand(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	CommandCost total_cost(EXPENSES_CONSTRUCTION);
 	int direction = (p2 != 0 ? 1 : -1);
@@ -227,7 +227,15 @@ CommandCost CmdTerraformLand(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 			assert(t < MapSize());
 			/* MP_VOID tiles can be terraformed but as tunnels and bridges
 			 * cannot go under / over these tiles they don't need checking. */
-			if (IsTileType(t, MP_VOID)) continue;
+			if (IsTileType(t, MP_VOID)) {
+				if (_settings_game.construction.map_edge_mode != 0) {
+					CommandCost err(STR_ERROR_TOO_CLOSE_TO_EDGE_OF_MAP);
+					err.SetTile(t);
+					return err;
+				} else {
+					continue;
+				}
+			}
 
 			/* Find new heights of tile corners */
 			int z_N = TerraformGetHeightOfTile(&ts, t + TileDiffXY(0, 0));
@@ -322,7 +330,7 @@ CommandCost CmdTerraformLand(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 			SetTileHeight(t, (uint)height);
 		}
 
-		if (c != nullptr) c->terraform_limit -= (uint32)ts.tile_to_new_height.size() << 16;
+		if (c != nullptr) c->terraform_limit -= (uint32_t)ts.tile_to_new_height.size() << 16;
 	}
 	return total_cost;
 }
@@ -339,7 +347,7 @@ CommandCost CmdTerraformLand(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdLevelLand(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdLevelLand(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (p1 >= MapSize()) return CMD_ERROR;
 

@@ -51,7 +51,7 @@
 class TemplateReplaceWindow;
 
 // some space in front of the virtual train in the matrix
-uint16 TRAIN_FRONT_SPACE = 16;
+uint16_t TRAIN_FRONT_SPACE = 16;
 
 enum TemplateReplaceCreateWindowWidgets {
 	TCW_CAPTION,
@@ -67,7 +67,7 @@ enum TemplateReplaceCreateWindowWidgets {
 	TCW_CLONE,
 };
 
-static const NWidgetPart _widgets[] = {
+static constexpr NWidgetPart _widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
 		NWidget(WWT_CAPTION, COLOUR_GREY, TCW_CAPTION), SetDataTip(STR_TMPL_CREATEGUI_TITLE, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -95,14 +95,14 @@ static const NWidgetPart _widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _template_create_window_desc(
+static WindowDesc _template_create_window_desc(__FILE__, __LINE__,
 	WDP_AUTO,                       // window position
 	"template create window",       // const char* ini_key
 	456, 100,                       // window size
 	WC_CREATE_TEMPLATE,             // window class
 	WC_TEMPLATEGUI_MAIN,            // parent window class
 	WDF_CONSTRUCTION,               // window flags
-	_widgets, lengthof(_widgets)    // widgets + num widgets
+	std::begin(_widgets), std::end(_widgets)
 );
 
 void ShowTemplateTrainBuildVehicleWindow(Train **virtual_train);
@@ -135,13 +135,13 @@ private:
 	VehicleID sel;
 	VehicleID vehicle_over;
 	bool sell_hovered;                ///< A vehicle is being dragged/hovered over the sell button.
-	uint32 template_index;
+	uint32_t template_index;
 	btree::btree_set<VehicleID> pending_deletions; ///< Vehicle IDs where deletion is in progress
 
 public:
 	TemplateCreateWindow(WindowDesc* _wdesc, TemplateVehicle *to_edit, bool *window_open) : Window(_wdesc)
 	{
-		this->CreateNestedTree(_wdesc != nullptr);
+		this->CreateNestedTree();
 		this->hscroll = this->GetScrollbar(TCW_SCROLLBAR_H_NEW_TMPL);
 		this->vscroll = this->GetScrollbar(TCW_SCROLLBAR_V_NEW_TMPL);
 		this->FinishInitNested(VEH_TRAIN);
@@ -166,7 +166,7 @@ public:
 		UpdateButtonState();
 	}
 
-	void Close() override
+	void Close(int data = 0) override
 	{
 		if (virtual_train != nullptr) {
 			DoCommandP(0, virtual_train->index, 0, CMD_DELETE_VIRTUAL_TRAIN);
@@ -217,7 +217,7 @@ public:
 		UpdateButtonState();
 	}
 
-	virtual void OnClick(Point pt, int widget, int click_count) override
+	virtual void OnClick(Point pt, WidgetID widget, int click_count) override
 	{
 		switch(widget) {
 			case TCW_NEW_TMPL_PANEL: {
@@ -286,7 +286,7 @@ public:
 		this->SetDirty();
 	}
 
-	virtual void DrawWidget(const Rect &r, int widget) const override
+	virtual void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		switch(widget) {
 			case TCW_NEW_TMPL_PANEL: {
@@ -323,10 +323,10 @@ public:
 					}
 					if (!buildable) {
 						DrawString(left, right, y, STR_TMPL_WARNING_VEH_UNAVAILABLE);
-						y += FONT_HEIGHT_NORMAL;
+						y += GetCharacterHeight(FS_NORMAL);
 					} else if (types == RAILTYPES_NONE) {
 						DrawString(left, right, y, STR_TMPL_WARNING_VEH_NO_COMPATIBLE_RAIL_TYPE);
-						y += FONT_HEIGHT_NORMAL;
+						y += GetCharacterHeight(FS_NORMAL);
 					}
 
 					SetDParam(0, STR_TMPL_TEMPLATE_OVR_VALUE_LTBLUE);
@@ -334,7 +334,7 @@ public:
 					SetDParam(2, STR_TMPL_TEMPLATE_OVR_RUNNING_COST);
 					SetDParam(3, this->virtual_train->GetDisplayRunningCost());
 					DrawString(left, right, y, STR_TMPL_TEMPLATE_OVR_MULTIPLE);
-					y += FONT_HEIGHT_NORMAL;
+					y += GetCharacterHeight(FS_NORMAL);
 
 					/* Draw vehicle performance info */
 					const bool original_acceleration = (_settings_game.vehicle.train_acceleration_model == AM_ORIGINAL ||
@@ -345,12 +345,12 @@ public:
 					SetDParam(0, gcache->cached_weight);
 					SetDParam(3, gcache->cached_max_te);
 					DrawString(left, right, y, original_acceleration ? STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED : STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
-					uint32 full_cargo_weight = 0;
+					uint32_t full_cargo_weight = 0;
 					for (Train *train = this->virtual_train; train != nullptr; train = train->Next()) {
 						full_cargo_weight += train->GetCargoWeight(train->cargo_cap);
 					}
 					if (full_cargo_weight > 0 || _settings_client.gui.show_train_weight_ratios_in_details) {
-						y += FONT_HEIGHT_NORMAL;
+						y += GetCharacterHeight(FS_NORMAL);
 						uint full_weight = gcache->cached_weight + full_cargo_weight;
 						SetDParam(0, full_weight);
 						if (_settings_client.gui.show_train_weight_ratios_in_details) {
@@ -365,7 +365,7 @@ public:
 						DrawString(left, right, y, STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS);
 					}
 					if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) {
-						y += FONT_HEIGHT_NORMAL;
+						y += GetCharacterHeight(FS_NORMAL);
 						SetDParam(0, GetTrainEstimatedMaxAchievableSpeed(this->virtual_train, gcache->cached_weight + full_cargo_weight, this->virtual_train->GetDisplayMaxSpeed()));
 						DrawString(left, right, y, STR_VEHICLE_INFO_MAX_SPEED_LOADED);
 					}
@@ -374,13 +374,13 @@ public:
 					for (const Train *tmp = this->virtual_train; tmp != nullptr; tmp = tmp->Next()) {
 						cargo_caps[tmp->cargo_type] += tmp->cargo_cap;
 					}
-					y += FONT_HEIGHT_NORMAL * 2;
+					y += GetCharacterHeight(FS_NORMAL) * 2;
 					for (CargoID i = 0; i < NUM_CARGO; ++i) {
 						if (cargo_caps[i] > 0) {
 							SetDParam(0, i);
 							SetDParam(1, cargo_caps[i]);
 							DrawString(left, right, y, STR_TMPL_CARGO_SUMMARY, TC_LIGHT_BLUE, SA_LEFT);
-							y += FONT_HEIGHT_NORMAL;
+							y += GetCharacterHeight(FS_NORMAL);
 						}
 					}
 				}
@@ -391,7 +391,7 @@ public:
 		}
 	}
 
-	virtual bool OnRightClick(Point pt, int widget) override
+	virtual bool OnRightClick(Point pt, WidgetID widget) override
 	{
 		if (widget != TCW_NEW_TMPL_PANEL) return false;
 
@@ -423,9 +423,7 @@ public:
 		}
 
 		/* Build tooltipstring */
-		static char details[1024];
-		details[0] = '\0';
-		char *pos = details;
+		std::string details;
 
 		for (CargoID cargo_type = 0; cargo_type < NUM_CARGO; cargo_type++) {
 			if (capacity[cargo_type] == 0) continue;
@@ -434,19 +432,18 @@ public:
 			SetDParam(1, loaded[cargo_type]);   // {CARGO} #2
 			SetDParam(2, cargo_type);           // {SHORTCARGO} #1
 			SetDParam(3, capacity[cargo_type]); // {SHORTCARGO} #2
-			pos = GetString(pos, STR_DEPOT_VEHICLE_TOOLTIP_CARGO, lastof(details));
+			details = GetString(STR_DEPOT_VEHICLE_TOOLTIP_CARGO);
 		}
 
 		/* Show tooltip window */
-		uint64 args[2];
-		args[0] = (whole_chain ? num : v->engine_type);
-		args[1] = (uint64)(size_t)details;
-		GuiShowTooltips(this, whole_chain ? STR_DEPOT_VEHICLE_TOOLTIP_CHAIN : STR_DEPOT_VEHICLE_TOOLTIP, 2, args, TCC_RIGHT_CLICK);
+		SetDParam(0, whole_chain ? num : v->engine_type);
+		SetDParamStr(1, std::move(details));
+		GuiShowTooltips(this, whole_chain ? STR_DEPOT_VEHICLE_TOOLTIP_CHAIN : STR_DEPOT_VEHICLE_TOOLTIP, TCC_RIGHT_CLICK, 2);
 
 		return true;
 	}
 
-	virtual void OnDragDrop(Point pt, int widget) override
+	virtual void OnDragDrop(Point pt, WidgetID widget) override
 	{
 		switch (widget) {
 			case TCW_NEW_TMPL_PANEL: {
@@ -507,7 +504,7 @@ public:
 		this->SetDirty();
 	}
 
-	virtual void OnMouseDrag(Point pt, int widget) override
+	virtual void OnMouseDrag(Point pt, WidgetID widget) override
 	{
 		if (this->sel == INVALID_VEHICLE) return;
 
@@ -556,25 +553,25 @@ public:
 	{
 		uint min_width = 32;
 		uint width = 0;
-		uint height = ScaleGUITrad(8) + (3 * FONT_HEIGHT_NORMAL);
+		uint height = ScaleGUITrad(8) + (3 * GetCharacterHeight(FS_NORMAL));
 		CargoArray cargo_caps{};
 
 		if (virtual_train != nullptr) {
 			bool buildable = true;
-			uint32 full_cargo_weight = 0;
+			uint32_t full_cargo_weight = 0;
 			for (Train *train = virtual_train; train != nullptr; train = train->GetNextUnit()) {
 				width += train->GetDisplayImageWidth();
 				cargo_caps[train->cargo_type] += train->cargo_cap;
 				if (!IsEngineBuildable(train->engine_type, VEH_TRAIN, train->owner)) buildable = false;
 				full_cargo_weight += train->GetCargoWeight(train->cargo_cap);
 			}
-			if (!buildable) height += FONT_HEIGHT_NORMAL;
-			if (full_cargo_weight > 0 || _settings_client.gui.show_train_weight_ratios_in_details) height += FONT_HEIGHT_NORMAL;
-			if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) height += FONT_HEIGHT_NORMAL;
+			if (!buildable) height += GetCharacterHeight(FS_NORMAL);
+			if (full_cargo_weight > 0 || _settings_client.gui.show_train_weight_ratios_in_details) height += GetCharacterHeight(FS_NORMAL);
+			if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) height += GetCharacterHeight(FS_NORMAL);
 
 			for (CargoID i = 0; i < NUM_CARGO; ++i) {
 				if (cargo_caps[i] > 0) {
-					height += FONT_HEIGHT_NORMAL;
+					height += GetCharacterHeight(FS_NORMAL);
 				}
 			}
 		}
@@ -714,11 +711,11 @@ void ShowTemplateCreateWindow(TemplateVehicle *to_edit, bool *create_window_open
 	new TemplateCreateWindow(&_template_create_window_desc, to_edit, create_window_open);
 }
 
-void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	if (result.Failed()) return;
 
-	Window* window = FindWindowById(WC_CREATE_TEMPLATE, 0);
+	Window *window = FindWindowById(WC_CREATE_TEMPLATE, 0);
 	if (window) {
 		Train* train = Train::From(Vehicle::Get(_new_vehicle_id));
 		((TemplateCreateWindow*)window)->SetVirtualTrain(train);
@@ -726,22 +723,22 @@ void CcSetVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uin
 	}
 }
 
-void CcVirtualTrainWagonsMoved(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcVirtualTrainWagonsMoved(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	if (result.Failed()) return;
 
-	Window* window = FindWindowById(WC_CREATE_TEMPLATE, 0);
+	Window *window = FindWindowById(WC_CREATE_TEMPLATE, 0);
 	if (window) {
 		((TemplateCreateWindow*)window)->RearrangeVirtualTrain();
 		window->InvalidateData();
 	}
 }
 
-void CcDeleteVirtualTrain(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcDeleteVirtualTrain(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	if (result.Failed()) return;
 
-	Window* window = FindWindowById(WC_CREATE_TEMPLATE, 0);
+	Window *window = FindWindowById(WC_CREATE_TEMPLATE, 0);
 	if (window) {
 		((TemplateCreateWindow*)window)->VirtualVehicleDeleted(GB(p1, 0, 20));
 		window->InvalidateData();

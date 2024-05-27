@@ -56,6 +56,7 @@
 #include <climits>
 #include <cassert>
 #include <memory>
+#include <span>
 #include <string>
 #include <inttypes.h>
 
@@ -69,7 +70,6 @@
 
 /* Stuff for GCC */
 #if defined(__GNUC__) || (defined(__clang__) && !defined(_MSC_VER))
-#	define NORETURN __attribute__ ((noreturn))
 #	define CDECL
 #	define __int64 long long
 	/* Warn about functions using 'printf' format syntax. First argument determines which parameter
@@ -80,18 +80,6 @@
 #		define WARN_FORMAT(string, args) __attribute__ ((format (printf, string, args)))
 #	endif
 	#define WARN_TIME_FORMAT(string) __attribute__ ((format (strftime, string, 0)))
-	#define FINAL final
-
-	/* Use fallthrough attribute where supported */
-#	if __GNUC__ >= 7
-#		if __cplusplus > 201402L // C++17
-#			define FALLTHROUGH [[fallthrough]]
-#		else
-#			define FALLTHROUGH __attribute__((fallthrough))
-#		endif
-#	else
-#		define FALLTHROUGH
-#	endif
 #endif /* __GNUC__ || __clang__ */
 
 #if __GNUC__ > 11 || (__GNUC__ == 11 && __GNUC_MINOR__ >= 1)
@@ -100,19 +88,27 @@
 #      define NOACCESS(args)
 #endif
 
-/* [[nodiscard]] on constructors doesn't work in GCC older than 10.1. */
-#if __GNUC__ < 10 || (__GNUC__ == 10 && __GNUC_MINOR__ < 1)
-#      define NODISCARD
-#else
-#      define NODISCARD [[nodiscard]]
-#endif
-
 #if defined(__MINGW32__)
 #	include <malloc.h> // alloca()
 #endif
 
 #if defined(_WIN32)
 #	define WIN32_LEAN_AND_MEAN     // Exclude rarely-used stuff from Windows headers
+#endif
+
+#if defined(_MSC_VER)
+	// See https://learn.microsoft.com/en-us/cpp/cpp/empty-bases?view=msvc-170
+#	define EMPTY_BASES __declspec(empty_bases)
+#else
+#	define EMPTY_BASES
+#endif
+
+#if defined(_MSC_VER) && _MSC_VER >= 1929
+#	define NO_UNIQUE_ADDRESS [[msvc::no_unique_address]]
+#elif defined(__has_cpp_attribute) && __has_cpp_attribute(no_unique_address)
+#	define NO_UNIQUE_ADDRESS [[no_unique_address]]
+#else
+#	define NO_UNIQUE_ADDRESS
 #endif
 
 /* Stuff for MSVC */
@@ -143,7 +139,6 @@
 #	endif
 
 #	include <malloc.h> // alloca()
-#	define NORETURN __declspec(noreturn)
 #	if (_MSC_VER < 1900)
 #		define inline __forceinline
 #	endif
@@ -151,14 +146,6 @@
 #	define CDECL _cdecl
 #	define WARN_FORMAT(string, args)
 #	define WARN_TIME_FORMAT(string)
-#	define FINAL final
-
-	/* fallthrough attribute, VS 2017 */
-#	if (_MSC_VER >= 1910) || defined(__clang__)
-#		define FALLTHROUGH [[fallthrough]]
-#	else
-#		define FALLTHROUGH
-#	endif
 
 #	if defined(_WIN32) && !defined(_WIN64)
 #		if !defined(_W64)
@@ -200,7 +187,7 @@
 
 #endif /* defined(_MSC_VER) */
 
-#if !defined(STRGEN) && !defined(SETTINGSGEN) && !defined(OPENTTD_TEST)
+#if !defined(STRGEN) && !defined(SETTINGSGEN)
 #	if defined(_WIN32)
 		char *getcwd(char *buf, size_t size);
 #		include <io.h>
@@ -213,6 +200,7 @@
 		std::wstring OTTD2FS(const std::string &name);
 #	elif defined(WITH_ICONV)
 #		define fopen(file, mode) fopen(OTTD2FS(file).c_str(), mode)
+#		define unlink(file) unlink(OTTD2FS(file).c_str())
 		std::string FS2OTTD(const std::string &name);
 		std::string OTTD2FS(const std::string &name);
 #	else
@@ -220,7 +208,7 @@
 		template <typename T> std::string FS2OTTD(T name) { return name; }
 		template <typename T> std::string OTTD2FS(T name) { return name; }
 #	endif /* _WIN32 or WITH_ICONV */
-#endif /* STRGEN || SETTINGSGEN || OPENTTD_TEST */
+#endif /* STRGEN || SETTINGSGEN */
 
 #if defined(_WIN32)
 #	define PATHSEP "\\"
@@ -316,21 +304,10 @@
 #define debug_inline inline
 #endif
 
-typedef uint8_t byte;
-
 /* This is already defined in unix, but not in QNX Neutrino (6.x) or Cygwin. */
 #if (!defined(UNIX) && !defined(__HAIKU__)) || defined(__QNXNTO__) || defined(__CYGWIN__)
 	typedef unsigned int uint;
 #endif
-
-typedef uint8_t  uint8;
-typedef  int8_t   int8;
-typedef uint16_t uint16;
-typedef  int16_t  int16;
-typedef uint32_t uint32;
-typedef  int32_t  int32;
-typedef uint64_t uint64;
-typedef  int64_t  int64;
 
 #if !defined(WITH_PERSONAL_DIR)
 #	define PERSONAL_DIR ""
@@ -342,16 +319,19 @@ typedef  int64_t  int64;
 #endif
 
 /* Check if the types have the bitsizes like we are using them */
-static_assert(sizeof(uint64) == 8);
-static_assert(sizeof(uint32) == 4);
-static_assert(sizeof(uint16) == 2);
-static_assert(sizeof(uint8)  == 1);
+static_assert(sizeof(uint64_t) == 8);
+static_assert(sizeof(uint32_t) == 4);
+static_assert(sizeof(uint16_t) == 2);
+static_assert(sizeof(uint8_t)  == 1);
 static_assert(SIZE_MAX >= UINT32_MAX);
 
 #ifndef M_PI_2
 #define M_PI_2 1.57079632679489661923
 #define M_PI   3.14159265358979323846
 #endif /* M_PI_2 */
+
+template <typename T, size_t N>
+char (&ArraySizeHelper(T (&array)[N]))[N];
 
 /**
  * Return the length of an fixed size array.
@@ -361,7 +341,7 @@ static_assert(SIZE_MAX >= UINT32_MAX);
  * @param x The pointer to the first element of the array
  * @return The number of elements
  */
-#define lengthof(x) (sizeof(x) / sizeof(x[0]))
+#define lengthof(array) (sizeof(ArraySizeHelper(array)))
 
 /**
  * Get the end element of an fixed size array.
@@ -406,6 +386,7 @@ static_assert(SIZE_MAX >= UINT32_MAX);
 #	define GetString OTTD_GetString
 #	define DrawString OTTD_DrawString
 #	define CloseConnection OTTD_CloseConnection
+#	define DateDelta OTTD_DateDelta
 #endif /* __APPLE__ */
 
 #if defined(__GNUC__) || defined(__clang__)
@@ -419,37 +400,41 @@ static_assert(SIZE_MAX >= UINT32_MAX);
 #endif /* __GNUC__ || __clang__ */
 
 #if defined(__GNUC__) || defined(__clang__)
-__attribute__((aligned(1))) typedef uint16 unaligned_uint16;
-__attribute__((aligned(1))) typedef uint32 unaligned_uint32;
-__attribute__((aligned(1))) typedef uint64 unaligned_uint64;
+__attribute__((aligned(1))) typedef uint16_t unaligned_uint16;
+__attribute__((aligned(1))) typedef uint32_t unaligned_uint32;
+__attribute__((aligned(1))) typedef uint64_t unaligned_uint64;
 #else
-typedef uint16 unaligned_uint16;
-typedef uint32 unaligned_uint32;
-typedef uint64 unaligned_uint64;
+typedef uint16_t unaligned_uint16;
+typedef uint32_t unaligned_uint32;
+typedef uint64_t unaligned_uint64;
 #endif /* __GNUC__ || __clang__ */
 
 /* For the FMT library we only want to use the headers, not link to some library. */
 #define FMT_HEADER_ONLY
 
-void NORETURN CDECL usererror(const char *str, ...) WARN_FORMAT(1, 2);
-void NORETURN CDECL error(const char *str, ...) WARN_FORMAT(1, 2);
-void NORETURN CDECL assert_msg_error(int line, const char *file, const char *expr, const char *extra, const char *str, ...) WARN_FORMAT(5, 6);
-const char *assert_tile_info(uint32 tile);
+[[noreturn]] void CDECL usererror(const char *str, ...) WARN_FORMAT(1, 2);
+[[noreturn]] void CDECL error(const char *str, ...) WARN_FORMAT(1, 2);
+[[noreturn]] void CDECL assert_msg_error(int line, const char *file, const char *expr, const char *extra, const char *str, ...) WARN_FORMAT(5, 6);
+[[noreturn]] void assert_str_error(int line, const char *file, const char *expr, const char *str);
+[[noreturn]] void assert_str_error(int line, const char *file, const char *expr, const std::string &str);
+const char *assert_tile_info(uint32_t tile);
 #define NOT_REACHED() error("NOT_REACHED triggered at line %i of %s", __LINE__, __FILE__)
 
 /* Asserts are enabled if NDEBUG isn't defined or WITH_ASSERT is defined. */
 #if !defined(NDEBUG) || defined(WITH_ASSERT)
 #	undef assert
-#	define assert(expression) if (unlikely(!(expression))) error("Assertion failed at line %i of %s: %s", __LINE__, __FILE__, #expression);
-#	define assert_msg(expression, ...) if (unlikely(!(expression))) assert_msg_error(__LINE__, __FILE__, #expression, nullptr, __VA_ARGS__);
-#	define assert_msg_tile(expression, tile, ...) if (unlikely(!(expression))) assert_msg_error(__LINE__, __FILE__, #expression, assert_tile_info(tile), __VA_ARGS__);
-#	define assert_tile(expression, tile) if (unlikely(!(expression))) error("Assertion failed at line %i of %s: %s\n\t%s", __LINE__, __FILE__, #expression, assert_tile_info(tile));
+#	define assert(expression) do { if (unlikely(!(expression))) error("Assertion failed at line %i of %s: %s", __LINE__, __FILE__, #expression); } while (false)
+#	define assert_msg(expression, ...) do { if (unlikely(!(expression))) assert_msg_error(__LINE__, __FILE__, #expression, nullptr, __VA_ARGS__); } while (false)
+#	define assert_msg_tile(expression, tile, ...) do { if (unlikely(!(expression))) assert_msg_error(__LINE__, __FILE__, #expression, assert_tile_info(tile), __VA_ARGS__); } while (false)
+#	define assert_tile(expression, tile) do { if (unlikely(!(expression))) error("Assertion failed at line %i of %s: %s\n\t%s", __LINE__, __FILE__, #expression, assert_tile_info(tile)); } while (false)
+#	define assert_str(expression, str) do { if (unlikely(!(expression))) assert_str_error(__LINE__, __FILE__, #expression, str); } while (false)
 #else
 #	undef assert
 #	define assert(expression)
 #	define assert_msg(expression, ...)
 #	define assert_msg_tile(expression, tile, ...)
 #	define assert_tile(expression, tile)
+#	define assert_str(expression, str)
 #endif
 #if (!defined(NDEBUG) || defined(WITH_ASSERT)) && !defined(FEWER_ASSERTS)
 #	define WITH_FULL_ASSERTS
@@ -463,6 +448,10 @@ const char *assert_tile_info(uint32 tile);
 #	define dbg_assert_msg_tile(expression, tile, ...)
 #	define dbg_assert_tile(expression, tile)
 #endif
+
+/* Define JSON_ASSERT, which is used by nlohmann-json. Otherwise the header-file
+ * will re-include assert.h, and reset the assert macro. */
+#define JSON_ASSERT(x) assert(x)
 
 #if defined(MAX_PATH)
 	/* It's already defined, no need to override */
@@ -478,7 +467,7 @@ const char *assert_tile_info(uint32 tile);
  * Version of the standard free that accepts const pointers.
  * @param ptr The data to free.
  */
-static inline void free(const void *ptr)
+inline void free(const void *ptr)
 {
 	free(const_cast<void *>(ptr));
 }
@@ -525,10 +514,20 @@ static inline void free(const void *ptr)
 	#define PREFETCH_NTA(address)
 #endif
 
-#if !defined(DISABLE_SCOPE_INFO) && (__cplusplus >= 201103L || defined(__STDCXX_VERSION__) || defined(__GXX_EXPERIMENTAL_CXX0X__) || defined(__GXX_EXPERIMENTAL_CPP0X__))
+#if !defined(DISABLE_SCOPE_INFO)
 #define USE_SCOPE_INFO
 #endif
 
 #define SINGLE_ARG(...) __VA_ARGS__
+
+#if defined(DEDICATED)
+inline constexpr bool IsHeadless() { return true; }
+#else
+inline bool IsHeadless()
+{
+	extern bool _network_dedicated;
+	return _network_dedicated;
+}
+#endif
 
 #endif /* STDAFX_H */

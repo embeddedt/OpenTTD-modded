@@ -12,6 +12,7 @@
 
 #include "vehicle_type.h"
 #include "economy_type.h"
+#include "industry_type.h"
 #include "tile_type.h"
 #include "transport_type.h"
 #include "story_type.h"
@@ -43,27 +44,41 @@ void ShowHeightmapLoad();
 /* misc_gui.cpp */
 void ShowLandInfo(TileIndex tile);
 void ShowAboutWindow();
-void ShowBuildTreesToolbar();
-void ShowTownDirectory();
-void ShowIndustryDirectory();
-void ShowIndustryCargoesWindow();
-void ShowSubsidiesList();
-void ShowGoalsList(CompanyID company);
-void ShowGoalQuestion(uint16 id, byte type, uint32 button_mask, const std::string &question);
-void ShowStoryBook(CompanyID company, uint16 page_id = INVALID_STORY_PAGE);
-
 void ShowEstimatedCostOrIncome(Money cost, int x, int y);
 
+/* tree_gui.cpp */
+void ShowBuildTreesToolbar();
+
+/* town_gui.cpp */
+void ShowTownDirectory();
+void ShowFoundTownWindow();
+
+/* industry_gui.cpp */
+void ShowIndustryDirectory();
+void ShowIndustryCargoesWindow();
+void ShowBuildIndustryWindow();
+void ShowBuildIndustryWindowForIndustryType(IndustryType industry_type);
+
+/* subsidy_gui.cpp */
+void ShowSubsidiesList();
+
+/* goal_gui.cpp */
+void ShowGoalsList(CompanyID company);
+void ShowGoalQuestion(uint16_t id, uint8_t type, uint32_t button_mask, const std::string &question);
+
+/* story_gui.cpp */
+void ShowStoryBook(CompanyID company, uint16_t page_id = INVALID_STORY_PAGE, bool centered = false);
+
+/* viewport_gui.cpp */
 void ShowExtraViewportWindow(TileIndex tile = INVALID_TILE);
 void ShowExtraViewportWindowForTileUnderCursor();
 
 void ShowModifierKeyToggleWindow();
 
 /* bridge_gui.cpp */
-void ShowBuildBridgeWindow(TileIndex start, TileIndex end, TransportType transport_type, byte bridge_type);
+void ShowBuildBridgeWindow(TileIndex start, TileIndex end, TransportType transport_type, uint8_t bridge_type);
 
-void ShowBuildIndustryWindow();
-void ShowFoundTownWindow();
+/* music_gui.cpp */
 void ShowMusicWindow();
 
 #endif /* GUI_H */

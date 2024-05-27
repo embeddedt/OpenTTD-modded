@@ -36,6 +36,7 @@ struct PlanLine {
 	{
 		this->visible = true;
 		this->focused = false;
+		_plan_update_counter++;
 	}
 
 	~PlanLine()
@@ -46,6 +47,7 @@ struct PlanLine {
 	void Clear()
 	{
 		this->tiles.clear();
+		_plan_update_counter++;
 	}
 
 	bool AppendTile(TileIndex tile)
@@ -81,12 +83,16 @@ struct PlanLine {
 		if (this->tiles.size() * sizeof(TileIndex) >= MAX_CMD_TEXT_LENGTH) return false;
 
 		this->tiles.push_back(tile);
+		_plan_update_counter++;
 		return true;
 	}
 
 	void SetFocus(bool focused)
 	{
-		if (this->focused != focused) this->MarkDirty();
+		if (this->focused != focused) {
+			this->MarkDirty();
+			_plan_update_counter++;
+		}
 		this->focused = focused;
 	}
 
@@ -98,7 +104,10 @@ struct PlanLine {
 
 	void SetVisibility(bool visible)
 	{
-		if (this->visible != visible) this->MarkDirty();
+		if (this->visible != visible) {
+			this->MarkDirty();
+			_plan_update_counter++;
+		}
 		this->visible = visible;
 	}
 
@@ -110,7 +119,7 @@ struct PlanLine {
 		}
 	}
 
-	void AddLineToCalculateCentreTile(uint64 &x, uint64 &y, uint32 &count) const
+	void AddLineToCalculateCentreTile(uint64_t &x, uint64_t &y, uint32_t &count) const
 	{
 		for (size_t i = 0; i < this->tiles.size(); i++) {
 			TileIndex t = this->tiles[i];
@@ -122,9 +131,9 @@ struct PlanLine {
 
 	TileIndex CalculateCentreTile() const
 	{
-		uint64 x = 0;
-		uint64 y = 0;
-		uint32 count = 0;
+		uint64_t x = 0;
+		uint64_t y = 0;
+		uint32_t count = 0;
 		this->AddLineToCalculateCentreTile(x, y, count);
 		if (count == 0) return INVALID_TILE;
 		return TileXY(x / count, y / count);
@@ -135,20 +144,20 @@ struct PlanLine {
 
 struct Plan : PlanPool::PoolItem<&_plan_pool> {
 	Owner owner;
+	Colours colour;
+	CalTime::Date creation_date;
 	PlanLineVector lines;
 	PlanLine *temp_line;
+	std::string name;
 	TileIndex last_tile;
 	bool visible;
 	bool visible_by_all;
 	bool show_lines;
-	Date creation_date;
-	std::string name;
-	Colours colour;
 
 	Plan(Owner owner = INVALID_OWNER)
 	{
 		this->owner = owner;
-		this->creation_date = _date;
+		this->creation_date = CalTime::CurDate();
 		this->visible = false;
 		this->visible_by_all = false;
 		this->show_lines = false;
@@ -176,6 +185,7 @@ struct Plan : PlanPool::PoolItem<&_plan_pool> {
 	void SetVisibility(bool visible, bool do_lines = true)
 	{
 		this->visible = visible;
+		_plan_update_counter++;
 
 		if (!do_lines) return;
 		for (PlanLineVector::iterator it = lines.begin(); it != lines.end(); it++) {
@@ -203,12 +213,12 @@ struct Plan : PlanPool::PoolItem<&_plan_pool> {
 
 	bool ValidateNewLine();
 
-	bool IsListable()
+	bool IsListable() const
 	{
 		return (this->owner == _local_company || this->visible_by_all);
 	}
 
-	bool IsVisible()
+	bool IsVisible() const
 	{
 		if (!this->IsListable()) return false;
 		return this->visible;
@@ -237,9 +247,9 @@ struct Plan : PlanPool::PoolItem<&_plan_pool> {
 
 	TileIndex CalculateCentreTile() const
 	{
-		uint64 x = 0;
-		uint64 y = 0;
-		uint32 count = 0;
+		uint64_t x = 0;
+		uint64_t y = 0;
+		uint32_t count = 0;
 		for (PlanLineVector::const_iterator it = lines.begin(); it != lines.end(); it++) {
 			(*it)->AddLineToCalculateCentreTile(x, y, count);
 		}

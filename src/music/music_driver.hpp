@@ -14,9 +14,6 @@
 
 #include <memory>
 #include <mutex>
-#if defined(__MINGW32__)
-#include "../3rdparty/mingw-std-threads/mingw.mutex.h"
-#endif
 
 extern std::mutex _music_driver_mutex;
 
@@ -46,7 +43,7 @@ public:
 	 * Set the volume, if possible.
 	 * @param vol The new volume.
 	 */
-	virtual void SetVolume(byte vol) = 0;
+	virtual void SetVolume(uint8_t vol) = 0;
 
 	/**
 	 * Is playback in a failed state?
@@ -65,7 +62,8 @@ public:
 	/**
 	 * Get the currently active instance of the music driver.
 	 */
-	static MusicDriver *GetInstance() {
+	static MusicDriver *GetInstance()
+	{
 		std::unique_lock<std::mutex> lock(_music_driver_mutex);
 
 		return static_cast<MusicDriver*>(*DriverFactoryBase::GetActiveDriver(Driver::DT_MUSIC));

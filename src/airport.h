@@ -40,7 +40,7 @@ enum AirportTypes {
 	AT_OILRIG             =   9, ///< Oilrig airport.
 	AT_INTERCONTINENTAL2  =  10, ///< Intercontinental airport 2.
     AT_CIRCLE             =  11, ///< Circle airport.
-	NEW_AIRPORT_OFFSET    =  12, ///< Number of the first newgrf airport.  
+	NEW_AIRPORT_OFFSET    =  12, ///< Number of the first newgrf airport.
 	NUM_AIRPORTS          = 128, ///< Maximal number of airports.
 	NUM_AIRPORTS_PER_GRF  = 128,
 	AT_INVALID            = 254, ///< Invalid airport.
@@ -101,7 +101,7 @@ enum AirportMovementStates {
 };
 
 /** Movement Blocks on Airports blocks (eg_airport_flags). */
-static const uint64
+static const uint64_t
 	TERM1_block              = 1ULL <<  0, ///< Block belonging to terminal 1.
 	TERM2_block              = 1ULL <<  1, ///< Block belonging to terminal 2.
 	TERM3_block              = 1ULL <<  2, ///< Block belonging to terminal 3.
@@ -178,9 +178,9 @@ static const uint64
 
 /** A single location on an airport where aircraft can move to. */
 struct AirportMovingData {
-	int16 x;             ///< x-coordinate of the destination.
-	int16 y;             ///< y-coordinate of the destination.
-	uint16 flag;         ///< special flags when moving towards the destination.
+	int16_t x;           ///< x-coordinate of the destination.
+	int16_t y;           ///< y-coordinate of the destination.
+	uint16_t flag;       ///< special flags when moving towards the destination.
 	Direction direction; ///< Direction to turn the aircraft after reaching the destination.
 };
 
@@ -190,7 +190,7 @@ struct AirportMovingData {
  */
 struct AirportMovementTerminalMapping {
 	AirportMovementStates state; ///< Aircraft movement state when going to this terminal.
-	uint64 airport_flag;         ///< Bitmask in the airport flags that need to be free for this terminal.
+	uint64_t airport_flag;         ///< Bitmask in the airport flags that need to be free for this terminal.
 };
 
 
@@ -214,12 +214,12 @@ public:
 
 	AirportFTAClass(
 		const AirportMovingData *moving_data,
-		const byte *terminals,
-		const byte num_helipads,
-		const byte *entry_points,
+		const uint8_t *terminals,
+		const uint8_t num_helipads,
+		const uint8_t *entry_points,
 		Flags flags,
 		const AirportFTAbuildup *apFA,
-		byte delta_z
+		uint8_t delta_z
 	);
 
 	~AirportFTAClass();
@@ -229,7 +229,7 @@ public:
 	 * @param position Element number to get movement data about.
 	 * @return Pointer to the movement data.
 	 */
-	const AirportMovingData *MovingData(byte position) const
+	const AirportMovingData *MovingData(uint8_t position) const
 	{
 		assert(position < nofelements);
 		return &moving_data[position];
@@ -237,12 +237,12 @@ public:
 
 	const AirportMovingData *moving_data; ///< Movement data.
 	struct AirportFTA *layout;            ///< state machine for airport
-	const byte *terminals;                ///< %Array with the number of terminal groups, followed by the number of terminals in each group.
-	const byte num_helipads;              ///< Number of helipads on this airport. When 0 helicopters will go to normal terminals.
+	const uint8_t *terminals;             ///< %Array with the number of terminal groups, followed by the number of terminals in each group.
+	const uint8_t num_helipads;           ///< Number of helipads on this airport. When 0 helicopters will go to normal terminals.
 	Flags flags;                          ///< Flags for this airport type.
-	byte nofelements;                     ///< number of positions the airport consists of
-	const byte *entry_points;             ///< when an airplane arrives at this airport, enter it at position entry_point, index depends on direction
-	byte delta_z;                         ///< Z adjustment for helicopter pads
+	uint8_t nofelements;                  ///< number of positions the airport consists of
+	const uint8_t *entry_points;          ///< when an airplane arrives at this airport, enter it at position entry_point, index depends on direction
+	uint8_t delta_z;                      ///< Z adjustment for helicopter pads
 };
 
 DECLARE_ENUM_AS_BIT_SET(AirportFTAClass::Flags)
@@ -251,14 +251,14 @@ DECLARE_ENUM_AS_BIT_SET(AirportFTAClass::Flags)
 /** Internal structure used in openttd - Finite sTate mAchine --> FTA */
 struct AirportFTA {
 	AirportFTA *next;        ///< possible extra movement choices from this position
-	uint64 block;            ///< 64 bit blocks (st->airport.flags), should be enough for the most complex airports
-	uint64 block2;           ///< additional 64 bit blocks for everytile-block airports 8*8 up to 11*11 every-tile
-	byte position;           ///< the position that an airplane is at
-	byte next_position;      ///< next position from this position
-	byte heading;            ///< heading (current orders), guiding an airplane to its target on an airport
+	uint64_t block;            ///< 64 bit blocks (st->airport.flags), should be enough for the most complex airports
+	uint64_t block2;           ///< additional 64 bit blocks for everytile-block airports 8*8 up to 11*11 every-tile
+	uint8_t position;           ///< the position that an airplane is at
+	uint8_t next_position;      ///< next position from this position
+	uint8_t heading;            ///< heading (current orders), guiding an airplane to its target on an airport
 };
 
-const AirportFTAClass *GetAirport(const byte airport_type);
-byte GetVehiclePosOnBuild(TileIndex hangar_tile);
+const AirportFTAClass *GetAirport(const uint8_t airport_type);
+uint8_t GetVehiclePosOnBuild(TileIndex hangar_tile);
 
 #endif /* AIRPORT_H */

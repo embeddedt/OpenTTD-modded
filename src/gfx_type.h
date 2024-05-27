@@ -11,12 +11,13 @@
 #define GFX_TYPE_H
 
 #include "core/endian_type.hpp"
+#include "core/enum_type.hpp"
 #include "core/geometry_type.hpp"
 #include "zoom_type.h"
 
-typedef uint32 SpriteID;  ///< The number of a sprite, without mapping bits and colourtables
-typedef uint32 PaletteID; ///< The number of the palette
-typedef uint32 CursorID;  ///< The number of the cursor (sprite)
+typedef uint32_t SpriteID;  ///< The number of a sprite, without mapping bits and colourtables
+typedef uint32_t PaletteID; ///< The number of the palette
+typedef uint32_t CursorID;  ///< The number of the cursor (sprite)
 
 /** Combination of a palette sprite and a 'real' sprite */
 struct PalSpriteID {
@@ -109,7 +110,7 @@ enum WindowKeyCodes {
 struct AnimCursor {
 	static const CursorID LAST = MAX_UVALUE(CursorID);
 	CursorID sprite;   ///< Must be set to LAST_ANIM when it is the last sprite of the loop
-	byte display_time; ///< Amount of ticks this sprite will be shown
+	uint8_t display_time; ///< Amount of ticks this sprite will be shown
 };
 
 /** Collection of variables for cursor-display and -animation */
@@ -158,16 +159,14 @@ struct DrawPixelInfo {
 
 /** Structure to access the alpha, red, green, and blue channels from a 32 bit number. */
 union Colour {
-	uint32 data; ///< Conversion of the channel information to a 32 bit number.
+	uint32_t data; ///< Conversion of the channel information to a 32 bit number.
 	struct {
 #if defined(__EMSCRIPTEN__)
-		uint8 r, g, b, a;  ///< colour channels as used in browsers
+		uint8_t r, g, b, a;  ///< colour channels as used in browsers
 #elif TTD_ENDIAN == TTD_BIG_ENDIAN
-		uint8 a, r, g, b; ///< colour channels in BE order
-#elif defined(__EMSCRIPTEN__)
-		uint8 r, g, b, a;
+		uint8_t a, r, g, b; ///< colour channels in BE order
 #else
-		uint8 b, g, r, a; ///< colour channels in LE order
+		uint8_t b, g, r, a; ///< colour channels in LE order
 #endif /* TTD_ENDIAN == TTD_BIG_ENDIAN */
 	};
 
@@ -178,7 +177,7 @@ union Colour {
 	 * @param b The channel for the blue colour.
 	 * @param a The channel for the alpha/transparency.
 	 */
-	constexpr Colour(uint8 r, uint8 g, uint8 b, uint8 a = 0xFF) :
+	constexpr Colour(uint8_t r, uint8_t g, uint8_t b, uint8_t a = 0xFF) :
 #if defined(__EMSCRIPTEN__)
 		r(r), g(g), b(b), a(a)
 #elif TTD_ENDIAN == TTD_BIG_ENDIAN
@@ -200,7 +199,7 @@ union Colour {
 	}
 };
 
-static_assert(sizeof(Colour) == sizeof(uint32));
+static_assert(sizeof(Colour) == sizeof(uint32_t));
 
 
 /** Available font sizes */
@@ -215,7 +214,7 @@ enum FontSize {
 };
 DECLARE_POSTFIX_INCREMENT(FontSize)
 
-static inline const char *FontSizeToName(FontSize fs)
+inline const char *FontSizeToName(FontSize fs)
 {
 	static const char *SIZE_TO_NAME[] = { "medium", "small", "large", "mono" };
 	assert(fs < FS_END);
@@ -231,7 +230,7 @@ struct SubSprite {
 	int left, top, right, bottom;
 };
 
-enum Colours : uint8 {
+enum Colours : uint8_t {
 	COLOUR_BEGIN,
 	COLOUR_DARK_BLUE = COLOUR_BEGIN,
 	COLOUR_PALE_GREEN,
@@ -252,7 +251,9 @@ enum Colours : uint8 {
 	COLOUR_END,
 	INVALID_COLOUR = 0xFF,
 };
-template <> struct EnumPropsT<Colours> : MakeEnumPropsT<Colours, byte, COLOUR_BEGIN, COLOUR_END, INVALID_COLOUR, 8> {};
+template <> struct EnumPropsT<Colours> : MakeEnumPropsT<Colours, uint8_t, COLOUR_BEGIN, COLOUR_END, INVALID_COLOUR, 8> {};
+DECLARE_POSTFIX_INCREMENT(Colours)
+DECLARE_ENUM_AS_ADDABLE(Colours)
 
 /** Colour of the strings, see _string_colourmap in table/string_colours.h or docs/ottd-colourtext-palette.png */
 enum TextColour {
@@ -312,7 +313,7 @@ enum PaletteType {
 };
 
 /** Types of sprites that might be loaded */
-enum class SpriteType : byte {
+enum class SpriteType : uint8_t {
 	Normal   = 0,      ///< The most basic (normal) sprite
 	MapGen   = 1,      ///< Special sprite for the map generator
 	Font     = 2,      ///< A sprite used for fonts

@@ -121,8 +121,8 @@ private:
 		uint received_demand;    ///< Received demand towards this node.
 		PathList paths;          ///< Paths through this node, sorted so that those with flow == 0 are in the back.
 		FlowStatMap flows;       ///< Planned flows to other nodes.
-		span<DemandAnnotation> demands; ///< Demand annotations belonging to this node.
-		span<Edge> edges;        ///< Edges with annotations belonging to this node.
+		std::span<DemandAnnotation> demands; ///< Demand annotations belonging to this node.
+		std::span<Edge> edges;               ///< Edges with annotations belonging to this node.
 		void Init(uint supply);
 	};
 
@@ -131,6 +131,7 @@ private:
 	friend SaveLoadTable GetLinkGraphJobDesc();
 	friend upstream_sl::SaveLoadTable upstream_sl::GetLinkGraphJobDesc();
 	friend void GetLinkGraphJobDayLengthScaleAfterLoad(LinkGraphJob *lgj);
+	friend void LinkGraphFixupAfterLoad(bool compression_was_date);
 	friend class LinkGraphSchedule;
 	friend class LinkGraphJobGroup;
 
@@ -139,8 +140,8 @@ protected:
 
 	std::shared_ptr<LinkGraphJobGroup> group; ///< Job group thread the job is running in or nullptr if it's running in the main thread.
 	const LinkGraphSettings settings; ///< Copy of _settings_game.linkgraph at spawn time.
-	DateTicks join_date_ticks;        ///< Date when the job is to be joined.
-	DateTicks start_date_ticks;       ///< Date when the job was started.
+	ScaledTickCounter join_tick;      ///< Tick when the job is to be joined.
+	ScaledTickCounter start_tick;     ///< Tick when the job was started.
 	NodeAnnotationVector nodes;       ///< Extra node data necessary for link graph calculation.
 	EdgeAnnotationVector edges;       ///< Edge data necessary for link graph calculation.
 	std::atomic<bool> job_completed;  ///< Is the job still running. This is accessed by multiple threads and reads may be stale.
@@ -152,7 +153,8 @@ protected:
 
 public:
 
-	btree::btree_map<std::pair<NodeID, NodeID>, uint> demand_map; ///< Demand map.
+	std::unique_ptr<uint[]> demand_matrix;                        ///< Demand matrix.
+	uint demand_matrix_count;                                     ///< Count of non-zero entries in demand_matrix.
 	std::vector<DemandAnnotation> demand_annotation_store;        ///< Demand annotation store.
 
 	DynUniformArenaAllocator path_allocator; ///< Arena allocator used for paths
@@ -231,12 +233,12 @@ public:
 			this->node_anno.received_demand += amount;
 		}
 
-		span<DemandAnnotation> GetDemandAnnotations() const
+		std::span<DemandAnnotation> GetDemandAnnotations() const
 		{
 			return this->node_anno.demands;
 		}
 
-		void SetDemandAnnotations(span<DemandAnnotation> demands)
+		void SetDemandAnnotations(std::span<DemandAnnotation> demands)
 		{
 			this->node_anno.demands = demands;
 		}
@@ -251,7 +253,7 @@ public:
 			return empty_edge;
 		}
 
-		span<Edge> GetEdges()
+		std::span<Edge> GetEdges()
 		{
 			return this->node_anno.edges;
 		}
@@ -262,7 +264,7 @@ public:
 	 * settings have to be brutally const-casted in order to populate them.
 	 */
 	LinkGraphJob() : settings(_settings_game.linkgraph),
-			join_date_ticks(INVALID_DATE), start_date_ticks(INVALID_DATE), job_completed(false), job_aborted(false) {}
+			join_tick(0), start_tick(0), job_completed(false), job_aborted(false) {}
 
 	LinkGraphJob(const LinkGraph &orig, uint duration_multiplier);
 	~LinkGraphJob();
@@ -297,29 +299,25 @@ public:
 	 * @param tick_offset Optional number of ticks to add to the current date
 	 * @return True if job should be finished by now, false if not.
 	 */
-	inline bool IsScheduledToBeJoined(int tick_offset = 0) const { return this->join_date_ticks <= (_date * DAY_TICKS) + _date_fract + tick_offset; }
+	inline bool IsScheduledToBeJoined(int tick_offset = 0) const { return this->join_tick <= _scaled_tick_counter + tick_offset; }
 
 	/**
-	 * Get the date when the job should be finished.
+	 * Get the tick when the job should be finished.
 	 * @return Join date.
 	 */
-	inline DateTicks JoinDateTicks() const { return join_date_ticks; }
+	inline ScaledTickCounter JoinTick() const { return this->join_tick; }
 
 	/**
-	 * Get the date when the job was started.
+	 * Get the tick when the job was started.
 	 * @return Start date.
 	 */
-	inline DateTicks StartDateTicks() const { return start_date_ticks; }
+	inline ScaledTickCounter StartTick() const { return this->start_tick; }
 
 	/**
-	 * Change the start and join dates on date cheating.
-	 * @param interval Number of days to add.
+	 * Set the tick when the job should be joined.
+	 * @return Start date.
 	 */
-	inline void ShiftJoinDate(int interval)
-	{
-		this->join_date_ticks += interval * DAY_TICKS;
-		this->start_date_ticks += interval * DAY_TICKS;
-	}
+	inline void SetJoinTick(ScaledTickCounter tick) { this->join_tick = tick; }
 
 	/**
 	 * Get the link graph settings for this component.
@@ -347,10 +345,10 @@ public:
 	inline CargoID Cargo() const { return this->link_graph.Cargo(); }
 
 	/**
-	 * Get the date when the underlying link graph was last compressed.
+	 * Get the state tick when the underlying link graph was last compressed.
 	 * @return Compression date.
 	 */
-	inline DateTicksScaled LastCompression() const { return this->link_graph.LastCompression(); }
+	inline ScaledTickCounter LastCompression() const { return this->link_graph.LastCompression(); }
 
 	/**
 	 * Get the ID of the underlying link graph.

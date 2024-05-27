@@ -13,16 +13,13 @@
 #include "video_driver.hpp"
 #include <mutex>
 #include <condition_variable>
-#if defined(__MINGW32__)
-#include "../3rdparty/mingw-std-threads/mingw.mutex.h"
-#include "../3rdparty/mingw-std-threads/mingw.condition_variable.h"
-#endif
 #include <vector>
+#include <windows.h>
 
 /** Base class for Windows video drivers. */
 class VideoDriver_Win32Base : public VideoDriver {
 public:
-	VideoDriver_Win32Base() : main_wnd(nullptr), fullscreen(false), buffer_locked(false) {}
+	VideoDriver_Win32Base(bool uses_hardware_acceleration = false) : VideoDriver(uses_hardware_acceleration), main_wnd(nullptr), fullscreen(false), buffer_locked(false) {}
 
 	void Stop() override;
 
@@ -65,7 +62,7 @@ protected:
 	void ClientSizeChanged(int w, int h, bool force = false);
 
 	/** Get screen depth to use for fullscreen mode. */
-	virtual uint8 GetFullscreenBpp();
+	virtual uint8_t GetFullscreenBpp();
 	/** (Re-)create the backing store. */
 	virtual bool AllocateBackingStore(int w, int h, bool force = false) = 0;
 	/** Get a pointer to the video buffer. */
@@ -122,7 +119,7 @@ public:
 /** The OpenGL video driver for windows. */
 class VideoDriver_Win32OpenGL : public VideoDriver_Win32Base {
 public:
-	VideoDriver_Win32OpenGL() : dc(nullptr), gl_rc(nullptr), driver_info(this->GetName()) {}
+	VideoDriver_Win32OpenGL() : VideoDriver_Win32Base(true), dc(nullptr), gl_rc(nullptr), driver_info(this->GetName()) {}
 
 	const char *Start(const StringList &param) override;
 
@@ -153,14 +150,14 @@ protected:
 	HGLRC  gl_rc;       ///< OpenGL context.
 	std::string driver_info; ///< Information string about selected driver.
 
-	uint8 GetFullscreenBpp() override { return 32; } // OpenGL is always 32 bpp.
+	uint8_t GetFullscreenBpp() override { return 32; } // OpenGL is always 32 bpp.
 
 	void Paint() override;
 
 	bool AllocateBackingStore(int w, int h, bool force = false) override;
 	void *GetVideoPointer() override;
 	void ReleaseVideoPointer() override;
-	void PaletteChanged(HWND hWnd) override {}
+	void PaletteChanged(HWND) override {}
 
 	const char *AllocateContext();
 	void DestroyContext();

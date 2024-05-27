@@ -22,9 +22,6 @@
 #include <memory>
 #include <vector>
 #include <thread>
-#if defined(__MINGW32__)
-#include "3rdparty/mingw-std-threads/mingw.thread.h"
-#endif
 
 /** The states of sending the packets. */
 enum SendPacketsState {
@@ -38,9 +35,8 @@ enum SendPacketsState {
 class NetworkTCPSocketHandler : public NetworkSocketHandler {
 private:
 	ring_buffer<std::unique_ptr<Packet>> packet_queue; ///< Packets that are awaiting delivery
-	std::unique_ptr<Packet> packet_recv;              ///< Partially received packet
+	std::unique_ptr<Packet> packet_recv;               ///< Partially received packet
 
-	void EmptyPacketQueue();
 public:
 	SOCKET sock;              ///< The socket currently connected to
 	bool writable;            ///< Can we write to this socket?
@@ -57,11 +53,6 @@ public:
 	void SendPacket(std::unique_ptr<Packet> packet);
 	void SendPrependPacket(std::unique_ptr<Packet> packet, int queue_after_packet_type);
 	void ShrinkToFitSendQueue();
-
-	void SendPacket(Packet *packet)
-	{
-		this->SendPacket(std::unique_ptr<Packet>(packet));
-	}
 
 	SendPacketsState SendPackets(bool closing_down = false);
 
@@ -116,6 +107,8 @@ private:
 	NetworkAddress bind_address;                        ///< Address we're binding to, if any.
 	int family = AF_UNSPEC;                             ///< Family we are using to connect with.
 
+	static std::vector<std::shared_ptr<TCPConnecter>> connecters; ///< List of connections that are currently being created.
+
 	void Resolve();
 	void OnResolved(addrinfo *ai);
 	bool TryNextAddress();
@@ -130,14 +123,14 @@ private:
 
 public:
 	TCPConnecter() {};
-	TCPConnecter(const std::string &connection_string, uint16 default_port, const NetworkAddress &bind_address = {}, int family = AF_UNSPEC);
+	TCPConnecter(const std::string &connection_string, uint16_t default_port, const NetworkAddress &bind_address = {}, int family = AF_UNSPEC);
 	virtual ~TCPConnecter();
 
 	/**
 	 * Callback when the connection succeeded.
 	 * @param s the socket that we opened
 	 */
-	virtual void OnConnect(SOCKET s) {}
+	virtual void OnConnect([[maybe_unused]] SOCKET s) {}
 
 	/**
 	 * Callback for when the connection attempt failed.
@@ -148,6 +141,18 @@ public:
 
 	static void CheckCallbacks();
 	static void KillAll();
+
+	/**
+	 * Create the connecter, and initiate connecting by putting it in the collection of TCP connections to make.
+	 * @tparam T The type of connecter to create.
+	 * @param args The arguments to the constructor of T.
+	 * @return Shared pointer to the connecter.
+	 */
+	template <class T, typename... Args>
+	static std::shared_ptr<TCPConnecter> Create(Args&& ... args)
+	{
+		return TCPConnecter::connecters.emplace_back(std::make_shared<T>(std::forward<Args>(args)...));
+	}
 };
 
 class TCPServerConnecter : public TCPConnecter {
@@ -159,7 +164,7 @@ private:
 public:
 	ServerAddress server_address; ///< Address we are connecting to.
 
-	TCPServerConnecter(const std::string &connection_string, uint16 default_port);
+	TCPServerConnecter(const std::string &connection_string, uint16_t default_port);
 
 	void SetConnected(SOCKET sock);
 	void SetFailure();

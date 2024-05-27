@@ -43,12 +43,12 @@ static_assert((LOAN_INTERVAL & 3) == 0);
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdIncreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdIncreaseLoan(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	Company *c = Company::Get(_current_company);
-
-	if (c->current_loan >= _economy.max_loan) {
-		SetDParam(0, _economy.max_loan);
+	Money max_loan = c->GetMaxLoan();
+	if (c->current_loan >= max_loan) {
+		SetDParam(0, max_loan);
 		return_cmd_error(STR_ERROR_MAXIMUM_PERMITTED_LOAN);
 	}
 
@@ -59,11 +59,11 @@ CommandCost CmdIncreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 			loan = LOAN_INTERVAL;
 			break;
 		case 1: // Take a loan as big as possible
-			loan = _economy.max_loan - c->current_loan;
+			loan = max_loan - c->current_loan;
 			break;
 		case 2: // Take the given amount of loan
-			loan = ((uint64)p1 << 32) | (p2 & 0xFFFFFFFC);
-			if (loan < LOAN_INTERVAL || c->current_loan + loan > _economy.max_loan || loan % LOAN_INTERVAL != 0) return CMD_ERROR;
+			loan = ((uint64_t)p1 << 32) | (p2 & 0xFFFFFFFC);
+			if (loan < LOAN_INTERVAL || c->current_loan + loan > max_loan || loan % LOAN_INTERVAL != 0) return CMD_ERROR;
 			break;
 	}
 
@@ -93,7 +93,7 @@ CommandCost CmdIncreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdDecreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdDecreaseLoan(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	Company *c = Company::Get(_current_company);
 
@@ -106,16 +106,16 @@ CommandCost CmdDecreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 			loan = std::min(c->current_loan, (Money)LOAN_INTERVAL);
 			break;
 		case 1: // Pay back as much as possible
-			loan = std::max(std::min(c->current_loan, c->money), (Money)LOAN_INTERVAL);
+			loan = std::max(std::min(c->current_loan, GetAvailableMoneyForCommand()), (Money)LOAN_INTERVAL);
 			loan -= loan % LOAN_INTERVAL;
 			break;
 		case 2: // Repay the given amount of loan
-			loan = ((uint64)p1 << 32) | (p2 & 0xFFFFFFFC);
+			loan = ((uint64_t)p1 << 32) | (p2 & 0xFFFFFFFC);
 			if (loan % LOAN_INTERVAL != 0 || loan < LOAN_INTERVAL || loan > c->current_loan) return CMD_ERROR; // Invalid amount to loan
 			break;
 	}
 
-	if (c->money < loan) {
+	if (GetAvailableMoneyForCommand() < loan) {
 		SetDParam(0, loan);
 		return_cmd_error(STR_ERROR_CURRENCY_REQUIRED);
 	}
@@ -129,12 +129,43 @@ CommandCost CmdDecreaseLoan(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 }
 
 /**
+ * Sets the max loan amount of your company. Does not respect the global loan setting.
+ * @param tile unused
+ * @param flags operation to perform
+ * @param p1 the company ID.
+ * @param p2 unused
+ * @param p3 the new max loan amount, will be rounded down to the multitude of LOAN_INTERVAL. If set to COMPANY_MAX_LOAN_DEFAULT reset the max loan to default(global) value.
+ * @param text unused
+ * @return zero cost or an error
+ */
+CommandCost CmdSetCompanyMaxLoan(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
+{
+	if (_current_company != OWNER_DEITY) return CMD_ERROR;
+
+	Money amount = (Money)p3;
+	if (amount != COMPANY_MAX_LOAN_DEFAULT) {
+		if (amount < 0 || amount > (Money)MAX_LOAN_LIMIT) return CMD_ERROR;
+	}
+
+	Company *c = Company::GetIfValid((CompanyID)p1);
+	if (c == nullptr) return CMD_ERROR;
+
+	if (flags & DC_EXEC) {
+		/* Round the amount down to a multiple of LOAN_INTERVAL. */
+		if (amount != COMPANY_MAX_LOAN_DEFAULT) amount -= (int64_t)amount % LOAN_INTERVAL;
+
+		c->max_loan = amount;
+		InvalidateCompanyWindows(c);
+	}
+	return CommandCost();
+}
+
+/**
  * In case of an unsafe unpause, we want the
  * user to confirm that it might crash.
- * @param w         unused
  * @param confirmed whether the user confirmed their action
  */
-static void AskUnsafeUnpauseCallback(Window *w, bool confirmed)
+static void AskUnsafeUnpauseCallback(Window *, bool confirmed)
 {
 	if (confirmed) {
 		DoCommandP(0, PM_PAUSED_ERROR, 0, CMD_PAUSE);
@@ -153,7 +184,7 @@ static void AskUnsafeUnpauseCallback(Window *w, bool confirmed)
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	switch (p1) {
 		case PM_PAUSED_SAVELOAD:
@@ -182,7 +213,7 @@ CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, 
 			PauseMode prev_mode = _pause_mode;
 
 			if ((p2 & 1) == 0) {
-				_pause_mode = static_cast<PauseMode>(_pause_mode & (byte)~p1);
+				_pause_mode = static_cast<PauseMode>(_pause_mode & (uint8_t)~p1);
 				_pause_countdown = (p2 >> 1);
 
 				/* If the only remaining reason to be paused is that we saw a command during pause, unpause. */
@@ -190,7 +221,7 @@ CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, 
 					_pause_mode = PM_UNPAUSED;
 				}
 			} else {
-				_pause_mode = static_cast<PauseMode>(_pause_mode | (byte)p1);
+				_pause_mode = static_cast<PauseMode>(_pause_mode | (uint8_t)p1);
 			}
 
 			NetworkHandlePauseChange(prev_mode, (PauseMode)p1);
@@ -212,14 +243,14 @@ CommandCost CmdPause(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, 
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdMoneyCheat(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdMoneyCheat(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	if (_networking && !_settings_game.difficulty.money_cheat_in_multiplayer) return CMD_ERROR;
 	if (flags & DC_EXEC) {
 		_cheats.money.been_used = true;
 		SetWindowDirty(WC_CHEATS, 0);
 	}
-	return CommandCost(EXPENSES_OTHER, -(int64)p3);
+	return CommandCost(EXPENSES_OTHER, -(int64_t)p3);
 }
 
 /**
@@ -232,13 +263,13 @@ CommandCost CmdMoneyCheat(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdMoneyCheatAdmin(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdMoneyCheatAdmin(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	if (flags & DC_EXEC) {
 		_cheats.money.been_used = true;
 		SetWindowDirty(WC_CHEATS, 0);
 	}
-	return CommandCost(EXPENSES_OTHER, -(int64)p3);
+	return CommandCost(EXPENSES_OTHER, -(int64_t)p3);
 }
 
 /**
@@ -250,7 +281,7 @@ CommandCost CmdMoneyCheatAdmin(TileIndex tile, DoCommandFlag flags, uint32 p1, u
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	Cheat *cht = nullptr;
 	switch ((CheatNumbers) p1) {
@@ -268,11 +299,11 @@ CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 
 		case CHT_INFLATION_INCOME:
 			if (flags & DC_EXEC) {
-				_extra_cheats.inflation_income.been_used = true;
-				_economy.inflation_payment = Clamp<uint64>(p2, 1 << 16, MAX_INFLATION);
+				_cheats.inflation_income.been_used = true;
+				_economy.inflation_payment = Clamp<uint64_t>(p2, 1 << 16, MAX_INFLATION);
 				if (_economy.inflation_payment > _economy.inflation_prices) {
 					_economy.inflation_prices = _economy.inflation_payment;
-					_extra_cheats.inflation_cost.been_used = true;
+					_cheats.inflation_cost.been_used = true;
 				}
 				RecomputePrices();
 				SetWindowDirty(WC_CHEATS, 0);
@@ -281,11 +312,11 @@ CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 
 		case CHT_INFLATION_COST:
 			if (flags & DC_EXEC) {
-				_extra_cheats.inflation_cost.been_used = true;
-				_economy.inflation_prices = Clamp<uint64>(p2, 1 << 16, MAX_INFLATION);
+				_cheats.inflation_cost.been_used = true;
+				_economy.inflation_prices = Clamp<uint64_t>(p2, 1 << 16, MAX_INFLATION);
 				if (_economy.inflation_payment > _economy.inflation_prices) {
 					_economy.inflation_payment = _economy.inflation_prices;
-					_extra_cheats.inflation_income.been_used = true;
+					_cheats.inflation_income.been_used = true;
 				}
 				RecomputePrices();
 				SetWindowDirty(WC_CHEATS, 0);
@@ -293,11 +324,11 @@ CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 			return CommandCost();
 
 		case CHT_STATION_RATING:
-			cht = &_extra_cheats.station_rating;
+			cht = &_cheats.station_rating;
 			break;
 
 		case CHT_TOWN_RATING:
-			cht = &_extra_cheats.town_rating;
+			cht = &_cheats.town_rating;
 			break;
 
 		default:
@@ -331,9 +362,9 @@ CommandCost CmdCheatSetting(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
  * @param text unused
  * @return zero cost or an error
  */
-CommandCost CmdChangeBankBalance(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdChangeBankBalance(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
-	int64 delta = (int64)p3;
+	int64_t delta = (int64_t)p3;
 	CompanyID company = (CompanyID) GB(p1, 0, 8);
 	ExpensesType expenses_type = Extract<ExpensesType, 8, 8>(p1);
 
@@ -370,12 +401,12 @@ CommandCost CmdChangeBankBalance(TileIndex tile, DoCommandFlag flags, uint32 p1,
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdGiveMoney(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data)
+CommandCost CmdGiveMoney(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data)
 {
 	if (!_settings_game.economy.give_money) return CMD_ERROR;
 
 	const Company *c = Company::Get(_current_company);
-	CommandCost amount(EXPENSES_OTHER, (int64)p3);
+	CommandCost amount(EXPENSES_OTHER, (int64_t)p3);
 	CompanyID dest_company = (CompanyID)p1;
 
 	/* You can only transfer funds that is in excess of your loan */

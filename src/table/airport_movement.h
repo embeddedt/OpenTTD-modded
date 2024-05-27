@@ -16,11 +16,11 @@
  * Finite sTate mAchine --> FTA
  */
 struct AirportFTAbuildup {
-	uint16 position; ///< The position that an airplane is at.
-	byte heading;    ///< The current orders (eg. TAKEOFF, HANGAR, ENDLANDING, etc.).
-	uint64 block;    ///< The block this position is on on the airport (st->airport.flags).
-    uint64 block2;   ///< The block this position is on on the airport (st->airport.flags2).
-	byte next;       ///< Next position from this position.
+	uint16_t position; ///< The position that an airplane is at.
+	uint8_t heading;  ///< The current orders (eg. TAKEOFF, HANGAR, ENDLANDING, etc.).
+	uint64_t block;   ///< The block this position is on on the airport (st->airport.flags).
+	uint64_t block2;   ///< The block this position is on on the airport (st->airport.flags2).
+	uint8_t next;     ///< Next position from this position.
 };
 
 ///////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ static const AirportMovingData _airport_moving_data_intercontinental[77] = {
 	AMD(  197,  168, AMED_NOSPDCLAMP | AMED_SLOWTURN, DIR_N ), // 76 Fly to landing position in air1
 };
 
- 
+
 //** Intercontinental 2 */
 static const AirportMovingData _airport_moving_data_intercontinental2[] = {
 	AMD(   8,    21, AMED_EXACTPOS,                   DIR_SE), // 00 In Hangar
@@ -667,7 +667,7 @@ static const AirportMovingData _airport_moving_data_oilrig[9] = {
 
 ///////////////////////////////////////////////////////////////////////
 /////**********Movement Machine on Airports*********************///////
-static const byte _airport_entries_dummy[] = {0, 1, 2, 3};
+static const uint8_t _airport_entries_dummy[] = {0, 1, 2, 3};
 static const AirportFTAbuildup _airport_fta_dummy[] = {
 	{ 0, TO_ALL, 0, 0, 3},
 	{ 1, TO_ALL, 0, 0, 0},
@@ -679,8 +679,8 @@ static const AirportFTAbuildup _airport_fta_dummy[] = {
 /* First element of terminals array tells us how many depots there are (to know size of array)
  * this may be changed later when airports are moved to external file  */
 static const HangarTileTable _airport_depots_country[] = { {{3, 0}, DIR_SE, 0} };
-static const byte _airport_terminal_country[] = {1, 2};
-static const byte _airport_entries_country[] = {16, 15, 18, 17};
+static const uint8_t _airport_terminal_country[] = {1, 2};
+static const uint8_t _airport_entries_country[] = {16, 15, 18, 17};
 static const AirportFTAbuildup _airport_fta_country[] = {
  	{  0, HANGAR, NOTHING_block, 0, 1 },
 	{  1, 255, AIRPORT_BUSY_block, 0, 0 }, { 1, HANGAR, 0, 0, 0 }, { 1, TERM1, TERM1_block, 0, 2 }, { 1, TERM2, 0, 0, 4 }, { 1, HELITAKEOFF, 0, 0, 19 }, { 1, 0, 0, 0, 6 },
@@ -711,8 +711,8 @@ static const AirportFTAbuildup _airport_fta_country[] = {
 };
 
 static const HangarTileTable _airport_depots_commuter[] = { {{4, 0}, DIR_SE, 0} };
-static const byte _airport_terminal_commuter[] = { 1, 3 };
-static const byte _airport_entries_commuter[] = {22, 21, 24, 23};
+static const uint8_t _airport_terminal_commuter[] = { 1, 3 };
+static const uint8_t _airport_entries_commuter[] = {22, 21, 24, 23};
 static const AirportFTAbuildup _airport_fta_commuter[] = {
 	{  0, HANGAR, NOTHING_block, 0, 1 }, { 0, HELITAKEOFF, HELIPAD2_block, 0, 1 }, { 0, 0, 0, 0, 1 },
 	{  1, 255, TAXIWAY_BUSY_block, 0, 0 }, { 1, HANGAR, 0, 0, 0 }, { 1, TAKEOFF, 0, 0, 11 }, { 1, TERM1, TAXIWAY_BUSY_block, 0, 10 }, { 1, TERM2, TAXIWAY_BUSY_block, 0, 10 }, { 1, TERM3, TAXIWAY_BUSY_block, 0, 10 }, { 1, HELIPAD1, TAXIWAY_BUSY_block, 0, 10 }, { 1, HELIPAD2, TAXIWAY_BUSY_block, 0, 10 }, { 1, HELITAKEOFF, TAXIWAY_BUSY_block, 0, 10 }, { 1, 0, 0, 0, 0 },
@@ -762,8 +762,8 @@ static const AirportFTAbuildup _airport_fta_commuter[] = {
 };
 
 static const HangarTileTable _airport_depots_city[] = { {{5, 0}, DIR_SE, 0} };
-static const byte _airport_terminal_city[] = { 1, 3 };
-static const byte _airport_entries_city[] = {26, 29, 27, 28};
+static const uint8_t _airport_terminal_city[] = { 1, 3 };
+static const uint8_t _airport_entries_city[] = {26, 29, 27, 28};
 static const AirportFTAbuildup _airport_fta_city[] = {
 	{  0, HANGAR, NOTHING_block, 0, 1 }, { 0, TAKEOFF, OUT_WAY_block, 0, 1 }, { 0, 0, 0, 0, 1 },
 	{  1, 255, TAXIWAY_BUSY_block, 0, 0 }, { 1, HANGAR, 0, 0, 0 }, { 1, TERM2, 0, 0, 6 }, { 1, TERM3, 0, 0, 6 }, { 1, 0, 0, 0, 7 }, // for all else, go to 7
@@ -803,8 +803,8 @@ static const AirportFTAbuildup _airport_fta_city[] = {
 };
 
 static const HangarTileTable _airport_depots_metropolitan[] = { {{5, 0}, DIR_SE, 0} };
-static const byte _airport_terminal_metropolitan[] = { 1, 3 };
-static const byte _airport_entries_metropolitan[] = {20, 19, 22, 21};
+static const uint8_t _airport_terminal_metropolitan[] = { 1, 3 };
+static const uint8_t _airport_entries_metropolitan[] = {20, 19, 22, 21};
 static const AirportFTAbuildup _airport_fta_metropolitan[] = {
 	{  0, HANGAR, NOTHING_block, 0, 1 },
 	{  1, 255, TAXIWAY_BUSY_block, 0, 0 }, { 1, HANGAR, 0, 0, 0 }, { 1, TERM2, 0, 0, 6 }, { 1, TERM3, 0, 0, 6 }, { 1, 0, 0, 0, 7 }, // for all else, go to 7
@@ -842,8 +842,8 @@ static const AirportFTAbuildup _airport_fta_metropolitan[] = {
 };
 
 static const HangarTileTable _airport_depots_international[] = { {{0, 3}, DIR_SE, 0}, {{6, 1}, DIR_SE, 1} };
-static const byte _airport_terminal_international[] = { 2, 3, 3 };
-static const byte _airport_entries_international[] = { 38, 37, 40, 39 };
+static const uint8_t _airport_terminal_international[] = { 2, 3, 3 };
+static const uint8_t _airport_entries_international[] = { 38, 37, 40, 39 };
 static const AirportFTAbuildup _airport_fta_international[] = {
 	{  0, HANGAR, NOTHING_block, 0, 2 }, { 0, 255, TERM_GROUP1_block, 0, 0 }, { 0, 255, TERM_GROUP2_ENTER1_block, 0, 1 }, { 0, HELITAKEOFF, HELIPAD1_block, 0, 2 }, { 0, 0, 0, 0, 2 },
 	{  1, HANGAR, NOTHING_block, 0, 3 }, { 1, 255, HANGAR2_AREA_block, 0, 1 }, { 1, HELITAKEOFF, HELIPAD2_block, 0, 3 }, { 1, 0, 0, 0, 3 },
@@ -909,8 +909,8 @@ static const AirportFTAbuildup _airport_fta_international[] = {
 
 /* intercontinental */
 static const HangarTileTable _airport_depots_intercontinental[] = { {{0, 5}, DIR_SE, 0}, {{8, 4}, DIR_SE, 1} };
-static const byte _airport_terminal_intercontinental[] = { 2, 4, 4 };
-static const byte _airport_entries_intercontinental[] = { 44, 43, 46, 45 };
+static const uint8_t _airport_terminal_intercontinental[] = { 2, 4, 4 };
+static const uint8_t _airport_entries_intercontinental[] = { 44, 43, 46, 45 };
 static const AirportFTAbuildup _airport_fta_intercontinental[] = {
 	{  0, HANGAR, NOTHING_block, 0, 2 }, { 0, 255, HANGAR1_AREA_block | TERM_GROUP1_block, 0, 0 }, { 0, 255, HANGAR1_AREA_block | TERM_GROUP1_block, 0, 1 }, { 0, TAKEOFF, HANGAR1_AREA_block | TERM_GROUP1_block, 0, 2 }, { 0, 0, 0, 0, 2 },
 	{  1, HANGAR, NOTHING_block, 0, 3 }, { 1, 255, HANGAR2_AREA_block, 0, 1 }, { 1, 255, HANGAR2_AREA_block, 0, 0 }, { 1, 0, 0, 0, 3 },
@@ -1001,8 +1001,8 @@ static const AirportFTAbuildup _airport_fta_intercontinental[] = {
 };
 
 static const HangarTileTable _airport_depots_intercontinental2[] = { {{0, 1}, DIR_SE, 0}, {{11, 1}, DIR_SE, 1}  };
-static const byte _airport_terminal_intercontinental2[] = {2, 1, 2, 1, 2, 2};
-static const byte _airport_entries_intercontinental2[] = {55, 54, 56, 57};
+static const uint8_t _airport_terminal_intercontinental2[] = {2, 1, 2, 1, 2, 2};
+static const uint8_t _airport_entries_intercontinental2[] = {55, 54, 56, 57};
 static const AirportFTAbuildup _airport_fta_intercontinental2[] = {
   /* Hangars */
 	{  0, HANGAR, NOTHING_block, 0, 2 }, { 0, 255, 0, 0, 0}, { 0, 255, 0, 0, 1}, { 0, 255, 0, 0, 2}, { 0, 255, 0, 0, 3}, { 0, 255, 0, 0, 4}, { 0, 0, 0, 0, 2},
@@ -1058,7 +1058,7 @@ static const AirportFTAbuildup _airport_fta_intercontinental2[] = {
 	{ 45, ENDTAKEOFF, NOTHING_block, 0, 0 },
   /* Helipads */
   { 46, HELIPAD1, HELIPAD1_block, 0, 46 }, { 46, HANGAR, 0, 0, 29 }, { 46, HELITAKEOFF, 0, 0, 60 },
-	{ 47, HELIPAD2, HELIPAD2_block, 0, 47 }, { 47, HANGAR, 0, 0, 30 }, { 47, HELITAKEOFF, 0, 0, 61 },  
+	{ 47, HELIPAD2, HELIPAD2_block, 0, 47 }, { 47, HANGAR, 0, 0, 30 }, { 47, HELITAKEOFF, 0, 0, 61 },
 	/* landing */
 	{ 48, FLYING, NOTHING_block, 0, 56 }, { 48, LANDING, 0, 0, 49 },  { 48, HELILANDING, 0, 0, 66 },
 	{ 49, LANDING, RUNWAY_IN_block, 0, 50 },
@@ -1075,7 +1075,7 @@ static const AirportFTAbuildup _airport_fta_intercontinental2[] = {
   /* Taxi */
   { 58, 0, NEW20_block, 0, 59 },
   { 59, 255, TERM_GROUP2_block, 0, 0 }, {  59, HELITAKEOFF, 0, 0, 70 }, {  59, 0, 0, 0, 25 },
-  /* Helitakeoff */ 
+  /* Helitakeoff */
   { 60, 0, HELIPAD1_block, 0, 62 },
   { 61, 0, HELIPAD2_block, 0, 63 },
   { 62, HELITAKEOFF, NOTHING_block, 0, 0 },
@@ -1097,75 +1097,75 @@ static const AirportFTAbuildup _airport_fta_intercontinental2[] = {
 };
 
 static const HangarTileTable _airport_depots_circle[] = {{ {6, 6}, DIR_SW, 0 }, {{6, 8}, DIR_NW, 1 }, {{8, 6}, DIR_SE, 2 }, {{8, 8}, DIR_NE, 3 } };
-static const byte _airport_terminal_circle[] = {4, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1 };
-static const byte _airport_entries_circle[] = {163, 162, 161, 160};
+static const uint8_t _airport_terminal_circle[] = {4, 2, 2, 1, 2, 2, 1, 2, 2, 1, 2, 2, 1 };
+static const uint8_t _airport_entries_circle[] = {163, 162, 161, 160};
 static const AirportFTAbuildup _airport_fta_circle[] = {
   /* Hangars */
-  { 0, HANGAR, NOTHING_block, 0, 4 }, { 0, 255, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 5 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 6 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 7 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 8 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 9 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 10 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 11 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 0 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 1 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 2 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 3 }, { 0, TERM8, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, TERM9, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, TAKEOFF, HANGAR1_AREA_block | NEW12_block, CIRCLE_block, 4 }, { 0, 0, HANGAR1_AREA_block | NEW12_block, NEW4_block | CIRCLE_block, 4 }, 
+  { 0, HANGAR, NOTHING_block, 0, 4 }, { 0, 255, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 5 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 6 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 7 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 8 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 9 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 10 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 11 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 0 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 1 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 2 }, { 0, 255, HANGAR1_AREA_block | NEW11_block | NEW12_block, NEW4_block, 3 }, { 0, TERM8, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, TERM9, HANGAR1_AREA_block | NEW12_block, 0, 4 }, { 0, TAKEOFF, HANGAR1_AREA_block | NEW12_block, CIRCLE_block, 4 }, { 0, 0, HANGAR1_AREA_block | NEW12_block, NEW4_block | CIRCLE_block, 4 },
   { 1, HANGAR, NOTHING_block, 0, 5 }, { 1, 255, HANGAR2_AREA_block | NEW5_block, 0, 1 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 2 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 3 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 4 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 5 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 6 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 7 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 8 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 9 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 10 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 11 }, { 1, 255, HANGAR2_AREA_block | NEW4_block | NEW5_block, NEW2_block, 0 }, { 1, TERM3, HANGAR2_AREA_block | NEW5_block, 0, 5 }, { 1, TERM4, HANGAR2_AREA_block | NEW5_block, 0, 5 }, { 1, TAKEOFF, HANGAR2_AREA_block | NEW5_block, CIRCLE_block, 5 }, { 1, 0, HANGAR2_AREA_block | NEW5_block, NEW2_block | CIRCLE_block, 5 },
-  { 2, HANGAR, NOTHING_block, 0, 6 }, { 2, 255, NEW19_block, HANGAR1_AREA_block, 7 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 8 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 9 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 10 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 11 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 0 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 1 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 2 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 3 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 4 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 5 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 6 }, { 2, TERM13, NEW19_block, HANGAR1_AREA_block, 6 }, { 2, TERM14, NEW19_block, HANGAR1_AREA_block, 6 }, { 2, TAKEOFF, NEW19_block, HANGAR1_AREA_block | CIRCLE_block, 6 }, { 2, 0, NEW19_block, HANGAR1_AREA_block | NEW6_block | CIRCLE_block, 6 }, 
-  { 3, HANGAR, NOTHING_block, 0, 7 }, { 3, 255, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 10 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 11 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 0 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 1 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 2 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 3 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 4 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 5 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 6 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 7 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 8 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 9 }, { 3, TERM18, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 7 }, { 3, TERM19, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 7 }, { 3, TAKEOFF, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | CIRCLE_block, 7 }, { 3, 0, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block | CIRCLE_block, 7 }, 
-  { 4, 255, HANGAR1_AREA_block, 0, 0 }, { 4, HANGAR, 0, 0, 0 }, { 4, 0, NEW12_block, 0, 39 },   
-  { 5, 255, HANGAR2_AREA_block, 0, 0 }, { 5, HANGAR, 0, 0, 1 }, { 5, 0, NEW5_block, 0, 32 },   
-  { 6, 255, 0, HANGAR1_AREA_block, 0 }, { 6, HANGAR, 0, 0, 2 }, { 6, 0, NEW19_block, 0, 46 },   
-  { 7, 255, 0, HANGAR2_AREA_block, 0 }, { 7, HANGAR, 0, 0, 3 }, { 7, 0, TERM_GROUP2_EXIT2_block, 0, 53 },    
+  { 2, HANGAR, NOTHING_block, 0, 6 }, { 2, 255, NEW19_block, HANGAR1_AREA_block, 7 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 8 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 9 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 10 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 11 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 0 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 1 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 2 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 3 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 4 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 5 }, { 2, 255, NEW18_block | NEW19_block, HANGAR1_AREA_block | NEW6_block, 6 }, { 2, TERM13, NEW19_block, HANGAR1_AREA_block, 6 }, { 2, TERM14, NEW19_block, HANGAR1_AREA_block, 6 }, { 2, TAKEOFF, NEW19_block, HANGAR1_AREA_block | CIRCLE_block, 6 }, { 2, 0, NEW19_block, HANGAR1_AREA_block | NEW6_block | CIRCLE_block, 6 },
+  { 3, HANGAR, NOTHING_block, 0, 7 }, { 3, 255, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 10 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 11 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 0 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 1 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 2 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 3 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 4 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 5 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 6 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 7 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 8 }, { 3, 255, TERM_GROUP2_EXIT1_block | TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block, 9 }, { 3, TERM18, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 7 }, { 3, TERM19, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block, 7 }, { 3, TAKEOFF, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | CIRCLE_block, 7 }, { 3, 0, TERM_GROUP2_EXIT2_block, HANGAR2_AREA_block | NEW8_block | CIRCLE_block, 7 },
+  { 4, 255, HANGAR1_AREA_block, 0, 0 }, { 4, HANGAR, 0, 0, 0 }, { 4, 0, NEW12_block, 0, 39 },
+  { 5, 255, HANGAR2_AREA_block, 0, 0 }, { 5, HANGAR, 0, 0, 1 }, { 5, 0, NEW5_block, 0, 32 },
+  { 6, 255, 0, HANGAR1_AREA_block, 0 }, { 6, HANGAR, 0, 0, 2 }, { 6, 0, NEW19_block, 0, 46 },
+  { 7, 255, 0, HANGAR2_AREA_block, 0 }, { 7, HANGAR, 0, 0, 3 }, { 7, 0, TERM_GROUP2_EXIT2_block, 0, 53 },
   /* Terminals */
-  { 8, TERM1, TERM1_block, 0, 28 }, { 8, TAKEOFF, 0, 0, 28 }, { 8, 0, 0, 0, 29 },          
-	{ 9, TERM2, TERM2_block, 0, 30 },          
-	{ 10, TERM3, TERM3_block, 0, 31 }, { 10, HANGAR, 0, 0, 32 }, { 10, 0, 0, 0, 31 },          
-  { 11, TERM4, TERM4_block, 0, 33 }, { 11, HANGAR, 0, 0, 32 }, { 11, 0, 0, 0, 33 },        
-  { 12, TERM5, TERM5_block, 0, 34 },            
-  { 13, TERM6, TERM6_block, 0, 36 }, { 13, TAKEOFF, 0, 0, 35 }, { 13, 0, 0, 0, 36 },          
-  { 14, TERM7, TERM7_block, 0, 37 },          
-  { 15, TERM8, TERM8_block, 0, 38 }, { 15, HANGAR, 0, 0, 39 }, { 15, 0, 0, 0, 38 },           
-  { 16, TERM9, TERM9_block, 0, 40 }, { 16, HANGAR, 0, 0, 39 }, { 16, 0, 0, 0, 40 },            
-	{ 17, TERM10, TERM10_block, 0, 41 },        
-	{ 18, TERM11, TERM11_block, 0, 43 }, { 18, TAKEOFF, 0, 0, 42 }, { 18, 0, 0, 0, 43 },          
-  { 19, TERM12, TERM12_block, 0, 44 },         
-  { 20, TERM13, TERM13_block, 0, 45 }, { 20, HANGAR, 0, 0, 46 }, { 20, 0, 0, 0, 45 },          
-  { 21, TERM14, TERM14_block, 0, 47 }, { 21, HANGAR, 0, 0, 46 }, { 21, 0, 0, 0, 47 },         
-  { 22, TERM15, TERM15_block, 0, 48 },         
-  { 23, TERM16, TERM16_block, 0, 50 }, { 23, TAKEOFF, 0, 0, 49 }, { 23, 0, 0, 0, 50 },          
-  { 24, TERM17, TERM17_block, 0, 51 },          
-	{ 25, TERM18, TERM18_block, 0, 52 }, { 25, HANGAR, 0, 0, 53 }, { 25, 0, 0, 0, 52 },    
-	{ 26, TERM19, TERM19_block, 0, 54 }, { 26, HANGAR, 0, 0, 53 }, { 26, 0, 0, 0, 54 },        
-  { 27, TERM20, TERM20_block, 0, 55 },          
+  { 8, TERM1, TERM1_block, 0, 28 }, { 8, TAKEOFF, 0, 0, 28 }, { 8, 0, 0, 0, 29 },
+	{ 9, TERM2, TERM2_block, 0, 30 },
+	{ 10, TERM3, TERM3_block, 0, 31 }, { 10, HANGAR, 0, 0, 32 }, { 10, 0, 0, 0, 31 },
+  { 11, TERM4, TERM4_block, 0, 33 }, { 11, HANGAR, 0, 0, 32 }, { 11, 0, 0, 0, 33 },
+  { 12, TERM5, TERM5_block, 0, 34 },
+  { 13, TERM6, TERM6_block, 0, 36 }, { 13, TAKEOFF, 0, 0, 35 }, { 13, 0, 0, 0, 36 },
+  { 14, TERM7, TERM7_block, 0, 37 },
+  { 15, TERM8, TERM8_block, 0, 38 }, { 15, HANGAR, 0, 0, 39 }, { 15, 0, 0, 0, 38 },
+  { 16, TERM9, TERM9_block, 0, 40 }, { 16, HANGAR, 0, 0, 39 }, { 16, 0, 0, 0, 40 },
+	{ 17, TERM10, TERM10_block, 0, 41 },
+	{ 18, TERM11, TERM11_block, 0, 43 }, { 18, TAKEOFF, 0, 0, 42 }, { 18, 0, 0, 0, 43 },
+  { 19, TERM12, TERM12_block, 0, 44 },
+  { 20, TERM13, TERM13_block, 0, 45 }, { 20, HANGAR, 0, 0, 46 }, { 20, 0, 0, 0, 45 },
+  { 21, TERM14, TERM14_block, 0, 47 }, { 21, HANGAR, 0, 0, 46 }, { 21, 0, 0, 0, 47 },
+  { 22, TERM15, TERM15_block, 0, 48 },
+  { 23, TERM16, TERM16_block, 0, 50 }, { 23, TAKEOFF, 0, 0, 49 }, { 23, 0, 0, 0, 50 },
+  { 24, TERM17, TERM17_block, 0, 51 },
+	{ 25, TERM18, TERM18_block, 0, 52 }, { 25, HANGAR, 0, 0, 53 }, { 25, 0, 0, 0, 52 },
+	{ 26, TERM19, TERM19_block, 0, 54 }, { 26, HANGAR, 0, 0, 53 }, { 26, 0, 0, 0, 54 },
+  { 27, TERM20, TERM20_block, 0, 55 },
   /* Terminals Taxi */
   { 28, 255, NEW_block, CIRCLE_block, 0 }, { 28, TERM1, TERM1_block, 0, 8 }, { 28, 0, 0, CIRCLE_block, 56 },
 	{ 29, 255, NEW2_block, CIRCLE_block, 0 }, { 29, TERM1, TERM1_block, 0, 8 }, { 29, 0,0, CIRCLE_block, 30 },
 	{ 30, 255, NEW3_block, CIRCLE_block, 0 }, { 30, TERM2, TERM2_block, 0, 9 }, { 30, 0, 0, CIRCLE_block, 31 },
-  { 31, 255, NEW4_block, CIRCLE_block, 0 }, { 31, TERM3, TERM3_block, 0, 10 }, { 31, 0, 0, CIRCLE_block, 57 }, 
-  { 32, 255, NEW5_block, 0, 0 }, { 32, TERM3, TERM3_block, 0, 10 }, { 32, TERM4, TERM4_block, 0, 11 }, { 32, HANGAR, 0, 0, 5 }, { 32, TAKEOFF, 0, CIRCLE_block, 57 }, { 32, 0, 0, NEW2_block | CIRCLE_block, 57 }, 
-  { 33, 255, NEW6_block, CIRCLE_block, 0 }, { 33, TERM4, TERM4_block, 0, 11 }, { 33, 0, 0, CIRCLE_block, 34 }, 
-  { 34, 255, NEW7_block, CIRCLE_block, 0 }, { 34, TERM5, TERM5_block, 0, 12 }, { 34, TAKEOFF, NEW7_block, 0, 70 }, { 34, TAKEOFF, 0, CIRCLE_block, 35 }, { 34, 0, 0, CIRCLE_block, 35 },  
+  { 31, 255, NEW4_block, CIRCLE_block, 0 }, { 31, TERM3, TERM3_block, 0, 10 }, { 31, 0, 0, CIRCLE_block, 57 },
+  { 32, 255, NEW5_block, 0, 0 }, { 32, TERM3, TERM3_block, 0, 10 }, { 32, TERM4, TERM4_block, 0, 11 }, { 32, HANGAR, 0, 0, 5 }, { 32, TAKEOFF, 0, CIRCLE_block, 57 }, { 32, 0, 0, NEW2_block | CIRCLE_block, 57 },
+  { 33, 255, NEW6_block, CIRCLE_block, 0 }, { 33, TERM4, TERM4_block, 0, 11 }, { 33, 0, 0, CIRCLE_block, 34 },
+  { 34, 255, NEW7_block, CIRCLE_block, 0 }, { 34, TERM5, TERM5_block, 0, 12 }, { 34, TAKEOFF, NEW7_block, 0, 70 }, { 34, TAKEOFF, 0, CIRCLE_block, 35 }, { 34, 0, 0, CIRCLE_block, 35 },
   { 35, 255, NEW8_block, CIRCLE_block, 0 }, { 35, TERM6, TERM6_block, 0, 13 }, { 35, 0, 0, CIRCLE_block, 58},
 	{ 36, 255, NEW9_block, CIRCLE_block, 0 }, { 36, TERM6, TERM6_block, 0, 13 }, { 36, 0, 0, CIRCLE_block, 37 },
 	{ 37, 255, NEW10_block, CIRCLE_block, 0 }, { 37, TERM7, TERM7_block, 0, 14 }, { 37, 0, 0, CIRCLE_block, 38 },
   { 38, 255, NEW11_block, CIRCLE_block, 0 }, { 38, TERM8, TERM8_block, 0, 15 }, { 38, 0 , 0, CIRCLE_block, 59 },
-  { 39, 255, NEW12_block, 0, 0 }, { 39, TERM8, TERM8_block, 0, 15 }, { 39, TERM9, TERM9_block, 0, 16 }, { 39, HANGAR, 0, 0, 4 }, { 39, TAKEOFF, 0, CIRCLE_block, 59 },  { 39, 0, 0, NEW4_block | CIRCLE_block, 59 }, 
-  { 40, 255, NEW13_block, CIRCLE_block, 0 }, { 40, TERM9, TERM9_block, 0, 16 }, { 40, 0, 0, CIRCLE_block, 41 }, 
-  { 41, 255, NEW14_block, CIRCLE_block, 0 }, { 41, TERM10, TERM10_block, 0, 17 }, { 41, TAKEOFF, NEW14_block, 0, 80 }, { 41, TAKEOFF, 0, CIRCLE_block, 42 }, { 41, 0, 0, CIRCLE_block, 42 },  
+  { 39, 255, NEW12_block, 0, 0 }, { 39, TERM8, TERM8_block, 0, 15 }, { 39, TERM9, TERM9_block, 0, 16 }, { 39, HANGAR, 0, 0, 4 }, { 39, TAKEOFF, 0, CIRCLE_block, 59 },  { 39, 0, 0, NEW4_block | CIRCLE_block, 59 },
+  { 40, 255, NEW13_block, CIRCLE_block, 0 }, { 40, TERM9, TERM9_block, 0, 16 }, { 40, 0, 0, CIRCLE_block, 41 },
+  { 41, 255, NEW14_block, CIRCLE_block, 0 }, { 41, TERM10, TERM10_block, 0, 17 }, { 41, TAKEOFF, NEW14_block, 0, 80 }, { 41, TAKEOFF, 0, CIRCLE_block, 42 }, { 41, 0, 0, CIRCLE_block, 42 },
   { 42, 255, NEW15_block, CIRCLE_block, 0 }, { 42, TERM11, TERM11_block, 0, 18 }, { 42, 0, 0, CIRCLE_block, 60},
 	{ 43, 255, NEW16_block, CIRCLE_block, 0 }, { 43, TERM11, TERM11_block, 0, 18 }, { 43, 0, 0, CIRCLE_block, 44 },
 	{ 44, 255, NEW17_block, CIRCLE_block, 0 }, { 44, TERM12, TERM12_block, 0, 19 }, { 44, 0, 0, CIRCLE_block, 45 },
-  { 45, 255, NEW18_block, CIRCLE_block, 0 }, { 45, TERM13, TERM13_block, 0, 20 }, { 45, 0, 0, CIRCLE_block, 61 }, 
-  { 46, 255, NEW19_block, 0, 0 }, { 46, TERM13, TERM13_block, 0, 20 }, { 46, TERM14, TERM14_block, 0, 21 }, { 46, HANGAR, 0, 0, 6 }, { 46, TAKEOFF, 0, CIRCLE_block, 61 }, { 46, 0, 0, NEW6_block | CIRCLE_block, 61 }, 
-  { 47, 255, NEW20_block, CIRCLE_block, 0 }, { 47, TERM14, TERM14_block, 0, 21 }, { 47, 0, 0, CIRCLE_block, 48 }, 
-  { 48, 255, TERM_GROUP1_block, CIRCLE_block, 0 }, { 48, TERM15, TERM15_block, 0, 22 }, { 48, TAKEOFF, TERM_GROUP1_block, 0, 90 }, { 48, TAKEOFF, 0, CIRCLE_block, 49 }, { 48, 0, 0, CIRCLE_block, 49 },  
-  { 49, 255, TERM_GROUP2_block, CIRCLE_block, 0 }, { 49, TERM16, TERM16_block, 0, 23 }, { 49, 0, 0, CIRCLE_block, 62}, 
+  { 45, 255, NEW18_block, CIRCLE_block, 0 }, { 45, TERM13, TERM13_block, 0, 20 }, { 45, 0, 0, CIRCLE_block, 61 },
+  { 46, 255, NEW19_block, 0, 0 }, { 46, TERM13, TERM13_block, 0, 20 }, { 46, TERM14, TERM14_block, 0, 21 }, { 46, HANGAR, 0, 0, 6 }, { 46, TAKEOFF, 0, CIRCLE_block, 61 }, { 46, 0, 0, NEW6_block | CIRCLE_block, 61 },
+  { 47, 255, NEW20_block, CIRCLE_block, 0 }, { 47, TERM14, TERM14_block, 0, 21 }, { 47, 0, 0, CIRCLE_block, 48 },
+  { 48, 255, TERM_GROUP1_block, CIRCLE_block, 0 }, { 48, TERM15, TERM15_block, 0, 22 }, { 48, TAKEOFF, TERM_GROUP1_block, 0, 90 }, { 48, TAKEOFF, 0, CIRCLE_block, 49 }, { 48, 0, 0, CIRCLE_block, 49 },
+  { 49, 255, TERM_GROUP2_block, CIRCLE_block, 0 }, { 49, TERM16, TERM16_block, 0, 23 }, { 49, 0, 0, CIRCLE_block, 62},
 	{ 50, 255, TERM_GROUP2_ENTER1_block, CIRCLE_block, 0 }, { 50, TERM16, TERM16_block, 0, 23 }, { 50, 0, 0, CIRCLE_block, 51 },
 	{ 51, 255, TERM_GROUP2_ENTER2_block, CIRCLE_block, 0 }, { 51, TERM17, TERM17_block, 0, 24 }, { 51, 0, 0, CIRCLE_block, 52 },
-  { 52, 255, TERM_GROUP2_EXIT1_block, CIRCLE_block, 0 }, { 52, TERM18, TERM18_block, 0, 25 }, { 52, 0, 0, CIRCLE_block, 63 }, 
-  { 53, 255, TERM_GROUP2_EXIT2_block, 0, 0 }, { 53, TERM18, TERM18_block, 0, 25 }, { 53, TERM19, TERM19_block, 0, 26 }, { 53, HANGAR, 0, 0, 7 }, { 53, TAKEOFF, 0, CIRCLE_block, 63 }, { 53, 0, 0, NEW8_block | CIRCLE_block, 63 }, 
-  { 54, 255, PRE_HELIPAD_block, CIRCLE_block, 0 }, { 54, TERM19, TERM19_block, 0, 26 }, { 54, 0, 0, CIRCLE_block, 55 }, 
-  { 55, 255, HELIPAD_GROUP_block, CIRCLE_block, 0 }, { 55, TERM20, TERM20_block, 0, 27 }, { 55, TAKEOFF, HELIPAD_GROUP_block, 0, 100 }, { 55, TAKEOFF, 0, CIRCLE_block, 28 }, { 55, 0, 0, CIRCLE_block, 28 },  
+  { 52, 255, TERM_GROUP2_EXIT1_block, CIRCLE_block, 0 }, { 52, TERM18, TERM18_block, 0, 25 }, { 52, 0, 0, CIRCLE_block, 63 },
+  { 53, 255, TERM_GROUP2_EXIT2_block, 0, 0 }, { 53, TERM18, TERM18_block, 0, 25 }, { 53, TERM19, TERM19_block, 0, 26 }, { 53, HANGAR, 0, 0, 7 }, { 53, TAKEOFF, 0, CIRCLE_block, 63 }, { 53, 0, 0, NEW8_block | CIRCLE_block, 63 },
+  { 54, 255, PRE_HELIPAD_block, CIRCLE_block, 0 }, { 54, TERM19, TERM19_block, 0, 26 }, { 54, 0, 0, CIRCLE_block, 55 },
+  { 55, 255, HELIPAD_GROUP_block, CIRCLE_block, 0 }, { 55, TERM20, TERM20_block, 0, 27 }, { 55, TAKEOFF, HELIPAD_GROUP_block, 0, 100 }, { 55, TAKEOFF, 0, CIRCLE_block, 28 }, { 55, 0, 0, CIRCLE_block, 28 },
   /* Taxi circle 1*/
-  { 56, 255, 0, NEW_block | CIRCLE_block, 0 }, { 56, TAKEOFF, 0, NEW_block, 102 }, { 56, TAKEOFF, 0, CIRCLE_block, 29 },  { 56, HELITAKEOFF, 0, 0, 168 }, { 56, HELITAKEOFF, 0, CIRCLE_block, 29 }, { 56, 0, 0, CIRCLE_block, 29 }, 
+  { 56, 255, 0, NEW_block | CIRCLE_block, 0 }, { 56, TAKEOFF, 0, NEW_block, 102 }, { 56, TAKEOFF, 0, CIRCLE_block, 29 },  { 56, HELITAKEOFF, 0, 0, 168 }, { 56, HELITAKEOFF, 0, CIRCLE_block, 29 }, { 56, 0, 0, CIRCLE_block, 29 },
 	{ 57, 255, 0, NEW2_block | CIRCLE_block, 0 }, { 57, TAKEOFF, 0, NEW2_block, 67 }, { 57, TAKEOFF, 0, CIRCLE_block, 33 }, { 57, HANGAR, 0, 0, 32 }, { 57, HANGAR, 0, CIRCLE_block, 33 }, { 57, 0, 0, CIRCLE_block, 33 },
 	{ 58, 255, 0, NEW3_block | CIRCLE_block, 0 }, { 58, TAKEOFF, 0, NEW3_block, 72 }, { 58, TAKEOFF, 0, CIRCLE_block, 36 }, { 58, HELITAKEOFF, 0, 0, 164 }, { 58, HELITAKEOFF, 0, CIRCLE_block, 36 }, { 58, 0, 0, CIRCLE_block, 36 },
   { 59, 255, 0, NEW4_block | CIRCLE_block, 0 }, { 59, TAKEOFF, 0, NEW4_block, 77 }, { 59, TAKEOFF, 0, CIRCLE_block, 40 }, { 59, HANGAR, 0, 0, 39 }, { 59, HANGAR, 0, CIRCLE_block, 40 }, { 59, 0, 0, CIRCLE_block, 40 },
-  { 60, 255, 0, NEW5_block | CIRCLE_block, 0 }, { 60, TAKEOFF, 0, NEW5_block, 82 }, { 60, TAKEOFF, 0, CIRCLE_block, 43 }, { 60, HELITAKEOFF, 0, 0, 170 }, { 60, HELITAKEOFF, 0, CIRCLE_block, 43 }, { 60, 0, 0, CIRCLE_block, 43 }, 
-	{ 61, 255, 0, NEW6_block | CIRCLE_block, 0 }, { 61, TAKEOFF, 0, NEW6_block, 87 }, { 61, TAKEOFF, 0, CIRCLE_block, 47 }, { 61, HANGAR, 0, 0, 46 }, { 61, HANGAR, 0, CIRCLE_block, 47 }, { 61, 0, 0, CIRCLE_block, 47 }, 
+  { 60, 255, 0, NEW5_block | CIRCLE_block, 0 }, { 60, TAKEOFF, 0, NEW5_block, 82 }, { 60, TAKEOFF, 0, CIRCLE_block, 43 }, { 60, HELITAKEOFF, 0, 0, 170 }, { 60, HELITAKEOFF, 0, CIRCLE_block, 43 }, { 60, 0, 0, CIRCLE_block, 43 },
+	{ 61, 255, 0, NEW6_block | CIRCLE_block, 0 }, { 61, TAKEOFF, 0, NEW6_block, 87 }, { 61, TAKEOFF, 0, CIRCLE_block, 47 }, { 61, HANGAR, 0, 0, 46 }, { 61, HANGAR, 0, CIRCLE_block, 47 }, { 61, 0, 0, CIRCLE_block, 47 },
 	{ 62, 255, 0, NEW7_block | CIRCLE_block, 0 }, { 62, TAKEOFF, 0, NEW7_block, 92 }, { 62, TAKEOFF, 0, CIRCLE_block, 50 }, { 62, HELITAKEOFF, 0, 0, 166 }, { 62, HELITAKEOFF, 0, CIRCLE_block, 50 }, { 62, 0, 0, CIRCLE_block, 50 },
   { 63, 255, 0, NEW8_block | CIRCLE_block, 0 }, { 63, TAKEOFF, 0, NEW8_block, 97 }, { 63, TAKEOFF, 0, CIRCLE_block, 54 }, { 63, HANGAR, 0, 0, 53 }, { 63, HANGAR, 0, CIRCLE_block, 54 }, { 63, 0, 0, CIRCLE_block, 54 },
   /* Taxi circle 2*/
@@ -1173,42 +1173,42 @@ static const AirportFTAbuildup _airport_fta_circle[] = {
   { 65, 255, 0, NEW9_block | NEW_block | CIRCLE_block, 0 }, { 65, 0, 0, NEW_block | CIRCLE_block, 56 },
   { 66, 0, 0, NEW10_block, 30 },
   { 67, 255, 0, NEW2_block | NEW11_block, 0 }, { 67, 0, 0, NEW11_block, 68 },
-  { 68, 255, 0, NEW11_block, 0 }, { 68, 0, 0, NEW11_block, 69 }, 
-  { 69, 255, 0, TERM3_block | NEW11_block, 0 }, { 69, 0, 0, TERM3_block, 108 }, 
+  { 68, 255, 0, NEW11_block, 0 }, { 68, 0, 0, NEW11_block, 69 },
+  { 69, 255, 0, TERM3_block | NEW11_block, 0 }, { 69, 0, 0, TERM3_block, 108 },
   { 70, 255, NEW7_block, NEW12_block, 0 }, { 70, 0, 0, NEW12_block, 71 },
-  { 71, 0, 0, NEW12_block, 106 },  
+  { 71, 0, 0, NEW12_block, 106 },
   { 72, 255, 0, NEW3_block | NEW13_block, 0 }, { 72, 0, 0, NEW13_block, 73 },
-  { 73, 0, 0, NEW13_block, 104 },   
+  { 73, 0, 0, NEW13_block, 104 },
   { 74, 255, 0, NEW14_block, 0 }, { 74, 0, 0, NEW14_block, 75 },
   { 75, 255, 0, NEW14_block | NEW3_block | CIRCLE_block, 0 }, { 75, 0, 0, NEW3_block | CIRCLE_block, 58 },
   { 76, 0, 0, NEW15_block, 37 },
-  { 77, 255, 0, NEW4_block | NEW16_block, 0 }, { 77, 0, 0, NEW16_block, 78 },  
-  { 78, 255, 0, NEW16_block, 0 }, { 78, 0, 0,NEW16_block, 79 },  
+  { 77, 255, 0, NEW4_block | NEW16_block, 0 }, { 77, 0, 0, NEW16_block, 78 },
+  { 78, 255, 0, NEW16_block, 0 }, { 78, 0, 0,NEW16_block, 79 },
   { 79, 255, 0, NEW16_block | TERM7_block, 0 }, { 79, 0, 0, TERM7_block, 116 },
   { 80, 255, NEW14_block, NEW17_block, 0 }, { 80, 0, 0, NEW17_block, 81 },
-  { 81, 0, 0, NEW17_block, 114 },  
+  { 81, 0, 0, NEW17_block, 114 },
   { 82, 255, 0, NEW5_block | NEW18_block, 0 }, { 82, 0, 0, NEW18_block, 83 },
-  { 83, 0, 0, NEW18_block, 112 },   
+  { 83, 0, 0, NEW18_block, 112 },
   { 84, 255, 0, NEW19_block, 0 }, { 84, 0, 0, NEW19_block, 85 },
   { 85, 255, 0, NEW19_block | NEW5_block | CIRCLE_block, 0 }, { 85, 0, 0, NEW5_block | CIRCLE_block, 60 },
   { 86, 0, 0, NEW20_block, 44 },
-  { 87, 255, 0, NEW6_block | TERM_GROUP1_block, 0 }, { 87, 0, 0, TERM_GROUP1_block, 88 },  
-  { 88, 255, 0, TERM_GROUP1_block, 0 }, { 88, 0, 0, TERM_GROUP1_block, 89 },  
-  { 89, 255, 0, TERM_GROUP1_block | TERM11_block, 0 }, { 89, 0, 0, TERM11_block, 124 },  
+  { 87, 255, 0, NEW6_block | TERM_GROUP1_block, 0 }, { 87, 0, 0, TERM_GROUP1_block, 88 },
+  { 88, 255, 0, TERM_GROUP1_block, 0 }, { 88, 0, 0, TERM_GROUP1_block, 89 },
+  { 89, 255, 0, TERM_GROUP1_block | TERM11_block, 0 }, { 89, 0, 0, TERM11_block, 124 },
   { 90, 255, TERM_GROUP1_block, TERM_GROUP2_block, 0 }, { 90, 0, 0, TERM_GROUP2_block, 91 },
-  { 91, 0, 0, TERM_GROUP2_block, 122 }, 
+  { 91, 0, 0, TERM_GROUP2_block, 122 },
   { 92, 255, 0, NEW7_block | TERM_GROUP2_ENTER1_block, 0 }, { 92, 0, 0, TERM_GROUP2_ENTER1_block, 93 },
-  { 93, 0, 0, TERM_GROUP2_ENTER1_block, 120 },  
+  { 93, 0, 0, TERM_GROUP2_ENTER1_block, 120 },
   { 94, 255, 0, TERM_GROUP2_ENTER2_block, 0 }, { 94, 0, 0, TERM_GROUP2_ENTER2_block, 95 },
   { 95, 255, 0, TERM_GROUP2_ENTER2_block | NEW7_block | CIRCLE_block, 0 }, { 95, 0, 0, NEW7_block | CIRCLE_block, 62 },
   { 96, 0, 0, TERM_GROUP2_EXIT1_block, 51 },
-  { 97, 255, 0, NEW8_block | TERM_GROUP2_EXIT2_block, 0 }, { 97, 0, 0, TERM_GROUP2_EXIT2_block, 98 },  
-  { 98, 255, 0, TERM_GROUP2_EXIT2_block, 0 },  { 98, 0, 0, TERM_GROUP2_EXIT2_block, 99 },  
-  { 99, 255, 0, TERM_GROUP2_EXIT2_block | TERM15_block, 0 }, { 99, 0, 0, TERM15_block, 132 },  
+  { 97, 255, 0, NEW8_block | TERM_GROUP2_EXIT2_block, 0 }, { 97, 0, 0, TERM_GROUP2_EXIT2_block, 98 },
+  { 98, 255, 0, TERM_GROUP2_EXIT2_block, 0 },  { 98, 0, 0, TERM_GROUP2_EXIT2_block, 99 },
+  { 99, 255, 0, TERM_GROUP2_EXIT2_block | TERM15_block, 0 }, { 99, 0, 0, TERM15_block, 132 },
   {100, 255, HELIPAD_GROUP_block, PRE_HELIPAD_block, 0 }, { 100, 0, 0, PRE_HELIPAD_block, 101 },
-  {101, 0, 0, PRE_HELIPAD_block, 130 },  
+  {101, 0, 0, PRE_HELIPAD_block, 130 },
   {102, 255, 0, NEW_block | HELIPAD_GROUP_block, 0 }, {102, 0, 0, HELIPAD_GROUP_block, 103 },
-  {103, 0, 0, HELIPAD_GROUP_block, 128 },   
+  {103, 0, 0, HELIPAD_GROUP_block, 128 },
   /* Taxi circle 3*/
   {104, 0, 0, TERM1_block, 105 },
   {105, 0, 0, TERM1_block, 106 },
@@ -1222,7 +1222,7 @@ static const AirportFTAbuildup _airport_fta_circle[] = {
   {113, 0, 0, TERM5_block, 114 },
   {114, 0, 0, TERM6_block, 115 },
   {115, 0, 0, TERM6_block, 116 },
-  {116, 0, 0, TERM7_block, 139 }, 
+  {116, 0, 0, TERM7_block, 139 },
   {117, 255, RUNWAY_IN2_block, TERM8_block, 0 }, {117, TERM6, 0, TERM8_block, 119 }, {117, 0, 0, TERM8_block, 118 },
   {118, 0, 0, TERM8_block, 76 },
   {119, 0, 0, TERM8_block, 74 },
@@ -1230,7 +1230,7 @@ static const AirportFTAbuildup _airport_fta_circle[] = {
   {121, 0, 0, TERM9_block, 122 },
   {122, 0, 0, TERM10_block, 123 },
   {123, 0, 0, TERM10_block, 124 },
-  {124, 0, 0, TERM11_block, 142 }, 
+  {124, 0, 0, TERM11_block, 142 },
   {125, 255, IN_WAY_block, TERM12_block, 0 }, {125, TERM11, 0, TERM12_block, 127 }, {125, 0, 0, TERM12_block, 126 },
   {126, 0, 0, TERM12_block, 86 },
   {127, 0, 0, TERM12_block, 84 },
@@ -1238,7 +1238,7 @@ static const AirportFTAbuildup _airport_fta_circle[] = {
   {129, 0, 0, TERM13_block, 130 },
   {130, 0, 0, TERM14_block, 131 },
   {131, 0, 0, TERM14_block, 132 },
-  {132, 0, 0, TERM15_block, 145 }, 
+  {132, 0, 0, TERM15_block, 145 },
   {133, 255, IN_WAY2_block, TERM16_block, 0 }, {133, TERM16, 0, TERM16_block, 135 }, {133, 0, 0, TERM16_block, 134 },
   {134, 0, 0, TERM16_block, 96 },
   {135, 0, 0, TERM16_block, 94 },
@@ -1288,13 +1288,13 @@ static const AirportFTAbuildup _airport_fta_circle[] = {
 	{ 174, HELILANDING, 0, TERM20_block, 175 },
 	{ 175, HELIENDLANDING, 0, TERM20_block, 60 }, { 175, 255, 0, 0, 6},{ 175, 255, 0, 0, 7}, { 175, 255, 0, 0, 8}, { 175, 255, 0, 0, 9}, { 175, 255, 0, 0, 10}, { 175, 255, 0, 0, 11}, { 175, 255, 0, 0, 0}, { 175, 255, 0, 0, 1}, { 175, 255, 0, 0, 2}, { 175, 255, 0, 0, 3}, { 175, 255, 0, 0, 4}, { 175, 255, 0, 0, 5}, { 175, 0, 0, 0, 60 },
 	{ MAX_ELEMENTS, 0, 0, 0, 0 } // end marker. DO NOT REMOVE
-}; 
+};
 
 
 
 
 /* heliports, oilrigs don't have depots */
-static const byte _airport_entries_heliport[] = { 7, 7, 7, 7 };
+static const uint8_t _airport_entries_heliport[] = { 7, 7, 7, 7 };
 static const AirportFTAbuildup _airport_fta_heliport[] = {
 	{ 0, HELIPAD1, HELIPAD1_block, 0, 1 },
 	{ 1, HELITAKEOFF, NOTHING_block, 0, 0 }, // takeoff
@@ -1313,7 +1313,7 @@ static const AirportFTAbuildup _airport_fta_heliport[] = {
 
 /* helidepots */
 static const HangarTileTable _airport_depots_helidepot[] = { {{1, 0}, DIR_SE, 0} };
-static const byte _airport_entries_helidepot[] = { 4, 4, 4, 4 };
+static const uint8_t _airport_entries_helidepot[] = { 4, 4, 4, 4 };
 static const AirportFTAbuildup _airport_fta_helidepot[] = {
 	{  0, HANGAR, NOTHING_block, 0, 1 },
 	{  1, 255, HANGAR2_AREA_block, 0, 0 }, { 1, HANGAR, 0, 0, 0 }, { 1, HELIPAD1, HELIPAD1_block, 0, 14 }, { 1, HELITAKEOFF, 0, 0, 15 }, { 1, 0, 0, 0, 0 },
@@ -1342,7 +1342,7 @@ static const AirportFTAbuildup _airport_fta_helidepot[] = {
 
 /* helistation */
 static const HangarTileTable _airport_depots_helistation[] = { {{0, 0}, DIR_SE, 0} };
-static const byte _airport_entries_helistation[] = { 25, 25, 25, 25 };
+static const uint8_t _airport_entries_helistation[] = { 25, 25, 25, 25 };
 static const AirportFTAbuildup _airport_fta_helistation[] = {
 	{  0, HANGAR, NOTHING_block, 0, 8 },    { 0, HELIPAD1, 0, 0, 1 }, { 0, HELIPAD2, 0, 0, 1 }, { 0, HELIPAD3, 0, 0, 1 }, { 0, HELITAKEOFF, 0, 0, 1 }, { 0, 0, 0, 0, 0 },
 	{  1, 255, HANGAR2_AREA_block, 0, 0 },  { 1, HANGAR, 0, 0, 0 }, { 1, HELITAKEOFF, 0, 0, 3 }, { 1, 0, 0, 0, 4 },

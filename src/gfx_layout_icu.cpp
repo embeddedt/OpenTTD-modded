@@ -26,7 +26,7 @@
 
 #include "safeguards.h"
 
-/** harfbuzz doesn't use floats, so we need a value to scale position with to get sub-pixel precision. */
+/** HarfBuzz FreeType integration sets the font scaling, which is always in 1/64th of a pixel. */
 constexpr float FONT_SCALE = 64.0;
 
 /**
@@ -45,7 +45,7 @@ public:
 	std::vector<GlyphID> glyphs; ///< The glyphs of the run. Valid after Shape() is called.
 	std::vector<int> advance; ///< The advance (width) of the glyphs. Valid after Shape() is called.
 	std::vector<int> glyph_to_char; ///< The mapping from glyphs to characters. Valid after Shape() is called.
-	std::vector<float> positions; ///< The positions of the glyphs. Valid after Shape() is called.
+	std::vector<Point> positions; ///< The positions of the glyphs. Valid after Shape() is called.
 	int total_advance = 0; ///< The total advance of the run. Valid after Shape() is called.
 
 	ICURun(int start, int length, UBiDiLevel level, UScriptCode script = USCRIPT_UNKNOWN, Font *font = nullptr) : start(start), length(length), level(level), script(script), font(font) {}
@@ -62,7 +62,7 @@ public:
 	class ICUVisualRun : public ParagraphLayouter::VisualRun {
 	private:
 		std::vector<GlyphID> glyphs;
-		std::vector<float> positions;
+		std::vector<Point> positions;
 		std::vector<int> glyph_to_char;
 
 		int total_advance;
@@ -71,9 +71,9 @@ public:
 	public:
 		ICUVisualRun(const ICURun &run, int x);
 
-		const GlyphID *GetGlyphs() const override { return this->glyphs.data(); }
-		const float *GetPositions() const override { return this->positions.data(); }
-		const int *GetGlyphToCharMap() const override { return this->glyph_to_char.data(); }
+		const std::vector<GlyphID> &GetGlyphs() const override { return this->glyphs; }
+		const std::vector<Point> &GetPositions() const override { return this->positions; }
+		const std::vector<int> &GetGlyphToCharMap() const override { return this->glyph_to_char; }
 
 		const Font *GetFont() const override { return this->font; }
 		int GetLeading() const override { return this->font->fc->GetHeight(); }
@@ -89,7 +89,7 @@ public:
 		int CountRuns() const override { return (uint)this->size();  }
 		const VisualRun &GetVisualRun(int run) const override { return this->at(run); }
 
-		int GetInternalCharLength(WChar c) const override
+		int GetInternalCharLength(char32_t c) const override
 		{
 			/* ICU uses UTF-16 internally which means we need to account for surrogate pairs. */
 			return c >= 0x010000U ? 2 : 1;
@@ -132,19 +132,12 @@ ICUParagraphLayout::ICUVisualRun::ICUVisualRun(const ICURun &run, int x) :
 	glyphs(run.glyphs), glyph_to_char(run.glyph_to_char), total_advance(run.total_advance), font(run.font)
 {
 	/* If there are no positions, the ICURun was not Shaped; that should never happen. */
-	assert(run.positions.size() != 0);
+	assert(!run.positions.empty());
 	this->positions.reserve(run.positions.size());
 
-	/* "positions" is an array of x/y. So we need to alternate. */
-	bool is_x = true;
-	for (auto &position : run.positions) {
-		if (is_x) {
-			this->positions.push_back(position + x);
-		} else {
-			this->positions.push_back(position);
-		}
-
-		is_x = !is_x;
+	/* Copy positions, moving x coordinate by x offset. */
+	for (const Point &pt : run.positions) {
+		this->positions.emplace_back(pt.x + x, pt.y);
 	}
 }
 
@@ -154,13 +147,15 @@ ICUParagraphLayout::ICUVisualRun::ICUVisualRun(const ICURun &run, int x) :
  * @param buff The buffer of which a partial (depending on start/length of the run) will be shaped.
  * @param length The length of the buffer.
  */
-void ICURun::Shape(UChar *buff, size_t buff_length) {
+void ICURun::Shape(UChar *buff, size_t buff_length)
+{
 	auto hbfont = hb_ft_font_create_referenced(*(static_cast<const FT_Face *>(font->fc->GetOSHandle())));
-	hb_font_set_scale(hbfont, this->font->fc->GetFontSize() * FONT_SCALE, this->font->fc->GetFontSize() * FONT_SCALE);
+	/* Match the flags with how we render the glyphs. */
+	hb_ft_font_set_load_flags(hbfont, GetFontAAState(this->font->fc->GetSize()) ? FT_LOAD_TARGET_NORMAL : FT_LOAD_TARGET_MONO);
 
 	/* ICU buffer is in UTF-16. */
 	auto hbbuf = hb_buffer_create();
-	hb_buffer_add_utf16(hbbuf, reinterpret_cast<uint16 *>(buff), buff_length, this->start, this->length);
+	hb_buffer_add_utf16(hbbuf, reinterpret_cast<uint16_t *>(buff), buff_length, this->start, this->length);
 
 	/* Set all the properties of this segment. */
 	hb_buffer_set_direction(hbbuf, (this->level & 1) == 1 ? HB_DIRECTION_RTL : HB_DIRECTION_LTR);
@@ -184,7 +179,7 @@ void ICURun::Shape(UChar *buff, size_t buff_length) {
 	/* Reserve space, as we already know the size. */
 	this->glyphs.reserve(glyph_count);
 	this->glyph_to_char.reserve(glyph_count);
-	this->positions.reserve(glyph_count * 2 + 2);
+	this->positions.reserve(glyph_count + 1);
 	this->advance.reserve(glyph_count);
 
 	/* Prepare the glyphs/position. ICUVisualRun will give the position an offset if needed. */
@@ -192,17 +187,15 @@ void ICURun::Shape(UChar *buff, size_t buff_length) {
 	for (unsigned int i = 0; i < glyph_count; i++) {
 		int x_advance;
 
-		if (buff[glyph_info[i].cluster] >= SCC_SPRITE_START && buff[glyph_info[i].cluster] <= SCC_SPRITE_END) {
+		if (buff[glyph_info[i].cluster] >= SCC_SPRITE_START && buff[glyph_info[i].cluster] <= SCC_SPRITE_END && glyph_info[i].codepoint == 0) {
 			auto glyph = this->font->fc->MapCharToGlyph(buff[glyph_info[i].cluster]);
 
 			this->glyphs.push_back(glyph);
-			this->positions.push_back(advance);
-			this->positions.push_back((this->font->fc->GetHeight() - ScaleSpriteTrad(FontCache::GetDefaultFontHeight(this->font->fc->GetSize()))) / 2); // Align sprite font to centre
+			this->positions.emplace_back(advance, (this->font->fc->GetHeight() - ScaleSpriteTrad(FontCache::GetDefaultFontHeight(this->font->fc->GetSize()))) / 2); // Align sprite font to centre
 			x_advance = this->font->fc->GetGlyphWidth(glyph);
 		} else {
 			this->glyphs.push_back(glyph_info[i].codepoint);
-			this->positions.push_back(glyph_pos[i].x_offset / FONT_SCALE + advance);
-			this->positions.push_back(glyph_pos[i].y_offset / FONT_SCALE);
+			this->positions.emplace_back(glyph_pos[i].x_offset / FONT_SCALE + advance, glyph_pos[i].y_offset / FONT_SCALE);
 			x_advance = glyph_pos[i].x_advance / FONT_SCALE;
 		}
 
@@ -211,9 +204,8 @@ void ICURun::Shape(UChar *buff, size_t buff_length) {
 		advance += x_advance;
 	}
 
-	/* Position has one more element to close off the array. */
-	this->positions.push_back(advance);
-	this->positions.push_back(0);
+	/* End-of-run position. */
+	this->positions.emplace_back(advance, 0);
 
 	/* Track the total advancement we made. */
 	this->total_advance = advance;
@@ -340,13 +332,11 @@ std::vector<ICURun> ItemizeScript(UChar *buff, size_t length, std::vector<ICURun
  *
  * Basically, this always returns the same or more runs than given.
  *
- * @param buff The string to itemize.
- * @param length The length of the string.
  * @param runs_current The current runs.
  * @param font_mapping The font mapping.
  * @return The runs.
  */
-std::vector<ICURun> ItemizeStyle(UChar *buff, size_t length, std::vector<ICURun> &runs_current, FontMap &font_mapping)
+std::vector<ICURun> ItemizeStyle(std::vector<ICURun> &runs_current, FontMap &font_mapping)
 {
 	std::vector<ICURun> runs;
 
@@ -380,15 +370,39 @@ std::vector<ICURun> ItemizeStyle(UChar *buff, size_t length, std::vector<ICURun>
 
 	auto runs = ItemizeBidi(buff, length);
 	runs = ItemizeScript(buff, length, runs);
-	runs = ItemizeStyle(buff, length, runs, font_mapping);
+	runs = ItemizeStyle(runs, font_mapping);
 
-	if (runs.size() == 0) return nullptr;
+	if (runs.empty()) return nullptr;
 
 	for (auto &run : runs) {
 		run.Shape(buff, length);
 	}
 
 	return new ICUParagraphLayout(runs, buff, length);
+}
+
+/* static */ std::unique_ptr<icu::BreakIterator> ICUParagraphLayoutFactory::break_iterator;
+
+/**
+ * Initialize data needed for the ICU layouter.
+ */
+/* static */ void ICUParagraphLayoutFactory::InitializeLayouter()
+{
+	auto locale = icu::Locale(_current_language->isocode);
+	UErrorCode status = U_ZERO_ERROR;
+	ICUParagraphLayoutFactory::break_iterator.reset(icu::BreakIterator::createLineInstance(locale, status));
+	assert(U_SUCCESS(status));
+}
+
+/**
+ * Get a thread-safe line break iterator.
+ * @returns unique_ptr managed BreakIterator instance.
+ */
+/* static */ std::unique_ptr<icu::BreakIterator> ICUParagraphLayoutFactory::GetBreakIterator()
+{
+	assert(ICUParagraphLayoutFactory::break_iterator != nullptr);
+
+	return std::unique_ptr<icu::BreakIterator>(ICUParagraphLayoutFactory::break_iterator->clone());
 }
 
 std::unique_ptr<const ICUParagraphLayout::Line> ICUParagraphLayout::NextLine(int max_width)
@@ -423,11 +437,8 @@ std::unique_ptr<const ICUParagraphLayout::Line> ICUParagraphLayout::NextLine(int
 	/* If the text does not fit into the available width, find a suitable breaking point. */
 	int new_partial_length = 0;
 	if (cur_width > max_width) {
-		auto locale = icu::Locale(_current_language->isocode);
-
 		/* Create a break-iterator to find a good place to break lines. */
-		UErrorCode err = U_ZERO_ERROR;
-		auto break_iterator = icu::BreakIterator::createLineInstance(locale, err);
+		auto break_iterator = ICUParagraphLayoutFactory::GetBreakIterator();
 		break_iterator->setText(icu::UnicodeString(this->buff, this->buff_length));
 
 		auto overflow_run = last_run - 1;
@@ -522,10 +533,11 @@ std::unique_ptr<const ICUParagraphLayout::Line> ICUParagraphLayout::NextLine(int
 	return line;
 }
 
-/* static */ size_t ICUParagraphLayoutFactory::AppendToBuffer(UChar *buff, const UChar *buffer_last, WChar c)
+/* static */ size_t ICUParagraphLayoutFactory::AppendToBuffer(UChar *buff, const UChar *buffer_last, char32_t c)
 {
+	assert(buff < buffer_last);
 	/* Transform from UTF-32 to internal ICU format of UTF-16. */
-	int32 length = 0;
+	int32_t length = 0;
 	UErrorCode err = U_ZERO_ERROR;
 	u_strFromUTF32(buff, buffer_last - buff, &length, (UChar32*)&c, 1, &err);
 	return length;

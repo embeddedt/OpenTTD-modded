@@ -31,7 +31,7 @@ namespace upstream_sl {
 
 /* We do need to read this single value, as the bigger it gets, the more data is stored */
 struct CompanyOldAI {
-	uint8 num_build_rec;
+	uint8_t num_build_rec;
 };
 
 class SlCompanyOldAIBuildRec : public DefaultSaveLoadHandler<SlCompanyOldAIBuildRec, CompanyOldAI> {
@@ -155,7 +155,7 @@ public:
 	void Load(CompanyProperties *c) const override
 	{
 		if (!IsSavegameVersionBefore(SLV_SAVELOAD_LIST_LENGTH)) {
-			c->num_valid_stat_ent = (uint8)SlGetStructListLength(UINT8_MAX);
+			c->num_valid_stat_ent = (uint8_t)SlGetStructListLength(UINT8_MAX);
 		}
 		if (c->num_valid_stat_ent > lengthof(c->old_economy)) SlErrorCorrupt("Too many old economy entries");
 
@@ -249,6 +249,7 @@ static const SaveLoad _company_desc[] = {
 
 	SLE_CONDVAR(CompanyProperties, current_loan,          SLE_VAR_I64 | SLE_FILE_I32,  SL_MIN_VERSION, SLV_65),
 	SLE_CONDVAR(CompanyProperties, current_loan,          SLE_INT64,                  SLV_65, SL_MAX_VERSION),
+	SLE_CONDVAR(CompanyProperties, max_loan,              SLE_INT64, SLV_MAX_LOAN_FOR_COMPANY, SL_MAX_VERSION),
 
 	    SLE_VAR(CompanyProperties, colour,                SLE_UINT8),
 	    SLE_VAR(CompanyProperties, money_fraction,        SLE_UINT8),
@@ -310,7 +311,7 @@ struct PLYRChunkHandler : ChunkHandler {
 			Company *c = new (index) Company();
 			SetDefaultCompanySettings(c->index);
 			SlObject((CompanyProperties *)c, slt);
-			_company_colours[index] = (Colours)c->colour;
+			_company_colours[index] = c->colour;
 		}
 	}
 

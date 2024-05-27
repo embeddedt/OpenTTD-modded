@@ -50,6 +50,7 @@ enum Action0RemapPropertyIds {
 	A0RPI_SIGNALS_STYLE_OPPOSITE_SIDE,
 	A0RPI_SIGNALS_STYLE_COMBINED_NORMAL_SHUNT,
 	A0RPI_SIGNALS_STYLE_REALISTIC_BRAKING_ONLY,
+	A0RPI_SIGNALS_STYLE_BOTH_SIDES,
 	A0RPI_OBJECT_USE_LAND_GROUND,
 	A0RPI_OBJECT_EDGE_FOUNDATION_MODE,
 	A0RPI_OBJECT_FLOOD_RESISTANT,
@@ -82,10 +83,12 @@ enum Action2VariableRemapIds {
 	A2VRI_VEHICLE_CURRENT_SPEED_SCALED,
 	A2VRI_ROADSTOP_INFO_NEARBY_TILES_EXT,
 	A2VRI_ROADSTOP_INFO_NEARBY_TILES_V2,
+	A2VRI_ROADSTOP_ROAD_INFO_NEARBY_TILES,
 	A2VRI_RAILTYPE_SIGNAL_RESTRICTION_INFO,
 	A2VRI_RAILTYPE_SIGNAL_CONTEXT,
 	A2VRI_RAILTYPE_SIGNAL_SIDE,
 	A2VRI_RAILTYPE_SIGNAL_VERTICAL_CLEARANCE,
+	A2VRI_RAILTYPE_ADJACENT_CROSSING,
 	A2VRI_SIGNALS_SIGNAL_RESTRICTION_INFO,
 	A2VRI_SIGNALS_SIGNAL_CONTEXT,
 	A2VRI_SIGNALS_SIGNAL_STYLE,
@@ -103,7 +106,7 @@ enum Action2VariableRemapIds {
 	A2VRI_TOWNS_XY,
 };
 
-enum GRFFeatureTestObservationFlag : uint8 {
+enum GRFFeatureTestObservationFlag : uint8_t {
 	GFTOF_MORE_ACTION2_IDS = 0,
 	GFTOF_TOWN_ZONE_CALLBACK,
 	GFTOF_MORE_VARACTION2_TYPES,
@@ -116,7 +119,7 @@ enum GRFFeatureTestObservationFlag : uint8 {
 /** Action14 feature definition */
 struct GRFFeatureInfo {
 	const char *name; // nullptr indicates the end of the list
-	uint16 version;
+	uint16_t version;
 	GRFFeatureTestObservationFlag observation_flag;
 
 	/** Create empty object used to identify the end of a list. */
@@ -126,7 +129,7 @@ struct GRFFeatureInfo {
 		observation_flag(GFTOF_INVALID)
 	{}
 
-	GRFFeatureInfo(const char *name, uint16 version, GRFFeatureTestObservationFlag observation_flag = GFTOF_INVALID) :
+	GRFFeatureInfo(const char *name, uint16_t version, GRFFeatureTestObservationFlag observation_flag = GFTOF_INVALID) :
 		name(name),
 		version(version),
 		observation_flag(observation_flag)

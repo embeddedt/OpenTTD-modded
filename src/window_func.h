@@ -18,10 +18,11 @@
 
 Window *FindWindowById(WindowClass cls, WindowNumber number);
 Window *FindWindowByClass(WindowClass cls);
+Window *FindWindowByToken(WindowToken token);
 Window *GetMainWindow();
 void ChangeWindowOwner(Owner old_owner, Owner new_owner);
 
-void ResizeWindow(Window *w, int x, int y, bool clamp_to_screen = true);
+void ResizeWindow(Window *w, int x, int y, bool clamp_to_screen = true, bool schedule_resize = true);
 int PositionMainToolbar(Window *w);
 int PositionStatusbar(Window *w);
 int PositionNewsMessage(Window *w);
@@ -53,13 +54,13 @@ void ShowVitalWindows();
  */
 void ReInitAllWindows(bool zoom_changed);
 
-void SetWindowWidgetDirty(WindowClass cls, WindowNumber number, byte widget_index);
+void SetWindowWidgetDirty(WindowClass cls, WindowNumber number, WidgetID widget_index);
 void SetWindowDirty(WindowClass cls, WindowNumber number);
 void SetWindowClassesDirty(WindowClass cls);
 
-void CloseWindowById(WindowClass cls, WindowNumber number, bool force = true);
-void CloseAllWindowsById(WindowClass cls, WindowNumber number, bool force = true);
-void CloseWindowByClass(WindowClass cls);
+void CloseWindowById(WindowClass cls, WindowNumber number, bool force = true, int data = 0);
+void CloseAllWindowsById(WindowClass cls, WindowNumber number, bool force = true, int data = 0);
+void CloseWindowByClass(WindowClass cls, int data = 0);
 
 bool FocusWindowById(WindowClass cls, WindowNumber number);
 

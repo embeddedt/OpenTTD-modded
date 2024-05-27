@@ -11,9 +11,9 @@
 #define GRAPH_GUI_H
 
 #include "window_type.h"
-extern uint8 _cargo_payment_x_mode;
+extern uint8_t _cargo_payment_x_mode;
 
-typedef uint16 StationID;
+typedef uint16_t StationID;
 
 void ShowOperatingProfitGraph();
 void ShowIncomeGraph();

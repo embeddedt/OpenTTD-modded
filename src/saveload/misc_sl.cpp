@@ -28,26 +28,28 @@
 
 extern TileIndex _cur_tileloop_tile;
 extern TileIndex _aux_tileloop_tile;
-extern uint16 _disaster_delay;
-extern byte _trees_tick_ctr;
-extern std::string _savegame_id;
+extern uint16_t _disaster_delay;
+extern uint8_t _trees_tick_ctr;
 
 /* Keep track of current game position */
 extern int _saved_scrollpos_x;
 extern int _saved_scrollpos_y;
 extern ZoomLevel _saved_scrollpos_zoom;
 
-extern byte _age_cargo_skip_counter; ///< Skip aging of cargo? Used before savegame version 162.
+extern uint8_t _age_cargo_skip_counter; ///< Skip aging of cargo? Used before savegame version 162.
 extern TimeoutTimer<TimerGameTick> _new_competitor_timeout;
 
 namespace upstream_sl {
 
 static const SaveLoad _date_desc[] = {
-	SLEG_CONDVAR("date",                   _date,                   SLE_FILE_U16 | SLE_VAR_I32,  SL_MIN_VERSION,  SLV_31),
-	SLEG_CONDVAR("date",                   _date,                   SLE_INT32,                  SLV_31, SL_MAX_VERSION),
-	    SLEG_VAR("date_fract",             _date_fract,             SLE_UINT16),
-	SLEG_CONDVAR("tick_counter",           _tick_counter,           SLE_FILE_U16 | SLE_VAR_U64,  SL_MIN_VERSION, SLV_U64_TICK_COUNTER),
-	SLEG_CONDVAR("tick_counter",           _tick_counter,           SLE_UINT64,                  SLV_U64_TICK_COUNTER, SL_MAX_VERSION),
+	SLEG_CONDVAR("date",                   CalTime::Detail::now.cal_date,          SLE_FILE_U16 | SLE_VAR_I32,  SL_MIN_VERSION,  SLV_31),
+	SLEG_CONDVAR("date",                   CalTime::Detail::now.cal_date,          SLE_INT32,                   SLV_31, SL_MAX_VERSION),
+	    SLEG_VAR("date_fract",             CalTime::Detail::now.cal_date_fract,    SLE_UINT16),
+	SLEG_CONDVAR("tick_counter",           _tick_counter,                          SLE_FILE_U16 | SLE_VAR_U64,  SL_MIN_VERSION, SLV_U64_TICK_COUNTER),
+	SLEG_CONDVAR("tick_counter",           _tick_counter,                          SLE_UINT64,                  SLV_U64_TICK_COUNTER, SL_MAX_VERSION),
+	SLEG_CONDVAR("economy_date",           EconTime::Detail::now.econ_date,        SLE_INT32,                   SLV_ECONOMY_DATE, SL_MAX_VERSION),
+	SLEG_CONDVAR("economy_date_fract",     EconTime::Detail::now.econ_date_fract,  SLE_UINT16,                  SLV_ECONOMY_DATE, SL_MAX_VERSION),
+	SLEG_CONDVAR("calendar_sub_date_fract", CalTime::Detail::now.sub_date_fract,   SLE_UINT16,                SLV_CALENDAR_SUB_DATE_FRACT, SL_MAX_VERSION),
 	SLEG_CONDVAR("age_cargo_skip_counter", _age_cargo_skip_counter, SLE_UINT8,                   SL_MIN_VERSION, SLV_162),
 	SLEG_CONDVAR("cur_tileloop_tile",      _cur_tileloop_tile,      SLE_FILE_U16 | SLE_VAR_U32,  SL_MIN_VERSION, SLV_6),
 	SLEG_CONDVAR("cur_tileloop_tile",      _cur_tileloop_tile,      SLE_UINT32,                  SLV_6, SL_MAX_VERSION),
@@ -57,11 +59,11 @@ static const SaveLoad _date_desc[] = {
 	    SLEG_VAR("company_tick_counter", _cur_company_tick_index, SLE_FILE_U8  | SLE_VAR_U32),
 	    SLEG_VAR("trees_tick_counter",     _trees_tick_ctr,         SLE_UINT8),
 	SLEG_CONDVAR("pause_mode",             _pause_mode,             SLE_UINT8,                   SLV_4, SL_MAX_VERSION),
-	SLEG_CONDSSTR("id",                    _savegame_id,            SLE_STR,                     SLV_SAVEGAME_ID, SL_MAX_VERSION),
+	SLEG_CONDSSTR("id",                    _game_session_stats.savegame_id, SLE_STR,                     SLV_SAVEGAME_ID, SL_MAX_VERSION),
 	/* For older savegames, we load the current value as the "period"; afterload will set the "fired" and "elapsed". */
-	SLEG_CONDVAR("next_competitor_start",        _new_competitor_timeout.period,          SLE_FILE_U16 | SLE_VAR_U32,  SL_MIN_VERSION, SLV_109),
-	SLEG_CONDVAR("next_competitor_start",        _new_competitor_timeout.period,          SLE_UINT32,                  SLV_109, SLV_AI_START_DATE),
-	SLEG_CONDVAR("competitors_interval",         _new_competitor_timeout.period,          SLE_UINT32,                  SLV_AI_START_DATE, SL_MAX_VERSION),
+	SLEG_CONDVAR("next_competitor_start",        _new_competitor_timeout.period.value,    SLE_FILE_U16 | SLE_VAR_U32,  SL_MIN_VERSION, SLV_109),
+	SLEG_CONDVAR("next_competitor_start",        _new_competitor_timeout.period.value,    SLE_UINT32,                  SLV_109, SLV_AI_START_DATE),
+	SLEG_CONDVAR("competitors_interval",         _new_competitor_timeout.period.value,    SLE_UINT32,                  SLV_AI_START_DATE, SL_MAX_VERSION),
 	SLEG_CONDVAR("competitors_interval_elapsed", _new_competitor_timeout.storage.elapsed, SLE_UINT32,                  SLV_AI_START_DATE, SL_MAX_VERSION),
 	SLEG_CONDVAR("competitors_interval_fired",   _new_competitor_timeout.fired,           SLE_BOOL,                    SLV_AI_START_DATE, SL_MAX_VERSION),
 };
@@ -104,7 +106,7 @@ struct DATEChunkHandler : ChunkHandler {
 		this->LoadCommon(_date_check_desc, _date_check_sl_compat);
 
 		if (IsSavegameVersionBefore(SLV_31)) {
-			_load_check_data.current_date += DAYS_TILL_ORIGINAL_BASE_YEAR;
+			_load_check_data.current_date += CalTime::DAYS_TILL_ORIGINAL_BASE_YEAR.AsDelta();
 		}
 	}
 };

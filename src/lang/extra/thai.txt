@@ -9,6 +9,9 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :รถยนต
 STR_VEHICLE_TYPE_SHIPS                                          :เรือ
 STR_VEHICLE_TYPE_AIRCRAFT                                       :อากาศยาน
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :แสดงตารางเวลาในแบบติ๊กแทนแบบวัน: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :แสดงเวลาในการเดินทางในตารางเวลาเป็น ticks แทนที่ days
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}เปิด/ปิด การโปร่งใสของตัวบอกการบรรทุกของ. กด Ctrl+Click สำหรับการล็อก
 
 # Tracerestrict GUI
@@ -27,6 +30,18 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}ปร�
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}สร้างครั้งแรก: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}กำหลังหยุด, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}มุ่งหน้าสู่ {STATION} ด้วยความเร็ว {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}ไม่มีสถานที่ที่ต้องไป, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}มุ่งหน้าสู่ {WAYPOINT} ด้วยความเร็ว {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}มุ่งหน้าสู่ {DEPOT} ด้วยความเร็ว {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}ซ่อมบำรุงที่ {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}ไม่สามารถวาง {STATION} ได้, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}ไม่สามารถวาง {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}ไม่สามารถวาง {DEPOT}ได้ {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}เพิ่มรายการที่ต้องทำก่อนหน้ารายการที่เลือก หรือเพิ่มในท้ายรายการที่มีอยู่แล้ว
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :ถึง:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :ออก:
@@ -61,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}ขา�
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}ไม่สามารถซื้อหุ้น 25% จากบริษัทนี้ได้...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}ไม่สามารถขายหุ้น 25% จากบริษัทนี้ได้...
 STR_ERROR_PROTECTED                                             :{WHITE}บริษัทนี้ยังไม่เก่าแก่พอที่จะซื้อหุ้นหรือซื้อกิจการได้...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :เสาอาณัติสัญญาณตอนอัตโนมัติ แบบทางเดียว

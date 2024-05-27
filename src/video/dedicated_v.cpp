@@ -103,12 +103,12 @@ extern bool SafeLoad(const std::string &filename, SaveLoadOperation fop, Detaile
 static FVideoDriver_Dedicated iFVideoDriver_Dedicated;
 
 
-const char *VideoDriver_Dedicated::Start(const StringList &parm)
+const char *VideoDriver_Dedicated::Start(const StringList &)
 {
 	this->UpdateAutoResolution();
 
 	int bpp = BlitterFactory::GetCurrentBlitter()->GetScreenDepth();
-	_dedicated_video_mem = (bpp == 0) ? nullptr : MallocT<byte>(static_cast<size_t>(_cur_resolution.width) * _cur_resolution.height * (bpp / 8));
+	_dedicated_video_mem = (bpp == 0) ? nullptr : MallocT<uint8_t>(static_cast<size_t>(_cur_resolution.width) * _cur_resolution.height * (bpp / 8));
 
 	_screen.width  = _screen.pitch = _cur_resolution.width;
 	_screen.height = _cur_resolution.height;
@@ -126,6 +126,8 @@ const char *VideoDriver_Dedicated::Start(const StringList &parm)
 #ifdef _MSC_VER
 	/* Disable the MSVC assertion message box. */
 	_set_error_mode(_OUT_TO_STDERR);
+	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
 #endif
 
 	DEBUG(driver, 1, "Loading dedicated server");
@@ -140,9 +142,9 @@ void VideoDriver_Dedicated::Stop()
 	free(_dedicated_video_mem);
 }
 
-void VideoDriver_Dedicated::MakeDirty(int left, int top, int width, int height) {}
-bool VideoDriver_Dedicated::ChangeResolution(int w, int h) { return false; }
-bool VideoDriver_Dedicated::ToggleFullscreen(bool fs) { return false; }
+void VideoDriver_Dedicated::MakeDirty(int, int, int, int) {}
+bool VideoDriver_Dedicated::ChangeResolution(int, int) { return false; }
+bool VideoDriver_Dedicated::ToggleFullscreen(bool) { return false; }
 
 #if defined(UNIX)
 static bool InputWaiting()
@@ -199,13 +201,15 @@ void VideoDriver_Dedicated::MainLoop()
 	signal(SIGQUIT, DedicatedSignalHandler);
 #endif
 
+	SetSelfAsGameThread();
+
 	/* Load the dedicated server stuff */
 	_is_network_server = true;
 	_network_dedicated = true;
 	_current_company = _local_company = COMPANY_SPECTATOR;
 
-	/* If SwitchMode is SM_LOAD_GAME, it means that the user used the '-g' options */
-	if (_switch_mode != SM_LOAD_GAME) {
+	/* If SwitchMode is SM_LOAD_GAME / SM_START_HEIGHTMAP, it means that the user used the '-g' options */
+	if (_switch_mode != SM_LOAD_GAME && _switch_mode != SM_START_HEIGHTMAP) {
 		StartNewGameWithoutGUI(GENERATE_NEW_SEED);
 	}
 

@@ -1,6 +1,8 @@
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
+STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :வட்டங்கள்/நாள்
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :வட்டங்கள்/வினாடி
 
 STR_VEHICLE_TYPE_TRAINS                                         :இரயில்வண்டிகள்
 STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :சாலை வாகனங்கள்
@@ -9,6 +11,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :விமான
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :தானியங்கிபதிவு: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :தானியங்கி விளையாட்டு சேமிப்புகளுக்கு இடையில் இடைவெளியைத் தேர்ந்தெடுக்கவும்
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :கால அட்டவணையை நாட்களில் அல்லாமல் சொடுக்குகளில் காட்டு: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :கால அட்டவணையை நாட்களில் அல்லாமல் சொடுக்குகளில் காட்டு
 
 # Tracerestrict GUI
 
@@ -26,6 +31,17 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}பன�
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}வடிவமைக்கப்பட்டது: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}நிறுத்தப்படுகின்றது, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}{STATION} இற்கு செல்கிறது, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}எந்த கட்டளைகளும் இல்லை, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE} {WAYPOINT}-இற்கு செல்கிறது, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE} {DEPOT}-இற்கு செல்கிறது, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE} {DEPOT}-இல் சர்வீஸ் செய்ய செல்கிறது, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}{STATION} நிலையத்தினை அடைய முடியவில்லை, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}{WAYPOINT}-இனை அடைய முடியவில்லை, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}{DEPOT}-இனை அடைய முடியாது , {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}{DEPOT} இனை அடைய முடியவில்லை, {VELOCITY}
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
@@ -60,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}இந�
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}இந்த நிறுவனத்தின் 25 சதவிகித பங்குகளை வாங்க இயலாது...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}இந்த நிறுவனத்தின் 25 சதவிகித பங்குகளை விற்க இயலாது...
 STR_ERROR_PROTECTED                                             :{WHITE}பங்குகளை பரிமாற்றம் செய்யும் அளவிற்கு இந்த நிறுவனம் இன்னும் வளரவில்லை...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :பாதை சிக்னல்கள் மட்டும்

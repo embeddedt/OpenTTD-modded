@@ -31,14 +31,18 @@ void ShowSurveyResultTextfileWindow();
 /** Company information stored at the client side */
 struct NetworkCompanyInfo : NetworkCompanyStats {
 	std::string company_name; ///< Company name
-	Year inaugurated_year;    ///< What year the company started in
+	CalTime::Year inaugurated_year; ///< What year the company started in
 	Money company_value;      ///< The company value
 	Money money;              ///< The amount of money the company has
 	Money income;             ///< How much did the company earn last year
-	uint16 performance;       ///< What was his performance last month?
+	uint16_t performance;     ///< What was his performance last month?
 	bool use_password;        ///< Is there a password
 	std::string clients;      ///< The clients that control this company (Name1, name2, ..)
 };
 
+enum NetworkRelayWindowCloseData {
+	NRWCD_UNHANDLED = 0, ///< Relay request is unhandled.
+	NRWCD_HANDLED = 1, ///< Relay request is handled, either by user or by timeout.
+};
 
 #endif /* NETWORK_GUI_H */

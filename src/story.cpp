@@ -22,6 +22,7 @@
 #include "window_func.h"
 #include "gui.h"
 #include "vehicle_base.h"
+#include "palette_func.h"
 #include "game/game.hpp"
 #include "script/api/script_story_page.hpp"
 #include "script/api/script_event_types.hpp"
@@ -31,8 +32,8 @@
 
 StoryPageElementID _new_story_page_element_id;
 StoryPageID _new_story_page_id;
-uint32 _story_page_element_next_sort_value;
-uint32 _story_page_next_sort_value;
+uint32_t _story_page_element_next_sort_value;
+uint32_t _story_page_next_sort_value;
 
 StoryPageElementPool _story_page_element_pool("StoryPageElement");
 StoryPagePool _story_page_pool("StoryPage");
@@ -49,7 +50,7 @@ INSTANTIATE_POOL_METHODS(StoryPage)
  * @param text The text parameter of the DoCommand proc
  * @return true, if and only if the given parameters are valid for the given page element type and page id.
  */
-static bool VerifyElementContentParameters(StoryPageID page_id, StoryPageElementType type, TileIndex tile, uint32 reference, const std::string &text)
+static bool VerifyElementContentParameters(StoryPageID page_id, StoryPageElementType type, TileIndex tile, uint32_t reference, const std::string &text)
 {
 	StoryPageButtonData button_data{ reference };
 
@@ -68,13 +69,16 @@ static bool VerifyElementContentParameters(StoryPageID page_id, StoryPageElement
 			break;
 		case SPET_BUTTON_PUSH:
 			if (!button_data.ValidateColour()) return false;
+			if (!button_data.ValidateFlags()) return false;
 			return true;
 		case SPET_BUTTON_TILE:
 			if (!button_data.ValidateColour()) return false;
+			if (!button_data.ValidateFlags()) return false;
 			if (!button_data.ValidateCursor()) return false;
 			return true;
 		case SPET_BUTTON_VEHICLE:
 			if (!button_data.ValidateColour()) return false;
+			if (!button_data.ValidateFlags()) return false;
 			if (!button_data.ValidateCursor()) return false;
 			if (!button_data.ValidateVehicleType()) return false;
 			return true;
@@ -93,7 +97,7 @@ static bool VerifyElementContentParameters(StoryPageID page_id, StoryPageElement
  * @param reference The reference parameter of the DoCommand proc (p2)
  * @param text The text parameter of the DoCommand proc
  */
-static void UpdateElement(StoryPageElement &pe, TileIndex tile, uint32 reference, const std::string &text)
+static void UpdateElement(StoryPageElement &pe, TileIndex tile, uint32_t reference, const std::string &text)
 {
 	switch (pe.type) {
 		case SPET_TEXT:
@@ -145,7 +149,9 @@ void StoryPageButtonData::SetVehicleType(VehicleType vehtype)
 /** Get the button background colour. */
 Colours StoryPageButtonData::GetColour() const
 {
-	return Extract<Colours, 0, 8>(this->referenced_id);
+	Colours colour = Extract<Colours, 0, 8>(this->referenced_id);
+	if (!IsValidColours(colour)) return INVALID_COLOUR;
+	return colour;
 }
 
 StoryPageButtonFlags StoryPageButtonData::GetFlags() const
@@ -173,7 +179,7 @@ bool StoryPageButtonData::ValidateColour() const
 
 bool StoryPageButtonData::ValidateFlags() const
 {
-	byte flags = GB(this->referenced_id, 24, 8);
+	uint8_t flags = GB(this->referenced_id, 24, 8);
 	/* Don't allow float left and right together */
 	if ((flags & SPBF_FLOAT_LEFT) && (flags & SPBF_FLOAT_RIGHT)) return false;
 	/* Don't allow undefined flags */
@@ -190,7 +196,7 @@ bool StoryPageButtonData::ValidateCursor() const
 /** Verity that the data stored a valid VehicleType value */
 bool StoryPageButtonData::ValidateVehicleType() const
 {
-	byte vehtype = GB(this->referenced_id, 16, 8);
+	uint8_t vehtype = GB(this->referenced_id, 16, 8);
 	return vehtype == VEH_INVALID || vehtype < VEH_COMPANY_END;
 }
 
@@ -204,7 +210,7 @@ bool StoryPageButtonData::ValidateVehicleType() const
  * @param text Title of the story page. Null is allowed in which case a generic page title is provided by OpenTTD.
  * @return the cost of this operation or an error
  */
-CommandCost CmdCreateStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdCreateStoryPage(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (!StoryPage::CanAllocateItem()) return CMD_ERROR;
 
@@ -221,7 +227,7 @@ CommandCost CmdCreateStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, u
 
 		StoryPage *s = new StoryPage();
 		s->sort_value = _story_page_next_sort_value;
-		s->date = _date;
+		s->date = CalTime::CurDate();
 		s->company = company;
 		if (StrEmpty(text)) {
 			s->title.clear();
@@ -250,7 +256,7 @@ CommandCost CmdCreateStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, u
  * @param text Text content in case it is a text or location page element
  * @return the cost of this operation or an error
  */
-CommandCost CmdCreateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdCreateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (!StoryPageElement::CanAllocateItem()) return CMD_ERROR;
 
@@ -258,7 +264,7 @@ CommandCost CmdCreateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint3
 	StoryPageElementType type = Extract<StoryPageElementType, 16, 8>(p1);
 
 	/* Allow at most 128 elements per page. */
-	uint16 element_count = 0;
+	uint16_t element_count = 0;
 	for (StoryPageElement *iter : StoryPageElement::Iterate()) {
 		if (iter->page == page_id) element_count++;
 	}
@@ -300,7 +306,7 @@ CommandCost CmdCreateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint3
  * @param text Text content in case it is a text or location page element
  * @return the cost of this operation or an error
  */
-CommandCost CmdUpdateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdUpdateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	StoryPageElementID page_element_id = (StoryPageElementID)GB(p1, 0, 16);
 
@@ -330,7 +336,7 @@ CommandCost CmdUpdateStoryPageElement(TileIndex tile, DoCommandFlag flags, uint3
  * @param text title text of the story page.
  * @return the cost of this operation or an error
  */
-CommandCost CmdSetStoryPageTitle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdSetStoryPageTitle(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 	StoryPageID page_id = (StoryPageID)GB(p1, 0, 16);
@@ -359,12 +365,12 @@ CommandCost CmdSetStoryPageTitle(TileIndex tile, DoCommandFlag flags, uint32 p1,
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdSetStoryPageDate(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdSetStoryPageDate(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 	StoryPageID page_id = (StoryPageID)GB(p1, 0, 16);
 	if (!StoryPage::IsValidID(page_id)) return CMD_ERROR;
-	Date date = (Date)p2;
+	CalTime::Date date = (CalTime::Date)p2;
 
 	if (flags & DC_EXEC) {
 		StoryPage *p = StoryPage::Get(page_id);
@@ -386,7 +392,7 @@ CommandCost CmdSetStoryPageDate(TileIndex tile, DoCommandFlag flags, uint32 p1, 
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdShowStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdShowStoryPage(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 	StoryPageID page_id = (StoryPageID)GB(p1, 0, 16);
@@ -394,7 +400,7 @@ CommandCost CmdShowStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
 
 	if (flags & DC_EXEC) {
 		StoryPage *g = StoryPage::Get(page_id);
-		if ((g->company != INVALID_COMPANY && g->company == _local_company) || (g->company == INVALID_COMPANY && Company::IsValidID(_local_company))) ShowStoryBook(_local_company, page_id);
+		if ((g->company != INVALID_COMPANY && g->company == _local_company) || (g->company == INVALID_COMPANY && Company::IsValidID(_local_company))) ShowStoryBook(_local_company, page_id, true);
 	}
 
 	return CommandCost();
@@ -408,7 +414,7 @@ CommandCost CmdShowStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, uin
  * @param text unused.
  * @return the cost of this operation or an error
  */
-CommandCost CmdRemoveStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdRemoveStoryPage(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 	StoryPageID page_id = (StoryPageID)p1;
@@ -441,7 +447,7 @@ CommandCost CmdRemoveStoryPage(TileIndex tile, DoCommandFlag flags, uint32 p1, u
  * @param text unused.
  * @return the cost of this operation or an error
  */
-CommandCost CmdRemoveStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdRemoveStoryPageElement(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	if (_current_company != OWNER_DEITY) return CMD_ERROR;
 	StoryPageElementID page_element_id = (StoryPageElementID)p1;
@@ -468,7 +474,7 @@ CommandCost CmdRemoveStoryPageElement(TileIndex tile, DoCommandFlag flags, uint3
  * @param text   Unused.
  * @return The cost of the operation, or an error.
  */
-CommandCost CmdStoryPageButton(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdStoryPageButton(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	StoryPageElementID page_element_id = (StoryPageElementID)GB(p1, 0, 16);
 

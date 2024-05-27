@@ -1,6 +1,8 @@
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
+STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :teiliau/diwrnod
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :teiliau/eiliad
 
 STR_BUTTON_RENAME                                               :{BLACK}Ailenwi
 
@@ -11,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Awyrennau
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Awtogadw: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Dewis pa mor aml y dylid awtogadw gemau
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Dangos amserlen fesul ticiau yn hytrach na dyddiau: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Dangos amseroedd teithio mewn amserlenni mewn ticiau yn hytrach na dyddiau
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Toglu tryloywder ar gyfer dangosyddion llwytho. Ctrl+Clic i gloi
 
@@ -30,6 +35,19 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Newid uc
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Cynlluniwyd: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Yn dod at aros, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Mynd tua {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Dim gorchmynion, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Mynd tua {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Mynd tua {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Mynd am wasanaeth yn {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Methu cyrraedd {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Methu cyrraedd {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Methu cyrraedd {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Methu cyrraedd {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Mewnosod gorchymyn newydd cyn yr orchymyn a amlygwyd, neu greu ar ddiwedd y rhestr. Mae Ctrl yn gwneud gorchymynion orsaf yn rhai 'llwyth llawn unrhyw nwyddau', gorchymynion pwyntiau llwybro 'heb aros' a gorchmynion depot 'gwasanaethu'. Mae 'Rhannu gorchmynion' neu Ctrl yn galluogi i'r cerbyd yma rannu gorchmynion gyda'r cerbyd a ddewisir. Mae clicio ar gerbyd yn copïo gorchmynion o'r cerbyd hwnnw. Mae gorchymyn depo'n analluogi gwasanaethu diofyn ar gyfer y cerbyd
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :Cyr:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :Gad:
@@ -64,3 +82,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Gwerthu 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Methu prynu cyfran o 25% o'r cwmni hwn...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Methu gwerthu cyfran o 25% o'r cwmni ...
 STR_ERROR_PROTECTED                                             :{WHITE}Nid yw'r cwmni hwn yn ddigon da ar gyfer cyfnewid cyfrandaliadau eto...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Signalau llwybr yn unig

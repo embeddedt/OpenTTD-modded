@@ -12,6 +12,8 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Luftfartøy
 STR_CONFIG_SETTING_AUTOSAVE                                     :Autolaging: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Vel intervall for automatisk lagring av spel
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Syne rutetabell i tikk i staden for dagar: {STRING}
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Byt gjennomsyn for lasteindikatorar. Ctrl+klikk for å låsa.
 
 # Tracerestrict GUI
@@ -30,6 +32,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Byt høg
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Designa: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Stoppar, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}På veg til {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Ingen ordre, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Har kurs mot {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}På veg mot {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Vedlikehald ved {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Set inn ein ny ordre før den valde ordren, eller legg til i slutten av lista. Ctrl gjer ordren 'full last, einkvar varetype', kontrollpunktordre 'direkte' og verkstadsordre 'vedlikehald'. 'Del ordre' eller Ctrl let dette køyretyget dele ordrer med det valde køyretyget. Ved å klikke på eit køyretyg, kopierast ordrene frå dette køyretyget. Ein verkstadsordre slår av automatisk vedlikehald av kjøyretyget
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :Ank:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :Avg:
@@ -63,3 +74,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Sel 25{N
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kan ikkje kjøpa 25{NBSP}% av aksjane...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Kan ikkje selja 25{NBSP}% av aksjane...
 STR_ERROR_PROTECTED                                             :{WHITE}Det her firmaet sel ikkje aksjer enno...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Kun avanserte signaler

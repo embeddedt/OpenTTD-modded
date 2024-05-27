@@ -13,7 +13,7 @@
 /** key for cached segment cost for rail YAPF */
 struct CYapfRailSegmentKey
 {
-	uint32    m_value;
+	uint32_t  m_value;
 
 	inline CYapfRailSegmentKey(const CYapfNodeKeyTrackDir &node_key)
 	{
@@ -30,7 +30,7 @@ struct CYapfRailSegmentKey
 		m_value = (((int)node_key.m_tile) << 4) | node_key.m_td;
 	}
 
-	inline int32 CalcHash() const
+	inline int32_t CalcHash() const
 	{
 		return m_value;
 	}
@@ -82,7 +82,7 @@ struct CYapfRailSegment
 		, m_hash_next(nullptr)
 	{}
 
-	inline const Key& GetKey() const
+	inline const Key &GetKey() const
 	{
 		return m_key;
 	}
@@ -123,12 +123,10 @@ struct CYapfRailNodeT
 	typedef CYapfRailSegment CachedData;
 
 	CYapfRailSegment *m_segment;
-	uint16            m_num_signals_passed;
-	uint16            m_num_signals_res_through_passed;
-	TileIndex         m_last_non_reserve_through_signal_tile;
-	Trackdir          m_last_non_reserve_through_signal_td;
+	uint16_t          m_num_signals_passed;
+	uint16_t          m_num_signals_res_through_passed;
 	union {
-		uint32          m_inherited_flags;
+		uint32_t        m_inherited_flags;
 		struct {
 			bool          m_targed_seen : 1;
 			bool          m_choice_seen : 1;
@@ -139,6 +137,8 @@ struct CYapfRailNodeT
 	} flags_u;
 	SignalType        m_last_red_signal_type;
 	SignalType        m_last_signal_type;
+	Trackdir          m_last_non_reserve_through_signal_td;
+	TileIndex         m_last_non_reserve_through_signal_tile;
 
 	inline void Set(CYapfRailNodeT *parent, TileIndex tile, Trackdir td, bool is_choice)
 	{
@@ -150,7 +150,7 @@ struct CYapfRailNodeT
 			m_last_non_reserve_through_signal_tile = INVALID_TILE;
 			m_last_non_reserve_through_signal_td = INVALID_TRACKDIR;
 			flags_u.m_inherited_flags = 0;
-			m_last_red_signal_type    = SIGTYPE_NORMAL;
+			m_last_red_signal_type    = SIGTYPE_BLOCK;
 			/* We use PBS as initial signal type because if we are in
 			 * a PBS section and need to route, i.e. we're at a safe
 			 * waiting point of a station, we need to account for the
@@ -194,15 +194,15 @@ struct CYapfRailNodeT
 		m_segment->m_last_td = td;
 	}
 
-	template <class Tbase, class Tfunc, class Tpf>
-	bool IterateTiles(const Train *v, Tpf &yapf, Tbase &obj, bool (Tfunc::*func)(TileIndex, Trackdir)) const
+	template <class Tbase, class Tpf, class Tfunc>
+	bool IterateTiles(const Train *v, Tpf &yapf, Tfunc func) const
 	{
 		typename Tbase::TrackFollower ft(v, yapf.GetCompatibleRailTypes());
 		TileIndex cur = base::GetTile();
 		Trackdir  cur_td = base::GetTrackdir();
 
 		while (cur != GetLastTile() || cur_td != GetLastTrackdir()) {
-			if (!((obj.*func)(cur, cur_td))) return false;
+			if (!(func(cur, cur_td))) return false;
 
 			if (!ft.Follow(cur, cur_td)) break;
 			cur = ft.m_new_tile;
@@ -210,7 +210,15 @@ struct CYapfRailNodeT
 			cur_td = FindFirstTrackdir(ft.m_new_td_bits);
 		}
 
-		return (obj.*func)(cur, cur_td);
+		return func(cur, cur_td);
+	}
+
+	template <class Tbase, class Tpf, class Tfunc>
+	bool IterateTiles(const Train *v, Tpf &yapf, Tbase &obj, bool (Tfunc::*func)(TileIndex, Trackdir)) const
+	{
+		return this->template IterateTiles<Tbase>(v, yapf, [&](TileIndex tile, Trackdir td) -> bool {
+			return (obj.*func)(tile, td);
+		});
 	}
 
 	template <class Tbase, class Tpf>

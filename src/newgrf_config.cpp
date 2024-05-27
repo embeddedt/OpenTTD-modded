@@ -30,10 +30,6 @@
 #include "thread.h"
 #include <mutex>
 #include <condition_variable>
-#if defined(__MINGW32__)
-#include "3rdparty/mingw-std-threads/mingw.mutex.h"
-#include "3rdparty/mingw-std-threads/mingw.condition_variable.h"
-#endif
 
 #include "safeguards.h"
 
@@ -74,6 +70,20 @@ GRFConfig::GRFConfig(const GRFConfig &config) :
 {
 }
 
+void GRFConfig::SetParams(const std::vector<uint32_t> &pars)
+{
+	this->num_params = static_cast<uint8_t>(std::min(this->param.size(), pars.size()));
+	std::copy(pars.begin(), pars.begin() + this->num_params, this->param.begin());
+}
+
+/**
+ * Return whether this NewGRF can replace an older version of the same NewGRF.
+ */
+bool GRFConfig::IsCompatible(uint32_t old_version) const
+{
+	return this->min_loadable_version <= old_version && old_version <= this->version;
+}
+
 /**
  * Copy the parameter information from the \a src config.
  * @param src Source config.
@@ -81,7 +91,6 @@ GRFConfig::GRFConfig(const GRFConfig &config) :
 void GRFConfig::CopyParams(const GRFConfig &src)
 {
 	this->num_params = src.num_params;
-	this->num_valid_params = src.num_valid_params;
 	this->param = src.param;
 }
 
@@ -195,7 +204,7 @@ GRFParameterInfo::GRFParameterInfo(uint nr) :
  * @param config The GRFConfig to get the value from.
  * @return The value of this parameter.
  */
-uint32 GRFParameterInfo::GetValue(struct GRFConfig *config) const
+uint32_t GRFParameterInfo::GetValue(struct GRFConfig *config) const
 {
 	/* GB doesn't work correctly with nbits == 32, so handle that case here. */
 	if (this->num_bit == 32) return config->param[this->param_nr];
@@ -207,7 +216,7 @@ uint32 GRFParameterInfo::GetValue(struct GRFConfig *config) const
  * @param config The GRFConfig to set the value in.
  * @param value The new value.
  */
-void GRFParameterInfo::SetValue(struct GRFConfig *config, uint32 value)
+void GRFParameterInfo::SetValue(struct GRFConfig *config, uint32_t value)
 {
 	/* SB doesn't work correctly with nbits == 32, so handle that case here. */
 	if (this->num_bit == 32) {
@@ -215,7 +224,7 @@ void GRFParameterInfo::SetValue(struct GRFConfig *config, uint32 value)
 	} else {
 		SB(config->param[this->param_nr], this->first_bit, this->num_bit, value);
 	}
-	config->num_params = std::max<uint>(config->num_params, this->param_nr + 1);
+	config->num_params = (uint8_t)std::max<uint>(config->num_params, this->param_nr + 1);
 	SetWindowDirty(WC_GAME_OPTIONS, WN_GAME_OPTIONS_NEWGRF_STATE);
 }
 
@@ -225,7 +234,7 @@ void GRFParameterInfo::SetValue(struct GRFConfig *config, uint32 value)
 void GRFParameterInfo::Finalize()
 {
 	this->complete_labels = true;
-	for (uint32 value = this->min_value; value <= this->max_value; value++) {
+	for (uint32_t value = this->min_value; value <= this->max_value; value++) {
 		if (this->value_names.count(value) == 0) {
 			this->complete_labels = false;
 			break;
@@ -236,9 +245,8 @@ void GRFParameterInfo::Finalize()
 /**
  * Update the palettes of the graphics from the config file.
  * Called when changing the default palette in advanced settings.
- * @param new_value Unused.
  */
-void UpdateNewGRFConfigPalette(int32 new_value)
+void UpdateNewGRFConfigPalette(int32_t new_value)
 {
 	for (GRFConfig *c = _grfconfig_newgame; c != nullptr; c = c->next) c->SetSuitablePalette();
 	for (GRFConfig *c = _grfconfig_static;  c != nullptr; c = c->next) c->SetSuitablePalette();
@@ -252,10 +260,10 @@ void UpdateNewGRFConfigPalette(int32 new_value)
  */
 size_t GRFGetSizeOfDataSection(FILE *f)
 {
-	extern const byte _grf_cont_v2_sig[];
+	extern const uint8_t _grf_cont_v2_sig[];
 	static const uint header_len = 14;
 
-	byte data[header_len];
+	uint8_t data[header_len];
 	if (fread(data, 1, header_len, f) == header_len) {
 		if (data[0] == 0 && data[1] == 0 && MemCmpT(data + 2, _grf_cont_v2_sig, 8) == 0) {
 			/* Valid container version 2, get data section size. */
@@ -292,7 +300,7 @@ static const uint GRF_MD5_PENDING_MAX = 8;
 static void CalcGRFMD5SumFromState(const GRFMD5SumState &state)
 {
 	Md5 checksum;
-	uint8 buffer[1024];
+	uint8_t buffer[1024];
 	size_t len;
 	size_t size = state.size;
 	while ((len = fread(buffer, 1, (size > sizeof(buffer)) ? sizeof(buffer) : size, state.f)) != 0 && size != 0) {
@@ -532,6 +540,15 @@ void ResetGRFConfig(bool defaults)
 	AppendStaticGRFConfigs(&_grfconfig);
 }
 
+/** Get the count of non-static GRFs in a GRF config list */
+uint GetGRFConfigListNonStaticCount(const GRFConfig *config)
+{
+	uint grf_count = 0;
+	for (const GRFConfig *c = config; c != nullptr; c = c->next) {
+		if (!HasBit(c->flags, GCF_STATIC)) grf_count++;
+	}
+	return grf_count;
+}
 
 /**
  * Check if all GRFs in the GRF config from a savegame can be loaded.
@@ -671,7 +688,7 @@ public:
 	}
 };
 
-bool GRFFileScanner::AddFile(const std::string &filename, size_t basepath_length, const std::string &tar_filename)
+bool GRFFileScanner::AddFile(const std::string &filename, size_t basepath_length, const std::string &)
 {
 	/* Abort if the user stopped the game during a scan. */
 	if (_exit_game) return false;
@@ -780,7 +797,7 @@ void ScanNewGRFFiles(NewGRFScanCallback *callback)
  * @param desired_version Requested version
  * @return The matching grf, if it exists in #_all_grfs, else \c nullptr.
  */
-const GRFConfig *FindGRFConfig(uint32 grfid, FindGRFConfigMode mode, const MD5Hash *md5sum, uint32 desired_version)
+const GRFConfig *FindGRFConfig(uint32_t grfid, FindGRFConfigMode mode, const MD5Hash *md5sum, uint32_t desired_version)
 {
 	assert((mode == FGCM_EXACT) != (md5sum == nullptr));
 	const GRFConfig *best = nullptr;
@@ -792,7 +809,7 @@ const GRFConfig *FindGRFConfig(uint32 grfid, FindGRFConfigMode mode, const MD5Ha
 		/* Skip incompatible stuff, unless explicitly allowed */
 		if (mode != FGCM_NEWEST && HasBit(c->flags, GCF_INVALID)) continue;
 		/* check version compatibility */
-		if (mode == FGCM_COMPATIBLE && (c->version < desired_version || c->min_loadable_version > desired_version)) continue;
+		if (mode == FGCM_COMPATIBLE && !c->IsCompatible(desired_version)) continue;
 		/* remember the newest one as "the best" */
 		if (best == nullptr || c->version > best->version) best = c;
 	}
@@ -806,7 +823,7 @@ const GRFConfig *FindGRFConfig(uint32 grfid, FindGRFConfigMode mode, const MD5Ha
  * @param mask  GRFID mask to allow for partial matching.
  * @return The grf config, if it exists, else \c nullptr.
  */
-GRFConfig *GetGRFConfig(uint32 grfid, uint32 mask)
+GRFConfig *GetGRFConfig(uint32_t grfid, uint32_t mask)
 {
 	GRFConfig *c;
 

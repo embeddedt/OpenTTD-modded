@@ -50,18 +50,19 @@ StringID GetEngineCategoryName(EngineID engine)
 	}
 }
 
-static const NWidgetPart _nested_engine_preview_widgets[] = {
+static constexpr NWidgetPart _nested_engine_preview_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_LIGHT_BLUE),
 		NWidget(WWT_CAPTION, COLOUR_LIGHT_BLUE), SetDataTip(STR_ENGINE_PREVIEW_CAPTION, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
 	EndContainer(),
 	NWidget(WWT_PANEL, COLOUR_LIGHT_BLUE),
-		NWidget(WWT_EMPTY, INVALID_COLOUR, WID_EP_QUESTION), SetMinimalSize(300, 0), SetPadding(8, 8, 8, 8), SetFill(1, 0),
-		NWidget(NWID_HORIZONTAL, NC_EQUALSIZE), SetPIP(85, 10, 85),
-			NWidget(WWT_PUSHTXTBTN, COLOUR_LIGHT_BLUE, WID_EP_NO), SetDataTip(STR_QUIT_NO, STR_NULL), SetFill(1, 0),
-			NWidget(WWT_PUSHTXTBTN, COLOUR_LIGHT_BLUE, WID_EP_YES), SetDataTip(STR_QUIT_YES, STR_NULL), SetFill(1, 0),
+		NWidget(NWID_VERTICAL), SetPIP(0, WidgetDimensions::unscaled.vsep_wide, 0), SetPadding(WidgetDimensions::unscaled.modalpopup),
+			NWidget(WWT_EMPTY, INVALID_COLOUR, WID_EP_QUESTION), SetMinimalSize(300, 0), SetFill(1, 0),
+			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE), SetPIP(85, WidgetDimensions::unscaled.hsep_wide, 85),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_LIGHT_BLUE, WID_EP_NO), SetDataTip(STR_QUIT_NO, STR_NULL), SetFill(1, 0),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_LIGHT_BLUE, WID_EP_YES), SetDataTip(STR_QUIT_YES, STR_NULL), SetFill(1, 0),
+			EndContainer(),
 		EndContainer(),
-		NWidget(NWID_SPACER), SetMinimalSize(0, 8),
 	EndContainer(),
 };
 
@@ -76,7 +77,7 @@ struct EnginePreviewWindow : Window {
 		this->flags |= WF_STICKY;
 	}
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override
 	{
 		if (widget != WID_EP_QUESTION) return;
 
@@ -96,14 +97,14 @@ struct EnginePreviewWindow : Window {
 		}
 		this->vehicle_space = std::max<int>(ScaleSpriteTrad(40), y - y_offs);
 
-		size->width = std::max(size->width, x - x_offs);
+		size->width = std::max(size->width, x + std::abs(x_offs));
 		SetDParam(0, GetEngineCategoryName(engine));
-		size->height = GetStringHeight(STR_ENGINE_PREVIEW_MESSAGE, size->width) + WidgetDimensions::scaled.vsep_wide + FONT_HEIGHT_NORMAL + this->vehicle_space;
+		size->height = GetStringHeight(STR_ENGINE_PREVIEW_MESSAGE, size->width) + WidgetDimensions::scaled.vsep_wide + GetCharacterHeight(FS_NORMAL) + this->vehicle_space;
 		SetDParam(0, engine);
 		size->height += GetStringHeight(GetEngineInfoString(engine), size->width);
 	}
 
-	void DrawWidget(const Rect &r, int widget) const override
+	void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		if (widget != WID_EP_QUESTION) return;
 
@@ -113,7 +114,7 @@ struct EnginePreviewWindow : Window {
 
 		SetDParam(0, PackEngineNameDParam(engine, EngineNameContext::PreviewNews));
 		DrawString(r.left, r.right, y, STR_ENGINE_NAME, TC_BLACK, SA_HOR_CENTER);
-		y += FONT_HEIGHT_NORMAL;
+		y += GetCharacterHeight(FS_NORMAL);
 
 		DrawVehicleEngine(r.left, r.right, this->width >> 1, y + this->vehicle_space / 2, engine, GetEnginePalette(engine, _local_company), EIT_PREVIEW);
 
@@ -121,19 +122,19 @@ struct EnginePreviewWindow : Window {
 		DrawStringMultiLine(r.left, r.right, y, r.bottom, GetEngineInfoString(engine), TC_FROMSTRING, SA_CENTER);
 	}
 
-	void OnClick(Point pt, int widget, int click_count) override
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override
 	{
 		switch (widget) {
 			case WID_EP_YES:
 				DoCommandP(0, this->window_number, 0, CMD_WANT_ENGINE_PREVIEW);
-				FALLTHROUGH;
+				[[fallthrough]];
 			case WID_EP_NO:
 				if (!_shift_pressed) this->Close();
 				break;
 		}
 	}
 
-	void OnInvalidateData(int data = 0, bool gui_scope = true) override
+	void OnInvalidateData([[maybe_unused]] int data = 0, [[maybe_unused]] bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
 
@@ -142,11 +143,11 @@ struct EnginePreviewWindow : Window {
 	}
 };
 
-static WindowDesc _engine_preview_desc(
+static WindowDesc _engine_preview_desc(__FILE__, __LINE__,
 	WDP_CENTER, nullptr, 0, 0,
 	WC_ENGINE_PREVIEW, WC_NONE,
 	WDF_CONSTRUCTION,
-	_nested_engine_preview_widgets, lengthof(_nested_engine_preview_widgets)
+	std::begin(_nested_engine_preview_widgets), std::end(_nested_engine_preview_widgets)
 );
 
 
@@ -158,43 +159,42 @@ void ShowEnginePreviewWindow(EngineID engine)
 /**
  * Get the capacity of an engine with articulated parts.
  * @param engine The engine to get the capacity of.
+ * @param attempt_refit Attempt to get capacity when refitting to this cargo.
  * @return The capacity.
  */
-uint GetTotalCapacityOfArticulatedParts(EngineID engine)
+uint GetTotalCapacityOfArticulatedParts(EngineID engine, CargoID attempt_refit)
 {
-	CargoArray cap = GetCapacityOfArticulatedParts(engine);
+	CargoArray cap = GetCapacityOfArticulatedParts(engine, attempt_refit);
 	return cap.GetSum<uint>();
 }
 
-static StringID GetEngineInfoCapacityString(EngineID engine)
+static StringID GetEngineInfoCapacityStringParameter(EngineID engine)
 {
-	char buffer[1024];
-
 	CargoArray cap = GetCapacityOfArticulatedParts(engine);
 	if (cap.GetSum<uint>() == 0) {
 		/* no cargo at all */
-		auto tmp_params = MakeParameters(CT_INVALID, 0);
-		GetStringWithArgs(buffer, STR_JUST_CARGO, tmp_params, lastof(buffer));
+		auto tmp_params = MakeParameters(INVALID_CARGO, 0);
+		_temp_special_strings[1] = GetStringWithArgs(STR_JUST_CARGO, tmp_params);
 	} else {
-		char *b = buffer;
+		std::string buffer;
 		for (uint i = 0; i < NUM_CARGO; i++) {
 			if (cap[i] == 0) continue;
 
-			if (b != buffer) {
+			if (!buffer.empty()) {
 				auto tmp_params = MakeParameters();
-				b = GetStringWithArgs(b, STR_COMMA_SEPARATOR, tmp_params, lastof(buffer));
+				GetStringWithArgs(StringBuilder(buffer), STR_COMMA_SEPARATOR, tmp_params);
 			}
 
 			auto tmp_params = MakeParameters(i, cap[i]);
-			b = GetStringWithArgs(b, STR_JUST_CARGO, tmp_params, lastof(buffer));
+			GetStringWithArgs(StringBuilder(buffer), STR_JUST_CARGO, tmp_params);
 		}
+		_temp_special_strings[1] = std::move(buffer);
 	}
 
-	_temp_special_strings[1].assign(buffer);
 	return SPECSTR_TEMP_START + 1;
 }
 
-static StringID ProcessEngineInfoString(StringID str)
+static StringID ProcessEngineCapacityString(StringID str)
 {
 	char str_buffer[1024];
 	strecpy(str_buffer, GetStringPtr(str), lastof(str_buffer));
@@ -203,76 +203,105 @@ static StringID ProcessEngineInfoString(StringID str)
 	return SPECSTR_TEMP_START;
 }
 
+static StringID GetRunningCostString()
+{
+	if (DayLengthFactor() > 1 && !_settings_client.gui.show_running_costs_calendar_year) {
+		return STR_ENGINE_PREVIEW_RUNCOST_ORIG_YEAR;
+	} else if (EconTime::UsingWallclockUnits()) {
+		return STR_ENGINE_PREVIEW_RUNCOST_PERIOD;
+	} else {
+		return STR_ENGINE_PREVIEW_RUNCOST_YEAR;
+	}
+}
+
 static StringID GetTrainEngineInfoString(const Engine *e)
 {
-	SetDParam(0, e->GetCost());
-	SetDParam(2, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-	SetDParam(3, e->GetPower());
-	SetDParam(1, e->GetDisplayWeight());
-	SetDParam(7, e->GetDisplayMaxTractiveEffort());
+	SetDParam(0, STR_ENGINE_PREVIEW_COST_WEIGHT);
+	SetDParam(1, e->GetCost());
+	SetDParam(2, e->GetDisplayWeight());
 
-	SetDParam(4, e->GetDisplayRunningCost());
+	SetDParam(3, (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL && GetRailTypeInfo(e->u.rail.railtype)->acceleration_type != 2) ? STR_ENGINE_PREVIEW_SPEED_POWER_MAX_TE : STR_ENGINE_PREVIEW_SPEED_POWER);
+	SetDParam(4, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
+	SetDParam(5, e->GetPower());
+	SetDParam(6, e->GetDisplayMaxTractiveEffort());
 
-	SetDParam(5, GetEngineInfoCapacityString(e->index));
+	SetDParam(7, GetRunningCostString());
+	SetDParam(8, e->GetDisplayRunningCost());
 
-	return (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL && GetRailTypeInfo(e->u.rail.railtype)->acceleration_type != 2) ? STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE : STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER;
+	SetDParam(9, ProcessEngineCapacityString(STR_ENGINE_PREVIEW_CAPACITY));
+	SetDParam(10, GetEngineInfoCapacityStringParameter(e->index));
+
+	return STR_ENGINE_PREVIEW_TEXT4;
 }
 
 static StringID GetAircraftEngineInfoString(const Engine *e)
 {
 	CargoID cargo = e->GetDefaultCargoType();
-	uint16 mail_capacity;
+	uint16_t mail_capacity;
 	uint capacity = e->GetDisplayDefaultCapacity(&mail_capacity);
-	uint16 range = e->GetRange();
+	uint16_t range = e->GetRange();
 
-	uint i = 0;
-	SetDParam(i++, e->GetCost());
-	SetDParam(i++, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-	SetDParam(i++, e->GetAircraftTypeText());
-	if (range > 0) SetDParam(i++, range);
-	SetDParam(i++, cargo);
-	SetDParam(i++, capacity);
+	SetDParam(0, STR_ENGINE_PREVIEW_COST_MAX_SPEED);
+	SetDParam(1, e->GetCost());
+	SetDParam(2, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
 
-	if (mail_capacity > 0) {
-		SetDParam(i++, CT_MAIL);
-		SetDParam(i++, mail_capacity);
-		SetDParam(i++, e->GetDisplayRunningCost());
-		return range > 0 ? STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_RANGE_CAP_CAP_RUNCOST : STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_CAP_CAP_RUNCOST;
-	} else {
-		SetDParam(i++, e->GetDisplayRunningCost());
-		return range > 0 ? STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_RANGE_CAP_RUNCOST : STR_ENGINE_PREVIEW_COST_MAX_SPEED_TYPE_CAP_RUNCOST;
-	}
+	SetDParam(3, range > 0 ? STR_ENGINE_PREVIEW_TYPE_RANGE : STR_ENGINE_PREVIEW_TYPE);
+	SetDParam(4, e->GetAircraftTypeText());
+	SetDParam(5, range);
+
+	SetDParam(7, GetRunningCostString());
+	SetDParam(8, e->GetDisplayRunningCost());
+
+	SetDParam(9, mail_capacity > 0 ? STR_ENGINE_PREVIEW_CAPACITY_2 : STR_ENGINE_PREVIEW_CAPACITY);
+	SetDParam(10, cargo);
+	SetDParam(11, capacity);
+	SetDParam(12, GetCargoIDByLabel(CT_MAIL));
+	SetDParam(13, mail_capacity);
+
+	return STR_ENGINE_PREVIEW_TEXT4;
 }
 
 static StringID GetRoadVehEngineInfoString(const Engine *e)
 {
+	SetDParam(7, GetRunningCostString());
+	SetDParam(8, e->GetDisplayRunningCost());
+
+	SetDParam(9, ProcessEngineCapacityString(STR_ENGINE_PREVIEW_CAPACITY));
+	SetDParam(10, GetEngineInfoCapacityStringParameter(e->index));
+
 	if (_settings_game.vehicle.roadveh_acceleration_model == AM_ORIGINAL) {
-		SetDParam(0, e->GetCost());
-		SetDParam(1, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-		SetDParam(2, GetEngineInfoCapacityString(e->index));
-		SetDParam(4, e->GetDisplayRunningCost());
-		return STR_ENGINE_PREVIEW_COST_MAX_SPEED_CAP_RUNCOST;
-	} else {
-		SetDParam(0, e->GetCost());
+		SetDParam(0, STR_ENGINE_PREVIEW_COST_MAX_SPEED);
+		SetDParam(1, e->GetCost());
 		SetDParam(2, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-		SetDParam(3, e->GetPower());
-		SetDParam(1, e->GetDisplayWeight());
-		SetDParam(7, e->GetDisplayMaxTractiveEffort());
 
-		SetDParam(4, e->GetDisplayRunningCost());
+		return STR_ENGINE_PREVIEW_TEXT3;
+	} else {
+		SetDParam(0, STR_ENGINE_PREVIEW_COST_WEIGHT);
+		SetDParam(1, e->GetCost());
+		SetDParam(2, e->GetDisplayWeight());
 
-		SetDParam(5, GetEngineInfoCapacityString(e->index));
-		return STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE;
+		SetDParam(3, STR_ENGINE_PREVIEW_SPEED_POWER_MAX_TE);
+		SetDParam(4, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
+		SetDParam(5, e->GetPower());
+		SetDParam(6, e->GetDisplayMaxTractiveEffort());
+
+		return STR_ENGINE_PREVIEW_TEXT4;
 	}
 }
 
 static StringID GetShipEngineInfoString(const Engine *e)
 {
-	SetDParam(0, e->GetCost());
-	SetDParam(1, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-	SetDParam(2, GetEngineInfoCapacityString(e->index));
-	SetDParam(4, e->GetDisplayRunningCost());
-	return STR_ENGINE_PREVIEW_COST_MAX_SPEED_CAP_RUNCOST;
+	SetDParam(0, STR_ENGINE_PREVIEW_COST_MAX_SPEED);
+	SetDParam(1, e->GetCost());
+	SetDParam(2, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
+
+	SetDParam(7, GetRunningCostString());
+	SetDParam(8, e->GetDisplayRunningCost());
+
+	SetDParam(9, ProcessEngineCapacityString(STR_ENGINE_PREVIEW_CAPACITY));
+	SetDParam(10, GetEngineInfoCapacityStringParameter(e->index));
+
+	return STR_ENGINE_PREVIEW_TEXT3;
 }
 
 
@@ -288,13 +317,13 @@ StringID GetEngineInfoString(EngineID engine)
 
 	switch (e->type) {
 		case VEH_TRAIN:
-			return ProcessEngineInfoString(GetTrainEngineInfoString(e));
+			return GetTrainEngineInfoString(e);
 
 		case VEH_ROAD:
-			return ProcessEngineInfoString(GetRoadVehEngineInfoString(e));
+			return GetRoadVehEngineInfoString(e);
 
 		case VEH_SHIP:
-			return ProcessEngineInfoString(GetShipEngineInfoString(e));
+			return GetShipEngineInfoString(e);
 
 		case VEH_AIRCRAFT:
 			return GetAircraftEngineInfoString(e);
@@ -345,7 +374,9 @@ void DrawVehicleEngine(int left, int right, int preferred_x, int y, EngineID eng
 void EngList_Sort(GUIEngineList &el, EngList_SortTypeFunction compare)
 {
 	if (el.size() < 2) return;
-	std::sort(el.begin(), el.end(), compare);
+	std::sort(el.begin(), el.end(), [&](const GUIEngineListItem &a, const GUIEngineListItem &b) {
+		return compare(a, b, el.SortParameterData());
+	});
 }
 
 /**
@@ -360,6 +391,8 @@ void EngList_SortPartial(GUIEngineList &el, EngList_SortTypeFunction compare, si
 	if (num_items < 2) return;
 	assert(begin < el.size());
 	assert(begin + num_items <= el.size());
-	std::sort(el.begin() + begin, el.begin() + begin + num_items, compare);
+	std::sort(el.begin() + begin, el.begin() + begin + num_items, [&](const GUIEngineListItem &a, const GUIEngineListItem &b) {
+		return compare(a, b, el.SortParameterData());
+	});
 }
 

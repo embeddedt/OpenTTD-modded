@@ -100,10 +100,10 @@ public:
 		virtual ~VisualRun() = default;
 		virtual const Font *GetFont() const = 0;
 		virtual int GetGlyphCount() const = 0;
-		virtual const GlyphID *GetGlyphs() const = 0;
-		virtual const float *GetPositions() const = 0;
+		virtual const std::vector<GlyphID> &GetGlyphs() const = 0;
+		virtual const std::vector<Point> &GetPositions() const = 0;
 		virtual int GetLeading() const = 0;
-		virtual const int *GetGlyphToCharMap() const = 0;
+		virtual const std::vector<int> &GetGlyphToCharMap() const = 0;
 	};
 
 	/** A single line worth of VisualRuns. */
@@ -114,7 +114,7 @@ public:
 		virtual int GetWidth() const = 0;
 		virtual int CountRuns() const = 0;
 		virtual const VisualRun &GetVisualRun(int run) const = 0;
-		virtual int GetInternalCharLength(WChar c) const = 0;
+		virtual int GetInternalCharLength(char32_t c) const = 0;
 	};
 
 	virtual void Reflow() = 0;
@@ -181,8 +181,9 @@ public:
 	Layouter(std::string_view str, int maxw = INT32_MAX, TextColour colour = TC_FROMSTRING, FontSize fontsize = FS_NORMAL);
 	Dimension GetBounds();
 	Point GetCharPosition(std::string_view::const_iterator ch) const;
-	ptrdiff_t GetCharAtPosition(int x) const;
+	ptrdiff_t GetCharAtPosition(int x, size_t line_index) const;
 
+	static void Initialize();
 	static void ResetFontCache(FontSize size);
 	static void ResetLineCache();
 	static void ReduceLineCache();

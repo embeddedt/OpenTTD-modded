@@ -20,15 +20,15 @@ void CheckEngines();
 void AnalyseEngineCallbacks();
 
 /* Original engine data counts and offsets */
-extern const uint8 _engine_counts[4];
-extern const uint8 _engine_offsets[4];
+extern const uint8_t _engine_counts[4];
+extern const uint8_t _engine_offsets[4];
 
 bool IsEngineBuildable(EngineID engine, VehicleType type, CompanyID company);
 bool IsEngineRefittable(EngineID engine);
 void SetYearEngineAgingStops();
 void CalcEngineReliability(Engine *e, bool new_month);
-void StartupOneEngine(Engine *e, Date aging_date, uint32 seed, Date no_introduce_after_date);
+void StartupOneEngine(Engine *e, const CalTime::YearMonthDay &aging_ymd, const CalTime::YearMonthDay &expire_stop_ymd, uint32_t seed, CalTime::Date no_introduce_after_date);
 
-uint GetTotalCapacityOfArticulatedParts(EngineID engine);
+uint GetTotalCapacityOfArticulatedParts(EngineID engine, CargoID attempt_refit = INVALID_CARGO);
 
 #endif /* ENGINE_FUNC_H */

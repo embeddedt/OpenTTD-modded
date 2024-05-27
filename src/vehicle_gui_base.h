@@ -21,7 +21,7 @@
 #include <iterator>
 #include <numeric>
 
-typedef GUIList<const Vehicle*, CargoID> GUIVehicleList;
+typedef GUIList<const Vehicle*, std::nullptr_t, CargoID> GUIVehicleList;
 
 struct GUIVehicleGroup {
 	VehicleList::const_iterator vehicles_begin;    ///< Pointer to beginning element of this vehicle group.
@@ -55,19 +55,25 @@ struct GUIVehicleGroup {
 		});
 	}
 
-	Date GetOldestVehicleAge() const
+	DateDelta GetOldestVehicleAge() const
 	{
 		const Vehicle *oldest = *std::max_element(this->vehicles_begin, this->vehicles_end, [](const Vehicle *v_a, const Vehicle *v_b) {
-			return v_a->age < v_b->age;
+			return v_a->economy_age < v_b->economy_age;
 		});
-		return oldest->age;
+		return oldest->economy_age;
+	}
+
+	uint8_t GetOrderOccupancyAverage() const
+	{
+		if (this->NumVehicles() < 1) return 0;
+		return this->vehicles_begin[0]->GetOrderOccupancyAverage();
 	}
 };
 
-typedef GUIList<GUIVehicleGroup, CargoID> GUIVehicleGroupList;
+typedef GUIList<GUIVehicleGroup, std::nullptr_t, CargoID> GUIVehicleGroupList;
 
 struct BaseVehicleListWindow : public Window {
-	enum GroupBy : byte {
+	enum GroupBy : uint8_t {
 		GB_NONE,
 		GB_SHARED_ORDERS,
 
@@ -82,20 +88,18 @@ public:
 	CompanyID own_company;                    ///< Company ID used for own_vehicles
 	GUIVehicleGroupList vehgroups;            ///< List of (groups of) vehicles.  This stores iterators of `vehicles`, and should be rebuilt if `vehicles` is structurally changed.
 	Listing *sorting;                         ///< Pointer to the vehicle type related sorting.
-	byte unitnumber_digits;                   ///< The number of digits of the highest unit number.
+	uint8_t unitnumber_digits;                ///< The number of digits of the highest unit number.
 	Scrollbar *vscroll;
-	VehicleListIdentifier vli;                ///< Identifier of the vehicle list we want to currently show.
-	uint order_arrow_width;                   ///< Width of the arrow in the small order list.
-	VehicleID vehicle_sel;                    ///< Selected vehicle
+	VehicleListIdentifier vli;                  ///< Identifier of the vehicle list we want to currently show.
+	VehicleID vehicle_sel;                      ///< Selected vehicle
+	CargoID cargo_filter_criteria;              ///< Selected cargo filter index
+	uint order_arrow_width;                     ///< Width of the arrow in the small order list.
+	CargoTypes used_cargoes;
 
 	typedef GUIVehicleGroupList::SortFunction VehicleGroupSortFunction;
 	typedef GUIVehicleList::SortFunction VehicleIndividualSortFunction;
 
-	CargoID cargo_filter[NUM_CARGO + 3];        ///< Available cargo filters; CargoID or CF_ANY or CF_NONE
-	StringID cargo_filter_texts[NUM_CARGO + 4]; ///< Texts for filter_cargo, terminated by INVALID_STRING_ID
-	byte cargo_filter_criteria;                 ///< Selected cargo filter
-
-	inline CargoID GetCargoFilter() const { return this->cargo_filter[this->cargo_filter_criteria]; }
+	inline CargoID GetCargoFilter() const { return this->cargo_filter_criteria; }
 
 	enum ActionDropdownItem {
 		ADI_TEMPLATE_REPLACE,
@@ -133,10 +137,11 @@ public:
 	void SortVehicleList();
 	void CountOwnVehicles();
 	void BuildVehicleList();
-	void SetCargoFilterIndex(int index);
+	void SetCargoFilter(uint8_t index);
 	void SetCargoFilterArray();
 	void FilterVehicleList();
-	void CheckCargoFilterEnableState(int plane_widget, bool re_init, bool possible = true);
+	StringID GetCargoFilterLabel(CargoID cid) const;
+	DropDownList BuildCargoDropDownList(bool full) const;
 	Dimension GetActionDropdownSize(bool show_autoreplace, bool show_group, bool show_template_replace, StringID change_order_str = 0);
 	DropDownList BuildActionDropdownList(bool show_autoreplace, bool show_group, bool show_template_replace,
 			StringID change_order_str = 0, bool show_create_group = false, bool consider_top_level = false);

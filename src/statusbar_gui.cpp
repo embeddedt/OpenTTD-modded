@@ -59,7 +59,7 @@ struct StatusBarWindow : Window {
 	int ticker_scroll;
 	GUITimer ticker_timer;
 	GUITimer reminder_timeout;
-	int64 last_minute = 0;
+	TickMinutes last_minute = 0;
 
 	static const int TICKER_STOP    = 1640; ///< scrolling is finished when counter reaches this value
 	static const int REMINDER_START = 1350; ///< time in ms for reminder notification (red dot on the right) to stay
@@ -77,29 +77,58 @@ struct StatusBarWindow : Window {
 		PositionStatusbar(this);
 	}
 
-	Point OnInitialPosition(int16 sm_width, int16 sm_height, int window_number) override
+	Point OnInitialPosition(int16_t sm_width, int16_t sm_height, int window_number) override
 	{
 		Point pt = { 0, _screen.height - sm_height };
 		return pt;
 	}
 
-	void FindWindowPlacementAndResize(int def_width, int def_height) override
+	void FindWindowPlacementAndResize([[maybe_unused]] int def_width, [[maybe_unused]] int def_height) override
 	{
 		Window::FindWindowPlacementAndResize(_toolbar_width, def_height);
 	}
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	StringID PrepareHHMMDateString(int hhmm, CalTime::Date date, CalTime::Year year) const
+	{
+		SetDParam(0, hhmm);
+		switch (_settings_client.gui.date_with_time) {
+			case 0:
+				return STR_JUST_TIME_HHMM;
+
+			case 1:
+				SetDParam(1, year);
+				return STR_HHMM_WITH_DATE_Y;
+
+			case 2:
+				SetDParam(1, date);
+				return STR_HHMM_WITH_DATE_YM;
+
+			case 3:
+				SetDParam(1, date);
+				return STR_HHMM_WITH_DATE_YMD;
+
+			default:
+				NOT_REACHED();
+		}
+	}
+
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override
 	{
 		Dimension d;
 		switch (widget) {
 			case WID_S_LEFT:
-				SetDParam(0, DateToScaledDateTicks(MAX_YEAR * DAYS_IN_YEAR));
-				d = GetStringBoundingBox(STR_JUST_DATE_WALLCLOCK_LONG);
+				if (_settings_time.time_in_minutes) {
+					StringID str = PrepareHHMMDateString(GetBroadestDigitsValue(4), CalTime::MAX_DATE, CalTime::MAX_YEAR);
+					d = GetStringBoundingBox(str);
+				} else {
+					SetDParam(0, CalTime::MAX_DATE);
+					d = GetStringBoundingBox(STR_JUST_DATE_LONG);
+				}
 				break;
 
 			case WID_S_RIGHT: {
-				int64 max_money = UINT32_MAX;
-				for (const Company *c : Company::Iterate()) max_money = std::max<int64>(c->money, max_money);
+				int64_t max_money = UINT32_MAX;
+				for (const Company *c : Company::Iterate()) max_money = std::max<int64_t>(c->money, max_money);
 				SetDParam(0, 100LL * max_money);
 				d = GetStringBoundingBox(STR_JUST_CURRENCY_LONG);
 				break;
@@ -114,20 +143,27 @@ struct StatusBarWindow : Window {
 		*size = maxdim(d, *size);
 	}
 
-	void DrawWidget(const Rect &r, int widget) const override
+	void DrawWidget(const Rect &r, WidgetID widget) const override
 	{
 		Rect tr = r.Shrink(WidgetDimensions::scaled.framerect, RectPadding::zero);
-		tr.top = CenterBounds(r.top, r.bottom, FONT_HEIGHT_NORMAL);
+		tr.top = CenterBounds(r.top, r.bottom, GetCharacterHeight(FS_NORMAL));
 		switch (widget) {
 			case WID_S_LEFT:
 				/* Draw the date */
-				SetDParam(0, _scaled_date_ticks);
-				DrawString(tr, STR_JUST_DATE_WALLCLOCK_LONG, TC_WHITE, SA_HOR_CENTER);
+				if (_settings_time.time_in_minutes) {
+					StringID str = PrepareHHMMDateString(_settings_time.ToTickMinutes(_state_ticks).ClockHHMM(), CalTime::CurDate(), CalTime::CurYear());
+					DrawString(tr, str, TC_WHITE, SA_HOR_CENTER);
+				} else {
+					SetDParam(0, CalTime::CurDate());
+					DrawString(tr, STR_JUST_DATE_LONG, TC_WHITE, SA_HOR_CENTER);
+				}
 				break;
 
 			case WID_S_RIGHT: {
 				if (_local_company == COMPANY_SPECTATOR) {
 					DrawString(tr, STR_STATUSBAR_SPECTATOR, TC_FROMSTRING, SA_HOR_CENTER);
+				} else if (_settings_game.difficulty.infinite_money) {
+					DrawString(tr, STR_STATUSBAR_INFINITE_MONEY, TC_FROMSTRING, SA_HOR_CENTER);
 				} else {
 					/* Draw company money, if any */
 					const Company *c = Company::GetIfValid(_local_company);
@@ -179,7 +215,7 @@ struct StatusBarWindow : Window {
 	 * @param data Information about the changed data.
 	 * @param gui_scope Whether the call is done from GUI scope. You may not do everything when not in GUI scope. See #InvalidateWindowData() for details.
 	 */
-	void OnInvalidateData(int data = 0, bool gui_scope = true) override
+	void OnInvalidateData([[maybe_unused]] int data = 0, [[maybe_unused]] bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
 		switch (data) {
@@ -198,7 +234,7 @@ struct StatusBarWindow : Window {
 		}
 	}
 
-	void OnClick(Point pt, int widget, int click_count) override
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override
 	{
 		switch (widget) {
 			case WID_S_MIDDLE: ShowLastNewsMessage(); break;
@@ -211,9 +247,12 @@ struct StatusBarWindow : Window {
 	{
 		if (_pause_mode != PM_UNPAUSED) return;
 
-		if (_settings_time.time_in_minutes && this->last_minute != CURRENT_MINUTE) {
-			this->last_minute = CURRENT_MINUTE;
-			this->SetWidgetDirty(WID_S_LEFT);
+		if (_settings_time.time_in_minutes) {
+			const TickMinutes now = _settings_time.NowInTickMinutes();
+			if (this->last_minute != now) {
+				this->last_minute = now;
+				this->SetWidgetDirty(WID_S_LEFT);
+			}
 		}
 
 		if (this->ticker_scroll < TICKER_STOP) { // Scrolling text
@@ -231,7 +270,7 @@ struct StatusBarWindow : Window {
 	}
 };
 
-static const NWidgetPart _nested_main_status_widgets[] = {
+static constexpr NWidgetPart _nested_main_status_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_PANEL, COLOUR_GREY, WID_S_LEFT), SetMinimalSize(160, 12), EndContainer(),
 		NWidget(WWT_PUSHBTN, COLOUR_GREY, WID_S_MIDDLE), SetMinimalSize(40, 12), SetDataTip(0x0, STR_STATUSBAR_TOOLTIP_SHOW_LAST_NEWS), SetResize(1, 0),
@@ -239,11 +278,11 @@ static const NWidgetPart _nested_main_status_widgets[] = {
 	EndContainer(),
 };
 
-static WindowDesc _main_status_desc(
+static WindowDesc _main_status_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_STATUS_BAR, WC_NONE,
 	WDF_NO_FOCUS | WDF_NO_CLOSE,
-	_nested_main_status_widgets, lengthof(_nested_main_status_widgets)
+	std::begin(_nested_main_status_widgets), std::end(_nested_main_status_widgets)
 );
 
 /**

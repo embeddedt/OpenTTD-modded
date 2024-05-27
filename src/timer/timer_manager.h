@@ -11,7 +11,7 @@
 #ifndef TIMER_MANAGER_H
 #define TIMER_MANAGER_H
 
-#include "stdafx.h"
+#include "../stdafx.h"
 #include <set>
 
 template <typename TTimerType>
@@ -39,7 +39,8 @@ public:
 	 *
 	 * @param timer The timer to register.
 	 */
-	static void RegisterTimer(BaseTimer<TTimerType> &timer) {
+	static void RegisterTimer(BaseTimer<TTimerType> &timer)
+	{
 #ifdef WITH_ASSERT
 		Validate(timer.period);
 #endif /* WITH_ASSERT */
@@ -51,8 +52,23 @@ public:
 	 *
 	 * @param timer The timer to unregister.
 	 */
-	static void UnregisterTimer(BaseTimer<TTimerType> &timer) {
+	static void UnregisterTimer(BaseTimer<TTimerType> &timer)
+	{
 		GetTimers().erase(&timer);
+	}
+
+	/**
+	 * Change the period of a registered timer.
+	 *
+	 * @param timer The timer to change the period of.
+	 * @param new_period The new period value.
+	 */
+	static void ChangeRegisteredTimerPeriod(BaseTimer<TTimerType> &timer, TPeriod new_period)
+	{
+		/* Unregistration and re-registration is necessary because the period is used as the sort key in base_timer_sorter */
+		UnregisterTimer(timer);
+		timer.period = new_period;
+		RegisterTimer(timer);
 	}
 
 #ifdef WITH_ASSERT
@@ -88,14 +104,16 @@ private:
 	 * same, it will sort based on the pointer value.
 	 */
 	struct base_timer_sorter {
-		bool operator() (BaseTimer<TTimerType> *a, BaseTimer<TTimerType> *b) const {
+		bool operator() (BaseTimer<TTimerType> *a, BaseTimer<TTimerType> *b) const
+		{
 			if (a->period == b->period) return a < b;
 			return a->period < b->period;
 		}
 	};
 
 	/** Singleton list, to store all the active timers. */
-	static std::set<BaseTimer<TTimerType> *, base_timer_sorter> &GetTimers() {
+	static std::set<BaseTimer<TTimerType> *, base_timer_sorter> &GetTimers()
+	{
 		static std::set<BaseTimer<TTimerType> *, base_timer_sorter> timers;
 		return timers;
 	}

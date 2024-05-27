@@ -16,69 +16,60 @@
 #include "date_func.h"
 #include "vehicle_base.h"
 #include "rail_gui.h"
-#include "linkgraph/linkgraph.h"
+#include "linkgraph/linkgraphschedule.h"
 #include "sl/saveload.h"
 #include "newgrf_profiling.h"
 #include "console_func.h"
 #include "debug.h"
 #include "landscape.h"
 #include "widgets/statusbar_widget.h"
+#include "event_logs.h"
 
 #include "safeguards.h"
 
-YearMonthDay _cur_date_ymd; ///< Current date as YearMonthDay struct
-Date      _date;       ///< Current date in days (day counter)
-DateFract _date_fract; ///< Fractional part of the day.
-uint64 _tick_counter;  ///< Ever incrementing tick counter for setting off various events
-uint8 _tick_skip_counter; ///< Counter for ticks, when only vehicles are moving and nothing else happens
-uint64 _scaled_tick_counter; ///< Tick counter in daylength-scaled ticks
-DateTicksScaled _scaled_date_ticks; ///< Date as ticks in daylength-scaled ticks
-DateTicksScaled _scaled_date_ticks_offset; ///< Offset to add when generating _scaled_date_ticks
-uint32    _quit_after_days;  ///< Quit after this many days of run time
+uint64_t _tick_counter;                    ///< Ever incrementing tick counter for setting off various events
+ScaledTickCounter _scaled_tick_counter;    ///< Tick counter in daylength-scaled ticks
+StateTicks _state_ticks;                   ///< Current state tick
+uint32_t _quit_after_days;                 ///< Quit after this many days of run time
 
-YearMonthDay _game_load_cur_date_ymd;
-DateFract _game_load_date_fract;
-uint8 _game_load_tick_skip_counter;
+CalTime::State CalTime::Detail::now;
+EconTime::State EconTime::Detail::now;
+YearDelta EconTime::Detail::years_elapsed;
+YearDelta EconTime::Detail::period_display_offset;
+
+namespace DateDetail {
+	StateTicksDelta _state_ticks_offset;   ///< Offset to add when calculating a StateTicks value from an economy date, date fract and tick skip counter
+	uint8_t _tick_skip_counter;            ///< Counter for ticks, when only vehicles are moving and nothing else happens
+	uint8_t _effective_day_length;         ///< Current effective day length
+	Ticks _ticks_per_calendar_day;         ///< Current ticks per calendar day
+};
 
 extern void ClearOutOfDateSignalSpeedRestrictions();
 
-void CheckScaledDateTicksWrap()
+void CheckStateTicksWrap()
 {
-	DateTicksScaled tick_adjust = 0;
-	auto get_tick_adjust = [&](DateTicksScaled target) {
-		int32 rounding = _settings_time.time_in_minutes * 1440;
-		return target - (target % rounding);
+	StateTicksDelta tick_adjust = 0;
+	auto get_tick_adjust = [&](StateTicksDelta target) {
+		int32_t rounding = _settings_time.time_in_minutes * 1440;
+		return target - (target.base() % rounding);
 	};
-	if (_scaled_date_ticks >= ((int64)1 << 60)) {
-		tick_adjust = get_tick_adjust(_scaled_date_ticks);
-	} else if (_scaled_date_ticks <= -((int64)1 << 60)) {
-		tick_adjust = -get_tick_adjust(-_scaled_date_ticks);
+	if (_state_ticks >= ((int64_t)1 << 60)) {
+		tick_adjust = get_tick_adjust(_state_ticks - INITIAL_STATE_TICKS_VALUE);
+	} else if (_state_ticks <= -((int64_t)1 << 60)) {
+		tick_adjust = -get_tick_adjust(INITIAL_STATE_TICKS_VALUE - _state_ticks);
 	} else {
 		return;
 	}
 
-	_scaled_date_ticks_offset -= tick_adjust;
-	_scaled_date_ticks -= tick_adjust;
+	DateDetail::_state_ticks_offset -= tick_adjust;
+	_state_ticks -= tick_adjust;
+	_game_load_state_ticks -= tick_adjust;
 
-	extern void AdjustAllSignalSpeedRestrictionTickValues(DateTicksScaled delta);
+	extern void AdjustAllSignalSpeedRestrictionTickValues(StateTicksDelta delta);
 	AdjustAllSignalSpeedRestrictionTickValues(-tick_adjust);
 
-	extern void AdjustVehicleScaledTickBase(int64 delta);
-	AdjustVehicleScaledTickBase(-tick_adjust);
-
-	extern void AdjustLinkGraphScaledTickBase(int64 delta);
-	AdjustLinkGraphScaledTickBase(-tick_adjust);
-}
-
-void RebaseScaledDateTicksBase()
-{
-	DateTicksScaled old_scaled_date_ticks = _scaled_date_ticks;
-	SetScaledTickVariables();
-	_scaled_date_ticks_offset += (old_scaled_date_ticks - _scaled_date_ticks);
-	SetScaledTickVariables();
-	assert(old_scaled_date_ticks == _scaled_date_ticks);
-
-	CheckScaledDateTicksWrap();
+	extern void AdjustVehicleStateTicksBase(StateTicksDelta delta);
+	AdjustVehicleStateTicksBase(-tick_adjust);
 }
 
 /**
@@ -86,31 +77,90 @@ void RebaseScaledDateTicksBase()
  * @param date  New date
  * @param fract The number of ticks that have passed on this date.
  */
-void SetDate(Date date, DateFract fract, bool preserve_scaled_ticks)
+void CalTime::Detail::SetDate(CalTime::Date date, CalTime::DateFract fract)
 {
 	assert(fract < DAY_TICKS);
 
-	YearMonthDay ymd;
-
-	_date = date;
-	_date_fract = fract;
-	ConvertDateToYMD(date, &ymd);
-	_cur_date_ymd = ymd;
-	if (preserve_scaled_ticks) {
-		RebaseScaledDateTicksBase();
-	} else {
-		SetScaledTickVariables();
-	}
+	CalTime::Detail::now.cal_date = date;
+	CalTime::Detail::now.cal_date_fract = fract;
+	CalTime::Detail::now.cal_ymd = CalTime::ConvertDateToYMD(date);
 	UpdateCachedSnowLine();
 }
 
-void SetScaledTickVariables()
+void EconTime::Detail::SetDate(EconTime::Date date, EconTime::DateFract fract)
 {
-	_scaled_date_ticks = ((((DateTicksScaled)_date * DAY_TICKS) + _date_fract) * _settings_game.economy.day_length_factor) + _tick_skip_counter + _scaled_date_ticks_offset;
+	assert(fract < DAY_TICKS);
+
+	EconTime::Detail::now.econ_date = date;
+	EconTime::Detail::now.econ_date_fract = fract;
+	EconTime::Detail::now.econ_ymd = EconTime::ConvertDateToYMD(date);
+	RecalculateStateTicksOffset();
+}
+
+CalTime::State CalTime::Detail::NewState(CalTime::Year year)
+{
+	CalTime::State state{};
+	state.cal_ymd = { year, 0, 1 };
+	state.cal_date = CalTime::ConvertYMDToDate(year, 0, 1);
+	return state;
+}
+
+EconTime::State EconTime::Detail::NewState(EconTime::Year year)
+{
+	EconTime::State state{};
+	state.econ_ymd = { year, 0, 1 };
+	state.econ_date = EconTime::ConvertYMDToDate(year, 0, 1);
+	return state;
+}
+
+int32_t EconTime::Detail::WallClockYearToDisplay(EconTime::Year year)
+{
+	return (year + EconTime::Detail::period_display_offset).base();
+}
+
+StateTicks GetStateTicksFromDateWithoutOffset(EconTime::Date date, EconTime::DateFract date_fract)
+{
+	return ((int64_t)(EconTime::DateToDateTicks(date, date_fract).base()) * DayLengthFactor()) + TickSkipCounter();
+}
+
+void RecalculateStateTicksOffset()
+{
+	DateDetail::_state_ticks_offset = _state_ticks - GetStateTicksFromDateWithoutOffset(EconTime::CurDate(), EconTime::CurDateFract());
+}
+
+void UpdateEffectiveDayLengthFactor()
+{
+	DateDetail::_effective_day_length = _settings_game.EffectiveDayLengthFactor();
+
+	if (EconTime::UsingWallclockUnits()) {
+		if (CalTime::IsCalendarFrozen()) {
+			DateDetail::_ticks_per_calendar_day = INT32_MAX;
+		} else {
+			DateDetail::_ticks_per_calendar_day = (_settings_game.economy.minutes_per_calendar_year * DAY_TICKS) / CalTime::DEF_MINUTES_PER_YEAR;
+		}
+	} else {
+		DateDetail::_ticks_per_calendar_day = DAY_TICKS * DateDetail::_effective_day_length;
+	}
+
+	SetupTileLoopCounts();
+	UpdateCargoScalers();
+}
+
+CalTime::Date StateTicksToCalendarDate(StateTicks ticks)
+{
+	if (!EconTime::UsingWallclockUnits()) return StateTicksToDate(ticks).base();
+
+	if (CalTime::IsCalendarFrozen()) return CalTime::CurDate();
+
+	Ticks ticks_per_cal_day = TicksPerCalendarDay();
+	uint subticks_left_this_day = ((DAY_TICKS - CalTime::CurDateFract()) * ticks_per_cal_day) - CalTime::CurSubDateFract();
+	Ticks ticks_into_this_day = ticks_per_cal_day - CeilDiv(subticks_left_this_day, DAY_TICKS);
+
+	return CalTime::CurDate().base() + (int32_t)(((ticks - _state_ticks).base() + ticks_into_this_day) / ticks_per_cal_day);
 }
 
 #define M(a, b) ((a << 5) | b)
-static const uint16 _month_date_from_year_day[] = {
+static const uint16_t _month_date_from_year_day[] = {
 	M( 0, 1), M( 0, 2), M( 0, 3), M( 0, 4), M( 0, 5), M( 0, 6), M( 0, 7), M( 0, 8), M( 0, 9), M( 0, 10), M( 0, 11), M( 0, 12), M( 0, 13), M( 0, 14), M( 0, 15), M( 0, 16), M( 0, 17), M( 0, 18), M( 0, 19), M( 0, 20), M( 0, 21), M( 0, 22), M( 0, 23), M( 0, 24), M( 0, 25), M( 0, 26), M( 0, 27), M( 0, 28), M( 0, 29), M( 0, 30), M( 0, 31),
 	M( 1, 1), M( 1, 2), M( 1, 3), M( 1, 4), M( 1, 5), M( 1, 6), M( 1, 7), M( 1, 8), M( 1, 9), M( 1, 10), M( 1, 11), M( 1, 12), M( 1, 13), M( 1, 14), M( 1, 15), M( 1, 16), M( 1, 17), M( 1, 18), M( 1, 19), M( 1, 20), M( 1, 21), M( 1, 22), M( 1, 23), M( 1, 24), M( 1, 25), M( 1, 26), M( 1, 27), M( 1, 28), M( 1, 29),
 	M( 2, 1), M( 2, 2), M( 2, 3), M( 2, 4), M( 2, 5), M( 2, 6), M( 2, 7), M( 2, 8), M( 2, 9), M( 2, 10), M( 2, 11), M( 2, 12), M( 2, 13), M( 2, 14), M( 2, 15), M( 2, 16), M( 2, 17), M( 2, 18), M( 2, 19), M( 2, 20), M( 2, 21), M( 2, 22), M( 2, 23), M( 2, 24), M( 2, 25), M( 2, 26), M( 2, 27), M( 2, 28), M( 2, 29), M( 2, 30), M( 2, 31),
@@ -142,7 +192,7 @@ enum DaysTillMonth {
 };
 
 /** Number of days to pass from the first day in the year before reaching the first of a month. */
-static const uint16 _accum_days_for_month[] = {
+static const uint16_t _accum_days_for_month[] = {
 	ACCUM_JAN, ACCUM_FEB, ACCUM_MAR, ACCUM_APR,
 	ACCUM_MAY, ACCUM_JUN, ACCUM_JUL, ACCUM_AUG,
 	ACCUM_SEP, ACCUM_OCT, ACCUM_NOV, ACCUM_DEC,
@@ -153,16 +203,16 @@ static const uint16 _accum_days_for_month[] = {
  * @param date the date to convert from
  * @param ymd  the year, month and day to write to
  */
-void ConvertDateToYMD(Date date, YearMonthDay *ymd)
+CalTime::YearMonthDay CalTime::ConvertDateToYMD(CalTime::Date date)
 {
 	/* Year determination in multiple steps to account for leap
 	 * years. First do the large steps, then the smaller ones.
 	 */
 
 	/* There are 97 leap years in 400 years */
-	Year yr = 400 * (date / (DAYS_IN_YEAR * 400 + 97));
-	int rem = date % (DAYS_IN_YEAR * 400 + 97);
-	uint16 x;
+	CalTime::Year yr = 400 * (date.base() / (DAYS_IN_YEAR * 400 + 97));
+	int rem = date.base() % (DAYS_IN_YEAR * 400 + 97);
+	uint16_t x;
 
 	if (rem >= DAYS_IN_YEAR * 100 + 25) {
 		/* There are 25 leap years in the first 100 years after
@@ -175,7 +225,7 @@ void ConvertDateToYMD(Date date, YearMonthDay *ymd)
 		rem = (rem % (DAYS_IN_YEAR * 100 + 24));
 	}
 
-	if (!IsLeapYear(yr) && rem >= DAYS_IN_YEAR * 4) {
+	if (!CalTime::IsLeapYear(yr) && rem >= DAYS_IN_YEAR * 4) {
 		/* The first 4 year of the century are not always a leap year */
 		yr  += 4;
 		rem -= DAYS_IN_YEAR * 4;
@@ -187,19 +237,22 @@ void ConvertDateToYMD(Date date, YearMonthDay *ymd)
 
 	/* The last (max 3) years to account for; the first one
 	 * can be, but is not necessarily a leap year */
-	while (rem >= (IsLeapYear(yr) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR)) {
-		rem -= IsLeapYear(yr) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR;
+	while (rem >= (CalTime::IsLeapYear(yr) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR)) {
+		rem -= CalTime::IsLeapYear(yr) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR;
 		yr++;
 	}
 
 	/* Skip the 29th of February in non-leap years */
-	if (!IsLeapYear(yr) && rem >= ACCUM_MAR - 1) rem++;
+	if (!CalTime::IsLeapYear(yr) && rem >= ACCUM_MAR - 1) rem++;
 
-	ymd->year = yr;
+	CalTime::YearMonthDay ymd;
+	ymd.year = yr;
 
 	x = _month_date_from_year_day[rem];
-	ymd->month = x >> 5;
-	ymd->day = x & 0x1F;
+	ymd.month = x >> 5;
+	ymd.day = x & 0x1F;
+
+	return ymd;
 }
 
 /**
@@ -208,7 +261,7 @@ void ConvertDateToYMD(Date date, YearMonthDay *ymd)
  * @param month is a number between 0..11
  * @param day   is a number between 1..31
  */
-Date ConvertYMDToDate(Year year, Month month, Day day)
+CalTime::Date CalTime::ConvertYMDToDate(CalTime::Year year, CalTime::Month month, CalTime::Day day)
 {
 	/* Day-offset in a leap year */
 	int days = _accum_days_for_month[month] + day - 1;
@@ -216,7 +269,67 @@ Date ConvertYMDToDate(Year year, Month month, Day day)
 	/* Account for the missing of the 29th of February in non-leap years */
 	if (!IsLeapYear(year) && days >= ACCUM_MAR) days--;
 
-	return DAYS_TILL(year) + days;
+	return CalTime::DateAtStartOfYear(year) + days;
+}
+
+EconTime::YearMonthDay EconTime::ConvertDateToYMD(EconTime::Date date)
+{
+	if (EconTime::UsingWallclockUnits()) {
+		/* If we're using wallclock units, economy months have 30 days and an economy year has 360 days. */
+		EconTime::YearMonthDay ymd;
+		ymd.year = date.base() / EconTime::DAYS_IN_ECONOMY_WALLCLOCK_YEAR;
+		ymd.month = (date.base() % EconTime::DAYS_IN_ECONOMY_WALLCLOCK_YEAR) / EconTime::DAYS_IN_ECONOMY_WALLCLOCK_MONTH;
+		ymd.day = (date.base() % EconTime::DAYS_IN_ECONOMY_WALLCLOCK_MONTH) + 1;
+		return ymd;
+	}
+
+	/* Process the same as calendar time */
+	CalTime::YearMonthDay ymd = CalTime::ConvertDateToYMD(date.base());
+	return { ymd.year.base(), ymd.month, ymd.day };
+}
+
+EconTime::Date EconTime::ConvertYMDToDate(EconTime::Year year, EconTime::Month month, EconTime::Day day)
+{
+	if (EconTime::UsingWallclockUnits()) {
+		/* If we're using wallclock units, economy months have 30 days and an economy year has 360 days. */
+		const int total_months = (year.base() * MONTHS_IN_YEAR) + month;
+		return (total_months * EconTime::DAYS_IN_ECONOMY_WALLCLOCK_MONTH) + day - 1; // Day is 1-indexed but Date is 0-indexed, hence the - 1.
+	}
+
+	/* Process the same as calendar time */
+	return CalTime::ConvertYMDToDate(year.base(), month, day).base();
+}
+
+bool CalTime::IsCalendarFrozen(bool newgame)
+{
+	GameSettings &settings = (newgame) ? _settings_newgame : _settings_game;
+	return settings.economy.timekeeping_units == TKU_WALLCLOCK && settings.economy.minutes_per_calendar_year == CalTime::FROZEN_MINUTES_PER_YEAR;
+}
+
+CalTime::Day CalTime::NumberOfDaysInMonth(Year year, Month month)
+{
+	switch (month) {
+		case  0: return 31;
+		case  1: return CalTime::IsLeapYear(year) ? 29 : 28;
+		case  2: return 31;
+		case  3: return 30;
+		case  4: return 31;
+		case  5: return 30;
+		case  6: return 31;
+		case  7: return 31;
+		case  8: return 30;
+		case  9: return 31;
+		case 10: return 30;
+		case 11: return 31;
+		default: NOT_REACHED();
+	}
+}
+
+bool EconTime::UsingWallclockUnits(bool newgame)
+{
+	if (newgame) return (_settings_newgame.economy.timekeeping_units == TKU_WALLCLOCK);
+
+	return (_settings_game.economy.timekeeping_units == TKU_WALLCLOCK);
 }
 
 /** Functions used by the IncreaseDate function */
@@ -225,7 +338,8 @@ extern void EnginesDailyLoop();
 extern void DisasterDailyLoop();
 extern void IndustryDailyLoop();
 
-extern void CompaniesMonthlyLoop();
+extern void CompaniesCalendarMonthlyLoop();
+extern void CompaniesEconomyMonthlyLoop();
 extern void EnginesMonthlyLoop();
 extern void TownsMonthlyLoop();
 extern void IndustryMonthlyLoop();
@@ -242,82 +356,108 @@ extern void ShowEndGameChart();
 /**
  * Runs various procedures that have to be done yearly
  */
-static void OnNewYear()
+static void OnNewCalendarYear()
 {
-	CompaniesYearlyLoop();
-	VehiclesYearlyLoop();
-	TownsYearlyLoop();
 	InvalidateWindowClassesData(WC_BUILD_STATION);
 	InvalidateWindowClassesData(WC_BUS_STATION);
 	InvalidateWindowClassesData(WC_TRUCK_STATION);
-	if (_network_server) NetworkServerYearlyLoop();
+	if (_network_server) NetworkServerCalendarYearlyLoop();
 
-	if (_cur_date_ymd.year == _settings_client.gui.semaphore_build_before) ResetSignalVariant();
+	if (CalTime::CurYear() == _settings_client.gui.semaphore_build_before) ResetSignalVariant();
 
 	/* check if we reached end of the game (end of ending year); 0 = never */
-	if (_cur_date_ymd.year == _settings_game.game_creation.ending_year + 1 && _settings_game.game_creation.ending_year != 0) {
+	if (CalTime::CurYear() == _settings_game.game_creation.ending_year + 1 && _settings_game.game_creation.ending_year != 0) {
 		ShowEndGameChart();
 	}
 
 	/* check if we reached the maximum year, decrement dates by a year */
-	if (_cur_date_ymd.year == MAX_YEAR + 1) {
-		int days_this_year;
-
-		_cur_date_ymd.year--;
-		days_this_year = IsLeapYear(_cur_date_ymd.year) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR;
-		_date -= days_this_year;
-		for (LinkGraph *lg : LinkGraph::Iterate()) lg->ShiftDates(-days_this_year);
-		ShiftOrderDates(-days_this_year);
-		ShiftVehicleDates(-days_this_year);
-		_scaled_date_ticks_offset += ((int64)days_this_year) * (DAY_TICKS * _settings_game.economy.day_length_factor);
-
-		/* Because the _date wraps here, and text-messages expire by game-days, we have to clean out
-		 *  all of them if the date is set back, else those messages will hang for ever */
-		NetworkInitChatMessage();
+	if (CalTime::CurYear() == CalTime::MAX_YEAR + 1) {
+		CalTime::Detail::now.cal_ymd.year--;
+		int days_this_year = CalTime::IsLeapYear(CalTime::Detail::now.cal_ymd.year) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR;
+		CalTime::Detail::now.cal_date -= days_this_year;
 	}
-
-	CheckScaledDateTicksWrap();
 
 	if (_settings_client.gui.auto_euro) CheckSwitchToEuro();
 	IConsoleCmdExec("exec scripts/on_newyear.scr 0");
 }
 
 /**
+ * Runs various procedures that have to be done yearly
+ */
+static void OnNewEconomyYear()
+{
+	EconTime::Detail::years_elapsed++;
+	CompaniesYearlyLoop();
+	VehiclesYearlyLoop();
+	TownsYearlyLoop();
+	if (_network_server) NetworkServerEconomyYearlyLoop();
+
+	/* check if we reached the maximum year, decrement dates by a year */
+	if (EconTime::CurYear() == EconTime::MAX_YEAR + 1) {
+		EconTime::Detail::period_display_offset++;
+		EconTime::Detail::now.econ_ymd.year--;
+		int days_this_year = EconTime::IsLeapYear(EconTime::Detail::now.econ_ymd.year) ? DAYS_IN_LEAP_YEAR : DAYS_IN_YEAR;
+		EconTime::Detail::now.econ_date -= days_this_year;
+		LinkGraphSchedule::instance.ShiftDates(-days_this_year);
+		UpdateOrderUIOnDateChange();
+		ShiftVehicleDates(-days_this_year);
+		RecalculateStateTicksOffset();
+	}
+
+	CheckStateTicksWrap();
+}
+
+/**
  * Runs various procedures that have to be done monthly
  */
-static void OnNewMonth()
+static void OnNewCalendarMonth()
 {
 	SetWindowClassesDirty(WC_CHEATS);
-	CompaniesMonthlyLoop();
+	CompaniesCalendarMonthlyLoop();
 	EnginesMonthlyLoop();
+	IConsoleCmdExec("exec scripts/on_newmonth.scr 0");
+}
+
+/**
+ * Runs various procedures that have to be done monthly
+ */
+static void OnNewEconomyMonth()
+{
+	CompaniesEconomyMonthlyLoop();
 	TownsMonthlyLoop();
 	IndustryMonthlyLoop();
 	SubsidyMonthlyLoop();
 	StationMonthlyLoop();
-	if (_network_server) NetworkServerMonthlyLoop();
-	IConsoleCmdExec("exec scripts/on_newmonth.scr 0");
+	if (_network_server) NetworkServerEconomyMonthlyLoop();
 }
 
 /**
  * Runs various procedures that have to be done daily
  */
-static void OnNewDay()
+static void OnNewCalendarDay()
 {
-	if (_network_server) NetworkServerDailyLoop();
+	EnginesDailyLoop();
+
+	if (!_settings_time.time_in_minutes || _settings_client.gui.date_with_time > 0) {
+		SetWindowWidgetDirty(WC_STATUS_BAR, 0, WID_S_LEFT);
+	}
+	/* Refresh after possible snowline change */
+	SetWindowClassesDirty(WC_TOWN_VIEW);
+	IConsoleCmdExec("exec scripts/on_newday.scr 0");
+}
+
+/**
+ * Runs various procedures that have to be done daily
+ */
+static void OnNewEconomyDay()
+{
+	if (_network_server) NetworkServerEconomyDailyLoop();
 
 	DisasterDailyLoop();
 	IndustryDailyLoop();
 	StationDailyLoop();
 
-	if (!_settings_time.time_in_minutes || _settings_client.gui.date_with_time > 0) {
-		SetWindowWidgetDirty(WC_STATUS_BAR, 0, WID_S_LEFT);
-	}
-	EnginesDailyLoop();
 	ClearOutOfDateSignalSpeedRestrictions();
-
-	/* Refresh after possible snowline change */
-	SetWindowClassesDirty(WC_TOWN_VIEW);
-	IConsoleCmdExec("exec scripts/on_newday.scr 0");
 
 	if (_quit_after_days > 0) {
 		if (--_quit_after_days == 0) {
@@ -325,6 +465,83 @@ static void OnNewDay()
 			_exit_game = true;
 		}
 	}
+}
+
+void IncreaseCalendarDate()
+{
+	/* If calendar day progress is frozen, don't try to advance time. */
+	if (CalTime::IsCalendarFrozen()) return;
+
+	/* If we are using a non-default calendar progression speed, we need to check the sub_date_fract before updating date_fract. */
+	if (_settings_game.economy.timekeeping_units == TKU_WALLCLOCK && _settings_game.economy.minutes_per_calendar_year != CalTime::DEF_MINUTES_PER_YEAR) {
+		CalTime::Detail::now.sub_date_fract += DAY_TICKS;
+
+		/* Check if we are ready to increment date_fract */
+		const uint16_t threshold = TicksPerCalendarDay();
+		if (CalTime::Detail::now.sub_date_fract < threshold) return;
+
+		CalTime::Detail::now.sub_date_fract = std::min<uint16_t>(CalTime::Detail::now.sub_date_fract - threshold, DAY_TICKS - 1);
+	}
+
+	CalTime::Detail::now.cal_date_fract++;
+	if (CalTime::Detail::now.cal_date_fract < DAY_TICKS) return;
+	CalTime::Detail::now.cal_date_fract = 0;
+	CalTime::Detail::now.sub_date_fract = 0;
+
+	/* increase day counter */
+	CalTime::Detail::now.cal_date++;
+
+	CalTime::YearMonthDay ymd = CalTime::ConvertDateToYMD(CalTime::Detail::now.cal_date);
+
+	/* check if we entered a new month? */
+	bool new_month = ymd.month != CalTime::Detail::now.cal_ymd.month;
+
+	/* check if we entered a new year? */
+	bool new_year = ymd.year != CalTime::Detail::now.cal_ymd.year;
+
+	/* update internal variables before calling the daily/monthly/yearly loops */
+	CalTime::Detail::now.cal_ymd = ymd;
+
+	UpdateCachedSnowLine();
+
+	/* yes, call various daily loops */
+	OnNewCalendarDay();
+
+	/* yes, call various monthly loops */
+	if (new_month) OnNewCalendarMonth();
+
+	/* yes, call various yearly loops */
+	if (new_year) OnNewCalendarYear();
+}
+
+static void IncreaseEconomyDate()
+{
+	EconTime::Detail::now.econ_date_fract++;
+	if (EconTime::Detail::now.econ_date_fract < DAY_TICKS) return;
+	EconTime::Detail::now.econ_date_fract = 0;
+
+	/* increase day counter */
+	EconTime::Detail::now.econ_date++;
+
+	EconTime::YearMonthDay ymd = EconTime::ConvertDateToYMD(EconTime::Detail::now.econ_date);
+
+	/* check if we entered a new month? */
+	bool new_month = ymd.month != EconTime::Detail::now.econ_ymd.month;
+
+	/* check if we entered a new year? */
+	bool new_year = ymd.year != EconTime::Detail::now.econ_ymd.year;
+
+	/* update internal variables before calling the daily/monthly/yearly loops */
+	EconTime::Detail::now.econ_ymd = ymd;
+
+	/* yes, call various daily loops */
+	OnNewEconomyDay();
+
+	/* yes, call various monthly loops */
+	if (new_month) OnNewEconomyMonth();
+
+	/* yes, call various yearly loops */
+	if (new_year) OnNewEconomyYear();
 }
 
 /**
@@ -338,33 +555,12 @@ void IncreaseDate()
 
 	if (_game_mode == GM_MENU || _game_mode == GM_BOOTSTRAP) return;
 
-	_date_fract++;
-	if (_date_fract < DAY_TICKS) return;
-	_date_fract = 0;
+	IncreaseCalendarDate();
+	IncreaseEconomyDate();
+}
 
-	/* increase day counter */
-	_date++;
-
-	YearMonthDay ymd;
-	ConvertDateToYMD(_date, &ymd);
-
-	/* check if we entered a new month? */
-	bool new_month = ymd.month != _cur_date_ymd.month;
-
-	/* check if we entered a new year? */
-	bool new_year = ymd.year != _cur_date_ymd.year;
-
-	/* update internal variables before calling the daily/monthly/yearly loops */
-	_cur_date_ymd = ymd;
-
-	UpdateCachedSnowLine();
-
-	/* yes, call various daily loops */
-	OnNewDay();
-
-	/* yes, call various monthly loops */
-	if (new_month) OnNewMonth();
-
-	/* yes, call various yearly loops */
-	if (new_year) OnNewYear();
+const char *debug_date_dumper::HexDate(EconTime::Date date, EconTime::DateFract date_fract, uint8_t tick_skip_counter)
+{
+	seprintf(this->buffer, lastof(this->buffer), "date{%08x; %02x; %02x}", date.base(), date_fract, tick_skip_counter);
+	return this->buffer;
 }

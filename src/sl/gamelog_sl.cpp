@@ -101,7 +101,7 @@ static void Load_GLOG_common(std::vector<LoggedAction> &gamelog_actions)
 {
 	assert(gamelog_actions.empty());
 
-	byte type;
+	uint8_t type;
 	while ((type = SlReadByte()) != GLAT_NONE) {
 		if (type >= GLAT_END) SlErrorCorrupt("Invalid gamelog action type");
 		GamelogActionType at = (GamelogActionType)type;
@@ -129,24 +129,6 @@ static void Load_GLOG_common(std::vector<LoggedAction> &gamelog_actions)
 	}
 }
 
-static void Save_GLOG()
-{
-	SlAutolength([](void *) {
-		for (LoggedAction &la : _gamelog_actions) {
-			SlWriteByte(la.at);
-			SlObject(&la, _glog_action_desc);
-
-			for (LoggedChange &lc : la.changes) {
-				SlWriteByte(lc.ct);
-				assert((uint)lc.ct < GLCT_END);
-				SlObject(&lc, _glog_desc[lc.ct]);
-			}
-			SlWriteByte(GLCT_NONE);
-		}
-		SlWriteByte(GLAT_NONE);
-	}, nullptr);
-}
-
 static void Load_GLOG()
 {
 	Load_GLOG_common(_gamelog_actions);
@@ -158,7 +140,7 @@ static void Check_GLOG()
 }
 
 static const ChunkHandler gamelog_chunk_handlers[] = {
-	{ 'GLOG', Save_GLOG, Load_GLOG, nullptr, Check_GLOG, CH_RIFF }
+	MakeSaveUpstreamFeatureConditionalLoadUpstreamChunkHandler<'GLOG', XSLFI_EXTENDED_GAMELOG, 2>(Load_GLOG, nullptr, Check_GLOG),
 };
 
 extern const ChunkHandlerTable _gamelog_chunk_handlers(gamelog_chunk_handlers);

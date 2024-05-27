@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :כלי טייס
 STR_CONFIG_SETTING_AUTOSAVE                                     :שמירה אוטומטית: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :בחר פרק זמן בין שמירות אוטומטיות
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :{STRING} :הצג לוח זמנים בפעימות במקום בימים
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :הצג זמני נסיעה בלוחות זמנים בפעימות משחק במקום בימים
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}שנה שקיפות עבור מצביעי הטענה. Ctrl+לחיצה לנעילה
 
 # Tracerestrict GUI
@@ -30,6 +33,16 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}שנה �
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}מודל: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}{VELOCITY} ,עוצרת
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}פונה אל {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}אין הוראות, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE} {1:VELOCITY},{0:WAYPOINT} :בדרך אל
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}בדרך אל {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}קבלת שירות ב{DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}לא יכול להגיע ל {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}הכנס הוראה חדשה לפני ההוראה המודגשת, או הוסף הוראה לסוף הרשימה. Ctrl גורם להוראות של תחנות להיות 'טען מטען כלשהו במלואו', נקודות ציון להיות 'ללא עצירה' והוראות מוסכים להיות 'בשירות'. 'שתף הוראות' או Ctrl מאפשר שיתוף הוראות עם כלי הרכב הנבחר. לחיצה על כלי רכב מעתיקה את ההוראות ממנו. הוראה למוסך מבטלת את הטיפולים האוטומטיים של כלי הרכב
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
@@ -66,3 +79,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}מכור
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}אין באפשרותך לקנות 25% ממניות חברה זו...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}אין באפשרותך למכור 25% ממניות חברה זו...
 STR_ERROR_PROTECTED                                             :{WHITE}חברה זו צעירה מידי ואינה יכולה לסחור במניותיה...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :רמזורי נתיב בלבד

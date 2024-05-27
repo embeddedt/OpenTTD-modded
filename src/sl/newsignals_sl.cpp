@@ -16,8 +16,8 @@
 
 static void Save_NSID()
 {
-	SlSetLength(4 + (lengthof(_new_signal_style_mapping) * 5));
-	SlWriteUint32(lengthof(_new_signal_style_mapping));
+	SlSetLength(4 + (_new_signal_style_mapping.size() * 5));
+	SlWriteUint32((uint)_new_signal_style_mapping.size());
 	for (const NewSignalStyleMapping &mapping : _new_signal_style_mapping) {
 		SlWriteUint32(mapping.grfid);
 		SlWriteByte(mapping.grf_local_id);
@@ -26,12 +26,14 @@ static void Save_NSID()
 
 static void Load_NSID()
 {
+	_new_signal_style_mapping.fill({});
+
 	uint count = SlReadUint32();
 	for (uint i = 0; i < count; i++) {
 		NewSignalStyleMapping mapping;
 		mapping.grfid = SlReadUint32();
 		mapping.grf_local_id = SlReadByte();
-		if (i < lengthof(_new_signal_style_mapping)) _new_signal_style_mapping[i] = mapping;
+		if (i < _new_signal_style_mapping.size()) _new_signal_style_mapping[i] = mapping;
 	}
 }
 

@@ -12,15 +12,16 @@ jobs:
   linux:
     name: Linux (Generic)
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     container:
-      # manylinux2014 is based on CentOS 7, but already has a lot of things
+      # manylinux_2_28 is based on AlmaLinux 8, and already has a lot of things
       # installed and preconfigured. It makes it easier to build OpenTTD.
-      image: quay.io/pypa/manylinux2014_x86_64
+      # This distro is based on glibc 2.28, released in 2018.
+      image: quay.io/pypa/manylinux_2_28_x86_64
 
     steps:
     - name: Download source
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: internal-source
 
@@ -28,13 +29,19 @@ jobs:
       run: |
         tar -xf source.tar.gz --strip-components=1
 
-    - name: Enable vcpkg cache
-      uses: actions/cache@v3
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Enable Rust cache
+      uses: Swatinem/rust-cache@v2
+
+    - name: Setup vcpkg caching
+      uses: actions/github-script@v7
       with:
-        path: /vcpkg/installed
-        key: ubuntu-20.04-vcpkg-release-1 # Increase the number whenever dependencies are modified
-        restore-keys: |
-          ubuntu-20.04-vcpkg-release
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          core.exportVariable('VCPKG_BINARY_SOURCES', 'clear;x-gha,readwrite')
 
     - name: Install dependencies
       run: |
@@ -74,7 +81,6 @@ jobs:
           cmake --build . -j $(nproc)
           cmake --install .
         )
-        echo "::endgroup::"
 
         echo "::group::Install audio drivers"
         # These audio libs are to make sure the SDL version of vcpkg adds
@@ -82,47 +88,40 @@ jobs:
         # binary, but the headers are used to enable them in SDL.
         yum install -y \
           alsa-lib-devel \
-          jack-audio-connection-kit-devel \
           pulseaudio-libs-devel \
+          # EOF
+        echo "::endgroup::"
+
+        echo "::group::Install video drivers"
+        # These video libs are to make sure the SDL version of vcpkg adds
+        # video-support; these libraries are not added to the resulting
+        # binary, but the headers are used to enable them in SDL.
+        yum install -y \
+          libX11-devel \
+          libXcursor-devel \
+          libXext-devel \
+          libXfixes-devel \
+          libXi-devel \
+          libxkbcommon-devel \
+          libXrandr-devel \
+          libXScrnSaver-devel \
+          mesa-libEGL-devel \
+          mesa-libGL-devel \
+          mesa-libGLES-devel \
+          wayland-devel \
+          wayland-protocols-devel \
           # EOF
         echo "::endgroup::"
 
         # We use vcpkg for our dependencies, to get more up-to-date version.
         echo "::group::Install vcpkg and dependencies"
 
-        # We do a little dance to make sure we copy the cached install folder
-        # into our new clone.
-        git clone --depth=1 https://github.com/microsoft/vcpkg /vcpkg-clone
-        if [ -e /vcpkg/installed ]; then
-          mv /vcpkg/installed /vcpkg-clone/
-          rm -rf /vcpkg
-        fi
-        mv /vcpkg-clone /vcpkg
+        git clone https://github.com/microsoft/vcpkg /vcpkg
 
         (
           cd /vcpkg
           ./bootstrap-vcpkg.sh -disableMetrics
-
-          # Make Python3 available for other packages.
-          ./vcpkg install python3
-          ln -sf $(pwd)/installed/x64-linux/tools/python3/python3.[0-9][0-9] /usr/bin/python3
-
-          ./vcpkg install \
-            curl[http2] \
-            fontconfig \
-            freetype \
-            harfbuzz \
-            icu \
-            liblzma \
-            libpng \
-            lzo \
-            nlohmann-json \
-            sdl2 \
-            zlib \
-            zstd \
-            # EOF
         )
-        echo "::endgroup::"
 
     - name: Install GCC problem matcher
       uses: ammaraskar/gcc-problem-matcher@master
@@ -163,7 +162,7 @@ jobs:
         echo "::endgroup::"
 
     - name: Store bundles
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: openttd-linux-generic
         path: build/bundles

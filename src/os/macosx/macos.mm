@@ -95,21 +95,7 @@ void GetMacOSVersion(int *return_major, int *return_minor, int *return_bugfix)
 #endif
 }
 
-#ifdef WITH_SDL
-
-/**
- * Show the system dialogue message (SDL on MacOSX).
- *
- * @param title Window title.
- * @param message Message text.
- * @param buttonLabel Button text.
- */
-void ShowMacDialog(const char *title, const char *message, const char *buttonLabel)
-{
-	NSRunAlertPanel([ NSString stringWithUTF8String:title ], [ NSString stringWithUTF8String:message ], [ NSString stringWithUTF8String:buttonLabel ], nil, nil);
-}
-
-#elif defined WITH_COCOA
+#ifdef WITH_COCOA
 
 extern void CocoaDialog(const char *title, const char *message, const char *buttonLabel);
 
@@ -164,9 +150,9 @@ void DoOSAbort()
 	abort();
 }
 
-void OSOpenBrowser(const char *url)
+void OSOpenBrowser(const std::string &url)
 {
-	[ [ NSWorkspace sharedWorkspace ] openURL:[ NSURL URLWithString:[ NSString stringWithUTF8String:url ] ] ];
+	[ [ NSWorkspace sharedWorkspace ] openURL:[ NSURL URLWithString:[ NSString stringWithUTF8String:url.c_str() ] ] ];
 }
 
 /**
@@ -275,7 +261,7 @@ void MacOSSetThreadName(const char *name)
 	}
 }
 
-uint64 MacOSGetPhysicalMemory()
+uint64_t MacOSGetPhysicalMemory()
 {
 	return [ [ NSProcessInfo processInfo ] physicalMemory ];
 }

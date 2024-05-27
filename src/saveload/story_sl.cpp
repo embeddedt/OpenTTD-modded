@@ -16,6 +16,18 @@
 
 #include "../safeguards.h"
 
+/** Called after load to trash broken pages. */
+void AfterLoadStoryBook()
+{
+	if (upstream_sl::IsSavegameVersionBefore(SLV_185)) {
+		/* Trash all story pages and page elements because
+		 * they were saved with wrong data types.
+		 */
+		_story_page_element_pool.CleanPool();
+		_story_page_pool.CleanPool();
+	}
+}
+
 namespace upstream_sl {
 
 static const SaveLoad _story_page_elements_desc[] = {
@@ -46,7 +58,7 @@ struct STPEChunkHandler : ChunkHandler {
 		const std::vector<SaveLoad> slt = SlCompatTableHeader(_story_page_elements_desc, _story_page_elements_sl_compat);
 
 		int index;
-		uint32 max_sort_value = 0;
+		uint32_t max_sort_value = 0;
 		while ((index = SlIterateArray()) != -1) {
 			StoryPageElement *s = new (index) StoryPageElement();
 			SlObject(s, slt);
@@ -88,7 +100,7 @@ struct STPAChunkHandler : ChunkHandler {
 		const std::vector<SaveLoad> slt = SlCompatTableHeader(_story_pages_desc, _story_pages_sl_compat);
 
 		int index;
-		uint32 max_sort_value = 0;
+		uint32_t max_sort_value = 0;
 		while ((index = SlIterateArray()) != -1) {
 			StoryPage *s = new (index) StoryPage();
 			SlObject(s, slt);

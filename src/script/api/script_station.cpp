@@ -64,7 +64,7 @@ template<bool Tfrom, bool Tvia>
 	const StationCargoList &cargo_list = ge.data->cargo;
 	if (!Tfrom && !Tvia) return cargo_list.TotalCount();
 
-	uint16 cargo_count = 0;
+	uint16_t cargo_count = 0;
 	std::pair<StationCargoList::ConstIterator, StationCargoList::ConstIterator> range = Tvia ?
 				cargo_list.Packets()->equal_range(via_station_id) :
 				std::make_pair(StationCargoList::ConstIterator(cargo_list.Packets()->begin()),
@@ -164,7 +164,7 @@ template<bool Tfrom, bool Tvia>
 	if (station_type == STATION_AIRPORT) return -1;
 	if (!HasExactlyOneBit(station_type)) return -1;
 
-	const int32 inc = _settings_game.station.catchment_increase;
+	const int32_t inc = _settings_game.station.catchment_increase;
 
 	if (!_settings_game.station.modified_catchment) return CA_UNMODIFIED + inc;
 
@@ -210,7 +210,7 @@ template<bool Tfrom, bool Tvia>
 	if (!IsValidStation(station_id)) return false;
 	if (!HasExactlyOneBit(station_type)) return false;
 
-	return (::Station::Get(station_id)->facilities & station_type) != 0;
+	return (::Station::Get(station_id)->facilities & static_cast<StationFacility>(station_type)) != 0;
 }
 
 /* static */ bool ScriptStation::HasRoadType(StationID station_id, ScriptRoad::RoadType road_type)

@@ -52,11 +52,6 @@
 #endif
 
 #if defined(__APPLE__)
-#	if defined(WITH_SDL)
-		/* the mac implementation needs this file included in the same file as main() */
-#		include <SDL.h>
-#	endif
-
 #	include "../macosx/macos.h"
 #endif
 
@@ -67,7 +62,7 @@ bool FiosIsRoot(const char *path)
 	return path[1] == '\0';
 }
 
-void FiosGetDrives(FileList &file_list)
+void FiosGetDrives(FileList &)
 {
 	return;
 }
@@ -207,13 +202,13 @@ std::string FS2OTTD(const std::string &name)
 
 #endif /* WITH_ICONV */
 
-void ShowInfo(const char *str)
+void ShowInfoI(const char *str)
 {
 	fprintf(stderr, "%s\n", str);
 }
 
 #if !defined(__APPLE__)
-void ShowOSErrorBox(const char *buf, bool system)
+void ShowOSErrorBox(const char *buf, bool)
 {
 	/* All unix systems, except OSX. Only use escape codes on a TTY. */
 	if (isatty(fileno(stderr))) {
@@ -223,45 +218,11 @@ void ShowOSErrorBox(const char *buf, bool system)
 	}
 }
 
-void NORETURN DoOSAbort()
+[[noreturn]] void DoOSAbort()
 {
 	abort();
 }
 #endif
-
-#ifdef WITH_COCOA
-void CocoaSetupAutoreleasePool();
-void CocoaReleaseAutoreleasePool();
-#endif
-
-int CDECL main(int argc, char *argv[])
-{
-	/* Make sure our arguments contain only valid UTF-8 characters. */
-	for (int i = 0; i < argc; i++) StrMakeValidInPlace(argv[i]);
-
-#ifdef WITH_COCOA
-	CocoaSetupAutoreleasePool();
-	/* This is passed if we are launched by double-clicking */
-	if (argc >= 2 && strncmp(argv[1], "-psn", 4) == 0) {
-		argv[1] = nullptr;
-		argc = 1;
-	}
-#endif
-	PerThreadSetupInit();
-	CrashLog::InitialiseCrashLog();
-
-	SetRandomSeed(time(nullptr));
-
-	signal(SIGPIPE, SIG_IGN);
-
-	int ret = openttd_main(argc, argv);
-
-#ifdef WITH_COCOA
-	CocoaReleaseAutoreleasePool();
-#endif
-
-	return ret;
-}
 
 #ifndef WITH_COCOA
 std::optional<std::string> GetClipboardContents()
@@ -283,28 +244,29 @@ std::optional<std::string> GetClipboardContents()
 
 
 #if defined(__EMSCRIPTEN__)
-void OSOpenBrowser(const char *url)
+void OSOpenBrowser(const std::string &url)
 {
 	/* Implementation in pre.js */
-	EM_ASM({ if(window["openttd_open_url"]) window.openttd_open_url($0, $1) }, url, strlen(url));
+	EM_ASM({ if (window["openttd_open_url"]) window.openttd_open_url($0, $1) }, url.c_str(), url.size());
 }
 #elif !defined( __APPLE__)
-void OSOpenBrowser(const char *url)
+void OSOpenBrowser(const std::string &url)
 {
 	pid_t child_pid = fork();
 	if (child_pid != 0) return;
 
 	const char *args[3];
 	args[0] = "xdg-open";
-	args[1] = url;
+	args[1] = url.c_str();
 	args[2] = nullptr;
 	execvp(args[0], const_cast<char * const *>(args));
-	DEBUG(misc, 0, "Failed to open url: %s", url);
+	DEBUG(misc, 0, "Failed to open url: %s", url.c_str());
 	exit(0);
 }
 #endif /* __APPLE__ */
 
-void SetCurrentThreadName(const char *threadName) {
+void SetCurrentThreadName([[maybe_unused]] const char *threadName)
+{
 #if defined(__GLIBC__)
 	if (threadName) pthread_setname_np(pthread_self(), threadName);
 #endif /* defined(__GLIBC__) */

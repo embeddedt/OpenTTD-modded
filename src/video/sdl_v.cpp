@@ -245,7 +245,7 @@ bool VideoDriver_SDL::CreateMainSurface(uint w, uint h)
 		icon = SDL_LoadBMP(icon_path.c_str());
 		if (icon != nullptr) {
 			/* Get the colourkey, which will be magenta */
-			uint32 rgbmap = SDL_MapRGB(icon->format, 255, 0, 255);
+			uint32_t rgbmap = SDL_MapRGB(icon->format, 255, 0, 255);
 
 			SDL_SetColorKey(icon, SDL_SRCCOLORKEY, rgbmap);
 			SDL_WM_SetIcon(icon, nullptr);
@@ -378,15 +378,21 @@ bool VideoDriver_SDL::ClaimMousePointer()
 }
 
 struct SDLVkMapping {
-	uint16 vk_from;
-	byte vk_count;
-	byte map_to;
+	const uint16_t vk_from;
+	const uint8_t vk_count;
+	const uint8_t map_to;
+
+	constexpr SDLVkMapping(SDL_Keycode vk_first, SDL_Keycode vk_last, uint8_t map_first, [[maybe_unused]] uint8_t map_last)
+		: vk_from(vk_first), vk_count(vk_last - vk_first), map_to(map_first)
+	{
+		assert((vk_last - vk_first) == (map_last - map_first));
+	}
 };
 
-#define AS(x, z) {x, 0, z}
-#define AM(x, y, z, w) {x, (byte)(y - x), z}
+#define AS(x, z) {x, x, z, z, false}
+#define AM(x, y, z, w) {x, y, z, w, false}
 
-static const SDLVkMapping _vk_mapping[] = {
+static constexpr SDLVkMapping _vk_mapping[] = {
 	/* Pageup stuff + up/down */
 	AM(SDLK_PAGEUP, SDLK_PAGEDOWN, WKC_PAGEUP, WKC_PAGEDOWN),
 	AS(SDLK_UP,     WKC_UP),
@@ -439,7 +445,7 @@ static const SDLVkMapping _vk_mapping[] = {
 	AS(SDLK_HASH,    WKC_HASH),
 };
 
-static uint ConvertSdlKeyIntoMy(SDL_keysym *sym, WChar *character)
+static uint ConvertSdlKeyIntoMy(SDL_keysym *sym, char32_t *character)
 {
 	const SDLVkMapping *map;
 	uint key = 0;
@@ -559,7 +565,7 @@ bool VideoDriver_SDL::PollEvent()
 					(ev.key.keysym.sym == SDLK_RETURN || ev.key.keysym.sym == SDLK_f)) {
 				ToggleFullScreen(!_fullscreen);
 			} else {
-				WChar character;
+				char32_t character;
 				uint keycode = ConvertSdlKeyIntoMy(&ev.key.keysym, &character);
 				HandleKeypress(keycode, character);
 			}
@@ -633,7 +639,7 @@ void VideoDriver_SDL::Stop()
 
 void VideoDriver_SDL::InputLoop()
 {
-	uint32 mod = SDL_GetModState();
+	uint32_t mod = SDL_GetModState();
 	int numkeys;
 	Uint8 *keys = SDL_GetKeyState(&numkeys);
 

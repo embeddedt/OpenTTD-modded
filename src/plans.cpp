@@ -17,10 +17,13 @@ INSTANTIATE_POOL_METHODS(Plan)
 
 Plan *_current_plan = nullptr;
 Plan *_new_plan = nullptr;
+uint64_t _plan_update_counter = 0;
+uint64_t _last_plan_visibility_check = 0;
+bool _last_plan_visibility_check_result = false;
 
 void PlanLine::UpdateVisualExtents()
 {
-	if (_network_dedicated) return;
+	if (IsHeadless()) return;
 
 	if (this->tiles.size() < 2) {
 		this->viewport_extents = { INT_MAX, INT_MAX, INT_MAX, INT_MAX };
@@ -62,4 +65,26 @@ bool Plan::ValidateNewLine()
 		ret = AddPlanLine(this->index, std::move(tiles));
 	}
 	return ret;
+}
+
+void UpdateAreAnyPlansVisible()
+{
+	_last_plan_visibility_check = _plan_update_counter;
+
+	if (_current_plan && _current_plan->temp_line->tiles.size() > 1) {
+		_last_plan_visibility_check_result = true;
+		return;
+	}
+
+	for (const Plan *p : Plan::Iterate()) {
+		if (!p->IsVisible()) continue;
+		for (const PlanLine *pl : p->lines) {
+			if (pl->visible) {
+				_last_plan_visibility_check_result = true;
+				return;
+			}
+		}
+	}
+
+	_last_plan_visibility_check_result = false;
 }

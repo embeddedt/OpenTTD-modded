@@ -15,6 +15,8 @@
 #include "company_type.h"
 
 /* Functions */
+void StartRemoveOrderFromAllVehiclesBatch();
+void StopRemoveOrderFromAllVehiclesBatch();
 void RemoveOrderFromAllVehicles(OrderType type, DestinationID destination, bool hangar = false);
 void InvalidateVehicleOrder(const Vehicle *v, int data);
 void CheckOrders(const Vehicle*);
@@ -42,11 +44,18 @@ static const uint DEF_SERVINT_DAYS_SHIPS    = 360;
 static const uint MIN_SERVINT_DAYS          = 30;
 static const uint MAX_SERVINT_DAYS          = 800;
 
+static const uint DEF_SERVINT_MINUTES_TRAINS   = 5;
+static const uint DEF_SERVINT_MINUTES_ROADVEH  = 5;
+static const uint DEF_SERVINT_MINUTES_AIRCRAFT = 3;
+static const uint DEF_SERVINT_MINUTES_SHIPS    = 12;
+static const uint MIN_SERVINT_MINUTES          = 1;
+static const uint MAX_SERVINT_MINUTES          = 30;
+
 static const uint DEF_SERVINT_PERCENT = 50;
 static const uint MIN_SERVINT_PERCENT = 5;
 static const uint MAX_SERVINT_PERCENT = 90;
 
-uint16 GetServiceIntervalClamped(uint interval, bool ispercent);
+uint16_t GetServiceIntervalClamped(int interval, bool ispercent);
 bool OrderConditionCompare(OrderConditionComparator occ, int variable, int value);
 
 const char *GetOrderTypeName(OrderType order_type);

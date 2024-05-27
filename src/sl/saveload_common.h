@@ -11,18 +11,17 @@
 #define SL_SAVELOAD_COMMON_H
 
 #include "../strings_type.h"
-#include "../core/span_type.hpp"
 
 struct SaveLoad;
 
 /** A table of SaveLoad entries. */
-using SaveLoadTable = span<const SaveLoad>;
+using SaveLoadTable = std::span<const SaveLoad>;
 
 namespace upstream_sl {
 	struct SaveLoad;
 
 	/** A table of SaveLoad entries. */
-	using SaveLoadTable = span<const SaveLoad>;
+	using SaveLoadTable = std::span<const SaveLoad>;
 }
 
 /** SaveLoad versions
@@ -38,7 +37,7 @@ namespace upstream_sl {
  *
  * Note that this list must not be reordered.
  */
-enum SaveLoadVersion : uint16 {
+enum SaveLoadVersion : uint16_t {
 	SL_MIN_VERSION,                         ///< First savegame version
 
 	SLV_1,                                  ///<   1.0         0.1.x, 0.2.x
@@ -292,7 +291,7 @@ enum SaveLoadVersion : uint16 {
 	SLV_198,                                ///< 198  PR#6763 Switch town growth rate and counter to actual game ticks
 	SLV_EXTEND_CARGOTYPES,                  ///< 199  PR#6802 Extend cargotypes to 64
 
-	SLV_EXTEND_RAILTYPES,                   ///< 200  PR#6805 Extend railtypes to 64, adding uint16 to map array.
+	SLV_EXTEND_RAILTYPES,                   ///< 200  PR#6805 Extend railtypes to 64, adding uint16_t to map array.
 	SLV_EXTEND_PERSISTENT_STORAGE,          ///< 201  PR#6885 Extend NewGRF persistent storages.
 	SLV_EXTEND_INDUSTRY_CARGO_SLOTS,        ///< 202  PR#6867 Increase industry cargo slots to 16 in, 16 out
 	SLV_SHIP_PATH_CACHE,                    ///< 203  PR#7072 Add path cache for ships
@@ -374,6 +373,24 @@ enum SaveLoadVersion : uint16 {
 	SLV_REMOVE_LOADED_AT_XY,                ///< 318  PR#11276 Remove loaded_at_xy variable from CargoPacket.
 	SLV_CARGO_TRAVELLED,                    ///< 319  PR#11283 CargoPacket now tracks how far it travelled inside a vehicle.
 
+	SLV_STATION_RATING_CHEAT,               ///< 320  PR#11346 Add cheat to fix station ratings at 100%.
+	SLV_TIMETABLE_START_TICKS,              ///< 321  PR#11468 Convert timetable start from a date to ticks.
+	SLV_TIMETABLE_START_TICKS_FIX,          ///< 322  PR#11557 Fix for missing convert timetable start from a date to ticks.
+	SLV_TIMETABLE_TICKS_TYPE,               ///< 323  PR#11435 Convert timetable current order time to ticks.
+	SLV_WATER_REGIONS,                      ///< 324  PR#10543 Water Regions for ship pathfinder.
+
+	SLV_WATER_REGION_EVAL_SIMPLIFIED,       ///< 325  PR#11750 Simplified Water Region evaluation.
+	SLV_ECONOMY_DATE,                       ///< 326  PR#10700 Split calendar and economy timers and dates.
+	SLV_ECONOMY_MODE_TIMEKEEPING_UNITS,     ///< 327  PR#11341 Mode to display economy measurements in wallclock units.
+	SLV_CALENDAR_SUB_DATE_FRACT,            ///< 328  PR#11428 Add sub_date_fract to measure calendar days.
+	SLV_SHIP_ACCELERATION,                  ///< 329  PR#10734 Start using Vehicle's acceleration field for ships too.
+
+	SLV_MAX_LOAN_FOR_COMPANY,               ///< 330  PR#11224 Separate max loan for each company.
+	SLV_DEPOT_UNBUNCHING,                   ///< 331  PR#11945 Allow unbunching shared order vehicles at a depot.
+	SLV_AI_LOCAL_CONFIG,                    ///< 332  PR#12003 Config of running AI is stored inside Company.
+	SLV_SCRIPT_RANDOMIZER,                  ///< 333  PR#12063 v14.0 Save script randomizers.
+	SLV_VEHICLE_ECONOMY_AGE,                ///< 334  PR#12141 Add vehicle age in economy year, for profit stats minimum age
+
 	SL_MAX_VERSION,                         ///< Highest possible saveload version
 
 	SL_SPRING_2013_v2_0_102 = 220,
@@ -401,25 +418,25 @@ enum SaveLoadVersion : uint16 {
 	SL_CHILLPP_233 = 233,
 };
 
-byte SlReadByte();
-void SlWriteByte(byte b);
+uint8_t SlReadByte();
+void SlWriteByte(uint8_t b);
 
 int SlReadUint16();
-uint32 SlReadUint32();
-uint64 SlReadUint64();
+uint32_t SlReadUint32();
+uint64_t SlReadUint64();
 
-void SlWriteUint16(uint16 v);
-void SlWriteUint32(uint32 v);
-void SlWriteUint64(uint64 v);
+void SlWriteUint16(uint16_t v);
+void SlWriteUint32(uint32_t v);
+void SlWriteUint64(uint64_t v);
 
 void SlSkipBytes(size_t length);
 
 size_t SlGetBytesRead();
 size_t SlGetBytesWritten();
 
-void NORETURN SlError(StringID string, std::string extra_msg = {});
-void NORETURN SlErrorCorrupt(std::string msg);
-void NORETURN CDECL SlErrorCorruptFmt(const char *format, ...) WARN_FORMAT(1, 2);
+[[noreturn]] void SlError(StringID string, std::string extra_msg = {});
+[[noreturn]] void SlErrorCorrupt(std::string msg);
+[[noreturn]] void CDECL SlErrorCorruptFmt(const char *format, ...) WARN_FORMAT(1, 2);
 
 bool SaveLoadFileTypeIsScenario();
 

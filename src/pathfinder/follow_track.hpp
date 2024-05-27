@@ -38,10 +38,10 @@ struct CFollowTrackT
 	};
 
 	const VehicleType  *m_veh;           ///< moving vehicle
-	Owner               m_veh_owner;     ///< owner of the vehicle
 	TileIndex           m_old_tile;      ///< the origin (vehicle moved from) before move
-	Trackdir            m_old_td;        ///< the trackdir (the vehicle was on) before move
 	TileIndex           m_new_tile;      ///< the new tile (the vehicle has entered)
+	Owner               m_veh_owner;     ///< owner of the vehicle
+	Trackdir            m_old_td;        ///< the trackdir (the vehicle was on) before move
 	TrackdirBits        m_new_td_bits;   ///< the new set of available trackdirs
 	DiagDirection       m_exitdir;       ///< exit direction (leaving the old tile)
 	bool                m_is_tunnel;     ///< last turn passed tunnel
@@ -251,7 +251,7 @@ protected:
 	inline bool CanExitOldTile()
 	{
 		/* road stop can be left at one direction only unless it's a drive-through stop */
-		if (IsRoadTT() && IsStandardRoadStopTile(m_old_tile)) {
+		if (IsRoadTT() && IsBayRoadStopTile(m_old_tile)) {
 			DiagDirection exitdir = GetRoadStopDir(m_old_tile);
 			if (exitdir != m_exitdir) {
 				m_err = EC_NO_WAY;
@@ -282,7 +282,7 @@ protected:
 	/** return true if we can enter m_new_tile from m_exitdir */
 	inline bool CanEnterNewTile()
 	{
-		if (IsRoadTT() && IsStandardRoadStopTile(m_new_tile)) {
+		if (IsRoadTT() && IsBayRoadStopTile(m_new_tile)) {
 			/* road stop can be entered from one direction only unless it's a drive-through stop */
 			DiagDirection exitdir = GetRoadStopDir(m_new_tile);
 			if (ReverseDiagDir(exitdir) != m_exitdir) {
@@ -399,7 +399,7 @@ protected:
 			/* move to the platform end */
 			TileIndexDiff diff = TileOffsByDiagDir(m_exitdir);
 			diff *= m_tiles_skipped;
-			m_new_tile = TILE_ADD(m_new_tile, diff);
+			m_new_tile = TileAdd(m_new_tile, diff);
 			return true;
 		}
 
@@ -425,7 +425,7 @@ protected:
 
 		/* Single tram bits and standard road stops cause reversing. */
 		if (IsRoadTT() && ((IsTram() && GetSingleTramBit(m_old_tile) == ReverseDiagDir(m_exitdir)) ||
-				(IsStandardRoadStopTile(m_old_tile) && GetRoadStopDir(m_old_tile) == ReverseDiagDir(m_exitdir)))) {
+				(IsBayRoadStopTile(m_old_tile) && GetRoadStopDir(m_old_tile) == ReverseDiagDir(m_exitdir)))) {
 			/* reverse */
 			m_new_tile = m_old_tile;
 			m_new_td_bits = TrackdirToTrackdirBits(ReverseTrackdir(m_old_td));
@@ -473,12 +473,12 @@ public:
 		}
 		/* Check for speed limit imposed by railtype */
 		if (IsRailTT()) {
-			uint16 rail_speed = GetRailTypeInfo(GetRailTypeByTrack(m_old_tile, TrackdirToTrack(m_old_td)))->max_speed;
+			uint16_t rail_speed = GetRailTypeInfo(GetRailTypeByTrack(m_old_tile, TrackdirToTrack(m_old_td)))->max_speed;
 			if (rail_speed > 0) max_speed = std::min<int>(max_speed, rail_speed);
 		}
 		if (IsRoadTT()) {
 			/* max_speed is already in roadvehicle units, no need to further modify (divide by 2) */
-			uint16 road_speed = GetRoadTypeInfo(GetRoadType(m_old_tile, GetRoadTramType(RoadVehicle::From(m_veh)->roadtype)))->max_speed;
+			uint16_t road_speed = GetRoadTypeInfo(GetRoadType(m_old_tile, GetRoadTramType(RoadVehicle::From(m_veh)->roadtype)))->max_speed;
 			if (road_speed > 0) max_speed = std::min<int>(max_speed, road_speed);
 		}
 

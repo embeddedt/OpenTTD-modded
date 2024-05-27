@@ -59,8 +59,8 @@
 static const size_t MD5_HASH_BYTES = 16;
 
 /** Container for storing a MD5 hash/checksum/digest. */
-struct MD5Hash : std::array<byte, MD5_HASH_BYTES> {
-	MD5Hash() : std::array<byte, MD5_HASH_BYTES>{} {}
+struct MD5Hash : std::array<uint8_t, MD5_HASH_BYTES> {
+	MD5Hash() : std::array<uint8_t, MD5_HASH_BYTES>{} {}
 
 	/**
 	 * Exclusively-or the given hash into this hash.
@@ -78,11 +78,11 @@ char *md5sumToString(char *buf, const char *last, const MD5Hash &md5sum);
 
 struct Md5 {
 private:
-	uint32 count[2]; ///< message length in bits, lsw first
-	uint32 abcd[4];  ///< digest buffer
-	uint8 buf[64];   ///< accumulate block
+	uint32_t count[2]; ///< message length in bits, lsw first
+	uint32_t abcd[4];  ///< digest buffer
+	uint8_t buf[64];   ///< accumulate block
 
-	void Process(const uint8 *data);
+	void Process(const uint8_t *data);
 
 public:
 	Md5();

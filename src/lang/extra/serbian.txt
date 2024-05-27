@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :milja na sat
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :pločica/dan
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :pločica/sek
 
 STR_BUTTON_RENAME                                               :{BLACK}Preimenuj
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Letelice
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Autočuvanje: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Odabir vremenskog intervala između dve automatski sačuvane igre
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Prikazati red vožnje u diskretnim otkucajima: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Prikaži vreme putovanja u redu vožnje u diskretnim otkucajima umesto u danima
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Promena prozirnosti pokazatelja utovara. Sa Ctrl+klik se zaključava
 
@@ -31,6 +35,19 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Promena 
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Projektovan: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Zaustavlja se, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Ide ka {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Nema naredbi, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Ide ka {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Ide ka {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Servisiranje u {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Ne može dostići {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Ne može dostići {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Ne može dostići {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Ne može dostići {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Unosi novu naredbu pre obeležene, ili je dodaje na kraju spiska. Ctrl čini da stanica naredi "pun bilo koji teret", putna tačka naredi "non-stop" i depo naredi "servis". "Deli naredbe" ili Ctrl omogućava da vozilo deli naredbe sa drugim odabranim vozilom. Klikom na drugo vozilo kopiraju se njegove naredbe. Naredbom za depo se isključuje automatsko servisiranje
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :D:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :P:
@@ -68,3 +85,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Prodaja 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Otkup 25% udela ovog preduzeća nije moguć...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Prodaja 25% udela ovog preduzeća nije moguća...
 STR_ERROR_PROTECTED                                             :{WHITE}Ovo preduzeće nije dovoljno dugo aktivno za trgovinu akcijama...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Samo putna

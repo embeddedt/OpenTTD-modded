@@ -129,14 +129,14 @@ public:
 
 	/**
 	 * Setup the node to start iterating at.
-	 * @param source Unused.
 	 * @param node Node to start iterating at.
 	 */
-	void SetNode(NodeID source, NodeID node)
+	void SetNode(NodeID, NodeID node)
 	{
 		Node node_anno = this->job[node];
-		this->i = node_anno.GetEdges().begin();
-		this->end = node_anno.GetEdges().end();
+		std::span<Edge> edges = node_anno.GetEdges();
+		this->i = edges.data();
+		this->end = edges.data() + edges.size();
 		this->node = node;
 	}
 
@@ -232,7 +232,7 @@ public:
  * @return True if base + the new edge would be better than the path associated
  * with this annotation.
  */
-bool DistanceAnnotation::IsBetter(const DistanceAnnotation *base, uint cap,
+bool DistanceAnnotation::IsBetter(const DistanceAnnotation *base, uint,
 		int free_cap, uint dist) const
 {
 	/* If any of the paths is disconnected, the other one is better. If both
@@ -518,7 +518,7 @@ bool MCF1stPass::EliminateCycles(PathVector &path, NodeID origin_id, NodeID next
 bool MCF1stPass::EliminateCycles()
 {
 	bool cycles_found = false;
-	uint16 size = this->job.Size();
+	uint16_t size = this->job.Size();
 	PathVector path(size, nullptr);
 	for (NodeID node = 0; node < size; ++node) {
 		/* Starting at each node in the graph find all cycles involving this
@@ -536,7 +536,7 @@ bool MCF1stPass::EliminateCycles()
 MCF1stPass::MCF1stPass(LinkGraphJob &job) : MultiCommodityFlow(job)
 {
 	PathVector paths;
-	uint16 size = job.Size();
+	uint16_t size = job.Size();
 	uint accuracy = job.Settings().accuracy;
 	bool more_loops;
 	std::vector<bool> finished_sources(size);
@@ -544,7 +544,7 @@ MCF1stPass::MCF1stPass(LinkGraphJob &job) : MultiCommodityFlow(job)
 	uint min_step_size = 1;
 	const uint adjust_threshold = 50;
 	if (size >= adjust_threshold) {
-		uint64 total_demand = 0;
+		uint64_t total_demand = 0;
 		uint demand_count = 0;
 		for (NodeID source = 0; source < size; ++source) {
 			const Node &node = job[source];
@@ -604,7 +604,7 @@ MCF2ndPass::MCF2ndPass(LinkGraphJob &job) : MultiCommodityFlow(job)
 {
 	this->max_saturation = UINT_MAX; // disable artificial cap on saturation
 	PathVector paths;
-	uint16 size = job.Size();
+	uint16_t size = job.Size();
 	uint accuracy = job.Settings().accuracy;
 	bool demand_left = true;
 	std::vector<bool> finished_sources(size);

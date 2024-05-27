@@ -16,9 +16,6 @@
 #include <fluidsynth.h>
 #include "../mixer.h"
 #include <mutex>
-#if defined(__MINGW32__)
-#include "3rdparty/mingw-std-threads/mingw.mutex.h"
-#endif
 
 static struct {
 	fluid_settings_t *settings;    ///< FluidSynth settings handle
@@ -53,7 +50,7 @@ static const char *default_sf[] = {
 	nullptr
 };
 
-static void RenderMusicStream(int16 *buffer, size_t samples)
+static void RenderMusicStream(int16_t *buffer, size_t samples)
 {
 	std::unique_lock<std::mutex> lock{ _midi.synth_mutex, std::try_to_lock };
 
@@ -77,7 +74,7 @@ const char *MusicDriver_FluidSynth::Start(const StringList &param)
 	fluid_settings_setint(_midi.settings, "synth.lock-memory", 0);
 
 	/* Install the music render routine and set up the samplerate */
-	uint32 samplerate = MxSetMusicSource(RenderMusicStream);
+	uint32_t samplerate = MxSetMusicSource(RenderMusicStream);
 	fluid_settings_setnum(_midi.settings, "synth.sample-rate", samplerate);
 	DEBUG(driver, 1, "Fluidsynth: samplerate %.0f", (float)samplerate);
 
@@ -186,7 +183,7 @@ bool MusicDriver_FluidSynth::IsSongPlaying()
 	return fluid_player_get_status(_midi.player) == FLUID_PLAYER_PLAYING;
 }
 
-void MusicDriver_FluidSynth::SetVolume(byte vol)
+void MusicDriver_FluidSynth::SetVolume(uint8_t vol)
 {
 	std::lock_guard<std::mutex> lock{ _midi.synth_mutex };
 	if (_midi.settings == nullptr) return;

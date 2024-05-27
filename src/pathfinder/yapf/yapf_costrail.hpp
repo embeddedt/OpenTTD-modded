@@ -79,7 +79,7 @@ protected:
 	}
 
 	/** to access inherited path finder */
-	Tpf& Yapf()
+	Tpf &Yapf()
 	{
 		return *static_cast<Tpf *>(this);
 	}
@@ -395,7 +395,7 @@ public:
 								case SIGTYPE_PROG:
 								case SIGTYPE_COMBO:
 								case SIGTYPE_EXIT:   cost += Yapf().PfGetSettings().rail_firstred_exit_penalty; break; // first signal is red pre-signal-exit
-								case SIGTYPE_NORMAL:
+								case SIGTYPE_BLOCK:
 								case SIGTYPE_ENTRY:  cost += Yapf().PfGetSettings().rail_firstred_penalty; break;
 								default: break;
 							}
@@ -754,7 +754,7 @@ no_entry_cost: // jump here at the beginning if the node has no parent (it is th
 			}
 
 			/* Gather the next tile/trackdir/tile_type/rail_type. */
-			TILE next(tf_local.m_new_tile, (Trackdir)FindFirstBit2x64(tf_local.m_new_td_bits));
+			TILE next(tf_local.m_new_tile, (Trackdir)FindFirstBit(tf_local.m_new_td_bits));
 
 			if (TrackFollower::DoTrackMasking() && IsTileType(next.tile, MP_RAILWAY)) {
 				if (HasSignalOnTrackdir(next.tile, next.td) && IsPbsSignal(GetSignalType(next.tile, TrackdirToTrack(next.td)))) {

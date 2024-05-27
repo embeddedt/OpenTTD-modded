@@ -17,7 +17,7 @@
 #include <vector>
 
 /** Vehicle List type flags */
-enum VehicleListType {
+enum VehicleListType : uint8_t {
 	VL_STANDARD,
 	VL_SHARED_ORDERS,
 	VL_STATION_LIST,
@@ -33,11 +33,11 @@ struct VehicleListIdentifier {
 	VehicleListType type; ///< The type of vehicle list.
 	VehicleType vtype;    ///< The vehicle type associated with this list.
 	CompanyID company;    ///< The company associated with this list.
-	uint32 index;         ///< A vehicle list type specific index.
+	uint32_t index;       ///< A vehicle list type specific index.
 
-	uint32 Pack() const;
-	bool UnpackIfValid(uint32 data);
-	static VehicleListIdentifier UnPack(uint32 data);
+	uint32_t Pack() const;
+	bool UnpackIfValid(uint32_t data);
+	static VehicleListIdentifier UnPack(uint32_t data);
 
 	/**
 	 * Create a simple vehicle list.
@@ -52,18 +52,11 @@ struct VehicleListIdentifier {
 	VehicleListIdentifier() : type(), vtype(), company(), index() {}
 };
 
-/** Special cargo filter criteria */
-enum VehicleCargoFilterSpecialType {
-	CF_ANY     = CT_NO_REFIT,               ///< Show all vehicles independent of carried cargo (i.e. no filtering)
-	CF_NONE    = CT_INVALID,                ///< Show only vehicles which do not carry cargo (e.g. train engines)
-	CF_FREIGHT = CT_AUTO_REFIT,             ///< Show only vehicles which carry any freight (non-passenger) cargo
-};
-
 /** A list of vehicles. */
 typedef std::vector<const Vehicle *> VehicleList;
 
 bool VehicleCargoFilter(const Vehicle *v, const CargoID cid);
-bool GenerateVehicleSortList(VehicleList *list, const VehicleListIdentifier &identifier, const CargoID cid = CF_ANY);
+bool GenerateVehicleSortList(VehicleList *list, const VehicleListIdentifier &identifier, const CargoID cid = CargoFilterCriteria::CF_ANY);
 void BuildDepotVehicleList(VehicleType type, TileIndex tile, VehicleList *engine_list, VehicleList *wagon_list, bool individual_wagons = false);
 uint GetUnitNumberDigits(VehicleList &vehicles);
 

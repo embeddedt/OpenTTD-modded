@@ -86,7 +86,8 @@ static const Dimension _default_resolutions[] = {
 };
 
 
-VideoDriver_Cocoa::VideoDriver_Cocoa()
+VideoDriver_Cocoa::VideoDriver_Cocoa(bool uses_hardware_acceleration)
+	: VideoDriver(uses_hardware_acceleration)
 {
 	this->setup         = false;
 	this->buffer_locked = false;
@@ -335,7 +336,7 @@ void VideoDriver_Cocoa::GameSizeChanged()
 	::GameSizeChanged();
 
 	/* We need to store the window size as non-Retina size in
-	* the config file to get same windows size on next start. */
+	 * the config file to get same windows size on next start. */
 	_cur_resolution.width = [ this->cocoaview frame ].size.width;
 	_cur_resolution.height = [ this->cocoaview frame ].size.height;
 }
@@ -399,7 +400,7 @@ bool VideoDriver_Cocoa::MakeWindow(int width, int height)
 		behavior |= NSWindowCollectionBehaviorFullScreenPrimary;
 		[ this->window setCollectionBehavior:behavior ];
 
-		NSButton* fullscreenButton = [ this->window standardWindowButton:NSWindowZoomButton ];
+		NSButton *fullscreenButton = [ this->window standardWindowButton:NSWindowZoomButton ];
 		[ fullscreenButton setAction:@selector(toggleFullScreen:) ];
 		[ fullscreenButton setTarget:this->window ];
 	}
@@ -567,11 +568,11 @@ void VideoDriver_Cocoa::MainLoopReal()
 static FVideoDriver_CocoaQuartz iFVideoDriver_CocoaQuartz;
 
 /** Clear buffer to opaque black. */
-static void ClearWindowBuffer(uint32 *buffer, uint32 pitch, uint32 height)
+static void ClearWindowBuffer(uint32_t *buffer, uint32_t pitch, uint32_t height)
 {
-	uint32 fill = Colour(0, 0, 0).data;
-	for (uint32 y = 0; y < height; y++) {
-		for (uint32 x = 0; x < pitch; x++) {
+	uint32_t fill = Colour(0, 0, 0).data;
+	for (uint32_t y = 0; y < height; y++) {
+		for (uint32_t x = 0; x < pitch; x++) {
 			buffer[y * pitch + x] = fill;
 		}
 	}
@@ -635,7 +636,7 @@ NSView *VideoDriver_CocoaQuartz::AllocateDrawView()
 }
 
 /** Resize the window. */
-void VideoDriver_CocoaQuartz::AllocateBackingStore(bool force)
+void VideoDriver_CocoaQuartz::AllocateBackingStore(bool)
 {
 	if (this->window == nil || this->cocoaview == nil || this->setup) return;
 
@@ -645,14 +646,14 @@ void VideoDriver_CocoaQuartz::AllocateBackingStore(bool force)
 
 	this->window_width = (int)newframe.size.width;
 	this->window_height = (int)newframe.size.height;
-	this->window_pitch = Align(this->window_width, 16 / sizeof(uint32)); // Quartz likes lines that are multiple of 16-byte.
+	this->window_pitch = Align(this->window_width, 16 / sizeof(uint32_t)); // Quartz likes lines that are multiple of 16-byte.
 	this->buffer_depth = BlitterFactory::GetCurrentBlitter()->GetScreenDepth();
 
 	/* Create Core Graphics Context */
 	free(this->window_buffer);
-	this->window_buffer = malloc(this->window_pitch * this->window_height * sizeof(uint32));
+	this->window_buffer = malloc(this->window_pitch * this->window_height * sizeof(uint32_t));
 	/* Initialize with opaque black. */
-	ClearWindowBuffer((uint32 *)this->window_buffer, this->window_pitch, this->window_height);
+	ClearWindowBuffer((uint32_t *)this->window_buffer, this->window_pitch, this->window_height);
 
 	CGContextRelease(this->cgcontext);
 	this->cgcontext = CGBitmapContextCreate(
@@ -665,7 +666,7 @@ void VideoDriver_CocoaQuartz::AllocateBackingStore(bool force)
 		kCGImageAlphaNoneSkipFirst | kCGBitmapByteOrder32Host
 	);
 
-	assert(this->cgcontext != NULL);
+	assert(this->cgcontext != nullptr);
 	CGContextSetShouldAntialias(this->cgcontext, FALSE);
 	CGContextSetAllowsAntialiasing(this->cgcontext, FALSE);
 	CGContextSetInterpolationQuality(this->cgcontext, kCGInterpolationNone);
@@ -700,9 +701,9 @@ void VideoDriver_CocoaQuartz::AllocateBackingStore(bool force)
  */
 void VideoDriver_CocoaQuartz::BlitIndexedToView32(int left, int top, int right, int bottom)
 {
-	const uint32 *pal   = this->palette;
-	const uint8  *src   = (uint8*)this->pixel_buffer;
-	uint32       *dst   = (uint32*)this->window_buffer;
+	const uint32_t *pal   = this->palette;
+	const uint8_t  *src   = (uint8_t*)this->pixel_buffer;
+	uint32_t       *dst   = (uint32_t*)this->window_buffer;
 	uint          width = this->window_width;
 	uint          pitch = this->window_pitch;
 
@@ -719,10 +720,10 @@ void VideoDriver_CocoaQuartz::UpdatePalette(uint first_color, uint num_colors)
 	if (this->buffer_depth != 8) return;
 
 	for (uint i = first_color; i < first_color + num_colors; i++) {
-		uint32 clr = 0xff000000;
-		clr |= (uint32)_cur_palette.palette[i].r << 16;
-		clr |= (uint32)_cur_palette.palette[i].g << 8;
-		clr |= (uint32)_cur_palette.palette[i].b;
+		uint32_t clr = 0xff000000;
+		clr |= (uint32_t)_cur_palette.palette[i].r << 16;
+		clr |= (uint32_t)_cur_palette.palette[i].g << 8;
+		clr |= (uint32_t)_cur_palette.palette[i].b;
 		this->palette[i] = clr;
 	}
 

@@ -12,8 +12,12 @@
 #define SCRIPT_LIST_HPP
 
 #include "script_object.hpp"
+#include "script_controller.hpp"
 #include "../../3rdparty/cpp-btree/safe_btree_set.h"
 #include "../../3rdparty/cpp-btree/safe_btree_map.h"
+
+/** Maximum number of operations allowed for valuating a list. */
+static const int MAX_VALUATE_OPS = 1000000;
 
 class ScriptListSorter;
 
@@ -54,6 +58,143 @@ private:
 	void SetIterValue(ScriptListMap::iterator item_iter, SQInteger value);
 	ScriptListMap::iterator RemoveIter(ScriptListMap::iterator item_iter);
 	ScriptListValueSet::iterator RemoveValueIter(ScriptListValueSet::iterator value_iter);
+
+	template<typename T>
+	struct FillListHelper {
+		using IterType = T;
+
+		auto Iterate()
+		{
+			return T::Iterate();
+		}
+
+		int OpcodeCharge([[maybe_unused]] int item_count)
+		{
+			return (int)(T::GetNumItems() / 2);
+		}
+	};
+
+protected:
+	template<typename T, typename... Targs>
+	static void FillList(Targs... args)
+	{
+		FillListT<FillListHelper<T>>(FillListHelper<T>{}, args...);
+	}
+
+	template<typename Thelper, class ItemValid, class ItemFilter>
+	static void FillListT(Thelper helper, ScriptList *list, ItemValid item_valid, ItemFilter item_filter)
+	{
+		using IterType = typename Thelper::IterType;
+
+		int opcode_charge = 0;
+		int item_count = 0;
+		for (const IterType *item : helper.Iterate()) {
+			item_count++;
+			if (!item_valid(item)) continue;
+			if (!item_filter(item)) continue;
+			list->AddItem(item->index);
+			opcode_charge += 3;
+		}
+		ScriptController::DecreaseOps(opcode_charge + helper.OpcodeCharge(item_count));
+	}
+
+	template<typename Thelper, class ItemValid>
+	static void FillListT(Thelper helper, ScriptList *list, ItemValid item_valid)
+	{
+		using IterType = typename Thelper::IterType;
+
+		ScriptList::FillListT<Thelper>(helper, list, item_valid, [](const IterType *) { return true; });
+	}
+
+	template<typename Thelper>
+	static void FillListT(Thelper helper, ScriptList *list)
+	{
+		using IterType = typename Thelper::IterType;
+
+		ScriptList::FillListT<Thelper>(list, [](const IterType *) { return true; });
+	}
+
+	template<typename Thelper, class ItemValid>
+	static void FillListT(Thelper helper, HSQUIRRELVM vm, ScriptList *list, ItemValid item_valid)
+	{
+		using IterType = typename Thelper::IterType;
+
+		int nparam = sq_gettop(vm) - 1;
+		if (nparam >= 1) {
+			/* Make sure the filter function is really a function, and not any
+			 * other type. It's parameter 2 for us, but for the user it's the
+			 * first parameter they give. */
+			SQObjectType valuator_type = sq_gettype(vm, 2);
+			if (valuator_type != OT_CLOSURE && valuator_type != OT_NATIVECLOSURE) {
+				throw sq_throwerror(vm, "parameter 1 has an invalid type (expected function)");
+			}
+
+			/* Push the function to call */
+			sq_push(vm, 2);
+		}
+
+		/* Don't allow docommand from a Valuator, as we can't resume in
+		 * mid C++-code. */
+		bool backup_allow = ScriptObject::GetAllowDoCommand();
+		ScriptObject::SetAllowDoCommand(false);
+
+
+		if (nparam < 1) {
+			ScriptList::FillListT<Thelper>(helper, list, item_valid);
+		} else {
+			/* Limit the total number of ops that can be consumed by a filter operation, if a filter function is present */
+			SQOpsLimiter limiter(vm, MAX_VALUATE_OPS, "list filter function");
+
+			ScriptList::FillListT<Thelper>(helper, list, item_valid,
+				[vm, nparam, backup_allow](const IterType *item) {
+					/* Push the root table as instance object, this is what squirrel does for meta-functions. */
+					sq_pushroottable(vm);
+					/* Push all arguments for the valuator function. */
+					sq_pushinteger(vm, item->index);
+					for (int i = 0; i < nparam - 1; i++) {
+						sq_push(vm, i + 3);
+					}
+
+					/* Call the function. Squirrel pops all parameters and pushes the return value. */
+					if (SQ_FAILED(sq_call(vm, nparam + 1, SQTrue, SQTrue))) {
+						ScriptObject::SetAllowDoCommand(backup_allow);
+						throw sq_throwerror(vm, "failed to run filter");
+					}
+
+					SQBool add = SQFalse;
+
+					/* Retrieve the return value */
+					switch (sq_gettype(vm, -1)) {
+						case OT_BOOL:
+							sq_getbool(vm, -1, &add);
+							break;
+
+						default:
+							ScriptObject::SetAllowDoCommand(backup_allow);
+							throw sq_throwerror(vm, "return value of filter is not valid (not bool)");
+					}
+
+					/* Pop the return value. */
+					sq_poptop(vm);
+
+					return add;
+				}
+			);
+
+			/* Pop the filter function */
+			sq_poptop(vm);
+		}
+
+		ScriptObject::SetAllowDoCommand(backup_allow);
+	}
+
+	template<typename Thelper>
+	static void FillListT(Thelper helper, HSQUIRRELVM vm, ScriptList *list)
+	{
+		using IterType = typename Thelper::IterType;
+
+		ScriptList::FillListT<Thelper>(helper, vm, list, [](const IterType *) { return true; });
+	}
 
 public:
 	ScriptListMap items;       ///< The items in the list

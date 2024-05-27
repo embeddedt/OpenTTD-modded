@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Zrakoplov
 STR_CONFIG_SETTING_AUTOSAVE                                     :Automatsko snimanje: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Odaberite interval između automatskog snimanja igre
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Pokaži vozni red u otkucajima rađe nego u danima: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Prikaži trajanje putovanja u voznim redovima u otkucajima igre umjesto u danima
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Namjesti prozirnost za indikatore učitavanja. Ctrl+klik za zaključavanje
 
 # Tracerestrict GUI
@@ -30,6 +33,18 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Promijen
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Dizajnirano: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Zaustavljam, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Kreće se prema {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Nema naredbi, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Ide prema {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Na putu za {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Servis u {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Ne može doseći {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Ne može doseći {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Ne može doseći {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Umetni novu naredbu prije označene naredbe, ili dodaj na kraj liste. Ctrl određuje naredbe postaje 'napuni do kraja bilo koji teret', naredbe prolaznih točki 'non-stop', a naredbe spremišta 'servisiraj'. 'Dijeli naredbe' ili Ctrl dopušta da ovo vozilo dijeli naredbe s odabranim vozilom. Klik na vozilo kopira naredbe tog vozila. Naredba spremišta isključuje automatsko servisiranje vozila.
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :D:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :O:
@@ -67,3 +82,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Prodaj 2
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Nije moguće kupiti 25% udjela u ovoj tvrtci...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Nije moguće prodati 25% udjela u ovoj tvrtci...
 STR_ERROR_PROTECTED                                             :{WHITE}Ova tvrtka još nije dovoljno stara da bi trgovala udjelima...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Samo putni signali

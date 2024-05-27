@@ -26,10 +26,10 @@ struct ExtraCheatNameDesc {
 };
 
 static ExtraCheatNameDesc _extra_cheat_descs[] = {
-	{ "inflation_cost",   &_extra_cheats.inflation_cost },
-	{ "inflation_income", &_extra_cheats.inflation_income },
-	{ "station_rating",   &_extra_cheats.station_rating },
-	{ "town_rating",      &_extra_cheats.town_rating },
+	{ "inflation_cost",   &_cheats.inflation_cost },
+	{ "inflation_income", &_cheats.inflation_income },
+	{ "station_rating",   &_cheats.station_rating },
+	{ "town_rating",      &_cheats.town_rating },
 };
 
 static const SaveLoad _cheats_desc[] = {
@@ -106,12 +106,12 @@ static void Load_CHTX()
 
 	CheatsExtLoad current_cheat;
 
-	uint32 chunk_flags = SlReadUint32();
+	uint32_t chunk_flags = SlReadUint32();
 	// flags are not in use yet, reserve for future expansion
 	if (chunk_flags != 0) SlErrorCorruptFmt("CHTX chunk: unknown chunk header flags: 0x%X", chunk_flags);
 
-	uint32 cheat_count = SlReadUint32();
-	for (uint32 i = 0; i < cheat_count; i++) {
+	uint32_t cheat_count = SlReadUint32();
+	for (uint32_t i = 0; i < cheat_count; i++) {
 		SlObject(&current_cheat, _cheats_ext_load_desc);
 
 		bool found = false;
@@ -148,7 +148,7 @@ static void Save_CHTX()
 
 	SlAutolength([](void *) {
 		SlWriteUint32(0);                                                               // flags
-		SlWriteUint32((uint32)(lengthof(_extra_cheat_descs) + _unknown_cheats.size())); // cheat count
+		SlWriteUint32((uint32_t)(lengthof(_extra_cheat_descs) + _unknown_cheats.size())); // cheat count
 
 		for (uint j = 0; j < lengthof(_extra_cheat_descs); j++) {
 			CheatsExtSave save = { _extra_cheat_descs[j].name, *(_extra_cheat_descs[j].cht) };
@@ -160,22 +160,6 @@ static void Save_CHTX()
 		}
 	}, nullptr);
 }
-
-/**
- * Internal structure used in SaveSettingsPatx() and SaveSettingsPlyx()
- */
-struct SettingsExtSave {
-	uint32 flags;
-	const char *name;
-	uint32 setting_length;
-};
-
-static const SaveLoad _settings_ext_save_desc[] = {
-	SLE_VAR(SettingsExtSave, flags,          SLE_UINT32),
-	SLE_STR(SettingsExtSave, name,           SLE_STR, 0),
-	SLE_VAR(SettingsExtSave, setting_length, SLE_UINT32),
-};
-
 
 /** Chunk handlers related to cheats. */
 static const ChunkHandler cheat_chunk_handlers[] = {

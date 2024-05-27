@@ -29,13 +29,29 @@
 #undef PACKAGE_VERSION
 #endif
 
+#include <map>
+
 #if defined(WITH_BFD)
-struct sym_info_bfd;
-void lookup_addr_bfd(const char *obj_file_name, sym_info_bfd &info);
+
+struct sym_bfd_obj {
+	bfd *abfd = nullptr;
+	bfd_vma image_base = 0;
+	asymbol **syms = nullptr;
+	const char *file_name = nullptr;
+	long sym_count = 0;
+	bool usable = false;
+
+	~sym_bfd_obj();
+};
+
+struct sym_bfd_obj_cache {
+	std::map<std::string, sym_bfd_obj> cache;
+};
 
 struct sym_info_bfd {
 	bfd_vma addr;
 	bfd *abfd;
+	bfd_vma image_base = 0;
 	asymbol **syms;
 	long sym_count;
 	const char *file_name;
@@ -45,8 +61,9 @@ struct sym_info_bfd {
 	bool found;
 
 	sym_info_bfd(bfd_vma addr_);
-	~sym_info_bfd();
 };
+
+void lookup_addr_bfd(const char *obj_file_name, sym_bfd_obj_cache &bfdc, sym_info_bfd &info);
 
 #endif
 

@@ -50,7 +50,7 @@ const char *scope_dumper::CompanyInfo(int company_id)
 	const char *last = lastof(this->buffer);
 	b += seprintf(b, last, "%d (", company_id);
 	SetDParam(0, company_id);
-	b = GetString(b, STR_COMPANY_NAME, last);
+	b = strecpy(b, GetString(STR_COMPANY_NAME).c_str(), last);
 	b += seprintf(b, last, ")");
 	return buffer;
 }
@@ -62,30 +62,36 @@ const char *scope_dumper::VehicleInfo(const Vehicle *v)
 	auto dump_flags = [&](const Vehicle *u) {
 		b = u->DumpVehicleFlags(b, last, true);
 	};
+	auto dump_name = [&](const Vehicle *u) {
+		if (u->type < VEH_COMPANY_END) {
+			const char *veh_type[] = {
+				"Train",
+				"Road Vehicle",
+				"Ship",
+				"Aircraft",
+			};
+			b = strecpy(b, veh_type[u->type], last, true);
+			if (u->unitnumber > 0) {
+				b += seprintf(b, last, " %u", u->unitnumber);
+			} else {
+				b += seprintf(b, last, " [N/A]");
+			}
+			if (!u->name.empty()) {
+				b += seprintf(b, last, " (%s)", u->name.c_str());
+			}
+		} else if (u->type == VEH_EFFECT) {
+			b += seprintf(b, last, "Effect Vehicle: subtype: %u", u->subtype);
+		} else if (u->type == VEH_DISASTER) {
+			b += seprintf(b, last, "Disaster Vehicle: subtype: %u", u->subtype);
+		}
+	};
 	if (v) {
 		b += seprintf(b, last, "veh: %u: (", v->index);
 		if (Vehicle::GetIfValid(v->index) != v) {
 			b += seprintf(b, last, "INVALID PTR: %p)", v);
 			return this->buffer;
 		}
-		switch (v->type) {
-			case VEH_EFFECT:
-				b += seprintf(b, last, "Effect Vehicle: subtype: %u", v->subtype);
-				break;
-
-			case VEH_DISASTER:
-				b += seprintf(b, last, "Disaster Vehicle: subtype: %u", v->subtype);
-				break;
-
-			default:
-				SetDParam(0, v->index);
-				b = GetString(b, STR_VEHICLE_NAME, last);
-				break;
-		}
-		if (v->type < VEH_COMPANY_END) {
-			const char veh_type_chars[] = "TRSA";
-			b += seprintf(b, last, ", (%c%u)", veh_type_chars[v->type], v->unitnumber);
-		}
+		dump_name(v);
 		b += seprintf(b, last, ", c:%d, ", (int) v->owner);
 		dump_flags(v);
 		if (v->First() && v->First() != v) {
@@ -94,8 +100,7 @@ const char *scope_dumper::VehicleInfo(const Vehicle *v)
 				b += seprintf(b, last, "INVALID PTR: %p)", v->First());
 				return this->buffer;
 			}
-			SetDParam(0, v->First()->index);
-			b = GetString(b, STR_VEHICLE_NAME, last);
+			dump_name(v->First());
 			b += seprintf(b, last, ", ");
 			dump_flags(v->First());
 			b += seprintf(b, last, ")");
@@ -116,7 +121,7 @@ const char *scope_dumper::StationInfo(const BaseStation *st)
 		const bool waypoint = Waypoint::IsExpected(st);
 		b += seprintf(b, last, "%s: %u: (", waypoint ? "waypoint" : "station", st->index);
 		SetDParam(0, st->index);
-		b = GetString(b, waypoint ? STR_WAYPOINT_NAME : STR_STATION_NAME, last);
+		b = strecpy(b, GetString(waypoint ? STR_WAYPOINT_NAME : STR_STATION_NAME).c_str(), last);
 		b += seprintf(b, last, ", c:%d, facil: ", (int) st->owner);
 		auto dump_facil = [&](char c, StationFacility flag) {
 			if (st->facilities & flag) b += seprintf(b, last, "%c", c);

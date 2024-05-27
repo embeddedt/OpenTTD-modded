@@ -12,6 +12,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Carbadan-adhair
 STR_CONFIG_SETTING_AUTOSAVE                                     :Fèin-sàbhaladh: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Tagh dè cho tric ’s a thèid geamannan a shàbhaladh gu fèin-obrachail
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Seall an clàr-ama ann an diogan seach làithean: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Seall na h-ùinean siubhail ann an clàran-ama le diogan geama seach làithean
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Toglaich trìd-shoillearachd nan comharraidhean luchdaidh. Ctrl+Briogadh airson glasadh
 
 # Tracerestrict GUI
@@ -30,6 +33,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Atharrai
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Air a dhealbhadh: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}A' stad, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}A' dèanamh air {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Gun òrdugh, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}A' dèanamh air {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}A' dèanamh air {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Obair-ghlèidhidh aig {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Cuir a-steach òrdugh ùr ron òrdugh a thagh thu no cuir ri deireadh na liosta e. Le Ctrl, bith òrdugh stèisein na “Luchdaich carago sam bith gu iomlan", òrdugh puinge-turais na “Gun stad" is òrdugh garaids / trèan-lainn / calaidh / hangair na “obair-ghlèidhidh". Le “Co-roinn na h-òrduighean” no Ctrl, co-roinnidh an carbad seo na h-òrduighean leis a' charbad a thagh thu. Gheibh thu lethbhreac dhe òrduighean le briogadh air carbad. Cuiridh òrdugh garaids / trèan-lainn / calaidh / hangair fèin-obair-ghlèidhidh airson a' charbaid à comas
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :R:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :F:
@@ -64,3 +76,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Reic ear
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Chan urrainn dhut earrann dhe 25% aig a' chompanaidh seo a cheannach....
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Chan urrainn dhut earrann dhe 25% aig a' chompanaidh seo a reic....
 STR_ERROR_PROTECTED                                             :{WHITE}Chan eil a' chompanaidh seo sean gu leòr gus earrannan a reic no a cheannach fhathast...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Comharran slighe a-mhàin

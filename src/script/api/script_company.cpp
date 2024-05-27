@@ -28,7 +28,7 @@
 {
 	if (company == COMPANY_SELF) {
 		if (!::Company::IsValidID(_current_company)) return COMPANY_INVALID;
-		return (CompanyID)((byte)_current_company);
+		return (CompanyID)((uint8_t)_current_company);
 	}
 
 	return ::Company::IsValidID(company) ? company : COMPANY_INVALID;
@@ -169,7 +169,7 @@
 	return ::Company::Get(company)->old_economy[quarter - 1].company_value;
 }
 
-/* static */ Money ScriptCompany::GetAnnualExpenseValue(CompanyID company, uint32 year_offset, ExpensesType expenses_type)
+/* static */ Money ScriptCompany::GetAnnualExpenseValue(CompanyID company, uint32_t year_offset, ExpensesType expenses_type)
 {
 	EnforcePrecondition(false, expenses_type < (ExpensesType)::EXPENSES_END);
 	EnforcePrecondition(false, year_offset <= 2);
@@ -185,8 +185,10 @@
 {
 	company = ResolveCompanyID(company);
 	if (company == COMPANY_INVALID) return -1;
+	/* If we return INT64_MAX as usual, overflows may occur in the script. So return a smaller value. */
+	if (_settings_game.difficulty.infinite_money) return INT32_MAX;
 
-	return ::Company::Get(company)->money;
+	return GetAvailableMoney((::CompanyID)company);
 }
 
 /* static */ Money ScriptCompany::GetLoanAmount()
@@ -199,7 +201,32 @@
 
 /* static */ Money ScriptCompany::GetMaxLoanAmount()
 {
-	return _economy.max_loan;
+	if (ScriptCompanyMode::IsDeity()) return _economy.max_loan;
+
+	ScriptCompany::CompanyID company = ResolveCompanyID(COMPANY_SELF);
+	if (company == COMPANY_INVALID) return -1;
+
+	return ::Company::Get(company)->GetMaxLoan();
+}
+
+/* static */ bool ScriptCompany::SetMaxLoanAmountForCompany(CompanyID company, Money amount)
+{
+	EnforceDeityMode(false);
+	EnforcePrecondition(false, amount >= 0 && amount <= (Money)MAX_LOAN_LIMIT);
+
+	company = ResolveCompanyID(company);
+	EnforcePrecondition(false, company != COMPANY_INVALID);
+	return ScriptObject::DoCommandEx(0, company, 0, (uint64_t)amount, CMD_SET_COMPANY_MAX_LOAN);
+}
+
+/* static */ bool ScriptCompany::ResetMaxLoanAmountForCompany(CompanyID company)
+{
+	EnforceDeityMode(false);
+
+	company = ResolveCompanyID(company);
+	EnforcePrecondition(false, company != COMPANY_INVALID);
+
+	return ScriptObject::DoCommandEx(0, company, 0, (uint64_t)COMPANY_MAX_LOAN_DEFAULT, CMD_SET_COMPANY_MAX_LOAN);
 }
 
 /* static */ Money ScriptCompany::GetLoanInterval()
@@ -211,7 +238,7 @@
 {
 	EnforceCompanyModeValid(false);
 	EnforcePrecondition(false, loan >= 0);
-	EnforcePrecondition(false, ((int64)loan % GetLoanInterval()) == 0);
+	EnforcePrecondition(false, ((int64_t)loan % GetLoanInterval()) == 0);
 	EnforcePrecondition(false, loan <= GetMaxLoanAmount());
 	EnforcePrecondition(false, (loan - GetLoanAmount() + GetBankBalance(COMPANY_SELF)) >= 0);
 
@@ -229,7 +256,7 @@
 	EnforceCompanyModeValid(false);
 	EnforcePrecondition(false, loan >= 0);
 
-	Money over_interval = (int64)loan % GetLoanInterval();
+	Money over_interval = (int64_t)loan % GetLoanInterval();
 	if (over_interval != 0) loan += GetLoanInterval() - over_interval;
 
 	EnforcePrecondition(false, loan <= GetMaxLoanAmount());
@@ -249,7 +276,7 @@
 	EnforcePrecondition(false, company != COMPANY_INVALID);
 
 	/* Network commands only allow 0 to indicate invalid tiles, not INVALID_TILE */
-	return ScriptObject::DoCommandEx(tile == INVALID_TILE ? 0 : tile, company | expenses_type << 8, 0, (uint64)(delta), CMD_CHANGE_BANK_BALANCE);
+	return ScriptObject::DoCommandEx(tile == INVALID_TILE ? 0 : tile, company | expenses_type << 8, 0, (uint64_t)(delta), CMD_CHANGE_BANK_BALANCE);
 }
 
 /* static */ bool ScriptCompany::BuildCompanyHQ(TileIndex tile)
@@ -303,7 +330,7 @@
 {
 	EnforceCompanyModeValid(false);
 	EnforcePrecondition(false, money >= 0);
-	EnforcePrecondition(false, (int64)money <= UINT32_MAX);
+	EnforcePrecondition(false, (int64_t)money <= UINT32_MAX);
 	return ScriptObject::DoCommand(0, 0, money, CMD_CHANGE_COMPANY_SETTING, "company.engine_renew_money");
 }
 

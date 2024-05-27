@@ -35,7 +35,7 @@ NetworkUDPSocketHandler::NetworkUDPSocketHandler(NetworkAddressList *bind)
 		this->bind.emplace_back("", 0, AF_INET6);
 	}
 
-	this->fragment_token = ((uint64) InteractiveRandom()) | (((uint64) InteractiveRandom()) << 32);
+	this->fragment_token = ((uint64_t) InteractiveRandom()) | (((uint64_t) InteractiveRandom()) << 32);
 }
 
 
@@ -52,7 +52,7 @@ bool NetworkUDPSocketHandler::Listen()
 		addr.Listen(SOCK_DGRAM, &this->sockets);
 	}
 
-	return this->sockets.size() != 0;
+	return !this->sockets.empty();
 }
 
 /**
@@ -73,34 +73,34 @@ void NetworkUDPSocketHandler::CloseSocket()
  * @param all  send the packet using all sockets that can send it
  * @param broadcast whether to send a broadcast message
  */
-void NetworkUDPSocketHandler::SendPacket(Packet *p, NetworkAddress *recv, bool all, bool broadcast, bool short_mtu)
+void NetworkUDPSocketHandler::SendPacket(Packet &p, NetworkAddress &recv, bool all, bool broadcast, bool short_mtu)
 {
-	if (this->sockets.size() == 0) this->Listen();
+	if (this->sockets.empty()) this->Listen();
 
 	const uint MTU = short_mtu ? UDP_MTU_SHORT : UDP_MTU;
 
-	if (p->Size() > MTU) {
-		p->PrepareToSend();
+	if (p.Size() > MTU) {
+		p.PrepareToSend();
 
-		uint64 token = this->fragment_token++;
+		uint64_t token = this->fragment_token++;
 		const uint PAYLOAD_MTU = MTU - (1 + 2 + 8 + 1 + 1 + 2);
 
-		const size_t packet_size = p->Size();
-		const uint8 frag_count = (uint8)((packet_size + PAYLOAD_MTU - 1) / PAYLOAD_MTU);
+		const size_t packet_size = p.Size();
+		const uint8_t frag_count = (uint8_t)((packet_size + PAYLOAD_MTU - 1) / PAYLOAD_MTU);
 
 		Packet frag(PACKET_UDP_EX_MULTI);
-		uint8 current_frag = 0;
+		uint8_t current_frag = 0;
 		size_t offset = 0;
 		while (offset < packet_size) {
-			uint16 payload_size = (uint16)std::min<size_t>(PAYLOAD_MTU, packet_size - offset);
+			uint16_t payload_size = (uint16_t)std::min<size_t>(PAYLOAD_MTU, packet_size - offset);
 			frag.Send_uint64(token);
-			frag.Send_uint8 (current_frag);
-			frag.Send_uint8 (frag_count);
-			frag.Send_uint16 (payload_size);
-			frag.Send_binary(p->GetBufferData() + offset, payload_size);
+			frag.Send_uint8(current_frag);
+			frag.Send_uint8(frag_count);
+			frag.Send_uint16(payload_size);
+			frag.Send_binary(p.GetBufferData() + offset, payload_size);
 			current_frag++;
 			offset += payload_size;
-			this->SendPacket(&frag, recv, all, broadcast, short_mtu);
+			this->SendPacket(frag, recv, all, broadcast, short_mtu);
 			frag.ResetState(PACKET_UDP_EX_MULTI);
 		}
 		assert_msg(current_frag == frag_count, "%u, %u", current_frag, frag_count);
@@ -110,12 +110,12 @@ void NetworkUDPSocketHandler::SendPacket(Packet *p, NetworkAddress *recv, bool a
 	for (auto &s : this->sockets) {
 		/* Make a local copy because if we resolve it we cannot
 		 * easily unresolve it so we can resolve it later again. */
-		NetworkAddress send(*recv);
+		NetworkAddress send(recv);
 
 		/* Not the same type */
 		if (!send.IsFamily(s.second.GetAddress()->ss_family)) continue;
 
-		p->PrepareToSend();
+		p.PrepareToSend();
 
 		if (broadcast) {
 			/* Enable broadcast */
@@ -126,7 +126,7 @@ void NetworkUDPSocketHandler::SendPacket(Packet *p, NetworkAddress *recv, bool a
 		}
 
 		/* Send the buffer */
-		ssize_t res = p->TransferOut<int>(sendto, s.first, 0, (const struct sockaddr *)send.GetAddress(), send.GetAddressLength());
+		ssize_t res = p.TransferOut<int>(sendto, s.first, 0, (const struct sockaddr *)send.GetAddress(), send.GetAddressLength());
 		DEBUG(net, 7, "sendto(%s)",  NetworkAddressDumper().GetAddressAsString(&send));
 
 		/* Check for any errors, but ignore it otherwise */
@@ -172,7 +172,7 @@ void NetworkUDPSocketHandler::ReceivePackets()
 			p.PrepareToRead();
 
 			/* Handle the packet */
-			this->HandleUDPPacket(&p, &address);
+			this->HandleUDPPacket(p, address);
 		}
 	}
 }
@@ -182,14 +182,14 @@ void NetworkUDPSocketHandler::ReceivePackets()
  * @param p the received packet
  * @param client_addr the sender of the packet
  */
-void NetworkUDPSocketHandler::HandleUDPPacket(Packet *p, NetworkAddress *client_addr)
+void NetworkUDPSocketHandler::HandleUDPPacket(Packet &p, NetworkAddress &client_addr)
 {
 	PacketUDPType type;
 
 	/* New packet == new client, which has not quit yet */
 	this->Reopen();
 
-	type = (PacketUDPType)p->Recv_uint8();
+	type = (PacketUDPType)p.Recv_uint8();
 
 	switch (this->HasClientQuit() ? PACKET_UDP_END : type) {
 		case PACKET_UDP_CLIENT_FIND_SERVER:   this->Receive_CLIENT_FIND_SERVER(p, client_addr);   break;
@@ -208,23 +208,23 @@ void NetworkUDPSocketHandler::HandleUDPPacket(Packet *p, NetworkAddress *client_
 	}
 }
 
-void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet *p, NetworkAddress *client_addr)
+void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet &p, NetworkAddress &client_addr)
 {
-	uint64 token        = p->Recv_uint64();
-	uint8 index         = p->Recv_uint8 ();
-	uint8 total         = p->Recv_uint8 ();
-	uint16 payload_size = p->Recv_uint16();
+	uint64_t token        = p.Recv_uint64();
+	uint8_t index         = p.Recv_uint8 ();
+	uint8_t total         = p.Recv_uint8 ();
+	uint16_t payload_size = p.Recv_uint16();
 
 	DEBUG(net, 6, "[udp] received multi-part packet from %s: " OTTD_PRINTFHEX64 ", %u/%u, %u bytes",
 			NetworkAddressDumper().GetAddressAsString(client_addr), token, index, total, payload_size);
 
 	if (total == 0 || index >= total) return;
-	if (!p->CanReadFromPacket(payload_size)) return;
+	if (!p.CanReadFromPacket(payload_size)) return;
 
 	time_t cur_time = time(nullptr);
 
 	auto add_to_fragment = [&](FragmentSet &fs) {
-		fs.fragments[index].assign((const char *) p->GetBufferData() + p->GetRawPos(), payload_size);
+		fs.fragments[index].assign((const char *) p.GetBufferData() + p.GetRawPos(), payload_size);
 
 		uint total_payload = 0;
 		for (auto &frag : fs.fragments) {
@@ -236,10 +236,10 @@ void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet *p, NetworkAddress *client
 		DEBUG(net, 6, "[udp] merged multi-part packet from %s: " OTTD_PRINTFHEX64 ", %u bytes",
 				NetworkAddressDumper().GetAddressAsString(client_addr), token, total_payload);
 
-		Packet merged(this, SHRT_MAX, 0);
+		Packet merged(this, TCP_MTU, 0);
 		merged.ReserveBuffer(total_payload);
 		for (auto &frag : fs.fragments) {
-			merged.Send_binary((const byte *)frag.data(), frag.size());
+			merged.Send_binary((const uint8_t *)frag.data(), frag.size());
 		}
 		merged.ParsePacketSize();
 		merged.PrepareToRead();
@@ -250,7 +250,7 @@ void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet *p, NetworkAddress *client
 			DEBUG(net, 1, "received an extended packet with mismatching size from %s, (%u, %u)",
 					NetworkAddressDumper().GetAddressAsString(client_addr), (uint)total_payload, (uint)merged.ReadRawPacketSize());
 		} else {
-			this->HandleUDPPacket(&merged, client_addr);
+			this->HandleUDPPacket(merged, client_addr);
 		}
 
 		fs = this->fragments.back();
@@ -266,14 +266,14 @@ void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet *p, NetworkAddress *client
 			continue;
 		}
 
-		if (fs.token == token && fs.address == *client_addr && fs.fragments.size() == total) {
+		if (fs.token == token && fs.address == client_addr && fs.fragments.size() == total) {
 			add_to_fragment(fs);
 			return;
 		}
 		i++;
 	}
 
-	this->fragments.push_back({ token, *client_addr, cur_time, {} });
+	this->fragments.push_back({ token, client_addr, cur_time, {} });
 	this->fragments.back().fragments.resize(total);
 	add_to_fragment(this->fragments.back());
 }
@@ -283,11 +283,11 @@ void NetworkUDPSocketHandler::Receive_EX_MULTI(Packet *p, NetworkAddress *client
  * @param type The received packet type.
  * @param client_addr The address we received the packet from.
  */
-void NetworkUDPSocketHandler::ReceiveInvalidPacket(PacketUDPType type, NetworkAddress *client_addr)
+void NetworkUDPSocketHandler::ReceiveInvalidPacket(PacketUDPType type, NetworkAddress &client_addr)
 {
 	DEBUG(net, 0, "[udp] received packet type %d on wrong port from %s", type, NetworkAddressDumper().GetAddressAsString(client_addr));
 }
 
-void NetworkUDPSocketHandler::Receive_CLIENT_FIND_SERVER(Packet *p, NetworkAddress *client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_CLIENT_FIND_SERVER, client_addr); }
-void NetworkUDPSocketHandler::Receive_SERVER_RESPONSE(Packet *p, NetworkAddress *client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_SERVER_RESPONSE, client_addr); }
-void NetworkUDPSocketHandler::Receive_EX_SERVER_RESPONSE(Packet *p, NetworkAddress *client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_EX_SERVER_RESPONSE, client_addr); }
+void NetworkUDPSocketHandler::Receive_CLIENT_FIND_SERVER(Packet &p, NetworkAddress &client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_CLIENT_FIND_SERVER, client_addr); }
+void NetworkUDPSocketHandler::Receive_SERVER_RESPONSE(Packet &p, NetworkAddress &client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_SERVER_RESPONSE, client_addr); }
+void NetworkUDPSocketHandler::Receive_EX_SERVER_RESPONSE(Packet &p, NetworkAddress &client_addr) { this->ReceiveInvalidPacket(PACKET_UDP_EX_SERVER_RESPONSE, client_addr); }

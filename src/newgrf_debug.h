@@ -24,15 +24,21 @@ enum NewGrfDebugSpritePickerMode {
 
 /** Spritepicker of SpriteAligner */
 struct NewGrfDebugSpritePicker {
-	NewGrfDebugSpritePickerMode mode;   ///< Current state
-	void *clicked_pixel;                ///< Clicked pixel (pointer to blitter buffer)
-	std::vector<SpriteID> sprites;       ///< Sprites found
+	NewGrfDebugSpritePickerMode mode = SPM_NONE; ///< Current state
+	void *clicked_pixel = nullptr;               ///< Clicked pixel (pointer to blitter buffer)
+	std::vector<SpriteID> sprites;               ///< Sprites found
+
+	void DrawingComplete();
+	void FoundSpriteDuringDrawing(SpriteID sprite);
+
+private:
+	std::vector<SpriteID> draw_found_sprites;    ///< Sprites found (used from threaded drawing jobs, mutex must be held for all accesses)
 };
 
 extern NewGrfDebugSpritePicker _newgrf_debug_sprite_picker;
 
 bool IsNewGRFInspectable(GrfSpecFeature feature, uint index);
-void ShowNewGRFInspectWindow(GrfSpecFeature feature, uint index, const uint32 grfid = 0);
+void ShowNewGRFInspectWindow(GrfSpecFeature feature, uint index, const uint32_t grfid = 0);
 void InvalidateNewGRFInspectWindow(GrfSpecFeature feature, uint index);
 void DeleteNewGRFInspectWindow(GrfSpecFeature feature, uint index);
 

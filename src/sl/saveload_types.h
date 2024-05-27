@@ -23,18 +23,26 @@
  */
 enum VarTypes {
 	/* 4 bits allocated a maximum of 16 types for NumberType */
-	SLE_FILE_I8       = 0,
-	SLE_FILE_U8       = 1,
-	SLE_FILE_I16      = 2,
-	SLE_FILE_U16      = 3,
-	SLE_FILE_I32      = 4,
-	SLE_FILE_U32      = 5,
-	SLE_FILE_I64      = 6,
-	SLE_FILE_U64      = 7,
-	SLE_FILE_STRINGID = 8, ///< StringID offset into strings-array
-	SLE_FILE_STRING   = 9,
-	SLE_FILE_VEHORDERID = 10,
-	/* 5 more possible file-primitives */
+	SLE_FILE_END      =  0, ///< Used to mark end-of-header in tables.
+	SLE_FILE_I8       =  1,
+	SLE_FILE_U8       =  2,
+	SLE_FILE_I16      =  3,
+	SLE_FILE_U16      =  4,
+	SLE_FILE_I32      =  5,
+	SLE_FILE_U32      =  6,
+	SLE_FILE_I64      =  7,
+	SLE_FILE_U64      =  8,
+	SLE_FILE_STRINGID =  9, ///< StringID offset into strings-array
+	SLE_FILE_STRING   = 10,
+	SLE_FILE_STRUCT   = 11,
+
+	/* End of values storable in save games */
+	SLE_FILE_TABLE_END = 12,
+
+	SLE_FILE_VEHORDERID = 12,
+
+	SLE_FILE_TYPE_MASK = 0xF, ///< Mask to get the file-type (and not any flags).
+	SLE_FILE_HAS_LENGTH_FIELD = 1 << 4, ///< Bit stored in savegame to indicate field has a length field for each entry.
 
 	/* 4 bits allocated a maximum of 16 types for NumberType */
 	SLE_VAR_BL    =  0 << 4,
@@ -91,7 +99,7 @@ enum VarTypes {
 	SLF_ALLOW_NEWLINE   = 1 << 9, ///< Allow new lines in the strings.
 };
 
-typedef uint32 VarType;
+typedef uint32_t VarType;
 
 /** Type of data saved. */
 enum SaveLoadTypes {
@@ -113,14 +121,14 @@ enum SaveLoadTypes {
 	SL_VARVEC      = 14, ///< Save/load a primitive type vector.
 };
 
-typedef byte SaveLoadType; ///< Save/load type. @see SaveLoadTypes
+typedef uint8_t SaveLoadType; ///< Save/load type. @see SaveLoadTypes
 
 /** SaveLoad type struct. Do NOT use this directly but use the SLE_ macros defined just below! */
 struct SaveLoad {
 	bool global;         ///< should we load a global variable or a non-global one
 	SaveLoadType cmd;    ///< the action to take with the saved/loaded type, All types need different action
 	VarType conv;        ///< type of the variable to be saved, int
-	uint16 length;       ///< (conditional) length of the variable (eg. arrays) (max array size is 65536 elements)
+	uint16_t length;     ///< (conditional) length of the variable (eg. arrays) (max array size is 65536 elements)
 	SaveLoadVersion version_from; ///< save/load the variable starting from this savegame version
 	SaveLoadVersion version_to;   ///< save/load the variable until this savegame version
 	/* NOTE: This element either denotes the address of the variable for a global
@@ -131,5 +139,29 @@ struct SaveLoad {
 	size_t size;         ///< the sizeof size.
 	SlXvFeatureTest ext_feature_test;  ///< extended feature test
 };
+
+enum NamedSaveLoadFlags : uint8_t {
+	NSLF_NONE                     = 0,
+	NSLF_TABLE_ONLY               = 1 << 0,
+};
+DECLARE_ENUM_AS_BIT_SET(NamedSaveLoadFlags)
+
+/** Named SaveLoad type struct, for use in tables */
+struct NamedSaveLoad {
+	const char *name;             ///< the name (for use in table chunks)
+	SaveLoad save_load;           ///< SaveLoad type struct
+	NamedSaveLoadFlags nsl_flags; ///< Flags
+};
+
+inline constexpr NamedSaveLoad NSL(const char *name, SaveLoad save_load)
+{
+	return { name, save_load, NSLF_NONE };
+}
+
+inline constexpr NamedSaveLoad NSLT(const char *name, SaveLoad save_load)
+{
+	return { name, save_load, NSLF_TABLE_ONLY };
+}
+using NamedSaveLoadTable = std::span<const NamedSaveLoad>;
 
 #endif /* SL_SAVELOAD_TYPES_H */

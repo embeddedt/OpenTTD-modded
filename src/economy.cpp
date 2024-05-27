@@ -59,6 +59,7 @@
 #include "pathfinder/yapf/yapf_cache.h"
 #include "debug_desync.h"
 #include "event_logs.h"
+#include "plans_func.h"
 
 #include "table/strings.h"
 #include "table/pricebase.h"
@@ -81,9 +82,9 @@ INSTANTIATE_POOL_METHODS(CargoPayment)
  * @param shift The amount to shift the value to right.
  * @return The shifted result
  */
-static inline int32 BigMulS(const int32 a, const int32 b, const uint8 shift)
+static inline int32_t BigMulS(const int32_t a, const int32_t b, const uint8_t shift)
 {
-	return (int32)((int64)a * (int64)b >> shift);
+	return (int32_t)((int64_t)a * (int64_t)b >> shift);
 }
 
 typedef std::vector<Industry *> SmallIndustryList;
@@ -104,11 +105,15 @@ const ScoreInfo _score_info[] = {
 	{       0,   0}  // SCORE_TOTAL
 };
 
-int64 _score_part[MAX_COMPANIES][SCORE_END];
+int64_t _score_part[MAX_COMPANIES][SCORE_END];
 Economy _economy;
 Prices _price;
 Money _additional_cash_required;
 static PriceMultipliers _price_base_multiplier;
+
+CargoScaler _town_cargo_scaler;
+CargoScaler _industry_cargo_scaler;
+CargoScaler _industry_inverse_cargo_scaler;
 
 extern int GetAmountOwnedBy(const Company *c, Owner owner);
 
@@ -138,7 +143,7 @@ Money CalculateCompanyValueExcludingShares(const Company *c, bool including_loan
 	uint num = 0;
 
 	for (const Station *st : Station::Iterate()) {
-		if (st->owner == owner) num += CountBits((byte)st->facilities);
+		if (st->owner == owner) num += CountBits((uint8_t)st->facilities);
 	}
 
 	Money value = num * _price[PR_STATION_VALUE] * 25;
@@ -232,11 +237,11 @@ int UpdateCompanyRatingAndValue(Company *c, bool update)
 		bool min_profit_first = true;
 		uint num = 0;
 
-		for (const Vehicle *v : Vehicle::Iterate()) {
+		for (const Vehicle *v : Vehicle::IterateFrontOnly()) {
 			if (v->owner != owner) continue;
 			if (IsCompanyBuildableVehicleType(v->type) && v->IsPrimaryVehicle() && !HasBit(v->subtype, GVSF_VIRTUAL)) {
 				if (v->profit_last_year > 0) num++; // For the vehicle score only count profitable vehicles
-				if (v->age > 730) {
+				if (v->economy_age > VEHICLE_PROFIT_MIN_AGE) {
 					/* Find the vehicle with the lowest amount of profit */
 					if (min_profit_first || min_profit > v->profit_last_year) {
 						min_profit = v->profit_last_year;
@@ -260,7 +265,7 @@ int UpdateCompanyRatingAndValue(Company *c, bool update)
 		uint num = 0;
 		for (const Station *st : Station::Iterate()) {
 			/* Only count stations that are actually serviced */
-			if (st->owner == owner && (st->time_since_load <= 20 || st->time_since_unload <= 20)) num += CountBits((byte)st->facilities);
+			if (st->owner == owner && (st->time_since_load <= 20 || st->time_since_unload <= 20)) num += CountBits((uint8_t)st->facilities);
 		}
 		_score_part[owner][SCORE_STATIONS] = num;
 	}
@@ -326,7 +331,7 @@ int UpdateCompanyRatingAndValue(Company *c, bool update)
 			/* Skip the total */
 			if (i == SCORE_TOTAL) continue;
 			/*  Check the score */
-			s = Clamp<int64>(_score_part[owner][i], 0, _score_info[i].needed) * _score_info[i].score / _score_info[i].needed;
+			s = Clamp<int64_t>(_score_part[owner][i], 0, _score_info[i].needed) * _score_info[i].score / _score_info[i].needed;
 			score += s;
 			total_score += _score_info[i].score;
 		}
@@ -497,17 +502,13 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 	/* Change ownership of vehicles */
 	if (new_owner != INVALID_OWNER) {
-		FreeUnitIDGenerator unitidgen[] = {
-			FreeUnitIDGenerator(VEH_TRAIN, new_owner), FreeUnitIDGenerator(VEH_ROAD,     new_owner),
-			FreeUnitIDGenerator(VEH_SHIP,  new_owner), FreeUnitIDGenerator(VEH_AIRCRAFT, new_owner)
-		};
+		Company *new_company = Company::Get(new_owner);
 
 		/* Override company settings to new company defaults in case we need to convert them.
 		 * This is required as the CmdChangeServiceInt doesn't copy the supplied value when it is non-custom
 		 */
-		if (new_owner != INVALID_OWNER) {
+		{
 			Company *old_company = Company::Get(old_owner);
-			Company *new_company = Company::Get(new_owner);
 
 			old_company->settings.vehicle.servint_aircraft = new_company->settings.vehicle.servint_aircraft;
 			old_company->settings.vehicle.servint_trains = new_company->settings.vehicle.servint_trains;
@@ -518,14 +519,10 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 		for (Vehicle *v : Vehicle::Iterate()) {
 			if (v->owner == old_owner && IsCompanyBuildableVehicleType(v->type)) {
-				assert(new_owner != INVALID_OWNER);
-
 				/* Correct default values of interval settings while maintaining custom set ones.
 				 * This prevents invalid values on mismatching company defaults being accepted.
 				 */
 				if (!v->ServiceIntervalIsCustom()) {
-					Company *new_company = Company::Get(new_owner);
-
 					/* Technically, passing the interval is not needed as the command will query the default value itself.
 					 * However, do not rely on that behaviour.
 					 */
@@ -545,7 +542,8 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 				}
 				if (v->IsPrimaryVehicle() && !HasBit(v->subtype, GVSF_VIRTUAL)) {
 					GroupStatistics::CountVehicle(v, 1);
-					v->unitnumber = unitidgen[v->type].NextID();
+					auto &unitidgen = new_company->freeunits[v->type];
+					v->unitnumber = unitidgen.UseID(unitidgen.NextID());
 				}
 
 				/* Invalidate the vehicle's cargo payment "owner cache". */
@@ -581,6 +579,7 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 	}
 
 	/*  Change ownership of tiles */
+	StartRemoveOrderFromAllVehiclesBatch();
 	{
 		TileIndex tile = 0;
 		do {
@@ -602,6 +601,7 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 		/* Update any signals in the buffer */
 		UpdateSignalsInBuffer();
 	}
+	StopRemoveOrderFromAllVehiclesBatch();
 
 	/* Add airport infrastructure count of the old company to the new one. */
 	if (new_owner != INVALID_OWNER) Company::Get(new_owner)->infrastructure.airport += Company::Get(old_owner)->infrastructure.airport;
@@ -666,6 +666,8 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
 
 	extern void MarkAllViewportMapLandscapesDirty();
 	MarkAllViewportMapLandscapesDirty();
+
+	InvalidatePlanCaches();
 }
 
 /**
@@ -674,9 +676,12 @@ void ChangeOwnershipOfCompanyItems(Owner old_owner, Owner new_owner)
  */
 static void CompanyCheckBankrupt(Company *c)
 {
+	/* If "Infinite money" setting is on, companies should not go bankrupt. */
+	if (_settings_game.difficulty.infinite_money) return;
+
 	/*  If the company has money again, it does not go bankrupt */
 	if (c->bankrupt_flags & CBRF_SALE) return;
-	if (c->money - c->current_loan >= -_economy.max_loan) {
+	if (c->money - c->current_loan >= -c->GetMaxLoan()) {
 		int previous_months_of_bankruptcy = CeilDiv(c->months_of_bankruptcy, 3);
 		c->months_of_bankruptcy = 0;
 		c->bankrupt_asked = 0;
@@ -780,13 +785,13 @@ static void CompaniesGenStatistics()
 			cur_company.Change(c->index);
 
 			CommandCost cost(EXPENSES_PROPERTY);
-			uint32 rail_total = c->infrastructure.GetRailTotal();
+			uint32_t rail_total = c->infrastructure.GetRailTotal();
 			for (RailType rt = RAILTYPE_BEGIN; rt < RAILTYPE_END; rt++) {
 				if (c->infrastructure.rail[rt] != 0) cost.AddCost(RailMaintenanceCost(rt, c->infrastructure.rail[rt], rail_total));
 			}
 			cost.AddCost(SignalMaintenanceCost(c->infrastructure.signal));
-			uint32 road_total = c->infrastructure.GetRoadTotal();
-			uint32 tram_total = c->infrastructure.GetTramTotal();
+			uint32_t road_total = c->infrastructure.GetRoadTotal();
+			uint32_t tram_total = c->infrastructure.GetTramTotal();
 			for (RoadType rt = ROADTYPE_BEGIN; rt < ROADTYPE_END; rt++) {
 				if (c->infrastructure.road[rt] != 0) cost.AddCost(RoadMaintenanceCost(rt, c->infrastructure.road[rt], RoadTypeIsRoad(rt) ? road_total : tram_total));
 			}
@@ -800,7 +805,7 @@ static void CompaniesGenStatistics()
 	cur_company.Restore();
 
 	/* Only run the economic statics and update company stats every 3rd month (1st of quarter). */
-	if (!HasBit(1 << 0 | 1 << 3 | 1 << 6 | 1 << 9, _cur_date_ymd.month)) return;
+	if ((EconTime::CurMonth() % 3) != 0) return;
 
 	for (Company *c : Company::Iterate()) {
 		/* Drop the oldest history off the end */
@@ -845,9 +850,9 @@ bool AddInflation(bool check_year)
 	 * it impossible due to the diverging cost and income rates.
 	 */
 	if (_settings_game.economy.inflation_fixed_dates) {
-		if (check_year && (_cur_year < ORIGINAL_BASE_YEAR || _cur_year >= ORIGINAL_MAX_YEAR)) return true;
+		if (check_year && (CalTime::CurYear() < CalTime::ORIGINAL_BASE_YEAR || CalTime::CurYear() >= CalTime::ORIGINAL_MAX_YEAR)) return true;
 	} else {
-		if (check_year && (_cur_year - _settings_game.game_creation.starting_year) >= (ORIGINAL_MAX_YEAR - ORIGINAL_BASE_YEAR)) return true;
+		if (check_year && (CalTime::CurYear() - _settings_game.game_creation.starting_year) >= (CalTime::ORIGINAL_MAX_YEAR - CalTime::ORIGINAL_BASE_YEAR)) return true;
 	}
 
 	if (_economy.inflation_prices == MAX_INFLATION || _economy.inflation_payment == MAX_INFLATION) return true;
@@ -872,7 +877,7 @@ bool AddInflation(bool check_year)
 void RecomputePrices()
 {
 	/* Setup maximum loan as a rounded down multiple of LOAN_INTERVAL. */
-	_economy.max_loan = ((uint64)_settings_game.difficulty.max_loan * _economy.inflation_prices >> 16) / LOAN_INTERVAL * LOAN_INTERVAL;
+	_economy.max_loan = ((uint64_t)_settings_game.difficulty.max_loan * _economy.inflation_prices >> 16) / LOAN_INTERVAL * LOAN_INTERVAL;
 
 	/* Setup price bases */
 	for (Price i = PR_BEGIN; i < PR_END; i++) {
@@ -899,7 +904,7 @@ void RecomputePrices()
 		}
 
 		/* Apply inflation */
-		price = (int64)price * _economy.inflation_prices;
+		price = (int64_t)price * _economy.inflation_prices;
 
 		/* Apply newgrf modifiers, remove fractional part of inflation, and normalise on medium difficulty. */
 		int shift = _price_base_multiplier[i] - 16 - 3;
@@ -925,7 +930,7 @@ void RecomputePrices()
 
 	/* Setup cargo payment */
 	for (CargoSpec *cs : CargoSpec::Iterate()) {
-		cs->current_payment = (cs->initial_payment * (int64)_economy.inflation_payment) >> 16;
+		cs->current_payment = (cs->initial_payment * (int64_t)_economy.inflation_payment) >> 16;
 	}
 
 	SetWindowClassesDirty(WC_BUILD_VEHICLE);
@@ -946,20 +951,24 @@ static void CompaniesPayInterest()
 		/* Over a year the paid interest should be "loan * interest percentage",
 		 * but... as that number is likely not dividable by 12 (pay each month),
 		 * one needs to account for that in the monthly fee calculations.
+		 *
 		 * To easily calculate what one should pay "this" month, you calculate
 		 * what (total) should have been paid up to this month and you subtract
 		 * whatever has been paid in the previous months. This will mean one month
 		 * it'll be a bit more and the other it'll be a bit less than the average
 		 * monthly fee, but on average it will be exact.
+		 *
 		 * In order to prevent cheating or abuse (just not paying interest by not
-		 * taking a loan we make companies pay interest on negative cash as well
+		 * taking a loan) we make companies pay interest on negative cash as well,
+		 * except if infinite money is enabled.
 		 */
 		Money yearly_fee = c->current_loan * _economy.interest_rate / 100;
-		if (c->money < 0) {
-			yearly_fee += -c->money *_economy.interest_rate / 100;
+		Money available_money = GetAvailableMoney(c->index);
+		if (available_money < 0) {
+			yearly_fee += -available_money * _economy.interest_rate / 100;
 		}
-		Money up_to_previous_month = yearly_fee * _cur_date_ymd.month / 12;
-		Money up_to_this_month = yearly_fee * (_cur_date_ymd.month + 1) / 12;
+		Money up_to_previous_month = yearly_fee * EconTime::CurMonth() / 12;
+		Money up_to_this_month = yearly_fee * (EconTime::CurMonth() + 1) / 12;
 
 		SubtractMoneyFromCompany(CommandCost(EXPENSES_LOAN_INTEREST, up_to_this_month - up_to_previous_month));
 
@@ -1042,7 +1051,7 @@ void StartupEconomy()
 
 	if (_settings_game.economy.inflation && _settings_game.economy.inflation_fixed_dates) {
 		/* Apply inflation that happened before our game start year. */
-		int months = (std::min(_cur_year, ORIGINAL_MAX_YEAR) - ORIGINAL_BASE_YEAR) * 12;
+		int months = (std::min(CalTime::CurYear(), CalTime::ORIGINAL_MAX_YEAR) - CalTime::ORIGINAL_BASE_YEAR).base() * 12;
 		for (int i = 0; i < months; i++) {
 			AddInflation(false);
 		}
@@ -1089,7 +1098,7 @@ Money GetPrice(Price index, uint cost_factor, const GRFFile *grf_file, int shift
 	return cost;
 }
 
-Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_periods, CargoID cargo_type)
+Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16_t transit_periods, CargoID cargo_type)
 {
 	const CargoSpec *cs = CargoSpec::Get(cargo_type);
 	if (!cs->IsValid()) {
@@ -1099,8 +1108,8 @@ Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_perio
 
 	/* Use callback to calculate cargo profit, if available */
 	if (HasBit(cs->callback_mask, CBM_CARGO_PROFIT_CALC)) {
-		uint32 var18 = ClampTo<uint16_t>(dist) | (ClampTo<uint8_t>(num_pieces) << 16) | (ClampTo<uint8_t>(transit_periods) << 24);
-		uint16 callback = GetCargoCallback(CBID_CARGO_PROFIT_CALC, 0, var18, cs);
+		uint32_t var18 = ClampTo<uint16_t>(dist) | (ClampTo<uint8_t>(num_pieces) << 16) | (ClampTo<uint8_t>(transit_periods) << 24);
+		uint16_t callback = GetCargoCallback(CBID_CARGO_PROFIT_CALC, 0, var18, cs);
 		if (callback != CALLBACK_FAILED) {
 			int result = GB(callback, 0, 14);
 
@@ -1119,7 +1128,7 @@ Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_perio
 	static const int TIME_FACTOR_FRAC_BITS = 4;
 	static const int TIME_FACTOR_FRAC = 1 << TIME_FACTOR_FRAC_BITS;
 
-	if (_settings_game.economy.payment_algorithm == CPA_TRADITIONAL) transit_periods = std::min<uint16>(transit_periods, 0xFFu);
+	if (_settings_game.economy.payment_algorithm == CPA_TRADITIONAL) transit_periods = std::min<uint16_t>(transit_periods, 0xFFu);
 
 	const int periods1 = cs->transit_periods[0];
 	const int periods2 = cs->transit_periods[1];
@@ -1191,7 +1200,7 @@ uint DeliverGoodsToIndustryNearestFirst(const Station *st, CargoID cargo_type, u
 
 		uint amount = std::min(num_pieces, 0xFFFFu - ind->incoming_cargo_waiting[cargo_index]);
 		ind->incoming_cargo_waiting[cargo_index] += amount;
-		ind->last_cargo_accepted_at[cargo_index] = _date;
+		ind->last_cargo_accepted_at[cargo_index] = EconTime::CurDate();
 		num_pieces -= amount;
 		accepted += amount;
 
@@ -1236,7 +1245,7 @@ uint DeliverGoodsToIndustryEqually(const Station *st, CargoID cargo_type, uint n
 		if (e.delivered == 0) return;
 		include(_cargo_delivery_destinations, e.ind);
 		e.ind->incoming_cargo_waiting[e.cargo_index] += e.delivered;
-		e.ind->last_cargo_accepted_at[e.cargo_index] = _date;
+		e.ind->last_cargo_accepted_at[e.cargo_index] = EconTime::CurDate();
 		AddCargoDelivery(cargo_type, company, e.delivered, SourceType::Industry, source, st, e.ind->index);
 	};
 
@@ -1355,7 +1364,7 @@ static Money DeliverGoods(int num_pieces, CargoID cargo_type, StationID dest, ui
 
 	/* Increase town's counter for town effects */
 	const CargoSpec *cs = CargoSpec::Get(cargo_type);
-	st->town->received[cs->town_effect].new_act += accepted_total;
+	st->town->received[cs->town_acceptance_effect].new_act += accepted_total;
 
 	/* Determine profit */
 	Money profit = GetTransportedGoodsIncome(accepted_total, distance, periods_in_transit, cargo_type);
@@ -1384,7 +1393,7 @@ static Money DeliverGoods(int num_pieces, CargoID cargo_type, StationID dest, ui
 static void TriggerIndustryProduction(Industry *i)
 {
 	const IndustrySpec *indspec = GetIndustrySpec(i->type);
-	uint16 callback = indspec->callback_mask;
+	uint16_t callback = indspec->callback_mask;
 
 	i->was_cargo_delivered = true;
 
@@ -1395,11 +1404,12 @@ static void TriggerIndustryProduction(Industry *i)
 			SetWindowDirty(WC_INDUSTRY_VIEW, i->index);
 		}
 	} else {
-		for (uint ci_in = 0; ci_in < lengthof(i->incoming_cargo_waiting); ci_in++) {
+		for (size_t ci_in = 0; ci_in < std::size(i->incoming_cargo_waiting); ci_in++) {
 			uint cargo_waiting = i->incoming_cargo_waiting[ci_in];
-			if (cargo_waiting == 0) continue;
+			if (cargo_waiting == 0 || i->accepts_cargo[ci_in] == INVALID_CARGO) continue;
 
-			for (uint ci_out = 0; ci_out < lengthof(i->produced_cargo_waiting); ci_out++) {
+			for (size_t ci_out = 0; ci_out < std::size(i->produced_cargo_waiting); ci_out++) {
+				if (i->produced_cargo[ci_out] == INVALID_CARGO) continue;
 				i->produced_cargo_waiting[ci_out] = ClampTo<uint16_t>(i->produced_cargo_waiting[ci_out] + (cargo_waiting * indspec->input_cargo_multiplier[ci_in][ci_out] / 256));
 			}
 
@@ -1416,8 +1426,8 @@ static void TriggerIndustryProduction(Industry *i)
  * @param front The front of the train
  */
 CargoPayment::CargoPayment(Vehicle *front) :
-	front(front),
-	current_station(front->last_station_visited)
+	current_station(front->last_station_visited),
+	front(front)
 {
 }
 
@@ -1429,7 +1439,7 @@ CargoPayment::~CargoPayment()
 
 	Station *st_last = Station::GetIfValid(this->front->last_loading_station);
 	Station *st_curr = Station::GetIfValid(this->current_station);
-	this->front->trip_history.AddValue(this->route_profit, _date, this->front->trip_occupancy, st_last != NULL && st_curr != NULL ? DistanceManhattan(st_last->xy, st_curr->xy) : 0);
+	this->front->trip_history.AddValue(this->route_profit, EconTime::CurDate(), this->front->trip_occupancy, st_last != NULL && st_curr != NULL ? DistanceManhattan(st_last->xy, st_curr->xy) : 0);
 	InvalidateWindowData(WC_VEHICLE_TRIP_HISTORY, this->front->index);
 
 	if (this->visual_profit == 0 && this->visual_transfer == 0) return;
@@ -1565,7 +1575,7 @@ void PrepareUnload(Vehicle *front_v)
 						front_v->last_station_visited, next_station.Get(v->cargo_type),
 						GetUnloadType(v), ge,
 						front_v->cargo_payment,
-						v->tile);
+						v->GetCargoTile());
 				if (v->cargo.UnloadCount() > 0) SetBit(v->vehicle_flags, VF_CARGO_UNLOADING);
 			}
 		}
@@ -1588,7 +1598,7 @@ static uint GetLoadAmount(Vehicle *v)
 	if (air_mail) load_amount = CeilDiv(load_amount, 4);
 
 	if (_settings_game.order.gradual_loading) {
-		uint16 cb_load_amount = CALLBACK_FAILED;
+		uint16_t cb_load_amount = CALLBACK_FAILED;
 		if (e->GetGRF() != nullptr && e->GetGRF()->grf_version >= 8) {
 			/* Use callback 36 */
 			cb_load_amount = GetVehicleProperty(v, PROP_VEHICLE_LOAD_AMOUNT, CALLBACK_FAILED);
@@ -1723,7 +1733,7 @@ struct ReturnCargoAction
 	 */
 	bool operator()(Vehicle *v)
 	{
-		v->cargo.Return(UINT_MAX, &this->st->goods[v->cargo_type].CreateData().cargo, this->next_hop, v->tile);
+		v->cargo.Return(UINT_MAX, &this->st->goods[v->cargo_type].CreateData().cargo, this->next_hop, v->GetCargoTile());
 		return true;
 	}
 };
@@ -1760,7 +1770,7 @@ struct FinalizeRefitAction
 	{
 		if (this->do_reserve || (cargo_type_loading == nullptr || (cargo_type_loading->current_order.GetCargoLoadTypeRaw(v->cargo_type) & OLFB_FULL_LOAD))) {
 			this->st->goods[v->cargo_type].CreateData().cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
-					&v->cargo, this->next_station.Get(v->cargo_type), v->tile);
+					&v->cargo, this->next_station.Get(v->cargo_type), v->GetCargoTile());
 		}
 		this->consist_capleft[v->cargo_type] += v->cargo_cap - v->cargo.RemainingCount();
 		return true;
@@ -1788,7 +1798,7 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 	/* Remove old capacity from consist capacity and collect refit mask. */
 	IterateVehicleParts(v_start, PrepareRefitAction(consist_capleft, refit_mask));
 
-	bool is_auto_refit = new_cid == CT_AUTO_REFIT;
+	bool is_auto_refit = new_cid == CARGO_AUTO_REFIT;
 	bool check_order = (v->First()->current_order.GetLoadType() == OLFB_CARGO_TYPE_LOAD);
 	if (is_auto_refit) {
 		/* Get a refittable cargo type with waiting cargo for next_station or INVALID_STATION. */
@@ -1865,7 +1875,7 @@ struct ReserveCargoAction {
 		}
 		if (v->cargo_cap > v->cargo.RemainingCount() && MayLoadUnderExclusiveRights(st, v)) {
 			st->goods[v->cargo_type].CreateData().cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
-					&v->cargo, next_station.Get(v->cargo_type), v->tile);
+					&v->cargo, next_station.Get(v->cargo_type), v->GetCargoTile());
 		}
 
 		return true;
@@ -1924,7 +1934,7 @@ static void ReserveConsist(Station *st, Vehicle *u, CargoArray *consist_capleft,
  */
 static void UpdateLoadUnloadTicks(Vehicle *front, const Station *st, int ticks, int platform_length_left)
 {
-	if (front->type == VEH_TRAIN) {
+	if (front->type == VEH_TRAIN && _settings_game.order.station_length_loading_penalty) {
 		/* Each platform tile is worth 2 rail vehicles. */
 		int overhang = -platform_length_left;
 		if (overhang > 0) {
@@ -1984,7 +1994,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 
 	CargoStationIDStackSet next_station = front->GetNextStoppingStation();
 
-	bool use_autorefit = front->current_order.IsRefit() && front->current_order.GetRefitCargo() == CT_AUTO_REFIT;
+	bool use_autorefit = front->current_order.IsRefit() && front->current_order.GetRefitCargo() == CARGO_AUTO_REFIT;
 	CargoArray consist_capleft{};
 	bool should_reserve_consist = false;
 	bool reserve_consist_cargo_type_loading = false;
@@ -2103,7 +2113,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 					uint new_remaining = v->cargo.RemainingCount() + v->cargo.ActionCount(VehicleCargoList::MTA_DELIVER);
 					if (v->cargo_cap < new_remaining) {
 						/* Return some of the reserved cargo to not overload the vehicle. */
-						v->cargo.Return(new_remaining - v->cargo_cap, &ged->cargo, INVALID_STATION, v->tile);
+						v->cargo.Return(new_remaining - v->cargo_cap, &ged->cargo, INVALID_STATION, v->GetCargoTile());
 					}
 
 					/* Keep instead of delivering. This may lead to no cargo being unloaded, so ...*/
@@ -2130,7 +2140,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 				}
 			}
 
-			amount_unloaded = v->cargo.Unload(amount_unloaded, &ged->cargo, payment, v->tile);
+			amount_unloaded = v->cargo.Unload(amount_unloaded, &ged->cargo, payment, v->GetCargoTile());
 			remaining = v->cargo.UnloadCount() > 0;
 			if (amount_unloaded > 0) {
 				dirty_vehicle = true;
@@ -2189,7 +2199,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 
 		/* if last speed is 0, we treat that as if no vehicle has ever visited the station. */
 		ge->last_speed = ClampTo<uint8_t>(t);
-		ge->last_age = ClampTo<uint8_t>(_cur_year - front->build_year);
+		ge->last_age = ClampTo<uint8_t>(DateDeltaToYearDelta(front->age));
 
 		assert(v->cargo_cap >= v->cargo.StoredCount());
 		/* Capacity available for loading more cargo. */
@@ -2198,6 +2208,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 		if (cap_left > 0) {
 			/* If vehicle can load cargo, reset time_since_pickup. */
 			ge->time_since_pickup = 0;
+			ge->last_vehicle_type = v->type;
 
 			/* If there's goods waiting at the station, and the vehicle
 			 * has capacity for it, load it on the vehicle. */
@@ -2205,7 +2216,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 				if (v->cargo.StoredCount() == 0) TriggerVehicle(v, VEHICLE_TRIGGER_NEW_CARGO);
 				if (_settings_game.order.gradual_loading) cap_left = std::min(cap_left, GetLoadAmount(v));
 
-				uint loaded = ged->cargo.Load(cap_left, &v->cargo, next_station.Get(v->cargo_type), v->tile);
+				uint loaded = ged->cargo.Load(cap_left, &v->cargo, next_station.Get(v->cargo_type), v->GetCargoTile());
 				if (v->cargo.ActionCount(VehicleCargoList::MTA_LOAD) > 0) {
 					/* Remember if there are reservations left so that we don't stop
 					 * loading before they're loaded. */
@@ -2231,7 +2242,6 @@ static void LoadUnloadVehicle(Vehicle *front)
 					anything_loaded = true;
 
 					st->time_since_load = 0;
-					ge->last_vehicle_type = v->type;
 
 					if (ged->cargo.TotalCount() == 0) {
 						TriggerStationRandomisation(st, st->xy, SRT_CARGO_TAKEN, v->cargo_type);
@@ -2312,7 +2322,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 		/* We loaded less cargo than possible for all cargo types and it's not full
 		 * load and we're not supposed to wait any longer: stop loading. */
 		if (!anything_unloaded && full_load_amount == 0 && reservation_left == 0 && full_load_cargo_mask == 0 &&
-				(front->current_order_time >= (uint)std::max<int>(front->current_order.GetTimetabledWait() - front->lateness_counter, 0) ||
+				(front->current_order_time >= (uint)std::max<int>((int)front->current_order.GetTimetabledWait() - (int)front->lateness_counter, 0) ||
 				may_leave_early())) {
 			SetBit(front->vehicle_flags, VF_STOP_LOADING);
 			if (may_leave_early()) {
@@ -2375,7 +2385,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 	 * if _settings_client.gui.loading_indicators == 1, _local_company must be the owner or must be a spectator to show ind., so 1 > 0
 	 * if _settings_client.gui.loading_indicators == 0, do not display indicators ... 0 is never greater than anything
 	 */
-	if (_game_mode != GM_MENU && (_settings_client.gui.loading_indicators > (uint)(front->owner != _local_company && _local_company != COMPANY_SPECTATOR))
+	if (_game_mode != GM_MENU && !IsHeadless() && (_settings_client.gui.loading_indicators > (uint)(front->owner != _local_company && _local_company != COMPANY_SPECTATOR))
 			&& !front->current_order.IsType(OT_LOADING_ADVANCE)) {
 		StringID percent_up_down = STR_NULL;
 		int percent = CalcPercentVehicleFilled(front, &percent_up_down);
@@ -2400,8 +2410,8 @@ static void LoadUnloadVehicle(Vehicle *front)
 	}
 	if (dirty_station) {
 		st->MarkTilesDirty(true);
-		SetWindowDirty(WC_STATION_VIEW, last_visited);
-		InvalidateWindowData(WC_STATION_LIST, last_visited);
+		SetWindowDirty(WC_STATION_VIEW, st->index);
+		SetWindowDirty(WC_STATION_LIST, st->owner);
 	}
 }
 
@@ -2449,14 +2459,21 @@ void LoadUnloadStation(Station *st)
 /**
  * Monthly update of the economic data (of the companies as well as economic fluctuations).
  */
-void CompaniesMonthlyLoop()
+void CompaniesCalendarMonthlyLoop()
 {
-	CompaniesPayInterest();
-	CompaniesGenStatistics();
 	if (_settings_game.economy.inflation) {
 		AddInflation();
 		RecomputePrices();
 	}
+}
+
+/**
+ * Monthly update of the economic data (of the companies as well as economic fluctuations).
+ */
+void CompaniesEconomyMonthlyLoop()
+{
+	CompaniesPayInterest();
+	CompaniesGenStatistics();
 	HandleEconomyFluctuations();
 }
 
@@ -2464,7 +2481,7 @@ static void DoAcquireCompany(Company *c, bool hostile_takeover)
 {
 	CompanyID ci = c->index;
 
-	DEBUG(desync, 1, "buy_company: date{%08x; %02x; %02x}, buyer: %u, bought: %u", _date, _date_fract, _tick_skip_counter, (uint) _current_company, (uint) ci);
+	DEBUG(desync, 1, "buy_company: %s, buyer: %u, bought: %u", debug_date_dumper().HexDate(), (uint) _current_company, (uint) ci);
 
 	CompanyNewsInformation *cni = new CompanyNewsInformation(c, Company::Get(_current_company));
 
@@ -2505,7 +2522,7 @@ static void DoAcquireCompany(Company *c, bool hostile_takeover)
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	CommandCost cost(EXPENSES_OTHER);
 	CompanyID target_company = (CompanyID)p1;
@@ -2516,7 +2533,7 @@ CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1,
 	if (c == nullptr || !_settings_game.economy.allow_shares || _current_company == target_company) return CMD_ERROR;
 
 	/* Protect new companies from hostile takeovers */
-	if (_cur_year - c->inaugurated_year < _settings_game.economy.min_years_for_shares) return_cmd_error(STR_ERROR_PROTECTED);
+	if (c->age_years < _settings_game.economy.min_years_for_shares) return_cmd_error(STR_ERROR_PROTECTED);
 
 	/* Those lines are here for network-protection (clients can be slow) */
 	if (GetAmountOwnedBy(c, COMPANY_SPECTATOR) == 0) return cost;
@@ -2536,8 +2553,7 @@ CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1,
 
 		auto current_company_owns_share = [](auto share_owner) { return share_owner == _current_company; };
 		if (std::all_of(c->share_owners.begin(), c->share_owners.end(), current_company_owns_share)) {
-			c->bankrupt_value = 0;
-			DoAcquireCompany(c, false);
+			DoAcquireCompany(c, true);
 		}
 		InvalidateWindowData(WC_COMPANY, target_company);
 		CompanyAdminUpdate(c);
@@ -2554,7 +2570,7 @@ CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1,
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdSellShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdSellShareInCompany(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	CompanyID target_company = (CompanyID)p1;
 	Company *c = Company::GetIfValid(target_company);
@@ -2596,7 +2612,7 @@ CommandCost CmdSellShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	CompanyID target_company = (CompanyID)p1;
 	Company *c = Company::GetIfValid(target_company);
@@ -2646,7 +2662,7 @@ CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdDeclineBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdDeclineBuyCompany(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text)
 {
 	CompanyID target_company = (CompanyID)p1;
 	Company *c = Company::GetIfValid(target_company);
@@ -2673,8 +2689,8 @@ uint ScaleQuantity(uint amount, int cf, int fine, bool allow_trunc)
 {
 	if (fine != 0) {
 		// 2^0.1 << 16 to 2^0.9 << 16
-		const uint32 adj[9] = {70239, 75281, 80684, 86475, 92681, 99334, 106463, 114104, 122294};
-		uint64 scaled_amount = ((uint64) amount) * ((uint64) adj[fine - 1]);
+		const uint32_t adj[9] = {70239, 75281, 80684, 86475, 92681, 99334, 106463, 114104, 122294};
+		uint64_t scaled_amount = ((uint64_t) amount) * ((uint64_t) adj[fine - 1]);
 		amount = scaled_amount >> 16;
 	}
 
@@ -2693,4 +2709,51 @@ uint ScaleQuantity(uint amount, int cf, int fine, bool allow_trunc)
 	}
 
 	return amount;
+}
+
+int PercentageToScaleQuantityFactor(uint percentage)
+{
+	const uint32_t adj[11] = {65536, 70239, 75281, 80684, 86475, 92681, 99334, 106463, 114104, 122294, 65536 * 2};
+
+	const uint64_t base = (((uint64_t)1) << 32);
+	uint64_t scale = CeilDivT<uint64_t>(base, 100) * percentage;
+	const uint8_t first_bit = FindLastBit(scale);
+	if (first_bit >= 16) {
+		scale >>= (first_bit - 16);
+	} else {
+		scale <<= (16 - first_bit);
+	}
+
+	uint32_t best_distance = INT32_MAX;
+	int best = 0;
+	for (int i = 0; i < 11; i++) {
+		uint32_t distance = Delta((uint32_t)scale, adj[i]);
+		if (distance < best_distance) {
+			best = i;
+			best_distance = distance;
+		}
+	}
+
+	return ((((int)first_bit) - 32) * 10) + best;
+}
+
+uint CargoScaler::ScaleAllowTrunc(uint num)
+{
+	return this->ScaleWithBias(num, Random() & 0xFFFF);
+}
+
+void UpdateCargoScalers()
+{
+	uint town_scale = _settings_game.economy.town_cargo_scale;
+	if (_settings_game.economy.town_cargo_scale_mode == CSM_DAYLENGTH) {
+		town_scale = Clamp<uint>(town_scale * DayLengthFactor(), 1, 5000);
+	}
+	_town_cargo_scaler.SetScale((town_scale << 16) / 100);
+
+	uint industry_scale = _settings_game.economy.industry_cargo_scale;
+	if (_settings_game.economy.industry_cargo_scale_mode == CSM_DAYLENGTH) {
+		industry_scale = Clamp<uint>(industry_scale * DayLengthFactor(), 5, 3000);
+	}
+	_industry_cargo_scaler.SetScale((industry_scale << 16) / 100);
+	_industry_inverse_cargo_scaler.SetScale((100 << 16) / std::max<uint>(1, industry_scale));
 }

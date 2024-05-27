@@ -117,6 +117,15 @@ protected:
 	 */
 	virtual char *LogRegisters(char *buffer, const char *last) const;
 
+	/**
+	 * Writes a final section in the crash log, if there is anything
+	 * to add at the end.
+	 * @param buffer The begin where to write at.
+	 * @param last   The last position in the buffer to write to.
+	 * @return the position of the \c '\0' character after the buffer.
+	 */
+	virtual char *LogCrashTrailer(char *buffer, const char *last) const;
+
 #ifdef USE_SCOPE_INFO
 	/**
 	 * Writes the scope info log to the buffer.
@@ -131,9 +140,11 @@ protected:
 	char *LogOpenTTDVersion(char *buffer, const char *last) const;
 	char *LogConfiguration(char *buffer, const char *last) const;
 	char *LogLibraries(char *buffer, const char *last) const;
+	char *LogPlugins(char *buffer, const char *last) const;
 	char *LogGamelog(char *buffer, const char *last) const;
 	char *LogRecentNews(char *buffer, const char *list) const;
 	char *LogCommandLog(char *buffer, const char *last) const;
+	char *LogSettings(char *buffer, const char *last) const;
 
 	virtual void StartCrashLogFaultHandler();
 	virtual void StopCrashLogFaultHandler();
@@ -188,7 +199,6 @@ public:
 	void MakeDesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info) const;
 	static bool WriteDesyncSavegame(const char *log_data, const char *name_buffer);
 	void MakeInconsistencyLog(const InconsistencyExtraInfo &info) const;
-	void MakeVersionInfoLog() const;
 	void MakeCrashSavegameAndScreenshot();
 
 	void SendSurvey() const;
@@ -208,7 +218,7 @@ public:
 
 	static void DesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info);
 	static void InconsistencyLog(const InconsistencyExtraInfo &info);
-	static void VersionInfoLog();
+	static void VersionInfoLog(char *buffer, const char *last);
 
 	static void RegisterCrashed() { CrashLog::have_crashed = true; }
 	static bool HaveAlreadyCrashed() { return CrashLog::have_crashed; }

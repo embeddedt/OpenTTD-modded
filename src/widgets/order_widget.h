@@ -13,7 +13,7 @@
 #include "../cargo_type.h"
 
 /** Widgets of the #OrdersWindow class. */
-enum OrderWidgets {
+enum OrderWidgets : WidgetID {
 	WID_O_CAPTION,                   ///< Caption of the window.
 	WID_O_TIMETABLE_VIEW,            ///< Toggle timetable view.
 	WID_O_ORDER_LIST,                ///< Order list panel.
@@ -24,12 +24,12 @@ enum OrderWidgets {
 	WID_O_DELETE,                    ///< Delete selected order.
 	WID_O_STOP_SHARING,              ///< Stop sharing orders.
 	WID_O_NON_STOP,                  ///< Goto non-stop to destination.
+	WID_O_DEPOT_UNBUNCHING,          ///< Toggle unbunching.
 	WID_O_GOTO,                      ///< Goto destination.
 	WID_O_FULL_LOAD,                 ///< Select full load.
 	WID_O_UNLOAD,                    ///< Select unload.
 	WID_O_REFIT,                     ///< Select refit.
-	WID_O_SERVICE,                   ///< Select service (at depot).
-	WID_O_EMPTY,                     ///< Placeholder for refit dropdown when not owner.
+	WID_O_DEPOT_ACTION,              ///< Dropdown to select the depot action (stop, service if needed, unbunch).
 	WID_O_REFIT_DROPDOWN,            ///< Open refit options.
 	WID_O_REVERSE,                   ///< Select waypoint reverse type
 	WID_O_COND_VARIABLE,             ///< Choose condition variable.
@@ -45,7 +45,7 @@ enum OrderWidgets {
 	WID_O_COND_AUX_VIA,              ///< Condition via button.
 	WID_O_COND_SCHED_TEST,           ///< Choose scheduled dispatch test.
 	WID_O_COND_AUX_STATION,          ///< Condition station button.
-	WID_O_RELEASE_SLOT,              ///< Choose slot to release.
+	WID_O_SLOT,                      ///< Choose slot to try acquire/release.
 	WID_O_COUNTER_OP,                ///< Choose counter operation.
 	WID_O_CHANGE_COUNTER,            ///< Choose counter to change.
 	WID_O_COUNTER_VALUE,             ///< Choose counter value.

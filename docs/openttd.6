@@ -13,10 +13,9 @@
 .Op Fl c Ar config_file
 .Op Fl d Op Ar level | Ar cat Ns = Ns Ar lvl Ns Op , Ns Ar ...
 .Op Fl D Oo Ar host Oc Ns Op : Ns Ar port
-.Op Fl g Op Ar savegame
+.Op Fl g Op Ar file
 .Op Fl G Ar seed
 .Op Fl I Ar graphicsset
-.Op Fl l Ar host Ns Op : Ns Ar port
 .Op Fl m Ar driver
 .Op Fl M Ar musicset
 .Op Fl n Ar host Ns Oo : Ns Ar port Oc Ns Op # Ns Ar company
@@ -63,11 +62,11 @@ Start in world editor mode.
 .It Fl f
 Fork into background (dedicated server only, see
 .Fl D ) .
-.It Fl g Op Ar savegame
+.It Fl g Op Ar file
 Load
-.Ar savegame
-at start or start a new game if omitted.
-.Ar savegame
+.Ar file
+(can be either a savegame, scenario, or heightmap) at start or start a new game if omitted.
+.Ar file
 must be either an absolute path or one relative to the current path or one of
 the search paths.
 .It Fl G Ar seed
@@ -82,9 +81,6 @@ Select the graphics set
 see
 .Fl h
 for a full list.
-.It Fl l Ar host Ns Op : Ns Ar port
-Redirect debug output; see
-.Fl d .
 .It Fl m Ar driver
 Select the music driver
 .Ar driver ;

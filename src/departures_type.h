@@ -18,25 +18,25 @@
 #include <vector>
 
 /** Whether or not a vehicle has arrived for a departure. */
-typedef enum {
+enum DepartureStatus : uint8_t {
 	D_TRAVELLING = 0,
 	D_ARRIVED = 1,
 	D_CANCELLED = 2,
-} DepartureStatus;
+};
 
 /** The type of departures. */
-typedef enum {
+enum DepartureType : uint8_t {
 	D_DEPARTURE = 0,
 	D_ARRIVAL = 1,
-} DepartureType;
+};
 
 struct CallAt {
 	StationID station;
-	DateTicks scheduled_date;
+	StateTicks scheduled_tick;
 
-	CallAt(const StationID& s) : station(s), scheduled_date(0) { }
-	CallAt(const StationID& s, const DateTicks& t) : station(s), scheduled_date(t) { }
-	CallAt(const CallAt& c) : station(c.station), scheduled_date(c.scheduled_date) { }
+	CallAt(const StationID& s) : station(s), scheduled_tick(0) { }
+	CallAt(const StationID& s, StateTicks t) : station(s), scheduled_tick(t) { }
+	CallAt(const CallAt& c) : station(c.station), scheduled_tick(c.scheduled_tick) { }
 
 	inline bool operator==(const CallAt& c) const {
 		return this->station == c.station;
@@ -48,14 +48,14 @@ struct CallAt {
 
 	inline bool operator>=(const CallAt& c) const {
 		return this->station == c.station &&
-				this->scheduled_date != 0 &&
-				c.scheduled_date != 0 &&
-				this->scheduled_date >= c.scheduled_date;
+				this->scheduled_tick != 0 &&
+				c.scheduled_tick != 0 &&
+				this->scheduled_tick >= c.scheduled_tick;
 	}
 
 	CallAt& operator=(const CallAt& c) {
 		this->station = c.station;
-		this->scheduled_date = c.scheduled_date;
+		this->scheduled_tick = c.scheduled_tick;
 		return *this;
 	}
 
@@ -71,19 +71,19 @@ struct RemoveVia {
 
 /** A scheduled departure. */
 struct Departure {
-	DateTicksScaled scheduled_date;        ///< The date this departure is scheduled to finish on (i.e. when the vehicle leaves the station)
+	StateTicks scheduled_tick;             ///< The tick this departure is scheduled to finish on (i.e. when the vehicle leaves the station)
 	Ticks lateness;                        ///< How delayed the departure is expected to be
-	CallAt terminus;                       ///< The station at which the vehicle will terminate following this departure
 	StationID via;                         ///< The station the departure should list as going via
 	StationID via2;                        ///< Secondary station the departure should list as going via
+	CallAt terminus;                       ///< The station at which the vehicle will terminate following this departure
 	std::vector<CallAt> calling_at;        ///< The stations both called at and unloaded at by the vehicle after this departure before it terminates
 	std::vector<RemoveVia> remove_vias;    ///< Vias to remove when using smart terminus.
 	DepartureStatus status;                ///< Whether the vehicle has arrived yet for this departure
 	DepartureType type;                    ///< The type of the departure (departure or arrival)
 	const Vehicle *vehicle;                ///< The vehicle performing this departure
 	const Order *order;                    ///< The order corresponding to this departure
-	uint scheduled_waiting_time;           ///< Scheduled waiting time if scheduled dispatch is used
-	Departure() : terminus(INVALID_STATION), via(INVALID_STATION), via2(INVALID_STATION), vehicle(nullptr), order(nullptr) { }
+	Ticks scheduled_waiting_time;          ///< Scheduled waiting time if scheduled dispatch is used
+	Departure() : via(INVALID_STATION), via2(INVALID_STATION), terminus(INVALID_STATION), vehicle(nullptr), order(nullptr) { }
 
 	inline bool operator==(const Departure& d) const {
 		if (this->calling_at.size() != d.calling_at.size()) return false;
@@ -92,13 +92,24 @@ struct Departure {
 			if (this->calling_at[i] != d.calling_at[i]) return false;
 		}
 
+		const Ticks timetable_unit_size = TimetableDisplayUnitSize();
+
 		return
-			(this->scheduled_date / DATE_UNIT_SIZE) == (d.scheduled_date / DATE_UNIT_SIZE) &&
+			(this->scheduled_tick.base() / timetable_unit_size) == (d.scheduled_tick.base() / timetable_unit_size) &&
 			this->vehicle->type == d.vehicle->type &&
 			this->via == d.via &&
 			this->via2 == d.via2 &&
 			this->type == d.type
 			;
+	}
+
+	inline Ticks EffectiveWaitingTime() const
+	{
+		if (this->scheduled_waiting_time > 0) {
+			return this->scheduled_waiting_time;
+		} else {
+			return this->order->GetWaitTime();
+		}
 	}
 };
 

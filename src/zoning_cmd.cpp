@@ -26,15 +26,14 @@
 #include "zoning.h"
 #include "viewport_func.h"
 #include "road_map.h"
-#include "debug_settings.h"
 #include "animated_tile.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 
 Zoning _zoning;
 static const SpriteID ZONING_INVALID_SPRITE_ID = UINT_MAX;
 
-static btree::btree_set<uint32> _zoning_cache_inner;
-static btree::btree_set<uint32> _zoning_cache_outer;
+static btree::btree_set<uint32_t> _zoning_cache_inner;
+static btree::btree_set<uint32_t> _zoning_cache_outer;
 
 /**
  * Draw the zoning sprites.
@@ -194,14 +193,21 @@ SpriteID TileZoneCheckUnservedBuildingsEvaluation(TileIndex tile, Owner owner)
 		return ZONING_INVALID_SPRITE_ID;
 	}
 
+	auto has_town_cargo = [&](const CargoArray &dat) {
+		for (CargoID cid : SetCargoBitIterator(CargoSpec::town_production_cargo_mask[TPE_PASSENGERS] | CargoSpec::town_production_cargo_mask[TPE_MAIL])) {
+			if (dat[cid] > 0) return true;
+		}
+		return false;
+	};
+
 	CargoArray dat{};
 	dat.Clear();
 	AddAcceptedCargo(tile, dat, nullptr);
-	if (dat[CT_MAIL] + dat[CT_PASSENGERS] == 0) {
-		// nothing is accepted, so now test if cargo is produced
+	if (!has_town_cargo(dat)) {
+		/* nothing is accepted, so now test if cargo is produced */
 		AddProducedCargo(tile, dat);
-		if (dat[CT_MAIL] + dat[CT_PASSENGERS] == 0) {
-			// total is still 0, so give up
+		if (!has_town_cargo(dat)) {
+			/* still don't have town cargo, so give up */
 			return ZONING_INVALID_SPRITE_ID;
 		}
 	}
@@ -236,13 +242,13 @@ SpriteID TileZoneCheckUnservedIndustriesEvaluation(TileIndex tile, Owner owner)
 				if (st->facilities & (~(FACIL_BUS_STOP | FACIL_TRUCK_STOP)) || st->facilities == (FACIL_BUS_STOP | FACIL_TRUCK_STOP)) {
 					return ZONING_INVALID_SPRITE_ID;
 				} else if (st->facilities & (FACIL_BUS_STOP | FACIL_TRUCK_STOP)) {
-					for (uint i = 0; i < lengthof(ind->produced_cargo); i++) {
-						if (ind->produced_cargo[i] != CT_INVALID && st->facilities & (IsCargoInClass(ind->produced_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
+					for (uint i = 0; i < std::size(ind->produced_cargo); i++) {
+						if (ind->produced_cargo[i] != INVALID_CARGO && st->facilities & (IsCargoInClass(ind->produced_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
 							return ZONING_INVALID_SPRITE_ID;
 						}
 					}
-					for (uint i = 0; i < lengthof(ind->accepts_cargo); i++) {
-						if (ind->accepts_cargo[i] != CT_INVALID && st->facilities & (IsCargoInClass(ind->accepts_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
+					for (uint i = 0; i < std::size(ind->accepts_cargo); i++) {
+						if (ind->accepts_cargo[i] != INVALID_CARGO && st->facilities & (IsCargoInClass(ind->accepts_cargo[i], CC_PASSENGERS) ? FACIL_BUS_STOP : FACIL_TRUCK_STOP)) {
 							return ZONING_INVALID_SPRITE_ID;
 						}
 					}
@@ -270,22 +276,6 @@ SpriteID TileZoneCheckTraceRestrictEvaluation(TileIndex tile, Owner owner)
 	}
 	if (IsTunnelBridgeWithSignalSimulation(tile) && IsTunnelBridgeRestrictedSignal(tile)) {
 		return SPR_ZONING_INNER_HIGHLIGHT_RED;
-	}
-	if (unlikely(HasBit(_misc_debug_flags, MDF_ZONING_RS_WATER_FLOOD_STATE)) && IsNonFloodingWaterTile(tile)) {
-		return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
-	}
-	if (unlikely(HasBit(_misc_debug_flags, MDF_ZONING_RS_TROPIC_ZONE))) {
-		switch (GetTropicZone(tile)) {
-			case TROPICZONE_DESERT:
-				return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
-			case TROPICZONE_RAINFOREST:
-				return SPR_ZONING_INNER_HIGHLIGHT_LIGHT_BLUE;
-			default:
-				break;
-		}
-	}
-	if (unlikely(HasBit(_misc_debug_flags, MDF_ZONING_RS_ANIMATED_TILE)) && _animated_tiles.find(tile) != _animated_tiles.end()) {
-		return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
 	}
 
 	return ZONING_INVALID_SPRITE_ID;
@@ -342,6 +332,45 @@ inline SpriteID TileZoneCheckOneWayRoadEvaluation(TileIndex tile)
 	}
 }
 
+inline SpriteID TileZoneDebugWaterFlood(TileIndex tile)
+{
+	if (IsNonFloodingWaterTile(tile)) {
+		return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
+	}
+	return ZONING_INVALID_SPRITE_ID;
+}
+
+inline SpriteID TileZoneDebugWaterRegion(TileIndex tile)
+{
+	extern uint GetWaterRegionTileDebugColourIndex(TileIndex tile);
+	uint colour_index = GetWaterRegionTileDebugColourIndex(tile);
+	if (colour_index == 0) {
+		return ZONING_INVALID_SPRITE_ID;
+	} else {
+		return std::min<SpriteID>(SPR_ZONING_INNER_HIGHLIGHT_RED + colour_index - 1, SPR_ZONING_INNER_HIGHLIGHT_YELLOW);
+	}
+}
+
+inline SpriteID TileZoneDebugTropicZone(TileIndex tile)
+{
+	switch (GetTropicZone(tile)) {
+		case TROPICZONE_DESERT:
+			return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
+		case TROPICZONE_RAINFOREST:
+			return SPR_ZONING_INNER_HIGHLIGHT_LIGHT_BLUE;
+		default:
+			return ZONING_INVALID_SPRITE_ID;
+	}
+}
+
+inline SpriteID TileZoneDebugAnimatedTile(TileIndex tile)
+{
+	if (_animated_tiles.find(tile) != _animated_tiles.end()) {
+		return SPR_ZONING_INNER_HIGHLIGHT_YELLOW;
+	}
+	return ZONING_INVALID_SPRITE_ID;
+}
+
 /**
  * General evaluation function; calls all the other functions depending on
  * evaluation mode.
@@ -367,17 +396,24 @@ SpriteID TileZoningSpriteEvaluation(TileIndex tile, Owner owner, ZoningEvaluatio
 		case ZEM_2x2_GRID:      return TileZoneCheckRoadGridEvaluation(tile, 3);
 		case ZEM_3x3_GRID:      return TileZoneCheckRoadGridEvaluation(tile, 4);
 		case ZEM_ONE_WAY_ROAD:  return TileZoneCheckOneWayRoadEvaluation(tile);
-		default:                return ZONING_INVALID_SPRITE_ID;
+
+		case ZEM_DBG_WATER_FLOOD:   return TileZoneDebugWaterFlood(tile);
+		case ZEM_DBG_WATER_REGION:  return TileZoneDebugWaterRegion(tile);
+		case ZEM_DBG_TROPIC_ZONE:   return TileZoneDebugTropicZone(tile);
+		case ZEM_DBG_ANIMATED_TILE: return TileZoneDebugAnimatedTile(tile);
+
+		default: return ZONING_INVALID_SPRITE_ID;
 	}
 }
 
 inline SpriteID TileZoningSpriteEvaluationCached(TileIndex tile, Owner owner, ZoningEvaluationMode ev_mode, bool is_inner)
 {
+	if (owner == COMPANY_SPECTATOR && (ev_mode == ZEM_CAN_BUILD || (ev_mode >= ZEM_STA_CATCH && ev_mode <= ZEM_IND_UNSER))) return ZONING_INVALID_SPRITE_ID;
 	if (ev_mode == ZEM_BUL_UNSER && !IsTileType(tile, MP_HOUSE)) return ZONING_INVALID_SPRITE_ID;
 	if (ev_mode == ZEM_IND_UNSER && !IsTileType(tile, MP_INDUSTRY)) return ZONING_INVALID_SPRITE_ID;
 	if (ev_mode >= ZEM_STA_CATCH && ev_mode <= ZEM_IND_UNSER) {
 		// cacheable
-		btree::btree_set<uint32> &cache = is_inner ? _zoning_cache_inner : _zoning_cache_outer;
+		btree::btree_set<uint32_t> &cache = is_inner ? _zoning_cache_inner : _zoning_cache_outer;
 		auto iter = cache.lower_bound(tile << 3);
 		if (iter != cache.end() && *iter >> 3 == tile) {
 			switch (*iter & 7) {
@@ -488,7 +524,7 @@ void ZoningMarkDirtyStationCoverageArea(const Station *st, ZoningModeMask mask)
 				MarkTileDirtyByTile(TileXY(x, y), VMDF_NOT_MAP_MODE);
 			}
 		}
-		auto invalidate_cache_rect = [&](btree::btree_set<uint32> &cache) {
+		auto invalidate_cache_rect = [&](btree::btree_set<uint32_t> &cache) {
 			for (int y = rect.top; y <= rect.bottom; y++) {
 				auto iter = cache.lower_bound(TileXY(rect.left, y) << 3);
 				auto end_iter = iter;
@@ -529,7 +565,7 @@ void ClearZoningCaches()
 void SetZoningMode(bool inner, ZoningEvaluationMode mode)
 {
 	ZoningEvaluationMode &current_mode = inner ? _zoning.inner : _zoning.outer;
-	btree::btree_set<uint32> &cache = inner ? _zoning_cache_inner : _zoning_cache_outer;
+	btree::btree_set<uint32_t> &cache = inner ? _zoning_cache_inner : _zoning_cache_outer;
 
 	if (current_mode == mode) return;
 

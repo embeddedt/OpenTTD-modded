@@ -19,21 +19,22 @@
 #include "settings_type.h"
 #include "vehicle_type.h"
 
-extern uint8 _extra_aspects;
-extern uint64 _aspect_cfg_hash;
+extern uint8_t _extra_aspects;
+extern uint64_t _aspect_cfg_hash;
 
-static inline uint8 GetMaximumSignalAspect()
+inline uint8_t GetMaximumSignalAspect()
 {
 	return _extra_aspects + 1;
 }
 
 struct SignalStyleMasks {
-	uint16 non_aspect_inc = 0;
-	uint16 next_only = 0;
-	uint16 always_reserve_through = 0;
-	uint16 no_tunnel_bridge = 0;
-	uint16 signal_opposite_side = 0;
-	uint16 combined_normal_shunt = 0;
+	uint16_t non_aspect_inc = 0;
+	uint16_t next_only = 0;
+	uint16_t always_reserve_through = 0;
+	uint16_t no_tunnel_bridge = 0;
+	uint16_t signal_opposite_side = 0;
+	uint16_t signal_both_sides = 0;
+	uint16_t combined_normal_shunt = 0;
 };
 extern SignalStyleMasks _signal_style_masks;
 
@@ -43,9 +44,9 @@ extern bool _signal_sprite_oversized;
  * Maps a trackdir to the bit that stores its status in the map arrays, in the
  * direction along with the trackdir.
  */
-static inline byte SignalAlongTrackdir(Trackdir trackdir)
+inline uint8_t SignalAlongTrackdir(Trackdir trackdir)
 {
-	extern const byte _signal_along_trackdir[TRACKDIR_END];
+	extern const uint8_t _signal_along_trackdir[TRACKDIR_END];
 	return _signal_along_trackdir[trackdir];
 }
 
@@ -53,9 +54,9 @@ static inline byte SignalAlongTrackdir(Trackdir trackdir)
  * Maps a trackdir to the bit that stores its status in the map arrays, in the
  * direction against the trackdir.
  */
-static inline byte SignalAgainstTrackdir(Trackdir trackdir)
+inline uint8_t SignalAgainstTrackdir(Trackdir trackdir)
 {
-	extern const byte _signal_against_trackdir[TRACKDIR_END];
+	extern const uint8_t _signal_against_trackdir[TRACKDIR_END];
 	return _signal_against_trackdir[trackdir];
 }
 
@@ -63,91 +64,73 @@ static inline byte SignalAgainstTrackdir(Trackdir trackdir)
  * Maps a Track to the bits that store the status of the two signals that can
  * be present on the given track.
  */
-static inline byte SignalOnTrack(Track track)
+inline uint8_t SignalOnTrack(Track track)
 {
-	extern const byte _signal_on_track[TRACK_END];
+	extern const uint8_t _signal_on_track[TRACK_END];
 	return _signal_on_track[track];
 }
 
 /// Is a given signal type a presignal entry signal?
-static inline bool IsEntrySignal(SignalType type)
+inline bool IsEntrySignal(SignalType type)
 {
 	return type == SIGTYPE_ENTRY || type == SIGTYPE_COMBO || type == SIGTYPE_PROG;
 }
 
 /// Is a given signal type a presignal exit signal?
-static inline bool IsExitSignal(SignalType type)
+inline bool IsExitSignal(SignalType type)
 {
 	return type == SIGTYPE_EXIT || type == SIGTYPE_COMBO || type == SIGTYPE_PROG;
 }
 
 /// Is a given signal type a presignal combo signal?
-static inline bool IsComboSignal(SignalType type)
+inline bool IsComboSignal(SignalType type)
 {
 	return type == SIGTYPE_COMBO || type == SIGTYPE_PROG;
 }
 
 /// Is a given signal type a PBS signal?
-static inline bool IsPbsSignal(SignalType type)
+inline bool IsPbsSignal(SignalType type)
 {
 	return _settings_game.vehicle.train_braking_model == TBM_REALISTIC || type == SIGTYPE_PBS || type == SIGTYPE_PBS_ONEWAY || type == SIGTYPE_NO_ENTRY;
 }
 
 /// Is a given signal type a PBS signal?
-static inline bool IsPbsSignalNonExtended(SignalType type)
+inline bool IsPbsSignalNonExtended(SignalType type)
 {
 	return type == SIGTYPE_PBS || type == SIGTYPE_PBS_ONEWAY;
 }
 
 /// Is this a programmable pre-signal?
-static inline bool IsProgrammableSignal(SignalType type)
+inline bool IsProgrammableSignal(SignalType type)
 {
 	return type == SIGTYPE_PROG;
 }
 
 /// Is this a programmable pre-signal?
-static inline bool IsNoEntrySignal(SignalType type)
+inline bool IsNoEntrySignal(SignalType type)
 {
 	return type == SIGTYPE_NO_ENTRY;
 }
 
 /** One-way signals can't be passed the 'wrong' way. */
-static inline bool IsOnewaySignal(SignalType type)
+inline bool IsOnewaySignal(SignalType type)
 {
 	return type != SIGTYPE_PBS && type != SIGTYPE_NO_ENTRY;
 }
 
 /// Is this signal type unsuitable for realistic braking?
-static inline bool IsSignalTypeUnsuitableForRealisticBraking(SignalType type)
+inline bool IsSignalTypeUnsuitableForRealisticBraking(SignalType type)
 {
 	return type == SIGTYPE_ENTRY || type == SIGTYPE_EXIT || type == SIGTYPE_COMBO || type == SIGTYPE_PROG;
 }
 
 /// Does a given signal have a PBS sprite?
-static inline bool IsSignalSpritePBS(SignalType type)
+inline bool IsSignalSpritePBS(SignalType type)
 {
 	return type >= SIGTYPE_FIRST_PBS_SPRITE;
 }
 
-static inline SignalType NextSignalType(SignalType cur, uint which_signals)
-{
-	bool pbs   = true;
-	bool block = (which_signals == SIGNAL_CYCLE_ALL);
-
-	switch(cur) {
-		case SIGTYPE_NORMAL:     return block ? SIGTYPE_ENTRY      : SIGTYPE_PBS;
-		case SIGTYPE_ENTRY:      return block ? SIGTYPE_EXIT       : SIGTYPE_PBS;
-		case SIGTYPE_EXIT:       return block ? SIGTYPE_COMBO      : SIGTYPE_PBS;
-		case SIGTYPE_COMBO:      return pbs   ? SIGTYPE_PBS        : SIGTYPE_NORMAL;
-		case SIGTYPE_PROG:       return pbs   ? SIGTYPE_PBS        : SIGTYPE_NORMAL;
-		case SIGTYPE_PBS:        return pbs   ? SIGTYPE_PBS_ONEWAY : SIGTYPE_NORMAL;
-		case SIGTYPE_PBS_ONEWAY: return block ? SIGTYPE_NORMAL     : SIGTYPE_PBS;
-		case SIGTYPE_NO_ENTRY:   return pbs   ? SIGTYPE_PBS        : SIGTYPE_NORMAL;
-		default:
-			DEBUG(map, 0, "Attempt to cycle from signal type %d", cur);
-			return SIGTYPE_NORMAL; // Fortunately mostly harmless
-	}
-}
+SignalType NextSignalType(SignalType cur, SignalCycleGroups which_signals);
 
 /** State of the signal segment */
 enum SigSegState {
@@ -186,33 +169,33 @@ void AddTrackToSignalBuffer(TileIndex tile, Track track, Owner owner);
 void AddSideToSignalBuffer(TileIndex tile, DiagDirection side, Owner owner);
 void UpdateSignalsInBuffer();
 void UpdateSignalsInBufferIfOwnerNotAddable(Owner owner);
-uint8 GetForwardAspectFollowingTrack(TileIndex tile, Trackdir trackdir);
-uint8 GetSignalAspectGeneric(TileIndex tile, Trackdir trackdir, bool check_non_inc_style);
-void PropagateAspectChange(TileIndex tile, Trackdir trackdir, uint8 aspect);
+uint8_t GetForwardAspectFollowingTrack(TileIndex tile, Trackdir trackdir);
+uint8_t GetSignalAspectGeneric(TileIndex tile, Trackdir trackdir, bool check_non_inc_style);
+void PropagateAspectChange(TileIndex tile, Trackdir trackdir, uint8_t aspect);
 void UpdateAspectDeferred(TileIndex tile, Trackdir trackdir);
 void UpdateAspectDeferredWithVehicle(const Train *v, TileIndex tile, Trackdir trackdir, bool check_combined_normal_aspect);
 void UpdateLookaheadCombinedNormalShuntSignalDeferred(TileIndex tile, Trackdir trackdir, int lookahead_position);
 void FlushDeferredAspectUpdates();
 void FlushDeferredDetermineCombineNormalShuntMode(Train *v);
 void UpdateAllSignalAspects();
-void UpdateExtraAspectsVariable();
+void UpdateExtraAspectsVariable(bool update_always_reserve_through = false);
 void InitialiseExtraAspectsVariable();
 bool IsRailSpecialSignalAspect(TileIndex tile, Track track);
 
-inline void AdjustSignalAspectIfNonIncStyle(TileIndex tile, Track track, uint8 &aspect)
+inline void AdjustSignalAspectIfNonIncStyle(TileIndex tile, Track track, uint8_t &aspect)
 {
-	extern void AdjustSignalAspectIfNonIncStyleIntl(TileIndex tile, Track track, uint8 &aspect);
+	extern void AdjustSignalAspectIfNonIncStyleIntl(TileIndex tile, Track track, uint8_t &aspect);
 	if (aspect > 0 && (_signal_style_masks.non_aspect_inc != 0 || _signal_style_masks.combined_normal_shunt != 0)) AdjustSignalAspectIfNonIncStyleIntl(tile, track, aspect);
 }
 
-inline uint8 IncrementAspectForSignal(uint8 aspect, bool combined_normal_mode)
+inline uint8_t IncrementAspectForSignal(uint8_t aspect, bool combined_normal_mode)
 {
-	aspect = std::min<uint8>(aspect + 1, GetMaximumSignalAspect());
-	if (combined_normal_mode) aspect = std::min<uint8>(aspect + 1, 7);
+	aspect = std::min<uint8_t>(aspect + 1, GetMaximumSignalAspect());
+	if (combined_normal_mode) aspect = std::min<uint8_t>(aspect + 1, 7);
 	return aspect;
 }
 
-inline uint8 GetForwardAspectFollowingTrackAndIncrement(TileIndex tile, Trackdir trackdir, bool combined_normal_mode = false)
+inline uint8_t GetForwardAspectFollowingTrackAndIncrement(TileIndex tile, Trackdir trackdir, bool combined_normal_mode = false)
 {
 	return IncrementAspectForSignal(GetForwardAspectFollowingTrack(tile, trackdir), combined_normal_mode);
 }

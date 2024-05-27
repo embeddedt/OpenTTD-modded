@@ -20,9 +20,7 @@
 typedef LinkGraph::BaseNode Node;
 typedef LinkGraph::BaseEdge Edge;
 
-const SettingDesc *GetSettingDescription(uint index);
-
-static uint16 _num_nodes;
+static uint16_t _num_nodes;
 
 /**
  * Get a SaveLoad array for a link graph.
@@ -32,7 +30,8 @@ SaveLoadTable GetLinkGraphDesc()
 {
 	static const SaveLoad link_graph_desc[] = {
 	SLE_CONDVAR_X(LinkGraph, last_compression, SLE_VAR_I64 | SLE_FILE_I32, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 0, 3)),
-	SLE_CONDVAR_X(LinkGraph, last_compression,                  SLE_INT64,  SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 4)),
+	SLE_CONDVAR_X(LinkGraph, last_compression,                  SLE_INT64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 4, 5)),
+	SLE_CONDVAR_X(LinkGraph, last_compression,                 SLE_UINT64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 6)),
 		SLEG_VAR(_num_nodes,                  SLE_UINT16),
 		 SLE_VAR(LinkGraph, cargo,            SLE_UINT8),
 	};
@@ -41,9 +40,18 @@ SaveLoadTable GetLinkGraphDesc()
 
 void GetLinkGraphJobDayLengthScaleAfterLoad(LinkGraphJob *lgj)
 {
-	lgj->join_date_ticks *= DAY_TICKS;
-	lgj->join_date_ticks += LinkGraphSchedule::SPAWN_JOIN_TICK;
-	lgj->start_date_ticks = lgj->join_date_ticks - (lgj->Settings().recalc_time * DAY_TICKS);
+	lgj->join_tick *= DAY_TICKS;
+	lgj->join_tick += LinkGraphSchedule::SPAWN_JOIN_TICK;
+
+	uint recalc_scale;
+	if (IsSavegameVersionBefore(SLV_LINKGRAPH_SECONDS) && SlXvIsFeatureMissing(XSLFI_LINKGRAPH_DAY_SCALE, 3)) {
+		/* recalc time is in days */
+		recalc_scale = DAY_TICKS;
+	} else {
+		/* recalc time is in seconds */
+		recalc_scale = DAY_TICKS / SECONDS_PER_DAY;
+	}
+	lgj->start_tick = lgj->join_tick - (lgj->Settings().recalc_time * recalc_scale);
 }
 
 /**
@@ -58,33 +66,30 @@ void GetLinkGraphJobDayLengthScaleAfterLoad(LinkGraphJob *lgj)
 SaveLoadTable GetLinkGraphJobDesc()
 {
 	static std::vector<SaveLoad> saveloads;
-	static const char *prefix = "linkgraph.";
 
 	/* Build the SaveLoad array on first call and don't touch it later on */
 	if (saveloads.size() == 0) {
 		size_t offset_gamesettings = cpp_offsetof(GameSettings, linkgraph);
 		size_t offset_component = cpp_offsetof(LinkGraphJob, settings);
 
-		size_t prefixlen = strlen(prefix);
-
-		int setting = 0;
-		const SettingDesc *desc = GetSettingDescription(setting);
-		while (desc != nullptr) {
-			if (desc->name != nullptr && strncmp(desc->name, prefix, prefixlen) == 0) {
-				SaveLoad sl = desc->save;
-				if (GetVarMemType(sl.conv) != SLE_VAR_NULL) {
-					char *&address = reinterpret_cast<char *&>(sl.address);
-					address -= offset_gamesettings;
-					address += offset_component;
-				}
-				saveloads.push_back(sl);
+		const SettingTable &linkgraph_table = GetLinkGraphSettingTable();
+		for (const auto &desc : linkgraph_table) {
+			SaveLoad sl = desc->save;
+			if (GetVarMemType(sl.conv) != SLE_VAR_NULL) {
+				char *&address = reinterpret_cast<char *&>(sl.address);
+				address -= offset_gamesettings;
+				address += offset_component;
 			}
-			desc = GetSettingDescription(++setting);
+			saveloads.push_back(sl);
 		}
 
 		const SaveLoad job_desc[] = {
-			SLE_VAR(LinkGraphJob, join_date_ticks,  SLE_INT32),
-			SLE_CONDVAR_X(LinkGraphJob, start_date_ticks,  SLE_INT32, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE)),
+			SLE_CONDVAR_X(LinkGraphJob, join_tick,  SLE_FILE_I32 | SLE_VAR_I64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 0, 4)),
+			SLE_CONDVAR_X(LinkGraphJob, join_tick,  SLE_FILE_I64 | SLE_VAR_U64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 5, 5)),
+			SLE_CONDVAR_X(LinkGraphJob, join_tick,  SLE_UINT64,                 SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 6)),
+			SLE_CONDVAR_X(LinkGraphJob, start_tick, SLE_FILE_I32 | SLE_VAR_U64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 1, 4)),
+			SLE_CONDVAR_X(LinkGraphJob, start_tick, SLE_FILE_I64 | SLE_VAR_U64, SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 5, 5)),
+			SLE_CONDVAR_X(LinkGraphJob, start_tick, SLE_UINT64,                 SL_MIN_VERSION, SL_MAX_VERSION, SlXvFeatureTest(XSLFTO_AND, XSLFI_LINKGRAPH_DAY_SCALE, 6)),
 			SLE_VAR(LinkGraphJob, link_graph.index, SLE_UINT16),
 		};
 
@@ -153,7 +158,7 @@ static void FilterDescs()
  */
 void Save_LinkGraph(LinkGraph &lg)
 {
-	uint16 size = lg.Size();
+	uint16_t size = lg.Size();
 	auto edge_iter = lg.edges.begin();
 	auto edge_end = lg.edges.end();
 	for (NodeID from = 0; from < size; ++from) {

@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :ô/ngày
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :ô/giây
 
 STR_BUTTON_RENAME                                               :{BLACK}Đổi tên
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Máy bay
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Tự động save: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Chọn chu kỳ giữa mỗi lần tự động save
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Hiện lịch trình ở dạng số nhịp thay vì ngày: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Hiển thị thời gian trong bảng lịch trình bằng bộ đếm trò chơi thay vì ngày
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Bật hiệu ứng trong suốt cho bảng báo hiệu nạp. Ctrl+Click để khoá.
 
@@ -34,6 +38,20 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Thay đ�
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Thiết kế: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Đang dừng, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Nhắm tới {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Không lộ trình, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Nhắm tới {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Nhắm tới {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Phục vụ tại {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_UNBUNCH_VEL_END            :{LTBLUE}Gỡ gộp và bảo trì ở {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Không thể đi tới {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Không thể đi tới {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Không thể đi tới {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Không thể đi tới {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Thêm một điểm lộ trình trước điểm đã chọn, hoặc thêm nó vào cuối danh sách. Ctrl nếu là ga thì 'bốc xếp đủ bất kỳ hàng nào', là điểm mốc thì 'đi suốt' và là xưởng thì 'bảo trì'. 'Lộ trình chia sẻ" hoặc giữ Ctrl để cho phép phương tiện này chia sẻ lộ trình với phương tiện đã chọn. Nháy vào một phương tiện để sao chép lộ trình từ phương tiện đó. Lệnh dẫn đến xưởng sẽ dừng việc bảo trì tự động cho phương tiện
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :Đến:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :Đi:
@@ -73,3 +91,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Bán 25%
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Không thể mua 25% cổ phần của công ty này...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Không thể bán 25% cổ phần của công ty này...
 STR_ERROR_PROTECTED                                             :{WHITE}Công ty này chưa tồn tại đủ lâu để mua bán cổ phần...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Đèn hiệu giành đường

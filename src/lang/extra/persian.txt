@@ -12,6 +12,8 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :هواپیما
 STR_CONFIG_SETTING_AUTOSAVE                                     :ذخیره خودکار: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :انتخاب فاصله زمانی بین ذخیره کردن های خودکار
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :استفاده از تیک(هزارم ثانیه) به جای روز در برنامه ساعتی: {STRING}
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}فعال/غیر فعال کردن شفافیت برای نشانه پر و خالی شدن بار. کنترل+کلیک برای قفل کردن
 
 # Tracerestrict GUI
@@ -28,6 +30,8 @@ STR_MAPGEN_SNOW_LINE_DOWN                                       :{BLACK}کم ک�
 STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}تغییر ارتفاع خط برف
 
 # Town tooltip
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}وارد کردن دستور جدید قبل از دستور مشخص شده. یا اضافه کردن آن به آخر لیست. فرستادن به مرکز تعمیر، دستور سرویس خودکار را غیرفعال می کند
 
 # Cargo type orders Window
 
@@ -57,3 +61,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}25% سه
 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}نمی شود 25% سهام این شرکت را خرید
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}نمی شود 25% سهام این شرکت را فروخت
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :فقط نشانگرهای مسیر

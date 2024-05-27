@@ -27,7 +27,7 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 	auto check_1A_range = [&]() -> bool {
 		if (this->GroupMayBeBypassed()) {
 			/* Not clear why some GRFs do this, perhaps a way of commenting out a branch */
-			uint32 value = (this->adjusts.size() == 1) ? EvaluateDeterministicSpriteGroupAdjust(this->size, this->adjusts[0], nullptr, 0, UINT_MAX) : 0;
+			uint32_t value = (this->adjusts.size() == 1) ? EvaluateDeterministicSpriteGroupAdjust(this->size, this->adjusts[0], nullptr, 0, UINT_MAX) : 0;
 			for (const auto &range : this->ranges) {
 				if (range.low <= value && value <= range.high) {
 					if (range.group != nullptr) range.group->AnalyseCallbacks(op);
@@ -46,7 +46,7 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 			return;
 		} else if (!(op.result_flags & ACORF_CB_RESULT_FOUND)) {
 			if (check_1A_range()) return;
-			auto check_var_filter = [&](uint8 var, uint value) -> bool {
+			auto check_var_filter = [&](uint8_t var, uint value) -> bool {
 				if (this->adjusts.size() == 1 && this->adjusts[0].variable == var && (this->adjusts[0].operation == DSGA_OP_ADD || this->adjusts[0].operation == DSGA_OP_RST)) {
 					const auto &adjust = this->adjusts[0];
 					if (adjust.shift_num == 0 && (adjust.and_mask & 0xFF) == 0xFF && adjust.type == DSGA_TYPE_NONE) {
@@ -145,7 +145,7 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 				for (const auto &range : this->ranges) {
 					if (range.low == range.high) {
 						if (range.low < 64) {
-							if (find_cb_result(range.group, { CBID_VEHICLE_MODIFY_PROPERTY, true, (uint8)range.low })) {
+							if (find_cb_result(range.group, { CBID_VEHICLE_MODIFY_PROPERTY, true, (uint8_t)range.low })) {
 								SetBit(op.properties_used, range.low);
 								if (range.low == 0x9) {
 									/* Speed */
@@ -183,6 +183,16 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 		}
 		if (op.mode == ACOM_INDUSTRY_TILE && adjust.variable == 0xC) {
 			if (adjust.shift_num == 0 && (adjust.and_mask & 0xFF) == 0xFF && adjust.type == DSGA_TYPE_NONE) {
+				/* Check for CBID_INDTILE_ANIM_NEXT_FRAME, mark layout subset as animated if found */
+				if (op.data.indtile->check_anim_next_frame_cb) {
+					for (const auto &range : this->ranges) {
+						if (range.low <= CBID_INDTILE_ANIM_NEXT_FRAME && CBID_INDTILE_ANIM_NEXT_FRAME <= range.high) {
+							/* Found a CBID_INDTILE_ANIM_NEXT_FRAME */
+							*(op.data.indtile->result_mask) &= ~op.data.indtile->check_mask;
+						}
+					}
+				}
+
 				/* Callback switch, skip to the default/graphics chain */
 				for (const auto &range : this->ranges) {
 					if (range.low == 0) {
@@ -207,19 +217,23 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 				return;
 			}
 		}
-		if (op.mode == ACOM_INDUSTRY_TILE && adjust.variable == 0x43 && this->var_scope == VSG_SCOPE_SELF) {
-			if (adjust.shift_num == 0 && adjust.and_mask == 0xFFFF && adjust.type == DSGA_TYPE_NONE) {
+		if (op.mode == ACOM_INDUSTRY_TILE && adjust.variable == 0x43 && adjust.type == DSGA_TYPE_NONE && this->var_scope == VSG_SCOPE_SELF) {
+			const uint32_t effective_mask = adjust.and_mask << adjust.shift_num;
+			if (effective_mask == 0xFFFF || effective_mask == 0xFF00 || effective_mask == 0x00FF) {
 				/* Relative position switch */
-				uint64 default_mask = op.data.indtile->check_mask;
+				const bool use_x = effective_mask & 0xFF;
+				const bool use_y = effective_mask & 0xFF00;
+				uint64_t default_mask = op.data.indtile->check_mask;
 				for (const auto &range : this->ranges) {
 					if (range.high - range.low < 32) {
-						uint64 new_check_mask = 0;
+						uint64_t new_check_mask = 0;
 						for (uint i = range.low; i <= range.high; i++) {
-							int16 x = i & 0xFF;
-							int16 y = (i >> 8) & 0xFF;
-							for (uint bit : SetBitIterator<uint, uint64>(op.data.indtile->check_mask)) {
+							const uint offset = i << adjust.shift_num;
+							const int16_t x = offset & 0xFF;
+							const int16_t y = (offset >> 8) & 0xFF;
+							for (uint bit : SetBitIterator<uint, uint64_t>(op.data.indtile->check_mask)) {
 								const TileIndexDiffC &ti = (*(op.data.indtile->layout))[bit].ti;
-								if (ti.x == x && ti.y == y) {
+								if ((!use_x || ti.x == x) && (!use_y || ti.y == y)) {
 									SetBit(new_check_mask, bit);
 								}
 							}
@@ -262,6 +276,7 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 		if (op.mode == ACOM_CB36_PROP && adjust.variable == 0x10) {
 			if (find_cb_result(this, { CBID_VEHICLE_MODIFY_PROPERTY, false, 0 })) {
 				op.properties_used |= UINT64_MAX;
+				break;
 			}
 		}
 		if ((op.mode == ACOM_CB_VAR || op.mode == ACOM_CB_REFIT_CAPACITY) && !(adjust.variable == 0xC || adjust.variable == 0x1A || adjust.variable == 0x47 || adjust.variable == 0x7D || adjust.variable == 0x7E)) {
@@ -270,12 +285,11 @@ void DeterministicSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) co
 		if ((op.mode == ACOM_CB_VAR || op.mode == ACOM_CB_REFIT_CAPACITY) && adjust.variable == 0x47) {
 			op.result_flags |= ACORF_CB_REFIT_CAP_SEEN_VAR_47;
 		}
-		if (adjust.variable == 0x7E && adjust.subroutine != nullptr && op.mode != ACOM_CB36_PROP) {
+		if (op.mode != ACOM_CB36_PROP && adjust.variable == 0x7E && adjust.subroutine != nullptr) {
 			adjust.subroutine->AnalyseCallbacks(op);
 		}
 		if (op.mode == ACOM_INDUSTRY_TILE && this->var_scope == VSG_SCOPE_SELF && (adjust.variable == 0x44 || (adjust.variable == 0x61 && adjust.parameter == 0))) {
 			*(op.data.indtile->result_mask) &= ~op.data.indtile->check_mask;
-			return;
 		}
 		if (op.mode == ACOM_INDUSTRY_TILE && ((this->var_scope == VSG_SCOPE_SELF && adjust.variable == 0x61) || (this->var_scope == VSG_SCOPE_PARENT && adjust.variable == 0x63))) {
 			op.data.indtile->anim_state_at_offset = true;
@@ -304,6 +318,16 @@ void RandomizedSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) const
 	}
 
 	for (const SpriteGroup *group: this->groups) {
+		if (group != nullptr) group->AnalyseCallbacks(op);
+	}
+}
+
+void RealSpriteGroup::AnalyseCallbacks(AnalyseCallbackOperation &op) const
+{
+	for (const SpriteGroup *group: this->loaded) {
+		if (group != nullptr) group->AnalyseCallbacks(op);
+	}
+	for (const SpriteGroup *group: this->loading) {
 		if (group != nullptr) group->AnalyseCallbacks(op);
 	}
 }

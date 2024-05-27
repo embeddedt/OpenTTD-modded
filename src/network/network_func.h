@@ -26,17 +26,17 @@
 
 extern NetworkCompanyState *_network_company_states;
 extern std::string _network_company_server_id;
-extern uint8 _network_company_password_storage_token[16];
-extern uint8 _network_company_password_storage_key[32];
+extern std::array<uint8_t, 16> _network_company_password_storage_token;
+extern std::array<uint8_t, 32> _network_company_password_storage_key;
 
 extern ClientID _network_own_client_id;
 extern ClientID _redirect_console_to_client;
-extern uint8 _network_reconnect;
+extern uint8_t _network_reconnect;
 extern StringList _network_bind_list;
 extern StringList _network_host_list;
 extern StringList _network_ban_list;
 
-byte NetworkSpectatorCount();
+uint8_t NetworkSpectatorCount();
 uint NetworkClientCount();
 bool NetworkIsValidClientName(const std::string_view client_name);
 bool NetworkValidateOurClientName();
@@ -47,11 +47,10 @@ void NetworkUpdateServerGameType();
 bool NetworkCompanyHasClients(CompanyID company);
 std::string NetworkChangeCompanyPassword(CompanyID company_id, std::string password);
 void NetworkReboot();
-void NetworkDisconnect(bool blocking = false, bool close_admins = true);
+void NetworkDisconnect(bool close_admins = true);
 void NetworkGameLoop();
 void NetworkBackgroundLoop();
-std::string_view ParseFullConnectionString(const std::string &connection_string, uint16 &port, CompanyID *company_id = nullptr);
-void NetworkStartDebugLog(const std::string &connection_string);
+std::string_view ParseFullConnectionString(const std::string &connection_string, uint16_t &port, CompanyID *company_id = nullptr);
 void NetworkPopulateCompanyStats(NetworkCompanyStats *stats);
 
 void NetworkUpdateClientInfo(ClientID client_id);
@@ -71,9 +70,10 @@ void NetworkPrintClients();
 void NetworkHandlePauseChange(PauseMode prev_mode, PauseMode changed_mode);
 
 /*** Commands ran by the server ***/
-void NetworkServerDailyLoop();
-void NetworkServerMonthlyLoop();
-void NetworkServerYearlyLoop();
+void NetworkServerEconomyDailyLoop();
+void NetworkServerEconomyMonthlyLoop();
+void NetworkServerEconomyYearlyLoop();
+void NetworkServerCalendarYearlyLoop();
 void NetworkServerSendConfigUpdate();
 void NetworkServerUpdateGameInfo();
 void NetworkServerShowStatusToConsole();

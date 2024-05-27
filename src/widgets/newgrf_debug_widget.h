@@ -11,7 +11,7 @@
 #define WIDGETS_NEWGRF_DEBUG_WIDGET_H
 
 /** Widgets of the #NewGRFInspectWindow class. */
-enum NewGRFInspectWidgets {
+enum NewGRFInspectWidgets : WidgetID {
 	WID_NGRFI_CAPTION,   ///< The caption bar of course.
 	WID_NGRFI_PARENT,    ///< Inspect the parent.
 	WID_NGRFI_VEH_PREV,  ///< Go to previous vehicle in chain.
@@ -26,12 +26,13 @@ enum NewGRFInspectWidgets {
 	WID_NGRFI_SPRITE_DUMP_SEL, ///< Selection widget for WID_NGRFI_SPRITE_DUMP
 	WID_NGRFI_SPRITE_DUMP_UNOPT, ///< Dump unoptimised sprite group
 	WID_NGRFI_SPRITE_DUMP_UNOPT_SEL, ///< Selection widget for WID_NGRFI_SPRITE_DUMP_UNOPT
-	WID_NGRFI_SPRITE_DUMP_GOTO, ///< Goto sprite
-	WID_NGRFI_SPRITE_DUMP_GOTO_SEL, ///< Selection widget for WID_NGRFI_SPRITE_DUMP_GOTO
+	WID_NGRFI_SPRITE_DUMP_OPTIONS, ///< Options dropdown (sprite dump)
+	WID_NGRFI_MAIN_OPTIONS, ///< Options dropdown (main view)
+	WID_NGRFI_OPTIONS_SEL, ///< Selection widget for WID_NGRFI_SPRITE_DUMP_OPTIONS
 };
 
 /** Widgets of the #SpriteAlignerWindow class. */
-enum SpriteAlignerWidgets {
+enum SpriteAlignerWidgets : WidgetID {
 	WID_SA_CAPTION,     ///< Caption of the window.
 	WID_SA_PREVIOUS,    ///< Skip to the previous sprite.
 	WID_SA_GOTO,        ///< Go to a given sprite.
@@ -46,6 +47,8 @@ enum SpriteAlignerWidgets {
 	WID_SA_PICKER,      ///< Sprite picker.
 	WID_SA_LIST,        ///< Queried sprite list.
 	WID_SA_SCROLLBAR,   ///< Scrollbar for sprite list.
+	WID_SA_ZOOM,        ///< Zoom level buttons (from ZOOM_LVL_BEGIN to ZOOM_LVL_SPR_COUNT).
+	WID_SA_ZOOM_LAST = WID_SA_ZOOM + ZOOM_LVL_SPR_COUNT - 1, ///< Marker for last zoom level button.
 	WID_SA_RESET_REL,   ///< Reset relative sprite offset
 	WID_SA_CENTRE,      ///< Toggle centre sprite.
 	WID_SA_CROSSHAIR,   ///< Toggle crosshair.

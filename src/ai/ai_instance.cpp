@@ -63,9 +63,12 @@ void AIInstance::Died()
 	/* Intro is not supposed to use AI, but it may have 'dummy' AI which instant dies. */
 	if (_game_mode == GM_MENU) return;
 
+	/* Don't show errors while loading savegame. They will be shown at end of loading anyway. */
+	if (_switch_mode != SM_NONE) return;
+
 	ShowScriptDebugWindow(_current_company);
 
-	const AIInfo *info = AIConfig::GetConfig(_current_company, AIConfig::SSS_FORCE_GAME)->GetInfo();
+	const AIInfo *info = AIConfig::GetConfig(_current_company)->GetInfo();
 	if (info != nullptr) {
 		ShowErrorMessage(STR_ERROR_AI_PLEASE_REPORT_CRASH, INVALID_STRING_ID, WL_WARNING);
 
@@ -100,7 +103,7 @@ ScriptInfo *AIInstance::FindLibrary(const std::string &library, int version)
  * @param p2 p2 as given to DoCommandPInternal.
  * @param cmd cmd as given to DoCommandPInternal.
  */
-void CcAI(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcAI(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	/*
 	 * The company might not exist anymore. Check for this.

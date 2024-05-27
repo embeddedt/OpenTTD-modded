@@ -21,7 +21,11 @@ enum TextfileType {
 	TFT_CONTENT_END, // This marker is used to generate the above three buttons in sequence by various of places in the code.
 
 	TFT_SURVEY_RESULT = TFT_CONTENT_END, ///< Survey result (preview)
+	TFT_GAME_MANUAL,                ///< Game manual/documentation file
+
+	TFT_END,
 };
 DECLARE_POSTFIX_INCREMENT(TextfileType)
+DECLARE_ENUM_AS_ADDABLE(TextfileType)
 
 #endif /* TEXTFILE_TYPE_H */

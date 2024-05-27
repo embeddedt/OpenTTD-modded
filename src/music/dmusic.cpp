@@ -26,9 +26,6 @@
 #include <dmksctrl.h>
 #include <dmusicc.h>
 #include <mutex>
-#if defined(__MINGW32__)
-#include "../3rdparty/mingw-std-threads/mingw.mutex.h"
-#endif
 
 #include "../safeguards.h"
 
@@ -40,9 +37,9 @@ static const int MS_TO_REFTIME = 1000 * 10; ///< DirectMusic time base is 100 ns
 static const int MIDITIME_TO_REFTIME = 10;  ///< Time base of the midi file reader is 1 us.
 
 
-#define FOURCC_INFO  mmioFOURCC('I','N','F','O')
-#define FOURCC_fmt   mmioFOURCC('f','m','t',' ')
-#define FOURCC_data  mmioFOURCC('d','a','t','a')
+#define FOURCC_INFO  mmioFOURCC('I', 'N', 'F', 'O')
+#define FOURCC_fmt   mmioFOURCC('f', 'm', 't', ' ')
+#define FOURCC_data  mmioFOURCC('d', 'a', 't', 'a')
 
 /** A DLS file. */
 struct DLSFile {
@@ -74,7 +71,8 @@ struct DLSFile {
 		WSMPL wave_sample;
 		std::vector<WLOOP> wave_loops;
 
-		bool operator ==(long offset) const {
+		bool operator ==(long offset) const
+		{
 			return this->file_offset == offset;
 		}
 	};
@@ -118,30 +116,45 @@ PACK_N(struct WAVE_DOWNLOAD {
 }, 2);
 
 struct PlaybackSegment {
-	uint32 start, end;
+	uint32_t start, end;
 	size_t start_block;
 	bool loop;
 };
 
-static struct {
+struct DMusicPlayback {
 	bool shutdown;    ///< flag to indicate playback thread shutdown
 	bool playing;     ///< flag indicating that playback is active
 	bool do_start;    ///< flag for starting playback of next_file at next opportunity
 	bool do_stop;     ///< flag for stopping playback at next opportunity
 
 	int preload_time; ///< preload time for music blocks.
-	byte new_volume;  ///< volume setting to change to
+	uint8_t new_volume; ///< volume setting to change to
 
 	MidiFile next_file;           ///< upcoming file to play
 	PlaybackSegment next_segment; ///< segment info for upcoming file
-} _playback;
 
-/** Handle to our worker thread. */
-static std::thread _dmusic_thread;
-/** Event to signal the thread that it should look at a state change. */
-static HANDLE _thread_event = nullptr;
-/** Lock access to playback data that is not thread-safe. */
-static std::mutex _thread_mutex;
+	/** Handle to our worker thread. */
+	std::thread dmusic_thread;
+	/** Event to signal the thread that it should look at a state change. */
+	HANDLE thread_event = nullptr;
+	/** Lock access to playback data that is not thread-safe. */
+	std::mutex thread_mutex;
+
+	void StopThread()
+	{
+		if (this->dmusic_thread.joinable()) {
+			this->shutdown = true;
+			SetEvent(this->thread_event);
+			this->dmusic_thread.join();
+		}
+	}
+
+	~DMusicPlayback()
+	{
+		this->StopThread();
+	}
+};
+static DMusicPlayback _playback;
 
 /** The direct music object manages buffers and ports. */
 static IDirectMusic *_music = nullptr;
@@ -521,12 +534,12 @@ bool DLSFile::LoadFile(const wchar_t *file)
 }
 
 
-static byte ScaleVolume(byte original, byte scale)
+static uint8_t ScaleVolume(uint8_t original, uint8_t scale)
 {
 	return original * scale / 127;
 }
 
-static void TransmitChannelMsg(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, byte status, byte p1, byte p2 = 0)
+static void TransmitChannelMsg(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, uint8_t status, uint8_t p1, uint8_t p2 = 0)
 {
 	if (buffer->PackStructured(rt, 0, status | (p1 << 8) | (p2 << 16)) == E_OUTOFMEMORY) {
 		/* Buffer is full, clear it and try again. */
@@ -537,10 +550,10 @@ static void TransmitChannelMsg(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, by
 	}
 }
 
-static void TransmitSysex(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, const byte *&msg_start, size_t &remaining)
+static void TransmitSysex(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, const uint8_t *&msg_start, size_t &remaining)
 {
 	/* Find end of message. */
-	const byte *msg_end = msg_start;
+	const uint8_t *msg_end = msg_start;
 	while (*msg_end != MIDIST_ENDSYSEX) msg_end++;
 	msg_end++; // Also include SysEx end byte.
 
@@ -560,7 +573,7 @@ static void TransmitSysex(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, const b
 static void TransmitStandardSysex(IDirectMusicBuffer *buffer, REFERENCE_TIME rt, MidiSysexMessage msg)
 {
 	size_t length = 0;
-	const byte *data = MidiGetStandardSysexMessage(msg, length);
+	const uint8_t *data = MidiGetStandardSysexMessage(msg, length);
 	TransmitSysex(buffer, rt, data, length);
 }
 
@@ -568,19 +581,19 @@ static void TransmitStandardSysex(IDirectMusicBuffer *buffer, REFERENCE_TIME rt,
 static void TransmitNotesOff(IDirectMusicBuffer *buffer, REFERENCE_TIME block_time, REFERENCE_TIME cur_time)
 {
 	for (int ch = 0; ch < 16; ch++) {
-		TransmitChannelMsg(_buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_MODE_ALLNOTESOFF, 0);
-		TransmitChannelMsg(_buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_SUSTAINSW, 0);
-		TransmitChannelMsg(_buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_MODE_RESETALLCTRL, 0);
+		TransmitChannelMsg(buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_MODE_ALLNOTESOFF, 0);
+		TransmitChannelMsg(buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_SUSTAINSW, 0);
+		TransmitChannelMsg(buffer, block_time + 10, MIDIST_CONTROLLER | ch, MIDICT_MODE_RESETALLCTRL, 0);
 	}
 
 	/* Performing a GM reset stops all sound and resets all parameters. */
-	TransmitStandardSysex(_buffer, block_time + 20, MidiSysexMessage::ResetGM);
-	TransmitStandardSysex(_buffer, block_time + 30, MidiSysexMessage::RolandSetReverb);
+	TransmitStandardSysex(buffer, block_time + 20, MidiSysexMessage::ResetGM);
+	TransmitStandardSysex(buffer, block_time + 30, MidiSysexMessage::RolandSetReverb);
 
 	/* Explicitly flush buffer to make sure the messages are processed,
 	 * as we want sound to stop immediately. */
-	_port->PlayBuffer(_buffer);
-	_buffer->Flush();
+	_port->PlayBuffer(buffer);
+	buffer->Flush();
 
 	/* Wait until message time has passed. */
 	Sleep(Clamp((block_time - cur_time) / MS_TO_REFTIME, 5, 1000));
@@ -596,8 +609,8 @@ static void MidiThreadProc()
 	MidiFile current_file;               // file currently being played from
 	PlaybackSegment current_segment;     // segment info for current playback
 	size_t current_block = 0;            // next block index to send
-	byte current_volume = 0;             // current effective volume setting
-	byte channel_volumes[16];            // last seen volume controller values in raw data
+	uint8_t current_volume = 0;          // current effective volume setting
+	uint8_t channel_volumes[16];         // last seen volume controller values in raw data
 
 	/* Get pointer to the reference clock of our output port. */
 	IReferenceClock *clock;
@@ -612,7 +625,7 @@ static void MidiThreadProc()
 	DWORD next_timeout = 1000;
 	while (true) {
 		/* Wait for a signal from the GUI thread or until the time for the next event has come. */
-		DWORD wfso = WaitForSingleObject(_thread_event, next_timeout);
+		DWORD wfso = WaitForSingleObject(_playback.thread_event, next_timeout);
 
 		if (_playback.shutdown) {
 			_playback.playing = false;
@@ -638,7 +651,7 @@ static void MidiThreadProc()
 				DEBUG(driver, 2, "DMusic thread: Starting playback");
 				{
 					/* New scope to limit the time the mutex is locked. */
-					std::lock_guard<std::mutex> lock(_thread_mutex);
+					std::lock_guard<std::mutex> lock(_playback.thread_mutex);
 
 					current_file.MoveFrom(_playback.next_file);
 					std::swap(_playback.next_segment, current_segment);
@@ -652,7 +665,10 @@ static void MidiThreadProc()
 				clock->GetTime(&cur_time);
 				TransmitNotesOff(_buffer, block_time, cur_time);
 
-				MemSetT<byte>(channel_volumes, 127, lengthof(channel_volumes));
+				MemSetT<uint8_t>(channel_volumes, 127, lengthof(channel_volumes));
+				/* Invalidate current volume. */
+				current_volume = UINT8_MAX;
+				last_volume_time = 0;
 
 				/* Take the current time plus the preload time as the music start time. */
 				clock->GetTime(&playback_start_time);
@@ -725,7 +741,7 @@ static void MidiThreadProc()
 				REFERENCE_TIME playback_time = current_time - playback_start_time;
 				if (block.realtime * MIDITIME_TO_REFTIME > playback_time +  3 *_playback.preload_time * MS_TO_REFTIME) {
 					/* Stop the thread loop until we are at the preload time of the next block. */
-					next_timeout = Clamp(((int64)block.realtime * MIDITIME_TO_REFTIME - playback_time) / MS_TO_REFTIME - _playback.preload_time, 0, 1000);
+					next_timeout = Clamp(((int64_t)block.realtime * MIDITIME_TO_REFTIME - playback_time) / MS_TO_REFTIME - _playback.preload_time, 0, 1000);
 					DEBUG(driver, 9, "DMusic thread: Next event in %lu ms (music %u, ref " OTTD_PRINTF64 ")", next_timeout, block.realtime * MIDITIME_TO_REFTIME, playback_time);
 					break;
 				}
@@ -734,13 +750,13 @@ static void MidiThreadProc()
 				block_time = playback_start_time + block.realtime * MIDITIME_TO_REFTIME;
 				DEBUG(driver, 9, "DMusic thread: Streaming block " PRINTF_SIZE " (cur=" OTTD_PRINTF64 ", block=" OTTD_PRINTF64 ")", current_block, (long long)(current_time / MS_TO_REFTIME), (long long)(block_time / MS_TO_REFTIME));
 
-				const byte *data = block.data.data();
+				const uint8_t *data = block.data.data();
 				size_t remaining = block.data.size();
-				byte last_status = 0;
+				uint8_t last_status = 0;
 				while (remaining > 0) {
 					/* MidiFile ought to have converted everything out of running status,
 					 * but handle it anyway just to be safe */
-					byte status = data[0];
+					uint8_t status = data[0];
 					if (status & 0x80) {
 						last_status = status;
 						data++;
@@ -876,7 +892,7 @@ static const char *LoadDefaultDLSFile(const char *user_dls)
 			}
 
 			/* If we couldn't load the file from the registry, try again at the default install path of the GM DLS file. */
-			if (dls_file.instruments.size() == 0) {
+			if (dls_file.instruments.empty()) {
 				static const wchar_t *DLS_GM_FILE = L"%windir%\\System32\\drivers\\gm.dls";
 				wchar_t path[MAX_PATH];
 				ExpandEnvironmentStrings(DLS_GM_FILE, path, lengthof(path));
@@ -942,14 +958,14 @@ static const char *LoadDefaultDLSFile(const char *user_dls)
 
 			/* Calculate download size for the instrument. */
 			size_t i_size = sizeof(DMUS_DOWNLOADINFO) + sizeof(DMUS_INSTRUMENT);
-			if (dls_file.instruments[i].articulators.size() > 0) {
+			if (!dls_file.instruments[i].articulators.empty()) {
 				/* Articulations are stored as two chunks, one containing meta data and one with the actual articulation data. */
 				offsets += 2;
 				i_size += sizeof(DMUS_ARTICULATION2) + sizeof(CONNECTIONLIST) + sizeof(CONNECTION) * dls_file.instruments[i].articulators.size();
 			}
 
 			for (std::vector<DLSFile::DLSRegion>::iterator rgn = dls_file.instruments[i].regions.begin(); rgn != dls_file.instruments[i].regions.end(); rgn++) {
-				if (rgn->articulators.size() > 0) {
+				if (!rgn->articulators.empty()) {
 					offsets += 2;
 					i_size += sizeof(DMUS_ARTICULATION2) + sizeof(CONNECTIONLIST) + sizeof(CONNECTION) * rgn->articulators.size();
 				}
@@ -1002,7 +1018,7 @@ static const char *LoadDefaultDLSFile(const char *user_dls)
 			instrument = inst_data + 1;
 
 			/* Write global articulations. */
-			if (dls_file.instruments[i].articulators.size() > 0) {
+			if (!dls_file.instruments[i].articulators.empty()) {
 				inst_data->ulGlobalArtIdx = last_offset;
 				offset_table[last_offset++] = (char *)instrument - inst_base;
 				offset_table[last_offset++] = (char *)instrument + sizeof(DMUS_ARTICULATION2) - inst_base;
@@ -1031,18 +1047,18 @@ static const char *LoadDefaultDLSFile(const char *user_dls)
 				/* The wave sample data will be taken from the region, if defined, otherwise from the wave itself. */
 				if (rgn.wave_sample.cbSize != 0) {
 					inst_region->WSMP = rgn.wave_sample;
-					if (rgn.wave_loops.size() > 0) MemCpyT(inst_region->WLOOP, &rgn.wave_loops.front(), rgn.wave_loops.size());
+					if (!rgn.wave_loops.empty()) MemCpyT(inst_region->WLOOP, &rgn.wave_loops.front(), rgn.wave_loops.size());
 
 					instrument = (char *)(inst_region + 1) - sizeof(DMUS_REGION::WLOOP) + sizeof(WLOOP) * rgn.wave_loops.size();
 				} else {
 					inst_region->WSMP = rgn.wave_sample;
-					if (dls_file.waves[wave_id].wave_loops.size() > 0) MemCpyT(inst_region->WLOOP, &dls_file.waves[wave_id].wave_loops.front(), dls_file.waves[wave_id].wave_loops.size());
+					if (!dls_file.waves[wave_id].wave_loops.empty()) MemCpyT(inst_region->WLOOP, &dls_file.waves[wave_id].wave_loops.front(), dls_file.waves[wave_id].wave_loops.size());
 
 					instrument = (char *)(inst_region + 1) - sizeof(DMUS_REGION::WLOOP) + sizeof(WLOOP) * dls_file.waves[wave_id].wave_loops.size();
 				}
 
 				/* Write local articulator data. */
-				if (rgn.articulators.size() > 0) {
+				if (!rgn.articulators.empty()) {
 					inst_region->ulRegionArtIdx = last_offset;
 					offset_table[last_offset++] = (char *)instrument - inst_base;
 					offset_table[last_offset++] = (char *)instrument + sizeof(DMUS_ARTICULATION2) - inst_base;
@@ -1147,10 +1163,10 @@ const char *MusicDriver_DMusic::Start(const StringList &parm)
 	if (dls != nullptr) return dls;
 
 	/* Create playback thread and synchronization primitives. */
-	_thread_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-	if (_thread_event == nullptr) return "Can't create thread shutdown event";
+	_playback.thread_event = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+	if (_playback.thread_event == nullptr) return "Can't create thread shutdown event";
 
-	if (!StartNewThread(&_dmusic_thread, "ottd:dmusic", &MidiThreadProc)) return "Can't create MIDI output thread";
+	if (!StartNewThread(&_playback.dmusic_thread, "ottd:dmusic", &MidiThreadProc)) return "Can't create MIDI output thread";
 
 	return nullptr;
 }
@@ -1164,14 +1180,10 @@ MusicDriver_DMusic::~MusicDriver_DMusic()
 
 void MusicDriver_DMusic::Stop()
 {
-	if (_dmusic_thread.joinable()) {
-		_playback.shutdown = true;
-		SetEvent(_thread_event);
-		_dmusic_thread.join();
-	}
+	_playback.StopThread();
 
 	/* Unloaded any instruments we loaded. */
-	if (_dls_downloads.size() > 0) {
+	if (!_dls_downloads.empty()) {
 		IDirectMusicPortDownload *download_port = nullptr;
 		_port->QueryInterface(IID_IDirectMusicPortDownload, (LPVOID *)&download_port);
 
@@ -1202,7 +1214,7 @@ void MusicDriver_DMusic::Stop()
 		_music = nullptr;
 	}
 
-	CloseHandle(_thread_event);
+	CloseHandle(_playback.thread_event);
 
 	CoUninitialize();
 }
@@ -1210,7 +1222,7 @@ void MusicDriver_DMusic::Stop()
 
 void MusicDriver_DMusic::PlaySong(const MusicSongInfo &song)
 {
-	std::lock_guard<std::mutex> lock(_thread_mutex);
+	std::lock_guard<std::mutex> lock(_playback.thread_mutex);
 
 	if (!_playback.next_file.LoadSong(song)) return;
 
@@ -1219,14 +1231,14 @@ void MusicDriver_DMusic::PlaySong(const MusicSongInfo &song)
 	_playback.next_segment.loop = song.loop;
 
 	_playback.do_start = true;
-	SetEvent(_thread_event);
+	SetEvent(_playback.thread_event);
 }
 
 
 void MusicDriver_DMusic::StopSong()
 {
 	_playback.do_stop = true;
-	SetEvent(_thread_event);
+	SetEvent(_playback.thread_event);
 }
 
 
@@ -1236,7 +1248,7 @@ bool MusicDriver_DMusic::IsSongPlaying()
 }
 
 
-void MusicDriver_DMusic::SetVolume(byte vol)
+void MusicDriver_DMusic::SetVolume(uint8_t vol)
 {
 	_playback.new_volume = vol;
 }

@@ -43,12 +43,12 @@ public:
 	 */
 	enum TownEffect {
 		/* Note: these values represent part of the in-game TownEffect enum */
-		TE_NONE       = ::TE_NONE,       ///< This cargo has no effect on a town
-		TE_PASSENGERS = ::TE_PASSENGERS, ///< This cargo supplies passengers to a town
-		TE_MAIL       = ::TE_MAIL,       ///< This cargo supplies mail to a town
-		TE_GOODS      = ::TE_GOODS,      ///< This cargo supplies goods to a town
-		TE_WATER      = ::TE_WATER,      ///< This cargo supplies water to a town
-		TE_FOOD       = ::TE_FOOD,       ///< This cargo supplies food to a town
+		TE_NONE       = ::TAE_NONE,       ///< This cargo has no effect on a town
+		TE_PASSENGERS = ::TAE_PASSENGERS, ///< This cargo supplies passengers to a town
+		TE_MAIL       = ::TAE_MAIL,       ///< This cargo supplies mail to a town
+		TE_GOODS      = ::TAE_GOODS,      ///< This cargo supplies goods to a town
+		TE_WATER      = ::TAE_WATER,      ///< This cargo supplies water to a town
+		TE_FOOD       = ::TAE_FOOD,       ///< This cargo supplies food to a town
 	};
 
 	/**
@@ -56,9 +56,9 @@ public:
 	 */
 	enum SpecialCargoID {
 		/* Note: these values represent part of the in-game CargoTypes enum */
-		CT_AUTO_REFIT = ::CT_AUTO_REFIT, ///< Automatically choose cargo type when doing auto-refitting.
-		CT_NO_REFIT   = ::CT_NO_REFIT,   ///< Do not refit cargo of a vehicle.
-		CT_INVALID    = ::CT_INVALID,    ///< An invalid cargo type.
+		CT_AUTO_REFIT = ::CARGO_AUTO_REFIT, ///< Automatically choose cargo type when doing auto-refitting.
+		CT_NO_REFIT   = ::CARGO_NO_REFIT, ///< Do not refit cargo of a vehicle.
+		CT_INVALID    = ::INVALID_CARGO, ///< An invalid cargo type.
 	};
 
 	/**
@@ -143,7 +143,7 @@ public:
 	 * @param cargo_type The cargo to transport.
 	 * @pre ScriptCargo::IsValidCargo(cargo_type).
 	 * @param distance The distance the cargo travels from begin to end.
-	 *                 The value will be clamped to 0 .. MAX(uint32).
+	 *                 The value will be clamped to 0 .. MAX(uint32_t).
 	 * @param days_in_transit Amount of (game) days the cargo is in transit.
 	 *                        The max value of this variable is 637. Any value higher returns the same as 637 would.
 	 * @return The amount of money that would be earned by this trip.
@@ -162,7 +162,7 @@ public:
 	 *   cargo for the specified type.
 	 * @param cargo_type The cargo to check on.
 	 * @param amount The quantity of cargo.
-	 *               The value will be clamped to 0 .. MAX(uint32).
+	 *               The value will be clamped to 0 .. MAX(uint32_t).
 	 * @pre ScriptCargo::IsValidCargo(cargo_type).
 	 * @return The weight in tonnes for that quantity of cargo.
 	 */

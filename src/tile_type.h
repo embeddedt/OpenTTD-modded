@@ -84,11 +84,11 @@ enum TropicZone {
 /**
  * The index/ID of a Tile.
  */
-typedef uint32 TileIndex;
+typedef uint32_t TileIndex;
 
 /**
  * The very nice invalid tile marker
  */
-static const TileIndex INVALID_TILE = (TileIndex)-1;
+inline constexpr TileIndex INVALID_TILE = (TileIndex)-1;
 
 #endif /* TILE_TYPE_H */

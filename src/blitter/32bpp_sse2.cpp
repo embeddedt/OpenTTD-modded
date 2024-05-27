@@ -20,16 +20,16 @@
 /** Instantiation of the SSE2 32bpp blitter factory. */
 static FBlitter_32bppSSE2 iFBlitter_32bppSSE2;
 
-Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, AllocatorProc *allocator)
+Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::SpriteCollection &sprite, AllocatorProc *allocator)
 {
-	/* First uint32 of a line = the number of transparent pixels from the left.
-	 * Second uint32 of a line = the number of transparent pixels from the right.
+	/* First uint32_t of a line = the number of transparent pixels from the left.
+	 * Second uint32_t of a line = the number of transparent pixels from the right.
 	 * Then all RGBA then all MV.
 	 */
 	ZoomLevel zoom_min = ZOOM_LVL_NORMAL;
 	ZoomLevel zoom_max = ZOOM_LVL_NORMAL;
-	uint8 missing_zoom_levels = 0;
-	if (sprite->type != SpriteType::Font) {
+	uint8_t missing_zoom_levels = 0;
+	if (sprite[ZOOM_LVL_NORMAL].type != SpriteType::Font) {
 		zoom_min = _settings_client.gui.zoom_min;
 		zoom_max =  (ZoomLevel) std::min(_settings_client.gui.zoom_max, ZOOM_LVL_DRAW_SPR);
 		if (zoom_max == zoom_min) zoom_max = ZOOM_LVL_DRAW_SPR;
@@ -52,7 +52,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 
 		sd.infos[z].sprite_width = src_sprite->width;
 		sd.infos[z].sprite_offset = all_sprites_size;
-		sd.infos[z].sprite_line_size = sizeof(Colour) * src_sprite->width + sizeof(uint32) * META_LENGTH;
+		sd.infos[z].sprite_line_size = sizeof(Colour) * src_sprite->width + sizeof(uint32_t) * META_LENGTH;
 
 		const uint rgba_size = sd.infos[z].sprite_line_size * src_sprite->height;
 		sd.infos[z].mv_offset = all_sprites_size + rgba_size;
@@ -62,10 +62,10 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 	}
 
 	Sprite *dst_sprite = (Sprite *) allocator(sizeof(Sprite) + sizeof(SpriteData) + all_sprites_size);
-	dst_sprite->height = sprite->height;
-	dst_sprite->width  = sprite->width;
-	dst_sprite->x_offs = sprite->x_offs;
-	dst_sprite->y_offs = sprite->y_offs;
+	dst_sprite->height = sprite[ZOOM_LVL_NORMAL].height;
+	dst_sprite->width  = sprite[ZOOM_LVL_NORMAL].width;
+	dst_sprite->x_offs = sprite[ZOOM_LVL_NORMAL].x_offs;
+	dst_sprite->y_offs = sprite[ZOOM_LVL_NORMAL].y_offs;
 	dst_sprite->next = nullptr;
 	dst_sprite->missing_zoom_levels = missing_zoom_levels;
 	memcpy(dst_sprite->data, &sd, sizeof(SpriteData));
@@ -91,7 +91,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 					dst_mv->m = src->m;
 					if (z >= _settings_client.gui.disable_water_animation && src->m >= 245 && src->m <= 254) {
 						/* Get brightest value */
-						uint8 rgb_max = std::max({ src->r, src->g, src->b });
+						uint8_t rgb_max = std::max({ src->r, src->g, src->b });
 
 						/* Black pixel (8bpp or old 32bpp image), so use default value */
 						if (rgb_max == 0) rgb_max = Blitter_32bppBase::DEFAULT_BRIGHTNESS;
@@ -108,7 +108,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 						if (src->m >= PALETTE_ANIM_START) has_anim = true;
 
 						/* Get brightest value (or default brightness if it's a black pixel). */
-						const uint8 rgb_max = std::max({src->r, src->g, src->b});
+						const uint8_t rgb_max = std::max({src->r, src->g, src->b});
 						dst_mv->v = (rgb_max == 0) ? Blitter_32bppBase::DEFAULT_BRIGHTNESS : rgb_max;
 
 						/* Pre-convert the mapping channel to a RGB value. */
@@ -124,7 +124,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 					}
 				} else {
 					dst_rgba->data = 0;
-					*(uint16*) dst_mv = 0;
+					*(uint16_t*) dst_mv = 0;
 				}
 				dst_rgba++;
 				dst_mv++;
@@ -133,7 +133,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 
 			/* Count the number of transparent pixels from the left. */
 			dst_rgba = dst_rgba_line + META_LENGTH;
-			uint32 nb_pix_transp = 0;
+			uint32_t nb_pix_transp = 0;
 			for (uint x = src_sprite->width; x != 0; x--) {
 				if (dst_rgba->a == 0) nb_pix_transp++;
 				else break;
@@ -142,7 +142,7 @@ Sprite *Blitter_32bppSSE_Base::Encode(const SpriteLoader::Sprite *sprite, Alloca
 			(*dst_rgba_line).data = nb_pix_transp;
 
 			Colour *nb_right = dst_rgba_line + 1;
-			dst_rgba_line = (Colour*) ((byte*) dst_rgba_line + sd.infos[z].sprite_line_size);
+			dst_rgba_line = (Colour*) ((uint8_t*) dst_rgba_line + sd.infos[z].sprite_line_size);
 
 			/* Count the number of transparent pixels from the right. */
 			dst_rgba = dst_rgba_line - 1;

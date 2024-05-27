@@ -9,6 +9,9 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Bifreiðir
 STR_VEHICLE_TYPE_SHIPS                                          :Skip
 STR_VEHICLE_TYPE_AIRCRAFT                                       :Flugvélar
 
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Birta áætlanir í slögum frekar en dögum: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Sýna ferðatíma í áætlun í slögum frekar en dögum
+
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Virkja/afvirkja gegnsæji hleðslumæla. Ctrl+smella til að læsa
 
 # Tracerestrict GUI
@@ -27,6 +30,15 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Breyta h
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Hönnun: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Stöðva, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Á leið til {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Engar skipanir, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Á leið til {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Á leið til {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Þjónusta í {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Skeyta inn nýrri skipun á undan valdri skipun, eða bæta við aftast á listann. Ctrl lætur skipanir 'fullhlaða einhverjum farmi', vegvísa skipanir 'ekki stöðva' og skýlis skipanir 'þjónusta'. 'Deila skipun' eða Ctrl lætur þetta farartæki deila skipunum með völdu farartæki. Smella á farartæki deilir skipunum með því farartæki. Ef skýli er í skipunum óvirkjar það sjálfvirka þjónustu á farartækinu
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :K:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :F:
@@ -61,3 +73,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Selja 25
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Get ekki keypt 25% hlut í þessu fyrirtæki...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Get ekki selt 25% hlut í þessu fyrirtæki...
 STR_ERROR_PROTECTED                                             :{WHITE}Þetta fyrirtæki er ekki nógu gamalt til að versla með hluti ...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Aðeins Leiðarmerki

@@ -12,18 +12,18 @@
 // entries to save
 #define TRIP_LENGTH 10
 
-static inline int TripHistoryRound( float x ) 
+static inline int TripHistoryRound( float x )
 {
 	return int( x > 0.0 ? x + 0.5 : x - 0.5 );
 }
 
 struct TripHistoryEntry {
 	Money profit; // Saved
-	Date date; // Saved
-	int32 profit_change; // Calculated
-	Date TBT; // Calculated
-	int32 TBT_change; // Calculated
-	int8 occupancy; // Calculated
+	EconTime::Date date; // Saved
+	int32_t profit_change; // Calculated
+	EconTime::Date TBT; // Calculated
+	int32_t TBT_change; // Calculated
+	int8_t occupancy; // Calculated
 
 	TripHistoryEntry( ) : profit( 0 ), date( 0 ), profit_change( 0 ), TBT( 0 ), TBT_change( 0 ), occupancy( -1 ) { };
 };
@@ -33,12 +33,12 @@ struct TripHistory {
 	// a lot of saveload stuff for std::deque. So...
 	TripHistoryEntry t[ TRIP_LENGTH ];
 
-	Money total_profit; 
-	int32 avg_daylength; 
-	int32 total_change;
+	Money total_profit;
+	int32_t avg_daylength;
+	int32_t total_change;
 	Money profit_per_day;
-	uint32 occupancy_sum;
-    uint32 trip_length;
+	uint32_t occupancy_sum;
+    uint32_t trip_length;
 
 	TripHistory( ) :
 		total_profit( 0 ),
@@ -50,7 +50,7 @@ struct TripHistory {
 
 	void NewRound();
 
-	void AddValue( Money mvalue, Date dvalue, int8 occupancy, uint32 distance );
+	void AddValue( Money mvalue, EconTime::Date dvalue, int8_t occupancy, uint32_t distance );
 
 
 	/**
@@ -60,7 +60,7 @@ struct TripHistory {
 	 */
 	size_t UpdateCalculated( );
 
-	int32 FindPercentChange( Money v1, Money v2 ) {
+	int32_t FindPercentChange( Money v1, Money v2 ) {
 		float temp;
 
 		if ( v1 > v2 ) {

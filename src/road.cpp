@@ -40,7 +40,7 @@
 #include "command_func.h"
 #include "safeguards.h"
 
-uint32 _road_layout_change_counter = 0;
+uint32_t _road_layout_change_counter = 0;
 
 /** Whether to build public roads */
 enum PublicRoadsConstruction {
@@ -61,7 +61,7 @@ static bool IsPossibleCrossing(const TileIndex tile, Axis ax)
 	return (IsTileType(tile, MP_RAILWAY) &&
 		GetRailTileType(tile) == RAIL_TILE_NORMAL &&
 		GetTrackBits(tile) == (ax == AXIS_X ? TRACK_BIT_Y : TRACK_BIT_X) &&
-		GetFoundationSlope(tile) == SLOPE_FLAT);
+		std::get<0>(GetFoundationSlope(tile)) == SLOPE_FLAT);
 }
 
 /**
@@ -147,7 +147,7 @@ bool HasRoadTypeAvail(const CompanyID company, RoadType roadtype)
 		if (rti->label == 0) return false;
 
 		/* Not yet introduced at this date. */
-		if (IsInsideMM(rti->introduction_date, 0, MAX_DAY) && rti->introduction_date > _date) return false;
+		if (IsInsideMM(rti->introduction_date, 0, CalTime::MAX_DATE.base()) && rti->introduction_date > CalTime::CurDate()) return false;
 
 		/*
 		 * Do not allow building hidden road types, except when a town may build it.
@@ -199,7 +199,7 @@ bool ValParamRoadType(RoadType roadtype)
  * @return The road types that should be available when date
  *         introduced road types are taken into account as well.
  */
-RoadTypes AddDateIntroducedRoadTypes(RoadTypes current, Date date)
+RoadTypes AddDateIntroducedRoadTypes(RoadTypes current, CalTime::Date date)
 {
 	RoadTypes rts = current;
 
@@ -209,7 +209,7 @@ RoadTypes AddDateIntroducedRoadTypes(RoadTypes current, Date date)
 		if (rti->label == 0) continue;
 
 		/* Not date introduced. */
-		if (!IsInsideMM(rti->introduction_date, 0, MAX_DAY)) continue;
+		if (!IsInsideMM(rti->introduction_date, 0, CalTime::MAX_DATE.base())) continue;
 
 		/* Not yet introduced at this date. */
 		if (rti->introduction_date > date) continue;
@@ -240,7 +240,7 @@ RoadTypes GetCompanyRoadTypes(CompanyID company, bool introduces)
 		const EngineInfo *ei = &e->info;
 
 		if (HasBit(ei->climates, _settings_game.game_creation.landscape) &&
-				(HasBit(e->company_avail, company) || _date >= e->intro_date + DAYS_IN_YEAR)) {
+				(HasBit(e->company_avail, company) || CalTime::CurDate() >= e->intro_date + DAYS_IN_YEAR)) {
 			const RoadVehicleInfo *rvi = &e->u.road;
 			assert(rvi->roadtype < ROADTYPE_END);
 			if (introduces) {
@@ -251,7 +251,7 @@ RoadTypes GetCompanyRoadTypes(CompanyID company, bool introduces)
 		}
 	}
 
-	if (introduces) return AddDateIntroducedRoadTypes(rts, _date);
+	if (introduces) return AddDateIntroducedRoadTypes(rts, CalTime::CurDate());
 	return rts;
 }
 
@@ -277,7 +277,7 @@ RoadTypes GetRoadTypes(bool introduces)
 		}
 	}
 
-	if (introduces) return AddDateIntroducedRoadTypes(rts, MAX_DAY);
+	if (introduces) return AddDateIntroducedRoadTypes(rts, CalTime::MAX_DATE);
 	return rts;
 }
 
@@ -307,50 +307,14 @@ RoadType GetRoadTypeByLabel(RoadTypeLabel label, bool allow_alternate_labels)
 	return INVALID_ROADTYPE;
 }
 
-/**
- * Returns the available RoadSubTypes for the provided RoadType
- * If the given company is valid then will be returned a list of the available sub types at the current date, while passing
- * a deity company will make all the sub types available
- * @param rt the RoadType to filter
- * @param c the company ID to check the roadtype against
- * @param any_date whether to return only currently introduced roadtypes or also future ones
- * @returns the existing RoadSubTypes
- */
-RoadTypes ExistingRoadTypes(CompanyID c)
-{
-	/* Check only players which can actually own vehicles, editor and gamescripts are considered deities */
-	if (c < OWNER_END) {
-		const Company *company = Company::GetIfValid(c);
-		if (company != nullptr) return company->avail_roadtypes;
-	}
-
-	RoadTypes known_roadtypes = ROADTYPES_NONE;
-
-	/* Find used roadtypes */
-	for (Engine *e : Engine::IterateType(VEH_ROAD)) {
-		/* Check if the roadtype can be used in the current climate */
-		if (!HasBit(e->info.climates, _settings_game.game_creation.landscape)) continue;
-
-		/* Check whether available for all potential companies */
-		if (e->company_avail != MAX_UVALUE(CompanyMask)) continue;
-
-		known_roadtypes |= GetRoadTypeInfo(e->u.road.roadtype)->introduces_roadtypes;
-	}
-
-	/* Get the date introduced roadtypes as well. */
-	known_roadtypes = AddDateIntroducedRoadTypes(known_roadtypes, MAX_DAY);
-
-	return known_roadtypes;
-}
-
 
 /* ========================================================================= */
 /*                                PUBLIC ROADS                               */
 /* ========================================================================= */
 
-CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text = nullptr);
-CommandCost CmdBuildTunnel(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text = nullptr);
-CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text = nullptr);
+CommandCost CmdBuildBridge(TileIndex end_tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text = nullptr);
+CommandCost CmdBuildTunnel(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text = nullptr);
+CommandCost CmdBuildRoad(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text = nullptr);
 
 static RoadType _public_road_type;
 static const uint _public_road_hash_size = 8U; ///< The number of bits the hash for river finding should have.
@@ -385,7 +349,7 @@ static TileIndex BuildTunnel(PathNode *current, TileIndex end_tile = INVALID_TIL
 {
 	const TileIndex start_tile = current->node.tile;
 	int start_z;
-	GetTileSlope(start_tile, &start_z);
+	std::tie(std::ignore, start_z) = GetTileSlopeZ(start_tile);
 
 	if (start_z == 0) return INVALID_TILE;
 
@@ -404,7 +368,7 @@ static TileIndex BuildTunnel(PathNode *current, TileIndex end_tile = INVALID_TIL
 			if (!IsValidTile(end_tile)) return INVALID_TILE;
 			if (tunnel_length > tunnel_length_limit) return INVALID_TILE;
 
-			GetTileSlope(end_tile, &end_z);
+			std::tie(std::ignore, end_z) = GetTileSlopeZ(end_tile);
 
 			if (start_z == end_z) break;
 
@@ -486,7 +450,7 @@ static TileIndex BuildBridge(PathNode *current, TileIndex end_tile = INVALID_TIL
 	assert(!build_bridge || !available_bridge_types.empty());
 	if (available_bridge_types.empty()) return INVALID_TILE;
 
-	const auto bridge_type = available_bridge_types[build_bridge ? RandomRange(uint32(available_bridge_types.size())) : 0];
+	const auto bridge_type = available_bridge_types[build_bridge ? RandomRange((uint32_t)available_bridge_types.size()) : 0];
 
 	Backup cur_company(_current_company, OWNER_DEITY, FILE_LINE);
 	const auto build_bridge_cmd = CmdBuildBridge(end_tile, DC_AUTO | (build_bridge ? DC_EXEC : DC_NONE), start_tile, bridge_type | (_public_road_type << 8) | (TRANSPORT_ROAD << 15));
@@ -517,7 +481,7 @@ static TileIndex BuildRiverBridge(PathNode *current, const DiagDirection road_di
 		// should not force that on them. This is just to bridge rivers, not to make long bridges.
 		for (;
 			IsValidTile(tile) &&
-			(GetTunnelBridgeLength(start_tile, tile) <= std::min(_settings_game.construction.max_bridge_length, (uint16)3)) &&
+			(GetTunnelBridgeLength(start_tile, tile) <= std::min(_settings_game.construction.max_bridge_length, (uint16_t)3)) &&
 			(start_tile_z < (GetTileZ(tile) + _settings_game.construction.max_bridge_height)) &&
 			(GetTileZ(tile) <= start_tile_z);
 			tile += TileOffsByDiagDir(road_direction)) {
@@ -545,7 +509,7 @@ static TileIndex BuildRiverBridge(PathNode *current, const DiagDirection road_di
 		}
 	}
 
-	const auto bridge_type = available_bridge_types[build_bridge ? RandomRange(uint32(available_bridge_types.size())) : 0];
+	const auto bridge_type = available_bridge_types[build_bridge ? RandomRange((uint32_t)available_bridge_types.size()) : 0];
 
 	Backup cur_company(_current_company, OWNER_DEITY, FILE_LINE);
 	const auto build_bridge_cmd = CmdBuildBridge(end_tile, DC_AUTO | (build_bridge ? DC_EXEC : DC_NONE), start_tile, bridge_type | (_public_road_type << 8) | (TRANSPORT_ROAD << 15));
@@ -585,10 +549,10 @@ static bool IsValidNeighbourOfPreviousTile(const TileIndex tile, const TileIndex
 	auto get_slope_info = [](TileIndex t) -> slope_desc {
 		slope_desc desc;
 
-		desc.tile_slope = GetTileSlope(t, &desc.tile_z);
+		std::tie(desc.tile_slope, desc.tile_z) = GetTileSlopeZ(t);
 
 		desc.z = desc.tile_z;
-		desc.slope = GetFoundationSlopeFromTileSlope(t, desc.tile_slope, &desc.z);
+		desc.slope = UpdateFoundationSlopeFromTileSlope(t, desc.tile_slope, desc.z);
 
 		if (desc.slope == desc.tile_slope && desc.slope != SLOPE_FLAT && HasBit(VALID_LEVEL_CROSSING_SLOPES, desc.slope)) {
 			/* Synthesise a trivial flattening foundation */
@@ -818,7 +782,7 @@ static void PublicRoad_GetNeighbours(AyStar *aystar, OpenListNode *current)
 }
 
 /** AyStar callback for checking whether we reached our destination. */
-static int32 PublicRoad_EndNodeCheck(const AyStar *aystar, const OpenListNode *current)
+static int32_t PublicRoad_EndNodeCheck(const AyStar *aystar, const OpenListNode *current)
 {
 	return current->path.node.tile == static_cast<TileIndex>(reinterpret_cast<uintptr_t>(aystar->user_target)) ? AYSTAR_FOUND_END_NODE : AYSTAR_DONE;
 }
@@ -872,7 +836,7 @@ static void PublicRoad_FoundEndNode(AyStar *aystar, OpenListNode *current)
 			// We only get here if we have a parent and we're not adjacent to it. River/Tunnel time!
 			const DiagDirection road_direction = DiagdirBetweenTiles(tile, path->parent->node.tile);
 
-			auto end_tile = INVALID_TILE;
+			[[maybe_unused]] auto end_tile = INVALID_TILE;
 
 			const Slope tile_slope = GetTileSlope(tile);
 			if (IsUpwardsSlope(tile_slope, road_direction)) {
@@ -894,16 +858,16 @@ static void PublicRoad_FoundEndNode(AyStar *aystar, OpenListNode *current)
 	}
 }
 
-static const int32 BASE_COST_PER_TILE  = 1;      // Cost for existing road or tunnel/bridge.
-static const int32 COST_FOR_NEW_ROAD   = 10;    // Cost for building a new road.
-static const int32 COST_FOR_SLOPE      = 50;     // Additional cost if the road heads up or down a slope.
+static const int32_t BASE_COST_PER_TILE  = 1;     ///< Cost for existing road or tunnel/bridge.
+static const int32_t COST_FOR_NEW_ROAD   = 10;    ///< Cost for building a new road.
+static const int32_t COST_FOR_SLOPE      = 50;    ///< Additional cost if the road heads up or down a slope.
 
 /** AyStar callback for getting the cost of the current node. */
-static int32 PublicRoad_CalculateG(AyStar *, AyStarNode *current, OpenListNode *parent)
+static int32_t PublicRoad_CalculateG(AyStar *, AyStarNode *current, OpenListNode *parent)
 {
-	int32 cost = 0;
+	int32_t cost = 0;
 
-	const int32 distance = DistanceManhattan(parent->path.node.tile, current->tile);
+	const int32_t distance = DistanceManhattan(parent->path.node.tile, current->tile);
 
 	if (IsTileType(current->tile, MP_ROAD) || IsTileType(current->tile, MP_TUNNELBRIDGE)) {
 		cost += distance * BASE_COST_PER_TILE;
@@ -948,7 +912,7 @@ static int32 PublicRoad_CalculateG(AyStar *, AyStarNode *current, OpenListNode *
 }
 
 /** AyStar callback for getting the estimated cost to the destination. */
-static int32 PublicRoad_CalculateH(AyStar *aystar, AyStarNode *current, OpenListNode *parent)
+static int32_t PublicRoad_CalculateH(AyStar *aystar, AyStarNode *current, OpenListNode *parent)
 {
 	return DistanceManhattan(static_cast<TileIndex>(reinterpret_cast<uintptr_t>(aystar->user_target)), current->tile) * BASE_COST_PER_TILE;
 }

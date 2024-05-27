@@ -23,7 +23,7 @@ static const int INT32_DIGITS_WITH_SIGN_AND_TERMINATION = 10 + 1 + 1;
 /** Bitmask of flags for Script settings. */
 enum ScriptConfigFlags {
 	SCRIPTCONFIG_NONE      = 0x0, ///< No flags set.
-	SCRIPTCONFIG_RANDOM    = 0x1, ///< When randomizing the Script, pick any value between min_value and max_value when on custom difficulty setting.
+	// Unused flag 0x1.
 	SCRIPTCONFIG_BOOLEAN   = 0x2, ///< This value is a boolean (either 0 (false) or 1 (true) ).
 	SCRIPTCONFIG_INGAME    = 0x4, ///< This setting can be changed while the Script is running.
 	SCRIPTCONFIG_DEVELOPER = 0x8, ///< This setting will only be visible when the Script development tools are active.
@@ -37,11 +37,7 @@ struct ScriptConfigItem {
 	std::string description;      ///< The description of the configuration setting.
 	int min_value = 0;            ///< The minimal value this configuration setting can have.
 	int max_value = 1;            ///< The maximal value this configuration setting can have.
-	int custom_value = 0;         ///< The default value on custom difficulty setting.
-	int easy_value = 0;           ///< The default value on easy difficulty setting.
-	int medium_value = 0;         ///< The default value on medium difficulty setting.
-	int hard_value = 0;           ///< The default value on hard difficulty setting.
-	int random_deviation = 0;     ///< The maximum random deviation from the default value.
+	int default_value = 0;        ///< The default value of this configuration setting.
 	int step_size = 1;            ///< The step size in the gui.
 	ScriptConfigFlags flags = SCRIPTCONFIG_NONE; ///< Flags for the configuration setting.
 	LabelMapping labels;          ///< Text labels for the integer values.
@@ -62,7 +58,6 @@ public:
 	ScriptConfig() :
 		version(-1),
 		info(nullptr),
-		is_random(false),
 		to_load_data(nullptr)
 	{}
 
@@ -83,7 +78,7 @@ public:
 	 *   as specified. If false any compatible version is ok.
 	 * @param is_random Is the Script chosen randomly?
 	 */
-	void Change(std::optional<const std::string> name, int version = -1, bool force_exact_match = false, bool is_random = false);
+	void Change(std::optional<const std::string> name, int version = -1, bool force_exact_match = false);
 
 	/**
 	 * Get the ScriptInfo linked to this ScriptConfig.
@@ -140,20 +135,10 @@ public:
 	void ResetEditableSettings(bool yet_to_start);
 
 	/**
-	 * Randomize all settings the Script requested to be randomized.
-	 */
-	void AddRandomDeviation();
-
-	/**
 	 * Is this config attached to an Script? In other words, is there a Script
 	 *  that is assigned to this slot.
 	 */
 	bool HasScript() const;
-
-	/**
-	 * Is the current Script a randomly chosen Script?
-	 */
-	bool IsRandom() const;
 
 	/**
 	 * Get the name of the Script.
@@ -194,7 +179,6 @@ protected:
 	class ScriptInfo *info;                                   ///< ScriptInfo object for related to this Script version
 	SettingValueList settings;                                ///< List with all setting=>value pairs that are configure for this Script
 	std::unique_ptr<ScriptConfigItemList> config_list;        ///< List with all settings defined by this Script
-	bool is_random;                                           ///< True if the AI in this slot was randomly chosen.
 	std::unique_ptr<ScriptInstance::ScriptData> to_load_data; ///< Data to load after the Script start.
 
 	/**

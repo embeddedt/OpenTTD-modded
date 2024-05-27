@@ -48,20 +48,19 @@
 
 #include "safeguards.h"
 
-void CcGiveMoney(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcGiveMoney(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	if (result.Failed() || !_settings_game.economy.give_money || !_networking) return;
 
 	/* Inform the company of the action of one of its clients (controllers). */
-	char msg[64];
 	SetDParam(0, p1);
-	GetString(msg, STR_COMPANY_NAME, lastof(msg));
+	std::string msg = GetString(STR_COMPANY_NAME);
 
 	/*
 	 * bits 31-16: source company
 	 * bits 15-0: target company
 	 */
-	uint64 auxdata = (p1 & 0xFFFF) | (((uint64) _local_company) << 16);
+	uint64_t auxdata = (p1 & 0xFFFF) | (((uint64_t) _local_company) << 16);
 
 	if (!_network_server) {
 		NetworkClientSendChat(NETWORK_ACTION_GIVE_MONEY, DESTTYPE_BROADCAST_SS, p2, msg, NetworkTextMessageData(result.GetCost(), auxdata));
@@ -80,7 +79,7 @@ void CcGiveMoney(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2
  * @param mode Tile highlighting mode, e.g. drawing a rectangle or a dot on the ground
  * @return true if the button is clicked, false if it's unclicked
  */
-bool HandlePlacePushButton(Window *w, int widget, CursorID cursor, HighLightStyle mode)
+bool HandlePlacePushButton(Window *w, WidgetID widget, CursorID cursor, HighLightStyle mode)
 {
 	if (w->IsWidgetDisabled(widget)) return false;
 
@@ -98,7 +97,7 @@ bool HandlePlacePushButton(Window *w, int widget, CursorID cursor, HighLightStyl
 }
 
 
-void CcPlaySound_EXPLOSION(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
+void CcPlaySound_EXPLOSION(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd)
 {
 	if (result.Succeeded() && _settings_client.sound.confirm) SndPlayTileFx(SND_12_EXPLOSION, tile);
 }
@@ -201,7 +200,7 @@ void FixTitleGameZoom(int zoom_adjust)
 	UpdateViewportSizeZoom(vp);
 }
 
-static const struct NWidgetPart _nested_main_window_widgets[] = {
+static constexpr NWidgetPart _nested_main_window_widgets[] = {
 	NWidget(NWID_VIEWPORT, INVALID_COLOUR, WID_M_VIEWPORT), SetResize(1, 1),
 };
 
@@ -211,6 +210,7 @@ enum {
 	GHK_CONSOLE,
 	GHK_BOUNDING_BOXES,
 	GHK_DIRTY_BLOCKS,
+	GHK_WIDGET_OUTLINES,
 	GHK_CENTER,
 	GHK_CENTER_ZOOM,
 	GHK_RESET_OBJECT_TO_PLACE,
@@ -222,7 +222,7 @@ enum {
 	GHK_MONEY,
 	GHK_UPDATE_COORDS,
 	GHK_TOGGLE_TRANSPARENCY,
-	GHK_TOGGLE_INVISIBILITY = GHK_TOGGLE_TRANSPARENCY + 9,
+	GHK_TOGGLE_INVISIBILITY = GHK_TOGGLE_TRANSPARENCY + 10,
 	GHK_TRANSPARENCY_TOOLBAR = GHK_TOGGLE_INVISIBILITY + 8,
 	GHK_TRANSPARANCY,
 	GHK_CHAT,
@@ -271,8 +271,9 @@ struct MainWindow : Window
 			return;
 		}
 
-		this->viewport->overlay->SetDirty();
-		this->GetWidget<NWidgetBase>(WID_M_VIEWPORT)->SetDirty(this);
+		if (this->viewport->overlay->RebuildCacheCheckChanged()) {
+			this->GetWidget<NWidgetBase>(WID_M_VIEWPORT)->SetDirty(this);
+		}
 	}
 
 	void OnPaint() override
@@ -333,6 +334,10 @@ struct MainWindow : Window
 			case GHK_DIRTY_BLOCKS:
 				ToggleDirtyBlocks();
 				return ES_HANDLED;
+
+			case GHK_WIDGET_OUTLINES:
+				ToggleWidgetOutlines();
+				return ES_HANDLED;
 		}
 
 		if (_game_mode == GM_MENU) return ES_NOT_HANDLED;
@@ -356,14 +361,14 @@ struct MainWindow : Window
 			case GHK_REFRESH_SCREEN: MarkWholeScreenDirty(); break;
 
 			case GHK_CRASH: // Crash the game
-				*(volatile byte *)nullptr = 0;
+				*(volatile uint8_t *)nullptr = 0;
 				break;
 
 			case GHK_MONEY: // Gimme money
 				/* You can only cheat for money in single player or when otherwise suitably authorised. */
 				if (!_networking || _settings_game.difficulty.money_cheat_in_multiplayer) {
 					DoCommandP(0, 10000000, 0, CMD_MONEY_CHEAT);
-				} else if (_network_server || _network_settings_access) {
+				} else if (IsNetworkSettingsAdmin()) {
 					DoCommandP(0, 10000000, 0, CMD_MONEY_CHEAT_ADMIN);
 				}
 				break;
@@ -381,6 +386,7 @@ struct MainWindow : Window
 			case GHK_TOGGLE_TRANSPARENCY + 6:
 			case GHK_TOGGLE_TRANSPARENCY + 7:
 			case GHK_TOGGLE_TRANSPARENCY + 8:
+			case GHK_TOGGLE_TRANSPARENCY + 9:
 				/* Transparency toggle hot keys */
 				ToggleTransparency((TransparencyOption)(hotkey - GHK_TOGGLE_TRANSPARENCY));
 				MarkWholeScreenDirty();
@@ -515,7 +521,7 @@ struct MainWindow : Window
 		}
 	}
 
-	bool OnTooltip(Point pt, int widget, TooltipCloseCondition close_cond) override
+	bool OnTooltip([[maybe_unused]] Point pt, WidgetID widget, TooltipCloseCondition close_cond) override
 	{
 		if (widget != WID_M_VIEWPORT) return false;
 		return this->viewport->overlay->ShowTooltip(pt, close_cond);
@@ -526,14 +532,14 @@ struct MainWindow : Window
 	 * @param data Information about the changed data.
 	 * @param gui_scope Whether the call is done from GUI scope. You may not do everything when not in GUI scope. See #InvalidateWindowData() for details.
 	 */
-	void OnInvalidateData(int data = 0, bool gui_scope = true) override
+	void OnInvalidateData([[maybe_unused]] int data = 0, [[maybe_unused]] bool gui_scope = true) override
 	{
 		if (!gui_scope) return;
 		/* Forward the message to the appropriate toolbar (ingame or scenario editor) */
 		InvalidateWindowData(WC_MAIN_TOOLBAR, 0, data, true);
 	}
 
-	virtual void OnMouseOver(Point pt, int widget) override
+	virtual void OnMouseOver(Point pt, WidgetID widget) override
 	{
 		if (pt.x != -1 && _game_mode != GM_MENU && IsViewportMouseHoverActive()) {
 			/* Show tooltip with last month production or town name */
@@ -546,12 +552,12 @@ struct MainWindow : Window
 	static HotkeyList hotkeys;
 };
 
-const uint16 _ghk_quit_keys[] = {'Q' | WKC_CTRL, 'Q' | WKC_META, 0};
-const uint16 _ghk_abandon_keys[] = {'W' | WKC_CTRL, 'W' | WKC_META, 0};
-const uint16 _ghk_chat_keys[] = {WKC_RETURN, 'T', 0};
-const uint16 _ghk_chat_all_keys[] = {WKC_SHIFT | WKC_RETURN, WKC_SHIFT | 'T', 0};
-const uint16 _ghk_chat_company_keys[] = {WKC_CTRL | WKC_RETURN, WKC_CTRL | 'T', 0};
-const uint16 _ghk_chat_server_keys[] = {WKC_CTRL | WKC_SHIFT | WKC_RETURN, WKC_CTRL | WKC_SHIFT | 'T', 0};
+const uint16_t _ghk_quit_keys[] = {'Q' | WKC_CTRL, 'Q' | WKC_META, 0};
+const uint16_t _ghk_abandon_keys[] = {'W' | WKC_CTRL, 'W' | WKC_META, 0};
+const uint16_t _ghk_chat_keys[] = {WKC_RETURN, 'T', 0};
+const uint16_t _ghk_chat_all_keys[] = {WKC_SHIFT | WKC_RETURN, WKC_SHIFT | 'T', 0};
+const uint16_t _ghk_chat_company_keys[] = {WKC_CTRL | WKC_RETURN, WKC_CTRL | 'T', 0};
+const uint16_t _ghk_chat_server_keys[] = {WKC_CTRL | WKC_SHIFT | WKC_RETURN, WKC_CTRL | WKC_SHIFT | 'T', 0};
 
 static Hotkey global_hotkeys[] = {
 	Hotkey(_ghk_quit_keys, "quit", GHK_QUIT),
@@ -559,6 +565,7 @@ static Hotkey global_hotkeys[] = {
 	Hotkey(WKC_BACKQUOTE, "console", GHK_CONSOLE),
 	Hotkey('B' | WKC_CTRL, "bounding_boxes", GHK_BOUNDING_BOXES),
 	Hotkey('I' | WKC_CTRL, "dirty_blocks", GHK_DIRTY_BLOCKS),
+	Hotkey((uint16_t)0,    "widget_outlines", GHK_WIDGET_OUTLINES),
 	Hotkey('C', "center", GHK_CENTER),
 	Hotkey('Z', "center_zoom", GHK_CENTER_ZOOM),
 	Hotkey(WKC_ESC, "reset_object_to_place", GHK_RESET_OBJECT_TO_PLACE),
@@ -580,6 +587,7 @@ static Hotkey global_hotkeys[] = {
 	Hotkey('7' | WKC_CTRL, "transparency_structures", GHK_TOGGLE_TRANSPARENCY + 6),
 	Hotkey('8' | WKC_CTRL, "transparency_catenary", GHK_TOGGLE_TRANSPARENCY + 7),
 	Hotkey('9' | WKC_CTRL, "transparency_loading", GHK_TOGGLE_TRANSPARENCY + 8),
+	Hotkey('0' | WKC_CTRL, "transparency_tunnels", GHK_TOGGLE_TRANSPARENCY + 9),
 	Hotkey('1' | WKC_CTRL | WKC_SHIFT, "invisibility_signs", GHK_TOGGLE_INVISIBILITY),
 	Hotkey('2' | WKC_CTRL | WKC_SHIFT, "invisibility_trees", GHK_TOGGLE_INVISIBILITY + 1),
 	Hotkey('3' | WKC_CTRL | WKC_SHIFT, "invisibility_houses", GHK_TOGGLE_INVISIBILITY + 2),
@@ -598,18 +606,18 @@ static Hotkey global_hotkeys[] = {
 	Hotkey(WKC_SPACE, "close_error", GHK_CLOSE_ERROR),
 	Hotkey(WKC_PAGEUP,   "previous_map_mode", GHK_CHANGE_MAP_MODE_PREV),
 	Hotkey(WKC_PAGEDOWN, "next_map_mode",     GHK_CHANGE_MAP_MODE_NEXT),
-	Hotkey((uint16)0,    "switch_viewport_route_overlay_mode", GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE),
-	Hotkey((uint16)0,    "switch_viewport_map_slope_mode", GHK_SWITCH_VIEWPORT_MAP_SLOPE_MODE),
-	Hotkey((uint16)0,    "switch_viewport_map_height_mode", GHK_SWITCH_VIEWPORT_MAP_HEIGHT_MODE),
+	Hotkey((uint16_t)0,  "switch_viewport_route_overlay_mode", GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE),
+	Hotkey((uint16_t)0,  "switch_viewport_map_slope_mode", GHK_SWITCH_VIEWPORT_MAP_SLOPE_MODE),
+	Hotkey((uint16_t)0,  "switch_viewport_map_height_mode", GHK_SWITCH_VIEWPORT_MAP_HEIGHT_MODE),
 	HOTKEY_LIST_END
 };
 HotkeyList MainWindow::hotkeys("global", global_hotkeys);
 
-static WindowDesc _main_window_desc(
+static WindowDesc _main_window_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_MAIN_WINDOW, WC_NONE,
 	WDF_NO_CLOSE,
-	_nested_main_window_widgets, lengthof(_nested_main_window_widgets),
+	std::begin(_nested_main_window_widgets), std::end(_nested_main_window_widgets),
 	&MainWindow::hotkeys
 );
 
@@ -618,7 +626,7 @@ static WindowDesc _main_window_desc(
  * @param keycode The keycode that was pressed by the user.
  * @return True iff the keycode matches one of the hotkeys for 'quit'.
  */
-bool IsQuitKey(uint16 keycode)
+bool IsQuitKey(uint16_t keycode)
 {
 	int num = MainWindow::hotkeys.CheckMatch(keycode);
 	return num == GHK_QUIT;
@@ -632,11 +640,12 @@ void ShowSelectGameWindow();
  */
 void SetupColoursAndInitialWindow()
 {
-	for (uint i = 0; i != 16; i++) {
-		const byte *b = GetNonSprite(PALETTE_RECOLOUR_START + i, SpriteType::Recolour);
-
-		assert(b);
-		memcpy(_colour_gradient[i], b + 0xC6, sizeof(_colour_gradient[i]));
+	for (Colours i = COLOUR_BEGIN; i != COLOUR_END; i++) {
+		const uint8_t *b = GetNonSprite(GENERAL_SPRITE_COLOUR(i), SpriteType::Recolour) + 1;
+		assert(b != nullptr);
+		for (ColourShade j = SHADE_BEGIN; j < SHADE_END; j++) {
+			SetColourGradient(i, j, b[0xC6 + j]);
+		}
 	}
 
 	new MainWindow(&_main_window_desc);

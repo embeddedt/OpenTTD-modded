@@ -13,13 +13,12 @@
 #include "economy_type.h"
 #include "strings_type.h"
 #include "tile_type.h"
-#include "core/span_type.hpp"
 #include <optional>
 #include <string>
 
 struct GRFFile;
 
-enum CommandCostIntlFlags : uint8 {
+enum CommandCostIntlFlags : uint8_t {
 	CCIF_NONE                     = 0,
 	CCIF_SUCCESS                  = 1 << 0,
 	CCIF_INLINE_EXTRA_MSG         = 1 << 1,
@@ -39,18 +38,18 @@ class CommandCost {
 	CommandCostIntlFlags flags;                 ///< Flags: see CommandCostIntlFlags
 	StringID message;                           ///< Warning message for when success is unset
 	union {
-		uint32 result = 0;
+		uint32_t result = 0;
 		StringID extra_message;                 ///< Additional warning message for when success is unset
 		TileIndex tile;
 	} inl;
 
 	struct CommandCostAuxiliaryData {
-		uint32 textref_stack[16] = {};
+		uint32_t textref_stack[16] = {};
 		const GRFFile *textref_stack_grffile = nullptr; ///< NewGRF providing the #TextRefStack content.
-		uint textref_stack_size = 0;                    ///< Number of uint32 values to put on the #TextRefStack for the error message.
+		uint textref_stack_size = 0;                    ///< Number of uint32_t values to put on the #TextRefStack for the error message.
 		StringID extra_message = INVALID_STRING_ID;     ///< Additional warning message for when success is unset
 		TileIndex tile = INVALID_TILE;
-		uint32 result = 0;
+		uint32_t result = 0;
 	};
 	std::unique_ptr<CommandCostAuxiliaryData> aux_data;
 
@@ -160,8 +159,8 @@ public:
 	}
 
 	/**
-	 * Returns the number of uint32 values for the #TextRefStack of the error message.
-	 * @return number of uint32 values.
+	 * Returns the number of uint32_t values for the #TextRefStack of the error message.
+	 * @return number of uint32_t values.
 	 */
 	uint GetTextRefStackSize() const
 	{
@@ -170,9 +169,9 @@ public:
 
 	/**
 	 * Returns a pointer to the values for the #TextRefStack of the error message.
-	 * @return uint32 values for the #TextRefStack
+	 * @return uint32_t values for the #TextRefStack
 	 */
-	const uint32 *GetTextRefStack() const
+	const uint32_t *GetTextRefStack() const
 	{
 		return this->aux_data != nullptr ? this->aux_data->textref_stack : nullptr;
 	}
@@ -222,15 +221,6 @@ public:
 	 */
 	std::string SummaryMessage(StringID cmd_msg = 0) const;
 
-	/**
-	 * Write a string summarising the command result
-	 * @param buf buffer to write to
-	 * @param last last byte in buffer
-	 * @param cmd_msg optional failure string as passed to DoCommand
-	 * @return the number of bytes written
-	 */
-	int WriteSummaryMessage(char *buf, char *last, StringID cmd_msg = 0) const;
-
 	bool IsSuccessWithMessage() const
 	{
 		return this->Succeeded() && this->message != INVALID_STRING_ID;
@@ -263,13 +253,13 @@ public:
 		return (this->flags & CCIF_VALID_RESULT);
 	}
 
-	uint32 GetResultData() const
+	uint32_t GetResultData() const
 	{
 		if (this->flags & CCIF_INLINE_RESULT) return this->inl.result;
 		return this->aux_data != nullptr ? this->aux_data->result : 0;
 	}
 
-	void SetResultData(uint32 result);
+	void SetResultData(uint32_t result);
 };
 
 /**
@@ -345,7 +335,7 @@ enum Commands {
 	CMD_DUPLICATE_ORDER,              ///< duplicate an order
 	CMD_MASS_CHANGE_ORDER,            ///< mass change the target of an order
 
-	CMD_CHANGE_SERVICE_INT,           ///< change the server interval of a vehicle
+	CMD_CHANGE_SERVICE_INT,           ///< change the service interval of a vehicle
 
 	CMD_BUILD_INDUSTRY,               ///< build a new industry
 	CMD_INDUSTRY_SET_FLAGS,           ///< change industry control flags
@@ -358,11 +348,10 @@ enum Commands {
 
 	CMD_INCREASE_LOAN,                ///< increase the loan from the bank
 	CMD_DECREASE_LOAN,                ///< decrease the loan from the bank
+	CMD_SET_COMPANY_MAX_LOAN,         ///< sets the max loan for the company
 
 	CMD_WANT_ENGINE_PREVIEW,          ///< confirm the preview of an engine
 	CMD_ENGINE_CTRL,                  ///< control availability of the engine for companies
-
-	CMD_SET_VEHICLE_UNIT_NUMBER,      ///< sets the unit number of a vehicle
 
 	CMD_RENAME_VEHICLE,               ///< rename a whole vehicle
 	CMD_RENAME_ENGINE,                ///< rename a engine (in the engine list)
@@ -471,6 +460,7 @@ enum Commands {
 	CMD_TEMPLATE_REPLACE_VEHICLE,     ///< template replace a vehicle while it is in a depot
 	CMD_DEPOT_SELL_ALL_VEHICLES,      ///< sell all vehicles which are in a given depot
 	CMD_DEPOT_MASS_AUTOREPLACE,       ///< force the autoreplace to take action in a given depot
+	CMD_SET_TRAIN_SPEED_RESTRICTION,  ///< manually set train speed restriction
 
 	CMD_CREATE_GROUP,                 ///< create a new group
 	CMD_DELETE_GROUP,                 ///< delete a group
@@ -513,7 +503,7 @@ enum Commands {
 	CMD_INSERT_SIGNAL_INSTRUCTION,    ///< insert a signal instruction
 	CMD_MODIFY_SIGNAL_INSTRUCTION,    ///< modifies a signal instruction
 	CMD_REMOVE_SIGNAL_INSTRUCTION,    ///< removes a signal instruction
-	CMD_SIGNAL_PROGRAM_MGMT,          ///< removes a signal program management command
+	CMD_SIGNAL_PROGRAM_MGMT,          ///< signal program management command
 
 	CMD_SCHEDULED_DISPATCH,                     ///< scheduled dispatch start
 	CMD_SCHEDULED_DISPATCH_ADD,                 ///< scheduled dispatch add
@@ -521,6 +511,7 @@ enum Commands {
 	CMD_SCHEDULED_DISPATCH_SET_DURATION,        ///< scheduled dispatch set schedule duration
 	CMD_SCHEDULED_DISPATCH_SET_START_DATE,      ///< scheduled dispatch set start date
 	CMD_SCHEDULED_DISPATCH_SET_DELAY,           ///< scheduled dispatch set maximum allow delay
+	CMD_SCHEDULED_DISPATCH_SET_REUSE_SLOTS,     ///< scheduled dispatch set whether to re-use dispatch slots
 	CMD_SCHEDULED_DISPATCH_RESET_LAST_DISPATCH, ///< scheduled dispatch reset last dispatch date
 	CMD_SCHEDULED_DISPATCH_CLEAR,               ///< scheduled dispatch clear schedule
 	CMD_SCHEDULED_DISPATCH_ADD_NEW_SCHEDULE,    ///< scheduled dispatch add new schedule
@@ -530,6 +521,7 @@ enum Commands {
 	CMD_SCHEDULED_DISPATCH_APPEND_VEHICLE_SCHEDULE, ///< scheduled dispatch append schedules from another vehicle
 	CMD_SCHEDULED_DISPATCH_ADJUST,              ///< scheduled dispatch adjust time offsets in schedule
 	CMD_SCHEDULED_DISPATCH_SWAP_SCHEDULES,      ///< scheduled dispatch swap schedules in order
+	CMD_SCHEDULED_DISPATCH_SET_SLOT_FLAGS,      ///< scheduled dispatch set flags of dispatch slot
 
 	CMD_ADD_PLAN,
 	CMD_ADD_PLAN_LINE,
@@ -538,6 +530,7 @@ enum Commands {
 	CMD_CHANGE_PLAN_VISIBILITY,
 	CMD_CHANGE_PLAN_COLOUR,
 	CMD_RENAME_PLAN,
+	CMD_ACQUIRE_UNOWNED_PLAN,
 
 	CMD_DESYNC_CHECK,                 ///< Force desync checks to be run
 
@@ -590,6 +583,11 @@ enum FlaggedCommands {
 	CMD_FLAGS_MASK            = 0xFF00, ///< mask for all command flags
 	CMD_ID_MASK               = 0x00FF, ///< mask for the command ID
 };
+
+inline constexpr Commands operator|(const Commands &lhs, const FlaggedCommands &rhs)
+{
+	return static_cast<Commands>(static_cast<uint32_t>(lhs) | static_cast<uint32_t>(rhs));
+}
 
 static_assert(CMD_END <= CMD_ID_MASK + 1);
 
@@ -660,8 +658,8 @@ struct CommandAuxiliaryBase;
  * @param text Additional text
  * @return The CommandCost of the command, which can be succeeded or failed.
  */
-typedef CommandCost CommandProc(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text);
-typedef CommandCost CommandProcEx(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data);
+typedef CommandCost CommandProc(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, const char *text);
+typedef CommandCost CommandProcEx(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data);
 
 /**
  * Define a command with the flags which belongs to it.
@@ -683,7 +681,7 @@ struct Command {
 	Command(CommandProcEx *procex, const char *name, CommandFlags flags, CommandType type)
 			: procex(procex), name(name), flags(flags | CMD_PROCEX), type(type) {}
 
-	inline CommandCost Execute(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, uint64 p3, const char *text, const CommandAuxiliaryBase *aux_data) const {
+	inline CommandCost Execute(TileIndex tile, DoCommandFlag flags, uint32_t p1, uint32_t p2, uint64_t p3, const char *text, const CommandAuxiliaryBase *aux_data) const {
 		if (this->flags & CMD_PROCEX) {
 			return this->procex(tile, flags, p1, p2, p3, text, aux_data);
 		} else {
@@ -706,7 +704,7 @@ struct Command {
  * @param p3 Additional data of the command
  * @see CommandProc
  */
-typedef void CommandCallback(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd);
+typedef void CommandCallback(const CommandCost &result, TileIndex tile, uint32_t p1, uint32_t p2, uint64_t p3, uint32_t cmd);
 
 #define MAX_CMD_TEXT_LENGTH 32000
 
@@ -717,7 +715,7 @@ struct CommandAuxiliaryBase {
 
 	virtual CommandAuxiliaryBase *Clone() const = 0;
 
-	virtual std::optional<span<const uint8>> GetDeserialisationSrc() const = 0;
+	virtual std::optional<std::span<const uint8_t>> GetDeserialisationSrc() const = 0;
 
 	virtual void Serialise(CommandSerialisationBuffer &buffer) const = 0;
 };
@@ -749,16 +747,16 @@ private:
  */
 struct CommandContainer {
 	TileIndex tile;                  ///< tile command being executed on.
-	uint32 p1;                       ///< parameter p1.
-	uint32 p2;                       ///< parameter p2.
-	uint32 cmd;                      ///< command being executed.
-	uint64 p3;                       ///< parameter p3. (here for alignment)
+	uint32_t p1;                     ///< parameter p1.
+	uint32_t p2;                     ///< parameter p2.
+	uint32_t cmd;                    ///< command being executed.
+	uint64_t p3;                     ///< parameter p3. (here for alignment)
 	CommandCallback *callback;       ///< any callback function executed upon successful completion of the command.
 	std::string text;                ///< possible text sent for name changes etc.
 	CommandAuxiliaryPtr aux_data;    ///< Auxiliary command data
 };
 
-inline CommandContainer NewCommandContainerBasic(TileIndex tile, uint32 p1, uint32 p2, uint32 cmd, CommandCallback *callback = nullptr)
+inline CommandContainer NewCommandContainerBasic(TileIndex tile, uint32_t p1, uint32_t p2, uint32_t cmd, CommandCallback *callback = nullptr)
 {
 	return { tile, p1, p2, cmd, 0, callback, {}, nullptr };
 }

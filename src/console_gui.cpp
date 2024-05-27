@@ -40,7 +40,7 @@ static const uint ICON_BOTTOM_BORDERWIDTH = 12;
 struct IConsoleLine {
 	std::string buffer;     ///< The data to store.
 	TextColour colour;      ///< The colour of the line.
-	uint16 time;            ///< The amount of time the line is in the backlog.
+	uint16_t time;          ///< The amount of time the line is in the backlog.
 
 	IConsoleLine() : buffer(), colour(TC_BEGIN), time(0)
 	{
@@ -100,15 +100,15 @@ static const char *IConsoleHistoryAdd(const char *cmd);
 static void IConsoleHistoryNavigate(int direction);
 static void IConsoleTabCompletion();
 
-static const struct NWidgetPart _nested_console_window_widgets[] = {
+static constexpr NWidgetPart _nested_console_window_widgets[] = {
 	NWidget(WWT_EMPTY, INVALID_COLOUR, WID_C_BACKGROUND), SetResize(1, 1),
 };
 
-static WindowDesc _console_window_desc(
+static WindowDesc _console_window_desc(__FILE__, __LINE__,
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_CONSOLE, WC_NONE,
 	0,
-	_nested_console_window_widgets, lengthof(_nested_console_window_widgets)
+	std::begin(_nested_console_window_widgets), std::end(_nested_console_window_widgets)
 );
 
 struct IConsoleWindow : Window
@@ -129,11 +129,11 @@ struct IConsoleWindow : Window
 
 	void OnInit() override
 	{
-		this->line_height = FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.hsep_normal;
+		this->line_height = GetCharacterHeight(FS_NORMAL) + WidgetDimensions::scaled.hsep_normal;
 		this->line_offset = GetStringBoundingBox("] ").width + WidgetDimensions::scaled.frametext.left;
 	}
 
-	void Close() override
+	void Close([[maybe_unused]] int data = 0) override
 	{
 		_iconsole_mode = ICONSOLE_CLOSED;
 		VideoDriver::GetInstance()->EditBoxLostFocus();
@@ -206,7 +206,7 @@ struct IConsoleWindow : Window
 		if (_iconsole_cmdline.HandleCaret()) this->SetDirty();
 	}
 
-	EventState OnKeyPress(WChar key, uint16 keycode) override
+	EventState OnKeyPress(char32_t key, uint16_t keycode) override
 	{
 		if (_focused_window != this) return ES_NOT_HANDLED;
 
@@ -281,7 +281,7 @@ struct IConsoleWindow : Window
 		return ES_HANDLED;
 	}
 
-	void InsertTextString(int wid, const char *str, bool marked, const char *caret, const char *insert_location, const char *replacement_end) override
+	void InsertTextString(WidgetID, const char *str, bool marked, const char *caret, const char *insert_location, const char *replacement_end) override
 	{
 		if (_iconsole_cmdline.InsertString(str, marked, caret, insert_location, replacement_end)) {
 			IConsoleWindow::scroll = 0;
@@ -290,22 +290,9 @@ struct IConsoleWindow : Window
 		}
 	}
 
-	const char *GetFocusedText() const override
+	Textbuf *GetFocusedTextbuf() const override
 	{
-		return _iconsole_cmdline.buf;
-	}
-
-	const char *GetCaret() const override
-	{
-		return _iconsole_cmdline.buf + _iconsole_cmdline.caretpos;
-	}
-
-	const char *GetMarkedText(size_t *length) const override
-	{
-		if (_iconsole_cmdline.markend == 0) return nullptr;
-
-		*length = _iconsole_cmdline.markend - _iconsole_cmdline.markpos;
-		return _iconsole_cmdline.buf + _iconsole_cmdline.markpos;
+		return &_iconsole_cmdline;
 	}
 
 	Point GetCaretPosition() const override
@@ -479,55 +466,61 @@ static void IConsoleTabCompletion()
 			return;
 		}
 	}
+
+	struct match_state {
+		std::string prefix;
+		std::string candidate_str;
+		std::string common_prefix;
+		uint matches = 0;
+	};
+	match_state match_input;
+	match_state match_input_no_underscores;
+
+	match_input.prefix = std::string(input, cmdptr - input);
+	if (match_input.prefix.empty()) return;
+
 	extern std::string RemoveUnderscores(std::string name);
-	std::string prefix = RemoveUnderscores(std::string(input, cmdptr - input));
-	size_t prefix_length = prefix.size();
+	match_input_no_underscores.prefix = RemoveUnderscores(match_input.prefix);
+	if (match_input_no_underscores.prefix.empty()) return;
 
-	if (prefix_length == 0) return;
+	auto check_candidate = [&](const char *cmd_name, match_state &state) {
+		if (strncmp(cmd_name, state.prefix.c_str(), state.prefix.size()) != 0) return;
 
-	char buffer[4096];
-	char *b = buffer;
-	uint matches = 0;
-	std::string common_prefix;
-	auto check_candidate = [&](const std::string &cmd_name_str) {
-		const char *cmd_name = cmd_name_str.c_str();
-		if (matches == 0) {
-			common_prefix = cmd_name_str;
+		if (state.matches == 0) {
+			state.common_prefix = cmd_name;
 		} else {
-			const char *cp = common_prefix.c_str();
+			const char *cp = state.common_prefix.c_str();
 			const char *cmdp = cmd_name;
 			while (true) {
 				const char *end = cmdp;
-				WChar a = Utf8Consume(cp);
-				WChar b = Utf8Consume(cmdp);
+				char32_t a = Utf8Consume(cp);
+				char32_t b = Utf8Consume(cmdp);
 				if (a == 0 || b == 0 || a != b) {
-					common_prefix.resize(end - cmd_name);
+					state.common_prefix.resize(end - cmd_name);
 					break;
 				}
 			}
 		}
-		matches++;
-		b += seprintf(b, lastof(buffer), "%s ", cmd_name);
+		state.matches++;
+		if (!state.candidate_str.empty()) state.candidate_str += ' ';
+		state.candidate_str += cmd_name;
 	};
 	for (auto &it : IConsole::Commands()) {
-		const char *cmd_name = it.first.c_str();
 		const IConsoleCmd *cmd = &it.second;
-		if (strncmp(cmd_name, prefix.c_str(), prefix_length) == 0) {
-			if ((_settings_client.gui.console_show_unlisted || !cmd->unlisted) && (cmd->hook == nullptr || cmd->hook(false) != CHR_HIDE)) {
-				check_candidate(it.first);
-			}
+		if ((_settings_client.gui.console_show_unlisted || !cmd->unlisted) && (cmd->hook == nullptr || cmd->hook(false) != CHR_HIDE)) {
+			check_candidate(it.first.c_str(), match_input_no_underscores);
+			check_candidate(cmd->name.c_str(), match_input);
 		}
 	}
 	for (auto &it : IConsole::Aliases()) {
-		const char *cmd_name = it.first.c_str();
-		if (strncmp(cmd_name, prefix.c_str(), prefix_length) == 0) {
-			check_candidate(it.first);
-		}
+		check_candidate(it.first.c_str(), match_input_no_underscores);
+		check_candidate(it.second.name.c_str(), match_input);
 	}
-	if (matches > 0) {
-		_iconsole_cmdline.Assign(common_prefix.c_str());
-		if (matches > 1) {
-			IConsolePrint(CC_WHITE, buffer);
+	match_state &best = match_input_no_underscores.matches > match_input.matches ? match_input_no_underscores : match_input;
+	if (best.matches > 0) {
+		_iconsole_cmdline.Assign(best.common_prefix.c_str());
+		if (best.matches > 1) {
+			IConsolePrint(CC_WHITE, best.candidate_str.c_str());
 		}
 	}
 }
@@ -541,9 +534,9 @@ static void IConsoleTabCompletion()
  * @param colour_code the colour of the command. Red in case of errors, etc.
  * @param str the message entered or output on the console (notice, error, etc.)
  */
-void IConsoleGUIPrint(TextColour colour_code, char *str)
+void IConsoleGUIPrint(TextColour colour_code, std::string str)
 {
-	_iconsole_buffer.push_front(IConsoleLine(str, colour_code));
+	_iconsole_buffer.push_front(IConsoleLine(std::move(str), colour_code));
 	SetWindowDirty(WC_CONSOLE, 0);
 }
 
@@ -553,7 +546,7 @@ void IConsoleGUIPrint(TextColour colour_code, char *str)
  * all lines in the buffer are aged by one. When a line exceeds both the maximum position
  * and also the maximum age, it gets removed.
  * @return true if any lines were removed
-*/
+ */
 static bool TruncateBuffer()
 {
 	bool need_truncation = false;
@@ -589,8 +582,8 @@ bool IsValidConsoleColour(TextColour c)
 	/* A text colour from the palette is used; must be the company
 	 * colour gradient, so it must be one of those. */
 	c &= ~TC_IS_PALETTE_COLOUR;
-	for (uint i = COLOUR_BEGIN; i < COLOUR_END; i++) {
-		if (_colour_gradient[i][4] == c) return true;
+	for (Colours i = COLOUR_BEGIN; i < COLOUR_END; i++) {
+		if (GetColourGradient(i, SHADE_NORMAL) == c) return true;
 	}
 
 	return false;

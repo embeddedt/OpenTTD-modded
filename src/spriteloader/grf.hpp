@@ -13,11 +13,11 @@
 #include "spriteloader.hpp"
 
 /** Sprite loader for graphics coming from a (New)GRF. */
-class SpriteLoaderGrf FINAL : public SpriteLoader {
-	byte container_ver;
+class SpriteLoaderGrf final : public SpriteLoader {
+	uint8_t container_ver;
 public:
-	SpriteLoaderGrf(byte container_ver) : container_ver(container_ver) {}
-	uint8 LoadSprite(SpriteLoader::Sprite *sprite, SpriteFile &file, size_t file_pos, SpriteType sprite_type, bool load_32bpp, uint count, uint16 control_flags, uint8 zoom_levels) override;
+	SpriteLoaderGrf(uint8_t container_ver) : container_ver(container_ver) {}
+	uint8_t LoadSprite(SpriteLoader::SpriteCollection &sprite, SpriteFile &file, size_t file_pos, SpriteType sprite_type, bool load_32bpp, uint count, uint16_t control_flags, uint8_t zoom_levels) override;
 };
 
 #endif /* SPRITELOADER_GRF_HPP */

@@ -60,20 +60,28 @@ struct RoadStop : RoadStopPool::PoolItem<&_roadstop_pool> {
 			return this->occupied;
 		}
 
+		/**
+		 * Adjust the occupation of this road stop, only to handle vehicles unexpectedly changing length
+		 */
+		inline void AdjustOccupation(int adjustment)
+		{
+			this->occupied += adjustment;
+		}
+
 		void Leave(const RoadVehicle *rv);
 		void Enter(const RoadVehicle *rv);
 		void CheckIntegrity(const RoadStop *rs) const;
 		void Rebuild(const RoadStop *rs, int side = -1);
 	};
 
+	uint8_t         status; ///< Current status of the Stop, @see RoadStopSatusFlag. Access using *Bay and *Busy functions.
 	TileIndex       xy;     ///< Position on the map
-	byte            status; ///< Current status of the Stop, @see RoadStopSatusFlag. Access using *Bay and *Busy functions.
 	struct RoadStop *next;  ///< Next stop of the given type at this station
 
 	/** Initializes a RoadStop */
 	inline RoadStop(TileIndex tile = INVALID_TILE) :
-		xy(tile),
-		status((1 << RSSFB_BAY_COUNT) - 1)
+		status((1 << RSSFB_BAY_COUNT) - 1),
+		xy(tile)
 	{ }
 
 	~RoadStop();
@@ -158,6 +166,9 @@ struct RoadStop : RoadStopPool::PoolItem<&_roadstop_pool> {
 	static RoadStop *GetByTile(TileIndex tile, RoadStopType type);
 
 	static bool IsDriveThroughRoadStopContinuation(TileIndex rs, TileIndex next);
+
+	void DebugClearOccupancy();
+	void DebugReEnter(const RoadVehicle *rv);
 
 private:
 	Entry *east; ///< The vehicles that entered from the east

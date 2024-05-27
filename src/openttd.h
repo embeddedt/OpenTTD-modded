@@ -12,6 +12,7 @@
 
 #include <atomic>
 #include <chrono>
+#include <optional>
 #include "core/enum_type.hpp"
 
 /** Mode which defines the state of the game. */
@@ -58,15 +59,21 @@ enum ExtraDisplayOptions {
 	XDO_SHOW_HIDDEN_SIGNS       = 1, ///< Show hidden signs
 };
 
+struct GameSessionStats {
+	std::optional<std::chrono::steady_clock::time_point> start_time; ///< Time when the current game was started.
+	std::string savegame_id;                                         ///< Unique ID of the savegame.
+	std::optional<size_t> savegame_size;                             ///< Size of the last saved savegame in bytes, or std::nullopt if not saved yet.
+};
+
 extern GameMode _game_mode;
 extern SwitchMode _switch_mode;
 extern bool _check_special_modes;
-extern std::chrono::steady_clock::time_point _switch_mode_time;
+extern GameSessionStats _game_session_stats;
 extern std::atomic<bool> _exit_game;
 extern bool _save_config;
 
 /** Modes of pausing we've got */
-enum PauseMode : byte {
+enum PauseMode : uint8_t {
 	PM_UNPAUSED              = 0,      ///< A normal unpaused game
 	PM_PAUSED_NORMAL         = 1 << 0, ///< A game normally paused
 	PM_PAUSED_SAVELOAD       = 1 << 1, ///< A game paused for saving/loading
@@ -84,7 +91,7 @@ DECLARE_ENUM_AS_BIT_SET(PauseMode)
 
 /** The current pause mode */
 extern PauseMode _pause_mode;
-extern uint32 _pause_countdown;
+extern uint32_t _pause_countdown;
 
 void AskExitGame();
 void AskExitToGameMenu();
@@ -99,7 +106,7 @@ void SwitchToMode(SwitchMode new_mode);
 bool RequestNewGRFScan(struct NewGRFScanCallback *callback = nullptr);
 void GenerateSavegameId();
 
-void OpenBrowser(const char *url);
+void OpenBrowser(const std::string &url);
 void ChangeAutosaveFrequency(bool reset);
 
 #endif /* OPENTTD_H */

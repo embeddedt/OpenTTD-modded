@@ -43,8 +43,8 @@ static const char * const HEIGHTMAP_NAME  = "heightmap";  ///< Default filename 
 std::string _screenshot_format_name;  ///< Extension of the current screenshot format (corresponds with #_cur_screenshot_format).
 uint _num_screenshot_formats;         ///< Number of available screenshot formats.
 uint _cur_screenshot_format;          ///< Index of the currently selected screenshot format in #_screenshot_formats.
-static char _screenshot_name[128];    ///< Filename of the screenshot file.
-char _full_screenshot_name[MAX_PATH]; ///< Pathname of the screenshot file.
+static std::string _screenshot_name;  ///< Filename of the screenshot file.
+std::string _full_screenshot_path;    ///< Pathname of the screenshot file.
 uint _heightmap_highest_peak;         ///< When saving a heightmap, this contains the highest peak on the map.
 
 static const char *_screenshot_aux_text_key = nullptr;
@@ -93,25 +93,25 @@ struct ScreenshotFormat {
 
 /** BMP File Header (stored in little endian) */
 PACK(struct BitmapFileHeader {
-	uint16 type;
-	uint32 size;
-	uint32 reserved;
-	uint32 off_bits;
+	uint16_t type;
+	uint32_t size;
+	uint32_t reserved;
+	uint32_t off_bits;
 });
 static_assert(sizeof(BitmapFileHeader) == 14);
 
 /** BMP Info Header (stored in little endian) */
 struct BitmapInfoHeader {
-	uint32 size;
-	int32 width, height;
-	uint16 planes, bitcount;
-	uint32 compression, sizeimage, xpels, ypels, clrused, clrimp;
+	uint32_t size;
+	int32_t width, height;
+	uint16_t planes, bitcount;
+	uint32_t compression, sizeimage, xpels, ypels, clrused, clrimp;
 };
 static_assert(sizeof(BitmapInfoHeader) == 40);
 
 /** Format of palette data in BMP header */
 struct RgbQuad {
-	byte blue, green, red, reserved;
+	uint8_t blue, green, red, reserved;
 };
 static_assert(sizeof(RgbQuad) == 4);
 
@@ -193,8 +193,8 @@ static bool MakeBMPImage(const char *name, ScreenshotCallback *callb, void *user
 	/* Try to use 64k of memory, store between 16 and 128 lines */
 	uint maxlines = Clamp(65536 / (w * pixelformat / 8), 16, 128); // number of lines per iteration
 
-	uint8 *buff = MallocT<uint8>(maxlines * w * pixelformat / 8); // buffer which is rendered to
-	uint8 *line = AllocaM(uint8, bytewidth); // one line, stored to file
+	uint8_t *buff = MallocT<uint8_t>(maxlines * w * pixelformat / 8); // buffer which is rendered to
+	uint8_t *line = AllocaM(uint8_t, bytewidth); // one line, stored to file
 	memset(line, 0, bytewidth);
 
 	/* Start at the bottom, since bitmaps are stored bottom up */
@@ -214,7 +214,7 @@ static bool MakeBMPImage(const char *name, ScreenshotCallback *callb, void *user
 				/* Convert from 'native' 32bpp to BMP-like 24bpp.
 				 * Works for both big and little endian machines */
 				Colour *src = ((Colour *)buff) + n * w;
-				byte *dst = line;
+				uint8_t *dst = line;
 				for (uint i = 0; i < w; i++) {
 					dst[i * 3    ] = src[i].b;
 					dst[i * 3 + 1] = src[i].g;
@@ -326,7 +326,7 @@ static bool MakePNGImage(const char *name, ScreenshotCallback *callb, void *user
 	text[0].text_length = strlen(_openttd_revision);
 	text[0].compression = PNG_TEXT_COMPRESSION_NONE;
 
-	const uint32 text_buf_length = 65536;
+	const uint32_t text_buf_length = 65536;
 	char * const text_buf = MallocT<char>(text_buf_length);
 	auto guard = scope_guard([=]() {
 		free(text_buf);
@@ -399,7 +399,7 @@ static bool MakePNGImage(const char *name, ScreenshotCallback *callb, void *user
 	maxlines = Clamp(65536 / w, 16, 128);
 
 	/* now generate the bitmap bits */
-	void *buff = CallocT<uint8>(static_cast<size_t>(w) * maxlines * bpp); // by default generate 128 lines at a time.
+	void *buff = CallocT<uint8_t>(static_cast<size_t>(w) * maxlines * bpp); // by default generate 128 lines at a time.
 
 	y = 0;
 	do {
@@ -432,21 +432,21 @@ static bool MakePNGImage(const char *name, ScreenshotCallback *callb, void *user
 
 /** Definition of a PCX file header. */
 struct PcxHeader {
-	byte manufacturer;
-	byte version;
-	byte rle;
-	byte bpp;
-	uint32 unused;
-	uint16 xmax, ymax;
-	uint16 hdpi, vdpi;
-	byte pal_small[16 * 3];
-	byte reserved;
-	byte planes;
-	uint16 pitch;
-	uint16 cpal;
-	uint16 width;
-	uint16 height;
-	byte filler[54];
+	uint8_t manufacturer;
+	uint8_t version;
+	uint8_t rle;
+	uint8_t bpp;
+	uint32_t unused;
+	uint16_t xmax, ymax;
+	uint16_t hdpi, vdpi;
+	uint8_t pal_small[16 * 3];
+	uint8_t reserved;
+	uint8_t planes;
+	uint16_t pitch;
+	uint16_t cpal;
+	uint16_t width;
+	uint16_t height;
+	uint8_t filler[54];
 };
 static_assert(sizeof(PcxHeader) == 128);
 
@@ -506,7 +506,7 @@ static bool MakePCXImage(const char *name, ScreenshotCallback *callb, void *user
 	maxlines = Clamp(65536 / w, 16, 128);
 
 	/* now generate the bitmap bits */
-	uint8 *buff = CallocT<uint8>(static_cast<size_t>(w) * maxlines); // by default generate 128 lines at a time.
+	uint8_t *buff = CallocT<uint8_t>(static_cast<size_t>(w) * maxlines); // by default generate 128 lines at a time.
 
 	y = 0;
 	do {
@@ -520,14 +520,14 @@ static bool MakePCXImage(const char *name, ScreenshotCallback *callb, void *user
 
 		/* write them to pcx */
 		for (i = 0; i != n; i++) {
-			const uint8 *bufp = buff + i * w;
-			byte runchar = bufp[0];
+			const uint8_t *bufp = buff + i * w;
+			uint8_t runchar = bufp[0];
 			uint runcount = 1;
 			uint j;
 
 			/* for each pixel... */
 			for (j = 1; j < w; j++) {
-				uint8 ch = bufp[j];
+				uint8_t ch = bufp[j];
 
 				if (ch != runchar || runcount >= 0x3f) {
 					if (runcount > 1 || (runchar & 0xC0) == 0xC0) {
@@ -573,7 +573,7 @@ static bool MakePCXImage(const char *name, ScreenshotCallback *callb, void *user
 	}
 
 	/* Palette is word-aligned, copy it to a temporary byte array */
-	byte tmp[256 * 3];
+	uint8_t tmp[256 * 3];
 
 	for (uint i = 0; i < 256; i++) {
 		tmp[i * 3 + 0] = palette[i].r;
@@ -624,7 +624,7 @@ void InitializeScreenshotFormats()
  * Callback of the screenshot generator that dumps the current video buffer.
  * @see ScreenshotCallback
  */
-static void CurrentScreenCallback(void *userdata, void *buf, uint y, uint pitch, uint n)
+static void CurrentScreenCallback(void *, void *buf, uint y, uint pitch, uint n)
 {
 	Blitter *blitter = BlitterFactory::GetCurrentBlitter();
 	void *src = blitter->MoveTo(_screen.dst_ptr, 0, y);
@@ -700,47 +700,47 @@ static void LargeWorldCallback(void *userdata, void *buf, uint y, uint pitch, ui
  */
 static const char *MakeScreenshotName(const char *default_fn, const char *ext, bool crashlog = false)
 {
-	bool generate = StrEmpty(_screenshot_name);
+	bool generate = _screenshot_name.empty();
 
 	if (generate) {
 		if (_game_mode == GM_EDITOR || _game_mode == GM_MENU || _local_company == COMPANY_SPECTATOR) {
-			strecpy(_screenshot_name, default_fn, lastof(_screenshot_name));
+			_screenshot_name = default_fn;
 		} else {
-			GenerateDefaultSaveName(_screenshot_name, lastof(_screenshot_name));
+			_screenshot_name = GenerateDefaultSaveName();
 		}
 	}
 
-	size_t len = strlen(_screenshot_name);
+	size_t len = _screenshot_name.size();
 
 	/* Handle user-specified filenames ending in %d or # with automatic numbering */
 	if (len >= 2 && _screenshot_name[len - 2] == '%' && _screenshot_name[len - 1] == 'd') {
 		generate = true;
-		len -= 2;
-		_screenshot_name[len] = '\0';
+		_screenshot_name.resize(len - 2);
 	} else if (len >= 1 && _screenshot_name[len - 1] == '#') {
 		generate = true;
-		len -= 1;
-		_screenshot_name[len] = '\0';
+		_screenshot_name.resize(len - 1);
 	}
 
+	len = _screenshot_name.size();
+
 	/* Add extension to screenshot file */
-	seprintf(&_screenshot_name[len], lastof(_screenshot_name), ".%s", ext);
+	_screenshot_name += '.';
+	_screenshot_name += ext;
 
 	const char *screenshot_dir = crashlog ? _personal_dir.c_str() : FiosGetScreenshotDir();
 
 	for (uint serial = 1;; serial++) {
-		if (seprintf(_full_screenshot_name, lastof(_full_screenshot_name), "%s%s", screenshot_dir, _screenshot_name) >= (int)lengthof(_full_screenshot_name)) {
-			/* We need more characters than MAX_PATH -> end with error */
-			_full_screenshot_name[0] = '\0';
-			break;
-		}
+		_full_screenshot_path = screenshot_dir;
+		_full_screenshot_path += _screenshot_name;
+
 		if (!generate) break; // allow overwriting of non-automatic filenames
-		if (!FileExists(_full_screenshot_name)) break;
+		if (!FileExists(_full_screenshot_path)) break;
 		/* If file exists try another one with same name, but just with a higher index */
-		seprintf(&_screenshot_name[len], lastof(_screenshot_name) - len, "#%u.%s", serial, ext);
+		_screenshot_name.erase(len);
+		_screenshot_name += stdstr_fmt("#%u.%s", serial, ext);
 	}
 
-	return _full_screenshot_name;
+	return _full_screenshot_path.c_str();
 }
 
 /** Make a screenshot of the current screen. */
@@ -758,7 +758,7 @@ static bool MakeSmallScreenshot(bool crashlog)
  * @param height the height of the screenshot, or 0 for current viewport height (needs to be 0 with SC_VIEWPORT, SC_CRASHLOG, and SC_WORLD).
  * @param[out] vp Result viewport
  */
-void SetupScreenshotViewport(ScreenshotType t, Viewport *vp, uint32 width, uint32 height)
+void SetupScreenshotViewport(ScreenshotType t, Viewport *vp, uint32_t width, uint32_t height)
 {
 	switch(t) {
 		case SC_VIEWPORT:
@@ -847,7 +847,7 @@ void SetupScreenshotViewport(ScreenshotType t, Viewport *vp, uint32 width, uint3
  * @param height the height of the screenshot of, or 0 for current viewport height.
  * @return true on success
  */
-static bool MakeLargeWorldScreenshot(ScreenshotType t, uint32 width = 0, uint32 height = 0)
+static bool MakeLargeWorldScreenshot(ScreenshotType t, uint32_t width = 0, uint32_t height = 0)
 {
 	Viewport vp;
 	SetupScreenshotViewport(t, &vp, width, height);
@@ -859,23 +859,21 @@ static bool MakeLargeWorldScreenshot(ScreenshotType t, uint32 width = 0, uint32 
 
 /**
  * Callback for generating a heightmap. Supports 8bpp grayscale only.
- * @param userdata Pointer to user data.
  * @param buffer   Destination buffer.
  * @param y        Line number of the first line to write.
- * @param pitch    Number of pixels to write (1 byte for 8bpp, 4 bytes for 32bpp). @see Colour
  * @param n        Number of lines to write.
  * @see ScreenshotCallback
  */
-static void HeightmapCallback(void *userdata, void *buffer, uint y, uint pitch, uint n)
+static void HeightmapCallback(void *, void *buffer, uint y, uint, uint n)
 {
-	byte *buf = (byte *)buffer;
+	uint8_t *buf = (uint8_t *)buffer;
 	while (n > 0) {
 		TileIndex ti = TileXY(MapMaxX(), y);
 		for (uint x = MapMaxX(); true; x--) {
 			*buf = 256 * TileHeight(ti) / (1 + _heightmap_highest_peak);
 			buf++;
 			if (x == 0) break;
-			ti = TILE_ADDXY(ti, -1, 0);
+			ti = TileAddXY(ti, -1, 0);
 		}
 		y++;
 		n--;
@@ -910,10 +908,9 @@ static ScreenshotType _confirmed_screenshot_type; ///< Screenshot type the curre
 
 /**
  * Callback on the confirmation window for huge screenshots.
- * @param w Window with viewport
  * @param confirmed true on confirmation
  */
-static void ScreenshotConfirmationCallback(Window *w, bool confirmed)
+static void ScreenshotConfirmationCallback(Window *, bool confirmed)
 {
 	if (confirmed) MakeScreenshot(_confirmed_screenshot_type, {});
 }
@@ -973,7 +970,7 @@ static void ShowScreenshotResultMessage(ScreenshotType t, bool ret)
  * @param height the height of the screenshot of, or 0 for current viewport height (only works for SC_ZOOMEDIN and SC_DEFAULTZOOM).
  * @return true iff the screenshot was made successfully
  */
-static bool RealMakeScreenshot(ScreenshotType t, std::string name, uint32 width, uint32 height)
+static bool RealMakeScreenshot(ScreenshotType t, std::string name, uint32_t width, uint32_t height)
 {
 	if (t == SC_VIEWPORT) {
 		/* First draw the dirty parts of the screen and only then change the name
@@ -986,8 +983,7 @@ static bool RealMakeScreenshot(ScreenshotType t, std::string name, uint32 width,
 		SetScreenshotWindowHidden(false);
 	}
 
-	_screenshot_name[0] = '\0';
-	if (!name.empty()) strecpy(_screenshot_name, name.c_str(), lastof(_screenshot_name));
+	_screenshot_name = name;
 
 	bool ret;
 	switch (t) {
@@ -1046,7 +1042,7 @@ static bool RealMakeScreenshot(ScreenshotType t, std::string name, uint32 width,
  * @return true iff the screenshot was successfully made.
  * @see MakeScreenshotWithConfirm
  */
-bool MakeScreenshot(ScreenshotType t, std::string name, uint32 width, uint32 height)
+bool MakeScreenshot(ScreenshotType t, std::string name, uint32_t width, uint32_t height)
 {
 	if (t == SC_CRASHLOG) {
 		/* Video buffer might or might not be locked. */
@@ -1125,7 +1121,7 @@ static Owner GetMinimapOwner(TileIndex tile)
  * @param tile The tile of which we would like to get the colour.
  * @return The color palette value
  */
-static byte GetTopographyValue(TileIndex tile)
+static uint8_t GetTopographyValue(TileIndex tile)
 {
 	const auto tile_type = GetTileType(tile);
 
@@ -1220,7 +1216,7 @@ static byte GetTopographyValue(TileIndex tile)
  * @param tile The tile of which we would like to get the colour.
  * @return The color palette value
  */
-static byte GetIndustryValue(TileIndex tile)
+static uint8_t GetIndustryValue(TileIndex tile)
 {
 	const auto tile_type = GetTileType(tile);
 
@@ -1275,16 +1271,16 @@ static byte GetIndustryValue(TileIndex tile)
 template <typename T>
 void MinimapScreenCallback(void *userdata, void *buf, uint y, uint pitch, uint n, T colorCallback)
 {
-	uint32 *ubuf = (uint32 *)buf;
+	uint32_t *ubuf = (uint32_t *)buf;
 	uint num = (pitch * n);
 	for (uint i = 0; i < num; i++) {
 		uint row = y + (int)(i / pitch);
 		uint col = (MapSizeX() - 1) - (i % pitch);
 
 		TileIndex tile = TileXY(col, row);
-		byte val = colorCallback(tile);
+		uint8_t val = colorCallback(tile);
 
-		uint32 colour_buf = 0;
+		uint32_t colour_buf = 0;
 		colour_buf  = (_cur_palette.palette[val].b << 0);
 		colour_buf |= (_cur_palette.palette[val].g << 8);
 		colour_buf |= (_cur_palette.palette[val].r << 16);
@@ -1303,9 +1299,9 @@ void MinimapScreenCallback(void *userdata, void *buf, uint y, uint pitch, uint n
 static void MinimapScreenCallback(void *userdata, void *buf, uint y, uint pitch, uint n)
 {
 	/* Fill with the company colours */
-	byte owner_colours[OWNER_END + 1];
+	uint8_t owner_colours[OWNER_END + 1];
 	for (const Company *c : Company::Iterate()) {
-		owner_colours[c->index] = MKCOLOUR(_colour_gradient[c->colour][5]);
+		owner_colours[c->index] = MKCOLOUR(GetColourGradient(c->colour, SHADE_LIGHT));
 	}
 
 	/* Fill with some special colours */
@@ -1315,7 +1311,7 @@ static void MinimapScreenCallback(void *userdata, void *buf, uint y, uint pitch,
 	owner_colours[OWNER_DEITY]   = PC_DARK_GREY; // industry
 	owner_colours[OWNER_END]     = PC_BLACK;
 
-	MinimapScreenCallback(userdata, buf, y, pitch, n, [&](TileIndex tile) -> byte {
+	MinimapScreenCallback(userdata, buf, y, pitch, n, [&](TileIndex tile) -> uint8_t {
 		return owner_colours[GetMinimapOwner(tile)];
 	});
 }
@@ -1335,8 +1331,8 @@ static void IndustryScreenCallback(void *userdata, void *buf, uint y, uint pitch
  */
 bool MakeMinimapWorldScreenshot(const char *name)
 {
-	_screenshot_name[0] = '\0';
-	if (name != nullptr) strecpy(_screenshot_name, name, lastof(_screenshot_name));
+	_screenshot_name.clear();
+	if (name != nullptr) _screenshot_name.assign(name);
 
 	const ScreenshotFormat *sf = _screenshot_formats + _cur_screenshot_format;
 	return sf->proc(MakeScreenshotName(SCREENSHOT_NAME, sf->extension), MinimapScreenCallback, nullptr, MapSizeX(), MapSizeY(), 32, _cur_palette.palette);
@@ -1347,8 +1343,8 @@ bool MakeMinimapWorldScreenshot(const char *name)
  */
 bool MakeTopographyScreenshot(const char *name)
 {
-	_screenshot_name[0] = '\0';
-	if (name != nullptr) strecpy(_screenshot_name, name, lastof(_screenshot_name));
+	_screenshot_name.clear();
+	if (name != nullptr) _screenshot_name.assign(name);
 
 	const ScreenshotFormat *sf = _screenshot_formats + _cur_screenshot_format;
 	return sf->proc(MakeScreenshotName(SCREENSHOT_NAME, sf->extension), TopographyScreenCallback, nullptr, MapSizeX(), MapSizeY(), 32, _cur_palette.palette);
@@ -1359,8 +1355,8 @@ bool MakeTopographyScreenshot(const char *name)
  */
 bool MakeIndustryScreenshot(const char *name)
 {
-	_screenshot_name[0] = '\0';
-	if (name != nullptr) strecpy(_screenshot_name, name, lastof(_screenshot_name));
+	_screenshot_name.clear();
+	if (name != nullptr) _screenshot_name.assign(name);
 
 	const ScreenshotFormat *sf = _screenshot_formats + _cur_screenshot_format;
 	return sf->proc(MakeScreenshotName(SCREENSHOT_NAME, sf->extension), IndustryScreenCallback, nullptr, MapSizeX(), MapSizeY(), 32, _cur_palette.palette);

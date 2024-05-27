@@ -24,10 +24,10 @@
 
 /** Window to select a date graphically by using dropdowns */
 struct SetDateWindow : Window {
-	SetDateCallback *callback; ///< Callback to call when a date has been selected
-	YearMonthDay date; ///< The currently selected date
-	Year min_year;     ///< The minimum year in the year dropdown
-	Year max_year;     ///< The maximum year (inclusive) in the year dropdown
+	SetTickCallback *callback;   ///< Callback to call when a date has been selected
+	EconTime::YearMonthDay date; ///< The currently selected date
+	EconTime::Year min_year;     ///< The minimum year in the year dropdown
+	EconTime::Year max_year;     ///< The maximum year (inclusive) in the year dropdown
 
 	/**
 	 * Create the new 'set date' window
@@ -39,12 +39,12 @@ struct SetDateWindow : Window {
 	 * @param max_year the maximum year (inclusive) to show in the year dropdown
 	 * @param callback the callback to call once a date has been selected
 	 */
-	SetDateWindow(WindowDesc *desc, WindowNumber window_number, Window *parent, Date initial_date, Year min_year, Year max_year,
-				SetDateCallback *callback, StringID button_text, StringID button_tooltip) :
+	SetDateWindow(WindowDesc *desc, WindowNumber window_number, Window *parent, EconTime::Date initial_date, EconTime::Year min_year, EconTime::Year max_year,
+				SetTickCallback *callback, StringID button_text, StringID button_tooltip) :
 			Window(desc),
 			callback(callback),
-			min_year(std::max(MIN_YEAR, min_year)),
-			max_year(std::min(MAX_YEAR, max_year))
+			min_year(std::max(EconTime::MIN_YEAR, min_year)),
+			max_year(std::min(EconTime::MAX_YEAR, max_year))
 	{
 		assert(this->min_year <= this->max_year);
 		this->parent = parent;
@@ -56,12 +56,12 @@ struct SetDateWindow : Window {
 		}
 		this->FinishInitNested(window_number);
 
-		if (initial_date == 0) initial_date = _date;
-		ConvertDateToYMD(initial_date, &this->date);
+		if (initial_date == 0) initial_date = EconTime::CurDate();
+		this->date = EconTime::ConvertDateToYMD(initial_date);
 		this->date.year = Clamp(this->date.year, min_year, max_year);
 	}
 
-	Point OnInitialPosition(int16 sm_width, int16 sm_height, int window_number) override
+	Point OnInitialPosition(int16_t sm_width, int16_t sm_height, int window_number) override
 	{
 		Point pt = { this->parent->left + this->parent->width / 2 - sm_width / 2, this->parent->top + this->parent->height / 2 - sm_height / 2 };
 		return pt;
@@ -71,7 +71,7 @@ struct SetDateWindow : Window {
 	 * Helper function to construct the dropdown.
 	 * @param widget the dropdown widget to create the dropdown for
 	 */
-	virtual void ShowDateDropDown(int widget)
+	virtual void ShowDateDropDown(WidgetID widget)
 	{
 		int selected;
 		DropDownList list;
@@ -81,31 +81,31 @@ struct SetDateWindow : Window {
 
 			case WID_SD_DAY:
 				for (uint i = 0; i < 31; i++) {
-					list.emplace_back(new DropDownListStringItem(STR_DAY_NUMBER_1ST + i, i + 1, false));
+					list.push_back(std::make_unique<DropDownListStringItem>(STR_DAY_NUMBER_1ST + i, i + 1, false));
 				}
 				selected = this->date.day;
 				break;
 
 			case WID_SD_MONTH:
 				for (uint i = 0; i < 12; i++) {
-					list.emplace_back(new DropDownListStringItem(STR_MONTH_JAN + i, i, false));
+					list.push_back(std::make_unique<DropDownListStringItem>(STR_MONTH_JAN + i, i, false));
 				}
 				selected = this->date.month;
 				break;
 
 			case WID_SD_YEAR:
-				for (Year i = this->min_year; i <= this->max_year; i++) {
+				for (EconTime::Year i = this->min_year; i <= this->max_year; i++) {
 					SetDParam(0, i);
-					list.emplace_back(new DropDownListStringItem(STR_JUST_INT, i, false));
+					list.push_back(std::make_unique<DropDownListStringItem>(STR_JUST_INT, i.base(), false));
 				}
-				selected = this->date.year;
+				selected = this->date.year.base();
 				break;
 		}
 
 		ShowDropDownList(this, std::move(list), selected, widget);
 	}
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override
 	{
 		Dimension d = {0, 0};
 		switch (widget) {
@@ -134,7 +134,7 @@ struct SetDateWindow : Window {
 		*size = d;
 	}
 
-	void SetStringParameters(int widget) const override
+	void SetStringParameters(WidgetID widget) const override
 	{
 		switch (widget) {
 			case WID_SD_DAY:   SetDParam(0, this->date.day - 1 + STR_DAY_NUMBER_1ST); break;
@@ -143,7 +143,7 @@ struct SetDateWindow : Window {
 		}
 	}
 
-	void OnClick(Point pt, int widget, int click_count) override
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override
 	{
 		switch (widget) {
 			case WID_SD_DAY:
@@ -153,14 +153,14 @@ struct SetDateWindow : Window {
 				break;
 			case WID_SD_SET_DATE:
 				if (this->callback != nullptr) {
-					this->callback(this, DateToScaledDateTicks(ConvertYMDToDate(this->date.year, this->date.month, this->date.day)));
+					this->callback(this, DateToStateTicks(EconTime::ConvertYMDToDate(this->date.year, this->date.month, this->date.day)));
 				}
 				this->Close();
 				break;
 		}
 	}
 
-	void OnDropdownSelect(int widget, int index) override
+	void OnDropdownSelect(WidgetID widget, int index) override
 	{
 		switch (widget) {
 			case WID_SD_DAY:
@@ -181,13 +181,13 @@ struct SetDateWindow : Window {
 
 struct SetMinutesWindow : SetDateWindow
 {
-	Minutes minutes;
+	TickMinutes minutes;
 
 	/** Constructor. */
-	SetMinutesWindow(WindowDesc *desc, WindowNumber window_number, Window *parent, DateTicksScaled initial_date, Year min_year, Year max_year,
-				SetDateCallback *callback, StringID button_text, StringID button_tooltip) :
-			SetDateWindow(desc, window_number, parent, initial_date, min_year, max_year, callback, button_text, button_tooltip),
-			minutes(initial_date / _settings_time.ticks_per_minute)
+	SetMinutesWindow(WindowDesc *desc, WindowNumber window_number, Window *parent, StateTicks initial_tick, EconTime::Year min_year, EconTime::Year max_year,
+				SetTickCallback *callback, StringID button_text, StringID button_tooltip) :
+			SetDateWindow(desc, window_number, parent, 0, min_year, max_year, callback, button_text, button_tooltip),
+			minutes(_settings_time.ToTickMinutes(initial_tick))
 	{
 	}
 
@@ -195,7 +195,7 @@ struct SetMinutesWindow : SetDateWindow
 	 * Helper function to construct the dropdown.
 	 * @param widget the dropdown widget to create the dropdown for
 	 */
-	virtual void ShowDateDropDown(int widget)
+	virtual void ShowDateDropDown(WidgetID widget) override
 	{
 		int selected;
 		DropDownList list;
@@ -208,7 +208,7 @@ struct SetMinutesWindow : SetDateWindow
 					SetDParam(0, i);
 					list.emplace_back(new DropDownListStringItem(STR_JUST_INT, i, false));
 				}
-				selected = MINUTES_MINUTE(minutes);
+				selected = this->minutes.ClockMinute();
 				break;
 
 			case WID_SD_MONTH:
@@ -216,7 +216,7 @@ struct SetMinutesWindow : SetDateWindow
 					SetDParam(0, i);
 					list.emplace_back(new DropDownListStringItem(STR_JUST_INT, i, false));
 				}
-				selected = MINUTES_HOUR(minutes);
+				selected = this->minutes.ClockHour();
 
 				break;
 		}
@@ -224,7 +224,7 @@ struct SetMinutesWindow : SetDateWindow
 		ShowDropDownList(this, std::move(list), selected, widget);
 	}
 
-	virtual void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize)
+	virtual void UpdateWidgetSize(WidgetID widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override
 	{
 		Dimension d = {0, 0};
 		switch (widget) {
@@ -250,15 +250,15 @@ struct SetMinutesWindow : SetDateWindow
 		*size = d;
 	}
 
-	virtual void SetStringParameters(int widget) const
+	virtual void SetStringParameters(WidgetID widget) const override
 	{
 		switch (widget) {
-			case WID_SD_DAY:   SetDParam(0, MINUTES_MINUTE(minutes)); break;
-			case WID_SD_MONTH: SetDParam(0, MINUTES_HOUR(minutes)); break;
+			case WID_SD_DAY:   SetDParam(0, this->minutes.ClockMinute()); break;
+			case WID_SD_MONTH: SetDParam(0, this->minutes.ClockHour()); break;
 		}
 	}
 
-	virtual void OnClick(Point pt, int widget, int click_count)
+	virtual void OnClick(Point pt, WidgetID widget, int click_count) override
 	{
 		switch (widget) {
 			case WID_SD_DAY:
@@ -269,35 +269,39 @@ struct SetMinutesWindow : SetDateWindow
 
 			case WID_SD_SET_DATE:
 				if (this->callback != nullptr) {
-					this->callback(this, ((DateTicks)minutes - _settings_time.clock_offset) * (DateTicksScaled)_settings_time.ticks_per_minute);
+					this->callback(this, _settings_time.FromTickMinutes(this->minutes));
 				}
 				this->Close();
 				break;
 		}
 	}
 
-	virtual void OnDropdownSelect(int widget, int index)
+	virtual void OnDropdownSelect(WidgetID widget, int index) override
 	{
-		Minutes current = 0;
+		const TickMinutes now = _settings_time.NowInTickMinutes();
+		TickMinutes current = 0;
 		switch (widget) {
 			case WID_SD_DAY:
-				current = MINUTES_DATE(MINUTES_DAY(CURRENT_MINUTE), MINUTES_HOUR(minutes), index);
+				current = now.ToSameDayClockTime(this->minutes.ClockHour(), index);
 				break;
 
 			case WID_SD_MONTH:
-				current = MINUTES_DATE(MINUTES_DAY(CURRENT_MINUTE), index, MINUTES_MINUTE(minutes));
+				current = now.ToSameDayClockTime(index, this->minutes.ClockMinute());
 				break;
+
+			default:
+				return;
 		}
 
-		if (current < (CURRENT_MINUTE - 60)) current += 60 * 24;
-		minutes = current;
+		if (current < (now - 60)) current += 60 * 24;
+		this->minutes = current;
 
 		this->SetDirty();
 	}
 };
 
 /** Widgets for the date setting window. */
-static const NWidgetPart _nested_set_date_widgets[] = {
+static constexpr NWidgetPart _nested_set_date_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_BROWN),
 		NWidget(WWT_CAPTION, COLOUR_BROWN), SetDataTip(STR_DATE_CAPTION, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -318,7 +322,7 @@ static const NWidgetPart _nested_set_date_widgets[] = {
 	EndContainer()
 };
 
-static const NWidgetPart _nested_set_minutes_widgets[] = {
+static constexpr NWidgetPart _nested_set_minutes_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_BROWN),
 		NWidget(WWT_CAPTION, COLOUR_BROWN), SetDataTip(STR_TIME_CAPTION, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
@@ -339,39 +343,37 @@ static const NWidgetPart _nested_set_minutes_widgets[] = {
 };
 
 /** Description of the date setting window. */
-static WindowDesc _set_date_desc(
+static WindowDesc _set_date_desc(__FILE__, __LINE__,
 	WDP_CENTER, nullptr, 0, 0,
 	WC_SET_DATE, WC_NONE,
 	0,
-	_nested_set_date_widgets, lengthof(_nested_set_date_widgets)
+	std::begin(_nested_set_date_widgets), std::end(_nested_set_date_widgets)
 );
 
-static WindowDesc _set_minutes_desc(
+static WindowDesc _set_minutes_desc(__FILE__, __LINE__,
 	WDP_CENTER, nullptr, 0, 0,
 	WC_SET_DATE, WC_NONE,
 	0,
-	_nested_set_minutes_widgets, lengthof(_nested_set_minutes_widgets)
+	std::begin(_nested_set_minutes_widgets), std::end(_nested_set_minutes_widgets)
 );
 
 /**
  * Create the new 'set date' window
  * @param window_number number for the window
  * @param parent the parent window, i.e. if this closes we should close too
- * @param initial_date the initial date to show
+ * @param initial_tick the initial tick to show
  * @param min_year the minimum year to show in the year dropdown
  * @param max_year the maximum year (inclusive) to show in the year dropdown
  * @param callback the callback to call once a date has been selected
  */
-void ShowSetDateWindow(Window *parent, int window_number, DateTicksScaled initial_date, Year min_year, Year max_year,
-		SetDateCallback *callback, StringID button_text, StringID button_tooltip)
+void ShowSetDateWindow(Window *parent, int window_number, StateTicks initial_tick, EconTime::Year min_year, EconTime::Year max_year,
+		SetTickCallback *callback, StringID button_text, StringID button_tooltip)
 {
 	CloseWindowByClass(WC_SET_DATE);
 
 	if (!_settings_time.time_in_minutes) {
-		new SetDateWindow(&_set_date_desc, window_number, parent, ScaledDateTicksToDate(initial_date), min_year, max_year, callback, button_text, button_tooltip);
+		new SetDateWindow(&_set_date_desc, window_number, parent, StateTicksToDate(initial_tick), min_year, max_year, callback, button_text, button_tooltip);
 	} else {
-		new SetMinutesWindow(&_set_minutes_desc, window_number, parent,
-				initial_date + (_settings_game.economy.day_length_factor * (_settings_time.clock_offset * _settings_time.ticks_per_minute)),
-				min_year, max_year, callback, button_text, button_tooltip);
+		new SetMinutesWindow(&_set_minutes_desc, window_number, parent, initial_tick, min_year, max_year, callback, button_text, button_tooltip);
 	}
 }

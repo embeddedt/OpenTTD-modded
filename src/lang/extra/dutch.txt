@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/u
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :tegels/dag
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :tegels/sec
 
 STR_BUTTON_RENAME                                               :{BLACK}Hernoemen
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Vliegtuigen
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Automatisch opslaan: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Tijdsduur kiezen voor automatische spelopslag
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Dienstregeling in tikken weergeven i.p.v. in dagen: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Reistijden in tijdtabellen in speltikken weergeven in plaats van dagen
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Transparantie voor laadpercentages aan-uit. Ctrl+klik om vast te zetten.
 
@@ -34,6 +38,20 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Hoogte v
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Ontworpen: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Remmen, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Op weg naar {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Geen orders, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Op weg naar {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Onderweg naar {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Onderhoud in {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_UNBUNCH_VEL_END            :{LTBLUE}Ontkreukelen en onderhouden bij {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Kan {STATION}, {VELOCITY} niet bereiken
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Kan {WAYPOINT}, {VELOCITY} niet bereiken
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Kan {DEPOT}, {VELOCITY} niet bereiken
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Kan {DEPOT}, {VELOCITY} niet bereiken
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Voegt een nieuwe order toe voor de geselecteerde order of aan het eind van de lijst. Ctrl+klik maakt stationsorders 'Eén soort vracht volledig laden', controlepost-orders 'Ga non-stop via' en depot-orders 'Onderhoud bij'. Klikken op een ander voertuig kopieert de orders van dat voertuig, Ctrl+klik om de orders te delen. Een depot-order schakelt automatisch onderhoud van een voertuig uit.
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :V:
@@ -73,3 +91,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Verkoop 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kan geen 25% aandeel in dit bedrijf kopen...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Kan geen 25% aandeel in dit bedrijf verkopen...
 STR_ERROR_PROTECTED                                             :{WHITE}Dit bedrijf verhandelt nog geen aandelen...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :Alleen routeseinen

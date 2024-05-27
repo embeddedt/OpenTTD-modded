@@ -81,7 +81,7 @@ static inline void GetLayouter(Layouter::LineCacheItem &line, std::string_view s
 	 * usable by ParagraphLayout.
 	 */
 	for (; buff < buffer_last && cur != str.end();) {
-		WChar c = Utf8Consume(cur);
+		char32_t c = Utf8Consume(cur);
 		if (c == '\0' || c == '\n') {
 			/* Caller should already have filtered out these characters. */
 			NOT_REACHED();
@@ -209,7 +209,7 @@ Dimension Layouter::GetBounds()
 /**
  * Test whether a character is a non-printable formatting code
  */
-static bool IsConsumedFormattingCode(WChar ch)
+static bool IsConsumedFormattingCode(char32_t ch)
 {
 	if (ch >= SCC_BLUE && ch <= SCC_BLACK) return true;
 	if (ch == SCC_PUSH_COLOUR) return true;
@@ -243,62 +243,79 @@ Point Layouter::GetCharPosition(std::string_view::const_iterator ch) const
 	size_t index = 0;
 	auto str = this->string.begin();
 	while (str < ch) {
-		WChar c = Utf8Consume(str);
+		char32_t c = Utf8Consume(str);
 		if (!IsConsumedFormattingCode(c)) index += line->GetInternalCharLength(c);
 	}
 
 	/* We couldn't find the code point index. */
-	if (str != ch) {
-		return { 0, 0 };
-	}
+	if (str != ch) return {0, 0};
+
+	/* Initial position, returned if character not found. */
+	static const Point zero = {0, 0};
+	const Point *position = &zero;
 
 	/* Valid character. */
 
 	/* Scan all runs until we've found our code point index. */
 	for (int run_index = 0; run_index < line->CountRuns(); run_index++) {
 		const ParagraphLayouter::VisualRun &run = line->GetVisualRun(run_index);
+		const auto &positions = run.GetPositions();
+		const auto &charmap = run.GetGlyphToCharMap();
 
-		for (int i = 0; i < run.GetGlyphCount(); i++) {
-			/* Matching glyph? Return position. */
-			if ((size_t)run.GetGlyphToCharMap()[i] == index) {
-				Point p = { (int)run.GetPositions()[i * 2], (int)run.GetPositions()[i * 2 + 1] };
-				return p;
-			}
+		/* Run starts after our character, use the last found position. */
+		if ((size_t)charmap.front() > index) return *position;
+
+		position = positions.data();
+		for (auto it = charmap.begin(); it != charmap.end(); /* nothing */) {
+			/* Plain honest-to-$deity match. */
+			if ((size_t)*it == index) return *position;
+			++it;
+			if (it == charmap.end()) break;
+
+			/* We just passed our character, it's probably a ligature, use the last found position. */
+			if ((size_t)*it > index) return *position;
+			++position;
 		}
 	}
 
-	/* Code point index not found, just give up */
-	return { 0, 0 };
+	/* At the end of the run but still didn't find our character so probably a trailing ligature, use the last found position. */
+	return *position;
 }
 
 /**
  * Get the character that is at a pixel position in the first line of the layouted text.
  * @param x Position in the string.
+ * @param line_index Which line of the layout to search
  * @return String offset of the position (bytes) or -1 if no character is at the position.
  */
-ptrdiff_t Layouter::GetCharAtPosition(int x) const
+ptrdiff_t Layouter::GetCharAtPosition(int x, size_t line_index) const
 {
-	const auto &line = this->front();
+	if (line_index >= this->size()) return -1;
+
+	const auto &line = this->at(line_index);
 
 	for (int run_index = 0; run_index < line->CountRuns(); run_index++) {
 		const ParagraphLayouter::VisualRun &run = line->GetVisualRun(run_index);
+		const auto &glyphs = run.GetGlyphs();
+		const auto &positions = run.GetPositions();
+		const auto &charmap = run.GetGlyphToCharMap();
 
 		for (int i = 0; i < run.GetGlyphCount(); i++) {
 			/* Not a valid glyph (empty). */
-			if (run.GetGlyphs()[i] == 0xFFFF) continue;
+			if (glyphs[i] == 0xFFFF) continue;
 
-			int begin_x = (int)run.GetPositions()[i * 2];
-			int end_x   = (int)run.GetPositions()[i * 2 + 2];
+			int begin_x = positions[i].x;
+			int end_x   = positions[i + 1].x;
 
 			if (IsInsideMM(x, begin_x, end_x)) {
 				/* Found our glyph, now convert to UTF-8 string index. */
-				size_t index = run.GetGlyphToCharMap()[i];
+				size_t index = charmap[i];
 
 				size_t cur_idx = 0;
 				for (auto str = this->string.begin(); str != this->string.end();) {
 					if (cur_idx == index) return str - this->string.begin();
 
-					WChar c = Utf8Consume(str);
+					char32_t c = Utf8Consume(str);
 					if (!IsConsumedFormattingCode(c)) cur_idx += line->GetInternalCharLength(c);
 				}
 			}
@@ -318,6 +335,16 @@ Font *Layouter::GetFont(FontSize size, TextColour colour)
 
 	fonts[size][colour] = std::make_unique<Font>(size, colour);
 	return fonts[size][colour].get();
+}
+
+/**
+ * Perform initialization of layout engine.
+ */
+void Layouter::Initialize()
+{
+#if defined(WITH_ICU_I18N) && defined(WITH_HARFBUZZ)
+	ICUParagraphLayoutFactory::InitializeLayouter();
+#endif /* WITH_ICU_I18N && WITH_HARFBUZZ */
 }
 
 /**

@@ -56,12 +56,12 @@ static SpriteFile &LoadGrfFile(const std::string &filename, uint load_index, boo
 
 	DEBUG(sprite, 2, "Reading grf-file '%s'", filename.c_str());
 
-	byte container_ver = file.GetContainerVersion();
+	uint8_t container_ver = file.GetContainerVersion();
 	if (container_ver == 0) usererror("Base grf '%s' is corrupt", filename.c_str());
 	ReadGRFSpriteOffsets(file);
 	if (container_ver >= 2) {
 		/* Read compression. */
-		byte compression = file.ReadByte();
+		uint8_t compression = file.ReadByte();
 		if (compression != 0) usererror("Unsupported compression format");
 	}
 
@@ -93,12 +93,12 @@ static void LoadGrfFileIndexed(const std::string &filename, const SpriteID *inde
 
 	DEBUG(sprite, 2, "Reading indexed grf-file '%s'", filename.c_str());
 
-	byte container_ver = file.GetContainerVersion();
+	uint8_t container_ver = file.GetContainerVersion();
 	if (container_ver == 0) usererror("Base grf '%s' is corrupt", filename.c_str());
 	ReadGRFSpriteOffsets(file);
 	if (container_ver >= 2) {
 		/* Read compression. */
-		byte compression = file.ReadByte();
+		uint8_t compression = file.ReadByte();
 		if (compression != 0) usererror("Unsupported compression format");
 	}
 
@@ -165,7 +165,7 @@ void InitGRFGlobalVars()
 	extern uint _extra_station_names_used;
 	_extra_station_names_used = 0;
 
-	extern uint8 _extra_station_names_probability;
+	extern uint8_t _extra_station_names_probability;
 	_extra_station_names_probability = 0;
 
 	extern bool _allow_rocks_desert;
@@ -178,7 +178,7 @@ static void LoadSpriteTables()
 	const GraphicsSet *used_set = BaseGraphics::GetUsedSet();
 
 	SpriteFile &baseset_file = LoadGrfFile(used_set->files[GFT_BASE].filename, 0, PAL_DOS != used_set->palette);
-	if (StrStartsWith(used_set->name, "original_")) {
+	if (used_set->name.starts_with("original_")) {
 		baseset_file.flags |= SFF_OPENTTDGRF;
 	}
 
@@ -260,18 +260,8 @@ static void LoadSpriteTables()
 	ClrBit(master->flags, GCF_INIT_ONLY);
 
 	/* Baseset extra graphics */
-	GRFConfig *extra = new GRFConfig(used_set->files[GFT_EXTRA].filename.c_str());
-
-	/* We know the palette of the base set, so if the base NewGRF is not
-	 * setting one, use the palette of the base set and not the global
-	 * one which might be the wrong palette for this base NewGRF.
-	 * The value set here might be overridden via action14 later. */
-	switch (used_set->palette) {
-		case PAL_DOS:     extra->palette |= GRFP_GRF_DOS;     break;
-		case PAL_WINDOWS: extra->palette |= GRFP_GRF_WINDOWS; break;
-		default: break;
-	}
-	FillGRFDetails(extra, false, BASESET_DIR);
+	GRFConfig *extra = new GRFConfig(used_set->GetOrCreateExtraConfig());
+	if (extra->num_params == 0) extra->SetParameterDefaults();
 	ClrBit(extra->flags, GCF_INIT_ONLY);
 
 	extra->next = top;
@@ -444,7 +434,7 @@ static SpriteID GetSpriteIDForClearGround(const ClearGround cg, const Slope slop
 {
 	switch (cg) {
 		case CLEAR_GRASS:
-			return GetSpriteIDForClearLand(slope, (byte) multi);
+			return GetSpriteIDForClearLand(slope, (uint8_t)multi);
 		case CLEAR_ROUGH:
 			return GetSpriteIDForHillyLand(slope, multi);
 		case CLEAR_ROCKS:
@@ -464,7 +454,7 @@ void GfxDetermineMainColours()
 {
 #if !defined(DEDICATED)
 	/* Water. */
-	extern uint32 _vp_map_water_colour[5];
+	extern uint32_t _vp_map_water_colour[5];
 	_vp_map_water_colour[0] = GetSpriteMainColour(SPR_FLAT_WATER_TILE, PAL_NONE);
 	if (BlitterFactory::GetCurrentBlitter()->GetScreenDepth() == 32) {
 		_vp_map_water_colour[1] = Blitter_32bppBase::MakeTransparent(_vp_map_water_colour[0], 256, 192).data; // lighter
@@ -474,11 +464,11 @@ void GfxDetermineMainColours()
 	}
 
 	/* Clear ground. */
-	extern uint32 _vp_map_vegetation_clear_colours[16][6][8];
+	extern uint32_t _vp_map_vegetation_clear_colours[16][6][8];
 	memset(_vp_map_vegetation_clear_colours, 0, sizeof(_vp_map_vegetation_clear_colours));
 	const struct {
-		byte min;
-		byte max;
+		uint8_t min;
+		uint8_t max;
 	} multi[6] = {
 		{ 0, 3 }, // CLEAR_GRASS, density
 		{ 0, 7 }, // CLEAR_ROUGH, "random" based on position
@@ -496,7 +486,7 @@ void GfxDetermineMainColours()
 	}
 
 	/* Trees. */
-	extern uint32 _vp_map_vegetation_tree_colours[16][5][MAX_TREE_COUNT_BY_LANDSCAPE];
+	extern uint32_t _vp_map_vegetation_tree_colours[16][5][MAX_TREE_COUNT_BY_LANDSCAPE];
 	const uint base  = _tree_base_by_landscape[_settings_game.game_creation.landscape];
 	const uint count = _tree_count_by_landscape[_settings_game.game_creation.landscape];
 	for (uint tg = 0; tg < 5; tg++) {
@@ -546,12 +536,24 @@ void GfxLoadSprites()
 	DEBUG(sprite, 2, "Completed loading sprite set %d", _settings_game.game_creation.landscape);
 }
 
-bool GraphicsSet::FillSetDetails(IniFile *ini, const std::string &path, const std::string &full_filename)
+GraphicsSet::GraphicsSet()
+	: BaseSet<GraphicsSet, MAX_GFT, true>{}, palette{}, blitter{}
+{
+	// instantiate here, because unique_ptr needs a complete type
+}
+
+GraphicsSet::~GraphicsSet()
+{
+	// instantiate here, because unique_ptr needs a complete type
+}
+
+bool GraphicsSet::FillSetDetails(const IniFile &ini, const std::string &path, const std::string &full_filename)
 {
 	bool ret = this->BaseSet<GraphicsSet, MAX_GFT, true>::FillSetDetails(ini, path, full_filename, false);
 	if (ret) {
-		IniGroup *metadata = ini->GetGroup("metadata");
-		IniItem *item;
+		const IniGroup *metadata = ini.GetGroup("metadata");
+		assert(metadata != nullptr); /* ret can't be true if metadata isn't present. */
+		const IniItem *item;
 
 		fetch_metadata("palette");
 		this->palette = ((*item->value)[0] == 'D' || (*item->value)[0] == 'd') ? PAL_DOS : PAL_WINDOWS;
@@ -561,6 +563,46 @@ bool GraphicsSet::FillSetDetails(IniFile *ini, const std::string &path, const st
 		this->blitter = (item != nullptr && (*item->value)[0] == '3') ? BLT_32BPP : BLT_8BPP;
 	}
 	return ret;
+}
+
+/**
+ * Return configuration for the extra GRF, or lazily create it.
+ * @return NewGRF configuration
+ */
+GRFConfig &GraphicsSet::GetOrCreateExtraConfig() const
+{
+	if (!this->extra_cfg) {
+		this->extra_cfg.reset(new GRFConfig(this->files[GFT_EXTRA].filename));
+
+		/* We know the palette of the base set, so if the base NewGRF is not
+		 * setting one, use the palette of the base set and not the global
+		 * one which might be the wrong palette for this base NewGRF.
+		 * The value set here might be overridden via action14 later. */
+		switch (this->palette) {
+			case PAL_DOS:     this->extra_cfg->palette |= GRFP_GRF_DOS;     break;
+			case PAL_WINDOWS: this->extra_cfg->palette |= GRFP_GRF_WINDOWS; break;
+			default: break;
+		}
+		FillGRFDetails(this->extra_cfg.get(), false, BASESET_DIR);
+	}
+	return *this->extra_cfg;
+}
+
+bool GraphicsSet::IsConfigurable() const
+{
+	const GRFConfig &cfg = this->GetOrCreateExtraConfig();
+	/* This check is more strict than the one for NewGRF Settings.
+	 * There are no legacy basesets with parameters, but without Action14 */
+	return !cfg.param_info.empty();
+}
+
+void GraphicsSet::CopyCompatibleConfig(const GraphicsSet &src)
+{
+	const GRFConfig *src_cfg = src.GetExtraConfig();
+	if (src_cfg == nullptr || src_cfg->num_params == 0) return;
+	GRFConfig &dest_cfg = this->GetOrCreateExtraConfig();
+	if (dest_cfg.IsCompatible(src_cfg->version)) return;
+	dest_cfg.CopyParams(*src_cfg);
 }
 
 /**
@@ -605,7 +647,7 @@ MD5File::ChecksumResult MD5File::CheckMD5(Subdirectory subdir, size_t max_size) 
 	size = std::min(size, max_size);
 
 	Md5 checksum;
-	uint8 buffer[1024];
+	uint8_t buffer[1024];
 	MD5Hash digest;
 	size_t len;
 

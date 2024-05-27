@@ -116,7 +116,7 @@
 	return g != nullptr && g->completed;
 }
 
-/* static */ bool ScriptGoal::DoQuestion(SQInteger uniqueid, uint32 target, bool is_client, Text *question, QuestionType type, SQInteger buttons)
+/* static */ bool ScriptGoal::DoQuestion(SQInteger uniqueid, uint32_t target, bool is_client, Text *question, QuestionType type, SQInteger buttons)
 {
 	CCountedPtr<Text> counter(question);
 
@@ -125,7 +125,7 @@
 	const std::string &text = question->GetEncodedText();
 	EnforcePreconditionEncodedText(false, text);
 	uint min_buttons = (type == QT_QUESTION ? 1 : 0);
-	EnforcePrecondition(false, CountBits(buttons) >= min_buttons && CountBits(buttons) <= 3);
+	EnforcePrecondition(false, CountBits<uint64_t>(buttons) >= min_buttons && CountBits<uint64_t>(buttons) <= 3);
 	EnforcePrecondition(false, buttons >= 0 && buttons < (1 << ::GOAL_QUESTION_BUTTON_COUNT));
 	EnforcePrecondition(false, (int)type < ::GQT_END);
 	EnforcePrecondition(false, uniqueid >= 0 && uniqueid <= UINT16_MAX);
@@ -136,7 +136,7 @@
 /* static */ bool ScriptGoal::Question(SQInteger uniqueid, ScriptCompany::CompanyID company, Text *question, QuestionType type, SQInteger buttons)
 {
 	EnforcePrecondition(false, company == ScriptCompany::COMPANY_INVALID || ScriptCompany::ResolveCompanyID(company) != ScriptCompany::COMPANY_INVALID);
-	uint8 c = company;
+	uint8_t c = company;
 	if (company == ScriptCompany::COMPANY_INVALID) c = INVALID_COMPANY;
 
 	return DoQuestion(uniqueid, c, false, question, type, buttons);

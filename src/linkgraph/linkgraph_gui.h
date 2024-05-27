@@ -23,7 +23,7 @@
  * Only the cargo type of the most saturated linkgraph is taken into account.
  */
 struct LinkProperties {
-	LinkProperties() : capacity(0), usage(0), planned(0), cargo(CT_INVALID), time(0), shared(false) {}
+	LinkProperties() : capacity(0), usage(0), planned(0), cargo(INVALID_CARGO), time(0), shared(false) {}
 
 	/** Return the usage of the link to display. */
 	uint Usage() const { return std::max(this->usage, this->planned); }
@@ -32,8 +32,10 @@ struct LinkProperties {
 	uint usage;    ///< Actual usage of the link.
 	uint planned;  ///< Planned usage of the link.
 	CargoID cargo; ///< Cargo type of the link.
-	uint32 time;   ///< Travel time of the link.
+	uint32_t time; ///< Travel time of the link.
 	bool shared;   ///< If this is a shared link to be drawn dashed.
+
+	bool operator==(const LinkProperties&) const = default;
 };
 
 /**
@@ -46,6 +48,8 @@ public:
 		StationID id;
 		uint quantity;
 		Point pt;
+
+		bool operator==(const StationSupplyInfo&) const = default;
 	};
 
 	struct LinkInfo {
@@ -54,12 +58,14 @@ public:
 		Point from_pt;
 		Point to_pt;
 		LinkProperties prop;
+
+		bool operator==(const LinkInfo&) const = default;
 	};
 
 	typedef std::vector<StationSupplyInfo> StationSupplyList;
 	typedef std::vector<LinkInfo> LinkList;
 
-	static const uint8 LINK_COLOURS[][12];
+	static const uint8_t LINK_COLOURS[][12];
 
 	/**
 	 * Create a link graph overlay for the specified window.
@@ -69,15 +75,16 @@ public:
 	 * @param company_mask Bitmask of companies to be shown.
 	 * @param scale Desired thickness of lines and size of station dots.
 	 */
-	LinkGraphOverlay(Window *w, uint wid, CargoTypes cargo_mask, CompanyMask company_mask, uint scale) :
-			window(w), widget_id(wid), cargo_mask(cargo_mask), company_mask(company_mask), scale(scale), dirty(true)
+	LinkGraphOverlay(Window *w, WidgetID wid, CargoTypes cargo_mask, CompanyMask company_mask, uint scale) :
+			window(w), widget_id(wid), cargo_mask(cargo_mask), scale(scale), company_mask(company_mask), dirty(true)
 	{}
 
+	bool RebuildCacheCheckChanged();
 	void RebuildCache(bool incremental = false);
 	bool CacheStillValid() const;
 	void MarkStationViewportLinksDirty(const Station *st);
 	void PrepareDraw();
-	void Draw(const DrawPixelInfo *dpi) const;
+	void Draw(class Blitter *blitter, const DrawPixelInfo *dpi) const;
 	void SetCargoMask(CargoTypes cargo_mask);
 	void SetCompanyMask(CompanyMask company_mask);
 
@@ -87,35 +94,38 @@ public:
 	void SetDirty() { this->dirty = true; }
 
 	/** Get a bitmask of the currently shown cargoes. */
-	CargoTypes GetCargoMask() { return this->cargo_mask; }
+	CargoTypes GetCargoMask() const { return this->cargo_mask; }
 
 	/** Get a bitmask of the currently shown companies. */
-	CompanyMask GetCompanyMask() { return this->company_mask; }
+	CompanyMask GetCompanyMask() const { return this->company_mask; }
+
+	uint64_t GetRebuildCounter() const { return this->rebuild_counter; }
 
 protected:
 	Window *window;                    ///< Window to be drawn into.
-	const uint widget_id;              ///< ID of Widget in Window to be drawn to.
+	const WidgetID widget_id;          ///< ID of Widget in Window to be drawn to.
 	CargoTypes cargo_mask;             ///< Bitmask of cargos to be displayed.
-	CompanyMask company_mask;          ///< Bitmask of companies to be displayed.
 	LinkList cached_links;             ///< Cache for links to reduce recalculation.
 	StationSupplyList cached_stations; ///< Cache for stations to be drawn.
 	Rect cached_region;                ///< Region covered by cached_links and cached_stations.
 	uint scale;                        ///< Width of link lines.
+	CompanyMask company_mask;          ///< Bitmask of companies to be displayed.
 	bool dirty;                        ///< Set if overlay should be rebuilt.
-	uint64 last_update_number = 0;     ///< Last window update number
+	uint64_t last_update_number = 0;   ///< Last window update number
+	uint64_t rebuild_counter = 0;      ///< Rebuild counter
 
 	Point GetStationMiddle(const Station *st) const;
 
 	void RefreshDrawCache();
-	void DrawLinks(const DrawPixelInfo *dpi) const;
-	void DrawStationDots(const DrawPixelInfo *dpi) const;
-	void DrawContent(const DrawPixelInfo *dpi, Point pta, Point ptb, const LinkProperties &cargo) const;
+	void DrawLinks(class Blitter *blitter, const DrawPixelInfo *dpi) const;
+	void DrawStationDots(class Blitter *blitter, const DrawPixelInfo *dpi) const;
+	void DrawContent(class Blitter *blitter, const DrawPixelInfo *dpi, Point pta, Point ptb, const LinkProperties &cargo) const;
 	bool IsLinkVisible(Point pta, Point ptb, const DrawPixelInfo *dpi, int padding = 0) const;
 	bool IsPointVisible(Point pt, const DrawPixelInfo *dpi, int padding = 0) const;
 	void GetWidgetDpi(DrawPixelInfo *dpi, uint margin = 0) const;
 
-	static void AddStats(CargoID new_cargo, uint new_cap, uint new_usg, uint new_plan, uint32 time, bool new_shared, LinkProperties &cargo);
-	static void DrawVertex(const DrawPixelInfo *dpi, int x, int y, int size, int colour, int border_colour);
+	static void AddStats(CargoID new_cargo, uint new_cap, uint new_usg, uint new_plan, uint32_t time, bool new_shared, LinkProperties &cargo);
+	static void DrawVertex(class Blitter *blitter, const DrawPixelInfo *dpi, int x, int y, int size, int colour, int border_colour);
 };
 
 void ShowLinkGraphLegend();
@@ -128,10 +138,10 @@ public:
 	LinkGraphLegendWindow(WindowDesc *desc, int window_number);
 	void SetOverlay(LinkGraphOverlay *overlay);
 
-	void UpdateWidgetSize(int widget, Dimension *size, const Dimension &padding, Dimension *fill, Dimension *resize) override;
-	void DrawWidget(const Rect &r, int widget) const override;
-	bool OnTooltip(Point pt, int widget, TooltipCloseCondition close_cond) override;
-	void OnClick(Point pt, int widget, int click_count) override;
+	void UpdateWidgetSize(WidgetID widget, Dimension *size, [[maybe_unused]] const Dimension &padding, [[maybe_unused]] Dimension *fill, [[maybe_unused]] Dimension *resize) override;
+	void DrawWidget(const Rect &r, WidgetID widget) const override;
+	bool OnTooltip([[maybe_unused]] Point pt, WidgetID widget, TooltipCloseCondition close_cond) override;
+	void OnClick([[maybe_unused]] Point pt, WidgetID widget, [[maybe_unused]] int click_count) override;
 	void OnInvalidateData(int data = 0, bool gui_scope = true) override;
 
 private:

@@ -11,11 +11,11 @@
 #define SIGNS_TYPE_H
 
 /** The type of the IDs of signs. */
-typedef uint16 SignID;
+typedef uint16_t SignID;
 struct Sign;
 
 static const SignID INVALID_SIGN = 0xFFFF; ///< Sentinel for an invalid sign.
 
-static const uint MAX_LENGTH_SIGN_NAME_CHARS = 32; ///< The maximum length of a sign name in characters including '\0'
+static const uint MAX_LENGTH_SIGN_NAME_CHARS = 128; ///< The maximum length of a sign name in characters including '\0'
 
 #endif /* SIGNS_TYPE_H */

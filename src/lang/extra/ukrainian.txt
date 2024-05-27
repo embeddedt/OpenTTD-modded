@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :миль/год
 STR_UNIT_NAME_VELOCITY_METRIC                                   :км/год
 STR_UNIT_NAME_VELOCITY_SI                                       :м/с
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :клітинок/день
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :клітинок/секунду
 
 STR_BUTTON_RENAME                                               :{BLACK}Назва
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Авіація
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Автозбереження: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Оберіть проміжок між автоматичними збереженнями гри
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Показувати розклад в тіках замість днів: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Відображати час руху в розкладах в тіках замість днів
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Змінити прозорість індикаторів завантаження. Утримуйте Ctrl, щоб заблокувати
 
@@ -31,6 +35,19 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Змін
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Рік випуску: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Зупиняється, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Прямує до {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Без завдань, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Прямує до {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Прямує до {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Техогляд у {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Неможливо досягти {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Неможливо досягти {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Неможливо досягти {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Неможливо досягти {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Вставити новий наказ перед вибраним, або додати в кінець списку. Утримуйте Ctrl аби створити наказ як "повне завантаження будь-якого вантажу", для точок маршруту - "без зупинок", і для депо - "обслуговування". Пункт "Спільні накази" або утримування Ctrl дозволяє поділитися спільними наказами з виділеним транспортом. Клац мишою на транспорті копіює з нього накази
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :П:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :В:
@@ -68,3 +85,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Прод
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Неможливо купити 25% акцій цієї компанії...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Неможливо продати 25% акцій цієї компанії...
 STR_ERROR_PROTECTED                                             :{WHITE}Ця компанія поки ще не продається...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :тільки маршрутні

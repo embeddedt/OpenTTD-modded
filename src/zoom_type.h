@@ -16,7 +16,7 @@ static uint const ZOOM_LVL_SHIFT = 2;
 static int const ZOOM_LVL_BASE  = 1 << ZOOM_LVL_SHIFT;
 
 /** All zoom levels we know. */
-enum ZoomLevel : byte {
+enum ZoomLevel : uint8_t {
 	/* Our possible zoom-levels */
 	ZOOM_LVL_BEGIN  = 0, ///< Begin for iteration.
 	ZOOM_LVL_NORMAL = 0, ///< The normal zoom level.
@@ -30,8 +30,6 @@ enum ZoomLevel : byte {
 	ZOOM_LVL_OUT_256X,   ///< Zoomed 256 times out.
 	ZOOM_LVL_OUT_512X,   ///< Zoomed 512 times out.
 	ZOOM_LVL_END,        ///< End for iteration.
-
-	ZOOM_LVL_COUNT = ZOOM_LVL_END - ZOOM_LVL_BEGIN, ///< Number of zoom levels.
 
 	/* Here we define in which zoom viewports are */
 	ZOOM_LVL_VIEWPORT = ZOOM_LVL_OUT_4X, ///< Default zoom level for viewports.
@@ -55,8 +53,9 @@ enum ZoomLevel : byte {
 	ZOOM_LVL_SPR_COUNT = ZOOM_LVL_SPR_END - ZOOM_LVL_BEGIN, ///< Number of zoom levels to draw with sprites.
 };
 DECLARE_POSTFIX_INCREMENT(ZoomLevel)
+DECLARE_ENUM_AS_ADDABLE(ZoomLevel)
 
-static inline uint8 ZoomMask(ZoomLevel level)
+inline uint8_t ZoomMask(ZoomLevel level)
 {
 	return 1 << level;
 }

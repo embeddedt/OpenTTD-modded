@@ -9,10 +9,13 @@
 
 #include "stdafx.h"
 #include "cargotype.h"
+#include "core/geometry_func.hpp"
+#include "gfx_func.h"
 #include "newgrf_cargo.h"
 #include "string_func.h"
 #include "strings_func.h"
 #include "settings_type.h"
+#include "3rdparty/cpp-btree/btree_map.h"
 
 #include "table/sprites.h"
 #include "table/strings.h"
@@ -21,6 +24,8 @@
 #include "safeguards.h"
 
 CargoSpec CargoSpec::array[NUM_CARGO];
+std::array<std::vector<CargoID>, NUM_TPE> CargoSpec::town_production_cargoes{};
+std::array<CargoTypes, NUM_TPE> CargoSpec::town_production_cargo_mask{};
 
 /**
  * Bitmask of cargo types available. This includes phony cargoes like regearing cargoes.
@@ -34,6 +39,16 @@ CargoTypes _cargo_mask;
 CargoTypes _standard_cargo_mask;
 
 /**
+ * List of default cargo labels, used when setting up cargo types for default vehicles.
+ * This is done by label so that a cargo label can be redefined in a different slot.
+ */
+static std::vector<CargoLabel> _default_cargo_labels;
+
+static btree::btree_map<CargoLabel, CargoID> _cargo_label_map; ///< Translation map from CargoLabel to Cargo ID.
+CargoID _cargo_id_passengers = INVALID_CARGO;
+CargoID _cargo_id_mail = INVALID_CARGO;
+
+/**
  * Set up the default cargo types for the given landscape type.
  * @param l Landscape
  */
@@ -41,96 +56,111 @@ void SetupCargoForClimate(LandscapeID l)
 {
 	assert(l < lengthof(_default_climate_cargo));
 
-	/* Reset and disable all cargo types */
-	for (CargoID i = 0; i < lengthof(CargoSpec::array); i++) {
-		*CargoSpec::Get(i) = {};
-		CargoSpec::Get(i)->bitnum = INVALID_CARGO;
-
-		/* Set defaults for newer properties, which old GRFs do not know */
-		CargoSpec::Get(i)->multiplier = 0x100;
-	}
-
 	_cargo_mask = 0;
+	_default_cargo_labels.clear();
 
-	for (CargoID i = 0; i < lengthof(_default_climate_cargo[l]); i++) {
-		CargoLabel cl = _default_climate_cargo[l][i];
+	/* Copy from default cargo by label or index. */
+	auto insert = std::begin(CargoSpec::array);
+	for (const auto &cl : _default_climate_cargo[l]) {
 
-		/* Bzzt: check if cl is just an index into the cargo table */
-		if (cl < lengthof(_default_cargo)) {
-			/* Copy the indexed cargo */
-			CargoSpec *cargo = CargoSpec::Get(i);
-			*cargo = _default_cargo[cl];
-			if (cargo->bitnum != INVALID_CARGO) SetBit(_cargo_mask, i);
-			continue;
-		}
-
-		/* Loop through each of the default cargo types to see if
-		 * the label matches */
-		for (uint j = 0; j < lengthof(_default_cargo); j++) {
-			if (_default_cargo[j].label == cl) {
-				*CargoSpec::Get(i) = _default_cargo[j];
-
-				/* Populate the available cargo mask */
-				SetBit(_cargo_mask, i);
-				break;
+		/* Check if value is an index into the cargo table */
+		if (std::holds_alternative<int>(cl)) {
+			/* Copy the default cargo by index. */
+			*insert = _default_cargo[std::get<int>(cl)];
+		} else {
+			/* Search for label in default cargo types and copy if found. */
+			CargoLabel label = std::get<CargoLabel>(cl);
+			auto found = std::find_if(std::begin(_default_cargo), std::end(_default_cargo), [&label](const CargoSpec &cs) { return cs.label == label; });
+			if (found != std::end(_default_cargo)) {
+				*insert = *found;
+			} else {
+				/* Index or label is invalid, this should not happen. */
+				NOT_REACHED();
 			}
 		}
+
+		if (insert->IsValid()) {
+			SetBit(_cargo_mask, insert->Index());
+			_default_cargo_labels.push_back(insert->label);
+		}
+		++insert;
 	}
+
+	/* Reset and disable remaining cargo types. */
+	std::fill(insert, std::end(CargoSpec::array), CargoSpec{});
+
+	BuildCargoLabelMap();
 }
 
 /**
- * Get the cargo ID of a default cargo, if present.
- * @param l Landscape
- * @param ct Default cargo type.
- * @return ID number if the cargo exists, else #CT_INVALID
+ * Build cargo label map.
+ * This is called multiple times during NewGRF initialization as cargos are defined, so that TranslateRefitMask() and
+ * GetCargoTranslation(), also used during initialization, get the correct information.
  */
-CargoID GetDefaultCargoID(LandscapeID l, CargoType ct)
+void BuildCargoLabelMap()
 {
-	assert(l < lengthof(_default_climate_cargo));
+	_cargo_label_map.clear();
+	for (const CargoSpec &cs : CargoSpec::array) {
+		/* During initialization, CargoSpec can be marked valid before the label has been set. */
+		if (!cs.IsValid() || cs.label == CargoLabel{0} || cs.label == CT_INVALID) continue;
+		/* Label already exists, don't add again. */
+		if (_cargo_label_map.count(cs.label) != 0) continue;
 
-	if (ct == CT_INVALID) return CT_INVALID;
-
-	assert(ct < lengthof(_default_climate_cargo[0]));
-	CargoLabel cl = _default_climate_cargo[l][ct];
-	/* Bzzt: check if cl is just an index into the cargo table */
-	if (cl < lengthof(_default_cargo)) {
-		cl = _default_cargo[cl].label;
+		_cargo_label_map.insert(std::make_pair(cs.label, cs.Index()));
 	}
-
-	return GetCargoIDByLabel(cl);
+	_cargo_id_passengers = GetCargoIDByLabelUsingMap(CT_PASSENGERS);
+	_cargo_id_mail = GetCargoIDByLabelUsingMap(CT_MAIL);
 }
 
 /**
- * Get the cargo ID by cargo label.
- * @param cl Cargo type to get.
- * @return ID number if the cargo exists, else #CT_INVALID
+ * Test if a cargo is a default cargo type.
+ * @param cid Cargo ID.
+ * @returns true iff the cargo type is a default cargo type.
  */
-CargoID GetCargoIDByLabel(CargoLabel cl)
+bool IsDefaultCargo(CargoID cid)
 {
-	for (const CargoSpec *cs : CargoSpec::Iterate()) {
-		if (cs->label == cl) return cs->Index();
-	}
+	auto cs = CargoSpec::Get(cid);
+	if (!cs->IsValid()) return false;
 
-	/* No matching label was found, so it is invalid */
-	return CT_INVALID;
+	CargoLabel label = cs->label;
+	return std::any_of(std::begin(_default_cargo_labels), std::end(_default_cargo_labels), [&label](const CargoLabel &cl) { return cl == label; });
 }
 
+/**
+ * Get dimensions of largest cargo icon.
+ * @return Dimensions of largest cargo icon.
+ */
+Dimension GetLargestCargoIconSize()
+{
+	Dimension size = {0, 0};
+	for (const CargoSpec *cs : _sorted_cargo_specs) {
+		size = maxdim(size, GetSpriteSize(cs->GetCargoIcon()));
+	}
+	return size;
+}
+
+CargoID GetCargoIDByLabelUsingMap(CargoLabel label)
+{
+	auto found = _cargo_label_map.find(label);
+	if (found != _cargo_label_map.end()) return found->second;
+	return INVALID_CARGO;
+}
 
 /**
  * Find the CargoID of a 'bitnum' value.
  * @param bitnum 'bitnum' to find.
- * @return First CargoID with the given bitnum, or #CT_INVALID if not found or if the provided \a bitnum is invalid.
+ * @return First CargoID with the given bitnum, or #INVALID_CARGO if not found or if the provided \a bitnum is invalid.
  */
-CargoID GetCargoIDByBitnum(uint8 bitnum)
+CargoID GetCargoIDByBitnum(uint8_t bitnum)
 {
-	if (bitnum == INVALID_CARGO) return CT_INVALID;
+	if (bitnum == INVALID_CARGO_BITNUM) return INVALID_CARGO;
 
 	for (const CargoSpec *cs : CargoSpec::Iterate()) {
 		if (cs->bitnum == bitnum) return cs->Index();
 	}
 
 	/* No matching label was found, so it is invalid */
-	return CT_INVALID;
+	return INVALID_CARGO;
 }
 
 /**
@@ -150,8 +180,9 @@ SpriteID CargoSpec::GetCargoIcon() const
 	return sprite;
 }
 
-std::vector<const CargoSpec *> _sorted_cargo_specs;   ///< Cargo specifications sorted alphabetically by name.
-span<const CargoSpec *> _sorted_standard_cargo_specs; ///< Standard cargo specifications sorted alphabetically by name.
+std::array<uint8_t, NUM_CARGO> _sorted_cargo_types;        ///< Sort order of cargoes by cargo ID.
+std::vector<const CargoSpec *> _sorted_cargo_specs;        ///< Cargo specifications sorted alphabetically by name.
+std::span<const CargoSpec *> _sorted_standard_cargo_specs; ///< Standard cargo specifications sorted alphabetically by name.
 
 /** Sort cargo specifications by their name. */
 static bool CargoSpecNameSorter(const CargoSpec * const &a, const CargoSpec * const &b)
@@ -185,8 +216,10 @@ static bool CargoSpecClassSorter(const CargoSpec * const &a, const CargoSpec * c
 /** Initialize the list of sorted cargo specifications. */
 void InitializeSortedCargoSpecs()
 {
+	for (auto &tpc : CargoSpec::town_production_cargoes) tpc.clear();
+	for (auto &tpc : CargoSpec::town_production_cargo_mask) tpc = 0;
 	_sorted_cargo_specs.clear();
-	/* Add each cargo spec to the list. */
+	/* Add each cargo spec to the list, and determine the largest cargo icon size. */
 	for (const CargoSpec *cargo : CargoSpec::Iterate()) {
 		_sorted_cargo_specs.push_back(cargo);
 	}
@@ -194,10 +227,18 @@ void InitializeSortedCargoSpecs()
 	/* Sort cargo specifications by cargo class and name. */
 	std::sort(_sorted_cargo_specs.begin(), _sorted_cargo_specs.end(), &CargoSpecClassSorter);
 
+	/* Populate */
+	for (auto it = std::begin(_sorted_cargo_specs); it != std::end(_sorted_cargo_specs); ++it) {
+		_sorted_cargo_types[(*it)->Index()] = static_cast<uint8_t>(it - std::begin(_sorted_cargo_specs));
+	}
+
 	/* Count the number of standard cargos and fill the mask. */
 	_standard_cargo_mask = 0;
-	uint8 nb_standard_cargo = 0;
+	uint8_t nb_standard_cargo = 0;
 	for (const auto &cargo : _sorted_cargo_specs) {
+		assert(cargo->town_production_effect != INVALID_TPE);
+		CargoSpec::town_production_cargoes[cargo->town_production_effect].push_back(cargo->Index());
+		SetBit(CargoSpec::town_production_cargo_mask[cargo->town_production_effect], cargo->Index());
 		if (cargo->classes & CC_SPECIAL) break;
 		nb_standard_cargo++;
 		SetBit(_standard_cargo_mask, cargo->Index());
@@ -207,7 +248,7 @@ void InitializeSortedCargoSpecs()
 	_sorted_standard_cargo_specs = { _sorted_cargo_specs.data(), nb_standard_cargo };
 }
 
-uint64 CargoSpec::WeightOfNUnitsInTrain(uint32 n) const
+uint64_t CargoSpec::WeightOfNUnitsInTrain(uint32_t n) const
 {
 	if (this->is_freight) n *= _settings_game.vehicle.freight_trains;
 	return this->WeightOfNUnits(n);

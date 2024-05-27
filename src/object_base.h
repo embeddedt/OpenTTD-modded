@@ -25,9 +25,9 @@ struct Object : ObjectPool::PoolItem<&_object_pool> {
 	ObjectType type;    ///< Type of the object
 	Town *town;         ///< Town the object is built in
 	TileArea location;  ///< Location of the object
-	Date build_date;    ///< Date of construction
-	byte colour;        ///< Colour of the object, for display purpose
-	byte view;          ///< The view setting for this object
+	CalTime::Date build_date; ///< Date of construction
+	uint8_t colour;     ///< Colour of the object, for display purpose
+	uint8_t view;       ///< The view setting for this object
 
 	/** Make sure the object isn't zeroed. */
 	Object() {}
@@ -65,7 +65,7 @@ struct Object : ObjectPool::PoolItem<&_object_pool> {
 	 * @param type ObjectType to query
 	 * @pre type < NUM_OBJECTS
 	 */
-	static inline uint16 GetTypeCount(ObjectType type)
+	static inline uint16_t GetTypeCount(ObjectType type)
 	{
 		dbg_assert(type < NUM_OBJECTS);
 		if (type >= counts.size()) return 0;
@@ -79,7 +79,7 @@ struct Object : ObjectPool::PoolItem<&_object_pool> {
 	}
 
 protected:
-	static std::vector<uint16> counts; ///< Number of objects per type ingame
+	static std::vector<uint16_t> counts; ///< Number of objects per type ingame
 };
 
 /**

@@ -53,22 +53,22 @@ struct TileDesc {
 	StringID str;               ///< Description of the tile
 	Owner owner[4];             ///< Name of the owner(s)
 	StringID owner_type[4];     ///< Type of each owner
-	Date build_date;            ///< Date of construction of tile contents
+	CalTime::Date build_date;   ///< Date of construction of tile contents
 	StringID station_class;     ///< Class of station
 	StringID station_name;      ///< Type of station within the class
 	StringID airport_class;     ///< Name of the airport class
 	StringID airport_name;      ///< Name of the airport
 	StringID airport_tile_name; ///< Name of the airport tile
 	const char *grf;            ///< newGRF used for the tile contents
-	uint64 dparam[4];           ///< Parameters of the \a str string
+	uint64_t dparam[4];         ///< Parameters of the \a str string
 	StringID railtype;          ///< Type of rail on the tile.
 	StringID railtype2;         ///< Type of second rail on the tile.
-	uint16 rail_speed;          ///< Speed limit of rail (bridges and track)
-	uint16 rail_speed2;         ///< Speed limit of second rail (bridges and track)
+	uint16_t rail_speed;        ///< Speed limit of rail (bridges and track)
+	uint16_t rail_speed2;       ///< Speed limit of second rail (bridges and track)
 	StringID roadtype;          ///< Type of road on the tile.
-	uint16 road_speed;          ///< Speed limit of road (bridges and track)
+	uint16_t road_speed;        ///< Speed limit of road (bridges and track)
 	StringID tramtype;          ///< Type of tram on the tile.
-	uint16 tram_speed;          ///< Speed limit of tram (bridges and track)
+	uint16_t tram_speed;        ///< Speed limit of tram (bridges and track)
 };
 
 struct DrawTileProcParams {
@@ -199,7 +199,7 @@ VehicleEnterTileStatus VehicleEnterTile(Vehicle *v, TileIndex tile, int x, int y
 void ChangeTileOwner(TileIndex tile, Owner old_owner, Owner new_owner);
 void GetTileDesc(TileIndex tile, TileDesc *td);
 
-static inline void AddAcceptedCargo(TileIndex tile, CargoArray &acceptance, CargoTypes *always_accepted)
+inline void AddAcceptedCargo(TileIndex tile, CargoArray &acceptance, CargoTypes *always_accepted)
 {
 	AddAcceptedCargoProc *proc = _tile_type_procs[GetTileType(tile)]->add_accepted_cargo_proc;
 	if (proc == nullptr) return;
@@ -207,14 +207,14 @@ static inline void AddAcceptedCargo(TileIndex tile, CargoArray &acceptance, Carg
 	proc(tile, acceptance, always_accepted == nullptr ? &dummy : always_accepted);
 }
 
-static inline void AddProducedCargo(TileIndex tile, CargoArray &produced)
+inline void AddProducedCargo(TileIndex tile, CargoArray &produced)
 {
 	AddProducedCargoProc *proc = _tile_type_procs[GetTileType(tile)]->add_produced_cargo_proc;
 	if (proc == nullptr) return;
 	proc(tile, produced);
 }
 
-static inline bool ClickTile(TileIndex tile)
+inline bool ClickTile(TileIndex tile)
 {
 	ClickTileProc *proc = _tile_type_procs[GetTileType(tile)]->click_tile_proc;
 	if (proc == nullptr) return false;

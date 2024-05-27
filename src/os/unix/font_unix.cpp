@@ -34,6 +34,8 @@ static std::tuple<std::string, std::string> SplitFontFamilyAndStyle(std::string_
 	if (separator == std::string_view::npos) return { std::string(font_name), std::string() };
 
 	auto begin = font_name.find_first_not_of("\t ", separator + 1);
+	if (begin == std::string_view::npos) return { std::string(font_name.substr(0, separator)), std::string() };
+
 	return { std::string(font_name.substr(0, separator)), std::string(font_name.substr(begin)) };
 }
 
@@ -79,8 +81,8 @@ FT_Error GetFontByFaceName(const char *font_name, FT_Face *face)
 				if (!font_style.empty() && !StrEqualsIgnoreCase(font_style, (char *)style)) continue;
 
 				/* Font config takes the best shot, which, if the family name is spelled
-					* wrongly a 'random' font, so check whether the family name is the
-					* same as the supplied name */
+				 * wrongly a 'random' font, so check whether the family name is the
+				 * same as the supplied name */
 				if (StrEqualsIgnoreCase(font_family, (char *)family)) {
 					err = FT_New_Face(_library, (char *)file, index, face);
 				}
@@ -95,7 +97,7 @@ FT_Error GetFontByFaceName(const char *font_name, FT_Face *face)
 	return err;
 }
 
-bool SetFallbackFont(FontCacheSettings *settings, const std::string &language_isocode, int winlangid, MissingGlyphSearcher *callback)
+bool SetFallbackFont(FontCacheSettings *settings, const std::string &language_isocode, int, MissingGlyphSearcher *callback)
 {
 	bool ret = false;
 

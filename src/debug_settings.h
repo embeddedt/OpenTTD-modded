@@ -21,6 +21,8 @@ enum ChickenBitFlags {
 	DCBF_DESYNC_CHECK_NO_GENERAL       = 4,
 	DCBF_DESYNC_CHECK_PERIODIC_SIGNALS = 5,
 	DCBF_CMD_NO_TEST_ALL               = 6,
+	DCBF_WATER_REGION_CLEAR            = 7,
+	DCBF_WATER_REGION_INIT_ALL         = 8,
 };
 
 inline bool HasChickenBit(ChickenBitFlags flag)
@@ -47,13 +49,12 @@ inline bool HasGrfOptimiserFlag(NewGRFOptimiserFlags flag)
 
 enum MiscDebugFlags {
 	MDF_OVERHEAT_BREAKDOWN_OPEN_WIN,
-	MDF_ZONING_RS_WATER_FLOOD_STATE,
-	MDF_ZONING_RS_TROPIC_ZONE,
-	MDF_ZONING_RS_ANIMATED_TILE,
+	MDF_ZONING_DEBUG_MODES,
+	MDF_UNUSED1,
+	MDF_UNUSED2,
 	MDF_NEWGRF_SG_SAVE_RAW,
-	MDF_NEWGRF_SG_DUMP_MORE_DETAIL,
 	MDF_SPECIAL_CMDS,
 };
-extern uint32 _misc_debug_flags;
+extern uint32_t _misc_debug_flags;
 
 #endif /* DEBUG_SETTINGS_H */

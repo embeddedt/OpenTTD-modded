@@ -9,7 +9,6 @@
 
 #include "../../stdafx.h"
 #include "script_list.hpp"
-#include "script_controller.hpp"
 #include "../../debug.h"
 #include "../../script/squirrel.hpp"
 
@@ -113,7 +112,7 @@ public:
 		this->End();
 	}
 
-	SQInteger Begin()
+	SQInteger Begin() override
 	{
 		if (this->list->values.empty()) return 0;
 		this->has_no_more_items = false;
@@ -126,7 +125,7 @@ public:
 		return item_current;
 	}
 
-	void End()
+	void End() override
 	{
 		this->has_no_more_items = true;
 		this->item_next = 0;
@@ -145,7 +144,7 @@ public:
 		if (this->value_iter != this->list->values.end()) item_next = (*this->value_iter).second;
 	}
 
-	SQInteger Next()
+	SQInteger Next() override
 	{
 		if (this->IsEnd()) return 0;
 
@@ -154,7 +153,7 @@ public:
 		return item_current;
 	}
 
-	void Remove(SQInteger item)
+	void Remove(SQInteger item) override
 	{
 		if (this->IsEnd()) return;
 
@@ -165,7 +164,7 @@ public:
 		}
 	}
 
-	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase)
+	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase) override
 	{
 		if (this->IsEnd()) return;
 
@@ -178,12 +177,12 @@ public:
 		}
 	}
 
-	void ValueChange(SQInteger item)
+	void ValueChange(SQInteger item) override
 	{
 		this->ScriptListSorterValueAscending::Remove(item);
 	}
 
-	void RetargetIterators()
+	void RetargetIterators() override
 	{
 		RetargetIterator(this->list->values, this->value_iter);
 	}
@@ -210,7 +209,7 @@ public:
 		this->End();
 	}
 
-	SQInteger Begin()
+	SQInteger Begin() override
 	{
 		if (this->list->values.empty()) return 0;
 		this->has_no_more_items = false;
@@ -224,7 +223,7 @@ public:
 		return item_current;
 	}
 
-	void End()
+	void End() override
 	{
 		this->has_no_more_items = true;
 		this->item_next = 0;
@@ -248,7 +247,7 @@ public:
 		if (this->value_iter != this->list->values.end()) item_next = this->value_iter->second;
 	}
 
-	SQInteger Next()
+	SQInteger Next() override
 	{
 		if (this->IsEnd()) return 0;
 
@@ -257,7 +256,7 @@ public:
 		return item_current;
 	}
 
-	void Remove(SQInteger item)
+	void Remove(SQInteger item) override
 	{
 		if (this->IsEnd()) return;
 
@@ -268,17 +267,17 @@ public:
 		}
 	}
 
-	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase)
+	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase) override
 	{
 		/* not implemented */
 	}
 
-	void ValueChange(SQInteger item)
+	void ValueChange(SQInteger item) override
 	{
 		this->ScriptListSorterValueDescending::Remove(item);
 	}
 
-	void RetargetIterators()
+	void RetargetIterators() override
 	{
 		RetargetIterator(this->list->values, this->value_iter);
 	}
@@ -302,7 +301,7 @@ public:
 		this->End();
 	}
 
-	SQInteger Begin()
+	SQInteger Begin() override
 	{
 		if (this->list->items.empty()) return 0;
 		this->has_no_more_items = false;
@@ -315,7 +314,7 @@ public:
 		return item_current;
 	}
 
-	void End()
+	void End() override
 	{
 		this->has_no_more_items = true;
 	}
@@ -333,7 +332,7 @@ public:
 		if (this->item_iter != this->list->items.end()) item_next = (*this->item_iter).first;
 	}
 
-	SQInteger Next()
+	SQInteger Next() override
 	{
 		if (this->IsEnd()) return 0;
 
@@ -342,7 +341,7 @@ public:
 		return item_current;
 	}
 
-	void Remove(SQInteger item)
+	void Remove(SQInteger item) override
 	{
 		if (this->IsEnd()) return;
 
@@ -353,7 +352,7 @@ public:
 		}
 	}
 
-	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase)
+	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase) override
 	{
 		if (this->IsEnd()) return;
 
@@ -366,12 +365,12 @@ public:
 		}
 	}
 
-	void ValueChange(SQInteger item)
+	void ValueChange(SQInteger item) override
 	{
 		/* do nothing */
 	}
 
-	void RetargetIterators()
+	void RetargetIterators() override
 	{
 		RetargetIterator(this->list->items, this->item_iter);
 	}
@@ -398,7 +397,7 @@ public:
 		this->End();
 	}
 
-	SQInteger Begin()
+	SQInteger Begin() override
 	{
 		if (this->list->items.empty()) return 0;
 		this->has_no_more_items = false;
@@ -412,7 +411,7 @@ public:
 		return item_current;
 	}
 
-	void End()
+	void End() override
 	{
 		this->has_no_more_items = true;
 	}
@@ -435,7 +434,7 @@ public:
 		if (this->item_iter != this->list->items.end()) item_next = (*this->item_iter).first;
 	}
 
-	SQInteger Next()
+	SQInteger Next() override
 	{
 		if (this->IsEnd()) return 0;
 
@@ -444,7 +443,7 @@ public:
 		return item_current;
 	}
 
-	void Remove(SQInteger item)
+	void Remove(SQInteger item) override
 	{
 		if (this->IsEnd()) return;
 
@@ -455,17 +454,17 @@ public:
 		}
 	}
 
-	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase)
+	void PostErase(SQInteger item, ScriptList::ScriptListMap::iterator post_erase, ScriptList::ScriptListValueSet::iterator value_post_erase) override
 	{
 		/* not implemented */
 	}
 
-	void ValueChange(SQInteger item)
+	void ValueChange(SQInteger item) override
 	{
 		/* do nothing */
 	}
 
-	void RetargetIterators()
+	void RetargetIterators() override
 	{
 		RetargetIterator(this->list->items, this->item_iter);
 	}
@@ -1026,6 +1025,9 @@ SQInteger ScriptList::Valuate(HSQUIRRELVM vm)
 	bool backup_allow = ScriptObject::GetAllowDoCommand();
 	ScriptObject::SetAllowDoCommand(false);
 
+	/* Limit the total number of ops that can be consumed by a valuate operation */
+	SQOpsLimiter limiter(vm, MAX_VALUATE_OPS, "valuator function");
+
 	/* Push the function to call */
 	sq_push(vm, 2);
 
@@ -1069,16 +1071,6 @@ SQInteger ScriptList::Valuate(HSQUIRRELVM vm)
 				ScriptObject::SetAllowDoCommand(backup_allow);
 				return sq_throwerror(vm, "return value of valuator is not valid (not integer/bool)");
 			}
-		}
-
-		/* Kill the script when the valuator call takes way too long.
-		 * Triggered by nesting valuators, which then take billions of iterations. */
-		if (ScriptController::GetOpsTillSuspend() < -1000000) {
-			/* See below for explanation. The extra pop is the return value. */
-			sq_pop(vm, nparam + 4);
-
-			ScriptObject::SetAllowDoCommand(backup_allow);
-			return sq_throwerror(vm, "excessive CPU usage in valuator function");
 		}
 
 		/* Was something changed? */

@@ -19,6 +19,7 @@
 #include "../../gamelog.h"
 #include "../../sl/saveload.h"
 #include "../../video/video_driver.hpp"
+#include "../../library_loader.h"
 #include "../../screenshot.h"
 #include "../../debug.h"
 #include "../../settings_type.h"
@@ -39,6 +40,7 @@
 #else
 #include <setjmp.h>
 #endif
+#include <atomic>
 
 #include "../../safeguards.h"
 
@@ -55,7 +57,7 @@
 #pragma GCC diagnostic ignored "-Wclobbered"
 #endif
 
-static void NORETURN ImmediateExitProcess(uint exit_code)
+[[noreturn]] static void ImmediateExitProcess(uint exit_code)
 {
 	/* TerminateProcess may fail in some special edge cases, fall back to ExitProcess in this case */
 	TerminateProcess(GetCurrentProcess(), exit_code);
@@ -69,12 +71,17 @@ class CrashLogWindows : public CrashLog {
 	/** Information about the encountered exception */
 	EXCEPTION_POINTERS *ep;
 
+public:
+	DWORD crash_thread_id;
+	std::atomic<uint32_t> other_crash_threads;
+
 	char *LogOSVersion(char *buffer, const char *last) const override;
 	char *LogError(char *buffer, const char *last, const char *message) const override;
 #if defined(_MSC_VER) || defined(WITH_DBGHELP)
 	char *LogStacktrace(char *buffer, const char *last) const override;
 #endif /* _MSC_VER || WITH_DBGHELP */
 	char *LogRegisters(char *buffer, const char *last) const override;
+	char *LogCrashTrailer(char *buffer, const char *last) const override;
 
 protected:
 	char *TryCrashLogFaultSection(char *buffer, const char *last, const char *section_name, CrashLogSectionWriter writer) override;
@@ -86,16 +93,15 @@ public:
 #endif /* _MSC_VER */
 
 	/** Buffer for the generated crash log */
-	char crashlog[65536 * 4];
+	std::span<char> crashlog_buffer;
 
 	/**
 	 * A crash log is always generated when it's generated.
 	 * @param ep the data related to the exception.
 	 */
 	CrashLogWindows(EXCEPTION_POINTERS *ep = nullptr) :
-		ep(ep)
+		ep(ep), crash_thread_id(GetCurrentThreadId())
 	{
-		this->crashlog[0] = '\0';
 		this->crashlog_filename[0] = '\0';
 		this->crashdump_filename[0] = '\0';
 		this->screenshot_filename[0] = '\0';
@@ -105,7 +111,7 @@ public:
 	/**
 	 * Points to the current crash log.
 	 */
-	static CrashLogWindows *current;
+	static std::atomic<CrashLogWindows *> current;
 
 	char *internal_fault_saved_buffer = nullptr;
 #if !defined(_MSC_VER)
@@ -113,7 +119,7 @@ public:
 #endif
 };
 
-/* static */ CrashLogWindows *CrashLogWindows::current = nullptr;
+/* static */ std::atomic<CrashLogWindows *> CrashLogWindows::current = nullptr;
 
 /* virtual */ char *CrashLogWindows::LogOSVersion(char *buffer, const char *last) const
 {
@@ -304,11 +310,11 @@ static const char *GetAccessViolationTypeString(uint type)
 
 	buffer += seprintf(buffer, last, "\n Bytes at instruction pointer:\n");
 #ifdef _M_AMD64
-	byte *b = (byte*)ep->ContextRecord->Rip;
+	uint8_t *b = (uint8_t*)ep->ContextRecord->Rip;
 #elif defined(_M_IX86)
-	byte *b = (byte*)ep->ContextRecord->Eip;
+	uint8_t *b = (uint8_t*)ep->ContextRecord->Eip;
 #elif defined(_M_ARM64)
-	byte *b = (byte*)ep->ContextRecord->Pc;
+	uint8_t *b = (uint8_t*)ep->ContextRecord->Pc;
 #endif
 	for (int i = 0; i != 24; i++) {
 		if (IsBadReadPtr(b, 1)) {
@@ -319,6 +325,18 @@ static const char *GetAccessViolationTypeString(uint type)
 		b++;
 	}
 	return buffer + seprintf(buffer, last, "\n\n");
+}
+
+/**
+ * Log crash trailer
+ */
+char *CrashLogWindows::LogCrashTrailer(char *buffer, const char *last) const
+{
+	uint32_t other_crashed_threads = this->other_crash_threads.load();
+	if (other_crashed_threads > 0) {
+		buffer += seprintf(buffer, last, "\n*** %u other threads have also crashed ***\n\n", other_crashed_threads);
+	}
+	return buffer;
 }
 
 #if defined(_MSC_VER) || defined(WITH_DBGHELP)
@@ -334,22 +352,7 @@ static const uint MAX_FRAMES     = 64;
 
 /* virtual */ char *CrashLogWindows::LogStacktrace(char *buffer, const char *last) const
 {
-#define M(x) x "\0"
-	static const char dbg_import[] =
-		M("dbghelp.dll")
-		M("SymInitialize")
-		M("SymSetOptions")
-		M("SymCleanup")
-		M("StackWalk64")
-		M("SymFunctionTableAccess64")
-		M("SymGetModuleBase64")
-		M("SymGetModuleInfo64")
-		M("SymGetSymFromAddr64")
-		M("SymGetLineFromAddr64")
-		M("")
-		;
-#undef M
-
+	LibraryLoader dbghelp("dbghelp.dll");
 	struct ProcPtrs {
 		BOOL (WINAPI * pSymInitialize)(HANDLE, PCSTR, BOOL);
 		BOOL (WINAPI * pSymSetOptions)(DWORD);
@@ -360,12 +363,22 @@ static const uint MAX_FRAMES     = 64;
 		BOOL (WINAPI * pSymGetModuleInfo64)(HANDLE, DWORD64, PIMAGEHLP_MODULE64);
 		BOOL (WINAPI * pSymGetSymFromAddr64)(HANDLE, DWORD64, PDWORD64, PIMAGEHLP_SYMBOL64);
 		BOOL (WINAPI * pSymGetLineFromAddr64)(HANDLE, DWORD64, PDWORD, PIMAGEHLP_LINE64);
-	} proc;
+	} proc = {
+		dbghelp.GetFunction("SymInitialize"),
+		dbghelp.GetFunction("SymSetOptions"),
+		dbghelp.GetFunction("SymCleanup"),
+		dbghelp.GetFunction("StackWalk64"),
+		dbghelp.GetFunction("SymFunctionTableAccess64"),
+		dbghelp.GetFunction("SymGetModuleBase64"),
+		dbghelp.GetFunction("SymGetModuleInfo64"),
+		dbghelp.GetFunction("SymGetSymFromAddr64"),
+		dbghelp.GetFunction("SymGetLineFromAddr64"),
+	};
 
 	buffer += seprintf(buffer, last, "Decoded stack trace:\n");
 
 	/* Try to load the functions from the DLL, if that fails because of a too old dbghelp.dll, just skip it. */
-	if (LoadLibraryList((Function*)&proc, dbg_import)) {
+	if (!dbghelp.HasError()) {
 		/* Initialize symbol handler. */
 		HANDLE hCur = GetCurrentProcess();
 		proc.pSymInitialize(hCur, nullptr, TRUE);
@@ -401,6 +414,13 @@ static const uint MAX_FRAMES     = 64;
 		sym_info->SizeOfStruct = sizeof(IMAGEHLP_SYMBOL64);
 		sym_info->MaxNameLength = MAX_SYMBOL_LEN;
 
+		std::array<DWORD64, 8> last_offsets = {};
+
+#if defined(WITH_BFD)
+		sym_bfd_obj_cache bfd_cache;
+		bfd_init();
+#endif /* WITH_BFD */
+
 		/* Walk stack at most MAX_FRAMES deep in case the stack is corrupt. */
 		for (uint num = 0; num < MAX_FRAMES; num++) {
 			auto guard = scope_guard([&]() {
@@ -414,20 +434,24 @@ static const uint MAX_FRAMES     = 64;
 #endif
 				hCur, GetCurrentThread(), &frame, &ctx, nullptr, proc.pSymFunctionTableAccess64, proc.pSymGetModuleBase64, nullptr)) break;
 
-			if (frame.AddrPC.Offset == frame.AddrReturn.Offset) {
+			if (std::find_if(last_offsets.begin(), last_offsets.end(), [&](DWORD64 offset) { return offset != frame.AddrPC.Offset; }) == last_offsets.end()) {
 				buffer += seprintf(buffer, last, " <infinite loop>\n");
 				break;
 			}
 
+			last_offsets[num % last_offsets.size()] = frame.AddrPC.Offset;
+
 			/* Get module name. */
 			const char *mod_name = "???";
 			const char *image_name = nullptr;
+			[[maybe_unused]] DWORD64 image_base = 0;
 
 			IMAGEHLP_MODULE64 module;
 			module.SizeOfStruct = sizeof(module);
 			if (proc.pSymGetModuleInfo64(hCur, frame.AddrPC.Offset, &module)) {
 				mod_name = module.ModuleName;
 				image_name = module.ImageName;
+				image_base = module.BaseOfImage;
 			}
 
 			/* Print module and instruction pointer. */
@@ -447,8 +471,8 @@ static const uint MAX_FRAMES     = 64;
 			} else if (image_name != nullptr) {
 #if defined (WITH_BFD)
 				/* subtract one to get the line before the return address, i.e. the function call line */
-				sym_info_bfd bfd_info(static_cast<bfd_vma>(frame.AddrPC.Offset) - 1);
-				lookup_addr_bfd(image_name, bfd_info);
+				sym_info_bfd bfd_info(static_cast<bfd_vma>(frame.AddrPC.Offset) - static_cast<bfd_vma>(image_base) - 1);
+				lookup_addr_bfd(image_name, bfd_cache, bfd_info);
 				if (bfd_info.function_name != nullptr) {
 					const char *func_name = bfd_info.function_name;
 #if defined(WITH_DEMANGLE)
@@ -518,12 +542,12 @@ static const uint MAX_FRAMES     = 64;
 	int ret = 0;
 	HMODULE dbghelp = LoadLibrary(L"dbghelp.dll");
 	if (dbghelp != nullptr) {
-		typedef BOOL (WINAPI *MiniDumpWriteDump_t)(HANDLE, DWORD, HANDLE,
+		typedef BOOL (WINAPI *MiniDumpWriteDumpT)(HANDLE, DWORD, HANDLE,
 				MINIDUMP_TYPE,
 				CONST PMINIDUMP_EXCEPTION_INFORMATION,
 				CONST PMINIDUMP_USER_STREAM_INFORMATION,
 				CONST PMINIDUMP_CALLBACK_INFORMATION);
-		MiniDumpWriteDump_t funcMiniDumpWriteDump = GetProcAddressT<MiniDumpWriteDump_t>(dbghelp, "MiniDumpWriteDump");
+		MiniDumpWriteDumpT funcMiniDumpWriteDump = (MiniDumpWriteDumpT) GetProcAddress(dbghelp, "MiniDumpWriteDump");
 		if (funcMiniDumpWriteDump != nullptr) {
 			seprintf(filename, filename_last, "%scrash.dmp", _personal_dir.c_str());
 			HANDLE file  = CreateFile(OTTD2FS(filename).c_str(), GENERIC_WRITE, 0, nullptr, CREATE_ALWAYS, 0, 0);
@@ -534,8 +558,8 @@ static const uint MAX_FRAMES     = 64;
 			MINIDUMP_USER_STREAM_INFORMATION musi;
 
 			userstream.Type        = LastReservedStream + 1;
-			userstream.Buffer      = const_cast<void *>(static_cast<const void*>(this->crashlog));
-			userstream.BufferSize  = (ULONG)strlen(this->crashlog) + 1;
+			userstream.Buffer      = const_cast<void *>(static_cast<const void*>(this->crashlog_buffer.data()));
+			userstream.BufferSize  = (ULONG)strlen(this->crashlog_buffer.data()) + 1;
 
 			musi.UserStreamCount   = 1;
 			musi.UserStreamArray   = &userstream;
@@ -651,10 +675,32 @@ static LONG WINAPI ExceptionHandler(EXCEPTION_POINTERS *ep)
 	/* Disable our event loop. */
 	SetWindowLongPtr(GetActiveWindow(), GWLP_WNDPROC, (LONG_PTR)&DefWindowProc);
 
-	if (CrashLogWindows::current != nullptr) {
-		CrashLog::AfterCrashLogCleanup();
-		ImmediateExitProcess(2);
-	}
+	CrashLogWindows *log = nullptr;
+	CrashLogWindows *cur = CrashLogWindows::current.load();
+	do {
+		if (cur != nullptr) {
+			if (cur->crash_thread_id == GetCurrentThreadId()) {
+				/* The same thread has recursively reached the exception handler */
+				CrashLog::AfterCrashLogCleanup();
+				ImmediateExitProcess(2);
+			} else {
+				/* Another thread has also reached the exception handler, just pause/suspend it */
+				cur->other_crash_threads++;
+				while (true) {
+					Sleep(INFINITE);
+				}
+			}
+			return EXCEPTION_EXECUTE_HANDLER;
+		} else if (log == nullptr) {
+			/* Use VirtualAlloc to allocate the buffer for the crash log object and text buffer.
+			 * It is too large for the stack, and the crash may have been caused by heap corruption.
+			 * Make the crash log text buffer at least 4 x 64k, round allocation up to multiple of 64k. */
+			const size_t alloc_size = Align(sizeof(CrashLogWindows) + 0x40000, 0x10000);
+			void *raw_buffer = VirtualAlloc(nullptr, alloc_size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+			log = new (raw_buffer) CrashLogWindows(ep);
+			log->crashlog_buffer = std::span<char>(reinterpret_cast<char *>(raw_buffer) + sizeof(CrashLogWindows), reinterpret_cast<char *>(raw_buffer) + alloc_size);
+		}
+	} while (!CrashLogWindows::current.compare_exchange_weak(cur, log));
 
 	const char *abort_reason = CrashLog::GetAbortCrashlogReason();
 	if (abort_reason != nullptr) {
@@ -665,9 +711,7 @@ static LONG WINAPI ExceptionHandler(EXCEPTION_POINTERS *ep)
 		ImmediateExitProcess(3);
 	}
 
-	CrashLogWindows *log = new CrashLogWindows(ep);
-	CrashLogWindows::current = log;
-	log->MakeCrashLog(log->crashlog, lastof(log->crashlog));
+	log->MakeCrashLog(log->crashlog_buffer.data(), log->crashlog_buffer.data() + log->crashlog_buffer.size() - 1);
 
 	/* Close any possible log files */
 	CloseConsoleLogIfActive();
@@ -708,11 +752,12 @@ static LONG WINAPI ExceptionHandler(EXCEPTION_POINTERS *ep)
 
 static LONG WINAPI VectoredExceptionHandler(EXCEPTION_POINTERS *ep)
 {
-	if (CrashLogWindows::current != nullptr && CrashLogWindows::current->internal_fault_saved_buffer != nullptr) {
+	CrashLogWindows *cur = CrashLogWindows::current.load();
+	if (cur != nullptr && cur->crash_thread_id == GetCurrentThreadId() && cur->internal_fault_saved_buffer != nullptr) {
 #if defined(_MSC_VER)
 		return EXCEPTION_CONTINUE_SEARCH;
 #else
-		longjmp(CrashLogWindows::current->internal_fault_jmp_buf, ep->ExceptionRecord->ExceptionCode);
+		longjmp(cur->internal_fault_jmp_buf, ep->ExceptionRecord->ExceptionCode);
 #endif
 	}
 
@@ -728,7 +773,7 @@ static LONG WINAPI VectoredExceptionHandler(EXCEPTION_POINTERS *ep)
 	return EXCEPTION_CONTINUE_SEARCH;
 }
 
-static void CDECL CustomAbort(int signal)
+static void CDECL CustomAbort(int)
 {
 	RaiseException(0xE1212012, 0, 0, nullptr);
 }
@@ -747,7 +792,9 @@ static void CDECL CustomAbort(int signal)
 
 	using VEX_HANDLER_TYPE = LONG WINAPI (EXCEPTION_POINTERS *);
 	void* (WINAPI *AddVectoredExceptionHandler)(ULONG, VEX_HANDLER_TYPE*);
-	if (LoadLibraryList((Function*)&AddVectoredExceptionHandler, "kernel32.dll\0AddVectoredExceptionHandler\0\0")) {
+	static LibraryLoader _kernel32("Kernel32.dll");
+	AddVectoredExceptionHandler = _kernel32.GetFunction("AddVectoredExceptionHandler");
+	if (AddVectoredExceptionHandler != nullptr) {
 		AddVectoredExceptionHandler(1, VectoredExceptionHandler);
 	}
 }
@@ -792,10 +839,10 @@ static void CDECL CustomAbort(int signal)
 	log.MakeInconsistencyLog(info);
 }
 
-/* static */ void CrashLog::VersionInfoLog()
+/* static */ void CrashLog::VersionInfoLog(char *buffer, const char *last)
 {
 	CrashLogWindows log(nullptr);
-	log.MakeVersionInfoLog();
+	log.FillVersionInfoLog(buffer, last);
 }
 
 /* The crash log GUI */
@@ -832,12 +879,13 @@ static void SetWndSize(HWND wnd, int mode)
 	}
 }
 
-static INT_PTR CALLBACK CrashDialogFunc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
+static INT_PTR CALLBACK CrashDialogFunc(HWND wnd, UINT msg, WPARAM wParam, LPARAM)
 {
 	switch (msg) {
 		case WM_INITDIALOG: {
 			uint crashlog_length = 0;
-			for (const char *p = CrashLogWindows::current->crashlog; *p != 0; p++) {
+			CrashLogWindows *cur = CrashLogWindows::current.load();
+			for (const char *p = cur->crashlog_buffer.data(); *p != 0; p++) {
 				if (*p == '\n') {
 					/* Reserve extra space for LF to CRLF conversion */
 					crashlog_length++;
@@ -860,9 +908,9 @@ static INT_PTR CALLBACK CrashDialogFunc(HWND wnd, UINT msg, WPARAM wParam, LPARA
 			char *dos_nl = reinterpret_cast<char *>(crash_msgW + crash_msgW_length);
 
 			/* Convert unix -> dos newlines because the edit box only supports that properly :( */
-			const char *unix_nl = CrashLogWindows::current->crashlog;
+			const char *unix_nl = cur->crashlog_buffer.data();
 			char *p = dos_nl;
-			WChar c;
+			char32_t c;
 			while ((c = Utf8Consume(&unix_nl)) && p < (dos_nl + dos_nl_length - 1) - 4) { // 4 is max number of bytes per character
 				if (c == '\n') p += Utf8Encode(p, '\r');
 				p += Utf8Encode(p, c);
@@ -886,18 +934,18 @@ static INT_PTR CALLBACK CrashDialogFunc(HWND wnd, UINT msg, WPARAM wParam, LPARA
 				*desc = L'\0';
 			};
 
-			append_str(CrashLogWindows::current->crashlog_filename);
-			if (_settings_client.gui.developer > 0 && CrashLogWindows::current->crashdump_filename[0] != 0) {
+			append_str(cur->crashlog_filename);
+			if (_settings_client.gui.developer > 0 && cur->crashdump_filename[0] != 0) {
 				append_newline();
-				append_str(CrashLogWindows::current->crashdump_filename);
+				append_str(cur->crashdump_filename);
 			}
-			if (CrashLogWindows::current->savegame_filename[0] != 0) {
+			if (cur->savegame_filename[0] != 0) {
 				append_newline();
-				append_str(CrashLogWindows::current->savegame_filename);
+				append_str(cur->savegame_filename);
 			}
-			if (CrashLogWindows::current->screenshot_filename[0] != 0) {
+			if (cur->screenshot_filename[0] != 0) {
 				append_newline();
-				append_str(CrashLogWindows::current->screenshot_filename);
+				append_str(cur->screenshot_filename);
 			}
 
 			SetDlgItemText(wnd, 10, crash_desc_buf);

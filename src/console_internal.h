@@ -31,7 +31,7 @@ enum ConsoleHookResult {
  * If you want to handle multiple words as one, enclose them in double-quotes
  * eg. 'say "hello everybody"'
  */
-typedef bool IConsoleCmdProc(byte argc, char *argv[]);
+typedef bool IConsoleCmdProc(uint8_t argc, char *argv[]);
 typedef ConsoleHookResult IConsoleHook(bool echo);
 struct IConsoleCmd {
 	IConsoleCmd(const std::string &name, IConsoleCmdProc *proc, IConsoleHook *hook, bool unlisted) : name(name), proc(proc), hook(hook), unlisted(unlisted) {}
@@ -84,10 +84,10 @@ void IConsoleClearBuffer();
 void IConsoleStdLibRegister();
 
 /* Supporting functions */
-bool GetArgumentInteger(uint32 *value, const char *arg);
+bool GetArgumentInteger(uint32_t *value, const char *arg);
 
 void IConsoleGUIInit();
 void IConsoleGUIFree();
-void IConsoleGUIPrint(TextColour colour_code, char *string);
+void IConsoleGUIPrint(TextColour colour_code, std::string str);
 
 #endif /* CONSOLE_INTERNAL_H */

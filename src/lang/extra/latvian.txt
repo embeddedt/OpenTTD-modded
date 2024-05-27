@@ -1,7 +1,8 @@
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :jūdzes stundā
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
-STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :lauciņi/diena
+STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :rūtiņas/dienā
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :rūtiņas/sek.
 
 STR_BUTTON_RENAME                                               :{BLACK}Pārdēvēt
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Lidaparāti
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Automātiskā saglabāšana: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Izvēlēties spēles automātiskās saglabāšanas starplaikus
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Kustības sarakstu rādīt mirkļos nevis dienās: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Kustības sarakstos laikus rādīt spēles mirkļos, nevis dienās
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Pārslēgt piekraušanas rādītāju caurspīdību. Ctrl+klikšķis, lai slēgtu
 
@@ -31,6 +35,20 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Mainīt 
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Projektēts: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Apstājas, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}Dodas uz {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Nav rīkojumu, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}Dodas uz {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}Dodas uz {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Veikt apkopi {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_UNBUNCH_VEL_END            :{LTBLUE}Atvienot un apkalpot {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Nevar sasniegt {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Nevar sasniegt {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Nevar sasniegt {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Nevar sasniegt {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Ievietojiet jaunu pasūtījumu pirms iezīmētā pasūtījuma vai pievienojiet saraksta beigām. Ctrl+klikšķis uz stacijas lai 'piekraut pilnu', uz pieturas punkta, lai atcelu iestatījumu "bez pieturas pēc noklusējuma", vai uz noliktavas, lai veiktu apkopi. Noklikšķiniet uz cita transportlīdzekļa, lai kopētu tā pasūtījumus, vai Ctrl+klikšķis, lai kopīgotu pasūtījumus. Depo pasūtījums atspējo transportlīdzekļa automātisko apkalpošanu
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :Ie:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :Iz:
@@ -68,3 +86,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Pārdot 
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Nevar nopirkt 25% daļu šajā uzņēmumā...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Nevar pārdot 25% daļu šajā uzņēmumā...
 STR_ERROR_PROTECTED                                             :{WHITE}Šis uzņēmums ir par jaunu lai tirgotu akcijas...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :tikai ceļa signāliem

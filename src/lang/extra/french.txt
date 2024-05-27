@@ -2,6 +2,7 @@ STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
 STR_UNIT_NAME_VELOCITY_SI                                       :m/s
 STR_UNIT_NAME_VELOCITY_GAMEUNITS                                :cases/jour
+STR_UNIT_NAME_VELOCITY_GAMEUNITS_WALLCLOCK                      :cases/s
 
 STR_BUTTON_RENAME                                               :{BLACK}Renommer
 
@@ -12,6 +13,9 @@ STR_VEHICLE_TYPE_AIRCRAFT                                       :Aéronefs
 
 STR_CONFIG_SETTING_AUTOSAVE                                     :Sauvegarde automatique{NBSP}: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Sélectionner l'intervalle de temps entre les sauvegardes automatiques
+
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS                           :Afficher l'horaire en ticks plutôt qu'en jours{NBSP}: {STRING}
+STR_CONFIG_SETTING_TIMETABLE_IN_TICKS_HELPTEXT                  :Affiche les temps de trajets dans les horaires en ticks plutôt qu'en jours
 
 STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Transparence des indicateurs de chargement.{}Ctrl-clic pour verrouiller.
 
@@ -34,6 +38,20 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Modifier
 # Town tooltip
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Conçu en{NBSP}: {GOLD}{NUM}
+
+STR_VEHICLE_STATUS_TRAIN_STOPPING_VEL_END                       :{RED}Ralentit, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_STATION_VEL_END                  :{LTBLUE}En route pour {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_NO_ORDERS_VEL_END                            :{LTBLUE}Aucun ordre, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_WAYPOINT_VEL_END                 :{LTBLUE}En route pour {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_VEL_END                    :{ORANGE}En route pour le {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_SERVICE_VEL_END            :{LTBLUE}Entretien au {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_HEADING_FOR_DEPOT_UNBUNCH_VEL_END            :{LTBLUE}Répartition et entretien au {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_STATION_VEL_END                 :{LTBLUE}Ne peut pas atteindre {STATION}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_WAYPOINT_VEL_END                :{LTBLUE}Ne peut pas atteindre {WAYPOINT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_VEL_END                   :{ORANGE}Ne peut pas atteindre {DEPOT}, {VELOCITY}
+STR_VEHICLE_STATUS_CANNOT_REACH_DEPOT_SERVICE_VEL_END           :{LTBLUE}Ne peut pas atteindre {DEPOT}, {VELOCITY}
+
+STR_ORDERS_GO_TO_TOOLTIP_EXTRA                                  :{BLACK}Insérer un nouvel ordre avant l'ordre sélectionné, ou l'ajouter à la fin. Ctrl-clic sur une station pour «{NBSP}Chargement complet par un seul type{NBSP}», sur un point de contrôle pour inverser le paramètre «{NBSP}sans arrêt par défaut{NBSP}» ou sur un dépôt pour «{NBSP}entretien{NBSP}». Cliquer sur un véhicule pour copier ses ordres ou Ctrl-clic pour les partager. Un ordre de dépôt désactive l'entretien automatique du véhicule
 
 STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
 STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
@@ -73,3 +91,5 @@ STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Vendre 2
 STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Impossible d'acheter 25{NBSP}% des parts...
 STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Impossible de vendre 25{NBSP}% des parts...
 STR_ERROR_PROTECTED                                             :{WHITE}Cette compagnie ne vend pas d'actions pour le moment...
+
+STR_CONFIG_SETTING_CYCLE_SIGNAL_PBS                             :les signaux de chemin uniquement

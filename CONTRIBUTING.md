@@ -112,7 +112,7 @@ Every pull request should have a clear scope, with no unrelated commits.
 
 Adhering to the following process is the best way to get your work included in the project:
 
-1. [Fork](https://help.github.com/fork-a-repo/) the project, clone your fork, and configure the remotes:
+1. [Fork](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo) the project, clone your fork, and configure the remotes:
 
 ```bash
 git clone https://github.com/<your-username>/OpenTTD.git openttd
@@ -182,6 +182,16 @@ There is no single source for OpenTTD development docs. It's a complex project w
 A good entry point is [Development](https://wiki.openttd.org/en/Development/) on the OpenTTD wiki; this provides links to wiki documentation and other sources.
 
 The GitHub repo also includes some non-comprehensive documentation in [/docs](./docs).
+These include:
+- When to [change other languages and when not to](./docs/eints.md).
+- The [savegame format](./docs/savegame_format.md).
+- The [release process](./docs/releasing_openttd.md).
+- Some [notes on the link graph algorithm](./docs/linkgraph.md).
+- The [network game coordinator](./docs/game_coordinator.md).
+- How to use [the admin port for network games](./docs/admin_network.md), also useful for multiplayer server hosts.
+- The [performance metrics and logging features](./docs/logging_and_performance_metrics.md), also useful for add-on developers.
+- How [symbol server and analysis works](./docs/symbol_server.md).
+- And several miscellaneous files detailing internal data structures and graphics measurements and palettes.
 
 You may also want the guide to [compiling OpenTTD](./COMPILING.md).
 
@@ -256,7 +266,7 @@ This is inevitable, because it is a main feature of git.
 If you are concerned about your privacy, we strongly recommend to use "Anonymous &lt;anonymous@openttd.org&gt;" as the git commit author. We might refuse anonymous contributions if malicious intent is suspected.
 
 Please note that the contributor identity, once given, is used for copyright verification and to provide proof should a malicious commit be made.
-As such, the [EU GDPR](https://www.eugdpr.org/key-changes.html) "right to be forgotten" does not apply, as this is an overriding legitimate interest.
+As such, the [EU GDPR](https://gdpr.eu) "right to be forgotten" does not apply, as this is an overriding legitimate interest.
 
 Please also note that your commit is public and as such will potentially be processed by many third-parties.
 Git's distributed nature makes it impossible to track where exactly your commit, and thus your personal data, will be stored and be processed.

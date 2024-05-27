@@ -17,20 +17,20 @@
 
 #include "safeguards.h"
 
-/* virtual */ uint32 RoadTypeScopeResolver::GetRandomBits() const
+/* virtual */ uint32_t RoadTypeScopeResolver::GetRandomBits() const
 {
 	uint tmp = CountBits(this->tile + (TileX(this->tile) + TileY(this->tile)) * TILE_SIZE);
 	return GB(tmp, 0, 2);
 }
 
-/* virtual */ uint32 RoadTypeScopeResolver::GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const
+/* virtual */ uint32_t RoadTypeScopeResolver::GetVariable(uint16_t variable, uint32_t parameter, GetVariableExtra *extra) const
 {
 	if (this->tile == INVALID_TILE) {
 		switch (variable) {
 			case 0x40: return 0;
 			case 0x41: return 0;
 			case 0x42: return 0;
-			case 0x43: return _date;
+			case 0x43: return CalTime::CurDate().base();
 			case 0x44: return HZB_TOWN_EDGE;
 		}
 	}
@@ -40,8 +40,8 @@
 		case 0x41: return 0;
 		case 0x42: return IsLevelCrossingTile(this->tile) && IsCrossingBarred(this->tile);
 		case 0x43:
-			if (IsRoadDepotTile(this->tile)) return Depot::GetByTile(this->tile)->build_date;
-			return _date;
+			if (IsRoadDepotTile(this->tile)) return Depot::GetByTile(this->tile)->build_date.base();
+			return CalTime::CurDate().base();
 		case 0x44: {
 			const Town *t = nullptr;
 			if (IsRoadDepotTile(this->tile)) {
@@ -69,7 +69,7 @@ GrfSpecFeature RoadTypeResolverObject::GetFeature() const
 	}
 }
 
-uint32 RoadTypeResolverObject::GetDebugID() const
+uint32_t RoadTypeResolverObject::GetDebugID() const
 {
 	return this->roadtype_scope.rti->label;
 }
@@ -83,7 +83,7 @@ uint32 RoadTypeResolverObject::GetDebugID() const
  * @param param1 Extra parameter (first parameter of the callback, except roadtypes do not have callbacks).
  * @param param2 Extra parameter (second parameter of the callback, except roadtypes do not have callbacks).
  */
-RoadTypeResolverObject::RoadTypeResolverObject(const RoadTypeInfo *rti, TileIndex tile, TileContext context, RoadTypeSpriteGroup rtsg, uint32 param1, uint32 param2)
+RoadTypeResolverObject::RoadTypeResolverObject(const RoadTypeInfo *rti, TileIndex tile, TileContext context, RoadTypeSpriteGroup rtsg, uint32_t param1, uint32_t param2)
 	: ResolverObject(rti != nullptr ? rti->grffile[rtsg] : nullptr, CBID_NO_CALLBACK, param1, param2), roadtype_scope(*this, rti, tile, context)
 {
 	this->root_spritegroup = rti != nullptr ? rti->group[rtsg] : nullptr;
@@ -120,7 +120,7 @@ SpriteID GetCustomRoadSprite(const RoadTypeInfo *rti, TileIndex tile, RoadTypeSp
  * @param grffile   Originating GRF file.
  * @return RoadType or INVALID_ROADTYPE if the roadtype is unknown.
  */
-RoadType GetRoadTypeTranslation(RoadTramType rtt, uint8 tracktype, const GRFFile *grffile)
+RoadType GetRoadTypeTranslation(RoadTramType rtt, uint8_t tracktype, const GRFFile *grffile)
 {
 	/* Because OpenTTD mixes RoadTypes and TramTypes into the same type,
 	 * the mapping of the original road- and tramtypes does not match the default GRF-local mapping.
@@ -150,13 +150,13 @@ RoadType GetRoadTypeTranslation(RoadTramType rtt, uint8 tracktype, const GRFFile
  * @param grffile The GRF to do the lookup for.
  * @return the GRF internal ID.
  */
-uint8 GetReverseRoadTypeTranslation(RoadType roadtype, const GRFFile *grffile)
+uint8_t GetReverseRoadTypeTranslation(RoadType roadtype, const GRFFile *grffile)
 {
 	/* No road type table present, return road type as-is */
 	if (grffile == nullptr) return roadtype;
 
 	const std::vector<RoadTypeLabel> *list = RoadTypeIsRoad(roadtype) ? &grffile->roadtype_list : &grffile->tramtype_list;
-	if (list->size() == 0) return roadtype;
+	if (list->empty()) return roadtype;
 
 	/* Look for a matching road type label in the table */
 	RoadTypeLabel label = GetRoadTypeInfo(roadtype)->label;
@@ -168,7 +168,7 @@ uint8 GetReverseRoadTypeTranslation(RoadType roadtype, const GRFFile *grffile)
 	return 0xFF;
 }
 
-void DumpRoadTypeSpriteGroup(RoadType rt, DumpSpriteGroupPrinter print)
+void DumpRoadTypeSpriteGroup(RoadType rt, SpriteGroupDumper &dumper)
 {
 	char buffer[64];
 	const RoadTypeInfo *rti = GetRoadTypeInfo(rt);
@@ -189,8 +189,6 @@ void DumpRoadTypeSpriteGroup(RoadType rt, DumpSpriteGroupPrinter print)
 	};
 	static_assert(lengthof(sprite_group_names) == ROTSG_END);
 
-	SpriteGroupDumper dumper(print);
-
 	for (RoadTypeSpriteGroup rtsg = (RoadTypeSpriteGroup)0; rtsg < ROTSG_END; rtsg = (RoadTypeSpriteGroup)(rtsg + 1)) {
 		if (rti->group[rtsg] != nullptr) {
 			char *b = buffer;
@@ -198,9 +196,9 @@ void DumpRoadTypeSpriteGroup(RoadType rt, DumpSpriteGroupPrinter print)
 			if (rti->grffile[rtsg] != nullptr) {
 				b += seprintf(b, lastof(buffer), ", GRF: %08X", BSWAP32(rti->grffile[rtsg]->grfid));
 			}
-			print(nullptr, DSGPO_PRINT, 0, buffer);
+			dumper.Print(buffer);
 			dumper.DumpSpriteGroup(rti->group[rtsg], 0);
-			print(nullptr, DSGPO_PRINT, 0, "");
+			dumper.Print("");
 		}
 	}
 }

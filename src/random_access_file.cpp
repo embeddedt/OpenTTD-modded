@@ -97,7 +97,7 @@ void RandomAccessFile::SeekTo(size_t pos, int mode)
  * Read a byte from the file.
  * @return Read byte.
  */
-byte RandomAccessFile::ReadByteIntl()
+uint8_t RandomAccessFile::ReadByteIntl()
 {
 	if (this->buffer == this->buffer_end) {
 		this->buffer = this->buffer_start;
@@ -114,9 +114,9 @@ byte RandomAccessFile::ReadByteIntl()
  * Read a word (16 bits) from the file (in low endian format).
  * @return Read word.
  */
-uint16 RandomAccessFile::ReadWordIntl()
+uint16_t RandomAccessFile::ReadWordIntl()
 {
-	byte b = this->ReadByteIntl();
+	uint8_t b = this->ReadByteIntl();
 	return (this->ReadByteIntl() << 8) | b;
 }
 
@@ -124,7 +124,7 @@ uint16 RandomAccessFile::ReadWordIntl()
  * Read a double word (32 bits) from the file (in low endian format).
  * @return Read word.
  */
-uint32 RandomAccessFile::ReadDwordIntl()
+uint32_t RandomAccessFile::ReadDwordIntl()
 {
 	uint b = this->ReadWordIntl();
 	return (this->ReadWordIntl() << 16) | b;
@@ -145,9 +145,10 @@ void RandomAccessFile::ReadBlock(void *ptr, size_t size)
  * Skip \a n bytes ahead in the file.
  * @param n Number of bytes to skip reading.
  */
-void RandomAccessFile::SkipBytes(int n)
+void RandomAccessFile::SkipBytes(size_t n)
 {
-	int remaining = this->buffer_end - this->buffer;
+	assert(this->buffer_end >= this->buffer);
+	size_t remaining = this->buffer_end - this->buffer;
 	if (n <= remaining) {
 		this->buffer += n;
 	} else {
