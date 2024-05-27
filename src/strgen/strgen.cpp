@@ -9,6 +9,7 @@
 
 #include "../stdafx.h"
 #include "../core/endian_func.hpp"
+#include "../core/mem_func.hpp"
 #include "../string_func.h"
 #include "../strings_type.h"
 #include "../misc/getoptdata.h"
@@ -131,7 +132,7 @@ struct FileStringReader : StringReader {
 
 	char *ReadLine(char *buffer, const char *last) override
 	{
-		char *result = fgets(buffer, ClampToU16(last - buffer + 1), this->fh);
+		char *result = fgets(buffer, ClampTo<uint16>(last - buffer + 1), this->fh);
 		if (result == nullptr && this->fh2 != nullptr) {
 			fclose(this->fh);
 			this->fh = this->fh2;
@@ -159,7 +160,7 @@ struct FileStringReader : StringReader {
 void FileStringReader::HandlePragma(char *str)
 {
 	if (!memcmp(str, "id ", 3)) {
-		this->data.next_string_id = strtoul(str + 3, nullptr, 0);
+		this->data.next_string_id = std::strtoul(str + 3, nullptr, 0);
 	} else if (!memcmp(str, "name ", 5)) {
 		strecpy(_lang.name, str + 5, lastof(_lang.name));
 	} else if (!memcmp(str, "ownname ", 8)) {
@@ -185,14 +186,14 @@ void FileStringReader::HandlePragma(char *str)
 		strecpy(_lang.digit_decimal_separator, strcmp(str, "{NBSP}") == 0 ? NBSP : str, lastof(_lang.digit_decimal_separator));
 	} else if (!memcmp(str, "winlangid ", 10)) {
 		const char *buf = str + 10;
-		long langid = strtol(buf, nullptr, 16);
+		long langid = std::strtol(buf, nullptr, 16);
 		if (langid > (long)UINT16_MAX || langid < 0) {
 			error("Invalid winlangid %s", buf);
 		}
 		_lang.winlangid = (uint16)langid;
 	} else if (!memcmp(str, "grflangid ", 10)) {
 		const char *buf = str + 10;
-		long langid = strtol(buf, nullptr, 16);
+		long langid = std::strtol(buf, nullptr, 16);
 		if (langid >= 0x7F || langid < 0) {
 			error("Invalid grflangid %s", buf);
 		}
@@ -220,15 +221,6 @@ void FileStringReader::HandlePragma(char *str)
 			if (_lang.num_cases >= MAX_NUM_CASES) error("Too many cases, max %d", MAX_NUM_CASES);
 			strecpy(_lang.cases[_lang.num_cases], s, lastof(_lang.cases[_lang.num_cases]));
 			_lang.num_cases++;
-		}
-	} else if (!memcmp(str, "override ", 9)) {
-		if (this->translation) error("Overrides are only allowed in the base translation.");
-		if (!memcmp(str + 9, "on", 2)) {
-			this->data.override_mode = true;
-		} else if (!memcmp(str + 9, "off", 3)) {
-			this->data.override_mode = false;
-		} else {
-			error("Invalid override mode %s", str + 9);
 		}
 	} else if (!memcmp(str, "override ", 9)) {
 		if (this->translation) error("Overrides are only allowed in the base translation.");
@@ -267,6 +259,15 @@ void FileStringReader::HandlePragma(char *str)
 			this->data.default_translation = ent;
 		} else {
 			error("Can't find string to use as default translation: '%s'", str + 20);
+		}
+	} else if (!memcmp(str, "no-translate ", 13)) {
+		if (this->translation) error("No-translate sections are only allowed in the base translation.");
+		if (!memcmp(str + 13, "on", 2)) {
+			this->data.no_translate_mode = true;
+		} else if (!memcmp(str + 13, "off", 3)) {
+			this->data.no_translate_mode = false;
+		} else {
+			error("Invalid no-translate mode %s", str + 13);
 		}
 	} else {
 		StringReader::HandlePragma(str);
@@ -504,7 +505,6 @@ static inline char *replace_pathsep(char *s) { return s; }
 
 /** Options of strgen. */
 static const OptionData _opts[] = {
-	  GETOPT_NOVAL(     'v',  "--version"),
 	GETOPT_GENERAL('C', '\0', "-export-commands", ODF_NO_VALUE),
 	GETOPT_GENERAL('L', '\0', "-export-plurals",  ODF_NO_VALUE),
 	GETOPT_GENERAL('P', '\0', "-export-pragmas",  ODF_NO_VALUE),
@@ -530,10 +530,6 @@ int CDECL main(int argc, char *argv[])
 		if (i == -1) break;
 
 		switch (i) {
-			case 'v':
-				puts("$Revision$");
-				return 0;
-
 			case 'C':
 				printf("args\tflags\tcommand\treplacement\n");
 				for (const CmdStruct *cs = _cmd_structs; cs < endof(_cmd_structs); cs++) {
@@ -576,8 +572,7 @@ int CDECL main(int argc, char *argv[])
 
 			case 'h':
 				puts(
-					"strgen - $Revision$\n"
-					" -v | --version    print version information and exit\n"
+					"strgen\n"
 					" -t | --todo       replace any untranslated strings with '<TODO>'\n"
 					" -w | --warning    print a warning for any untranslated strings\n"
 					" -h | -? | --help  print this help message and exit\n"

@@ -18,8 +18,8 @@
 #include "../console_func.h"
 #include "../company_base.h"
 #include "../command_func.h"
-#include "../saveload/saveload.h"
-#include "../saveload/saveload_filter.h"
+#include "../sl/saveload.h"
+#include "../sl/saveload_filter.h"
 #include "../station_base.h"
 #include "../genworld.h"
 #include "../company_func.h"
@@ -30,6 +30,8 @@
 #include "../core/random_func.hpp"
 #include "../rev.h"
 #include "../crashlog.h"
+#include "../3rdparty/randombytes/randombytes.h"
+#include "../3rdparty/monocypher/monocypher.h"
 #include <mutex>
 #include <condition_variable>
 #if defined(__MINGW32__)
@@ -159,7 +161,7 @@ struct PacketWriter : SaveFilter {
 
 		byte *bufe = buf + size;
 		while (buf != bufe) {
-			size_t written = this->current->Send_bytes(buf, bufe);
+			size_t written = this->current->Send_binary_until_full(buf, bufe);
 			buf += written;
 
 			if (!this->current->CanWriteToPacket(1)) {
@@ -201,9 +203,6 @@ ServerNetworkGameSocketHandler::ServerNetworkGameSocketHandler(SOCKET s) : Netwo
 	this->status = STATUS_INACTIVE;
 	this->client_id = _network_client_id++;
 	this->receive_limit = _settings_client.network.bytes_per_frame_burst;
-	this->server_hash_bits = InteractiveRandom();
-	this->rcon_hash_bits = InteractiveRandom();
-	this->settings_hash_bits = InteractiveRandom();
 
 	/* The Socket and Info pools need to be the same in size. After all,
 	 * each Socket will be associated with at most one Info object. As
@@ -216,6 +215,8 @@ ServerNetworkGameSocketHandler::ServerNetworkGameSocketHandler(SOCKET s) : Netwo
  */
 ServerNetworkGameSocketHandler::~ServerNetworkGameSocketHandler()
 {
+	delete this->GetInfo();
+
 	if (_redirect_console_to_client == this->client_id) _redirect_console_to_client = INVALID_CLIENT_ID;
 	OrderBackup::ResetUser(this->client_id);
 
@@ -226,6 +227,61 @@ ServerNetworkGameSocketHandler::~ServerNetworkGameSocketHandler()
 		this->savegame->Destroy();
 		this->savegame = nullptr;
 	}
+}
+
+bool ServerNetworkGameSocketHandler::ParseKeyPasswordPacket(Packet *p, NetworkSharedSecrets &ss, const std::string &password, std::string *payload, size_t length)
+{
+	byte client_pub_key[32];
+	byte nonce[24];
+	byte mac[16];
+	p->Recv_binary(client_pub_key, 32);
+	p->Recv_binary(nonce, 24);
+	p->Recv_binary(mac, 16);
+
+	const NetworkGameKeys &keys = this->GetKeys();
+
+	byte shared_secret[32]; // Shared secret
+	crypto_x25519(shared_secret, keys.x25519_priv_key, client_pub_key);
+	if (std::all_of(shared_secret, shared_secret + 32, [](auto v) { return v == 0; })) {
+		/* Secret is all 0 because public key is all 0, just reject it */
+		return false;
+	}
+
+	crypto_blake2b_ctx ctx;
+	crypto_blake2b_init  (&ctx, 64);
+	crypto_blake2b_update(&ctx, shared_secret, 32);       // Shared secret
+	crypto_blake2b_update(&ctx, client_pub_key, 32);      // Client pub key
+	crypto_blake2b_update(&ctx, keys.x25519_pub_key, 32); // Server pub key
+	crypto_blake2b_update(&ctx, (const byte *)password.data(), password.size()); // Password
+	crypto_blake2b_final (&ctx, ss.shared_data);
+
+	/* NetworkSharedSecrets::shared_data now contains 2 keys worth of hash, first key is used for up direction, second key for down direction (if any) */
+
+	crypto_wipe(shared_secret, 32);
+
+	std::vector<byte> message = p->Recv_binary(p->RemainingBytesToTransfer());
+	if (message.size() < 8) return false;
+	if ((message.size() == 8) != (payload == nullptr)) {
+		/* Payload expected but not present, or vice versa, just give up */
+		return false;
+	}
+
+	/* Decrypt in place, use first half of hash as key */
+	if (crypto_aead_unlock(message.data(), mac, ss.shared_data, nonce, client_pub_key, 32, message.data(), message.size()) == 0) {
+		SubPacketDeserialiser spd(p, message);
+		uint64 message_id = spd.Recv_uint64();
+		if (message_id < this->min_key_message_id) {
+			/* ID has not increased monotonically, reject the message */
+			return false;
+		}
+		this->min_key_message_id = message_id + 1;
+		if (payload != nullptr) {
+			*payload = spd.Recv_string(length);
+		}
+		return true;
+	}
+
+	return false;
 }
 
 std::unique_ptr<Packet> ServerNetworkGameSocketHandler::ReceivePacket()
@@ -251,7 +307,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 	 * connection. This handles that case gracefully without having to make
 	 * that code any more complex or more aware of the validity of the socket.
 	 */
-	if (this->sock == INVALID_SOCKET) return status;
+	if (this->IsPendingDeletion() || this->sock == INVALID_SOCKET) return status;
 
 	if (status != NETWORK_RECV_STATUS_CLIENT_QUIT && status != NETWORK_RECV_STATUS_SERVER_ERROR && !this->HasClientQuit() && this->status >= STATUS_AUTHORIZED) {
 		/* We did not receive a leave message from this client... */
@@ -289,8 +345,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::CloseConnection(NetworkRecvSta
 
 	this->SendPackets(true);
 
-	delete this->GetInfo();
-	delete this;
+	this->DeferDeletion();
 
 	InvalidateWindowData(WC_CLIENT_LIST, 0);
 
@@ -433,7 +488,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendDesyncLog(const std::strin
 		Packet *p = new Packet(PACKET_SERVER_DESYNC_LOG, SHRT_MAX);
 		size_t size = std::min<size_t>(log.size() - offset, SHRT_MAX - 2 - p->Size());
 		p->Send_uint16(static_cast<uint16>(size));
-		p->Send_binary(log.data() + offset, size);
+		p->Send_binary((const byte *)(log.data() + offset), size);
 		this->SendPacket(p);
 
 		offset += size;
@@ -471,8 +526,11 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNeedGamePassword()
 	/* Reset 'lag' counters */
 	this->last_frame = this->last_frame_server = _frame_counter;
 
+	const NetworkGameKeys &keys = this->GetKeys();
+
 	Packet *p = new Packet(PACKET_SERVER_NEED_GAME_PASSWORD, SHRT_MAX);
-	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->server_hash_bits);
+	static_assert(sizeof(keys.x25519_pub_key) == 32);
+	p->Send_binary(keys.x25519_pub_key, sizeof(keys.x25519_pub_key));
 	p->Send_string(_settings_client.network.network_id);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -509,12 +567,13 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendWelcome()
 
 	_network_game_info.clients_on++;
 
+	const NetworkGameKeys &keys = this->GetKeys();
+
 	p = new Packet(PACKET_SERVER_WELCOME, SHRT_MAX);
 	p->Send_uint32(this->client_id);
 	p->Send_uint32(_settings_game.game_creation.generation_seed);
-	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->server_hash_bits);
-	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->rcon_hash_bits);
-	p->Send_uint32(_settings_game.game_creation.generation_seed ^ this->settings_hash_bits);
+	static_assert(sizeof(keys.x25519_pub_key) == 32);
+	p->Send_binary(keys.x25519_pub_key, sizeof(keys.x25519_pub_key));
 	p->Send_string(_settings_client.network.network_id);
 	p->Send_string(_network_company_server_id);
 	this->SendPacket(p);
@@ -642,9 +701,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendFrame()
 	p->Send_uint32(_frame_counter_max);
 #ifdef ENABLE_NETWORK_SYNC_EVERY_FRAME
 	p->Send_uint32(_sync_seed_1);
-#ifdef NETWORK_SEND_DOUBLE_SEED
-	p->Send_uint32(_sync_seed_2);
-#endif
 	p->Send_uint64(_sync_state_checksum);
 #endif
 
@@ -665,9 +721,6 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendSync()
 	p->Send_uint32(_frame_counter);
 	p->Send_uint32(_sync_seed_1);
 
-#ifdef NETWORK_SEND_DOUBLE_SEED
-	p->Send_uint32(_sync_seed_2);
-#endif
 	p->Send_uint64(_sync_state_checksum);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
@@ -788,10 +841,38 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::SendNewGame()
  */
 NetworkRecvStatus ServerNetworkGameSocketHandler::SendRConResult(uint16 colour, const std::string &command)
 {
-	Packet *p = new Packet(PACKET_SERVER_RCON, SHRT_MAX);
+	assert(this->rcon_reply_key != nullptr);
 
-	p->Send_uint16(colour);
-	p->Send_string(command);
+	std::vector<byte> message;
+	BufferSerialiser buffer(message);
+	buffer.Send_uint16(colour);
+	buffer.Send_string(command);
+
+	/* Message authentication code */
+	uint8 mac[16];
+
+	/* Use only once per key: random */
+	uint8 nonce[24];
+	NetworkRandomBytesWithFallback(nonce, 24);
+
+	/* Encrypt in place, use first half of hash as key */
+	crypto_aead_lock(message.data(), mac, this->rcon_reply_key, nonce, nullptr, 0, message.data(), message.size());
+
+	Packet *p = new Packet(PACKET_SERVER_RCON, SHRT_MAX);
+	p->Send_binary(nonce, 24);
+	p->Send_binary(mac, 16);
+	p->Send_binary(message.data(), message.size());
+
+	this->SendPacket(p);
+	return NETWORK_RECV_STATUS_OKAY;
+}
+
+/**
+ * Send a deny result of a console action.
+ */
+NetworkRecvStatus ServerNetworkGameSocketHandler::SendRConDenied()
+{
+	Packet *p = new Packet(PACKET_SERVER_RCON, SHRT_MAX);
 	this->SendPacket(p);
 	return NETWORK_RECV_STATUS_OKAY;
 }
@@ -940,6 +1021,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_JOIN(Packet *p)
 	ci->join_date = _date;
 	ci->join_date_fract = _date_fract;
 	ci->join_tick_skip_counter = _tick_skip_counter;
+	ci->join_frame = _frame_counter;
 	ci->client_name = client_name;
 	ci->client_playas = playas;
 	DEBUG(desync, 1, "client: date{%08x; %02x; %02x}; client: %02x; company: %02x", _date, _date_fract, _tick_skip_counter, (int)ci->index, (int)ci->client_playas);
@@ -963,13 +1045,13 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_GAME_PASSWORD(P
 		return this->SendError(NETWORK_ERROR_NOT_EXPECTED);
 	}
 
-	std::string password = p->Recv_string(NETWORK_PASSWORD_LENGTH);
-
 	/* Check game password. Allow joining if we cleared the password meanwhile */
-	if (!_settings_client.network.server_password.empty() &&
-			password != GenerateCompanyPasswordHash(_settings_client.network.server_password.c_str(), _settings_client.network.network_id.c_str(), _settings_game.game_creation.generation_seed ^ this->server_hash_bits)) {
-		/* Password is invalid */
-		return this->SendError(NETWORK_ERROR_WRONG_PASSWORD);
+	if (!_settings_client.network.server_password.empty()) {
+		NetworkSharedSecrets ss;
+		if (!this->ParseKeyPasswordPacket(p, ss, _settings_client.network.server_password, nullptr, 0)) {
+			/* Password is invalid */
+			return this->SendError(NETWORK_ERROR_WRONG_PASSWORD);
+		}
 	}
 
 	const NetworkClientInfo *ci = this->GetInfo();
@@ -1009,20 +1091,23 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_SETTINGS_PASSWO
 		return this->SendError(NETWORK_ERROR_NOT_EXPECTED);
 	}
 
-	std::string password = p->Recv_string(NETWORK_PASSWORD_LENGTH);
+	NetworkSharedSecrets ss;
 
 	/* Check settings password. Deny if no password is set */
-	if (password.empty()) {
+	if (!p->CanReadFromPacket(1)) {
 		if (this->settings_authed) DEBUG(net, 0, "[settings-ctrl] client-id %d deauthed", this->client_id);
 		this->settings_authed = false;
 	} else if (_settings_client.network.settings_password.empty() ||
-			password != GenerateCompanyPasswordHash(_settings_client.network.settings_password.c_str(), _settings_client.network.network_id.c_str(), _settings_game.game_creation.generation_seed ^ this->settings_hash_bits)) {
+			!this->ParseKeyPasswordPacket(p, ss, _settings_client.network.settings_password, nullptr, 0)) {
 		DEBUG(net, 0, "[settings-ctrl] wrong password from client-id %d", this->client_id);
-		NetworkServerSendRcon(this->client_id, CC_ERROR, "Access Denied");
+		NetworkServerSendRconDenied(this->client_id);
 		this->settings_authed = false;
+		NetworkRecvStatus status = this->HandleAuthFailure(this->settings_auth_failures);
+		if (status != NETWORK_RECV_STATUS_OKAY) return status;
 	} else {
 		DEBUG(net, 0, "[settings-ctrl] client-id %d", this->client_id);
 		this->settings_authed = true;
+		this->settings_auth_failures = 0;
 	}
 
 	return this->SendSettingsAccessUpdate(this->settings_authed);
@@ -1089,7 +1174,11 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MAP_OK(Packet *
 		this->SendConfigUpdate();
 
 		/* quickly update the syncing client with company details */
-		return this->SendCompanyUpdate();
+		NetworkRecvStatus status = this->SendCompanyUpdate();
+
+		this->ShrinkToFitSendQueue();
+
+		return status;
 	}
 
 	/* Wrong status for this packet, give a warning to client, and close connection */
@@ -1203,8 +1292,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_ERROR(Packet *p
 		DesyncExtraInfo info;
 		info.client_name = client_name;
 		info.client_id = this->client_id;
-		info.desync_frame_seed = this->desync_frame_seed;
-		info.desync_frame_state_checksum = this->desync_frame_state_checksum;
+		info.desync_frame_info = std::move(this->desync_frame_info);
 		CrashLog::DesyncCrashLog(&(this->desync_log), &server_desync_log, info);
 		this->SendDesyncLog(server_desync_log);
 
@@ -1227,7 +1315,7 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_LOG(Pack
 {
 	uint size = p->Recv_uint16();
 	this->desync_log.resize(this->desync_log.size() + size);
-	p->Recv_binary(this->desync_log.data() + this->desync_log.size() - size, size);
+	p->Recv_binary((byte *)(this->desync_log.data() + this->desync_log.size() - size), size);
 	DEBUG(net, 2, "Received %u bytes of client desync log", size);
 	this->receive_limit += p->Size();
 	return NETWORK_RECV_STATUS_OKAY;
@@ -1248,32 +1336,58 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_MSG(Pack
 
 NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_DESYNC_SYNC_DATA(Packet *p)
 {
-	uint32 frame = p->Recv_uint32();
-	uint32 count = p->Recv_uint32();
+	uint32 frame_count = p->Recv_uint32();
 
-	DEBUG(net, 2, "Received desync sync data: %u frames from %08X", count, frame);
+	DEBUG(net, 2, "Received desync sync data: %u frames", frame_count);
 
-	uint server_idx = UINT32_MAX;
-	for (uint i = 0; i < _network_server_sync_records->size(); i++) {
-		if ((*_network_server_sync_records)[i].frame == frame) {
-			server_idx = i;
-			break;
+	if (frame_count == 0 || _network_sync_record_counts.empty()) return NETWORK_RECV_STATUS_OKAY;
+
+	size_t record_count_offset = 0;
+	size_t record_offset = 0;
+	for (uint i = 0; i < frame_count; i++) {
+		uint32 item_count = p->Recv_uint32();
+		if (item_count == 0) continue;
+		uint32 local_item_count = 0;
+		uint32 frame = 0;
+		NetworkSyncRecordEvents event = NSRE_BEGIN;
+		for (uint j = 0; j < item_count; j++) {
+			if (j == 0) {
+				frame = p->Recv_uint32();
+				while (_network_sync_records[record_offset].frame != frame) {
+					if (record_count_offset == _network_sync_record_counts.size()) {
+						return NETWORK_RECV_STATUS_OKAY;
+					}
+					record_offset += _network_sync_record_counts[record_count_offset];
+					record_count_offset++;
+				}
+				local_item_count = _network_sync_record_counts[record_count_offset];
+			} else {
+				event = (NetworkSyncRecordEvents)p->Recv_uint32();
+			}
+			uint32 seed_1 = p->Recv_uint32();
+			uint64 state_checksum = p->Recv_uint64();
+			if (j == local_item_count) {
+				this->desync_frame_info = stdstr_fmt("Desync subframe count mismatch: extra client record: %08X, %s", frame, GetSyncRecordEventName(event));
+				return NETWORK_RECV_STATUS_OKAY;
+			}
+
+			const NetworkSyncRecord &record = _network_sync_records[record_offset + j];
+			if (j != 0 && record.frame != event) {
+				this->desync_frame_info = stdstr_fmt("Desync subframe event mismatch: %08X, client: %s != server: %s",
+						frame, GetSyncRecordEventName(event), GetSyncRecordEventName((NetworkSyncRecordEvents)record.frame));
+				return NETWORK_RECV_STATUS_OKAY;
+			}
+			if (seed_1 != record.seed_1 || state_checksum != record.state_checksum) {
+				this->desync_frame_info = stdstr_fmt("Desync subframe mismatch: %08X, %s%s%s",
+						frame, GetSyncRecordEventName(event), (seed_1 != record.seed_1) ? ", seed" : "", (state_checksum != record.state_checksum) ? ", state checksum" : "");
+				return NETWORK_RECV_STATUS_OKAY;
+			}
 		}
-	}
-	if (server_idx == UINT32_MAX) return NETWORK_RECV_STATUS_OKAY;
-
-	for (uint i = 0; i < count; i++) {
-		uint32 seed_1 = p->Recv_uint32();
-		uint64 state_checksum = p->Recv_uint64();
-
-		const NetworkSyncRecord &record = (*_network_server_sync_records)[server_idx];
-
-		if (record.frame != frame) break;
-		if (record.seed_1 != seed_1 && this->desync_frame_seed == 0) this->desync_frame_seed = frame;
-		if (record.state_checksum != state_checksum && this->desync_frame_state_checksum == 0) this->desync_frame_state_checksum = frame;
-
-		frame++;
-		server_idx = (server_idx + 1) % _network_server_sync_records->size();
+		if (local_item_count > item_count) {
+			const NetworkSyncRecord &record = _network_sync_records[record_offset + item_count];
+			this->desync_frame_info = stdstr_fmt("Desync subframe count mismatch: extra server record: %08X, %s", frame, GetSyncRecordEventName((NetworkSyncRecordEvents)record.frame));
+			return NETWORK_RECV_STATUS_OKAY;
+		}
 	}
 
 	return NETWORK_RECV_STATUS_OKAY;
@@ -1572,24 +1686,26 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_RCON(Packet *p)
 	if (this->status != STATUS_ACTIVE) return this->SendError(NETWORK_ERROR_NOT_EXPECTED);
 
 	if (_settings_client.network.rcon_password.empty()) {
-		NetworkServerSendRcon(this->client_id, CC_ERROR, "Access Denied");
-		return NETWORK_RECV_STATUS_OKAY;
+		NetworkServerSendRconDenied(this->client_id);
+		return this->HandleAuthFailure(this->rcon_auth_failures);
 	}
 
-	std::string password = p->Recv_string(NETWORK_PASSWORD_LENGTH);
-	std::string command = p->Recv_string(NETWORK_RCONCOMMAND_LENGTH);
-
-	if (password != GenerateCompanyPasswordHash(_settings_client.network.rcon_password.c_str(), _settings_client.network.network_id.c_str(), _settings_game.game_creation.generation_seed ^ this->rcon_hash_bits)) {
+	std::string command;
+	NetworkSharedSecrets ss;
+	if (!this->ParseKeyPasswordPacket(p, ss, _settings_client.network.rcon_password, &command, NETWORK_RCONCOMMAND_LENGTH)) {
 		DEBUG(net, 0, "[rcon] wrong password from client-id %d", this->client_id);
-		NetworkServerSendRcon(this->client_id, CC_ERROR, "Access Denied");
-		return NETWORK_RECV_STATUS_OKAY;
+		NetworkServerSendRconDenied(this->client_id);
+		return this->HandleAuthFailure(this->rcon_auth_failures);
 	}
 
 	DEBUG(net, 3, "[rcon] Client-id %d executed: %s", this->client_id, command.c_str());
 
 	_redirect_console_to_client = this->client_id;
-	IConsoleCmdExec(command.c_str());
+	this->rcon_reply_key = ss.shared_data + 32; /* second key */
+	IConsoleCmdExec(command);
 	_redirect_console_to_client = INVALID_CLIENT_ID;
+	this->rcon_auth_failures = 0;
+	this->rcon_reply_key = nullptr;
 	return NETWORK_RECV_STATUS_OKAY;
 }
 
@@ -1617,6 +1733,17 @@ NetworkRecvStatus ServerNetworkGameSocketHandler::Receive_CLIENT_MOVE(Packet *p)
 	/* if we get here we can move the client */
 	NetworkServerDoMove(this->client_id, company_id);
 	return NETWORK_RECV_STATUS_OKAY;
+}
+
+NetworkRecvStatus ServerNetworkGameSocketHandler::HandleAuthFailure(uint &failure_count)
+{
+	failure_count++;
+	if (_settings_client.network.max_auth_failures != 0 && failure_count >= _settings_client.network.max_auth_failures) {
+		DEBUG(net, 0, "Kicked client-id #%d due to too many failed authentication attempts", this->client_id);
+		return this->SendError(NETWORK_ERROR_KICKED);
+	} else {
+		return NETWORK_RECV_STATUS_OKAY;
+	}
 }
 
 const char *ServerNetworkGameSocketHandler::GetClientStatusName(ClientStatus status)
@@ -2174,6 +2301,17 @@ void NetworkServerSendRcon(ClientID client_id, TextColour colour_code, const std
 }
 
 /**
+ * Send an rcon reply to the client.
+ * @param client_id The identifier of the client.
+ * @param colour_code The colour of the text.
+ * @param string The actual reply.
+ */
+void NetworkServerSendRconDenied(ClientID client_id)
+{
+	NetworkClientSocket::GetByClientID(client_id)->SendRConDenied();
+}
+
+/**
  * Kick a single client.
  * @param client_id The client to kick.
  * @param reason In case of kicking a client, specifies the reason for kicking the client.
@@ -2330,8 +2468,8 @@ char *NetworkServerDumpClients(char *buffer, const char *last)
 		if (ci->join_date != 0) {
 			YearMonthDay ymd;
 			ConvertDateToYMD(ci->join_date, &ymd);
-			buffer += seprintf(buffer, last, ", joined: %4i-%02i-%02i, %2i, %3i",
-					ymd.year, ymd.month + 1, ymd.day, ci->join_date_fract, ci->join_tick_skip_counter);
+			buffer += seprintf(buffer, last, ", joined: %4i-%02i-%02i, %i, %i, frame: %08X",
+					ymd.year, ymd.month + 1, ymd.day, ci->join_date_fract, ci->join_tick_skip_counter, ci->join_frame);
 		}
 		buffer += seprintf(buffer, last, "\n");
 	}

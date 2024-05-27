@@ -21,17 +21,14 @@ struct DesyncDeferredSaveInfo {
 struct DesyncExtraInfo {
 	enum Flags {
 		DEIF_NONE       = 0,      ///< no flags
-		DEIF_RAND1      = 1 << 0, ///< random 1 mismatch
-		DEIF_RAND2      = 1 << 1, ///< random 2 mismatch
-		DEIF_STATE      = 1 << 2, ///< state mismatch
-		DEIF_DBL_RAND   = 1 << 3, ///< double-seed sent
+		DEIF_RAND       = 1 << 0, ///< random mismatch
+		DEIF_STATE      = 1 << 1, ///< state mismatch
 	};
 
 	Flags flags = DEIF_NONE;
 	const char *client_name = nullptr;
 	int client_id = -1;
-	uint32 desync_frame_seed = 0;
-	uint32 desync_frame_state_checksum = 0;
+	std::string desync_frame_info;
 	FILE **log_file = nullptr; ///< save unclosed log file handle here
 	DesyncDeferredSaveInfo *defer_savegame_write = nullptr;
 };
@@ -54,6 +51,9 @@ private:
 
 	/** Temporary 'local' location of the end of the buffer. */
 	static const char *gamelog_last;
+
+	/** Whether a crash has already occured */
+	static bool have_crashed;
 
 	static void GamelogFillCrashLog(const char *s);
 protected:
@@ -100,6 +100,15 @@ protected:
 	virtual char *LogStacktrace(char *buffer, const char *last) const = 0;
 
 	/**
+	 * Writes information about extra debug info, if there is
+	 * information about it available.
+	 * @param buffer The begin where to write at.
+	 * @param last   The last position in the buffer to write to.
+	 * @return the position of the \c '\0' character after the buffer.
+	 */
+	virtual char *LogDebugExtra(char *buffer, const char *last) const;
+
+	/**
 	 * Writes information about the data in the registers, if there is
 	 * information about it available.
 	 * @param buffer The begin where to write at.
@@ -107,15 +116,6 @@ protected:
 	 * @return the position of the \c '\0' character after the buffer.
 	 */
 	virtual char *LogRegisters(char *buffer, const char *last) const;
-
-	/**
-	 * Writes the dynamically linked libraries/modules to the buffer, if there
-	 * is information about it available.
-	 * @param buffer The begin where to write at.
-	 * @param last   The last position in the buffer to write to.
-	 * @return the position of the \c '\0' character after the buffer.
-	 */
-	virtual char *LogModules(char *buffer, const char *last) const;
 
 #ifdef USE_SCOPE_INFO
 	/**
@@ -125,7 +125,7 @@ protected:
 	 * @param last   The last position in the buffer to write to.
 	 * @return the position of the \c '\0' character after the buffer.
 	 */
-	virtual char *LogScopeInfo(char *buffer, const char *last) const;
+	char *LogScopeInfo(char *buffer, const char *last) const;
 #endif
 
 	char *LogOpenTTDVersion(char *buffer, const char *last) const;
@@ -135,17 +135,34 @@ protected:
 	char *LogRecentNews(char *buffer, const char *list) const;
 	char *LogCommandLog(char *buffer, const char *last) const;
 
+	virtual void StartCrashLogFaultHandler();
+	virtual void StopCrashLogFaultHandler();
+
+	using CrashLogSectionWriter = char *(*)(CrashLog *self, char *buffer, const char *last);
+	virtual char *TryCrashLogFaultSection(char *buffer, const char *last, const char *section_name, CrashLogSectionWriter writer);
+	virtual void CrashLogFaultSectionCheckpoint(char *buffer) const;
+
 public:
 	/** Buffer for the filename name prefix */
 	char name_buffer[64];
 	FILE *crash_file = nullptr;
 	const char *crash_buffer_write = nullptr;
 
+	/** Buffer for the filename of the crash log */
+	char crashlog_filename[MAX_PATH];
+	/** Buffer for the filename of the crash dump */
+	char crashdump_filename[MAX_PATH];
+	/** Buffer for the filename of the crash savegame */
+	char savegame_filename[MAX_PATH];
+	/** Buffer for the filename of the crash screenshot */
+	char screenshot_filename[MAX_PATH];
+
 	/** Stub destructor to silence some compilers. */
-	virtual ~CrashLog() {}
+	virtual ~CrashLog() = default;
 
 	char *FillCrashLog(char *buffer, const char *last);
 	void FlushCrashLogBuffer();
+	void CloseCrashLogFile();
 	char *FillDesyncCrashLog(char *buffer, const char *last, const DesyncExtraInfo &info) const;
 	char *FillInconsistencyLog(char *buffer, const char *last, const InconsistencyExtraInfo &info) const;
 	char *FillVersionInfoLog(char *buffer, const char *last) const;
@@ -166,13 +183,15 @@ public:
 	static bool WriteDiagnosticSavegame(char *filename, const char *filename_last, const char *name);
 	static bool WriteScreenshot(char *filename, const char *filename_last, const char *name = "crash");
 
-	bool MakeCrashLog(char *buffer, const char *last);
-	bool MakeCrashLogWithStackBuffer();
-	bool MakeDesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info) const;
+	void MakeCrashLog(char *buffer, const char *last);
+	void MakeCrashLogWithStackBuffer();
+	void MakeDesyncCrashLog(const std::string *log_in, std::string *log_out, const DesyncExtraInfo &info) const;
 	static bool WriteDesyncSavegame(const char *log_data, const char *name_buffer);
-	bool MakeInconsistencyLog(const InconsistencyExtraInfo &info) const;
-	bool MakeVersionInfoLog() const;
-	bool MakeCrashSavegameAndScreenshot() const;
+	void MakeInconsistencyLog(const InconsistencyExtraInfo &info) const;
+	void MakeVersionInfoLog() const;
+	void MakeCrashSavegameAndScreenshot();
+
+	void SendSurvey() const;
 
 	/**
 	 * Initialiser for crash logs; do the appropriate things so crashes are
@@ -191,6 +210,8 @@ public:
 	static void InconsistencyLog(const InconsistencyExtraInfo &info);
 	static void VersionInfoLog();
 
+	static void RegisterCrashed() { CrashLog::have_crashed = true; }
+	static bool HaveAlreadyCrashed() { return CrashLog::have_crashed; }
 	static void SetErrorMessage(const char *message);
 	static void AfterCrashLogCleanup();
 

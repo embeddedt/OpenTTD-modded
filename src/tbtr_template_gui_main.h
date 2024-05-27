@@ -19,8 +19,6 @@
 #include "tbtr_template_vehicle.h"
 #include "tbtr_template_vehicle_func.h"
 
-typedef GUIList<const Group*> GUIGroupList;
-
 void ShowTemplateReplaceWindow();
 
 bool TemplateVehicleClicked(const TemplateVehicle *v);

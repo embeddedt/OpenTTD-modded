@@ -16,6 +16,7 @@
 #include "../../core/random_func.hpp"
 
 #include "script_types.hpp"
+#include "script_log_types.hpp"
 #include "../script_suspend.hpp"
 #include "../squirrel.hpp"
 
@@ -27,6 +28,11 @@ struct CommandAuxiliaryBase;
  * The callback function for Mode-classes.
  */
 typedef bool (ScriptModeProc)();
+
+/**
+ * The callback function for Async Mode-classes.
+ */
+typedef bool (ScriptAsyncModeProc)();
 
 /**
  * Uper-parent object of all API classes. You should never use this class in
@@ -174,6 +180,21 @@ protected:
 	static ScriptObject *GetDoCommandModeInstance();
 
 	/**
+	 * Set the current async mode of your script to this proc.
+	 */
+	static void SetDoCommandAsyncMode(ScriptAsyncModeProc *proc, ScriptObject *instance);
+
+	/**
+	 * Get the current async mode your script is currently under.
+	 */
+	static ScriptModeProc *GetDoCommandAsyncMode();
+
+	/**
+	 * Get the instance of the current async mode your script is currently under.
+	 */
+	static ScriptObject *GetDoCommandAsyncModeInstance();
+
+	/**
 	 * Set the delay of the DoCommand.
 	 */
 	static void SetDoCommandDelay(uint ticks);
@@ -297,12 +318,12 @@ protected:
 	/**
 	 * Get the pointer to store log message in.
 	 */
-	static void *&GetLogPointer();
+	static ScriptLogTypes::LogData &GetLogData();
 
 	/**
 	 * Get an allocated string with all control codes stripped off.
 	 */
-	static char *GetString(StringID string);
+	static std::string GetString(StringID string);
 
 	static bool IsNewUniqueLogMessage(const std::string &msg);
 

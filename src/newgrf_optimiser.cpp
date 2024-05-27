@@ -45,6 +45,7 @@ static bool IsExpensiveStationVariable(uint16 variable)
 		case 0x67:
 		case 0x68:
 		case 0x6A:
+		case A2VRI_STATION_INFO_NEARBY_TILES_V2:
 			return true;
 
 		default:
@@ -94,6 +95,8 @@ static bool IsExpensiveRoadStopsVariable(uint16 variable)
 		case 0x68:
 		case 0x6A:
 		case 0x6B:
+		case A2VRI_ROADSTOP_INFO_NEARBY_TILES_EXT:
+		case A2VRI_ROADSTOP_INFO_NEARBY_TILES_V2:
 			return true;
 
 		default:
@@ -2742,6 +2745,8 @@ void OptimiseVarAction2DeterministicSpriteGroup(VarAction2OptimiseState &state, 
 			OptimiseVarAction2DeterministicSpriteGroupExpensiveVars(group, info.scope_feature);
 		}
 	}
+
+	if (!dse_candidate) group->adjusts.shrink_to_fit();
 }
 
 static std::bitset<256> HandleVarAction2DeadStoreElimination(DeterministicSpriteGroup *group, VarAction2GroupVariableTracking *var_tracking, bool no_changes)
@@ -3138,6 +3143,8 @@ void HandleVarAction2OptimisationPasses()
 		if (group->dsg_flags & DSGF_CHECK_INSERT_JUMP) {
 			OptimiseVarAction2DeterministicSpriteResolveJumps(group);
 		}
+
+		group->adjusts.shrink_to_fit();
 	}
 }
 

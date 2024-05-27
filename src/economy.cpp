@@ -43,6 +43,7 @@
 #include "economy_base.h"
 #include "core/pool_func.hpp"
 #include "core/backup_type.hpp"
+#include "core/container_func.hpp"
 #include "infrastructure_func.h"
 #include "cargo_type.h"
 #include "water.h"
@@ -112,15 +113,12 @@ static PriceMultipliers _price_base_multiplier;
 extern int GetAmountOwnedBy(const Company *c, Owner owner);
 
 /**
- * Calculate the value of the company. That is the value of all
- * assets (vehicles, stations, shares) and money minus the loan,
- * except when including_loan is \c false which is useful when
- * we want to calculate the value for bankruptcy.
- * @param c the company to get the value of.
- * @param including_loan include the loan in the company value.
- * @return the value of the company.
+ * Calculate the value of the assets of a company.
+ *
+ * @param c The company to calculate the value of.
+ * @return The value of the assets of the company.
  */
-Money CalculateCompanyValue(const Company *c, bool including_loan)
+static Money CalculateCompanyAssetValue(const Company *c)
 {
 	Money owned_shares_value = 0;
 
@@ -157,9 +155,58 @@ Money CalculateCompanyValueExcludingShares(const Company *c, bool including_loan
 		}
 	}
 
+	return value;
+}
+
+/**
+ * Calculate the value of the company. That is the value of all
+ * assets (vehicles, stations) and money (including loan),
+ * except when including_loan is \c false which is useful when
+ * we want to calculate the value for bankruptcy.
+ * @param c the company to get the value of.
+ * @param including_loan include the loan in the company value.
+ * @return the value of the company.
+ */
+Money CalculateCompanyValue(const Company *c, bool including_loan)
+{
+	Money value = CalculateCompanyAssetValue(c);
+
 	/* Add real money value */
 	if (including_loan) value -= c->current_loan;
 	value += c->money;
+
+	return std::max<Money>(value, 1);
+}
+
+/**
+ * Calculate what you have to pay to take over a company.
+ *
+ * This is different from bankruptcy and company value, and involves a few
+ * more parameters to make it more realistic.
+ *
+ * You have to pay for:
+ * - The value of all the assets in the company.
+ * - The loan the company has (the investors really want their money back).
+ * - The profit for the next two years (if positive) based on the last four quarters.
+ *
+ * And on top of that, they walk away with all the money they have in the bank.
+ *
+ * @param c the company to get the value of.
+ * @return The value of the company.
+ */
+Money CalculateHostileTakeoverValue(const Company *c)
+{
+	Money value = CalculateCompanyAssetValue(c);
+
+	value += c->current_loan;
+	/* Negative balance is basically a loan. */
+	if (c->money < 0) {
+		value += -c->money;
+	}
+
+	for (int quarter = 0; quarter < 4; quarter++) {
+		value += std::max<Money>(c->old_economy[quarter].income - c->old_economy[quarter].expenses, 0) * 2;
+	}
 
 	return std::max<Money>(value, 1);
 }
@@ -633,7 +680,7 @@ static void CompanyCheckBankrupt(Company *c)
 		int previous_months_of_bankruptcy = CeilDiv(c->months_of_bankruptcy, 3);
 		c->months_of_bankruptcy = 0;
 		c->bankrupt_asked = 0;
-		DeleteWindowById(WC_BUY_COMPANY, c->index);
+		CloseWindowById(WC_BUY_COMPANY, c->index);
 		if (previous_months_of_bankruptcy != 0) CompanyAdminUpdate(c);
 		return;
 	}
@@ -1042,7 +1089,7 @@ Money GetPrice(Price index, uint cost_factor, const GRFFile *grf_file, int shift
 	return cost;
 }
 
-Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_days, CargoID cargo_type)
+Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_periods, CargoID cargo_type)
 {
 	const CargoSpec *cs = CargoSpec::Get(cargo_type);
 	if (!cs->IsValid()) {
@@ -1052,7 +1099,7 @@ Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_days,
 
 	/* Use callback to calculate cargo profit, if available */
 	if (HasBit(cs->callback_mask, CBM_CARGO_PROFIT_CALC)) {
-		uint32 var18 = std::min(dist, 0xFFFFu) | (std::min(num_pieces, 0xFFu) << 16) | (std::min<uint16>(transit_days, 0xFFu) << 24);
+		uint32 var18 = ClampTo<uint16_t>(dist) | (ClampTo<uint8_t>(num_pieces) << 16) | (ClampTo<uint8_t>(transit_periods) << 24);
 		uint16 callback = GetCargoCallback(CBID_CARGO_PROFIT_CALC, 0, var18, cs);
 		if (callback != CALLBACK_FAILED) {
 			int result = GB(callback, 0, 14);
@@ -1072,17 +1119,22 @@ Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_days,
 	static const int TIME_FACTOR_FRAC_BITS = 4;
 	static const int TIME_FACTOR_FRAC = 1 << TIME_FACTOR_FRAC_BITS;
 
-	const int days1 = cs->transit_days[0];
-	const int days2 = cs->transit_days[1];
-	const int days_over_days1 = std::max(   transit_days - days1, 0);
-	const int days_over_days2 = std::max(days_over_days1 - days2, 0);
-	int days_over_max = MIN_TIME_FACTOR - MAX_TIME_FACTOR;
-	if (days2 > -days_over_max) days_over_max += transit_days - days1;
-	else days_over_max += 2 * (transit_days - days1) - days2;
+	if (_settings_game.economy.payment_algorithm == CPA_TRADITIONAL) transit_periods = std::min<uint16>(transit_periods, 0xFFu);
+
+	const int periods1 = cs->transit_periods[0];
+	const int periods2 = cs->transit_periods[1];
+	const int periods_over_periods1 = std::max(transit_periods - periods1, 0);
+	const int periods_over_periods2 = std::max(periods_over_periods1 - periods2, 0);
+	int periods_over_max = MIN_TIME_FACTOR - MAX_TIME_FACTOR;
+	if (periods2 > -periods_over_max) {
+		periods_over_max += transit_periods - periods1;
+	} else {
+		periods_over_max += 2 * (transit_periods - periods1) - periods2;
+	}
 
 	/*
 	 * The time factor is calculated based on the time it took
-	 * (transit_days) compared two cargo-depending values. The
+	 * (transit_periods) compared two cargo-depending values. The
 	 * range is divided into four parts:
 	 *
 	 *  - constant for fast transits
@@ -1091,11 +1143,11 @@ Money GetTransportedGoodsIncome(uint num_pieces, uint dist, uint16 transit_days,
 	 *  - after hitting MIN_TIME_FACTOR, the time factor will be asymptotically decreased to a limit of 1 with a scaled 1/(x+1) function.
 	 *
 	 */
-	if (days_over_max > 0) {
-		const int time_factor = std::max(2 * MIN_TIME_FACTOR * TIME_FACTOR_FRAC * TIME_FACTOR_FRAC / (days_over_max + 2 * TIME_FACTOR_FRAC), 1); // MIN_TIME_FACTOR / (x/(2 * TIME_FACTOR_FRAC) + 1) + 1, expressed as fixed point with TIME_FACTOR_FRAC_BITS.
+	if (periods_over_max > 0) {
+		const int time_factor = std::max(2 * MIN_TIME_FACTOR * TIME_FACTOR_FRAC * TIME_FACTOR_FRAC / (periods_over_max + 2 * TIME_FACTOR_FRAC), 1); // MIN_TIME_FACTOR / (x/(2 * TIME_FACTOR_FRAC) + 1) + 1, expressed as fixed point with TIME_FACTOR_FRAC_BITS.
 		return BigMulS(dist * time_factor * num_pieces, cs->current_payment, 21 + TIME_FACTOR_FRAC_BITS);
 	} else {
-		const int time_factor = std::max(MAX_TIME_FACTOR - days_over_days1 - days_over_days2, MIN_TIME_FACTOR);
+		const int time_factor = std::max(MAX_TIME_FACTOR - periods_over_periods1 - periods_over_periods2, MIN_TIME_FACTOR);
 		return BigMulS(dist * time_factor * num_pieces, cs->current_payment, 21);
 	}
 }
@@ -1109,12 +1161,9 @@ void ForAcceptingIndustries(const Station *st, CargoID cargo_type, IndustryID so
 		Industry *ind = i.industry;
 		if (ind->index == source) continue;
 
-		uint cargo_index;
-		for (cargo_index = 0; cargo_index < lengthof(ind->accepts_cargo); cargo_index++) {
-			if (cargo_type == ind->accepts_cargo[cargo_index]) break;
-		}
+		int cargo_index = ind->GetCargoAcceptedIndex(cargo_type);
 		/* Check if matching cargo has been found */
-		if (cargo_index >= lengthof(ind->accepts_cargo)) continue;
+		if (cargo_index < 0) continue;
 
 		/* Check if industry temporarily refuses acceptance */
 		if (IndustryTemporarilyRefusesCargo(ind, cargo_type)) continue;
@@ -1147,7 +1196,7 @@ uint DeliverGoodsToIndustryNearestFirst(const Station *st, CargoID cargo_type, u
 		accepted += amount;
 
 		/* Update the cargo monitor. */
-		AddCargoDelivery(cargo_type, company, amount, ST_INDUSTRY, source, st, ind->index);
+		AddCargoDelivery(cargo_type, company, amount, SourceType::Industry, source, st, ind->index);
 
 		return num_pieces != 0;
 	});
@@ -1188,7 +1237,7 @@ uint DeliverGoodsToIndustryEqually(const Station *st, CargoID cargo_type, uint n
 		include(_cargo_delivery_destinations, e.ind);
 		e.ind->incoming_cargo_waiting[e.cargo_index] += e.delivered;
 		e.ind->last_cargo_accepted_at[e.cargo_index] = _date;
-		AddCargoDelivery(cargo_type, company, e.delivered, ST_INDUSTRY, source, st, e.ind->index);
+		AddCargoDelivery(cargo_type, company, e.delivered, SourceType::Industry, source, st, e.ind->index);
 	};
 
 	if (acceptingIndustries.size() == 1) {
@@ -1274,22 +1323,22 @@ static uint DeliverGoodsToIndustry(const Station *st, CargoID cargo_type, uint n
  * @param num_pieces amount of cargo delivered
  * @param cargo_type the type of cargo that is delivered
  * @param dest Station the cargo has been unloaded
- * @param source_tile The origin of the cargo for distance calculation
- * @param days_in_transit Travel time
+ * @param distance The distance the cargo has traveled.
+ * @param periods_in_transit Travel time in cargo aging periods
  * @param company The company delivering the cargo
  * @param src_type Type of source of cargo (industry, town, headquarters)
  * @param src Index of source of cargo
  * @return Revenue for delivering cargo
  * @note The cargo is just added to the stockpile of the industry. It is due to the caller to trigger the industry's production machinery
  */
-static Money DeliverGoods(int num_pieces, CargoID cargo_type, StationID dest, TileIndex source_tile, uint16 days_in_transit, Company *company, SourceType src_type, SourceID src)
+static Money DeliverGoods(int num_pieces, CargoID cargo_type, StationID dest, uint distance, uint16_t periods_in_transit, Company *company, SourceType src_type, SourceID src)
 {
 	assert(num_pieces > 0);
 
 	Station *st = Station::Get(dest);
 
 	/* Give the goods to the industry. */
-	uint accepted_ind = DeliverGoodsToIndustry(st, cargo_type, num_pieces, src_type == ST_INDUSTRY ? src : INVALID_INDUSTRY, company->index);
+	uint accepted_ind = DeliverGoodsToIndustry(st, cargo_type, num_pieces, src_type == SourceType::Industry ? src : INVALID_INDUSTRY, company->index);
 
 	/* If this cargo type is always accepted, accept all */
 	uint accepted_total = HasBit(st->always_accepted, cargo_type) ? num_pieces : accepted_ind;
@@ -1309,7 +1358,7 @@ static Money DeliverGoods(int num_pieces, CargoID cargo_type, StationID dest, Ti
 	st->town->received[cs->town_effect].new_act += accepted_total;
 
 	/* Determine profit */
-	Money profit = GetTransportedGoodsIncome(accepted_total, DistanceManhattan(source_tile, st->xy), days_in_transit, cargo_type);
+	Money profit = GetTransportedGoodsIncome(accepted_total, distance, periods_in_transit, cargo_type);
 
 	/* Update the cargo monitor. */
 	AddCargoDelivery(cargo_type, company->index, accepted_total - accepted_ind, src_type, src, st);
@@ -1351,7 +1400,7 @@ static void TriggerIndustryProduction(Industry *i)
 			if (cargo_waiting == 0) continue;
 
 			for (uint ci_out = 0; ci_out < lengthof(i->produced_cargo_waiting); ci_out++) {
-				i->produced_cargo_waiting[ci_out] = std::min(i->produced_cargo_waiting[ci_out] + (cargo_waiting * indspec->input_cargo_multiplier[ci_in][ci_out] / 256), 0xFFFFu);
+				i->produced_cargo_waiting[ci_out] = ClampTo<uint16_t>(i->produced_cargo_waiting[ci_out] + (cargo_waiting * indspec->input_cargo_multiplier[ci_in][ci_out] / 256));
 			}
 
 			i->incoming_cargo_waiting[ci_in] = 0;
@@ -1411,17 +1460,18 @@ CargoPayment::~CargoPayment()
  * Handle payment for final delivery of the given cargo packet.
  * @param cp The cargo packet to pay for.
  * @param count The number of packets to pay for.
+ * @param current_tile Current tile the payment is happening on.
  */
-void CargoPayment::PayFinalDelivery(CargoPacket *cp, uint count)
+void CargoPayment::PayFinalDelivery(CargoPacket *cp, uint count, TileIndex current_tile)
 {
 	if (this->owner == nullptr) {
 		this->owner = Company::Get(this->front->owner);
 	}
 
 	/* Handle end of route payment */
-	Money profit = DeliverGoods(count, this->ct, this->current_station, cp->SourceStationXY(), cp->DaysInTransit(), this->owner, cp->SourceSubsidyType(), cp->SourceSubsidyID());
+	Money profit = DeliverGoods(count, this->ct, this->current_station, cp->GetDistance(current_tile), cp->GetPeriodsInTransit(), this->owner, cp->GetSourceType(), cp->GetSourceID());
 
-	profit -= cp->FeederShare(count);
+	profit -= cp->GetFeederShare(count);
 
 	/* For Infrastructure patch. Handling transfers between other companies */
 	this->route_profit += profit;
@@ -1435,16 +1485,17 @@ void CargoPayment::PayFinalDelivery(CargoPacket *cp, uint count)
  * Handle payment for transfer of the given cargo packet.
  * @param cp The cargo packet to pay for; actual payment won't be made!.
  * @param count The number of packets to pay for.
+ * @param current_tile Current tile the payment is happening on.
  * @return The amount of money paid for the transfer.
  */
-Money CargoPayment::PayTransfer(CargoPacket *cp, uint count)
+Money CargoPayment::PayTransfer(CargoPacket *cp, uint count, TileIndex current_tile)
 {
-	Money profit = -cp->FeederShare(count) + GetTransportedGoodsIncome(
+	/* Pay transfer vehicle the difference between the payment for the journey from
+	 * the source to the current point, and the sum of the previous transfer payments */
+	Money profit = -cp->GetFeederShare(count) + GetTransportedGoodsIncome(
 			count,
-			/* pay transfer vehicle the difference between the payment for the journey from
-			 * the source to the current point, and the sum of the previous transfer payments */
-			DistanceManhattan(cp->SourceStationXY(), Station::Get(this->current_station)->xy),
-			cp->DaysInTransit(),
+			cp->GetDistance(current_tile),
+			cp->GetPeriodsInTransit(),
 			this->ct);
 
 	profit = profit * _settings_game.economy.feeder_payment_share / 100;
@@ -1513,7 +1564,8 @@ void PrepareUnload(Vehicle *front_v)
 						HasBit(ge->status, GoodsEntry::GES_ACCEPTANCE),
 						front_v->last_station_visited, next_station.Get(v->cargo_type),
 						GetUnloadType(v), ge,
-						front_v->cargo_payment);
+						front_v->cargo_payment,
+						v->tile);
 				if (v->cargo.UnloadCount() > 0) SetBit(v->vehicle_flags, VF_CARGO_UNLOADING);
 			}
 		}
@@ -1671,7 +1723,7 @@ struct ReturnCargoAction
 	 */
 	bool operator()(Vehicle *v)
 	{
-		v->cargo.Return(UINT_MAX, &this->st->goods[v->cargo_type].cargo, this->next_hop);
+		v->cargo.Return(UINT_MAX, &this->st->goods[v->cargo_type].CreateData().cargo, this->next_hop, v->tile);
 		return true;
 	}
 };
@@ -1707,8 +1759,8 @@ struct FinalizeRefitAction
 	bool operator()(Vehicle *v)
 	{
 		if (this->do_reserve || (cargo_type_loading == nullptr || (cargo_type_loading->current_order.GetCargoLoadTypeRaw(v->cargo_type) & OLFB_FULL_LOAD))) {
-			this->st->goods[v->cargo_type].cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
-					&v->cargo, st->xy, this->next_station.Get(v->cargo_type));
+			this->st->goods[v->cargo_type].CreateData().cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
+					&v->cargo, this->next_station.Get(v->cargo_type), v->tile);
 		}
 		this->consist_capleft[v->cargo_type] += v->cargo_cap - v->cargo.RemainingCount();
 		return true;
@@ -1743,7 +1795,7 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 		new_cid = v_start->cargo_type;
 		for (CargoID cid : SetCargoBitIterator(refit_mask)) {
 			if (check_order && v->First()->current_order.GetCargoLoadType(cid) == OLFB_NO_LOAD) continue;
-			if (st->goods[cid].cargo.HasCargoFor(next_station.Get(cid))) {
+			if (st->goods[cid].data != nullptr && st->goods[cid].data->cargo.HasCargoFor(next_station.Get(cid))) {
 				/* Try to find out if auto-refitting would succeed. In case the refit is allowed,
 				 * the returned refit capacity will be greater than zero. */
 				DoCommand(v_start->tile, v_start->index, cid | 1U << 24 | 0xFF << 8 | 1U << 16, DC_QUERY_COST, GetCmdRefitVeh(v_start)); // Auto-refit and only this vehicle including artic parts.
@@ -1755,7 +1807,7 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 				 * of 0 for all cargoes. */
 				if (_returned_refit_capacity > 0 && (consist_capleft[cid] < consist_capleft[new_cid] ||
 						(consist_capleft[cid] == consist_capleft[new_cid] &&
-						st->goods[cid].cargo.AvailableCount() > st->goods[new_cid].cargo.AvailableCount()))) {
+						st->goods[cid].data->cargo.AvailableCount() > st->goods[new_cid].CargoAvailableCount()))) {
 					new_cid = cid;
 				}
 			}
@@ -1763,7 +1815,7 @@ static void HandleStationRefit(Vehicle *v, CargoArray &consist_capleft, Station 
 	}
 
 	/* Refit if given a valid cargo. */
-	if (new_cid < NUM_CARGO && new_cid != v_start->cargo_type) {
+	if (new_cid < NUM_CARGO && new_cid != GetOverallCargoOfArticulatedVehicle(v_start)) {
 		/* INVALID_STATION because in the DT_MANUAL case that's correct and in the DT_(A)SYMMETRIC
 		 * cases the next hop of the vehicle doesn't really tell us anything if the cargo had been
 		 * "via any station" before reserving. We rather produce some more "any station" cargo than
@@ -1812,8 +1864,8 @@ struct ReserveCargoAction {
 			if (!(flags & OLFB_FULL_LOAD) && !through_load) return true;
 		}
 		if (v->cargo_cap > v->cargo.RemainingCount() && MayLoadUnderExclusiveRights(st, v)) {
-			st->goods[v->cargo_type].cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
-					&v->cargo, st->xy, next_station.Get(v->cargo_type));
+			st->goods[v->cargo_type].CreateData().cargo.Reserve(v->cargo_cap - v->cargo.RemainingCount(),
+					&v->cargo, next_station.Get(v->cargo_type), v->tile);
 		}
 
 		return true;
@@ -1933,7 +1985,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 	CargoStationIDStackSet next_station = front->GetNextStoppingStation();
 
 	bool use_autorefit = front->current_order.IsRefit() && front->current_order.GetRefitCargo() == CT_AUTO_REFIT;
-	CargoArray consist_capleft;
+	CargoArray consist_capleft{};
 	bool should_reserve_consist = false;
 	bool reserve_consist_cargo_type_loading = false;
 	if (_settings_game.order.improved_load && use_autorefit) {
@@ -2024,7 +2076,9 @@ static void LoadUnloadVehicle(Vehicle *front)
 		if (v->cargo_cap == 0) continue;
 		artic_part++;
 
+		/* ge and ged must both be changed together, when the cargo is changed (e.g. after HandleStationRefit) */
 		GoodsEntry *ge = &st->goods[v->cargo_type];
+		GoodsEntryData *ged = &ge->CreateData();
 
 		if (HasBit(v->vehicle_flags, VF_CARGO_UNLOADING) && payment == nullptr) {
 			/* Once the payment has been made, never attempt to unload again */
@@ -2044,12 +2098,12 @@ static void LoadUnloadVehicle(Vehicle *front)
 				if (GetUnloadType(v) & (OUFB_TRANSFER | OUFB_UNLOAD)) {
 					/* Transfer instead of delivering. */
 					v->cargo.Reassign<VehicleCargoList::MTA_DELIVER, VehicleCargoList::MTA_TRANSFER>(
-							v->cargo.ActionCount(VehicleCargoList::MTA_DELIVER), INVALID_STATION);
+							v->cargo.ActionCount(VehicleCargoList::MTA_DELIVER));
 				} else {
 					uint new_remaining = v->cargo.RemainingCount() + v->cargo.ActionCount(VehicleCargoList::MTA_DELIVER);
 					if (v->cargo_cap < new_remaining) {
 						/* Return some of the reserved cargo to not overload the vehicle. */
-						v->cargo.Return(new_remaining - v->cargo_cap, &ge->cargo, INVALID_STATION);
+						v->cargo.Return(new_remaining - v->cargo_cap, &ged->cargo, INVALID_STATION, v->tile);
 					}
 
 					/* Keep instead of delivering. This may lead to no cargo being unloaded, so ...*/
@@ -2076,7 +2130,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 				}
 			}
 
-			amount_unloaded = v->cargo.Unload(amount_unloaded, &ge->cargo, payment);
+			amount_unloaded = v->cargo.Unload(amount_unloaded, &ged->cargo, payment, v->tile);
 			remaining = v->cargo.UnloadCount() > 0;
 			if (amount_unloaded > 0) {
 				dirty_vehicle = true;
@@ -2105,6 +2159,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 		if (front->current_order.IsRefit() && artic_part == 1) {
 			HandleStationRefit(v, consist_capleft, st, next_station, front->current_order.GetRefitCargo());
 			ge = &st->goods[v->cargo_type];
+			ged = &ge->CreateData();
 		}
 
 		/* Do not pick up goods when we have no-load set. */
@@ -2133,8 +2188,8 @@ static void LoadUnloadVehicle(Vehicle *front)
 		}
 
 		/* if last speed is 0, we treat that as if no vehicle has ever visited the station. */
-		ge->last_speed = std::min(t, 255);
-		ge->last_age = std::min(_cur_year - front->build_year, 255);
+		ge->last_speed = ClampTo<uint8_t>(t);
+		ge->last_age = ClampTo<uint8_t>(_cur_year - front->build_year);
 
 		assert(v->cargo_cap >= v->cargo.StoredCount());
 		/* Capacity available for loading more cargo. */
@@ -2146,11 +2201,11 @@ static void LoadUnloadVehicle(Vehicle *front)
 
 			/* If there's goods waiting at the station, and the vehicle
 			 * has capacity for it, load it on the vehicle. */
-			if ((v->cargo.ActionCount(VehicleCargoList::MTA_LOAD) > 0 || ge->cargo.AvailableCount() > 0) && MayLoadUnderExclusiveRights(st, v)) {
+			if ((v->cargo.ActionCount(VehicleCargoList::MTA_LOAD) > 0 || ged->cargo.AvailableCount() > 0) && MayLoadUnderExclusiveRights(st, v)) {
 				if (v->cargo.StoredCount() == 0) TriggerVehicle(v, VEHICLE_TRIGGER_NEW_CARGO);
 				if (_settings_game.order.gradual_loading) cap_left = std::min(cap_left, GetLoadAmount(v));
 
-				uint loaded = ge->cargo.Load(cap_left, &v->cargo, st->xy, next_station.Get(v->cargo_type));
+				uint loaded = ged->cargo.Load(cap_left, &v->cargo, next_station.Get(v->cargo_type), v->tile);
 				if (v->cargo.ActionCount(VehicleCargoList::MTA_LOAD) > 0) {
 					/* Remember if there are reservations left so that we don't stop
 					 * loading before they're loaded. */
@@ -2178,7 +2233,7 @@ static void LoadUnloadVehicle(Vehicle *front)
 					st->time_since_load = 0;
 					ge->last_vehicle_type = v->type;
 
-					if (ge->cargo.TotalCount() == 0) {
+					if (ged->cargo.TotalCount() == 0) {
 						TriggerStationRandomisation(st, st->xy, SRT_CARGO_TAKEN, v->cargo_type);
 						TriggerStationAnimation(st, st->xy, SAT_CARGO_TAKEN, v->cargo_type);
 						AirportAnimationTrigger(st, AAT_STATION_CARGO_TAKEN, v->cargo_type);
@@ -2396,16 +2451,16 @@ void LoadUnloadStation(Station *st)
  */
 void CompaniesMonthlyLoop()
 {
+	CompaniesPayInterest();
 	CompaniesGenStatistics();
 	if (_settings_game.economy.inflation) {
 		AddInflation();
 		RecomputePrices();
 	}
-	CompaniesPayInterest();
 	HandleEconomyFluctuations();
 }
 
-static void DoAcquireCompany(Company *c)
+static void DoAcquireCompany(Company *c, bool hostile_takeover)
 {
 	CompanyID ci = c->index;
 
@@ -2414,7 +2469,7 @@ static void DoAcquireCompany(Company *c)
 	CompanyNewsInformation *cni = new CompanyNewsInformation(c, Company::Get(_current_company));
 
 	SetDParam(0, STR_NEWS_COMPANY_MERGER_TITLE);
-	SetDParam(1, c->bankrupt_value == 0 ? STR_NEWS_MERGER_TAKEOVER_TITLE : STR_NEWS_COMPANY_MERGER_DESCRIPTION);
+	SetDParam(1, hostile_takeover ? STR_NEWS_MERGER_TAKEOVER_TITLE : STR_NEWS_COMPANY_MERGER_DESCRIPTION);
 	SetDParamStr(2, cni->company_name);
 	SetDParamStr(3, cni->other_company_name);
 	SetDParam(4, c->bankrupt_value);
@@ -2423,14 +2478,6 @@ static void DoAcquireCompany(Company *c)
 	Game::NewEvent(new ScriptEventCompanyMerger(ci, _current_company));
 
 	ChangeOwnershipOfCompanyItems(ci, _current_company);
-
-	if (c->bankrupt_value == 0) {
-		Company *owner = Company::Get(_current_company);
-
-		/* Get both the balance and the loan of the company you just bought. */
-		SubtractMoneyFromCompany(CommandCost(EXPENSES_OTHER, -c->money));
-		owner->current_loan += c->current_loan;
-	}
 
 	if (c->is_ai) AI::Stop(c->index);
 
@@ -2483,17 +2530,14 @@ CommandCost CmdBuyShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1,
 
 	cost.AddCost(CalculateCompanyValue(c) >> 2);
 	if (flags & DC_EXEC) {
-		Owner *b = c->share_owners;
+		auto unowned_share = std::find(c->share_owners.begin(), c->share_owners.end(), INVALID_OWNER);
+		assert(unowned_share != c->share_owners.end()); // share owners is guaranteed to contain at least one INVALID_OWNER, i.e. unowned share
+		*unowned_share = _current_company;
 
-		while (*b != COMPANY_SPECTATOR) b++; // share owners is guaranteed to contain at least one COMPANY_SPECTATOR
-		*b = _current_company;
-
-		for (int i = 0; c->share_owners[i] == _current_company;) {
-			if (++i == 4) {
-				c->bankrupt_value = 0;
-				DoAcquireCompany(c);
-				break;
-			}
+		auto current_company_owns_share = [](auto share_owner) { return share_owner == _current_company; };
+		if (std::all_of(c->share_owners.begin(), c->share_owners.end(), current_company_owns_share)) {
+			c->bankrupt_value = 0;
+			DoAcquireCompany(c, false);
 		}
 		InvalidateWindowData(WC_COMPANY, target_company);
 		CompanyAdminUpdate(c);
@@ -2530,9 +2574,9 @@ CommandCost CmdSellShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1
 	cost = -(cost - (cost >> 7));
 
 	if (flags & DC_EXEC) {
-		Owner *b = c->share_owners;
-		while (*b != _current_company) b++; // share owners is guaranteed to contain company
-		*b = COMPANY_SPECTATOR;
+		auto our_owner = std::find(c->share_owners.begin(), c->share_owners.end(), _current_company);
+		assert(our_owner != c->share_owners.end()); // share owners is guaranteed to contain at least one INVALID_OWNER
+		*our_owner = INVALID_OWNER;
 		InvalidateWindowData(WC_COMPANY, target_company);
 		CompanyAdminUpdate(c);
 	}
@@ -2547,7 +2591,8 @@ CommandCost CmdSellShareInCompany(TileIndex tile, DoCommandFlag flags, uint32 p1
  * @param tile unused
  * @param flags type of operation
  * @param p1 company to buy up
- * @param p2 unused
+ * @param p2 various bitstuffed elements
+ * - p2 = (bit 0) - hostile_takeover whether to buy up the company even if it is not bankrupt
  * @param text unused
  * @return the cost of this operation or an error
  */
@@ -2557,8 +2602,18 @@ CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 	Company *c = Company::GetIfValid(target_company);
 	if (c == nullptr) return CMD_ERROR;
 
+	bool hostile_takeover = HasBit(p2, 0);
+	if (hostile_takeover && _settings_game.economy.allow_shares) return CMD_ERROR;
+
+	/* If you do a hostile takeover but the company went bankrupt, buy it via bankruptcy rules. */
+	if (hostile_takeover && HasBit(c->bankrupt_asked, _current_company)) hostile_takeover = false;
+
 	/* Disable takeovers when not asked */
-	if (!HasBit(c->bankrupt_asked, _current_company)) return CMD_ERROR;
+	if (!hostile_takeover && !HasBit(c->bankrupt_asked, _current_company)) return CMD_ERROR;
+
+	/* Only allow hostile takeover of AI companies and when in single player */
+	if (hostile_takeover && !c->is_ai) return CMD_ERROR;
+	if (hostile_takeover && _networking) return CMD_ERROR;
 
 	/* Disable taking over the local company in singleplayer mode */
 	if (!_networking && _local_company == c->index) return CMD_ERROR;
@@ -2569,11 +2624,13 @@ CommandCost CmdBuyCompany(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 	/* Disable taking over when not allowed. */
 	if (!MayCompanyTakeOver(_current_company, target_company)) return CMD_ERROR;
 
-	/* Get the cost here as the company is deleted in DoAcquireCompany. */
-	CommandCost cost(EXPENSES_OTHER, c->bankrupt_value);
+	/* Get the cost here as the company is deleted in DoAcquireCompany.
+	 * For bankruptcy this amount is calculated when the offer was made;
+	 * for hostile takeover you pay the current price. */
+	CommandCost cost(EXPENSES_OTHER, hostile_takeover ? CalculateHostileTakeoverValue(c) : c->bankrupt_value);
 
 	if (flags & DC_EXEC) {
-		DoAcquireCompany(c);
+		DoAcquireCompany(c, hostile_takeover);
 	}
 	return cost;
 }

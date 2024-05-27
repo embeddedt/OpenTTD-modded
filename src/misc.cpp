@@ -35,18 +35,24 @@
 #include "viewport_func.h"
 #include "bridge_signal_map.h"
 #include "command_func.h"
+#include "command_log.h"
 #include "zoning.h"
 #include "cargopacket.h"
 #include "tbtr_template_vehicle_func.h"
 #include "event_logs.h"
+#include "string_func.h"
+#include "3rdparty/monocypher/monocypher.h"
 
 #include "safeguards.h"
 
+std::string _savegame_id; ///< Unique ID of the current savegame.
 
 extern TileIndex _cur_tileloop_tile;
 extern TileIndex _aux_tileloop_tile;
 extern void ClearAllSignalSpeedRestrictions();
 extern void MakeNewgameSettingsLive();
+
+extern uint64 _station_tile_cache_hash;
 
 void InitializeSound();
 void InitializeMusic();
@@ -65,6 +71,35 @@ void InitializeCompanies();
 void InitializeCheats();
 void InitializeNPF();
 void InitializeOldNames();
+
+/**
+ * Generate a unique ID.
+ */
+std::string GenerateUid(std::string_view subject)
+{
+	extern void NetworkRandomBytesWithFallback(void *buf, size_t n);
+
+	uint8 random_bytes[32];
+	NetworkRandomBytesWithFallback(random_bytes, lengthof(random_bytes));
+
+	uint8 digest[16];
+
+	crypto_blake2b_ctx ctx;
+	crypto_blake2b_init  (&ctx, lengthof(digest));
+	crypto_blake2b_update(&ctx, random_bytes, lengthof(random_bytes));
+	crypto_blake2b_update(&ctx, (const byte *)subject.data(), subject.size());
+	crypto_blake2b_final (&ctx, digest);
+
+	return FormatArrayAsHex({digest, lengthof(digest)});
+}
+
+/**
+ * Generate a unique savegame ID.
+ */
+void GenerateSavegameId()
+{
+	_savegame_id = GenerateUid("OpenTTD Savegame ID");
+}
 
 void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settings)
 {
@@ -104,6 +139,7 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 	_game_load_time = 0;
 	_extra_aspects = 0;
 	_aspect_cfg_hash = 0;
+	_station_tile_cache_hash = 0;
 	InitGRFGlobalVars();
 	_loadgame_DBGL_data.clear();
 	if (reset_settings) MakeNewgameSettingsLive();
@@ -116,6 +152,7 @@ void InitializeGame(uint size_x, uint size_y, bool reset_date, bool reset_settin
 	} else {
 		SetScaledTickVariables();
 	}
+	SetupTileLoopCounts();
 	UpdateCachedSnowLine();
 	UpdateCachedSnowLineBounds();
 

@@ -42,7 +42,7 @@
 
 static const SpriteID SPR_SELECT_TILE  = 752;
 static const SpriteID SPR_DOT          = 774; // corner marker for lower/raise land
-static const SpriteID SPR_DOT_SMALL    = 4078;
+static const SpriteID SPR_EMPTY        = 4078; // empty (transparent blue) sprite
 static const SpriteID SPR_WHITE_POINT  = 4079;
 
 /* ASCII */
@@ -340,7 +340,7 @@ static const SpriteID ROUTE_STEP_SPRITE_COUNT = 4;
 
 /* Tracerestrict sprites */
 static const SpriteID SPR_TRACERESTRICT_BASE = SPR_ROUTE_STEP_BASE + ROUTE_STEP_SPRITE_COUNT;
-static const uint16 TRACERESTRICT_SPRITE_COUNT = 2;
+static const uint16 TRACERESTRICT_SPRITE_COUNT = 3;
 
 /* Misc GUI sprites */
 static const SpriteID SPR_MISC_GUI_BASE = SPR_TRACERESTRICT_BASE + TRACERESTRICT_SPRITE_COUNT;

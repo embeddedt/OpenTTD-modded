@@ -183,16 +183,13 @@ namespace {
 		}
 	};
 
-	/** %Game loop rate, cycles per second */
-	static const double GL_RATE = 1000.0 / MILLISECONDS_PER_TICK;
-
 	/**
 	 * Storage for all performance element measurements.
 	 * Elements are initialized with the expected rate in recorded values per second.
 	 * @hideinitializer
 	 */
 	PerformanceData _pf_data[PFE_MAX] = {
-		PerformanceData(GL_RATE),               // PFE_GAMELOOP
+		PerformanceData(1),                     // PFE_GAMELOOP
 		PerformanceData(1),                     // PFE_ACC_GL_ECONOMY
 		PerformanceData(1),                     // PFE_ACC_GL_TRAINS
 		PerformanceData(1),                     // PFE_ACC_GL_ROADVEHS
@@ -365,7 +362,7 @@ static const PerformanceElement DISPLAY_ORDER_PFE[PFE_MAX] = {
 static const char * GetAIName(int ai_index)
 {
 	if (!Company::IsValidAiID(ai_index)) return "";
-	return Company::Get(ai_index)->ai_info->GetName();
+	return Company::Get(ai_index)->ai_info->GetName().c_str();
 }
 
 /** @hideinitializer */
@@ -479,6 +476,7 @@ struct FramerateWindow : Window {
 
 	void UpdateData()
 	{
+		_pf_data[PFE_GAMELOOP].expected_rate = _ticks_per_second;
 		double gl_rate = _pf_data[PFE_GAMELOOP].GetRate();
 		bool have_script = false;
 		this->rate_gameloop.SetRate(gl_rate, _pf_data[PFE_GAMELOOP].expected_rate);
@@ -738,7 +736,7 @@ static WindowDesc _framerate_display_desc(
 static const NWidgetPart _frametime_graph_window_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_CLOSEBOX, COLOUR_GREY),
-		NWidget(WWT_CAPTION, COLOUR_GREY, WID_FGW_CAPTION), SetDataTip(STR_WHITE_STRING, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS),
+		NWidget(WWT_CAPTION, COLOUR_GREY, WID_FGW_CAPTION), SetDataTip(STR_JUST_STRING, STR_TOOLTIP_WINDOW_TITLE_DRAG_THIS), SetTextStyle(TC_WHITE),
 		NWidget(WWT_STICKYBOX, COLOUR_GREY),
 	EndContainer(),
 	NWidget(WWT_PANEL, COLOUR_GREY),

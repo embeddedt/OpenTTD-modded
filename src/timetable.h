@@ -18,7 +18,15 @@
 void ShowTimetableWindow(const Vehicle *v);
 void UpdateVehicleTimetable(Vehicle *v, bool travelling);
 void SetTimetableParams(int first_param, Ticks ticks, bool long_mode = false);
-void SetTimetableWindowsDirty(const Vehicle *v, bool include_scheduled_dispatch = false);
+Ticks ParseTimetableDuration(const char *str);
+
+enum SetTimetableWindowsDirtyFlags {
+	STWDF_NONE                       = 0,
+	STWDF_SCHEDULED_DISPATCH         = 1 << 0,
+	STWDF_ORDERS                     = 1 << 1,
+};
+DECLARE_ENUM_AS_BIT_SET(SetTimetableWindowsDirtyFlags)
+void SetTimetableWindowsDirty(const Vehicle *v, SetTimetableWindowsDirtyFlags flags = STWDF_NONE);
 
 struct TimetableProgress {
 	VehicleID id;

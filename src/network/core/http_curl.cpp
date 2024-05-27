@@ -14,6 +14,7 @@
 #include "../../fileio_func.h"
 #include "../../rev.h"
 #include "../../thread.h"
+#include "../../core/ring_buffer_queue.hpp"
 #include "../network_internal.h"
 
 #include "http.h"
@@ -23,7 +24,6 @@
 #include <curl/curl.h>
 #include <memory>
 #include <mutex>
-#include <queue>
 
 #include "../../safeguards.h"
 
@@ -69,7 +69,7 @@ public:
 
 static std::thread _http_thread;
 static std::atomic<bool> _http_thread_exit = false;
-static std::queue<std::unique_ptr<NetworkHTTPRequest>> _http_requests;
+static ring_buffer_queue<std::unique_ptr<NetworkHTTPRequest>> _http_requests;
 static std::mutex _http_mutex;
 static std::condition_variable _http_cv;
 #if defined(UNIX)
@@ -117,6 +117,7 @@ void HttpThread()
 
 		/* Reset to default settings. */
 		curl_easy_reset(curl);
+		curl_slist *headers = nullptr;
 
 		if (_debug_net_level >= 5) {
 			curl_easy_setopt(curl, CURLOPT_VERBOSE, 1L);
@@ -147,8 +148,16 @@ void HttpThread()
 
 		/* Prepare POST body and URI. */
 		if (!request->data.empty()) {
+			/* When the payload starts with a '{', it is a JSON payload. */
+			if (StrStartsWith(request->data, "{")) {
+				headers = curl_slist_append(headers, "Content-Type: application/json");
+			} else {
+				headers = curl_slist_append(headers, "Content-Type: application/x-www-form-urlencoded");
+			}
+
 			curl_easy_setopt(curl, CURLOPT_POST, 1L);
 			curl_easy_setopt(curl, CURLOPT_POSTFIELDS, request->data.c_str());
+			curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 		}
 		curl_easy_setopt(curl, CURLOPT_URL, request->uri.c_str());
 
@@ -175,11 +184,17 @@ void HttpThread()
 		/* Perform the request. */
 		CURLcode res = curl_easy_perform(curl);
 
+		curl_slist_free_all(headers);
+
 		if (res == CURLE_OK) {
 			Debug(net, 1, "HTTP request succeeded");
 			request->callback->OnReceiveData(nullptr, 0);
 		} else {
-			Debug(net, (request->callback->IsCancelled() || _http_thread_exit) ? 1 : 0, "HTTP request failed: {}", curl_easy_strerror(res));
+			long status_code = 0;
+			curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &status_code);
+
+			/* No need to be verbose about rate limiting. */
+			Debug(net, (request->callback->IsCancelled() || _http_thread_exit || status_code == HTTP_429_TOO_MANY_REQUESTS) ? 1 : 0, "HTTP request failed: status_code: {}, error: {}", status_code, curl_easy_strerror(res));
 			request->callback->OnFailure();
 		}
 	}

@@ -10,6 +10,11 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Veículos Rodov
 STR_VEHICLE_TYPE_SHIPS                                          :Navios
 STR_VEHICLE_TYPE_AIRCRAFT                                       :Aeronaves
 
+STR_CONFIG_SETTING_AUTOSAVE                                     :Guardar automaticamente: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Seleccione o intervalo entre gravações automáticas
+
+STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Alterar transparência para indicadores de carga. Ctrl+Clique para bloquear.
+
 STR_LINKGRAPH_STATS_TOOLTIP_TIME_EXTENSION_GENERAL              :{}Tempo médio de viagem: {STRING}
 STR_LINKGRAPH_STATS_TOOLTIP_CAPACITY                            :{}Capacidade: {CARGO_LONG}
 
@@ -30,6 +35,9 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Mudar a 
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Concebido: {GOLD}{NUM}
 
+STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :C:
+STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :P:
+
 # Cargo type orders Window
 
 # Plans window
@@ -46,3 +54,22 @@ STR_TRADITIONAL_AIRCRAFT_NAME                                   :Aeronave {COMMA
 # Scheduled Dispatch
 
 # Modifier key toggle window
+
+STR_CONFIG_SETTING_ALLOW_SHARES                                 :Permite comprar acções de outras empresas: {STRING}
+STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Quando ativo, permite a compra e venda de ações de companhias. As ações apenas estarão disponíveis quando a companhia atinge uma determinada idade.
+
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Idade mínima da empresa para negociar ações: {STRING}
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Definir a idade mínima de uma companhia a partir da qual outros jogadores poderão comprar ou vender ações da mesma.
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_VALUE                   :{COMMA} ano{P "" s}
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_NO_MIN                  :Sem mínimo
+
+STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% propriedade de {COMPANY})
+
+STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Comprar 25% das acções
+STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Vender 25% das ações
+STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Comprar 25% das acções nesta empresa. Shift+Clique mostra valor estimado sem comprar nenhuma acção
+STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Vender 25% das ações nesta empresa. Shift+Clique mostra valor estimado sem vender nenhuma ação
+
+STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Não é possível comprar 25% das acções nesta empresa...
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Não é possível vender 25% das acções nesta empresa...
+STR_ERROR_PROTECTED                                             :{WHITE}Esta empresa ainda não troca acções...

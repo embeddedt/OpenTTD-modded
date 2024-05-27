@@ -92,7 +92,7 @@ enum WidgetType : uint8 {
 	WPT_DATATIP,      ///< Widget part for specifying data and tooltip.
 	WPT_PADDING,      ///< Widget part for specifying a padding.
 	WPT_PIPSPACE,     ///< Widget part for specifying pre/inter/post space for containers.
-	WPT_TEXTCOLOUR,   ///< Widget part for specifying text colour.
+	WPT_TEXTSTYLE,    ///< Widget part for specifying text colour.
 	WPT_ALIGNMENT,    ///< Widget part for specifying text/image alignment.
 	WPT_ENDCONTAINER, ///< Widget part to denote end of a container.
 	WPT_FUNCTION,     ///< Widget part for calling a user function.
@@ -283,6 +283,8 @@ public:
 	void SetFill(uint fill_x, uint fill_y);
 	void SetResize(uint resize_x, uint resize_y);
 
+	bool UpdateVerticalSize(uint min_y);
+
 	void AssignSizePosition(SizingType sizing, uint x, uint y, uint given_width, uint given_height, bool rtl) override;
 
 	uint min_x; ///< Minimal horizontal size of only this widget.
@@ -338,7 +340,7 @@ public:
 	void SetIndex(int index);
 	void SetDataTip(uint32 widget_data, StringID tool_tip);
 	void SetToolTip(StringID tool_tip);
-	void SetTextColour(TextColour colour);
+	void SetTextStyle(TextColour colour, FontSize size);
 	void SetAlignment(StringAlignment align);
 
 	inline void SetLowered(bool lowered);
@@ -361,6 +363,7 @@ public:
 	int scrollbar_index;       ///< Index of an attached scrollbar.
 	TextColour highlight_colour; ///< Colour of highlight.
 	TextColour text_colour;    ///< Colour of text within widget.
+	FontSize text_size;        ///< Size of text within widget.
 	StringAlignment align;     ///< Alignment of text/image within widget.
 };
 
@@ -478,6 +481,7 @@ public:
 
 	int shown_plane; ///< Plane being displayed (for #NWID_SELECTION only).
 	int index;       ///< If non-negative, index in the #Window::nested_array.
+	bool independent_planes = false; ///< If true, treat planes as independent for layout purposes.
 };
 
 /** Nested widget container flags, */
@@ -727,10 +731,11 @@ public:
 	 * Set the distance to scroll when using the buttons or the wheel.
 	 * @param stepsize Scrolling speed.
 	 */
-	void SetStepSize(uint16 stepsize)
+	void SetStepSize(size_t stepsize)
 	{
 		assert(stepsize > 0);
-		this->stepsize = stepsize;
+
+		this->stepsize = ClampTo<uint16_t>(stepsize);
 	}
 
 	/**
@@ -738,15 +743,13 @@ public:
 	 * @param num the number of elements in the list
 	 * @note updates the position if needed
 	 */
-	void SetCount(int num)
+	void SetCount(size_t num)
 	{
-		assert(num >= 0);
 		assert(num <= MAX_UVALUE(uint16));
 
-		this->count = num;
-		num -= this->cap;
-		if (num < 0) num = 0;
-		if (num < this->pos) this->pos = num;
+		this->count = ClampTo<uint16_t>(num);
+		/* Ensure position is within bounds */
+		this->SetPosition(this->pos);
 	}
 
 	/**
@@ -754,13 +757,13 @@ public:
 	 * @param capacity the new capacity
 	 * @note updates the position if needed
 	 */
-	void SetCapacity(int capacity)
+	void SetCapacity(size_t capacity)
 	{
-		assert(capacity > 0);
 		assert(capacity <= MAX_UVALUE(uint16));
 
-		this->cap = capacity;
-		if (this->cap + this->pos > this->count) this->pos = std::max(0, this->count - this->cap);
+		this->cap = ClampTo<uint16_t>(capacity);
+		/* Ensure position is within bounds */
+		this->SetPosition(this->pos);
 	}
 
 	void SetCapacityFromWidget(Window *w, int widget, int padding = 0);
@@ -812,7 +815,30 @@ public:
 		}
 	}
 
-	int GetScrolledRowFromWidget(int clickpos, const Window * const w, int widget, int padding = 0) const;
+	int GetScrolledRowFromWidget(int clickpos, const Window * const w, int widget, int padding = 0, int line_height = -1) const;
+
+	/**
+	 * Return an iterator pointing to the element of a scrolled widget that a user clicked in.
+	 * @param container   Container of elements represented by the scrollbar.
+	 * @param clickpos    Vertical position of the mouse click (without taking scrolling into account).
+	 * @param w           The window the click was in.
+	 * @param widget      Widget number of the widget clicked in.
+	 * @param padding     Amount of empty space between the widget edge and the top of the first row. Default value is \c 0.
+	 * @param line_height Height of a single row. A negative value means using the vertical resize step of the widget.
+	 * @return Iterator to the element clicked at. If clicked at a wrong position, returns as interator to the end of the container.
+	 */
+	template <typename Tcontainer>
+	typename Tcontainer::iterator GetScrolledItemFromWidget(Tcontainer &container, int clickpos, const Window * const w, int widget, int padding = 0, int line_height = -1) const
+	{
+		assert(this->GetCount() == container.size()); // Scrollbar and container size must match.
+		int row = this->GetScrolledRowFromWidget(clickpos, w, widget, padding, line_height);
+		if (row == INT_MAX) return std::end(container);
+
+		typename Tcontainer::iterator it = std::begin(container);
+		std::advance(it, row);
+		return it;
+	}
+
 	EventState UpdateListPositionOnKeyPress(int &list_position, uint16 keycode) const;
 };
 
@@ -852,10 +878,32 @@ public:
 
 	static void InvalidateDimensionCache();
 
+	static const Dimension &GetDropdownBoxDimension()
+	{
+		if (dropdown_dimension.width == 0) UpdateDropdownBoxDimension();
+		return dropdown_dimension;
+	}
+
+	static const Dimension &GetResizeBoxDimension()
+	{
+		if (resizebox_dimension.width == 0) UpdateResizeBoxDimension();
+		return resizebox_dimension;
+	}
+
+	static const Dimension &GetCloseBoxDimension()
+	{
+		if (closebox_dimension.width == 0) UpdateCloseBoxDimension();
+		return closebox_dimension;
+	}
+
+private:
+	static void UpdateDropdownBoxDimension();
+	static void UpdateResizeBoxDimension();
+	static void UpdateCloseBoxDimension();
+
 	static Dimension dropdown_dimension;  ///< Cached size of a dropdown widget.
 	static Dimension resizebox_dimension; ///< Cached size of a resizebox widget.
 	static Dimension closebox_dimension;  ///< Cached size of a closebox widget.
-private:
 	static Dimension shadebox_dimension;  ///< Cached size of a shadebox widget.
 	static Dimension debugbox_dimension;  ///< Cached size of a debugbox widget.
 	static Dimension defsizebox_dimension; ///< Cached size of a defsizebox widget.
@@ -972,8 +1020,9 @@ struct NWidgetPartTextLines {
  * Widget part for storing text colour.
  * @ingroup NestedWidgetParts
  */
-struct NWidgetPartTextColour {
+struct NWidgetPartTextStyle {
 	TextColour colour; ///< TextColour for DrawString.
+	FontSize size; ///< Font size of text.
 };
 
 /**
@@ -1005,7 +1054,7 @@ struct NWidgetPart {
 		NWidgetPartPaddings padding;     ///< Part with paddings.
 		NWidgetPartPIP pip;              ///< Part with pre/inter/post spaces.
 		NWidgetPartTextLines text_lines; ///< Part with text line data.
-		NWidgetPartTextColour colour;    ///< Part with text colour data.
+		NWidgetPartTextStyle text_style; ///< Part with text style data.
 		NWidgetPartAlignment align;      ///< Part with internal alignment.
 		NWidgetFunctionType *func_ptr;   ///< Part with a function call.
 		NWidContainerFlags cont_flags;   ///< Part with container flags.
@@ -1066,16 +1115,18 @@ static inline NWidgetPart SetMinimalTextLines(uint8 lines, uint8 spacing, FontSi
 }
 
 /**
- * Widget part function for setting the text colour.
+ * Widget part function for setting the text style.
  * @param colour Colour to draw string within widget.
+ * @param size Font size to draw string within widget.
  * @ingroup NestedWidgetParts
  */
-static inline NWidgetPart SetTextColour(TextColour colour)
+static inline NWidgetPart SetTextStyle(TextColour colour, FontSize size = FS_NORMAL)
 {
 	NWidgetPart part;
 
-	part.type = WPT_TEXTCOLOUR;
-	part.u.colour.colour = colour;
+	part.type = WPT_TEXTSTYLE;
+	part.u.text_style.colour = colour;
+	part.u.text_style.size = size;
 
 	return part;
 }

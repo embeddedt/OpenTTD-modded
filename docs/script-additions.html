@@ -22,7 +22,17 @@
 	<p>Scripts which use any of these features SHOULD check whether the feature is present and if not, fallback to not using it and/or emitting a clear and end-user friendly error message.<br>
 	Testing for the presence of methods may be done using the "in" operator.</p>
 
-	<h3>Date: <a href="https://docs.openttd.org/gs-api/classGSDate.html">GSDate Class</a> and <a href="https://docs.openttd.org/ai-api/classAIDate.html">AIDate Class</a></h3>
+	<h4 style="margin-bottom: 0px">Contents:</h4>
+	<ul style="margin-top: 0px">
+		<li><a href="#date">Date: GSDate and AIDate</a></li>
+		<li><a href="#marine">Marine: GSMarine and AIMarine</a></li>
+		<li><a href="#road">Road: GSRoad and AIRoad</a></li>
+		<li><a href="#company">Company: GSCompany and AICompany</a></li>
+		<li><a href="#inflation">Inflation: GSInflation and AIInflation</a></li>
+		<li><a href="#asyncmode">Command Asynchronous Mode: GSAsyncMode</a></li>
+	</ul>
+
+	<h3 id="date">Date: <a href="https://docs.openttd.org/gs-api/classGSDate.html">GSDate Class</a> and <a href="https://docs.openttd.org/ai-api/classAIDate.html">AIDate Class</a></h3>
 	<div class="indent">
 		<h4>Additional Static Public Member Functions:</h4>
 		<div class="indent">
@@ -57,7 +67,7 @@
 		</div>
 	</div>
 
-	<h3>Marine: <a href="https://docs.openttd.org/gs-api/classGSMarine.html">GSMarine Class</a> and <a href="https://docs.openttd.org/ai-api/classAIMarine.html">AIMarine Class</a></h3>
+	<h3 id="marine">Marine: <a href="https://docs.openttd.org/gs-api/classGSMarine.html">GSMarine Class</a> and <a href="https://docs.openttd.org/ai-api/classAIMarine.html">AIMarine Class</a></h3>
 	<div class="indent">
 		<h4>Additional Static Public Member Functions:</h4>
 		<div class="indent">
@@ -67,7 +77,7 @@
 		</div>
 	</div>
 
-	<h3>Road: <a href="https://docs.openttd.org/gs-api/classGSRoad.html">GSRoad Class</a> and <a href="https://docs.openttd.org/ai-api/classAIRoad.html">AIRoad Class</a></h3>
+	<h3 id="road">Road: <a href="https://docs.openttd.org/gs-api/classGSRoad.html">GSRoad Class</a> and <a href="https://docs.openttd.org/ai-api/classAIRoad.html">AIRoad Class</a></h3>
 	<div class="indent">
 		<h4>Additional Static Public Member Functions:</h4>
 		<div class="indent">
@@ -96,7 +106,7 @@
 		</div>
 	</div>
 
-	<h3>Company: <a href="https://docs.openttd.org/gs-api/classGSCompany.html">GSCompany Class</a> and <a href="https://docs.openttd.org/ai-api/classAICompany.html">AICompany Class</a></h3>
+	<h3 id="company">Company: <a href="https://docs.openttd.org/gs-api/classGSCompany.html">GSCompany Class</a> and <a href="https://docs.openttd.org/ai-api/classAICompany.html">AICompany Class</a></h3>
 	<div class="indent">
 		<h4>Additional Static Public Member Functions:</h4>
 		<div class="indent">
@@ -116,7 +126,7 @@
 		</div>
 	</div>
 
-	<h3>Inflation: GSInflation Class and AIInflation Class</h3>
+	<h3 id="inflation">Inflation: GSInflation Class and AIInflation Class</h3>
 	<div class="indent">
 		<h4>Static Public Member Functions:</h4>
 		<div class="indent">
@@ -138,6 +148,25 @@
 			<div class="code">static bool SetPaymentFactor (int64 factor)</div>
 			<div class="methodtext">Set the inflation factor for payments (GS only).</div>
 			<div class="methodtext">The inflation factor is a fixed point value (16 bits).</div>
+		</div>
+	</div>
+
+	<h3 id="asyncmode">Command Asynchronous Mode: GSAsyncMode Class</h3>
+	<div class="indent">
+		<h4>Public Constructor:</h4>
+		<div class="indent">
+			<div class="code">GSAsyncMode (bool asynchronous)</div>
+			<div class="methodtext">Creating an instance of this class switches the asynchronous execution mode for commands.</div>
+			<div class="methodtext">
+				A value of true sets the mode to Asynchronous, the commands you execute are queued for later execution, and the script
+				is not delayed waiting for the command result. The estimated result is returned to the script.
+				The actual cost and whether the command succeeded when the command is eventually executed may differ from what was returned to the script.
+			</div>
+			<div class="methodtext">
+				A value of false sets the mode to Non-Asynchronous, this is the normal mode of executing commands.
+			</div>
+			<div class="methodtext">The original mode is stored and recovered from when ever the instance is destroyed.</div>
+			<div class="methodtext">Use in a similar way to the <a href="https://docs.openttd.org/gs-api/classGSTestMode.html">GSTestMode class</a>.</div>
 		</div>
 	</div>
 </body>

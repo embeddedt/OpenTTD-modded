@@ -12,7 +12,8 @@
 #include "../../crashlog_bfd.h"
 #include "../../string_func.h"
 #include "../../gamelog.h"
-#include "../../saveload/saveload.h"
+#include "../../sl/saveload.h"
+#include "../../scope.h"
 
 #include <errno.h>
 #include <signal.h>
@@ -47,10 +48,7 @@
 #if defined(WITH_BFD)
 #   include <bfd.h>
 #endif
-#elif defined(SUNOS)
-#	include <ucontext.h>
-#	include <dlfcn.h>
-#endif
+#endif /* __GLIBC__ */
 
 #if defined(__NetBSD__)
 #include <unistd.h>
@@ -60,18 +58,25 @@
 
 #include "../../safeguards.h"
 
+/** The signals we want our crash handler to handle. */
+static const int _signals_to_handle[] = { SIGSEGV, SIGABRT, SIGFPE, SIGBUS, SIGILL, SIGQUIT };
+
 #if defined(__GLIBC__) && defined(__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
 #pragma GCC diagnostic ignored "-Wclobbered"
 #endif
 
-#if defined(__GLIBC__)
-static char *logStacktraceSavedBuffer;
-static jmp_buf logStacktraceJmpBuf;
+#if defined(__GLIBC__) && defined(WITH_SIGACTION)
+static char *internal_fault_saved_buffer;
+static jmp_buf internal_fault_jmp_buf;
+sigset_t internal_fault_old_sig_proc_mask;
 
-static void LogStacktraceSigSegvHandler(int  sig)
+static void InternalFaultSigHandler(int sig)
 {
-	signal(SIGSEGV, SIG_DFL);
-	longjmp(logStacktraceJmpBuf, 1);
+	longjmp(internal_fault_jmp_buf, sig);
+	if (internal_fault_saved_buffer == nullptr) {
+		/* if we get here, things are unrecoverable */
+		_exit(43);
+	}
 }
 #endif
 
@@ -304,8 +309,21 @@ class CrashLogUnix : public CrashLog {
 #ifdef WITH_SIGACTION
 		if (this->si) {
 			buffer += seprintf(buffer, last,
-					"          si_code: %d\n",
+					"          si_code: %d",
 					this->si->si_code);
+			if (this->signum == SIGSEGV) {
+				switch (this->si->si_code) {
+					case SEGV_MAPERR:
+						buffer += seprintf(buffer, last, " (SEGV_MAPERR)");
+						break;
+					case SEGV_ACCERR:
+						buffer += seprintf(buffer, last, " (SEGV_ACCERR)");
+						break;
+					default:
+						break;
+				}
+			}
+			buffer += seprintf(buffer, last, "\n");
 			if (this->signum != SIGABRT) {
 				buffer += seprintf(buffer, last,
 						"          Fault address: %p\n",
@@ -316,8 +334,24 @@ class CrashLogUnix : public CrashLog {
 							this->signal_instruction_ptr);
 				}
 			}
+
+#if defined(WITH_UCONTEXT) && (defined(__x86_64__) || defined(__i386))
+			if (this->signal_instruction_ptr_valid && this->signum == SIGSEGV) {
+				auto err = static_cast<ucontext_t *>(this->context)->uc_mcontext.gregs[REG_ERR];
+				buffer += seprintf(buffer, last,
+						"          REG_ERR: %s%s%s%s%s\n",
+							(err & 1) ? "protection fault" : "no page",
+							(err & 2) ? ", write" : ", read",
+							(err & 4) ? "" : ", kernel",
+							(err & 8) ? ", reserved bit" : "",
+							(err & 16) ? ", instruction fetch" : ""
+						);
+			}
+#endif /* defined(WITH_UCONTEXT) && (defined(__x86_64__) || defined(__i386)) */
+
 		}
-#endif
+#endif /* WITH_SIGACTION */
+		this->CrashLogFaultSectionCheckpoint(buffer);
 		buffer += seprintf(buffer, last,
 				" Message: %s\n\n",
 				message == nullptr ? "<none>" : message
@@ -326,48 +360,19 @@ class CrashLogUnix : public CrashLog {
 		return buffer;
 	}
 
-#if defined(SUNOS)
-	/** Data needed while walking up the stack */
-	struct StackWalkerParams {
-		char **bufptr;    ///< Buffer
-		const char *last; ///< End of buffer
-		int counter;      ///< We are at counter-th stack level
-	};
-
 	/**
-	 * Callback used while walking up the stack.
-	 * @param pc program counter
-	 * @param sig 'active' signal (unused)
-	 * @param params parameters
-	 * @return always 0, continue walking up the stack
+	 * Log GDB information if available
 	 */
-	static int SunOSStackWalker(uintptr_t pc, int sig, void *params)
+	char *LogDebugExtra(char *buffer, const char *last) const override
 	{
-		StackWalkerParams *wp = (StackWalkerParams *)params;
-
-		/* Resolve program counter to file and nearest symbol (if possible) */
-		Dl_info dli;
-		if (dladdr((void *)pc, &dli) != 0) {
-			*wp->bufptr += seprintf(*wp->bufptr, wp->last, " [%02i] %s(%s+0x%x) [0x%x]\n",
-					wp->counter, dli.dli_fname, dli.dli_sname, (int)((byte *)pc - (byte *)dli.dli_saddr), (uint)pc);
-		} else {
-			*wp->bufptr += seprintf(*wp->bufptr, wp->last, " [%02i] [0x%x]\n", wp->counter, (uint)pc);
-		}
-		wp->counter++;
-
-		return 0;
+		return this->LogGdbInfo(buffer, last);
 	}
-#endif
 
 	/**
 	 * Show registers if possible
-	 *
-	 * Also log GDB information if available
 	 */
 	char *LogRegisters(char *buffer, const char *last) const override
 	{
-		buffer = LogGdbInfo(buffer, last);
-
 #ifdef WITH_UCONTEXT
 		ucontext_t *ucontext = static_cast<ucontext_t *>(context);
 #if defined(__x86_64__)
@@ -378,7 +383,7 @@ class CrashLogUnix : public CrashLog {
 			" rsi: %#16llx rdi: %#16llx rbp: %#16llx rsp: %#16llx\n"
 			" r8:  %#16llx r9:  %#16llx r10: %#16llx r11: %#16llx\n"
 			" r12: %#16llx r13: %#16llx r14: %#16llx r15: %#16llx\n"
-			" rip: %#16llx eflags: %#8llx\n\n",
+			" rip: %#16llx eflags: %#8llx, err: %#llx\n\n",
 			gregs[REG_RAX],
 			gregs[REG_RBX],
 			gregs[REG_RCX],
@@ -396,7 +401,8 @@ class CrashLogUnix : public CrashLog {
 			gregs[REG_R14],
 			gregs[REG_R15],
 			gregs[REG_RIP],
-			gregs[REG_EFL]
+			gregs[REG_EFL],
+			gregs[REG_ERR]
 		);
 #elif defined(__i386)
 		const gregset_t &gregs = ucontext->uc_mcontext.gregs;
@@ -404,7 +410,7 @@ class CrashLogUnix : public CrashLog {
 			"Registers:\n"
 			" eax: %#8x ebx: %#8x ecx: %#8x edx: %#8x\n"
 			" esi: %#8x edi: %#8x ebp: %#8x esp: %#8x\n"
-			" eip: %#8x eflags: %#8x\n\n",
+			" eip: %#8x eflags: %#8x, err: %#x\n\n",
 			gregs[REG_EAX],
 			gregs[REG_EBX],
 			gregs[REG_ECX],
@@ -414,7 +420,8 @@ class CrashLogUnix : public CrashLog {
 			gregs[REG_EBP],
 			gregs[REG_ESP],
 			gregs[REG_EIP],
-			gregs[REG_EFL]
+			gregs[REG_EFL],
+			gregs[REG_ERR]
 		);
 #endif
 #endif
@@ -490,8 +497,6 @@ class CrashLogUnix : public CrashLog {
 	 * backtrace() is prone to crashing if the stack is invalid.
 	 * Also these functions freely use malloc which is not technically OK in a signal handler, as
 	 * malloc is not re-entrant.
-	 * For that reason, set up another SIGSEGV handler to handle the case where we trigger a SIGSEGV
-	 * during the course of getting the backtrace.
 	 *
 	 * If libdl is present, try to use that to get the section file name and possibly the symbol
 	 * name/address instead of using the string from backtrace_symbols().
@@ -500,32 +505,12 @@ class CrashLogUnix : public CrashLog {
 	 * and knows about more symbols than libdl does.
 	 * If demangling support is available, try to demangle whatever symbol name we got back.
 	 * If we could find a symbol address from libdl or libbfd, show the offset from that to the frame address.
-	 *
-	 * Note that GCC complains about 'buffer' being clobbered by the longjmp.
-	 * This is not an issue as we save/restore it explicitly, so silence the warning.
 	 */
 	char *LogStacktrace(char *buffer, const char *last) const override
 	{
 		buffer += seprintf(buffer, last, "Stacktrace:\n");
 
 #if defined(__GLIBC__)
-		logStacktraceSavedBuffer = buffer;
-
-		if (setjmp(logStacktraceJmpBuf) != 0) {
-			buffer = logStacktraceSavedBuffer;
-			buffer += seprintf(buffer, last, "\nSomething went seriously wrong when attempting to decode the stacktrace (SIGSEGV in signal handler)\n");
-			buffer += seprintf(buffer, last, "This is probably due to either: a crash caused by an attempt to call an invalid function\n");
-			buffer += seprintf(buffer, last, "pointer, some form of stack corruption, or an attempt was made to call malloc recursively.\n\n");
-			return buffer;
-		}
-
-		signal(SIGSEGV, LogStacktraceSigSegvHandler);
-		sigset_t sigs;
-		sigset_t oldsigs;
-		sigemptyset(&sigs);
-		sigaddset(&sigs, SIGSEGV);
-		sigprocmask(SIG_UNBLOCK, &sigs, &oldsigs);
-
 		void *trace[64];
 		int trace_size = backtrace(trace, lengthof(trace));
 
@@ -536,6 +521,9 @@ class CrashLogUnix : public CrashLog {
 #endif /* WITH_BFD */
 
 		for (int i = 0; i < trace_size; i++) {
+			auto guard = scope_guard([&]() {
+				this->CrashLogFaultSectionCheckpoint(buffer);
+			});
 #if defined(WITH_DL)
 			Dl_info info;
 #if defined(WITH_DL2)
@@ -571,6 +559,7 @@ class CrashLogUnix : public CrashLog {
 				bool result = ExecReadStdout("addr2line", const_cast<char* const*>(args), buffer, last);
 				if (result && strstr(buffer_start, "??") == nullptr) {
 					while (buffer[-1] == '\n' && buffer[-2] == '\n') buffer--;
+					*buffer = 0;
 					continue;
 				}
 				buffer = saved_buffer;
@@ -637,57 +626,99 @@ class CrashLogUnix : public CrashLog {
 		}
 		free(messages);
 
-		signal(SIGSEGV, SIG_DFL);
-		sigprocmask(SIG_SETMASK, &oldsigs, nullptr);
-
 /* end of __GLIBC__ */
-#elif defined(SUNOS)
-		ucontext_t uc;
-		if (getcontext(&uc) != 0) {
-			buffer += seprintf(buffer, last, " getcontext() failed\n\n");
-			return buffer;
-		}
-
-		StackWalkerParams wp = { &buffer, last, 0 };
-		walkcontext(&uc, &CrashLogUnix::SunOSStackWalker, &wp);
-
-/* end of SUNOS */
 #else
 		buffer += seprintf(buffer, last, " Not supported.\n");
 #endif
 		return buffer + seprintf(buffer, last, "\n");
 	}
 
-#if defined(USE_SCOPE_INFO) && defined(__GLIBC__)
-	/**
-	 * This is a wrapper around the generic LogScopeInfo function which sets
-	 * up a signal handler to catch any SIGSEGVs which may occur due to invalid data
-	 */
-	/* virtual */ char *LogScopeInfo(char *buffer, const char *last) const override
+#if defined(__GLIBC__) && defined(WITH_SIGACTION)
+	/* virtual */ void StartCrashLogFaultHandler() override
 	{
-		logStacktraceSavedBuffer = buffer;
+		internal_fault_saved_buffer = nullptr;
 
-		if (setjmp(logStacktraceJmpBuf) != 0) {
-			buffer = logStacktraceSavedBuffer;
-			buffer += seprintf(buffer, last, "\nSomething went seriously wrong when attempting to dump the scope info (SIGSEGV in signal handler).\n");
+		sigset_t sigs;
+		sigemptyset(&sigs);
+		for (int signum : _signals_to_handle) {
+			sigaddset(&sigs, signum);
+		}
+
+		struct sigaction sa;
+		memset(&sa, 0, sizeof(sa));
+		sa.sa_flags = SA_RESTART;
+		sa.sa_handler = InternalFaultSigHandler;
+		sa.sa_mask = sigs;
+
+		for (int signum : _signals_to_handle) {
+			sigaction(signum, &sa, nullptr);
+		}
+		sigprocmask(SIG_UNBLOCK, &sigs, &internal_fault_old_sig_proc_mask);
+	}
+
+	/* virtual */ void StopCrashLogFaultHandler() override
+	{
+		internal_fault_saved_buffer = nullptr;
+
+		for (int signum : _signals_to_handle) {
+			signal(signum, SIG_DFL);
+		}
+		sigprocmask(SIG_SETMASK, &internal_fault_old_sig_proc_mask, nullptr);
+	}
+
+	/**
+	 * Set up further signal handlers to handle the case where we trigger another fault signal
+	 * during the course of calling the given log section writer.
+	 *
+	 * If a signal does occur, restore the buffer pointer to either the original value, or
+	 * the value provided in any later checkpoint.
+	 * Insert a message describing the problem and give up on the section.
+	 *
+	 * Note that GCC complains about 'buffer' being clobbered by the longjmp.
+	 * This is not an issue as we save/restore it explicitly, so silence the warning.
+	 */
+	/* virtual */ char *TryCrashLogFaultSection(char *buffer, const char *last, const char *section_name, CrashLogSectionWriter writer) override
+	{
+		this->FlushCrashLogBuffer();
+		internal_fault_saved_buffer = buffer;
+
+		int signum = setjmp(internal_fault_jmp_buf);
+		if (signum != 0) {
+			if (internal_fault_saved_buffer == nullptr) {
+				/* if we get here, things are unrecoverable */
+				_exit(43);
+			}
+
+			buffer = internal_fault_saved_buffer;
+			internal_fault_saved_buffer = nullptr;
+
+			buffer += seprintf(buffer, last, "\nSomething went seriously wrong when attempting to fill the '%s' section of the crash log: signal: %s (%d).\n", section_name, strsignal(signum), signum);
 			buffer += seprintf(buffer, last, "This is probably due to an invalid pointer or other corrupt data.\n\n");
+
+			sigset_t sigs;
+			sigemptyset(&sigs);
+			for (int signum : _signals_to_handle) {
+				sigaddset(&sigs, signum);
+			}
+			sigprocmask(SIG_UNBLOCK, &sigs, nullptr);
+
 			return buffer;
 		}
 
-		signal(SIGSEGV, LogStacktraceSigSegvHandler);
-		sigset_t sigs;
-		sigset_t oldsigs;
-		sigemptyset(&sigs);
-		sigaddset(&sigs, SIGSEGV);
-		sigprocmask(SIG_UNBLOCK, &sigs, &oldsigs);
-
-		buffer = this->CrashLog::LogScopeInfo(buffer, last);
-
-		signal(SIGSEGV, SIG_DFL);
-		sigprocmask(SIG_SETMASK, &oldsigs, nullptr);
+		buffer = writer(this, buffer, last);
+		internal_fault_saved_buffer = nullptr;
 		return buffer;
 	}
-#endif
+
+	/* virtual */ void CrashLogFaultSectionCheckpoint(char *buffer) const override
+	{
+		if (internal_fault_saved_buffer != nullptr && buffer > internal_fault_saved_buffer) {
+			internal_fault_saved_buffer = buffer;
+		}
+
+		const_cast<CrashLogUnix *>(this)->FlushCrashLogBuffer();
+	}
+#endif /* __GLIBC__ && WITH_SIGACTION */
 
 public:
 	struct DesyncTag {};
@@ -730,9 +761,6 @@ public:
 	}
 };
 
-/** The signals we want our crash handler to handle. */
-static const int _signals_to_handle[] = { SIGSEGV, SIGABRT, SIGFPE, SIGBUS, SIGILL, SIGQUIT };
-
 /**
  * Entry point for the crash handler.
  * @note Not static so it shows up in the backtrace.
@@ -745,8 +773,8 @@ static void CDECL HandleCrash(int signum)
 #endif
 {
 	/* Disable all handling of signals by us, so we don't go into infinite loops. */
-	for (const int *i = _signals_to_handle; i != endof(_signals_to_handle); i++) {
-		signal(*i, SIG_DFL);
+	for (int signum : _signals_to_handle) {
+		signal(signum, SIG_DFL);
 	}
 
 	const char *abort_reason = CrashLog::GetAbortCrashlogReason();
@@ -775,14 +803,14 @@ static void CDECL HandleCrash(int signum)
 /* static */ void CrashLog::InitialiseCrashLog()
 {
 #ifdef WITH_SIGALTSTACK
-	const size_t stack_size = max<size_t>(SIGSTKSZ, 512*1024);
+	const size_t stack_size = std::max<size_t>(SIGSTKSZ, 512*1024);
 	stack_t ss;
-	ss.ss_sp = CallocT<byte>(stack_size);
+	ss.ss_sp = mmap(nullptr, stack_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	ss.ss_size = stack_size;
 	ss.ss_flags = 0;
 	sigaltstack(&ss, nullptr);
 #endif
-	for (const int *i = _signals_to_handle; i != endof(_signals_to_handle); i++) {
+	for (int signum : _signals_to_handle) {
 #ifdef WITH_SIGACTION
 		struct sigaction sa;
 		memset(&sa, 0, sizeof(sa));
@@ -792,9 +820,9 @@ static void CDECL HandleCrash(int signum)
 #endif
 		sigemptyset(&sa.sa_mask);
 		sa.sa_sigaction = HandleCrash;
-		sigaction(*i, &sa, nullptr);
+		sigaction(signum, &sa, nullptr);
 #else
-		signal(*i, HandleCrash);
+		signal(signum, HandleCrash);
 #endif
 	}
 }

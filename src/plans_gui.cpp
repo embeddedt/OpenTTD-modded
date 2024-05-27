@@ -49,7 +49,7 @@ static const NWidgetPart _nested_plans_widgets[] = {
 	NWidget(WWT_PANEL, COLOUR_GREY),
 		NWidget(NWID_HORIZONTAL),
 			NWidget(NWID_HORIZONTAL, NC_EQUALSIZE),
-				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_PLN_NEW), SetResize(1, 0), SetFill(1, 0), SetDataTip(STR_PLANS_NEW_PLAN, STR_NULL),
+				NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_PLN_NEW), SetResize(1, 0), SetFill(1, 0), SetDataTip(STR_PLANS_NEW_PLAN, STR_PLANS_NEW_PLAN_TOOLTIP),
 				NWidget(WWT_TEXTBTN_2, COLOUR_GREY, WID_PLN_ADD_LINES), SetResize(1, 0), SetFill(1, 0), SetDataTip(STR_PLANS_ADD_LINES, STR_PLANS_ADDING_LINES),
 				NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_PLN_VISIBILITY), SetResize(1, 0), SetFill(1, 0), SetDataTip(STR_PLANS_VISIBILITY_PUBLIC, STR_PLANS_VISIBILITY_TOOLTIP),
 				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_PLN_COLOUR), SetResize(1, 0), SetFill(1, 0), SetDataTip(STR_JUST_STRING, STR_PLANS_COLOUR_TOOLTIP),
@@ -98,13 +98,14 @@ struct PlansWindow : Window {
 		RebuildList();
 	}
 
-	~PlansWindow()
+	void Close() override
 	{
 		this->list.clear();
 		if (_current_plan) {
 			_current_plan->SetFocus(false);
 			_current_plan = nullptr;
 		}
+		this->Window::Close();
 	}
 
 	virtual void OnClick(Point pt, int widget, int click_count) override
@@ -412,6 +413,7 @@ struct PlansWindow : Window {
 	void RebuildList()
 	{
 		int old_focused_plan_id = this->selected == INT_MAX ? INT_MAX : this->list[this->selected].plan_id;
+		this->selected = INT_MAX;
 
 		int sbcnt = 0;
 		this->list.clear();

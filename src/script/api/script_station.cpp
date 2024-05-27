@@ -58,7 +58,10 @@ template<bool Tfrom, bool Tvia>
 		return -1;
 	}
 
-	const StationCargoList &cargo_list = ::Station::Get(station_id)->goods[cargo_id].cargo;
+	const GoodsEntry &ge = ::Station::Get(station_id)->goods[cargo_id];
+	if (ge.data == nullptr) return 0;
+
+	const StationCargoList &cargo_list = ge.data->cargo;
 	if (!Tfrom && !Tvia) return cargo_list.TotalCount();
 
 	uint16 cargo_count = 0;
@@ -68,7 +71,7 @@ template<bool Tfrom, bool Tvia>
 						StationCargoList::ConstIterator(cargo_list.Packets()->end()));
 	for (StationCargoList::ConstIterator it = range.first; it != range.second; it++) {
 		const CargoPacket *cp = *it;
-		if (!Tfrom || cp->SourceStation() == from_station_id) cargo_count += cp->Count();
+		if (!Tfrom || cp->GetFirstStation() == from_station_id) cargo_count += cp->Count();
 	}
 
 	return cargo_count;
@@ -106,7 +109,10 @@ template<bool Tfrom, bool Tvia>
 		return -1;
 	}
 
-	const FlowStatMap &flows = ::Station::Get(station_id)->goods[cargo_id].flows;
+	const GoodsEntry &ge = ::Station::Get(station_id)->goods[cargo_id];
+	if (ge.data == nullptr) return 0;
+
+	const FlowStatMap &flows = ge.data->flows;
 	if (Tfrom) {
 		return Tvia ? flows.GetFlowFromVia(from_station_id, via_station_id) :
 					  flows.GetFlowFrom(from_station_id);

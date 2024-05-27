@@ -166,7 +166,7 @@ public:
 		UpdateButtonState();
 	}
 
-	~TemplateCreateWindow()
+	void Close() override
 	{
 		if (virtual_train != nullptr) {
 			DoCommandP(0, virtual_train->index, 0, CMD_DELETE_VIRTUAL_TRAIN);
@@ -175,8 +175,9 @@ public:
 
 		/* more cleanup */
 		*create_window_open = false;
-		DeleteWindowById(WC_BUILD_VIRTUAL_TRAIN, this->window_number);
+		CloseWindowById(WC_BUILD_VIRTUAL_TRAIN, this->window_number);
 		InvalidateWindowClassesData(WC_TEMPLATEGUI_MAIN);
+		this->Window::Close();
 	}
 
 	void SetVirtualTrain(Train* const train)
@@ -208,7 +209,7 @@ public:
 
 		if (this->template_index != INVALID_VEHICLE) {
 			if (TemplateVehicle::GetIfValid(this->template_index) == nullptr) {
-				delete this;
+				this->Close();
 				return;
 			}
 		}
@@ -244,11 +245,11 @@ public:
 				} else if (this->template_index != INVALID_VEHICLE) {
 					DoCommandP(0, this->template_index, 0, CMD_DELETE_TEMPLATE_VEHICLE);
 				}
-				delete this;
+				this->Close();
 				break;
 			}
 			case TCW_CANCEL: {
-				delete this;
+				this->Close();
 				break;
 			}
 			case TCW_REFIT: {
@@ -293,7 +294,7 @@ public:
 					DrawTrainImage(virtual_train, r.Shrink(TRAIN_FRONT_SPACE, 2, 25, 0), this->sel, EIT_IN_DEPOT, this->hscroll->GetPosition(), this->vehicle_over);
 					SetDParam(0, CeilDiv(virtual_train->gcache.cached_total_length * 10, TILE_SIZE));
 					SetDParam(1, 1);
-					DrawString(r.left, r.right, r.top, STR_TINY_BLACK_DECIMAL, TC_BLACK, SA_RIGHT);
+					DrawString(r.left, r.right, r.top, STR_JUST_DECIMAL, TC_BLACK, SA_RIGHT, false, FS_SMALL);
 				}
 				break;
 			}
@@ -306,6 +307,8 @@ public:
 					AutoRestoreBackup dpi_backup(_cur_dpi, &tmp_dpi);
 
 					int y = ScaleGUITrad(4) - this->vscroll->GetPosition();
+					int left = ScaleGUITrad(4);
+					int right = (r.right - r.left) - ScaleGUITrad(4);
 					bool buildable = true;
 					Money buy_cost = 0;
 					RailTypes types = static_cast<RailTypes>(UINT64_MAX);
@@ -319,10 +322,10 @@ public:
 						buy_cost += e->GetCost();
 					}
 					if (!buildable) {
-						DrawString(8, r.right, y, STR_TMPL_WARNING_VEH_UNAVAILABLE);
+						DrawString(left, right, y, STR_TMPL_WARNING_VEH_UNAVAILABLE);
 						y += FONT_HEIGHT_NORMAL;
 					} else if (types == RAILTYPES_NONE) {
-						DrawString(8, r.right, y, STR_TMPL_WARNING_VEH_NO_COMPATIBLE_RAIL_TYPE);
+						DrawString(left, right, y, STR_TMPL_WARNING_VEH_NO_COMPATIBLE_RAIL_TYPE);
 						y += FONT_HEIGHT_NORMAL;
 					}
 
@@ -330,7 +333,7 @@ public:
 					SetDParam(1, buy_cost);
 					SetDParam(2, STR_TMPL_TEMPLATE_OVR_RUNNING_COST);
 					SetDParam(3, this->virtual_train->GetDisplayRunningCost());
-					DrawString(8, r.right, y, STR_TMPL_TEMPLATE_OVR_MULTIPLE);
+					DrawString(left, right, y, STR_TMPL_TEMPLATE_OVR_MULTIPLE);
 					y += FONT_HEIGHT_NORMAL;
 
 					/* Draw vehicle performance info */
@@ -340,8 +343,8 @@ public:
 					SetDParam(2, this->virtual_train->GetDisplayMaxSpeed());
 					SetDParam(1, gcache->cached_power);
 					SetDParam(0, gcache->cached_weight);
-					SetDParam(3, gcache->cached_max_te / 1000);
-					DrawString(8, r.right, y, original_acceleration ? STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED : STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
+					SetDParam(3, gcache->cached_max_te);
+					DrawString(left, right, y, original_acceleration ? STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED : STR_VEHICLE_INFO_WEIGHT_POWER_MAX_SPEED_MAX_TE);
 					uint32 full_cargo_weight = 0;
 					for (Train *train = this->virtual_train; train != nullptr; train = train->Next()) {
 						full_cargo_weight += train->GetCargoWeight(train->cargo_cap);
@@ -355,19 +358,19 @@ public:
 							SetDParam(2, STR_VEHICLE_INFO_POWER_WEIGHT_RATIO);
 							SetDParam(3, (100 * this->virtual_train->gcache.cached_power) / std::max<uint>(1, full_weight));
 							SetDParam(4, this->virtual_train->GetAccelerationType() == 2 ? STR_EMPTY : STR_VEHICLE_INFO_TE_WEIGHT_RATIO);
-							SetDParam(5, (this->virtual_train->gcache.cached_max_te / 10) / std::max<uint>(1, full_weight));
+							SetDParam(5, (100 * this->virtual_train->gcache.cached_max_te) / std::max<uint>(1, full_weight));
 						} else {
 							SetDParam(1, STR_EMPTY);
 						}
-						DrawString(8, r.right, y, STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS);
+						DrawString(left, right, y, STR_VEHICLE_INFO_FULL_WEIGHT_WITH_RATIOS);
 					}
 					if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) {
 						y += FONT_HEIGHT_NORMAL;
 						SetDParam(0, GetTrainEstimatedMaxAchievableSpeed(this->virtual_train, gcache->cached_weight + full_cargo_weight, this->virtual_train->GetDisplayMaxSpeed()));
-						DrawString(8, r.right, y, STR_VEHICLE_INFO_MAX_SPEED_LOADED);
+						DrawString(left, right, y, STR_VEHICLE_INFO_MAX_SPEED_LOADED);
 					}
 					/* Draw cargo summary */
-					CargoArray cargo_caps;
+					CargoArray cargo_caps{};
 					for (const Train *tmp = this->virtual_train; tmp != nullptr; tmp = tmp->Next()) {
 						cargo_caps[tmp->cargo_type] += tmp->cargo_cap;
 					}
@@ -376,7 +379,7 @@ public:
 						if (cargo_caps[i] > 0) {
 							SetDParam(0, i);
 							SetDParam(1, cargo_caps[i]);
-							DrawString(8, r.right, y, STR_TMPL_CARGO_SUMMARY, TC_LIGHT_BLUE, SA_LEFT);
+							DrawString(left, right, y, STR_TMPL_CARGO_SUMMARY, TC_LIGHT_BLUE, SA_LEFT);
 							y += FONT_HEIGHT_NORMAL;
 						}
 					}
@@ -400,7 +403,7 @@ public:
 
 		if (v == nullptr || mode != MODE_DRAG_VEHICLE) return false;
 
-		CargoArray capacity, loaded;
+		CargoArray capacity{}, loaded{};
 
 		/* Display info for single (articulated) vehicle, or for whole chain starting with selected vehicle */
 		bool whole_chain = _ctrl_pressed;
@@ -554,7 +557,7 @@ public:
 		uint min_width = 32;
 		uint width = 0;
 		uint height = ScaleGUITrad(8) + (3 * FONT_HEIGHT_NORMAL);
-		CargoArray cargo_caps;
+		CargoArray cargo_caps{};
 
 		if (virtual_train != nullptr) {
 			bool buildable = true;

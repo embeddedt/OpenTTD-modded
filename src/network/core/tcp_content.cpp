@@ -70,8 +70,8 @@ const char *ContentInfo::GetTextfile(TextfileType type) const
 			tmp = Game::GetScannerLibrary()->FindMainScript(this, true);
 			break;
 		case CONTENT_TYPE_NEWGRF: {
-			const GRFConfig *gc = FindGRFConfig(BSWAP32(this->unique_id), FGCM_EXACT, this->md5sum);
-			tmp = gc != nullptr ? gc->filename : nullptr;
+			const GRFConfig *gc = FindGRFConfig(BSWAP32(this->unique_id), FGCM_EXACT, &this->md5sum);
+			tmp = gc != nullptr ? gc->filename.c_str() : nullptr;
 			break;
 		}
 		case CONTENT_TYPE_BASE_GRAPHICS:

@@ -17,13 +17,13 @@
 #include "../script_instance.hpp"
 #include "script_log.hpp"
 #include "../../table/control_codes.h"
-#include "../../3rdparty/fmt/format.h"
+#include "../../core/format.hpp"
 
 #include "table/strings.h"
 
 #include "../../safeguards.h"
 
-RawText::RawText(const char *text) : text(text)
+RawText::RawText(const std::string &text) : text(text)
 {
 }
 
@@ -141,10 +141,11 @@ SQInteger ScriptText::_set(HSQUIRRELVM vm)
 	if (sq_gettype(vm, 2) == OT_STRING) {
 		const SQChar *key_string;
 		sq_getstring(vm, 2, &key_string);
-		StrMakeValidInPlace(const_cast<char *>(key_string));
 
-		if (strncmp(key_string, "param_", 6) != 0 || strlen(key_string) > 8) return SQ_ERROR;
-		k = atoi(key_string + 6);
+		std::string str = StrMakeValid(key_string);
+		if (!StrStartsWith(str, "param_") || str.size() > 8) return SQ_ERROR;
+
+		k = stoi(str.substr(6));
 	} else if (sq_gettype(vm, 2) == OT_INTEGER) {
 		SQInteger key;
 		sq_getinteger(vm, 2, &key);
@@ -174,7 +175,7 @@ const std::string ScriptText::GetEncodedText()
 void ScriptText::_TextParamError(std::string msg)
 {
 	if (this->GetActiveInstance()->IsTextParamMismatchAllowed()) {
-		ScriptLog::LogOnce(ScriptLog::LOG_ERROR, std::move(msg));
+		ScriptLog::LogOnce(ScriptLogTypes::LOG_ERROR, std::move(msg));
 	} else {
 		throw Script_FatalError(std::move(msg));
 	}
@@ -328,10 +329,8 @@ char *ScriptText::_GetEncodedText(char *p, char *lastofp, int &param_count, Stri
 
 const std::string Text::GetDecodedText()
 {
-	const std::string &encoded_text = this->GetEncodedText();
-
 	static char buf[1024];
-	::SetDParamStr(0, encoded_text);
+	::SetDParamStr(0, this->GetEncodedText());
 	::GetString(buf, STR_JUST_RAW_STRING, lastof(buf));
 	return buf;
 }

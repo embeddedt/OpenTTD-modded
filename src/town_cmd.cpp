@@ -53,6 +53,7 @@
 #include "zoom_func.h"
 #include "zoning.h"
 #include "scope.h"
+#include "3rdparty/cpp-btree/btree_map.h"
 
 #include "table/strings.h"
 #include "table/town_land.h"
@@ -112,7 +113,7 @@ Town::~Town()
 
 	/* Delete town authority window
 	 * and remove from list of sorted towns */
-	DeleteWindowById(WC_TOWN_VIEW, this->index);
+	CloseWindowById(WC_TOWN_VIEW, this->index);
 
 #ifdef WITH_ASSERT
 	/* Check no industry is related to us. */
@@ -149,9 +150,9 @@ Town::~Town()
 	/* Clear the persistent storage list. */
 	this->psa_list.clear();
 
-	DeleteSubsidyWith(ST_TOWN, this->index);
+	DeleteSubsidyWith(SourceType::Town, this->index);
 	DeleteNewGRFInspectWindow(GSF_FAKE_TOWNS, this->index);
-	CargoPacket::InvalidateAllFrom(ST_TOWN, this->index);
+	CargoPacket::InvalidateAllFrom(SourceType::Town, this->index);
 	MarkWholeScreenDirty();
 }
 
@@ -221,12 +222,31 @@ void Town::UpdateLabel()
 {
 	if (!(_game_mode == GM_EDITOR) && (_local_company < MAX_COMPANIES)) {
 		int r = this->ratings[_local_company];
-		this->town_label = 0;                         // Appalling and Very Poor
-		if (r > RATING_VERYPOOR)  this->town_label++; // Poor and Mediocre
-		if (r > RATING_MEDIOCRE)  this->town_label++; // Good
-		if (r > RATING_GOOD)      this->town_label++; // Very Good
-		if (r > RATING_VERYGOOD)  this->town_label++; // Excellent and Outstanding
+		int town_rating = 0;                     // Appalling and Very Poor
+		if (r > RATING_VERYPOOR)  town_rating++; // Poor and Mediocre
+		if (r > RATING_MEDIOCRE)  town_rating++; // Good
+		if (r > RATING_GOOD)      town_rating++; // Very Good
+		if (r > RATING_VERYGOOD)  town_rating++; // Excellent and Outstanding
+
+		static const uint8 tcs[] = { TC_RED, TC_ORANGE, TC_YELLOW, TC_WHITE, TC_GREEN };
+		this->town_label_rating = tcs[town_rating];
 	}
+}
+
+/**
+ * Get the second dparam value for town viewport labels
+ */
+uint64 Town::LabelParam2() const
+{
+	uint64 value = this->cache.population;
+	if (!(_game_mode == GM_EDITOR) && (_local_company < MAX_COMPANIES)) {
+		SB(value, 32, 8, this->town_label_rating);
+	} else {
+		SB(value, 32, 8, TC_WHITE);
+	}
+	if (_settings_client.gui.population_in_label) SetBit(value, 40);
+	if (_settings_client.gui.city_in_label && this->larger_town) SetBit(value, 41);
+	return value;
 }
 
 void Town::FillCachedName() const
@@ -373,11 +393,11 @@ void DrawHouseImage(HouseID house_id, int left, int top, int right, int bottom)
 
 	/* sprites are relative to the topmost pixel of the ground tile */
 	uint x = (right - left + 1) / 2;
-	uint y = bottom - top + 1 - TILE_PIXELS;
-	if (hs->building_flags & TILE_SIZE_1x2) x -= TILE_PIXELS / 2;
-	if (hs->building_flags & TILE_SIZE_2x1) x += TILE_PIXELS / 2;
-	if (hs->building_flags & BUILDING_HAS_2_TILES) y -= TILE_PIXELS / 2;
-	if (hs->building_flags & BUILDING_HAS_4_TILES) y -= TILE_PIXELS / 2;
+	uint y = bottom - top + 1 - ScaleSpriteTrad(TILE_PIXELS);
+	if (hs->building_flags & TILE_SIZE_1x2) x -= ScaleSpriteTrad(TILE_PIXELS / 2);
+	if (hs->building_flags & TILE_SIZE_2x1) x += ScaleSpriteTrad(TILE_PIXELS / 2);
+	if (hs->building_flags & BUILDING_HAS_2_TILES) y -= ScaleSpriteTrad(TILE_PIXELS / 2);
+	if (hs->building_flags & BUILDING_HAS_4_TILES) y -= ScaleSpriteTrad(TILE_PIXELS / 2);
 
 	bool new_house = false;
 	if (house_id >= NEW_HOUSE_OFFSET) {
@@ -394,7 +414,7 @@ void DrawHouseImage(HouseID house_id, int left, int top, int right, int bottom)
 	uint num_row = (hs->building_flags & BUILDING_2_TILES_X) ? 2 : 1;
 	uint num_col = (hs->building_flags & BUILDING_2_TILES_Y) ? 2 : 1;
 
-	for (bool ground = true; ; ground = !ground) {
+	for (bool ground : { true, false }) {
 		HouseID hid = house_id;
 		for (uint row = 0; row < num_row; row++) {
 			for (uint col = 0; col < num_col; col++) {
@@ -409,7 +429,6 @@ void DrawHouseImage(HouseID house_id, int left, int top, int right, int bottom)
 				hid++;
 			}
 		}
-		if (!ground) break;
 	}
 }
 
@@ -521,8 +540,8 @@ void Town::UpdateVirtCoord()
 	if (_viewport_sign_kdtree_valid && this->cache.sign.kdtree_valid) _viewport_sign_kdtree.Remove(ViewportSignKdtreeItem::MakeTown(this->index));
 
 	SetDParam(0, this->index);
-	SetDParam(1, this->cache.population);
-	this->cache.sign.UpdatePosition(HasBit(_display_opt, DO_SHOW_TOWN_NAMES) ? ZOOM_LVL_OUT_128X : ZOOM_LVL_END, pt.x, pt.y - 24 * ZOOM_LVL_BASE, this->Label(), STR_VIEWPORT_TOWN_TINY_WHITE);
+	SetDParam(1, this->LabelParam2());
+	this->cache.sign.UpdatePosition(HasBit(_display_opt, DO_SHOW_TOWN_NAMES) ? ZOOM_LVL_OUT_128X : ZOOM_LVL_END, pt.x, pt.y - 24 * ZOOM_LVL_BASE, STR_VIEWPORT_TOWN_LABEL, STR_VIEWPORT_TOWN_TINY_WHITE);
 
 	if (_viewport_sign_kdtree_valid) _viewport_sign_kdtree.Insert(ViewportSignKdtreeItem::MakeTown(this->index));
 
@@ -642,9 +661,9 @@ static void MakeTownHouseBigger(TileIndex tile)
  * @param stations available stations for this house
  * @param economy_adjust true if amount should be reduced during recession
  */
-static void TownGenerateCargo (Town *t, CargoID ct, uint amount, StationFinder &stations, bool economy_adjust)
+static void TownGenerateCargo(Town *t, CargoID ct, uint amount, StationFinder &stations, bool economy_adjust)
 {
-	// when the economy flunctuates, everyone wants to stay at home
+	/* When the economy flunctuates, everyone wants to stay at home */
 	if (economy_adjust && EconomyIsInRecession()) {
 		amount = (amount + 1) >> 1;
 	}
@@ -653,22 +672,8 @@ static void TownGenerateCargo (Town *t, CargoID ct, uint amount, StationFinder &
 
 	if (amount == 0) return;
 
-	// calculate for town stats
-
-	switch (ct) {
-		case CT_PASSENGERS:
-		case CT_MAIL:
-			t->supplied[ct].new_max += amount;
-			t->supplied[ct].new_act += MoveGoodsToStation(ct, amount, ST_TOWN, t->index, stations.GetStations());
-			break;
-
-		default: {
-			const CargoSpec *cs = CargoSpec::Get(ct);
-			t->supplied[cs->Index()].new_max += amount;
-			t->supplied[cs->Index()].new_act += MoveGoodsToStation(ct, amount, ST_TOWN, t->index, stations.GetStations());
-			break;
-		}
-	}
+	t->supplied[ct].new_max += amount;
+	t->supplied[ct].new_act += MoveGoodsToStation(ct, amount, SourceType::Town, t->index, stations.GetStations());
 }
 
 /**
@@ -928,7 +933,7 @@ static void GetTileDesc_Town(TileIndex tile, TileDesc *td)
 	td->str = GetHouseName(house, tile);
 
 	if (!IsHouseCompleted(tile)) {
-		SetDParamX(td->dparam, 0, td->str);
+		td->dparam[0] = td->str;
 		td->str = STR_LAI_TOWN_INDUSTRY_DESCRIPTION_UNDER_CONSTRUCTION;
 	}
 
@@ -1543,6 +1548,20 @@ static inline bool RoadTypesAllowHouseHere(TileIndex t)
 	return !allow;
 }
 
+/** Test if town can grow road onto a specific tile.
+ * @param town Town that is building.
+ * @param tile Tile to build upon.
+ * @return true iff the tile's road type don't prevent extending the road.
+ */
+static bool TownCanGrowRoad(const Town *town, TileIndex tile)
+{
+	if (!IsTileType(tile, MP_ROAD)) return true;
+
+	/* Allow extending on roadtypes which can be built by town, or if the road type matches the type the town will build. */
+	RoadType rt = GetRoadTypeRoad(tile);
+	return HasBit(GetRoadTypeInfo(rt)->flags, ROTF_TOWN_BUILD) || GetTownRoadType() == rt;
+}
+
 /**
  * Grows the given town.
  * There are at the moment 3 possible way's for
@@ -1650,6 +1669,8 @@ static void GrowTownInTile(TileIndex *tile_ptr, RoadBits cur_rb, DiagDirection t
 		}
 
 	} else if (target_dir < DIAGDIR_END && !(cur_rb & DiagDirToRoadBits(ReverseDiagDir(target_dir)))) {
+		if (!TownCanGrowRoad(t1, tile)) return;
+
 		/* Continue building on a partial road.
 		 * Should be always OK, so we only generate
 		 * the fitting RoadBits */
@@ -1790,6 +1811,8 @@ static void GrowTownInTile(TileIndex *tile_ptr, RoadBits cur_rb, DiagDirection t
 			}
 			return;
 		}
+
+		if (!TownCanGrowRoad(t1, tile)) return;
 
 		_grow_town_result = GROWTH_SEARCH_STOPPED;
 	}
@@ -2554,6 +2577,11 @@ bool GenerateTowns(TownLayout layout)
 	TownNames town_names;
 
 	SetGeneratingWorldProgress(GWP_TOWN, total);
+
+	/* Pre-populate the town names list with the names of any towns already on the map */
+	for (const Town *town : Town::Iterate()) {
+		town_names.insert(town->GetCachedName());
+	}
 
 	/* First attempt will be made at creating the suggested number of towns.
 	 * Note that this is really a suggested value, not a required one.
@@ -3381,7 +3409,7 @@ CommandCost CmdExpandTown(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32
 	if (flags & DC_EXEC) {
 		/* The more houses, the faster we grow */
 		if (p2 == 0) {
-			uint amount = RandomRange(ClampToU16(t->cache.num_houses / 10)) + 3;
+			uint amount = RandomRange(ClampTo<uint16>(t->cache.num_houses / 10)) + 3;
 			t->cache.num_houses += amount;
 			UpdateTownRadius(t);
 
@@ -3671,6 +3699,7 @@ static CommandCost TownActionBuyRights(Town *t, DoCommandFlag flags)
 {
 	/* Check if it's allowed to buy the rights */
 	if (!_settings_game.economy.exclusive_rights) return CMD_ERROR;
+	if (t->exclusivity != INVALID_COMPANY) return CMD_ERROR;
 
 	if (flags & DC_EXEC) {
 		t->exclusive_counter = 12;
@@ -3722,6 +3751,10 @@ static CommandCost TownActionBribe(Town *t, DoCommandFlag flags)
 			}
 		} else {
 			ChangeTownRating(t, RATING_BRIBE_UP_STEP, RATING_BRIBE_MAXIMUM, DC_EXEC);
+			if (t->exclusivity != _current_company && t->exclusivity != INVALID_COMPANY) {
+				t->exclusivity = INVALID_COMPANY;
+				t->exclusive_counter = 0;
+			}
 		}
 	}
 	return CommandCost();
@@ -3766,7 +3799,7 @@ uint GetMaskOfTownActions(int *nump, CompanyID cid, const Town *t)
 			if (cur == TACT_BRIBE && (!_settings_game.economy.bribe || t->ratings[cid] >= RATING_BRIBE_MAXIMUM)) continue;
 
 			/* Is the company not able to buy exclusive rights ? */
-			if (cur == TACT_BUY_RIGHTS && !_settings_game.economy.exclusive_rights) continue;
+			if (cur == TACT_BUY_RIGHTS && (!_settings_game.economy.exclusive_rights || t->exclusive_counter != 0)) continue;
 
 			/* Is the company not able to fund buildings ? */
 			if (cur == TACT_FUND_BUILDINGS && !_settings_game.economy.fund_buildings) continue;
@@ -4205,7 +4238,7 @@ Town *ClosestTownFromTile(TileIndex tile, uint threshold)
 }
 
 static bool _town_rating_test = false; ///< If \c true, town rating is in test-mode.
-static SmallMap<const Town *, int> _town_test_ratings; ///< Map of towns to modified ratings, while in town rating test-mode.
+static btree::btree_map<const Town *, int> _town_test_ratings; ///< Map of towns to modified ratings, while in town rating test-mode.
 
 /**
  * Switch the town rating to test-mode, to allow commands to be tested without affecting current ratings.
@@ -4235,8 +4268,8 @@ void SetTownRatingTestMode(bool mode)
 static int GetRating(const Town *t)
 {
 	if (_town_rating_test) {
-		SmallMap<const Town *, int>::iterator it = _town_test_ratings.Find(t);
-		if (it != _town_test_ratings.End()) {
+		auto it = _town_test_ratings.find(t);
+		if (it != _town_test_ratings.end()) {
 			return it->second;
 		}
 	}
@@ -4424,8 +4457,10 @@ HouseSpec _house_specs[NUM_HOUSES];
 
 void ResetHouses()
 {
-	memset(&_house_specs, 0, sizeof(_house_specs));
-	memcpy(&_house_specs, &_original_house_specs, sizeof(_original_house_specs));
+	ResetHouseClassIDs();
+
+	auto insert = std::copy(std::begin(_original_house_specs), std::end(_original_house_specs), std::begin(_house_specs));
+	std::fill(insert, std::end(_house_specs), HouseSpec{});
 
 	/* Reset any overrides that have been set. */
 	_house_mngr.ResetOverride();

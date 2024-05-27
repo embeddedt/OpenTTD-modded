@@ -130,39 +130,39 @@ STR_QUANTITY_N_A                                                :nav informācij
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}PA
-STR_ABBREV_COAL                                                 :{TINY_FONT}OG
-STR_ABBREV_MAIL                                                 :{TINY_FONT}PT
-STR_ABBREV_OIL                                                  :{TINY_FONT}NF
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}LL
-STR_ABBREV_GOODS                                                :{TINY_FONT}PR
-STR_ABBREV_GRAIN                                                :{TINY_FONT}GR
-STR_ABBREV_WOOD                                                 :{TINY_FONT}KM
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}DZ
-STR_ABBREV_STEEL                                                :{TINY_FONT}TR
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}VL
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}VR
-STR_ABBREV_MAIZE                                                :{TINY_FONT}KU
-STR_ABBREV_FRUIT                                                :{TINY_FONT}AU
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}DM
-STR_ABBREV_FOOD                                                 :{TINY_FONT}PP
-STR_ABBREV_PAPER                                                :{TINY_FONT}PR
-STR_ABBREV_GOLD                                                 :{TINY_FONT}ZE
-STR_ABBREV_WATER                                                :{TINY_FONT}ŪD
-STR_ABBREV_WHEAT                                                :{TINY_FONT}KV
-STR_ABBREV_RUBBER                                               :{TINY_FONT}KČ
-STR_ABBREV_SUGAR                                                :{TINY_FONT}CU
-STR_ABBREV_TOYS                                                 :{TINY_FONT}RT
-STR_ABBREV_SWEETS                                               :{TINY_FONT}SA
-STR_ABBREV_COLA                                                 :{TINY_FONT}KO
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}CV
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}BB
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}CP
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}BT
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}PL
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}LM
-STR_ABBREV_NONE                                                 :{TINY_FONT}NAV
-STR_ABBREV_ALL                                                  :{TINY_FONT}VISI
+STR_ABBREV_PASSENGERS                                           :PA
+STR_ABBREV_COAL                                                 :OG
+STR_ABBREV_MAIL                                                 :PT
+STR_ABBREV_OIL                                                  :NF
+STR_ABBREV_LIVESTOCK                                            :LL
+STR_ABBREV_GOODS                                                :PR
+STR_ABBREV_GRAIN                                                :GR
+STR_ABBREV_WOOD                                                 :KM
+STR_ABBREV_IRON_ORE                                             :DZ
+STR_ABBREV_STEEL                                                :TR
+STR_ABBREV_VALUABLES                                            :VL
+STR_ABBREV_COPPER_ORE                                           :VR
+STR_ABBREV_MAIZE                                                :KU
+STR_ABBREV_FRUIT                                                :AU
+STR_ABBREV_DIAMONDS                                             :DM
+STR_ABBREV_FOOD                                                 :PP
+STR_ABBREV_PAPER                                                :PR
+STR_ABBREV_GOLD                                                 :ZE
+STR_ABBREV_WATER                                                :ŪD
+STR_ABBREV_WHEAT                                                :KV
+STR_ABBREV_RUBBER                                               :KČ
+STR_ABBREV_SUGAR                                                :CU
+STR_ABBREV_TOYS                                                 :RT
+STR_ABBREV_SWEETS                                               :SA
+STR_ABBREV_COLA                                                 :KO
+STR_ABBREV_CANDYFLOSS                                           :CV
+STR_ABBREV_BUBBLES                                              :BB
+STR_ABBREV_TOFFEE                                               :CP
+STR_ABBREV_BATTERIES                                            :BT
+STR_ABBREV_PLASTIC                                              :PL
+STR_ABBREV_FIZZY_DRINKS                                         :LM
+STR_ABBREV_NONE                                                 :NAV
+STR_ABBREV_ALL                                                  :VISI
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA}{NBSP}pasažier{P is i u}
@@ -192,15 +192,18 @@ STR_COLOUR_GREY                                                 :Pelēka
 STR_COLOUR_WHITE                                                :Balta
 STR_COLOUR_RANDOM                                               :Nejaušs
 
+###length 17
+
+
 # Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA}{NBSP}jūdzes stundā
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA}{NBSP}km/h
-STR_UNITS_VELOCITY_SI                                           :{COMMA}{NBSP}m/s
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL}{NBSP}jūdzes stundā
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL}{NBSP}km/h
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL}{NBSP}m/s
 STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}{NBSP}lauciņi/diena
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}{NBSP}ZS
-STR_UNITS_POWER_METRIC                                          :{COMMA}{NBSP}ZS
-STR_UNITS_POWER_SI                                              :{COMMA}{NBSP}kW
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}{NBSP}ZS
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}{NBSP}ZS
+STR_UNITS_POWER_SI                                              :{DECIMAL}{NBSP}kW
 
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}{NBSP}zs/t
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}{NBSP}zs/l
@@ -212,29 +215,29 @@ STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL                           :{DECIMAL}{NBSP}
 STR_UNITS_POWER_SI_TO_WEIGHT_METRIC                             :{DECIMAL}{NBSP}kW/t
 STR_UNITS_POWER_SI_TO_WEIGHT_SI                                 :{DECIMAL}{NBSP}W/kg
 
-STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{COMMA}{NBSP}t
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}{NBSP}t
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}{NBSP}kg
+STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}t
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}{NBSP}t
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}{NBSP}kg
 
-STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{COMMA}{NBSP}tonn{P a as u}
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA}{NBSP}tonn{P a as u}
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA}{NBSP}kg
+STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}tonn{P a as u}
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL}{NBSP}tonn{P a as u}
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL}{NBSP}kg
 
-STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{COMMA}{NBSP}gal
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}{NBSP}l
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}{NBSP}m³
+STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}gal
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}{NBSP}l
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}{NBSP}m³
 
-STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{COMMA}{NBSP}galon{P s i u}
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA}{NBSP}litr{P s i u}
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA}{NBSP}m³
+STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}galon{P s i u}
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL}{NBSP}litr{P s i u}
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL}{NBSP}m³
 
-STR_UNITS_FORCE_IMPERIAL                                        :{COMMA}{NBSP}lbf
-STR_UNITS_FORCE_METRIC                                          :{COMMA}{NBSP}kgf
-STR_UNITS_FORCE_SI                                              :{COMMA}{NBSP}kN
+STR_UNITS_FORCE_IMPERIAL                                        :{DECIMAL}{NBSP}lbf
+STR_UNITS_FORCE_METRIC                                          :{DECIMAL}{NBSP}kgf
+STR_UNITS_FORCE_SI                                              :{DECIMAL}{NBSP}kN
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA}{NBSP}pēdas
-STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}m
-STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}m
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}{NBSP}pēdas
+STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL}{NBSP}m
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL}{NBSP}m
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}Filters:
@@ -931,52 +934,57 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}Kopēt �
 
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Spēles opcijas
+
+
+
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}Naudas vienības
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}Naudas vienību izvēle
 
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :Lielbritānijas sterliņu mārciņas (GBP)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :ASV dolāri (USD)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :Eiro (EUR)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :Japānas jenas (JPY)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :Austrijas šiliņi (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :Beļģijas franki (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :Šveices franki (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :Čehijas kronas (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :Vācijas markas (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :Dānijas kronas (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :Spānijas pesetas (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :Somijas markas (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :Francijas franki (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :Grieķijas drahmas (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ungārijas forinti (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :Īslandes kronas (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :Itālijas liras (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :Nīderlandes guldeņi (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :Norvēģijas kronas (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :Polijas zloti (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :Rumānijas lejas (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :Krievijas rubļi (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :Slovēnijas tolāri (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :Zviedrijas kronas (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :Turcijas liras (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :Slovākijas kronas (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :Brazīlijas reāli (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :Igaunijas kronas (EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :Lietuvas liti (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :Dienvidkorejas vonas (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Dienvidāfrikas rendi (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :Lielbritānijas sterliņu mārciņas
+STR_GAME_OPTIONS_CURRENCY_USD                                   :ASV dolāri
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :Eiro
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :Japānas jenas
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :Austrijas šiliņi
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :Beļģijas franki
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :Šveices franki
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :Čehijas kronas
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :Vācijas markas
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :Dānijas kronas
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :Spānijas pesetas
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :Somijas markas
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :Francijas franki
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :Grieķijas drahmas
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ungārijas forinti
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :Īslandes kronas
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :Itālijas liras
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :Nīderlandes guldeņi
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :Norvēģijas kronas
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :Polijas zloti
+STR_GAME_OPTIONS_CURRENCY_RON                                   :Rumānijas lejas
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :Krievijas rubļi
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :Slovēnijas tolāri
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :Zviedrijas kronas
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :Turcijas liras
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :Slovākijas kronas
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :Brazīlijas reāli
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :Igaunijas kronas
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :Lietuvas liti
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :Dienvidkorejas vonas
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Dienvidāfrikas rendi
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :Cita...
-STR_GAME_OPTIONS_CURRENCY_GEL                                   :Gruzijas lari (GEL)
-STR_GAME_OPTIONS_CURRENCY_IRR                                   :Irānas riāli (IRR)
-STR_GAME_OPTIONS_CURRENCY_RUB                                   :Jaunais Krievijas rublis (RUB)
-STR_GAME_OPTIONS_CURRENCY_MXN                                   :Meksikas peso (MXN)
-STR_GAME_OPTIONS_CURRENCY_NTD                                   :Jaunais Taivānas dolārs (NTD)
-STR_GAME_OPTIONS_CURRENCY_CNY                                   :Ķīnas juaņa (CNY)
-STR_GAME_OPTIONS_CURRENCY_HKD                                   :Honkongas dolārs (HKD)
-STR_GAME_OPTIONS_CURRENCY_INR                                   :Indijas rūpija (INR)
-STR_GAME_OPTIONS_CURRENCY_IDR                                   :Indonēzijas rūpija (IDR)
-STR_GAME_OPTIONS_CURRENCY_MYR                                   :Malaizijas Ringits (MYR)
+STR_GAME_OPTIONS_CURRENCY_GEL                                   :Gruzijas lari
+STR_GAME_OPTIONS_CURRENCY_IRR                                   :Irānas riāli
+STR_GAME_OPTIONS_CURRENCY_RUB                                   :Jaunais Krievijas rublis
+STR_GAME_OPTIONS_CURRENCY_MXN                                   :Meksikas peso
+STR_GAME_OPTIONS_CURRENCY_NTD                                   :Jaunais Taivānas dolārs
+STR_GAME_OPTIONS_CURRENCY_CNY                                   :Ķīnas juaņa
+STR_GAME_OPTIONS_CURRENCY_HKD                                   :Honkongas dolārs
+STR_GAME_OPTIONS_CURRENCY_INR                                   :Indijas rūpija
+STR_GAME_OPTIONS_CURRENCY_IDR                                   :Indonēzijas rūpija
+STR_GAME_OPTIONS_CURRENCY_MYR                                   :Malaizijas Ringits
 
 STR_GAME_OPTIONS_AUTOSAVE_FRAME                                 :{BLACK}Automātiskā saglabāšana
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Izvēlēties spēles automātiskās saglabāšanas starplaikus
@@ -984,10 +992,6 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Izvēlē
 # Autosave dropdown
 ###length 5
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :Izslēgta
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :katru mēnesi
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :katrus 3 mēnešus
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :katrus 6 mēnešus
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :katrus 12 mēnešus
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Valoda
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Saskarnes valodas izvēle
@@ -1023,6 +1027,7 @@ STR_GAME_OPTIONS_GUI_SCALE_2X                                   :2x
 STR_GAME_OPTIONS_GUI_SCALE_3X                                   :3x
 STR_GAME_OPTIONS_GUI_SCALE_4X                                   :4x
 STR_GAME_OPTIONS_GUI_SCALE_5X                                   :5x
+
 
 STR_GAME_OPTIONS_GRAPHICS                                       :{BLACK}Grafika
 
@@ -1206,6 +1211,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :pa kreisi
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :centrā
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :pa labi
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :Maksimālais sākotnējais aizdevums: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :Maksimālais aizdevuma daudzums, ko uzņēmums var izsniegt (neskaitot inflāciju)
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_VALUE                   :{CURRENCY_LONG}
@@ -1388,6 +1394,7 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Kad ieslēgts, 
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :Sākotnējā uzņēmuma krāsa: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :Izvēlieties uzņēmuma sākotnējo krāsu
 
+
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Lidostas darbosies mūžīgi: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :Ieslēdzot šo iestatījumu, katrs lidostas veids pēc tā ieviešanas vienmēr ir pieejams
 
@@ -1421,7 +1428,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :Minimālais nau
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :Kļūdas ziņojuma ilgums: {STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :Kļūdas ziņojuma sarkanā logā rādīšanas ilgums. Jāņem vērā ka daži (kritiskie) kļūdu ziņojumi pēc šī laika netiek slēgti automātiski, bet tos ir jāaizver manuāli
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} sekun{P 0 di des žu}
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :Rādīt rīku padomus: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :Aizkaves ilgums, pirms tiek rādīti rīku padomi, kad peles kursors atrodas virs kāda saskarnes elementa. Rīku padomu rādīšanu pārmaiņus var saistīt ar peles labās pogas klikšķi
@@ -1589,9 +1595,7 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :Izslēgta
 
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE                        :Aizvērt logu ar labo klikšķi: {STRING}
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :Labais klikšķis logā aizver logu. Izslēdz paskaidres parādīšanu ar labo klikšķi!
-
-STR_CONFIG_SETTING_AUTOSAVE                                     :Automātiskā saglabāšana: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Izvēlēties spēles automātiskās saglabāšanas starplaikus
+###length 3
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :Lietot {STRING} datuma formātu saglabāto spēļu nosaukumos
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :Datuma formāts spēļu saglabājuma failu nosaukumos
@@ -1805,13 +1809,6 @@ STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :Orģināls
 STR_CONFIG_SETTING_ECONOMY_TYPE_SMOOTH                          :Gluds
 STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :Saldēts
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :Atļaut akciju pirkšanu no citiem uzņēmumiem: {STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Ja iespējots, ir atļauts pirkt un pārdodot uzņēmumu akcijas. Akcijas būs pieejamas tikai atbilstošu vecumu sasniegušiem uzņēmumiem
-
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Minimālais uzņēmuma vecums, lai tirgotos ar akcijām: {STRING}
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Iestatīt minimālo uzņēmuma vecums, lai citi varētu pirkt un pārdod to akcijas.
-###setting-zero-is-special
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Procenti no kopējās peļņas, ko maksā tranzītstacijās: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Procenti no ienākumiem, kas tiek doti starpposmiem padeves sistēmās, kas dod lielāku kontroli pār ienākumiem
 
@@ -1925,10 +1922,6 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :neviena
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :Pilsētu sākuma lieluma reizinātājs: {STRING}
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER_HELPTEXT                :Pilsētu vidējais lielums attiecībā pret parastām apdzīvotām vietām spēles sākumā
 
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL                           :Atjaunināt sadales grafu ik pa {STRING}{NBSP}dien{P 0:2 ai ām ām}
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT                  :Laiks starp secīgām saišu grafa pārrēķināšanām. Katra pārrēķināšana izskaitļo plānos vienai grafa komponentei. Tas nozīmē, ka šim iestatījumam vērtība X nenozīmē, ka viss grafs tiks atjaunināts ir pēc X dienām. Tikai dažas komponentes tiks pārrēķinātas. Jo mazāka iestatītā vērtība, jo vairāk laika CPU pavadīs rēķinot. Jo lielāka iestatītā vērtība, jo ilgāk nevarēs sākties kravu izplatīšana jaunos maršrutos.
-STR_CONFIG_SETTING_LINKGRAPH_TIME                               :Dot {STRING}{NBSP}dien{P 0:2 u as u} izplatīšanas grafa pārrēķināšanai
-STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :Laiks, ko aizņem katra saišu grafa komponenšu pārrēķināšana. Kad sākas pārrēķināšana, tiek izveidots pavediens, kuram ir atļauts darboties norādīto dienu skaitu. Jo īsāku skaitli šeit ievadīsiet, jo lielāka iespēja, ka pavediens nebūs laicīgi paveicis savu darbu. Tādā gadījumā spēle apstāsies (“iebremzēs”) līdz darbs būs pabeigts. Jo lielāku skaitli šeit iestatīsiet, jo ilgāk aizņems izplatīšanas atjaunināšana, kad tiks mainīti maršruti.
 
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :Pasažieru izplatīšanas režīms: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :"simetriska" nozīmē, ka apmēram vienāds daudzums pasažieri vēlēsies doties virzienā no stacijas A uz B, cik no B uz A. "asimetriska" nozīmē, ka patvaļīgs pasažieru daudzums var vēlēties nokļūt katrā no virzieniem. "manuāli" nozīmē, ka pasažieriem netiks veikta automātiska izplatīšana.
@@ -1999,30 +1992,30 @@ STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :impērijas, bri
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :metriskās (m)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :SI, starptautiskās (m)
 
-STR_CONFIG_SETTING_LOCALISATION                                 :{ORANGE}Lokalizēšana
-STR_CONFIG_SETTING_GRAPHICS                                     :{ORANGE}Grafika
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}Skaņa
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}Saskarne
-STR_CONFIG_SETTING_INTERFACE_GENERAL                            :{ORANGE}Vispārīgi
-STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}Skatvietas
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}Būvniecība
-STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}Avīžu raksti / padomnieki
-STR_CONFIG_SETTING_COMPANY                                      :{ORANGE}Uzņēmums
-STR_CONFIG_SETTING_ACCOUNTING                                   :{ORANGE}Grāmatvedība
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}Transportlīdzekļi
-STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :{ORANGE}Fizika
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}Pārvietošanās
-STR_CONFIG_SETTING_LIMITATIONS                                  :{ORANGE}Ierobežojumi
-STR_CONFIG_SETTING_ACCIDENTS                                    :{ORANGE}Katastrofas / negadījumi
-STR_CONFIG_SETTING_GENWORLD                                     :{ORANGE}Pasaules radīšana
-STR_CONFIG_SETTING_ENVIRONMENT                                  :{ORANGE}Apkārtējā vide
-STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :{ORANGE}Pašvaldības
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}Pilsētas
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}Ražotnes
-STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Kravu sadale
-STR_CONFIG_SETTING_AI                                           :{ORANGE}Sāncenši
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Nespēlētāju tēli (datora vadīti)
-STR_CONFIG_SETTING_NETWORK                                      :{ORANGE}Tīkls
+STR_CONFIG_SETTING_LOCALISATION                                 :Lokalizēšana
+STR_CONFIG_SETTING_GRAPHICS                                     :Grafika
+STR_CONFIG_SETTING_SOUND                                        :Skaņa
+STR_CONFIG_SETTING_INTERFACE                                    :Saskarne
+STR_CONFIG_SETTING_INTERFACE_GENERAL                            :Vispārīgi
+STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :Skatvietas
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :Būvniecība
+STR_CONFIG_SETTING_ADVISORS                                     :Avīžu raksti / padomnieki
+STR_CONFIG_SETTING_COMPANY                                      :Uzņēmums
+STR_CONFIG_SETTING_ACCOUNTING                                   :Grāmatvedība
+STR_CONFIG_SETTING_VEHICLES                                     :Transportlīdzekļi
+STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :Fizika
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :Pārvietošanās
+STR_CONFIG_SETTING_LIMITATIONS                                  :Ierobežojumi
+STR_CONFIG_SETTING_ACCIDENTS                                    :Katastrofas / negadījumi
+STR_CONFIG_SETTING_GENWORLD                                     :Pasaules radīšana
+STR_CONFIG_SETTING_ENVIRONMENT                                  :Apkārtējā vide
+STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :Pašvaldības
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :Pilsētas
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :Ražotnes
+STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :Kravu sadale
+STR_CONFIG_SETTING_AI                                           :Sāncenši
+STR_CONFIG_SETTING_AI_NPC                                       :Nespēlētāju tēli (datora vadīti)
+STR_CONFIG_SETTING_NETWORK                                      :Tīkls
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :Vilcienu ceļa meklētājs: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :Vilcieniem pielietotais ceļa meklētājs
@@ -2389,6 +2382,7 @@ STR_NETWORK_ASK_RELAY_NO                                        :{BLACK}Nē
 STR_NETWORK_ASK_RELAY_YES_ONCE                                  :{BLACK}Jā, vienreiz
 STR_NETWORK_ASK_RELAY_YES_ALWAYS                                :{BLACK}Jā, vairs nejautāt
 
+
 STR_NETWORK_SPECTATORS                                          :Novērotāji
 
 # Network set password
@@ -2594,7 +2588,6 @@ STR_TRANSPARENT_BUILDINGS_TOOLTIP                               :{BLACK}Pārslē
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}Pārslēgt tiltu caurspīdību. Ctrl+klikšķis, lai slēgtu
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}Pārslēgt caurspīdību tādām celtnēm kā bākas un antenas. Ctrl+klikšķis, lai slēgtu
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}Pārslēgt piekartroses caurspīdību. Ctrl+klikšķis, lai slēgtu
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Pārslēgt piekraušanas rādītāju caurspīdību. Ctrl+klikšķis, lai slēgtu
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}Caurspīdības vietā objektus padarīt neredzamus
 
 # Linkgraph legend window
@@ -3713,7 +3706,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}{COMMA} 
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}{COMMA} kuģ{P is i u}
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}Neviens
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}Uzņēmuma vērtība: {WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% piederoši {COMPANY})
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}Infrastruktūra:
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}{COMMA} sliežu gabal{P s i u}
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}{COMMA} ceļa gabal{P s i u}
@@ -3741,11 +3733,6 @@ STR_COMPANY_VIEW_COMPANY_NAME_BUTTON                            :{BLACK}Uzņēmu
 STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}Mainīt uzņēmuma nosaukumu
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}Vadītāja vārds
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}Mainīt vadītāja vārdu
-
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Nopirkt 25% daļu uzņēmumā
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Pārdot 25% daļu uzņēmumā
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Nopirkt 25% daļu šajā uzņēmumā. Shift+klikšķis rāda izmaksu novērtējumu, nepērkot akcijas
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Pārdot 25% daļu uzņēmumā. Shift+Ctrl rāda izmaksu novērtējumu, nepārdodot nevienu akciju
 
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :Uzņēmuma nosaukums
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :Vadītāja vārds
@@ -3825,8 +3812,6 @@ STR_VEHICLE_LIST_MANAGE_LIST_TOOLTIP                            :{BLACK}Sūtīt 
 STR_VEHICLE_LIST_REPLACE_VEHICLES                               :Nomainīt transportlīdzekļus
 STR_VEHICLE_LIST_SEND_FOR_SERVICING                             :Sūtīt uz apkopi
 STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR                     :{TINY_FONT}{BLACK}Peļņa šogad: {CURRENCY_LONG} (pērn: {CURRENCY_LONG})
-STR_VEHICLE_LIST_CARGO                                          :{TINY_FONT}{BLACK}[{CARGO_LIST}]
-STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{TINY_FONT}{BLACK}{STRING} {STRING}
 
 STR_VEHICLE_LIST_SEND_TRAIN_TO_DEPOT                            :Sūtīt uz depo
 STR_VEHICLE_LIST_SEND_ROAD_VEHICLE_TO_DEPOT                     :Sūtīt uz depo
@@ -4546,8 +4531,6 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}Paredzē
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}Ieplānots
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}Pārslēgties starp sagaidāmo un ieplānoto
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :Ie:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :Iz:
 
 
 # Date window (for timetable)
@@ -4637,7 +4620,6 @@ STR_AI_SETTINGS_CAPTION_AI                                      :{WHITE}MI Param
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}Aizvērt
 STR_AI_SETTINGS_RESET                                           :{BLACK}Atiestatīt
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :Aptuvenais dienu skaits, līdz palaist šo MI pēc iepriekšējā: {ORANGE}{STRING}
 
 
 # Textfile window
@@ -4646,7 +4628,7 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}Aplauzt 
 STR_TEXTFILE_VIEW_README                                        :{BLACK}Skatīt failu Lasi_mani
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}Izmaiņu žurnāls
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}Licence
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING} kopas {STRING} fails Lasi_mani
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING} kopas {STRING} izmaiņu žurnāls
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} kopas {STRING} licence
@@ -4774,9 +4756,6 @@ STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}Bankas a
 STR_ERROR_CAN_T_GIVE_MONEY                                      :{WHITE}Nav iespējams atdot naudu šai kompānijai...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}Nevar nopirkt uzņēmumu...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}Nevar uzbūvēt uzņēmuma biroju...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Nevar nopirkt 25% daļu šajā uzņēmumā...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Nevar pārdot 25% daļu šajā uzņēmumā...
-STR_ERROR_PROTECTED                                             :{WHITE}Šis uzņēmums ir par jaunu lai tirgotu akcijas...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}Nevar būvēt pilsētas
@@ -5508,10 +5487,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Powernaut helik
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}-{STRING}-{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}-{ZEROFILL_NUM}-{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM}
 STR_FORMAT_DATE_LONG                                            :{STRING} {STRING} {NUM}
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :({COMMA}. uzņēmums)
 STR_FORMAT_GROUP_NAME                                           :Grupa {COMMA}
@@ -5592,33 +5571,8 @@ STR_JUST_RAW_STRING                                             :{STRING}
 STR_JUST_BIG_RAW_STRING                                         :{BIG_FONT}{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

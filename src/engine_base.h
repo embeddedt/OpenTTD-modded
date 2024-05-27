@@ -17,6 +17,7 @@
 #include "newgrf_commons.h"
 
 #include "3rdparty/cpp-btree/btree_map.h"
+#include <vector>
 
 struct WagonOverride {
 	std::vector<EngineID> engines;
@@ -44,7 +45,7 @@ struct EngineRefitCapacityValue {
 struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	TinyString name;            ///< Custom name of engine.
 	Date intro_date;            ///< Date of introduction of the engine.
-	Date age;
+	int32 age;                  ///< Age of the engine in months.
 	uint16 reliability;         ///< Current reliability of the engine.
 	uint16 reliability_spd_dec; ///< Speed of reliability decay between services (per day).
 	uint16 reliability_start;   ///< Initial reliability of the engine.
@@ -152,6 +153,18 @@ struct Engine : EnginePool::PoolItem<&_engine_pool> {
 	{
 		return c < MAX_COMPANIES && HasBit(this->company_hidden, c);
 	}
+
+	/**
+	 * Get the last display variant for an engine.
+	 * @return Engine's last display variant or engine itself if no last display variant is set.
+	 */
+	const Engine *GetDisplayVariant() const
+	{
+		if (this->display_last_variant == this->index || this->display_last_variant == INVALID_ENGINE) return this;
+		return Engine::Get(this->display_last_variant);
+	}
+
+	bool IsVariantHidden(CompanyID c) const;
 
 	/**
 	 * Check if the engine is a ground vehicle.

@@ -146,7 +146,15 @@ bool HasRoadTypeAvail(const CompanyID company, RoadType roadtype)
 		const RoadTypeInfo *rti = GetRoadTypeInfo(roadtype);
 		if (rti->label == 0) return false;
 
-		bool available = (rti->flags & ROTFB_HIDDEN) == 0;
+		/* Not yet introduced at this date. */
+		if (IsInsideMM(rti->introduction_date, 0, MAX_DAY) && rti->introduction_date > _date) return false;
+
+		/*
+		 * Do not allow building hidden road types, except when a town may build it.
+		 * The GS under deity mode, as well as anybody in the editor builds roads that are
+		 * owned by towns. So if a town may build it, it should be buildable by them too.
+		 */
+		bool available = (rti->flags & ROTFB_HIDDEN) == 0 || (rti->flags & ROTFB_TOWN_BUILD) != 0;
 		if (!available && (company == OWNER_TOWN || _game_mode == GM_EDITOR || _generating_world)) {
 			if (roadtype == GetTownRoadType()) return true;
 		}
@@ -1037,8 +1045,14 @@ void GeneratePublicRoads()
 	std::vector<std::unique_ptr<TownNetwork>> networks;
 	robin_hood::unordered_flat_map<TileIndex, TownNetwork *> town_to_network_map;
 
-	TileIndex main_town = *std::max_element(towns.begin(), towns.end(), [&](TileIndex a, TileIndex b) { return DistanceFromEdge(a) < DistanceFromEdge(b); });
-	towns.erase(towns.begin());
+	TileIndex main_town;
+	{
+		auto main_town_iter = std::max_element(towns.begin(), towns.end(), [&](TileIndex a, TileIndex b) { return DistanceFromEdge(a) < DistanceFromEdge(b); });
+		main_town = *main_town_iter;
+		/* Unordered remove item */
+		*main_town_iter = towns.back();
+		towns.pop_back();
+	}
 
 	_public_road_type = GetTownRoadType();
 	robin_hood::unordered_flat_set<TileIndex> checked_towns;

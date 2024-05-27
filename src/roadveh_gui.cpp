@@ -39,9 +39,8 @@ void DrawRoadVehDetails(const Vehicle *v, const Rect &r)
 	y += FONT_HEIGHT_NORMAL;
 
 	if (v->HasArticulatedPart()) {
-		CargoArray max_cargo;
+		CargoArray max_cargo{};
 		StringID subtype_text[NUM_CARGO];
-		char capacity[512];
 
 		memset(subtype_text, 0, sizeof(subtype_text));
 
@@ -53,23 +52,19 @@ void DrawRoadVehDetails(const Vehicle *v, const Rect &r)
 			}
 		}
 
-		GetString(capacity, STR_VEHICLE_DETAILS_TRAIN_ARTICULATED_RV_CAPACITY, lastof(capacity));
+		std::string capacity = GetString(STR_VEHICLE_DETAILS_TRAIN_ARTICULATED_RV_CAPACITY);
 
 		bool first = true;
 		for (CargoID i = 0; i < NUM_CARGO; i++) {
 			if (max_cargo[i] > 0) {
-				char buffer[128];
+				if (!first) capacity += ", ";
 
 				SetDParam(0, i);
 				SetDParam(1, max_cargo[i]);
-				GetString(buffer, STR_JUST_CARGO, lastof(buffer));
-
-				if (!first) strecat(capacity, ", ", lastof(capacity));
-				strecat(capacity, buffer, lastof(capacity));
+				capacity += GetString(STR_JUST_CARGO);
 
 				if (subtype_text[i] != 0) {
-					GetString(buffer, subtype_text[i], lastof(buffer));
-					strecat(capacity, buffer, lastof(capacity));
+					capacity += GetString(subtype_text[i]);
 				}
 
 				first = false;
@@ -86,9 +81,9 @@ void DrawRoadVehDetails(const Vehicle *v, const Rect &r)
 			if (u->cargo.StoredCount() > 0) {
 				SetDParam(0, u->cargo_type);
 				SetDParam(1, u->cargo.StoredCount());
-				SetDParam(2, u->cargo.Source());
+				SetDParam(2, u->cargo.GetFirstStation());
 				str = STR_VEHICLE_DETAILS_CARGO_FROM;
-				feeder_share += u->cargo.FeederShare();
+				feeder_share += u->cargo.GetFeederShare();
 			}
 			DrawString(r.left, r.right, y, str);
 			y += FONT_HEIGHT_NORMAL;
@@ -105,9 +100,9 @@ void DrawRoadVehDetails(const Vehicle *v, const Rect &r)
 		if (v->cargo.StoredCount() > 0) {
 			SetDParam(0, v->cargo_type);
 			SetDParam(1, v->cargo.StoredCount());
-			SetDParam(2, v->cargo.Source());
+			SetDParam(2, v->cargo.GetFirstStation());
 			str = STR_VEHICLE_DETAILS_CARGO_FROM;
-			feeder_share += v->cargo.FeederShare();
+			feeder_share += v->cargo.GetFeederShare();
 		}
 		DrawString(r.left, r.right, y, str);
 		y += FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.vsep_normal;

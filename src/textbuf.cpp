@@ -24,11 +24,9 @@
  * Try to retrieve the current clipboard contents.
  *
  * @note OS-specific function.
- * @param buffer Clipboard content.
- * @param last The pointer to the last element of the destination buffer
- * @return True if some text could be retrieved.
+ * @return The (optional) clipboard contents.
  */
-bool GetClipboardContents(char *buffer, const char *last);
+std::optional<std::string> GetClipboardContents();
 
 int _caret_timer;
 
@@ -225,11 +223,10 @@ bool Textbuf::InsertString(const char *str, bool marked, const char *caret, cons
  */
 bool Textbuf::InsertClipboard()
 {
-	char utf8_buf[512];
+	auto contents = GetClipboardContents();
+	if (!contents.has_value()) return false;
 
-	if (!GetClipboardContents(utf8_buf, lastof(utf8_buf))) return false;
-
-	return this->InsertString(utf8_buf, false);
+	return this->InsertString(contents.value().c_str(), false);
 }
 
 /**
@@ -253,14 +250,21 @@ void Textbuf::DeleteText(uint16 from, uint16 to, bool update)
 	if (this->markend >= this->bytes) this->markpos = this->markend = 0;
 	this->chars -= c;
 
-	/* Fixup caret if needed. */
-	if (this->caretpos > from) {
-		if (this->caretpos <= to) {
-			this->caretpos = from;
+	auto fixup = [&](uint16_t &pos) {
+		if (pos <= from) return;
+		if (pos <= to) {
+			pos = from;
 		} else {
-			this->caretpos -= to - from;
+			pos -= to - from;
 		}
-	}
+	};
+
+	/* Fixup caret if needed. */
+	fixup(this->caretpos);
+
+	/* Fixup marked text if needed. */
+	fixup(this->markpos);
+	fixup(this->markend);
 
 	if (update) {
 		this->UpdateStringIter();
@@ -406,6 +410,15 @@ void Textbuf::Assign(const char *text)
 {
 	strecpy(this->buf, text, &this->buf[this->max_bytes - 1]);
 	this->UpdateSize();
+}
+
+/**
+ * Copy a string into the textbuffer.
+ * @param text Source.
+ */
+void Textbuf::Assign(const std::string &text)
+{
+	this->Assign(text.c_str());
 }
 
 /**

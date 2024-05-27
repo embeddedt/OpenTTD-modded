@@ -17,7 +17,7 @@
 #include "vehicle_base.h"
 #include "rail_gui.h"
 #include "linkgraph/linkgraph.h"
-#include "saveload/saveload.h"
+#include "sl/saveload.h"
 #include "newgrf_profiling.h"
 #include "console_func.h"
 #include "debug.h"
@@ -65,6 +65,9 @@ void CheckScaledDateTicksWrap()
 
 	extern void AdjustVehicleScaledTickBase(int64 delta);
 	AdjustVehicleScaledTickBase(-tick_adjust);
+
+	extern void AdjustLinkGraphScaledTickBase(int64 delta);
+	AdjustLinkGraphScaledTickBase(-tick_adjust);
 }
 
 void RebaseScaledDateTicksBase()
@@ -236,16 +239,6 @@ extern void TownsYearlyLoop();
 
 extern void ShowEndGameChart();
 
-
-/** Available settings for autosave intervals. */
-static const Month _autosave_months[] = {
-	 0, ///< never
-	 1, ///< every month
-	 3, ///< every 3 months
-	 6, ///< every 6 months
-	12, ///< every 12 months
-};
-
 /**
  * Runs various procedures that have to be done yearly
  */
@@ -294,12 +287,6 @@ static void OnNewYear()
  */
 static void OnNewMonth()
 {
-	if (_settings_client.gui.autosave != 0 && _settings_client.gui.autosave < 5 && (_cur_date_ymd.month % _autosave_months[_settings_client.gui.autosave]) == 0) {
-		_do_autosave = true;
-		_check_special_modes = true;
-		SetWindowDirty(WC_STATUS_BAR, 0);
-	}
-
 	SetWindowClassesDirty(WC_CHEATS);
 	CompaniesMonthlyLoop();
 	EnginesMonthlyLoop();
@@ -316,16 +303,6 @@ static void OnNewMonth()
  */
 static void OnNewDay()
 {
-	if (_settings_client.gui.autosave == 5 && (_date % _settings_client.gui.autosave_custom_days) == 0) {
-		_do_autosave = true;
-		_check_special_modes = true;
-		SetWindowDirty(WC_STATUS_BAR, 0);
-	}
-
-	if (!_newgrf_profilers.empty() && _newgrf_profile_end_date <= _date) {
-		NewGRFProfiler::FinishAll();
-	}
-
 	if (_network_server) NetworkServerDailyLoop();
 
 	DisasterDailyLoop();

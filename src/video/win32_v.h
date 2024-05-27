@@ -17,6 +17,7 @@
 #include "../3rdparty/mingw-std-threads/mingw.mutex.h"
 #include "../3rdparty/mingw-std-threads/mingw.condition_variable.h"
 #endif
+#include <vector>
 
 /** Base class for Windows video drivers. */
 class VideoDriver_Win32Base : public VideoDriver {
@@ -121,7 +122,7 @@ public:
 /** The OpenGL video driver for windows. */
 class VideoDriver_Win32OpenGL : public VideoDriver_Win32Base {
 public:
-	VideoDriver_Win32OpenGL() : dc(nullptr), gl_rc(nullptr), anim_buffer(nullptr), driver_info(this->GetName()) {}
+	VideoDriver_Win32OpenGL() : dc(nullptr), gl_rc(nullptr), driver_info(this->GetName()) {}
 
 	const char *Start(const StringList &param) override;
 
@@ -140,7 +141,6 @@ public:
 	void ClearSystemSprites() override;
 
 	bool HasAnimBuffer() override { return true; }
-	uint8 *GetAnimBuffer() override { return this->anim_buffer; }
 
 	void ToggleVsync(bool vsync) override;
 
@@ -151,7 +151,6 @@ public:
 protected:
 	HDC    dc;          ///< Window device context.
 	HGLRC  gl_rc;       ///< OpenGL context.
-	uint8 *anim_buffer; ///< Animation buffer from OpenGL back-end.
 	std::string driver_info; ///< Information string about selected driver.
 
 	uint8 GetFullscreenBpp() override { return 32; } // OpenGL is always 32 bpp.

@@ -254,39 +254,39 @@ STR_QUANTITY_N_A                                                :отсутст�
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}ПС
-STR_ABBREV_COAL                                                 :{TINY_FONT}УГ
-STR_ABBREV_MAIL                                                 :{TINY_FONT}ПЧ
-STR_ABBREV_OIL                                                  :{TINY_FONT}НФ
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}СК
-STR_ABBREV_GOODS                                                :{TINY_FONT}ТВ
-STR_ABBREV_GRAIN                                                :{TINY_FONT}ЗР
-STR_ABBREV_WOOD                                                 :{TINY_FONT}ДВ
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}ЖР
-STR_ABBREV_STEEL                                                :{TINY_FONT}СТ
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}ДР
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}МР
-STR_ABBREV_MAIZE                                                :{TINY_FONT}КК
-STR_ABBREV_FRUIT                                                :{TINY_FONT}ФР
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}АЛ
-STR_ABBREV_FOOD                                                 :{TINY_FONT}ПР
-STR_ABBREV_PAPER                                                :{TINY_FONT}БМ
-STR_ABBREV_GOLD                                                 :{TINY_FONT}ЗЛ
-STR_ABBREV_WATER                                                :{TINY_FONT}ВД
-STR_ABBREV_WHEAT                                                :{TINY_FONT}ПШ
-STR_ABBREV_RUBBER                                               :{TINY_FONT}КЧ
-STR_ABBREV_SUGAR                                                :{TINY_FONT}СХ
-STR_ABBREV_TOYS                                                 :{TINY_FONT}ИГ
-STR_ABBREV_SWEETS                                               :{TINY_FONT}КФ
-STR_ABBREV_COLA                                                 :{TINY_FONT}КЛ
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}СВ
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}ПЗ
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}ИР
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}БТ
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}ПЛ
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}ГЗ
-STR_ABBREV_NONE                                                 :{TINY_FONT}НЕТ
-STR_ABBREV_ALL                                                  :{TINY_FONT}Все
+STR_ABBREV_PASSENGERS                                           :ПС
+STR_ABBREV_COAL                                                 :УГ
+STR_ABBREV_MAIL                                                 :ПЧ
+STR_ABBREV_OIL                                                  :НФ
+STR_ABBREV_LIVESTOCK                                            :СК
+STR_ABBREV_GOODS                                                :ТВ
+STR_ABBREV_GRAIN                                                :ЗР
+STR_ABBREV_WOOD                                                 :ДВ
+STR_ABBREV_IRON_ORE                                             :ЖР
+STR_ABBREV_STEEL                                                :СТ
+STR_ABBREV_VALUABLES                                            :ДР
+STR_ABBREV_COPPER_ORE                                           :МР
+STR_ABBREV_MAIZE                                                :КК
+STR_ABBREV_FRUIT                                                :ФР
+STR_ABBREV_DIAMONDS                                             :АЛ
+STR_ABBREV_FOOD                                                 :ПР
+STR_ABBREV_PAPER                                                :БМ
+STR_ABBREV_GOLD                                                 :ЗЛ
+STR_ABBREV_WATER                                                :ВД
+STR_ABBREV_WHEAT                                                :ПШ
+STR_ABBREV_RUBBER                                               :КЧ
+STR_ABBREV_SUGAR                                                :СХ
+STR_ABBREV_TOYS                                                 :ИГ
+STR_ABBREV_SWEETS                                               :КФ
+STR_ABBREV_COLA                                                 :КЛ
+STR_ABBREV_CANDYFLOSS                                           :СВ
+STR_ABBREV_BUBBLES                                              :ПЗ
+STR_ABBREV_TOFFEE                                               :ИР
+STR_ABBREV_BATTERIES                                            :БТ
+STR_ABBREV_PLASTIC                                              :ПЛ
+STR_ABBREV_FIZZY_DRINKS                                         :ГЗ
+STR_ABBREV_NONE                                                 :НЕТ
+STR_ABBREV_ALL                                                  :Все
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA}{NBSP}пассажир{P "" а ов}
@@ -316,16 +316,36 @@ STR_COLOUR_GREY                                                 :Серый
 STR_COLOUR_WHITE                                                :Белый
 STR_COLOUR_RANDOM                                               :Случайный
 
-# Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA}{NBSP}мил{P я и ь}/ч
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA}{NBSP}км/ч
-STR_UNITS_VELOCITY_SI                                           :{COMMA}{NBSP}м/с
-STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}{NBSP}кл./день
-STR_UNITS_VELOCITY_KNOTS                                        :{COMMA}{NBSP}уз{P ел ла лов}
+###length 17
+STR_COLOUR_SECONDARY_DARK_BLUE                                  :Тёмно-синий
+STR_COLOUR_SECONDARY_PALE_GREEN                                 :Светло-зелёный
+STR_COLOUR_SECONDARY_SECONDARY_PINK                             :Розовый
+STR_COLOUR_SECONDARY_YELLOW                                     :Жёлтый
+STR_COLOUR_SECONDARY_RED                                        :Красный
+STR_COLOUR_SECONDARY_LIGHT_BLUE                                 :Голубой
+STR_COLOUR_SECONDARY_GREEN                                      :Зелёный
+STR_COLOUR_SECONDARY_DARK_GREEN                                 :Тёмно-зелёный
+STR_COLOUR_SECONDARY_BLUE                                       :Синий
+STR_COLOUR_SECONDARY_CREAM                                      :Кремовый
+STR_COLOUR_SECONDARY_MAUVE                                      :Лиловый
+STR_COLOUR_SECONDARY_PURPLE                                     :Пурпурный
+STR_COLOUR_SECONDARY_ORANGE                                     :Оранжевый
+STR_COLOUR_SECONDARY_BROWN                                      :Коричневый
+STR_COLOUR_SECONDARY_GREY                                       :Серый
+STR_COLOUR_SECONDARY_WHITE                                      :Белый
+STR_COLOUR_SECONDARY_SAME_AS_PRIMARY                            :Тот же, что и основной
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}{NBSP}лс
-STR_UNITS_POWER_METRIC                                          :{COMMA}{NBSP}лс
-STR_UNITS_POWER_SI                                              :{COMMA}{NBSP}кВт
+
+# Units used in OpenTTD
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL}{NBSP}мил{P я и ь}/ч
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL}{NBSP}км/ч
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL}{NBSP}м/с
+STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}{NBSP}кл./день
+STR_UNITS_VELOCITY_KNOTS                                        :{DECIMAL}{NBSP}уз{P ел ла лов}
+
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}{NBSP}лс
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}{NBSP}лс
+STR_UNITS_POWER_SI                                              :{DECIMAL}{NBSP}кВт
 
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}{NBSP}лс/т
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}{NBSP}лс/т
@@ -337,29 +357,29 @@ STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL                           :{DECIMAL}{NBSP}
 STR_UNITS_POWER_SI_TO_WEIGHT_METRIC                             :{DECIMAL}{NBSP}кВт/т
 STR_UNITS_POWER_SI_TO_WEIGHT_SI                                 :{DECIMAL}{NBSP}Вт/кг
 
-STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{COMMA}{NBSP}т
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}{NBSP}т
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}{NBSP}кг
+STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}т
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}{NBSP}т
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}{NBSP}кг
 
-STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{COMMA}{NBSP}тонн{P а ы ""}
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA}{NBSP}тонн{P а ы ""}
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA}{NBSP}кг
+STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}тонн{P а ы ""}
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL}{NBSP}тонн{P а ы ""}
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL}{NBSP}кг
 
-STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{COMMA}{NBSP}гал.
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}{NBSP}л
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}{NBSP}м³
+STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}гал.
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}{NBSP}л
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}{NBSP}м³
 
-STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{COMMA}{NBSP}галлон{P "" а ов}
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA}{NBSP}литр{P "" а ов}
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA}{NBSP}м³
+STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}галлон{P "" а ов}
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL}{NBSP}литр{P "" а ов}
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL}{NBSP}м³
 
-STR_UNITS_FORCE_IMPERIAL                                        :{COMMA}{NBSP}фунт{P "" а ов}-силы
-STR_UNITS_FORCE_METRIC                                          :{COMMA}{NBSP}кгс
-STR_UNITS_FORCE_SI                                              :{COMMA}{NBSP}кН
+STR_UNITS_FORCE_IMPERIAL                                        :{DECIMAL}{NBSP}фунт{P "" а ов}-силы
+STR_UNITS_FORCE_METRIC                                          :{DECIMAL}{NBSP}кгс
+STR_UNITS_FORCE_SI                                              :{DECIMAL}{NBSP}кН
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA}{NBSP}фут{P "" а ов}
-STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}м
-STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}м
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}{NBSP}фут{P "" а ов}
+STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL}{NBSP}м
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL}{NBSP}м
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}Фильтр:
@@ -742,7 +762,7 @@ STR_GRAPH_OPERATING_PROFIT_CAPTION                              :{WHITE}Граф
 STR_GRAPH_INCOME_CAPTION                                        :{WHITE}График дохода
 STR_GRAPH_CARGO_DELIVERED_CAPTION                               :{WHITE}Количество доставленного груза
 STR_GRAPH_COMPANY_PERFORMANCE_RATINGS_CAPTION                   :{WHITE}Рейтинг компании (макс=1000)
-STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}Стоимость компании
+STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}График изменения стоимости компании
 
 STR_GRAPH_CARGO_PAYMENT_RATES_CAPTION                           :{WHITE}Оплата за перевозку грузов
 STR_GRAPH_CARGO_PAYMENT_RATES_X_LABEL                           :{TINY_FONT}{BLACK}Дней в пути
@@ -991,7 +1011,7 @@ STR_NEWS_COMPANY_BANKRUPT_TITLE                                 :{BIG_FONT}{BLAC
 STR_NEWS_COMPANY_BANKRUPT_DESCRIPTION                           :{BIG_FONT}{BLACK}{STRING} была закрыта кредиторами! Все активы распроданы!
 STR_NEWS_COMPANY_LAUNCH_TITLE                                   :{BIG_FONT}{BLACK}Основана новая транспортная компания!
 STR_NEWS_COMPANY_LAUNCH_DESCRIPTION                             :{BIG_FONT}{BLACK}{STRING} начинает строительство около г.{NBSP}{TOWN}!
-STR_NEWS_MERGER_TAKEOVER_TITLE                                  :{BIG_FONT}{BLACK}{STRING} выкуплена {STRING}!
+STR_NEWS_MERGER_TAKEOVER_TITLE                                  :{BIG_FONT}{BLACK}{STRING} поглощена компанией {STRING}! Сумма сделки не разглашается.
 STR_PRESIDENT_NAME_MANAGER                                      :{BLACK}{PRESIDENT_NAME}{}(Директор)
 
 STR_NEWS_NEW_TOWN                                               :{BLACK}{BIG_FONT}Компания «{STRING}» профинансировала основание города {TOWN}!
@@ -1074,64 +1094,84 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW                                :{BLACK}В ос�
 STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}Показать в основном окне
 
 # Game options window
-STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Основные настройки
+STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Настройки
+
+STR_GAME_OPTIONS_TAB_GENERAL                                    :Основные
+STR_GAME_OPTIONS_TAB_GENERAL_TT                                 :{BLACK}Основные настройки игры
+STR_GAME_OPTIONS_TAB_GRAPHICS                                   :Графика
+STR_GAME_OPTIONS_TAB_GRAPHICS_TT                                :{BLACK}Настройки графики
+STR_GAME_OPTIONS_TAB_SOUND                                      :Звук
+STR_GAME_OPTIONS_TAB_SOUND_TT                                   :{BLACK}Настройки звука и музыки
+
+STR_GAME_OPTIONS_VOLUME                                         :Громкость
+STR_GAME_OPTIONS_SFX_VOLUME                                     :Звуковые эффекты
+STR_GAME_OPTIONS_MUSIC_VOLUME                                   :Музыка
+
+STR_GAME_OPTIONS_VOLUME_0                                       :0%
+STR_GAME_OPTIONS_VOLUME_25                                      :25%
+STR_GAME_OPTIONS_VOLUME_50                                      :50%
+STR_GAME_OPTIONS_VOLUME_75                                      :75%
+STR_GAME_OPTIONS_VOLUME_100                                     :100%
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}Валюта
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}Смена используемой в игре валюты
 
+STR_GAME_OPTIONS_CURRENCY_CODE                                  :{STRING} ({STRING})
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :Английский фунт (£)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :Доллар США ($)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :Евро (€)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :Японская иена (¥)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :Австрийский шиллинг (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :Бельгийский франк (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :Швейцарский франк (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :Чешская крона (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :Немецкая марка (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :Датская крона (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :Испанская песета (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :Финская марка (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :Французский франк (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :Греческая драхма (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :Венгерский форинт (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :Исландская крона (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :Итальянская лира (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :Нидерландский гульден (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :Норвежская крона (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :Польский злотый (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :Румынский лей (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :Российский рубль (старый) (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :Словенский толар (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :Шведская крона (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :Турецкая лира (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :Словацкая крона (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :Бразильский реал (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :Эстонская крона (EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :Литовский лит (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :Южнокорейская вона (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Южноафриканский ранд (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :Английский фунт
+STR_GAME_OPTIONS_CURRENCY_USD                                   :Доллар США
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :Евро
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :Японская иена
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :Австрийский шиллинг
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :Бельгийский франк
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :Швейцарский франк
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :Чешская крона
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :Немецкая марка
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :Датская крона
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :Испанская песета
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :Финская марка
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :Французский франк
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :Греческая драхма
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :Венгерский форинт
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :Исландская крона
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :Итальянская лира
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :Нидерландский гульден
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :Норвежская крона
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :Польский злотый
+STR_GAME_OPTIONS_CURRENCY_RON                                   :Румынский лей
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :Российский рубль (старый)
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :Словенский толар
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :Шведская крона
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :Турецкая лира
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :Словацкая крона
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :Бразильский реал
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :Эстонская крона
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :Литовский лит
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :Южнокорейская вона
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Южноафриканский ранд
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :Своя...
-STR_GAME_OPTIONS_CURRENCY_GEL                                   :Грузинский лари (GEL)
-STR_GAME_OPTIONS_CURRENCY_IRR                                   :Иранский риал (IRR)
-STR_GAME_OPTIONS_CURRENCY_RUB                                   :Российский рубль (RUB)
-STR_GAME_OPTIONS_CURRENCY_MXN                                   :Мексиканский песо (MXN)
-STR_GAME_OPTIONS_CURRENCY_NTD                                   :Новый тайваньский доллар (NTD)
-STR_GAME_OPTIONS_CURRENCY_CNY                                   :Китайский юань (CNY)
-STR_GAME_OPTIONS_CURRENCY_HKD                                   :Гонконгский доллар (HKD)
-STR_GAME_OPTIONS_CURRENCY_INR                                   :Индийская рупия (INR)
-STR_GAME_OPTIONS_CURRENCY_IDR                                   :Индонезийская рупия (IDR)
-STR_GAME_OPTIONS_CURRENCY_MYR                                   :Малайзийский ринггит (MYR)
+STR_GAME_OPTIONS_CURRENCY_GEL                                   :Грузинский лари
+STR_GAME_OPTIONS_CURRENCY_IRR                                   :Иранский риал
+STR_GAME_OPTIONS_CURRENCY_RUB                                   :Российский рубль
+STR_GAME_OPTIONS_CURRENCY_MXN                                   :Мексиканский песо
+STR_GAME_OPTIONS_CURRENCY_NTD                                   :Новый тайваньский доллар
+STR_GAME_OPTIONS_CURRENCY_CNY                                   :Китайский юань
+STR_GAME_OPTIONS_CURRENCY_HKD                                   :Гонконгский доллар
+STR_GAME_OPTIONS_CURRENCY_INR                                   :Индийская рупия
+STR_GAME_OPTIONS_CURRENCY_IDR                                   :Индонезийская рупия
+STR_GAME_OPTIONS_CURRENCY_MYR                                   :Малайзийский ринггит
 
 STR_GAME_OPTIONS_AUTOSAVE_FRAME                                 :{BLACK}Автосохранение
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Интервал автосохранения игры
 
 # Autosave dropdown
 ###length 5
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :Отключено
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :Каждый месяц
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :Каждые 3 месяца
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :Каждые 6 месяцев
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :Каждый год
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :отключено
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_10_MINUTES             :каждые 10 минут
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_30_MINUTES             :каждые 30 минут
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_60_MINUTES             :каждые 60 минут
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_120_MINUTES            :каждые 120 минут
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Язык
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Язык пользовательского интерфейса
@@ -1168,6 +1208,14 @@ STR_GAME_OPTIONS_GUI_SCALE_3X                                   :3x
 STR_GAME_OPTIONS_GUI_SCALE_4X                                   :4x
 STR_GAME_OPTIONS_GUI_SCALE_5X                                   :5x
 
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_FRAME                       :{BLACK}Автоматический сбор данных
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY                             :{BLACK}Разрешить сбор и отправку данных
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_TOOLTIP                     :{BLACK}Разрешить автоматический сбор данных о ваших настройках игры и используемых модулях. OpenTTD отправит эти данные при закрытии игры.
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_LINK                        :{BLACK}О сборе данных и приватности
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_LINK_TOOLTIP                :{BLACK}Открыть ссылку с информацией об автоматическом сборе данных
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_PREVIEW                     :{BLACK}Просмотр собранных данных
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_PREVIEW_TOOLTIP             :{BLACK}Показать данные, собранные в текущем сеансе и подготовленные к отправке
+
 STR_GAME_OPTIONS_GRAPHICS                                       :{BLACK}Настройки графики
 
 STR_GAME_OPTIONS_REFRESH_RATE                                   :{BLACK}Частота обновления экрана
@@ -1176,12 +1224,12 @@ STR_GAME_OPTIONS_REFRESH_RATE_ITEM                              :{NUM}{NBSP}Гц
 STR_GAME_OPTIONS_REFRESH_RATE_WARNING                           :{WHITE}Частота обновления выше 60{NBSP}Гц может отрицательно сказаться на производительности.
 
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}Основной графический пакет
-STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Выбор основного графического пакета
+STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}Выбор основного графического пакета (его нельзя сменить в игре; только в главном меню)
 STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM} отсутствующи{P й х х}/повреждённы{P й х х} файл{P "" а ов}
 STR_GAME_OPTIONS_BASE_GRF_DESCRIPTION_TOOLTIP                   :{BLACK}Дополнительная информация о выбранном графическом пакете
 
 STR_GAME_OPTIONS_BASE_SFX                                       :{BLACK}Основной звуковой пакет
-STR_GAME_OPTIONS_BASE_SFX_TOOLTIP                               :{BLACK}Выбор основного пакета звуковых эффектов
+STR_GAME_OPTIONS_BASE_SFX_TOOLTIP                               :{BLACK}Выбор основного пакета звуковых эффектов (его нельзя сменить в игре; только в главном меню)
 STR_GAME_OPTIONS_BASE_SFX_DESCRIPTION_TOOLTIP                   :{BLACK}Дополнительная информация о выбранном пакете звуковых эффектов
 
 STR_GAME_OPTIONS_BASE_MUSIC                                     :{BLACK}Основной музыкальный пакет
@@ -1301,6 +1349,7 @@ STR_CONFIG_SETTING_EXPAND_ALL                                   :{BLACK}Разв
 STR_CONFIG_SETTING_COLLAPSE_ALL                                 :{BLACK}Свернуть всё
 STR_CONFIG_SETTING_RESET_ALL                                    :{BLACK}Сбросить все значения
 STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT            :(нет описания)
+STR_CONFIG_SETTING_VALUE                                        :{PUSH_COLOUR}{ORANGE}{STRING}{POP_COLOUR}
 STR_CONFIG_SETTING_DEFAULT_VALUE                                :{LTBLUE}Значение по умолчанию: {ORANGE}{STRING}
 STR_CONFIG_SETTING_TYPE                                         :{LTBLUE}Тип настроек: {ORANGE}{STRING}
 STR_CONFIG_SETTING_TYPE_CLIENT                                  :Настройки клиента (не содержатся в файлах сохранений; влияют на все игры)
@@ -1355,6 +1404,8 @@ STR_CONFIG_SETTING_REALISTIC.f                                  :реалист�
 STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :слева
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :посередине
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :справа
+
+STR_CONFIG_SETTING_SECONDS_VALUE                                :{COMMA}{NBSP}секунд{P 0 а ы ""}
 
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :Максимальная сумма кредита: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :Максимальная сумма кредита для компании (без учета инфляции)
@@ -1483,7 +1534,7 @@ STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT                           :Создава�
 STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT_HELPTEXT                  :Обычно транспортное средство останавливается на каждой станции, через которое проезжает. Если в задании стоит метка «без остановок», то ТС не останавливается на пути к станции назначения. Эта настройка влияет только на вновь создаваемые задания; после создания маршрута каждое задание можно настроить индивидуально.
 
 STR_CONFIG_SETTING_STOP_LOCATION                                :По умолчанию поезда останавливаются {STRING} станции
-STR_CONFIG_SETTING_STOP_LOCATION_HELPTEXT                       :Укажите, в какой части станции должны останавливаться поезда. «Начало станции» обозначает тот край платформы, куда поезд прибывает; «середина станции» - середину платформы; «конец станции» - край платформы, противоположный тому, откуда прибыл поезд. Учтите, что это значения по умолчанию; в каждом задании можно указать своё место остановки.
+STR_CONFIG_SETTING_STOP_LOCATION_HELPTEXT                       :Укажите, в какой части станции должны останавливаться поезда. «Начало станции» обозначает тот край платформы, куда поезд прибывает; «середина станции» - середину платформы; «конец станции» - край платформы, противоположный тому, откуда прибыл поезд. Учтите, что это значения по умолчанию; для каждого задания можно указать место остановки щелчком по тексту задания.
 ###length 3
 STR_CONFIG_SETTING_STOP_LOCATION_NEAR_END                       :в начале
 STR_CONFIG_SETTING_STOP_LOCATION_MIDDLE                         :в середине
@@ -1526,8 +1577,8 @@ STR_CONFIG_SETTING_PLANE_CRASHES_NONE                           :отсутст�
 STR_CONFIG_SETTING_PLANE_CRASHES_REDUCED                        :сниженная
 STR_CONFIG_SETTING_PLANE_CRASHES_NORMAL                         :обычная
 
-STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD                            :Позволять строить остановки на городских дорогах: {STRING}
-STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD_HELPTEXT                   :Разрешить компаниям строить сквозные остановки на муниципальных дорогах
+STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD                            :Позволять строить остановки на муниципальных дорогах: {STRING}
+STR_CONFIG_SETTING_STOP_ON_TOWN_ROAD_HELPTEXT                   :Разрешить компаниям строить сквозные остановки на дорогах, построенных за счёт городского бюджета
 STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD                      :Разрешить проезд через остановки соперников по их дорогам: {STRING}
 STR_CONFIG_SETTING_STOP_ON_COMPETITOR_ROAD_HELPTEXT             :Разрешить компаниям строить сквозные остановки на дорогах, принадлежащих другим транспортным компаниям
 STR_CONFIG_SETTING_DYNAMIC_ENGINES_EXISTING_VEHICLES            :{WHITE}Изменение этого параметра невозможно, если в игре есть транспортные средства.
@@ -1537,6 +1588,9 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Включае�
 
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :Фирменный цвет компании: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :Выберите начальный фирменный цвет компании
+
+STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_SECONDARY            :Дополнительный цвет компании: {STRING}
+STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_SECONDARY_HELPTEXT   :Дополнительный цвет транспорта компании. Он будет использоваться, если подключён модуль NewGRF с поддержкой дополнительного цвета.
 
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Аэропорты не устаревают: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :При включении все типы аэропортов доступны для строительства в любое время после их первоначального появления
@@ -1571,7 +1625,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :Минимал�
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :Длительность сообщения об ошибке: {STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :Длительность показа красных окон с сообщениями об ошибках. Эта настройка не действует на некоторые сообщения (о критических ошибках) - они не закрываются автоматически, только вручную.
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} секунд{P а ы ""}
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :Показывать подсказки: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :Задержка между наведением указателя мыши на элемент интерфейса и появлением подсказки. Если это значение равно 0, подсказки появляются по щелчку правой кнопки мыши.
@@ -1682,7 +1735,7 @@ STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREY_TO_RED                :серый и �
 STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREYSCALE                  :оттенки серого
 
 STR_CONFIG_SETTING_SCROLLMODE                                   :Перемещение обзора: {STRING}
-STR_CONFIG_SETTING_SCROLLMODE_HELPTEXT                          :Способ перемещения по игровому полю
+STR_CONFIG_SETTING_SCROLLMODE_HELPTEXT                          :Способ перемещения по игровому полю. Варианты с зафиксированным курсором не работают на некоторых системах, например, в браузерах, на сенсорных экранах, на Linux с Wayland и т. д.
 ###length 4
 STR_CONFIG_SETTING_SCROLLMODE_DEFAULT                           :перемещать обзор с помощью ПКМ, зафиксировав курсор
 STR_CONFIG_SETTING_SCROLLMODE_RMB_LOCKED                        :перемещать карту с помощью ПКМ, зафиксировав курсор
@@ -1739,9 +1792,10 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :Выкл.
 
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE                        :Закрывать окна щелчком ПКМ: {STRING}
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :Закрывать окно щелчком правой кнопкой мыши в его пределах. При этом отключается появление подсказок по правой кнопке.
-
-STR_CONFIG_SETTING_AUTOSAVE                                     :Автосохранение: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Укажите интервал между автоматическими сохранениями
+###length 3
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_NO                     :нет
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_YES                    :да
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_YES_EXCEPT_STICKY      :да, кроме закреплённых
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :Использовать {STRING} формат даты для имён сохранений
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :Формат даты, использующийся в названиях сохранённых игр
@@ -1863,7 +1917,7 @@ STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_HELPTEXT                   :Объём па
 STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_VALUE                      :{COMMA} МиБ
 
 STR_CONFIG_SETTING_SERVINT_ISPERCENT                            :Интервал тех. обслуживания в процентах: {STRING}
-STR_CONFIG_SETTING_SERVINT_ISPERCENT_HELPTEXT                   :Выберите, должно ли техническое обслуживание транспорта выполняться через определённые промежутки времени, либо при снижении надёжности транспортного средства на определённый процент от максимума
+STR_CONFIG_SETTING_SERVINT_ISPERCENT_HELPTEXT                   :При включении транспортные средства будут отправляться на техническое обслуживание после падения надёжности на указанный процент от максимальной.{}Например, при максимальной надёжности 90% и указанном интервале ТО 20% транспортное средство уйдёт на обслуживание при падении надёжности до 72%.
 
 STR_CONFIG_SETTING_SERVINT_TRAINS                               :Интервал ТО по умолчанию для поездов: {STRING}
 STR_CONFIG_SETTING_SERVINT_TRAINS_HELPTEXT                      :Настройка периодичности технического обслуживания для новых поездов
@@ -1955,15 +2009,6 @@ STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :классич�
 STR_CONFIG_SETTING_ECONOMY_TYPE_SMOOTH                          :плавная
 STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :стабильная
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :Разрешить торговлю акциями других компаний: {STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Разрешает торговлю акциями транспортных компаний. Акции выпускаются компаниями через некоторое время после основания.
-
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Мин. возраст компании для выпуска акций: {STRING}
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Минимальный возраст, которого должна достичь компания для начала выпуска акций, которые смогут покупать и продавать другие игроки.
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_VALUE                   :{COMMA} {P год года лет}
-###setting-zero-is-special
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_NO_MIN                  :без ограничений по возрасту
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Процент дохода, начисляемый при частичной перевозке: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Процент прибыли, начисляемый транспорту за частичную перевозку груза.
 
@@ -2002,8 +2047,8 @@ STR_CONFIG_SETTING_ALLOW_TOWN_ROADS_HELPTEXT                    :Разреши�
 STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS                   :Города могут создавать ж/д переезды: {STRING}
 STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS_HELPTEXT          :Разрешить городам строить дороги через железнодорожные пути
 
-STR_CONFIG_SETTING_NOISE_LEVEL                                  :Разрешить городам контролировать уровень шума аэропортов: {STRING}
-STR_CONFIG_SETTING_NOISE_LEVEL_HELPTEXT                         :При выключенной настройке количество аэропортов ограничено двумя на каждый город. При включенной - администрация города ограничивает только уровень допустимого шума (он зависит от количества жителей). Уровень шума, производимого аэропортом, зависит от его типа и расстояния от центра города.
+STR_CONFIG_SETTING_NOISE_LEVEL                                  :Ограничить строительство аэропортов в соответствии с уровнем шума: {STRING}
+STR_CONFIG_SETTING_NOISE_LEVEL_HELPTEXT                         :Разрешить городам регулировать строительство аэропортов в соответствии с допустимым уровнем шума, который зависит от населения города, а также от размера аэропорта и расстояния до него. При отключенной настройке количество аэропортов ограничено двумя на каждый город, если только отношение администрации к компаниям не настроено как "дозволяющее".
 
 STR_CONFIG_SETTING_TOWN_FOUNDING                                :Строительство городов в игре: {STRING}
 STR_CONFIG_SETTING_TOWN_FOUNDING_HELPTEXT                       :Включение данной настройки позволяет игрокам основывать новые города
@@ -2077,10 +2122,10 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :нет
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :Стартовый множитель размера мегаполисов: {STRING}
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER_HELPTEXT                :Средний размер мегаполисов по сравнению с остальными городами в начале игры
 
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL                           :Обновлять граф распределения раз в {STRING}{NBSP}д{P 0:2 ень ня ней}
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT                  :Период перерасчёта графов распределения. В каждом цикле рассчитывается не граф полностью, а только один из его компонентов. Чем меньше это значение, тем больше будет нагрузка на процессор. Чем больше значение, тем больше времени пройдёт перед началом расчёта графов для новых маршрутов.
-STR_CONFIG_SETTING_LINKGRAPH_TIME                               :Пересчитывать граф распределения раз в {STRING}{NBSP}д{P 0:2 ень ня ней}
-STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :Время, отведённое для перерасчёта компонентов графа. Расчёт запускается отдельным потоком и продолжается в течение указанного количества игровых дней. Если значение будет слишком маленьким, то, возможно, расчёт не успеет завершиться, и игра будет ждать завершения (это приведёт к задержкам). При больших значениях графы распределения будут медленнее обновляться при изменениях маршрутов.
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_INTERVAL                    :Интервал обновления графа распределения: {STRING}
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_INTERVAL_HELPTEXT           :Интервалы между перерасчётами графов распределения грузов. Каждый перерасчёт обновляет один компонент графа. То есть, по истечении указанного здесь времени будет обновлён не весь граф, а только один из его компонентов. Чем ниже значение, тем выше нагрузка на процессор. Чем выше значение, тем дольше не будет работать распределение грузов на новых маршрутах.
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_TIME                        :Продолжительность перерасчёта графа распределения: {STRING}
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_TIME_HELPTEXT               :Время, выделяемое на каждый перерасчёт одного из компонентов графа распределения грузов. Расчёт выполняется в отдельном вычислительном потоке. Чем ниже значение, тем выше вероятность того, что расчёт не будет выполнен за указанное время; в таком случае игра будет приостановлена до завершения расчёта. Чем выше значение, тем медленнее будет обновляться граф распределения в случае изменения маршрутов.
 
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :Распределение пассажиров: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :«Симметричное» означает, что примерно одинаковое количество пассажиров будет направляться по прямому и обратному маршрутам.{}«Несимметричное» означает, что пассажиропотоки в любых направлениях не будут зависеть друг от друга.{}«Вручную» - не использовать автоматическое распределение для пассажиров.
@@ -2151,30 +2196,30 @@ STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :английс�
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :метрическая (м)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :СИ (м)
 
-STR_CONFIG_SETTING_LOCALISATION                                 :{ORANGE}Локализация
-STR_CONFIG_SETTING_GRAPHICS                                     :{ORANGE}Графика
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}Звуковые эффекты
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}Интерфейс
-STR_CONFIG_SETTING_INTERFACE_GENERAL                            :{ORANGE}Общие настройки
-STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}Окна просмотра
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}Строительство
-STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}Новости и информация
-STR_CONFIG_SETTING_COMPANY                                      :{ORANGE}Компания
-STR_CONFIG_SETTING_ACCOUNTING                                   :{ORANGE}Финансы
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}Транспорт
-STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :{ORANGE}Физическая модель
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}Маршруты
-STR_CONFIG_SETTING_LIMITATIONS                                  :{ORANGE}Ограничения
-STR_CONFIG_SETTING_ACCIDENTS                                    :{ORANGE}Аварии и катастрофы
-STR_CONFIG_SETTING_GENWORLD                                     :{ORANGE}Создание карты
-STR_CONFIG_SETTING_ENVIRONMENT                                  :{ORANGE}Окружение
-STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :{ORANGE}Городская администрация
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}Города
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}Предприятия
-STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Распределение грузов
-STR_CONFIG_SETTING_AI                                           :{ORANGE}Конкуренты
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Искусственный интеллект
-STR_CONFIG_SETTING_NETWORK                                      :{ORANGE}Сеть
+STR_CONFIG_SETTING_LOCALISATION                                 :Локализация
+STR_CONFIG_SETTING_GRAPHICS                                     :Графика
+STR_CONFIG_SETTING_SOUND                                        :Звуковые эффекты
+STR_CONFIG_SETTING_INTERFACE                                    :Интерфейс
+STR_CONFIG_SETTING_INTERFACE_GENERAL                            :Общие настройки
+STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :Окна просмотра
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :Строительство
+STR_CONFIG_SETTING_ADVISORS                                     :Новости и информация
+STR_CONFIG_SETTING_COMPANY                                      :Компания
+STR_CONFIG_SETTING_ACCOUNTING                                   :Финансы
+STR_CONFIG_SETTING_VEHICLES                                     :Транспорт
+STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :Физическая модель
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :Маршруты
+STR_CONFIG_SETTING_LIMITATIONS                                  :Ограничения
+STR_CONFIG_SETTING_ACCIDENTS                                    :Аварии и катастрофы
+STR_CONFIG_SETTING_GENWORLD                                     :Создание карты
+STR_CONFIG_SETTING_ENVIRONMENT                                  :Окружение
+STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :Городская администрация
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :Города
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :Предприятия
+STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :Распределение грузов
+STR_CONFIG_SETTING_AI                                           :Конкуренты
+STR_CONFIG_SETTING_AI_NPC                                       :Искусственный интеллект
+STR_CONFIG_SETTING_NETWORK                                      :Сеть
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :Алгоритм поиска пути для поездов: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :Алгоритм поиска пути, используемый поездами
@@ -2213,6 +2258,7 @@ STR_CONFIG_ERROR_SPRITECACHE_TOO_BIG                            :{WHITE}Не у�
 # Video initalization errors
 STR_VIDEO_DRIVER_ERROR                                          :{WHITE}Ошибка в настройках графики...
 STR_VIDEO_DRIVER_ERROR_NO_HARDWARE_ACCELERATION                 :{WHITE}... не найдено подходящего графического процессора. Аппаратное ускорение отключено.
+STR_VIDEO_DRIVER_ERROR_HARDWARE_ACCELERATION_CRASH              :{WHITE}... драйвер видеокарты вызвал критическую ошибку. Аппаратное ускорение отключено.
 
 # Intro window
 STR_INTRO_CAPTION                                               :{WHITE}OpenTTD {REV}
@@ -2543,6 +2589,13 @@ STR_NETWORK_ASK_RELAY_NO                                        :{BLACK}Нет
 STR_NETWORK_ASK_RELAY_YES_ONCE                                  :{BLACK}Да, однократно
 STR_NETWORK_ASK_RELAY_YES_ALWAYS                                :{BLACK}Да, всегда
 
+STR_NETWORK_ASK_SURVEY_CAPTION                                  :Разрешить автоматический сбор данных?
+STR_NETWORK_ASK_SURVEY_TEXT                                     :Разрешаете ли вы автоматический сбор данных о ваших настройках игры и используемых модулях?{}OpenTTD отправит эти данные при закрытии игры.{}Вы можете в любой момент открыть настройки и изменить своё решение.
+STR_NETWORK_ASK_SURVEY_PREVIEW                                  :Просмотр собранных данных
+STR_NETWORK_ASK_SURVEY_LINK                                     :О сборе данных и приватности
+STR_NETWORK_ASK_SURVEY_NO                                       :Нет
+STR_NETWORK_ASK_SURVEY_YES                                      :Да
+
 STR_NETWORK_SPECTATORS                                          :Зрители
 
 # Network set password
@@ -2760,7 +2813,7 @@ STR_TRANSPARENT_BUILDINGS_TOOLTIP                               :{BLACK}Пере
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}Переключение прозрачности мостов. Ctrl+щелчок - заблокировать.
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}Переключение прозрачности таких сооружений, как маяки и антенны. Ctrl+щелчок - заблокировать.
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}Переключение прозрачности контактной сети. Ctrl+щелчок - заблокировать.
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Переключение прозрачности индикаторов загрузки. Ctrl+щелчок - заблокировать.
+STR_TRANSPARENT_TEXT_TOOLTIP                                    :{BLACK}Переключение прозрачности индикаторов погрузки, доходов и расходов. Ctrl+щелчок - заблокировать.
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}Сделать объекты не прозрачными, а полностью невидимыми
 
 # Linkgraph legend window
@@ -2852,8 +2905,11 @@ STR_STATION_BUILD_DRAG_DROP_TOOLTIP                             :{BLACK}Пост
 STR_STATION_BUILD_STATION_CLASS_TOOLTIP                         :{BLACK}Выберите класс станций для отображения
 STR_STATION_BUILD_STATION_TYPE_TOOLTIP                          :{BLACK}Выберите тип станции для постройки
 
-STR_STATION_CLASS_DFLT                                          :По умолчанию
+STR_STATION_CLASS_DFLT                                          :Стандартная станция
+STR_STATION_CLASS_DFLT_STATION                                  :Стандартная ж/д станция
+STR_STATION_CLASS_DFLT_ROADSTOP                                 :Стандартная остановка
 STR_STATION_CLASS_WAYP                                          :Точки пути
+STR_STATION_CLASS_WAYP_WAYPOINT                                 :Стандартная путевая точка
 
 # Signal window
 STR_BUILD_SIGNAL_CAPTION                                        :{WHITE}Выбор сигналов
@@ -3065,7 +3121,7 @@ STR_FOUND_TOWN_SELECT_LAYOUT_3X3_GRID                           :{BLACK}Решё
 STR_FOUND_TOWN_SELECT_LAYOUT_RANDOM                             :{BLACK}Случайная
 
 # Fund new industry window
-STR_FUND_INDUSTRY_CAPTION                                       :{WHITE}Создать новое предприятие
+STR_FUND_INDUSTRY_CAPTION                                       :{WHITE}Создание предприятий
 STR_FUND_INDUSTRY_SELECTION_TOOLTIP                             :{BLACK}Выберите тип предприятия из списка
 STR_FUND_INDUSTRY_MANY_RANDOM_INDUSTRIES                        :{BLACK}Множество различных предприятий
 STR_FUND_INDUSTRY_MANY_RANDOM_INDUSTRIES_TOOLTIP                :{BLACK}Разместить на карте различные предприятия случайным образом
@@ -3081,14 +3137,14 @@ STR_FUND_INDUSTRY_REMOVE_ALL_INDUSTRIES_CAPTION                 :{WHITE}Убра
 STR_FUND_INDUSTRY_REMOVE_ALL_INDUSTRIES_QUERY                   :{YELLOW}Убрать все предприятия с карты?
 
 # Industry cargoes window
-STR_INDUSTRY_CARGOES_INDUSTRY_CAPTION                           :{WHITE}Цепочка грузоперевозок для {STRING.gen}
-STR_INDUSTRY_CARGOES_CARGO_CAPTION                              :{WHITE}Цепочка грузоперевозок для {STRING.gen}
+STR_INDUSTRY_CARGOES_INDUSTRY_CAPTION                           :{WHITE}Цепочка грузоперевозок - {STRING}
+STR_INDUSTRY_CARGOES_CARGO_CAPTION                              :{WHITE}Цепочка грузоперевозок - {STRING}
 STR_INDUSTRY_CARGOES_PRODUCERS                                  :{WHITE}Производители
 STR_INDUSTRY_CARGOES_CUSTOMERS                                  :{WHITE}Потребители
 STR_INDUSTRY_CARGOES_HOUSES                                     :{WHITE}Городские здания
 STR_INDUSTRY_CARGOES_INDUSTRY_TOOLTIP                           :{BLACK}Щелчок по предприятию покажет его поставщиков и потребителей
 STR_INDUSTRY_CARGOES_CARGO_TOOLTIP                              :{BLACK}{STRING}{}Щелчок по типу груза покажет его производителей и потребителей
-STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}Показать цепочку
+STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}Показать связи
 STR_INDUSTRY_DISPLAY_CHAIN_TOOLTIP                              :{BLACK}Показать производителей сырья и потребителей продукции этого предприятия
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP                            :{BLACK}Показать на карте
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP_TOOLTIP                    :{BLACK}Показать на карте выбранные предприятия
@@ -3683,8 +3739,8 @@ STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_LARGE_ADVERTISING            :{PUSH_COLOUR}{Y
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_ROAD_RECONSTRUCTION          :{PUSH_COLOUR}{YELLOW}Профинансировать реконструкцию городских дорог.{}Вызывает большие нарушения движения на срок до 6 месяцев.{}{POP_COLOUR}Стоимость: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_STATUE_OF_COMPANY            :{PUSH_COLOUR}{YELLOW}Установить статую в честь вашей компании.{}Она добавит рейтинг вашим станциям.{}{POP_COLOUR}Стоимость: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_NEW_BUILDINGS                :{PUSH_COLOUR}{YELLOW}Профинансировать строительство новых зданий.{}Это временно ускорит рост города.{}{POP_COLOUR}Стоимость: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{PUSH_COLOUR}{YELLOW}Приобрести годовые эксклюзивные права на транспортные перевозки в городе.{}Городская администрация разрешит пользоваться ТОЛЬКО вашими станциями.{}{POP_COLOUR}Стоимость: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{PUSH_COLOUR}{YELLOW}Дать взятку городской администрации для повышения рейтинга. Существует риск санкций, если факт подкупа раскроется.{}{POP_COLOUR}Цена: {CURRENCY_LONG}
+STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{PUSH_COLOUR}{YELLOW}Приобрести годовые эксклюзивные права на транспортные перевозки в городе.{}Городская администрация разрешит пользоваться только вашими станциями. Однако контракт может быть аннулирован, если конкурирующей компании удастся подкупить администрацию.{}{POP_COLOUR}Стоимость: {CURRENCY_LONG}
+STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{PUSH_COLOUR}{YELLOW}Дать взятку городской администрации для повышения рейтинга и отмены эксклюзивных транспортных прав конкурирующей компании. Существует риск санкций, если факт подкупа раскроется.{}{POP_COLOUR}Цена: {CURRENCY_LONG}
 
 # Goal window
 STR_GOALS_CAPTION                                               :{WHITE}Задачи компании «{COMPANY}»
@@ -3888,7 +3944,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}{COMMA} 
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}{COMMA} суд{P но на ов}
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}нет
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}Стоимость компании: {WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% владеет {COMPANY})
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}Инфраструктура:
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}{COMMA} ж/д участ{P ок ка ков}
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}{COMMA} дорожны{P й х х} участ{P ок ка ков}
@@ -3907,6 +3962,8 @@ STR_COMPANY_VIEW_INFRASTRUCTURE_BUTTON                          :{BLACK}Подр
 STR_COMPANY_VIEW_INFRASTRUCTURE_TOOLTIP                         :{BLACK}Посмотреть подробный состав инфраструктуры
 STR_COMPANY_VIEW_GIVE_MONEY_BUTTON                              :{BLACK}Передать деньги
 STR_COMPANY_VIEW_GIVE_MONEY_TOOLTIP                             :{BLACK}Передать некоторую сумму денег этой компании
+STR_COMPANY_VIEW_HOSTILE_TAKEOVER_BUTTON                        :{BLACK}Поглощение
+STR_COMPANY_VIEW_HOSTILE_TAKEOVER_TOOLTIP                       :{BLACK}Осуществить поглощение компании
 
 STR_COMPANY_VIEW_NEW_FACE_BUTTON                                :{BLACK}Внешность
 STR_COMPANY_VIEW_NEW_FACE_TOOLTIP                               :{BLACK}Изменить внешность директора
@@ -3917,16 +3974,12 @@ STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}Изме
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}Директор
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}Изменить имя директора
 
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Купить 25% акций компании
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Продать 25% акций компании
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Купить 25% акций этой компании. Shift+щелчок - оценка стоимости акций.
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Продать 25% акций этой компании. Shift+щелчок - оценка стоимости акций.
-
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :Компания
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :Имя директора
 STR_COMPANY_VIEW_GIVE_MONEY_QUERY_CAPTION                       :Введите сумму, которую собираетесь передать
 
 STR_BUY_COMPANY_MESSAGE                                         :{WHITE}Мы ищем потенциального покупателя для нашей компании.{}{}Не желаете ли Вы приобрести {COMPANY} за {CURRENCY_LONG}?
+STR_BUY_COMPANY_HOSTILE_TAKEOVER                                :{WHITE}После поглощения компании {COMPANY} все её активы перейдут в вашу собственность. При этом вам придётся выплатить все долги компании плюс сумму, эквивалентную её двойному годовому доходу.{}{}Сумма сделки оценивается в {CURRENCY_LONG}.{}{}Осуществить поглощение компании?
 
 # Company infrastructure window
 STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}Инфраструктура «{COMPANY}»
@@ -3998,9 +4051,10 @@ STR_VEHICLE_LIST_MANAGE_LIST                                    :{BLACK}Орга
 STR_VEHICLE_LIST_MANAGE_LIST_TOOLTIP                            :{BLACK}Управление транспортом, находящимся в этом списке
 STR_VEHICLE_LIST_REPLACE_VEHICLES                               :Замена транспорта
 STR_VEHICLE_LIST_SEND_FOR_SERVICING                             :Отправить на тех. обслуживание
+STR_VEHICLE_LIST_CREATE_GROUP                                   :Создать группу
 STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR                     :{TINY_FONT}{BLACK}Прибыль в этом году: {CURRENCY_LONG} (в прошлом году: {CURRENCY_LONG})
-STR_VEHICLE_LIST_CARGO                                          :{TINY_FONT}{BLACK}[{CARGO_LIST}]
-STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{TINY_FONT}{BLACK}{STRING} {STRING}
+STR_VEHICLE_LIST_CARGO                                          :[{CARGO_LIST}]
+STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{STRING} {STRING}
 
 STR_VEHICLE_LIST_SEND_TRAIN_TO_DEPOT                            :Отправить в депо
 STR_VEHICLE_LIST_SEND_ROAD_VEHICLE_TO_DEPOT                     :Отправить в гараж
@@ -4732,8 +4786,8 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}Ожид
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}График
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}Переключение между графиком движения и ожидаемым временем прибытия/отправления
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :П:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :О:
+STR_TIMETABLE_ARRIVAL                                           :Приб: {COLOUR}{DATE_TINY}
+STR_TIMETABLE_DEPARTURE                                         :Отпр: {COLOUR}{DATE_TINY}
 
 
 # Date window (for timetable)
@@ -4779,6 +4833,7 @@ STR_AI_CONFIG_RANDOM_AI                                         :Случайн�
 STR_AI_CONFIG_NONE                                              :(нет)
 STR_AI_CONFIG_NAME_VERSION                                      :{STRING} {YELLOW}v{NUM}
 STR_AI_CONFIG_MAX_COMPETITORS                                   :{LTBLUE}Максимальное количество конкурентов: {ORANGE}{COMMA}
+STR_AI_CONFIG_COMPETITORS_INTERVAL                              :{LTBLUE}Интервал между запуском конкурентов: {ORANGE}{COMMA} минут{P а ы ""}
 
 STR_AI_CONFIG_MOVE_UP                                           :{BLACK}Вверх
 STR_AI_CONFIG_MOVE_UP_TOOLTIP                                   :{BLACK}Переместить этот модуль ИИ вверх по списку
@@ -4825,7 +4880,6 @@ STR_AI_SETTINGS_CAPTION_GAMESCRIPT                              :игровых 
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}Закрыть
 STR_AI_SETTINGS_RESET                                           :{BLACK}Сброс
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :Запускать этот ИИ через {ORANGE}{STRING} д{P 0:1 ень ня ней} после предыдущего
 
 
 # Textfile window
@@ -4834,10 +4888,11 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}Пере
 STR_TEXTFILE_VIEW_README                                        :{BLACK}Посмотреть инструкцию
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}Список изменений
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}Лицензия
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}Инструкция к {STRING} {STRING}
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}Список изменений к {STRING} {STRING}
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}Лицензия к {STRING} {STRING}
+STR_TEXTFILE_SURVEY_RESULT_CAPTION                              :{WHITE}Собранные данные
 
 
 # Vehicle loading indicators
@@ -4962,9 +5017,6 @@ STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}Нево
 STR_ERROR_CAN_T_GIVE_MONEY                                      :{WHITE}Невозможно передать деньги этой компании...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}Невозможно приобрести компанию...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}Невозможно построить штаб-квартиру компании...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Невозможно купить 25% акций этой компании...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Невозможно продать 25% акций этой компании...
-STR_ERROR_PROTECTED                                             :{WHITE}Эта компания ещё не выпускает акции...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}Невозможно построить города...
@@ -5297,6 +5349,7 @@ STR_ERROR_NO_BUOY                                               :{WHITE}Буи �
 STR_ERROR_CAN_T_TIMETABLE_VEHICLE                               :{WHITE}Не удалось составить график движения для этого транспорта...
 STR_ERROR_TIMETABLE_ONLY_WAIT_AT_STATIONS                       :{WHITE}Транспорт может ждать только на станции
 STR_ERROR_TIMETABLE_NOT_STOPPING_HERE                           :{WHITE}Это транспортное средство не останавливается на этой станции
+STR_ERROR_TIMETABLE_INCOMPLETE                                  :{WHITE}... график движения неполный
 
 # Sign related errors
 STR_ERROR_TOO_MANY_SIGNS                                        :{WHITE}... слишком много табличек
@@ -5745,10 +5798,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Вертолё�
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}.{STRING}.{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}.{ZEROFILL_NUM}.{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM} г.
 STR_FORMAT_DATE_LONG                                            :{STRING} {STRING.gen} {NUM} г.
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :(Компания {COMMA})
 STR_FORMAT_GROUP_NAME                                           :Группа {COMMA}
@@ -5813,49 +5866,28 @@ STR_VEHICLE_NAME                                                :{VEHICLE}
 STR_WAYPOINT_NAME                                               :{WAYPOINT}
 
 STR_JUST_CARGO                                                  :{CARGO_LONG}
+STR_JUST_RIGHT_ARROW                                            :{RIGHT_ARROW}
 STR_JUST_CHECKMARK                                              :{CHECKMARK}
 STR_JUST_COMMA                                                  :{COMMA}
 STR_JUST_CURRENCY_SHORT                                         :{CURRENCY_SHORT}
 STR_JUST_CURRENCY_LONG                                          :{CURRENCY_LONG}
 STR_JUST_CARGO_LIST                                             :{CARGO_LIST}
+STR_JUST_DECIMAL                                                :{DECIMAL}
 STR_JUST_INT                                                    :{NUM}
 STR_JUST_DATE_TINY                                              :{DATE_TINY}
 STR_JUST_DATE_SHORT                                             :{DATE_SHORT}
 STR_JUST_DATE_LONG                                              :{DATE_LONG}
 STR_JUST_DATE_ISO                                               :{DATE_ISO}
 STR_JUST_STRING                                                 :{STRING}
+STR_JUST_STRING1                                                :{STRING}
+STR_JUST_STRING2                                                :{STRING}
 STR_JUST_STRING_STRING                                          :{STRING}{STRING}
 STR_JUST_RAW_STRING                                             :{STRING}
 STR_JUST_BIG_RAW_STRING                                         :{BIG_FONT}{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

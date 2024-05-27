@@ -11,8 +11,9 @@
 #define PROGRAMMABLE_SIGNALS_H
 #include "rail_map.h"
 #include "tracerestrict.h"
-#include "core/smallvec_type.hpp"
+#include "core/container_func.hpp"
 #include <map>
+#include <vector>
 
 /** @defgroup progsigs Programmable Pre-Signals */
 ///@{

@@ -104,8 +104,7 @@ public:
 
 				/* Extract font information for this run. */
 				CFRange chars = CTRunGetStringRange(run);
-				auto map = fontMapping.begin();
-				while (map < fontMapping.end() - 1 && map->first <= chars.location) map++;
+				auto map = fontMapping.upper_bound(chars.location);
 
 				this->emplace_back(run, map->second, buff);
 			}
@@ -181,7 +180,7 @@ static CTRunDelegateCallbacks _sprite_font_callback = {
 		if (font == nullptr) {
 			if (!_font_cache[i.second->fc->GetSize()]) {
 				/* Cache font information. */
-				CFAutoRelease<CFStringRef> font_name(CFStringCreateWithCString(kCFAllocatorDefault, i.second->fc->GetFontName(), kCFStringEncodingUTF8));
+				CFAutoRelease<CFStringRef> font_name(CFStringCreateWithCString(kCFAllocatorDefault, i.second->fc->GetFontName().c_str(), kCFStringEncodingUTF8));
 				_font_cache[i.second->fc->GetSize()].reset(CTFontCreateWithName(font_name.get(), i.second->fc->GetFontSize(), nullptr));
 			}
 			font = _font_cache[i.second->fc->GetSize()].get();
@@ -323,7 +322,7 @@ void MacOSSetCurrentLocaleName(const char *iso_code)
  * @param s2 Second string to compare.
  * @return 1 if s1 < s2, 2 if s1 == s2, 3 if s1 > s2, or 0 if not supported by the OS.
  */
-int MacOSStringCompare(const char *s1, const char *s2)
+int MacOSStringCompare(std::string_view s1, std::string_view s2)
 {
 	static bool supported = MacOSVersionIsAtLeast(10, 5, 0);
 	if (!supported) return 0;
@@ -332,8 +331,8 @@ int MacOSStringCompare(const char *s1, const char *s2)
 
 	CFStringCompareFlags flags = kCFCompareCaseInsensitive | kCFCompareNumerically | kCFCompareLocalized | kCFCompareWidthInsensitive | kCFCompareForcedOrdering;
 
-	CFAutoRelease<CFStringRef> cf1(CFStringCreateWithCString(kCFAllocatorDefault, s1, kCFStringEncodingUTF8));
-	CFAutoRelease<CFStringRef> cf2(CFStringCreateWithCString(kCFAllocatorDefault, s2, kCFStringEncodingUTF8));
+	CFAutoRelease<CFStringRef> cf1(CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)s1.data(), s1.size(), kCFStringEncodingUTF8, false));
+	CFAutoRelease<CFStringRef> cf2(CFStringCreateWithBytes(kCFAllocatorDefault, (const UInt8 *)s2.data(), s2.size(), kCFStringEncodingUTF8, false));
 
 	/* If any CFString could not be created (e.g., due to UTF8 invalid chars), return OS unsupported functionality */
 	if (cf1 == nullptr || cf2 == nullptr) return 0;

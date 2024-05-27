@@ -40,9 +40,9 @@
 	return e != nullptr && ::IsEngineBuildable(engine_id, e->type, ScriptObject::GetCompany());
 }
 
-/* static */ char *ScriptEngine::GetName(EngineID engine_id)
+/* static */ std::optional<std::string> ScriptEngine::GetName(EngineID engine_id)
 {
-	if (!IsValidEngine(engine_id)) return nullptr;
+	if (!IsValidEngine(engine_id)) return std::nullopt;
 
 	::SetDParam(0, engine_id);
 	return GetString(STR_ENGINE_NAME);
@@ -171,7 +171,7 @@
 	if (GetVehicleType(engine_id) != ScriptVehicle::VT_RAIL && GetVehicleType(engine_id) != ScriptVehicle::VT_ROAD) return -1;
 	if (IsWagon(engine_id)) return -1;
 
-	return ::Engine::Get(engine_id)->GetDisplayMaxTractiveEffort();
+	return ::Engine::Get(engine_id)->GetDisplayMaxTractiveEffort() / 1000;
 }
 
 /* static */ ScriptDate::Date ScriptEngine::GetDesignDate(EngineID engine_id)

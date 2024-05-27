@@ -65,6 +65,7 @@ int _debug_yapfdesync_level;
 int _debug_console_level;
 int _debug_linkgraph_level;
 int _debug_sound_level;
+int _debug_command_level;
 #ifdef RANDOM_DEBUG
 int _debug_random_level;
 int _debug_statecsum_level;
@@ -102,6 +103,7 @@ struct DebugLevel {
 	DEBUG_LEVEL(console),
 	DEBUG_LEVEL(linkgraph),
 	DEBUG_LEVEL(sound),
+	DEBUG_LEVEL(command),
 #ifdef RANDOM_DEBUG
 	DEBUG_LEVEL(random),
 	DEBUG_LEVEL(statecsum),
@@ -171,18 +173,15 @@ void debug_print(const char *dbg, const char *buf)
 			have_inited = true;
 			unsigned int num = 0;
 			int pid = getpid();
-			const char *fn = nullptr;
 			for(;;) {
-				free(fn);
-				fn = str_fmt("random-out-%d-%u.log", pid, num);
-				f = FioFOpenFile(fn, "wx", AUTOSAVE_DIR);
+				std::string fn = stdstr_fmt("random-out-%d-%u.log", pid, num);
+				f = FioFOpenFile(fn.c_str(), "wx", AUTOSAVE_DIR);
 				if (f == nullptr && errno == EEXIST) {
 					num++;
 					continue;
 				}
 				break;
 			}
-			free(fn);
 		}
 #else
 		static FILE *f = FioFOpenFile("random-out.log", "wb", AUTOSAVE_DIR);
@@ -260,7 +259,7 @@ void SetDebugString(const char *s, void (*error_func)(const char *))
 	if (*s >= '0' && *s <= '9') {
 		const DebugLevel *i;
 
-		v = strtoul(s, &end, 0);
+		v = std::strtoul(s, &end, 0);
 		s = end;
 
 		for (i = debug_level; i != endof(debug_level); ++i) {
@@ -287,7 +286,7 @@ void SetDebugString(const char *s, void (*error_func)(const char *))
 		}
 
 		if (*s == '=') s++;
-		v = strtoul(s, &end, 0);
+		v = std::strtoul(s, &end, 0);
 		s = end;
 		if (found != nullptr) {
 			new_levels[found->name] = v;
@@ -313,22 +312,13 @@ void SetDebugString(const char *s, void (*error_func)(const char *))
  * Just return a string with the values of all the debug categories.
  * @return string with debug-levels
  */
-const char *GetDebugString()
+std::string GetDebugString()
 {
-	const DebugLevel *i;
-	static char dbgstr[150];
-	char dbgval[20];
-
-	memset(dbgstr, 0, sizeof(dbgstr));
-	i = debug_level;
-	seprintf(dbgstr, lastof(dbgstr), "%s=%d", i->name, *i->level);
-
-	for (i++; i != endof(debug_level); i++) {
-		seprintf(dbgval, lastof(dbgval), ", %s=%d", i->name, *i->level);
-		strecat(dbgstr, dbgval, lastof(dbgstr));
+	std::string result;
+	for (size_t i = 0; i < lengthof(debug_level); i++) {
+		result += stdstr_fmt("%s%s=%d", i == 0 ? "" : ", ", debug_level[i].name, *(debug_level[i].level));
 	}
-
-	return dbgstr;
+	return result;
 }
 
 /**

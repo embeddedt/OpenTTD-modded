@@ -86,7 +86,7 @@ class ZeroedMemoryAllocator
 {
 public:
 	ZeroedMemoryAllocator() {}
-	virtual ~ZeroedMemoryAllocator() {}
+	virtual ~ZeroedMemoryAllocator() = default;
 
 	/**
 	 * Memory allocator for a single class instance.
@@ -118,6 +118,11 @@ public:
 struct FreeDeleter
 {
 	void operator()(const void* ptr) { free(ptr); }
+};
+
+struct NoOpDeleter
+{
+	void operator()(const void* ptr) {}
 };
 
 #endif /* ALLOC_TYPE_HPP */

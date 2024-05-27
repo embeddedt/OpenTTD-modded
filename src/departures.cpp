@@ -27,7 +27,6 @@
 #include "vehicle_gui.h"
 #include "order_base.h"
 #include "settings_type.h"
-#include "core/smallvec_type.hpp"
 #include "date_type.h"
 #include "company_type.h"
 #include "cargo_type.h"
@@ -35,14 +34,13 @@
 #include "departures_type.h"
 #include "tracerestrict.h"
 #include "3rdparty/cpp-btree/btree_set.h"
+#include "3rdparty/cpp-btree/btree_map.h"
 
-#include <map>
-#include <set>
 #include <vector>
 #include <algorithm>
 
 /* A cache of used departure time for scheduled dispatch in departure time calculation */
-typedef std::map<const DispatchSchedule *, btree::btree_set<DateTicksScaled>> schdispatch_cache_t;
+typedef btree::btree_map<const DispatchSchedule *, btree::btree_set<DateTicksScaled>> schdispatch_cache_t;
 
 /** A scheduled order. */
 typedef struct OrderDate
@@ -168,7 +166,7 @@ static bool VehicleSetNextDepartureTime(DateTicks *previous_departure, uint *wai
 static void ScheduledDispatchDepartureLocalFix(DepartureList *departure_list)
 {
 	/* Seperate departure by each shared order group */
-	std::map<uint32, std::vector<Departure*>> separated_departure;
+	btree::btree_map<uint32, std::vector<Departure*>> separated_departure;
 	for (Departure* departure : *departure_list) {
 		separated_departure[departure->vehicle->orders->index].push_back(departure);
 	}
@@ -239,7 +237,7 @@ DepartureList* MakeDepartureList(StationID station, const std::vector<const Vehi
 	std::vector<OrderDate*> next_orders;
 
 	/* The maximum possible date for departures to be scheduled to occur. */
-	DateTicksScaled max_date = _settings_client.gui.max_departure_time * DAY_TICKS * _settings_game.economy.day_length_factor;
+	DateTicksScaled max_date = GetDeparturesMaxTicksAhead();
 
 	DateTicksScaled date_only_scaled = DateToScaledDateTicks(_date);
 	DateTicksScaled date_fract_scaled = ((DateTicksScaled)_date_fract * _settings_game.economy.day_length_factor) + _tick_skip_counter;
@@ -541,6 +539,10 @@ DepartureList* MakeDepartureList(StationID station, const std::vector<const Vehi
 					}
 				}
 
+				if (order->GetType() == OT_LABEL && order->GetLabelSubType() == OLST_DEPARTURES_REMOVE_VIA && !d->calling_at.empty()) {
+					d->remove_vias.push_back({ (StationID)order->GetDestination(), (uint)(d->calling_at.size() - 1) });
+				}
+
 				if (c.scheduled_date != 0 && (order->GetTravelTime() != 0 || order->IsTravelTimetabled())) {
 					c.scheduled_date += order->GetTravelTime(); /* TODO smart terminal may not work correctly */
 				} else {
@@ -624,10 +626,18 @@ DepartureList* MakeDepartureList(StationID station, const std::vector<const Vehi
 
 								if (d_first->terminus >= c && d_first->calling_at.size() >= 2) {
 									d_first->terminus = CallAt(d_first->calling_at[k]);
-									if (d_first->via2 == d_first->terminus.station) d_first->via2 = INVALID_STATION;
-									if (d_first->via == d_first->terminus.station) {
-										d_first->via = d_first->via2;
-										d_first->via2 = INVALID_STATION;
+									auto remove_via = [&](StationID st) {
+										if (d_first->via2 == st) d_first->via2 = INVALID_STATION;
+										if (d_first->via == st) {
+											d_first->via = d_first->via2;
+											d_first->via2 = INVALID_STATION;
+										}
+									};
+									remove_via(d_first->terminus.station);
+									for (const RemoveVia &rv : d_first->remove_vias) {
+										if (rv.calling_at_offset == k) {
+											remove_via(rv.via);
+										}
 									}
 
 									if (k == 0) break;
@@ -852,4 +862,13 @@ DepartureList* MakeDepartureList(StationID station, const std::vector<const Vehi
 
 	/* Done. Phew! */
 	return result;
+}
+
+DateTicksScaled GetDeparturesMaxTicksAhead()
+{
+	if (_settings_time.time_in_minutes) {
+		return _settings_client.gui.max_departure_time_minutes * _settings_time.ticks_per_minute;
+	} else {
+		return _settings_client.gui.max_departure_time * DAY_TICKS * _settings_game.economy.day_length_factor;
+	}
 }

@@ -146,7 +146,7 @@ class ReplaceVehicleWindow : public Window {
 		GUIEngineList list;
 
 		for (const Engine *e : Engine::IterateType(type)) {
-			if (!draw_left && !this->show_hidden_engines && e->IsHidden(_local_company)) continue;
+			if (!draw_left && !this->show_hidden_engines && e->IsVariantHidden(_local_company)) continue;
 			EngineID eid = e->index;
 			switch (type) {
 				case VEH_TRAIN:
@@ -193,10 +193,10 @@ class ReplaceVehicleWindow : public Window {
 
 		this->sel_engine[side] = selected_engine; // update which engine we selected (the same or none, if it's not in the list anymore)
 		if (draw_left) {
-			EngList_Sort(&list, &EngineNumberSorter);
+			EngList_Sort(list, &EngineNumberSorter);
 		} else {
 			_engine_sort_direction = this->descending_sort_order;
-			EngList_Sort(&list, _engine_sort_functions[this->window_number][this->sort_criteria]);
+			EngList_Sort(list, _engine_sort_functions[this->window_number][this->sort_criteria]);
 		}
 
 		this->engines[side].clear();
@@ -215,7 +215,7 @@ class ReplaceVehicleWindow : public Window {
 		if (this->engines[0].NeedRebuild()) {
 			/* We need to rebuild the left engines list */
 			this->GenerateReplaceVehList(true);
-			this->vscroll[0]->SetCount((uint)this->engines[0].size());
+			this->vscroll[0]->SetCount(this->engines[0].size());
 			if (this->reset_sel_engine && this->sel_engine[0] == INVALID_ENGINE && this->engines[0].size() != 0) {
 				this->sel_engine[0] = this->engines[0][0].engine_id;
 			}
@@ -227,6 +227,7 @@ class ReplaceVehicleWindow : public Window {
 				/* Always empty the right engines list when nothing is selected in the left engines list */
 				this->engines[1].clear();
 				this->sel_engine[1] = INVALID_ENGINE;
+				this->vscroll[1]->SetCount(this->engines[1].size());
 			} else {
 				if (this->reset_sel_engine && this->sel_engine[0] != INVALID_ENGINE) {
 					/* Select the current replacement for sel_engine[0]. */
@@ -235,7 +236,7 @@ class ReplaceVehicleWindow : public Window {
 				}
 				/* Regenerate the list on the right. Note: This resets sel_engine[1] to INVALID_ENGINE, if it is no longer available. */
 				this->GenerateReplaceVehList(false);
-				this->vscroll[1]->SetCount((uint)this->engines[1].size());
+				this->vscroll[1]->SetCount(this->engines[1].size());
 				if (this->reset_sel_engine && this->sel_engine[1] != INVALID_ENGINE) {
 					int position = 0;
 					for (const auto &item : this->engines[1]) {
@@ -617,12 +618,11 @@ public:
 				} else {
 					click_side = 1;
 				}
-				uint i = this->vscroll[click_side]->GetScrolledRowFromWidget(pt.y, this, widget);
-				size_t engine_count = this->engines[click_side].size();
 
 				EngineID e = INVALID_ENGINE;
-				if (i < engine_count) {
-					const auto &item = this->engines[click_side][i];
+				const auto it = this->vscroll[click_side]->GetScrolledItemFromWidget(this->engines[click_side], pt.y, this, widget);
+				if (it != this->engines[click_side].end()) {
+					const auto &item = *it;
 					const Rect r = this->GetWidget<NWidgetBase>(widget)->GetCurrentRect().Shrink(WidgetDimensions::scaled.matrix).WithWidth(WidgetDimensions::scaled.hsep_indent * (item.indent + 1), _current_text_dir == TD_RTL);
 					if ((item.flags & EngineDisplayFlags::HasVariants) != EngineDisplayFlags::None && IsInsideMM(r.left, r.right, pt.x)) {
 						/* toggle folded flag on engine */
@@ -770,7 +770,7 @@ static const NWidgetPart _nested_replace_rail_vehicle_widgets[] = {
 		NWidget(NWID_VERTICAL),
 			NWidget(NWID_HORIZONTAL),
 				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_RV_RAIL_ROAD_TYPE_DROPDOWN), SetMinimalSize(136, 12), SetDataTip(0x0, STR_REPLACE_HELP_RAILTYPE), SetFill(1, 0), SetResize(1, 0),
-				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_RV_TRAIN_ENGINEWAGON_DROPDOWN), SetDataTip(STR_BLACK_STRING, STR_REPLACE_ENGINE_WAGON_SELECT_HELP),
+				NWidget(WWT_DROPDOWN, COLOUR_GREY, WID_RV_TRAIN_ENGINEWAGON_DROPDOWN), SetDataTip(STR_JUST_STRING, STR_REPLACE_ENGINE_WAGON_SELECT_HELP),
 			EndContainer(),
 			NWidget(WWT_PANEL, COLOUR_GREY), SetResize(1, 0), EndContainer(),
 		EndContainer(),
@@ -933,7 +933,7 @@ static WindowDesc _replace_vehicle_desc(
  */
 void ShowReplaceGroupVehicleWindow(GroupID id_g, VehicleType vehicletype)
 {
-	DeleteWindowById(WC_REPLACE_VEHICLE, vehicletype);
+	CloseWindowById(WC_REPLACE_VEHICLE, vehicletype);
 	WindowDesc *desc;
 	switch (vehicletype) {
 		case VEH_TRAIN: desc = &_replace_rail_vehicle_desc; break;

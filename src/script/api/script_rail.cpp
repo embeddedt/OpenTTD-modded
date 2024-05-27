@@ -21,9 +21,9 @@
 
 #include "../../safeguards.h"
 
-/* static */ char *ScriptRail::GetName(RailType rail_type)
+/* static */ std::optional<std::string> ScriptRail::GetName(RailType rail_type)
 {
-	if (!IsRailTypeAvailable(rail_type)) return nullptr;
+	if (!IsRailTypeAvailable(rail_type)) return std::nullopt;
 
 	return GetString(GetRailTypeInfo((::RailType)rail_type)->strings.menu_text);
 }
@@ -185,7 +185,7 @@
 		0,
 		source_industry,
 		goal_industry,
-		std::min<SQInteger>(255, distance / 2),
+		ClampTo<uint8_t>(distance / 2),
 		AICE_STATION_GET_STATION_ID,
 		source_station ? 0 : 1,
 		std::min<SQInteger>(15u, num_platforms) << 4 | std::min<SQInteger>(15u, platform_length),
@@ -196,7 +196,7 @@
 		int index = 0;
 		const StationSpec *spec = StationClass::GetByGrf(file->grfid, res, &index);
 		if (spec == nullptr) {
-			DEBUG(grf, 1, "%s returned an invalid station ID for 'AI construction/purchase selection (18)' callback", file->filename);
+			DEBUG(grf, 1, "%s returned an invalid station ID for 'AI construction/purchase selection (18)' callback", file->filename.c_str());
 		} else {
 			/* We might have gotten an usable station spec. Try to build it, but if it fails we'll fall back to the original station. */
 			if (ScriptObject::DoCommandEx(tile, p1, p2 | spec->cls_id, index, CMD_BUILD_RAIL_STATION)) return true;

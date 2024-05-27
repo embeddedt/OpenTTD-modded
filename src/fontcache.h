@@ -37,6 +37,8 @@ public:
 	FontCache(FontSize fs);
 	virtual ~FontCache();
 
+	static void InitializeFontCaches();
+
 	static int GetDefaultFontHeight(FontSize fs);
 
 	/**
@@ -136,7 +138,7 @@ public:
 	 * Get the name of this font.
 	 * @return The name of the font.
 	 */
-	virtual const char *GetFontName() = 0;
+	virtual std::string GetFontName() = 0;
 
 	/**
 	 * Get the font cache of a given font size.

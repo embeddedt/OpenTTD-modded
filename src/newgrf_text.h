@@ -12,7 +12,6 @@
 
 #include "string_type.h"
 #include "strings_type.h"
-#include "core/smallvec_type.hpp"
 #include "table/control_codes.h"
 #include <utility>
 #include <vector>
@@ -38,7 +37,7 @@ const char *GetGRFStringFromGRFText(const GRFTextList &text_list);
 const char *GetGRFStringFromGRFText(const GRFTextWrapper &text);
 const char *GetDefaultLangGRFStringFromGRFText(const GRFTextList &text_list);
 const char *GetDefaultLangGRFStringFromGRFText(const GRFTextWrapper &text);
-const char *GetGRFStringPtr(uint16 stringid);
+const char *GetGRFStringPtr(uint32 stringid);
 void CleanUpStrings();
 void SetCurrentGrfLangID(byte language_id);
 std::string TranslateTTDPatchCodes(uint32 grfid, uint8 language_id, bool allow_newlines, const std::string &str, StringControlCode byte80 = SCC_NEWGRF_PRINT_WORD_STRING_ID);
@@ -54,7 +53,9 @@ void RewindTextRefStack();
 bool UsingNewGRFTextStack();
 struct TextRefStack *CreateTextRefStackBackup();
 void RestoreTextRefStackBackup(struct TextRefStack *backup);
-uint RemapNewGRFStringControlCode(uint scc, char *buf_start, char **buff, const char **str, int64 *argv, uint argv_size, bool modify_argv);
+
+class StringParameters;
+uint RemapNewGRFStringControlCode(uint scc, char *buf_start, char **buff, const char **str, StringParameters &parameters, bool modify_parameters);
 
 /** Mapping of language data between a NewGRF and OpenTTD. */
 struct LanguageMap {

@@ -11,6 +11,7 @@
 #include "../zoom_func.h"
 #include "../settings_type.h"
 #include "32bpp_optimized.hpp"
+#include "common.hpp"
 
 #include "../safeguards.h"
 
@@ -181,12 +182,10 @@ inline void Blitter_32bppOptimized::Draw(const Blitter::BlitterParams *bp, ZoomL
 					break;
 
 				case BM_BLACK_REMAP:
-					do {
-						*dst = Colour(0, 0, 0);
-						dst++;
-						src_px++;
-						src_n++;
-					} while (--n != 0);
+					memset_colour(dst, _black_colour, n);
+					dst += n;
+					src_px += n;
+					src_n += n;
 					break;
 
 				case BM_TRANSPARENT:
@@ -288,7 +287,7 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 	/* streams of pixels (a, r, g, b channels)
 	 *
 	 * stored in separated stream so data are always aligned on 4B boundary */
-	Colour *dst_px_orig[ZOOM_LVL_COUNT];
+	Colour *dst_px_orig[ZOOM_LVL_SPR_COUNT];
 
 	/* interleaved stream of 'm' channel and 'n' channel
 	 * 'n' is number of following pixels with the same alpha channel class
@@ -296,15 +295,16 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 	 *
 	 * it has to be stored in one stream so fewer registers are used -
 	 * x86 has problems with register allocation even with this solution */
-	uint16 *dst_n_orig[ZOOM_LVL_COUNT];
+	uint16 *dst_n_orig[ZOOM_LVL_SPR_COUNT];
 
 	/* lengths of streams */
-	uint32 lengths[ZOOM_LVL_COUNT][2];
+	uint32 lengths[ZOOM_LVL_SPR_COUNT][2];
 
 	ZoomLevel zoom_min;
 	ZoomLevel zoom_max;
+	uint8 missing_zoom_levels = 0;
 
-	if (sprite->type == ST_FONT) {
+	if (sprite->type == SpriteType::Font) {
 		zoom_min = ZOOM_LVL_NORMAL;
 		zoom_max = ZOOM_LVL_NORMAL;
 	} else {
@@ -315,18 +315,39 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 
 	BlitterSpriteFlags flags = BSF_NO_REMAP | BSF_NO_ANIM;
 
+	uint px_size = 0;
+	uint n_size = 0;
 	for (ZoomLevel z = zoom_min; z <= zoom_max; z++) {
 		const SpriteLoader::Sprite *src_orig = &sprite[z];
+		if (src_orig->data == nullptr) continue;
 
 		uint size = src_orig->height * src_orig->width;
 
-		dst_px_orig[z] = CallocT<Colour>(size + src_orig->height * 2);
-		dst_n_orig[z]  = CallocT<uint16>(size * 2 + src_orig->height * 4 * 2);
+		px_size += size + src_orig->height * 2;
+		n_size += size * 2 + src_orig->height * 4 * 2;
+	}
 
-		uint32 *dst_px_ln = (uint32 *)dst_px_orig[z];
-		uint32 *dst_n_ln  = (uint32 *)dst_n_orig[z];
+	Colour * const px_buffer = MallocT<Colour>(px_size);
+	uint16 * const n_buffer = MallocT<uint16>(n_size);
+	Colour *px_buffer_next = px_buffer;
+	uint16 *n_buffer_next = n_buffer;
+
+	for (ZoomLevel z = zoom_min; z <= zoom_max; z++) {
+		const SpriteLoader::Sprite *src_orig = &sprite[z];
+
+		dst_px_orig[z] = px_buffer_next;
+		dst_n_orig[z] = n_buffer_next;
+		uint32 *dst_px_ln = (uint32 *)px_buffer_next;
+		uint32 *dst_n_ln  = (uint32 *)n_buffer_next;
 
 		const SpriteLoader::CommonPixel *src = (const SpriteLoader::CommonPixel *)src_orig->data;
+
+		if (src == nullptr) {
+			lengths[z][0] = 0;
+			lengths[z][1] = 0;
+			SetBit(missing_zoom_levels, z);
+			continue;
+		}
 
 		for (uint y = src_orig->height; y > 0; y--) {
 			/* Index 0 of dst_px and dst_n is left as space to save the length of the row to be filled later. */
@@ -334,6 +355,7 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 			uint16 *dst_n = (uint16 *)&dst_n_ln[1];
 
 			uint16 *dst_len = dst_n++;
+			*dst_len = 0;
 
 			uint last = 3;
 			int len = 0;
@@ -401,8 +423,9 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 					dst_px++;
 					dst_n++;
 				} else if (len == 1) {
-					dst_px++;
+					*dst_px = 0;
 					*dst_n = src->m;
+					dst_px++;
 					dst_n++;
 				}
 
@@ -425,6 +448,9 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 
 		lengths[z][0] = (byte *)dst_px_ln - (byte *)dst_px_orig[z]; // all are aligned to 4B boundary
 		lengths[z][1] = (byte *)dst_n_ln  - (byte *)dst_n_orig[z];
+
+		px_buffer_next = (Colour *)dst_px_ln;
+		n_buffer_next = (uint16 *)dst_n_ln;
 	}
 
 	uint len = 0; // total length of data
@@ -432,28 +458,38 @@ template <bool Tpal_to_rgb> Sprite *Blitter_32bppOptimized::EncodeInternal(const
 		len += lengths[z][0] + lengths[z][1];
 	}
 
-	Sprite *dest_sprite = (Sprite *)allocator(sizeof(*dest_sprite) + sizeof(SpriteData) + len);
+	Sprite *dest_sprite = (Sprite *)allocator(sizeof(Sprite) + sizeof(SpriteData) + len);
+
+	if (len == 0) {
+		/* Mark sprite as having no levels at all, and therefore replaceable */
+		missing_zoom_levels = UINT8_MAX;
+	}
 
 	dest_sprite->height = sprite->height;
 	dest_sprite->width  = sprite->width;
 	dest_sprite->x_offs = sprite->x_offs;
 	dest_sprite->y_offs = sprite->y_offs;
+	dest_sprite->next = nullptr;
+	dest_sprite->missing_zoom_levels = missing_zoom_levels;
 
 	SpriteData *dst = (SpriteData *)dest_sprite->data;
 	memset(dst, 0, sizeof(*dst));
 	/* Store sprite flags. */
 	dst->flags = flags;
 
+	uint32 next_offset = 0;
 	for (ZoomLevel z = zoom_min; z <= zoom_max; z++) {
-		dst->offset[z][0] = z == zoom_min ? 0 : lengths[z - 1][1] + dst->offset[z - 1][1];
-		dst->offset[z][1] = lengths[z][0] + dst->offset[z][0];
+		dst->offset[z][0] = next_offset;
+		dst->offset[z][1] = lengths[z][0] + next_offset;
 
-		memcpy(dst->data + dst->offset[z][0], dst_px_orig[z], lengths[z][0]);
-		memcpy(dst->data + dst->offset[z][1], dst_n_orig[z],  lengths[z][1]);
+		next_offset += lengths[z][0] + lengths[z][1];
 
-		free(dst_px_orig[z]);
-		free(dst_n_orig[z]);
+		if (lengths[z][0] != 0) memcpy(dst->data + dst->offset[z][0], dst_px_orig[z], lengths[z][0]);
+		if (lengths[z][1] != 0) memcpy(dst->data + dst->offset[z][1], dst_n_orig[z],  lengths[z][1]);
 	}
+
+	free(px_buffer);
+	free(n_buffer);
 
 	return dest_sprite;
 }

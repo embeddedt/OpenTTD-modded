@@ -41,6 +41,8 @@
 #include "news_func.h"
 #include "core/backup_type.hpp"
 
+#include <bitset>
+
 #include "safeguards.h"
 
 /** Values for _settings_client.gui.auto_scrolling */
@@ -56,11 +58,11 @@ static Window *_mouseover_last_w = nullptr; ///< Window of the last OnMouseOver 
 static Window *_last_scroll_window = nullptr; ///< Window of the last scroll event.
 
 /** List of windows opened at the screen sorted from the front. */
-WindowBase *_z_front_window = nullptr;
+Window *_z_front_window = nullptr;
 /** List of windows opened at the screen sorted from the back. */
-WindowBase *_z_back_window  = nullptr;
+Window *_z_back_window  = nullptr;
 /** List of windows in an arbitrary order, that is not instantaneously changed by bringing windows to the front. */
-WindowBase *_first_window  = nullptr;
+Window *_first_window  = nullptr;
 
 /** If false, highlight is white, otherwise the by the widget defined colour. */
 bool _window_highlight_colour = false;
@@ -85,6 +87,8 @@ Rect _scrolling_viewport_bound; ///< A viewport is being scrolled with the mouse
 bool _mouse_hovering;      ///< The mouse is hovering over the same point.
 
 SpecialMouseMode _special_mouse_mode; ///< Mode of the mouse.
+
+std::bitset<WC_END> _present_window_types;
 
 /**
  * List of all WindowDescs.
@@ -213,8 +217,8 @@ int Window::GetRowFromWidget(int clickpos, int widget, int padding, int line_hei
 {
 	const NWidgetBase *wid = this->GetWidget<NWidgetBase>(widget);
 	if (line_height < 0) line_height = wid->resize_y;
-	if (clickpos < (int)wid->pos_y + padding) return INT_MAX;
-	return (clickpos - (int)wid->pos_y - padding) / line_height;
+	if (clickpos < wid->pos_y + padding) return INT_MAX;
+	return (clickpos - wid->pos_y - padding) / line_height;
 }
 
 /**
@@ -339,7 +343,7 @@ Scrollbar *Window::GetScrollbar(uint widnum)
  */
 const QueryString *Window::GetQueryString(uint widnum) const
 {
-	auto query = this->querystrings.Find(widnum);
+	auto query = this->querystrings.find(widnum);
 	return query != this->querystrings.end() ? query->second : nullptr;
 }
 
@@ -350,8 +354,8 @@ const QueryString *Window::GetQueryString(uint widnum) const
  */
 QueryString *Window::GetQueryString(uint widnum)
 {
-	SmallMap<int, QueryString*>::Pair *query = this->querystrings.Find(widnum);
-	return query != this->querystrings.End() ? query->second : nullptr;
+	auto query = this->querystrings.find(widnum);
+	return query != this->querystrings.end() ? query->second : nullptr;
 }
 
 /**
@@ -359,8 +363,7 @@ QueryString *Window::GetQueryString(uint widnum)
  */
 void Window::UpdateQueryStringSize()
 {
-	for (auto &qs : this->querystrings)
-	{
+	for (auto &qs : this->querystrings) {
 		qs.second->text.UpdateSize();
 	}
 }
@@ -438,15 +441,15 @@ void Window::UpdateQueryStringSize()
 /**
  * Get the character that is rendered at a position by the focused edit box.
  * @param pt The position to test.
- * @return Pointer to the character at the position or nullptr if no character is at the position.
+ * @return Index of the character position or -1 if no character is at the position.
  */
-/* virtual */ const char *Window::GetTextCharacterAtPosition(const Point &pt) const
+/* virtual */ ptrdiff_t Window::GetTextCharacterAtPosition(const Point &pt) const
 {
 	if (this->nested_focus != nullptr && this->nested_focus->type == WWT_EDITBOX) {
 		return this->GetQueryString(this->nested_focus->index)->GetCharAtPosition(this, this->nested_focus->index, pt);
 	}
 
-	return nullptr;
+	return -1;
 }
 
 /**
@@ -467,7 +470,7 @@ void SetFocusedWindow(Window *w)
 	_focused_window = w;
 
 	/* So we can inform it that it lost focus */
-	if (old_focused != nullptr) old_focused->OnFocusLost(w);
+	if (old_focused != nullptr) old_focused->OnFocusLost(false, w);
 	if (_focused_window != nullptr) _focused_window->OnFocus(old_focused);
 }
 
@@ -558,7 +561,7 @@ void Window::OnFocus(Window *previously_focused_window)
 /**
  * Called when window loses focus
  */
-void Window::OnFocusLost(Window *newly_focused_window)
+void Window::OnFocusLost(bool closing, Window *newly_focused_window)
 {
 	if (this->nested_focus != nullptr && this->nested_focus->type == WWT_EDITBOX) VideoDriver::GetInstance()->EditBoxLostFocus();
 }
@@ -744,7 +747,7 @@ static void DispatchLeftClickEvent(Window *w, int x, int y, int click_count)
 		}
 
 		case WWT_CLOSEBOX: // 'X'
-			delete w;
+			w->Close();
 			return;
 
 		case WWT_CAPTION: // 'Title bar'
@@ -754,7 +757,7 @@ static void DispatchLeftClickEvent(Window *w, int x, int y, int click_count)
 		case WWT_RESIZEBOX:
 			/* When the resize widget is on the left size of the window
 			 * we assume that that button is used to resize to the left. */
-			StartWindowSizing(w, (int)nw->pos_x < (w->width / 2));
+			StartWindowSizing(w, nw->pos_x < (w->width / 2));
 			nw->SetDirty(w);
 			return;
 
@@ -830,9 +833,12 @@ static void DispatchRightClickEvent(Window *w, int x, int y)
 		if (w->OnRightClick(pt, wid->index)) return;
 	}
 
-	/* Right-click close is enabled and there is a closebox */
-	if (_settings_client.gui.right_mouse_wnd_close && w->nested_root->GetWidgetOfType(WWT_CLOSEBOX)) {
-		delete w;
+	/* Right-click close is enabled and there is a closebox. */
+	if (_settings_client.gui.right_click_wnd_close == RCC_YES && (w->window_desc->flags & WDF_NO_CLOSE) == 0) {
+		w->Close();
+	} else if (_settings_client.gui.right_click_wnd_close == RCC_YES_EXCEPT_STICKY && (w->flags & WF_STICKY) == 0 && (w->window_desc->flags & WDF_NO_CLOSE) == 0) {
+		/* Right-click close is enabled, but excluding sticky windows. */
+		w->Close();
 	} else if (_settings_client.gui.hover_delay_ms == 0 && !w->OnTooltip(pt, wid->index, TCC_RIGHT_CLICK) && wid->tool_tip != 0) {
 		GuiShowTooltips(w, wid->tool_tip, 0, nullptr, TCC_RIGHT_CLICK);
 	}
@@ -1028,9 +1034,10 @@ void Window::SetDirtyAsBlocks()
  * Re-initialize a window, and optionally change its size.
  * @param rx Horizontal resize of the window.
  * @param ry Vertical resize of the window.
+ * @param reposition If set, reposition the window to default location.
  * @note For just resizing the window, use #ResizeWindow instead.
  */
-void Window::ReInit(int rx, int ry)
+void Window::ReInit(int rx, int ry, bool reposition)
 {
 	this->SetDirtyAsBlocks(); // Mark whole current window as dirty.
 
@@ -1056,6 +1063,12 @@ void Window::ReInit(int rx, int ry)
 	 * The cast to int is necessary else dx/dy are implicitly casted to unsigned int, which won't work. */
 	if (this->resize.step_width  > 1) dx -= dx % (int)this->resize.step_width;
 	if (this->resize.step_height > 1) dy -= dy % (int)this->resize.step_height;
+
+	if (reposition) {
+		Point pt = this->OnInitialPosition(this->nested_root->smallest_x, this->nested_root->smallest_y, window_number);
+		this->InitializePositionSize(pt.x, pt.y, this->nested_root->smallest_x, this->nested_root->smallest_y);
+		this->FindWindowPlacementAndResize(this->window_desc->GetDefaultWidth(), this->window_desc->GetDefaultHeight());
+	}
 
 	ResizeWindow(this, dx, dy);
 	/* ResizeWindow() does this->SetDirty() already, no need to do it again here. */
@@ -1095,6 +1108,8 @@ void Window::SetShaded(bool make_shaded)
  */
 static Window *FindChildWindow(const Window *w, WindowClass wc)
 {
+	if (wc < WC_END && !_present_window_types[wc]) return nullptr;
+
 	for (Window *v : Window::IterateFromBack()) {
 		if ((wc == WC_INVALID || wc == v->window_class) && v->parent == w) return v;
 	}
@@ -1106,19 +1121,19 @@ static Window *FindChildWindow(const Window *w, WindowClass wc)
  * Delete all children a window might have in a head-recursive manner
  * @param wc Window class of the window to remove; #WC_INVALID if class does not matter
  */
-void Window::DeleteChildWindows(WindowClass wc) const
+void Window::CloseChildWindows(WindowClass wc) const
 {
 	Window *child = FindChildWindow(this, wc);
 	while (child != nullptr) {
-		delete child;
+		child->Close();
 		child = FindChildWindow(this, wc);
 	}
 }
 
 /**
- * Remove window and all its child windows from the window stack.
+ * Hide the window and all its child windows, and mark them for a later deletion.
  */
-Window::~Window()
+void Window::Close()
 {
 	if (_thd.window_class == this->window_class &&
 			_thd.window_number == this->window_number) {
@@ -1137,28 +1152,27 @@ Window::~Window()
 	/* Make sure we don't try to access this window as the focused window when it doesn't exist anymore. */
 	if (_focused_window == this) {
 		_focused_window = nullptr;
-		this->OnFocusLost(nullptr);
+		this->OnFocusLost(true, nullptr);
 	}
 
-	this->DeleteChildWindows();
-
-	if (this->viewport != nullptr) DeleteWindowViewport(this);
+	this->CloseChildWindows();
 
 	this->SetDirtyAsBlocks();
 
+	this->window_class = WC_INVALID;
+}
+
+/**
+ * Remove window and all its child windows from the window stack.
+ */
+Window::~Window()
+{
+	assert(this->window_class == WC_INVALID);
+
+	if (this->viewport != nullptr) DeleteWindowViewport(this);
+
 	free(this->nested_array); // Contents is released through deletion of #nested_root.
 	delete this->nested_root;
-
-	/*
-	 * Make fairly sure that this is written, and not "optimized" away.
-	 * The delete operator is overwritten to not delete it; the deletion
-	 * happens at a later moment in time after the window has been
-	 * removed from the list of windows to prevent issues with items
-	 * being removed during the iteration as not one but more windows
-	 * may be removed by a single call to ~Window by means of the
-	 * DeleteChildWindows function.
-	 */
-	const_cast<volatile WindowClass &>(this->window_class) = WC_INVALID;
 }
 
 /**
@@ -1169,6 +1183,8 @@ Window::~Window()
  */
 Window *FindWindowById(WindowClass cls, WindowNumber number)
 {
+	if (cls < WC_END && !_present_window_types[cls]) return nullptr;
+
 	for (Window *w : Window::IterateFromBack()) {
 		if (w->window_class == cls && w->window_number == number) return w;
 	}
@@ -1184,6 +1200,8 @@ Window *FindWindowById(WindowClass cls, WindowNumber number)
  */
 Window *FindWindowByClass(WindowClass cls)
 {
+	if (cls < WC_END && !_present_window_types[cls]) return nullptr;
+
 	for (Window *w : Window::IterateFromBack()) {
 		if (w->window_class == cls) return w;
 	}
@@ -1209,11 +1227,11 @@ Window *GetMainWindow()
  * @param number Number of the window within the window class
  * @param force force deletion; if false don't delete when stickied
  */
-void DeleteWindowById(WindowClass cls, WindowNumber number, bool force)
+void CloseWindowById(WindowClass cls, WindowNumber number, bool force)
 {
 	Window *w = FindWindowById(cls, number);
 	if (w != nullptr && (force || (w->flags & WF_STICKY) == 0)) {
-		delete w;
+		w->Close();
 	}
 }
 
@@ -1223,12 +1241,14 @@ void DeleteWindowById(WindowClass cls, WindowNumber number, bool force)
  * @param number Number of the window within the window class
  * @param force force deletion; if false don't delete when stickied
  */
-void DeleteAllWindowsById(WindowClass cls, WindowNumber number, bool force)
+void CloseAllWindowsById(WindowClass cls, WindowNumber number, bool force)
 {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
 	/* Note: the container remains stable, even when deleting windows. */
-	for (Window *w : Window::IterateUnordered()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls && w->window_number == number && (force || (w->flags & WF_STICKY) == 0)) {
-			delete w;
+			w->Close();
 		}
 	}
 }
@@ -1237,12 +1257,14 @@ void DeleteAllWindowsById(WindowClass cls, WindowNumber number, bool force)
  * Delete all windows of a given class
  * @param cls Window class of windows to delete
  */
-void DeleteWindowByClass(WindowClass cls)
+void CloseWindowByClass(WindowClass cls)
 {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
 	/* Note: the container remains stable, even when deleting windows. */
-	for (Window *w : Window::IterateUnordered()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls) {
-			delete w;
+			w->Close();
 		}
 	}
 }
@@ -1256,14 +1278,14 @@ void DeleteWindowByClass(WindowClass cls)
 void DeleteCompanyWindows(CompanyID id)
 {
 	/* Note: the container remains stable, even when deleting windows. */
-	for (Window *w : Window::IterateUnordered()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->owner == id) {
-			delete w;
+			w->Close();
 		}
 	}
 
 	/* Also delete the company specific windows that don't have a company-colour. */
-	DeleteWindowById(WC_BUY_COMPANY, id);
+	CloseWindowById(WC_BUY_COMPANY, id);
 }
 
 /**
@@ -1353,15 +1375,20 @@ static uint GetWindowZPriority(WindowClass wc)
 	uint z_priority = 0;
 
 	switch (wc) {
+		case WC_TOOLTIPS:
+			++z_priority;
+			FALLTHROUGH;
+
+		case WC_ERRMSG:
+		case WC_CONFIRM_POPUP_QUERY:
+			++z_priority;
+			FALLTHROUGH;
+
 		case WC_ENDSCREEN:
 			++z_priority;
 			FALLTHROUGH;
 
 		case WC_HIGHSCORE:
-			++z_priority;
-			FALLTHROUGH;
-
-		case WC_TOOLTIPS:
 			++z_priority;
 			FALLTHROUGH;
 
@@ -1383,8 +1410,6 @@ static uint GetWindowZPriority(WindowClass wc)
 			++z_priority;
 			FALLTHROUGH;
 
-		case WC_ERRMSG:
-		case WC_CONFIRM_POPUP_QUERY:
 		case WC_NETWORK_ASK_RELAY:
 		case WC_MODAL_PROGRESS:
 		case WC_NETWORK_STATUS_WINDOW:
@@ -1435,7 +1460,7 @@ static void AddWindowToZOrdering(Window *w)
 		w->z_front = w->z_back = nullptr;
 	} else {
 		/* Search down the z-ordering for its location. */
-		WindowBase *v = _z_front_window;
+		Window *v = _z_front_window;
 		uint last_z_priority = UINT_MAX;
 		(void)last_z_priority; // Unused without asserts
 		while (v != nullptr && (v->window_class == WC_INVALID || GetWindowZPriority(v->window_class) > GetWindowZPriority(w->window_class))) {
@@ -1475,7 +1500,7 @@ static void AddWindowToZOrdering(Window *w)
  * Removes a window from the z-ordering.
  * @param w Window to remove
  */
-static void RemoveWindowFromZOrdering(WindowBase *w)
+static void RemoveWindowFromZOrdering(Window *w)
 {
 	if (w->z_front == nullptr) {
 		dbg_assert(_z_front_window == w);
@@ -1508,6 +1533,12 @@ static void BringWindowToFront(Window *w)
 	w->SetDirty();
 }
 
+void Window::ChangeWindowClass(WindowClass cls)
+{
+	this->window_class = cls;
+	if (this->window_class < WC_END) _present_window_types.set(this->window_class);
+}
+
 /**
  * Initializes the data (except the position and initial size) of a new Window.
  * @param window_number Number being assigned to the new window
@@ -1518,7 +1549,7 @@ static void BringWindowToFront(Window *w)
 void Window::InitializeData(WindowNumber window_number)
 {
 	/* Set up window properties; some of them are needed to set up smallest size below */
-	this->window_class = this->window_desc->cls;
+	this->ChangeWindowClass(this->window_desc->cls);
 	this->SetWhiteBorder();
 	if (this->window_desc->default_pos == WDP_CENTER) this->flags |= WF_CENTERED;
 	this->owner = INVALID_OWNER;
@@ -1762,8 +1793,9 @@ static Point GetAutoPlacePosition(int width, int height)
 	 * of the closebox
 	 */
 	int left = rtl ? _screen.width - width : 0, top = toolbar_y;
-	int offset_x = rtl ? -(int)NWidgetLeaf::closebox_dimension.width : (int)NWidgetLeaf::closebox_dimension.width;
-	int offset_y = std::max<int>(NWidgetLeaf::closebox_dimension.height, FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.captiontext.Vertical());
+	const Dimension &closebox_dimension = NWidgetLeaf::GetCloseBoxDimension();
+	int offset_x = rtl ? -(int)closebox_dimension.width : (int)closebox_dimension.width;
+	int offset_y = std::max<int>(closebox_dimension.height, FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.captiontext.Vertical());
 
 restart:
 	for (const Window *w : Window::IterateFromBack()) {
@@ -1829,11 +1861,12 @@ static Point LocalGetWindowPlacement(const WindowDesc *desc, int16 sm_width, int
 			 *  - Y position: closebox of parent + closebox of child + statusbar
 			 *  - X position: closebox on left/right, resizebox on right/left (depending on ltr/rtl)
 			 */
-			int indent_y = std::max<int>(NWidgetLeaf::closebox_dimension.height, FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.captiontext.Vertical());
+			const Dimension &closebox_dimension = NWidgetLeaf::GetCloseBoxDimension();
+			int indent_y = std::max<int>(closebox_dimension.height, FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.captiontext.Vertical());
 			if (w->top + 3 * indent_y < _screen.height) {
 				pt.y = w->top + indent_y;
-				int indent_close = NWidgetLeaf::closebox_dimension.width;
-				int indent_resize = NWidgetLeaf::resizebox_dimension.width;
+				int indent_close = closebox_dimension.width;
+				int indent_resize = NWidgetLeaf::GetResizeBoxDimension().width;
 				if (_current_text_dir == TD_RTL) {
 					pt.x = std::max(w->left + w->width - default_width - indent_close, 0);
 					if (pt.x + default_width >= indent_close && pt.x + indent_resize <= _screen.width) return pt;
@@ -1972,13 +2005,8 @@ void UnInitWindowSystem()
 {
 	UnshowCriticalError();
 
-	for (Window *w : Window::IterateUnordered()) delete w;
-
-	for (WindowBase *w = _z_front_window; w != nullptr; /* nothing */) {
-		WindowBase *to_del = w;
-		w = w->z_back;
-		free(to_del);
-	}
+	for (Window *w : Window::Iterate()) w->Close();
+	Window::DeleteClosedWindows();
 
 	_z_front_window = nullptr;
 	_z_back_window = nullptr;
@@ -2021,7 +2049,7 @@ static void DecreaseWindowCounters()
 		}
 
 		/* Handle editboxes */
-		for (SmallMap<int, QueryString*>::Pair &pair : w->querystrings) {
+		for (auto &pair : w->querystrings) {
 			pair.second->HandleEditBox(w, pair.first);
 		}
 
@@ -2450,7 +2478,7 @@ static void StartWindowDrag(Window *w)
 	_drag_delta.x = w->left - _cursor.pos.x;
 	_drag_delta.y = w->top  - _cursor.pos.y;
 
-	DeleteWindowById(WC_DROPDOWN_MENU, 0);
+	CloseWindowById(WC_DROPDOWN_MENU, 0);
 	BringWindowToFront(w);
 }
 
@@ -2468,7 +2496,7 @@ static void StartWindowSizing(Window *w, bool to_left)
 	_drag_delta.x = _cursor.pos.x;
 	_drag_delta.y = _cursor.pos.y;
 
-	DeleteWindowById(WC_DROPDOWN_MENU, 0);
+	CloseWindowById(WC_DROPDOWN_MENU, 0);
 	BringWindowToFront(w);
 }
 
@@ -2497,13 +2525,10 @@ static void HandleScrollbarScrolling(Window *w)
 		return;
 	}
 
-	/* Find the item we want to move to and make sure it's inside bounds. */
-	int pos = std::min(RoundDivSU(std::max(0, i + _scrollbar_start_pos) * sb->GetCount(), _scrollbar_size), std::max(0, sb->GetCount() - sb->GetCapacity()));
-	if (rtl) pos = std::max(0, sb->GetCount() - sb->GetCapacity() - pos);
-	if (pos != sb->GetPosition()) {
-		sb->SetPosition(pos);
-		w->SetDirty();
-	}
+	/* Find the item we want to move to. SetPosition will make sure it's inside bounds. */
+	int pos = RoundDivSU((i + _scrollbar_start_pos) * sb->GetCount(), _scrollbar_size);
+	if (rtl) pos = sb->GetCount() - sb->GetCapacity() - pos;
+	if (sb->SetPosition(pos)) w->SetDirty();
 }
 
 /**
@@ -2727,6 +2752,22 @@ EventState Window::HandleEditBoxKey(int wid, WChar key, uint16 keycode)
 	}
 
 	return ES_HANDLED;
+}
+
+/**
+ * Clear editbox widget.
+ * @param wid Editbox widget.
+ * @return if the Editbox was successfully cleared
+ */
+bool Window::ClearEditBox(int wid)
+{
+	QueryString *query = this->GetQueryString(wid);
+	if (query == nullptr) return false;
+
+	query->text.DeleteAll();
+	this->SetWidgetDirty(wid);
+	this->OnEditboxChanged(wid);
+	return true;
 }
 
 /**
@@ -3193,7 +3234,37 @@ static void CheckSoftLimit()
 		if (deletable_count <= _settings_client.gui.window_soft_limit) break;
 
 		assert(last_deletable != nullptr);
-		delete last_deletable;
+		last_deletable->Close();
+	}
+}
+
+/**
+ * Delete all closed windows.
+ */
+/* static */ void Window::DeleteClosedWindows()
+{
+	bool reset_window_nexts = false;
+	_present_window_types.reset();
+
+	/* Do the actual free of the deleted windows. */
+	for (Window *v = _z_front_window; v != nullptr; /* nothing */) {
+		Window *w = v;
+		v = v->z_back;
+
+		if (w->window_class < WC_END) _present_window_types.set(w->window_class);
+
+		if (w->window_class != WC_INVALID) continue;
+
+		RemoveWindowFromZOrdering(w);
+		delete w;
+		reset_window_nexts = true;
+	}
+
+	if (reset_window_nexts) {
+		_first_window = _z_front_window;
+		for (Window *w = _z_front_window; w != nullptr; w = w->z_back) {
+			w->next_window = w->z_back;
+		}
 	}
 }
 
@@ -3208,26 +3279,7 @@ void InputLoop()
 
 	CheckSoftLimit();
 
-	bool reset_window_nexts = false;
-
-	/* Do the actual free of the deleted windows. */
-	for (WindowBase *v = _z_front_window; v != nullptr; /* nothing */) {
-		WindowBase *w = v;
-		v = v->z_back;
-
-		if (w->window_class != WC_INVALID) continue;
-
-		RemoveWindowFromZOrdering(w);
-		free(w);
-		reset_window_nexts = true;
-	}
-
-	if (reset_window_nexts) {
-		_first_window = _z_front_window;
-		for (WindowBase *w = _z_front_window; w != nullptr; w = w->z_back) {
-			w->next_window = w->z_back;
-		}
-	}
+	Window::DeleteClosedWindows();
 
 	if (_input_events_this_tick != 0) {
 		/* The input loop is called only once per GameLoop() - so we can clear the counter here */
@@ -3245,7 +3297,7 @@ void InputLoop()
  */
 void CallWindowRealtimeTickEvent(uint delta_ms)
 {
-	for (Window *w : Window::IterateFromFront()) {
+	for (Window *w : Window::Iterate()) {
 		w->OnRealtimeTick(delta_ms);
 	}
 }
@@ -3278,7 +3330,7 @@ void UpdateWindows()
 	_window_update_number++;
 
 	/* Process invalidations before anything else. */
-	for (Window *w : Window::IterateFromFront()) {
+	for (Window *w : Window::Iterate()) {
 		w->ProcessScheduledInvalidations();
 		w->ProcessHighlightedInvalidations();
 	}
@@ -3311,7 +3363,7 @@ void UpdateWindows()
 	if (window_timer.HasElapsed()) {
 		window_timer.SetInterval(MILLISECONDS_PER_TICK);
 
-		for (Window *w : Window::IterateFromFront()) {
+		for (Window *w : Window::Iterate()) {
 			if ((w->flags & WF_WHITE_BORDER) && --w->white_border_timer == 0) {
 				CLRBITS(w->flags, WF_WHITE_BORDER);
 				w->SetDirty();
@@ -3319,11 +3371,16 @@ void UpdateWindows()
 		}
 	}
 
+	for (Window *w : Window::Iterate()) {
+		/* Update viewport only if window is not shaded. */
+		if (w->viewport != nullptr && !w->IsShaded()) UpdateNextViewportPosition(w);
+	}
+
 	DrawDirtyBlocks();
 
-	for (Window *w : Window::IterateFromBack()) {
+	for (Window *w : Window::Iterate()) {
 		/* Update viewport only if window is not shaded. */
-		if (w->viewport != nullptr && !w->IsShaded()) UpdateViewportPosition(w);
+		if (w->viewport != nullptr && !w->IsShaded()) ApplyNextViewportPosition(w);
 	}
 	ViewportDoDrawProcessAllPending();
 	NetworkDrawChatMessage();
@@ -3340,7 +3397,9 @@ void UpdateWindows()
  */
 void SetWindowDirty(WindowClass cls, WindowNumber number)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls && w->window_number == number) w->SetDirty();
 	}
 }
@@ -3353,7 +3412,9 @@ void SetWindowDirty(WindowClass cls, WindowNumber number)
  */
 void SetWindowWidgetDirty(WindowClass cls, WindowNumber number, byte widget_index)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls && w->window_number == number) {
 			w->SetWidgetDirty(widget_index);
 		}
@@ -3366,7 +3427,9 @@ void SetWindowWidgetDirty(WindowClass cls, WindowNumber number, byte widget_inde
  */
 void SetWindowClassesDirty(WindowClass cls)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls) w->SetDirty();
 	}
 }
@@ -3440,7 +3503,9 @@ void Window::ProcessHighlightedInvalidations()
  */
 void InvalidateWindowData(WindowClass cls, WindowNumber number, int data, bool gui_scope)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls && w->window_number == number) {
 			w->InvalidateData(data, gui_scope);
 		}
@@ -3457,7 +3522,9 @@ void InvalidateWindowData(WindowClass cls, WindowNumber number, int data, bool g
  */
 void InvalidateWindowClassesData(WindowClass cls, int data, bool gui_scope)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	if (cls < WC_END && !_present_window_types[cls]) return;
+
+	for (Window *w : Window::Iterate()) {
 		if (w->window_class == cls) {
 			w->InvalidateData(data, gui_scope);
 		}
@@ -3469,29 +3536,25 @@ void InvalidateWindowClassesData(WindowClass cls, int data, bool gui_scope)
  */
 void CallWindowGameTickEvent()
 {
-	for (Window *w : Window::IterateFromFront()) {
+	for (Window *w : Window::Iterate()) {
 		w->OnGameTick();
 	}
 }
 
 /**
- * Try to delete a non-vital window.
+ * Try to close a non-vital window.
  * Non-vital windows are windows other than the game selection, main toolbar,
  * status bar, toolbar menu, and tooltip windows. Stickied windows are also
  * considered vital.
  */
-void DeleteNonVitalWindows()
+void CloseNonVitalWindows()
 {
 	/* Note: the container remains stable, even when deleting windows. */
-	for (const Window *w : Window::IterateUnordered()) {
-		if (w->window_class != WC_MAIN_WINDOW &&
-				w->window_class != WC_SELECT_GAME &&
-				w->window_class != WC_MAIN_TOOLBAR &&
-				w->window_class != WC_STATUS_BAR &&
-				w->window_class != WC_TOOLTIPS &&
+	for (Window *w : Window::Iterate()) {
+		if ((w->window_desc->flags & WDF_NO_CLOSE) == 0 &&
 				(w->flags & WF_STICKY) == 0) { // do not delete windows which are 'pinned'
 
-			delete w;
+			w->Close();
 		}
 	}
 }
@@ -3503,15 +3566,12 @@ void DeleteNonVitalWindows()
  * then, does a little hacked loop of closing all stickied windows. Note
  * that standard windows (status bar, etc.) are not stickied, so these aren't affected
  */
-void DeleteAllNonVitalWindows()
+void CloseAllNonVitalWindows()
 {
-	/* Delete every window except for stickied ones, then sticky ones as well */
-	DeleteNonVitalWindows();
-
-	/* Note: the container remains stable, even when deleting windows. */
-	for (const Window *w : Window::IterateUnordered()) {
-		if (w->flags & WF_STICKY) {
-			delete w;
+	/* Note: the container remains stable, even when closing windows. */
+	for (Window *w : Window::Iterate()) {
+		if ((w->window_desc->flags & WDF_NO_CLOSE) == 0) {
+			w->Close();
 		}
 	}
 }
@@ -3524,32 +3584,32 @@ void DeleteAllMessages()
 	InitNewsItemStructs();
 	InvalidateWindowData(WC_STATUS_BAR, 0, SBI_NEWS_DELETED); // invalidate the statusbar
 	InvalidateWindowData(WC_MESSAGE_HISTORY, 0); // invalidate the message history
-	DeleteWindowById(WC_NEWS_WINDOW, 0); // close newspaper or general message window if shown
+	CloseWindowById(WC_NEWS_WINDOW, 0); // close newspaper or general message window if shown
 }
 
 /**
- * Delete all windows that are used for construction of vehicle etc.
+ * Close all windows that are used for construction of vehicle etc.
  * Once done with that invalidate the others to ensure they get refreshed too.
  */
-void DeleteConstructionWindows()
+void CloseConstructionWindows()
 {
 	/* Note: the container remains stable, even when deleting windows. */
-	for (const Window *w : Window::IterateUnordered()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->window_desc->flags & WDF_CONSTRUCTION) {
-			delete w;
+			w->Close();
 		}
 	}
 }
 
 /**
- * Delete all windows that use network client functionality.
+ * Close all windows that use network client functionality.
  */
-void DeleteNetworkClientWindows()
+void CloseNetworkClientWindows()
 {
 	/* Note: the container remains stable, even when deleting windows. */
-	for (const Window *w : Window::IterateUnordered()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->window_desc->flags & WDF_NETWORK) {
-			delete w;
+			w->Close();
 		}
 	}
 }
@@ -3557,8 +3617,8 @@ void DeleteNetworkClientWindows()
 /** Delete all always on-top windows to get an empty screen */
 void HideVitalWindows()
 {
-	DeleteWindowById(WC_MAIN_TOOLBAR, 0);
-	DeleteWindowById(WC_STATUS_BAR, 0);
+	CloseWindowById(WC_MAIN_TOOLBAR, 0);
+	CloseWindowById(WC_STATUS_BAR, 0);
 }
 
 void ReInitWindow(Window *w, bool zoom_changed)
@@ -3582,7 +3642,10 @@ void ReInitAllWindows(bool zoom_changed)
 
 	/* When _gui_zoom has changed, we need to resize toolbar and statusbar first,
 	 * so EnsureVisibleCaption uses the updated size information. */
-	ReInitWindow(FindWindowById(WC_MAIN_TOOLBAR, 0), zoom_changed);
+	{
+		MainToolbarScaleAdjuster toolbar_scale_adjuster;
+		ReInitWindow(FindWindowById(WC_MAIN_TOOLBAR, 0), zoom_changed);
+	}
 	ReInitWindow(FindWindowById(WC_STATUS_BAR, 0), zoom_changed);
 	for (Window *w : Window::IterateFromBack()) {
 		if (w->window_class == WC_MAIN_TOOLBAR || w->window_class == WC_STATUS_BAR) continue;
@@ -3673,7 +3736,7 @@ int PositionNetworkChatWindow(Window *w)
  */
 void ChangeVehicleViewports(VehicleID from_index, VehicleID to_index)
 {
-	for (Window *w : Window::IterateFromBack()) {
+	for (Window *w : Window::Iterate()) {
 		if (w->viewport != nullptr && w->viewport->follow_vehicle == from_index) {
 			w->viewport->follow_vehicle = to_index;
 			w->SetDirty();
@@ -3689,7 +3752,7 @@ void ChangeVehicleViewports(VehicleID from_index, VehicleID to_index)
  */
 void RelocateAllWindows(int neww, int newh)
 {
-	DeleteWindowById(WC_DROPDOWN_MENU, 0);
+	CloseWindowById(WC_DROPDOWN_MENU, 0);
 
 	for (Window *w : Window::IterateFromBack()) {
 		int left, top;
@@ -3753,14 +3816,13 @@ void RelocateAllWindows(int neww, int newh)
 }
 
 /**
- * Destructor of the base class PickerWindowBase
- * Main utility is to stop the base Window destructor from triggering
- * a free while the child will already be free, in this case by the ResetObjectToPlace().
+ * Hide the window and all its child windows, and mark them for a later deletion.
+ * Always call ResetObjectToPlace() when closing a PickerWindow.
  */
-PickerWindowBase::~PickerWindowBase()
+void PickerWindowBase::Close()
 {
-	this->window_class = WC_INVALID; // stop the ancestor from freeing the already (to be) child
 	ResetObjectToPlace();
+	this->Window::Close();
 }
 
 char *DumpWindowInfo(char *b, const char *last, const Window *w)

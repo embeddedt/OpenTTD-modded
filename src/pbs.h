@@ -14,6 +14,7 @@
 #include "direction_type.h"
 #include "track_type.h"
 #include "vehicle_type.h"
+#include "core/ring_buffer.hpp"
 
 TrackBits GetReservedTrackbits(TileIndex t);
 
@@ -97,8 +98,8 @@ struct TrainReservationLookAhead {
 	int16 tunnel_bridge_reserved_tiles;   ///< How many tiles a reservation into the tunnel/bridge currently extends into the wormhole
 	uint16 flags;                         ///< Flags (TrainReservationLookAheadFlags)
 	uint16 speed_restriction;
-	std::deque<TrainReservationLookAheadItem> items;
-	std::deque<TrainReservationLookAheadCurve> curves;
+	ring_buffer<TrainReservationLookAheadItem> items;
+	ring_buffer<TrainReservationLookAheadCurve> curves;
 	int32 cached_zpos = 0;                ///< Cached z position as used in TrainDecelerationStats
 	uint8 zpos_refresh_remaining = 0;     ///< Remaining position updates before next refresh of cached_zpos
 
@@ -164,6 +165,7 @@ bool ValidateLookAhead(const Train *v);
 PBSTileInfo FollowTrainReservation(const Train *v, Vehicle **train_on_res = nullptr, FollowTrainReservationFlags flags = FTRF_NONE);
 void ApplyAvailableFreeTunnelBridgeTiles(TrainReservationLookAhead *lookahead, int free_tiles, TileIndex tile, TileIndex end);
 void TryCreateLookAheadForTrainInTunnelBridge(Train *t);
+int AdvanceTrainReservationLookaheadEnd(const Train *v, int lookahead_end_position);
 void SetTrainReservationLookaheadEnd(Train *v);
 void FillTrainReservationLookAhead(Train *v);
 bool TrainReservationPassesThroughTile(const Train *v, TileIndex search_tile);

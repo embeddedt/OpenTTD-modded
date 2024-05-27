@@ -23,6 +23,7 @@
 #include "../script_storage.hpp"
 #include "../script_instance.hpp"
 #include "../script_fatalerror.hpp"
+#include "script_controller.hpp"
 #include "script_error.hpp"
 #include "../../debug.h"
 
@@ -83,6 +84,22 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 /* static */ ScriptObject *ScriptObject::GetDoCommandModeInstance()
 {
 	return GetStorage()->mode_instance;
+}
+
+/* static */ void ScriptObject::SetDoCommandAsyncMode(ScriptAsyncModeProc *proc, ScriptObject *instance)
+{
+	GetStorage()->async_mode = proc;
+	GetStorage()->async_mode_instance = instance;
+}
+
+/* static */ ScriptAsyncModeProc *ScriptObject::GetDoCommandAsyncMode()
+{
+	return GetStorage()->async_mode;
+}
+
+/* static */ ScriptObject *ScriptObject::GetDoCommandAsyncModeInstance()
+{
+	return GetStorage()->async_mode_instance;
 }
 
 /* static */ void ScriptObject::SetLastCommand(TileIndex tile, uint32 p1, uint32 p2, uint64 p3, uint32 cmd)
@@ -289,17 +306,14 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 	return GetStorage()->event_data;
 }
 
-/* static */ void *&ScriptObject::GetLogPointer()
+/* static */ ScriptLogTypes::LogData &ScriptObject::GetLogData()
 {
 	return GetStorage()->log_data;
 }
 
-/* static */ char *ScriptObject::GetString(StringID string)
+/* static */ std::string ScriptObject::GetString(StringID string)
 {
-	char buffer[64];
-	::GetString(buffer, string, lastof(buffer));
-	::StrMakeValidInPlace(buffer, lastof(buffer), SVS_NONE);
-	return ::stredup(buffer);
+	return ::StrMakeValid(::GetString(string));
 }
 
 /* static */ void ScriptObject::SetCallbackVariable(int index, int value)
@@ -339,6 +353,9 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 	/* Are we only interested in the estimate costs? */
 	bool estimate_only = GetDoCommandMode() != nullptr && !GetDoCommandMode()();
 
+	/* Should the command be executed asynchronously? */
+	bool asynchronous = GetDoCommandAsyncMode() != nullptr && GetDoCommandAsyncMode()() && GetActiveInstance()->GetScriptType() == ScriptType::GS;
+
 	/* Only set p2 when the command does not come from the network. */
 	if (GetCommandFlags(cmd) & CMD_CLIENT_ID && p2 == 0) p2 = UINT32_MAX;
 
@@ -349,7 +366,9 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 	if (!estimate_only && _networking && !_generating_world) SetLastCommand(tile, p1, p2, p3, cmd);
 
 	/* Try to perform the command. */
-	CommandCost res = ::DoCommandPScript(tile, p1, p2, p3, cmd, (_networking && !_generating_world) ? ScriptObject::GetActiveInstance()->GetDoCommandCallback() : nullptr, text, false, estimate_only, aux_data);
+	CommandCost res = ::DoCommandPScript(tile, p1, p2, p3, cmd,
+			(_networking && !_generating_world && !asynchronous) ? ScriptObject::GetActiveInstance()->GetDoCommandCallback() : nullptr,
+			text, false, estimate_only, asynchronous, aux_data);
 
 	/* We failed; set the error and bail out */
 	if (res.Failed()) {
@@ -371,11 +390,12 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 	SetLastCommandResultData(res.GetResultData());
 	SetLastCommandRes(true);
 
-	if (_generating_world) {
+	if (_generating_world || asynchronous) {
 		IncreaseDoCommandCosts(res.GetCost());
 		if (callback != nullptr) {
 			/* Insert return value into to stack and throw a control code that
 			 * the return value in the stack should be used. */
+			if (!_generating_world) ScriptController::DecreaseOps(100);
 			callback(GetActiveInstance());
 			throw SQInteger(1);
 		}
@@ -383,6 +403,12 @@ ScriptObject::ActiveInstance::~ActiveInstance()
 	} else if (_networking) {
 		/* Suspend the script till the command is really executed. */
 		throw Script_Suspend(-(int)GetDoCommandDelay(), callback);
+	} else if (GetActiveInstance()->GetScriptType() == ScriptType::GS && (_pause_mode & PM_PAUSED_GAME_SCRIPT) != PM_UNPAUSED) {
+		/* Game is paused due to GS, just execute as fast as possible */
+		IncreaseDoCommandCosts(res.GetCost());
+		ScriptController::DecreaseOps(100);
+		callback(GetActiveInstance());
+		throw SQInteger(1);
 	} else {
 		IncreaseDoCommandCosts(res.GetCost());
 

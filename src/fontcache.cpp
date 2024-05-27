@@ -54,13 +54,21 @@ int FontCache::GetDefaultFontHeight(FontSize fs)
 	return _default_font_height[fs];
 }
 
-/* static */ FontCache *FontCache::caches[FS_END] = { new SpriteFontCache(FS_NORMAL), new SpriteFontCache(FS_SMALL), new SpriteFontCache(FS_LARGE), new SpriteFontCache(FS_MONO) };
 int font_height_cache[FS_END];
 
 void UpdateFontHeightCache()
 {
 	for (int i = 0; i < FS_END; i++) {
 		font_height_cache[i] = FontCache::Get((FontSize) i)->GetHeight();
+	}
+}
+
+/* static */ FontCache *FontCache::caches[FS_END];
+
+/* static */ void FontCache::InitializeFontCaches()
+{
+	for (FontSize fs = FS_BEGIN; fs != FS_END; fs++) {
+		if (FontCache::caches[fs] == nullptr) new SpriteFontCache(fs); /* FontCache inserts itself into to the cache. */
 	}
 }
 
@@ -113,7 +121,7 @@ void SetFont(FontSize fontsize, const std::string& font, uint size, bool aa)
 	UpdateAllVirtCoords();
 	ReInitAllWindows(true);
 
-	if (_save_config) SaveToConfig();
+	if (_save_config) SaveToConfig(STCF_GENERIC);
 }
 
 #ifdef WITH_FREETYPE
@@ -131,6 +139,8 @@ extern void LoadCoreTextFont(FontSize fs);
  */
 void InitFontCache(bool monospace)
 {
+	FontCache::InitializeFontCaches();
+
 	for (FontSize fs = FS_BEGIN; fs < FS_END; fs++) {
 		if (monospace != (fs == FS_MONO)) continue;
 
@@ -177,5 +187,5 @@ bool HasAntialiasedFonts()
 
 #if !defined(_WIN32) && !defined(__APPLE__) && !defined(WITH_FONTCONFIG) && !defined(WITH_COCOA)
 
-bool SetFallbackFont(FontCacheSettings *settings, const char *language_isocode, int winlangid, MissingGlyphSearcher *callback) { return false; }
+bool SetFallbackFont(FontCacheSettings *settings, const std::string &language_isocode, int winlangid, MissingGlyphSearcher *callback) { return false; }
 #endif /* !defined(_WIN32) && !defined(__APPLE__) && !defined(WITH_FONTCONFIG) && !defined(WITH_COCOA) */

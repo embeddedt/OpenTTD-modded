@@ -189,39 +189,39 @@ STR_QUANTITY_N_A                                                :Μ/Δ
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}ΕΠ
-STR_ABBREV_COAL                                                 :{TINY_FONT}AΘ
-STR_ABBREV_MAIL                                                 :{TINY_FONT}ΑΓ
-STR_ABBREV_OIL                                                  :{TINY_FONT}ΠΤ
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}ΖΩ
-STR_ABBREV_GOODS                                                :{TINY_FONT}ΧΡ
-STR_ABBREV_GRAIN                                                :{TINY_FONT}ΣΡ
-STR_ABBREV_WOOD                                                 :{TINY_FONT}ΞΛ
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}ΣΜ
-STR_ABBREV_STEEL                                                :{TINY_FONT}ΧΒ
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}ΠΕ
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}ΧΜ
-STR_ABBREV_MAIZE                                                :{TINY_FONT}ΚΛ
-STR_ABBREV_FRUIT                                                :{TINY_FONT}ΦΡ
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}ΔΜ
-STR_ABBREV_FOOD                                                 :{TINY_FONT}ΤΦ
-STR_ABBREV_PAPER                                                :{TINY_FONT}ΧΤ
-STR_ABBREV_GOLD                                                 :{TINY_FONT}ΧΡ
-STR_ABBREV_WATER                                                :{TINY_FONT}ΝΕ
-STR_ABBREV_WHEAT                                                :{TINY_FONT}ΣΤ
-STR_ABBREV_RUBBER                                               :{TINY_FONT}ΚΤ
-STR_ABBREV_SUGAR                                                :{TINY_FONT}ΖΧ
-STR_ABBREV_TOYS                                                 :{TINY_FONT}ΠΧ
-STR_ABBREV_SWEETS                                               :{TINY_FONT}ΓΛ
-STR_ABBREV_COLA                                                 :{TINY_FONT}ΚΟ
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}ΜΓ
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}ΦΥ
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}ΚΒ
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}ΜΠ
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}ΠΛ
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}ΑΨ
-STR_ABBREV_NONE                                                 :{TINY_FONT}ΤΠ
-STR_ABBREV_ALL                                                  :{TINY_FONT}ΟΛΑ
+STR_ABBREV_PASSENGERS                                           :ΕΠ
+STR_ABBREV_COAL                                                 :AΘ
+STR_ABBREV_MAIL                                                 :ΑΓ
+STR_ABBREV_OIL                                                  :ΠΤ
+STR_ABBREV_LIVESTOCK                                            :ΖΩ
+STR_ABBREV_GOODS                                                :ΧΡ
+STR_ABBREV_GRAIN                                                :ΣΡ
+STR_ABBREV_WOOD                                                 :ΞΛ
+STR_ABBREV_IRON_ORE                                             :ΣΜ
+STR_ABBREV_STEEL                                                :ΧΒ
+STR_ABBREV_VALUABLES                                            :ΠΕ
+STR_ABBREV_COPPER_ORE                                           :ΧΜ
+STR_ABBREV_MAIZE                                                :ΚΛ
+STR_ABBREV_FRUIT                                                :ΦΡ
+STR_ABBREV_DIAMONDS                                             :ΔΜ
+STR_ABBREV_FOOD                                                 :ΤΦ
+STR_ABBREV_PAPER                                                :ΧΤ
+STR_ABBREV_GOLD                                                 :ΧΡ
+STR_ABBREV_WATER                                                :ΝΕ
+STR_ABBREV_WHEAT                                                :ΣΤ
+STR_ABBREV_RUBBER                                               :ΚΤ
+STR_ABBREV_SUGAR                                                :ΖΧ
+STR_ABBREV_TOYS                                                 :ΠΧ
+STR_ABBREV_SWEETS                                               :ΓΛ
+STR_ABBREV_COLA                                                 :ΚΟ
+STR_ABBREV_CANDYFLOSS                                           :ΜΓ
+STR_ABBREV_BUBBLES                                              :ΦΥ
+STR_ABBREV_TOFFEE                                               :ΚΒ
+STR_ABBREV_BATTERIES                                            :ΜΠ
+STR_ABBREV_PLASTIC                                              :ΠΛ
+STR_ABBREV_FIZZY_DRINKS                                         :ΑΨ
+STR_ABBREV_NONE                                                 :ΤΠ
+STR_ABBREV_ALL                                                  :ΟΛΑ
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA}{NBSP}επιβάτ{P ης ες}
@@ -251,15 +251,18 @@ STR_COLOUR_GREY                                                 :Γκρι
 STR_COLOUR_WHITE                                                :Λευκό
 STR_COLOUR_RANDOM                                               :Τυχαία
 
+###length 17
+
+
 # Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA}{NBSP}μίλια/ώρα
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA}{NBSP}χλμ/ώρα
-STR_UNITS_VELOCITY_SI                                           :{COMMA}{NBSP}m/s
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL}{NBSP}μίλια/ώρα
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL}{NBSP}χλμ/ώρα
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL}{NBSP}m/s
 STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}{NBSP}τετραγωνίδια/ημέρα
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}{NBSP}hp
-STR_UNITS_POWER_METRIC                                          :{COMMA}{NBSP}hp
-STR_UNITS_POWER_SI                                              :{COMMA}{NBSP}kW
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}{NBSP}hp
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}{NBSP}hp
+STR_UNITS_POWER_SI                                              :{DECIMAL}{NBSP}kW
 
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}{NBSP}hp/t
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}{NBSP}hp/t
@@ -270,29 +273,29 @@ STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL                           :{DECIMAL}{NBSP}
 STR_UNITS_POWER_SI_TO_WEIGHT_METRIC                             :{DECIMAL}{NBSP}kW/t
 STR_UNITS_POWER_SI_TO_WEIGHT_SI                                 :{DECIMAL}{NBSP}W/kg
 
-STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{COMMA}{NBSP}τ.
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}{NBSP}τ.
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}{NBSP}kg
+STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}τ.
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}{NBSP}τ.
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}{NBSP}kg
 
-STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{COMMA}{NBSP}τόνο{P ς ι}
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA}{NBSP}τόνο{P ς ι}
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA}{NBSP}kg
+STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}τόνο{P ς ι}
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL}{NBSP}τόνο{P ς ι}
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL}{NBSP}kg
 
-STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{COMMA}{NBSP}γαλ
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}{NBSP}λ
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}{NBSP}m³
+STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}γαλ
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}{NBSP}λ
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}{NBSP}m³
 
-STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{COMMA}{NBSP}γαλόν{P "ι" "ια"}
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA}{NBSP}λίτρ{P ο α}
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA}{NBSP}m³
+STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}γαλόν{P "ι" "ια"}
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL}{NBSP}λίτρ{P ο α}
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL}{NBSP}m³
 
-STR_UNITS_FORCE_IMPERIAL                                        :{COMMA}{NBSP}lbf
-STR_UNITS_FORCE_METRIC                                          :{COMMA}{NBSP}kgf
-STR_UNITS_FORCE_SI                                              :{COMMA}{NBSP}kN
+STR_UNITS_FORCE_IMPERIAL                                        :{DECIMAL}{NBSP}lbf
+STR_UNITS_FORCE_METRIC                                          :{DECIMAL}{NBSP}kgf
+STR_UNITS_FORCE_SI                                              :{DECIMAL}{NBSP}kN
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA}{NBSP}πόδ{P "ι" "ια"}
-STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}μ
-STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}m
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}{NBSP}πόδ{P "ι" "ια"}
+STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL}{NBSP}μ
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL}{NBSP}m
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}Φιλτράρισμα λίστας:
@@ -1035,52 +1038,57 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}Επικ
 
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Επιλογές Παιχνιδιού
+
+
+
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}Νομισματικές μονάδες
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}Επιλογή νομισματικών μονάδων
 
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :Στερλίνα Ηνωμένου Βασιλείου (GBP)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :Δολλάριο Η.Π.Α. (USD)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :Ευρώ (EUR)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :Ιαπωνικό Γιεν (JPY)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :Αυστριακό Σελίνι (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :Βελγικό Φράγκο (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :Ελβετικό Φράγκο (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :Τσέχικη Κορώνα (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :Γερμανικό Μάρκο (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :Δανέζικη Κορώνα (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :Ισπανική Πεσέτα (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :Φινλανδικό Μάρκο (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :Γαλλικό Φράγκο (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :Ελληνική Δραχμή (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ουγγρικό Φλουρί (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :Ισλανδική Κορώνα (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :Ιταλική Λίρα (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :Ολλανδικό Φιορίνι (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :Νορβηγική Κορώνα (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :Πολωνικό Ζλότυ (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :Ρουμάνικο Λευ (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :Ρωσικό Ρούβλι (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :Σλοβένικο Τολάρ (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :Σουηδική Κορώνα (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :Τούρκικη Λίρα (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :Σλοβάκικη Κορώνα (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :Βραζιλιάνικο Ρεάλ (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :Εσθονική Κορώνα (EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :Λιθουανική Λίτα (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :Νοτιοκορεάτικο Γουόν (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Νοτιοαφρικάνικο Ραντ (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :Στερλίνα Ηνωμένου Βασιλείου
+STR_GAME_OPTIONS_CURRENCY_USD                                   :Δολλάριο Η.Π.Α.
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :Ευρώ
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :Ιαπωνικό Γιεν
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :Αυστριακό Σελίνι
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :Βελγικό Φράγκο
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :Ελβετικό Φράγκο
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :Τσέχικη Κορώνα
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :Γερμανικό Μάρκο
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :Δανέζικη Κορώνα
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :Ισπανική Πεσέτα
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :Φινλανδικό Μάρκο
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :Γαλλικό Φράγκο
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :Ελληνική Δραχμή
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ουγγρικό Φλουρί
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :Ισλανδική Κορώνα
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :Ιταλική Λίρα
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :Ολλανδικό Φιορίνι
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :Νορβηγική Κορώνα
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :Πολωνικό Ζλότυ
+STR_GAME_OPTIONS_CURRENCY_RON                                   :Ρουμάνικο Λευ
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :Ρωσικό Ρούβλι
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :Σλοβένικο Τολάρ
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :Σουηδική Κορώνα
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :Τούρκικη Λίρα
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :Σλοβάκικη Κορώνα
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :Βραζιλιάνικο Ρεάλ
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :Εσθονική Κορώνα
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :Λιθουανική Λίτα
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :Νοτιοκορεάτικο Γουόν
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Νοτιοαφρικάνικο Ραντ
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :Άλλο...
-STR_GAME_OPTIONS_CURRENCY_GEL                                   :Γεοργιανό Λάρι (GEL)
-STR_GAME_OPTIONS_CURRENCY_IRR                                   :Ιρανικό Ριάλ (IRR)
-STR_GAME_OPTIONS_CURRENCY_RUB                                   :Νεο Ρώσικο Ρούβλι (RUB)
-STR_GAME_OPTIONS_CURRENCY_MXN                                   :Πεσος Μεξικου (MXN)
-STR_GAME_OPTIONS_CURRENCY_NTD                                   :Δολλάριο Νέας Ταϊβάν (NTD)
-STR_GAME_OPTIONS_CURRENCY_CNY                                   :Ρενμίνμπι Κίνας (CNY)
-STR_GAME_OPTIONS_CURRENCY_HKD                                   :Δολάριο Χονγκ Κονγκ (HKD)
-STR_GAME_OPTIONS_CURRENCY_INR                                   :Ρουπία Ινδίας (INR)
-STR_GAME_OPTIONS_CURRENCY_IDR                                   :Ινδονησιακή Ρουπία  (IDR)
-STR_GAME_OPTIONS_CURRENCY_MYR                                   :Ρινγκίτ Μαλαισίας (MYR)
+STR_GAME_OPTIONS_CURRENCY_GEL                                   :Γεοργιανό Λάρι
+STR_GAME_OPTIONS_CURRENCY_IRR                                   :Ιρανικό Ριάλ
+STR_GAME_OPTIONS_CURRENCY_RUB                                   :Νεο Ρώσικο Ρούβλι
+STR_GAME_OPTIONS_CURRENCY_MXN                                   :Πεσος Μεξικου
+STR_GAME_OPTIONS_CURRENCY_NTD                                   :Δολλάριο Νέας Ταϊβάν
+STR_GAME_OPTIONS_CURRENCY_CNY                                   :Ρενμίνμπι Κίνας
+STR_GAME_OPTIONS_CURRENCY_HKD                                   :Δολάριο Χονγκ Κονγκ
+STR_GAME_OPTIONS_CURRENCY_INR                                   :Ρουπία Ινδίας
+STR_GAME_OPTIONS_CURRENCY_IDR                                   :Ινδονησιακή Ρουπία
+STR_GAME_OPTIONS_CURRENCY_MYR                                   :Ρινγκίτ Μαλαισίας
 
 STR_GAME_OPTIONS_AUTOSAVE_FRAME                                 :{BLACK}Αυτόματη αποθήκευση
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Επιλογή διάκενου ανάμεσα στις αυτόματες αποθηκεύσεις
@@ -1088,10 +1096,6 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Επιλ
 # Autosave dropdown
 ###length 5
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :Ανενεργό
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :Κάθε μήνα
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :Κάθε 3 μήνες
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :Κάθε 6 μήνες
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :Κάθε 12 μήνες
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Γλώσσα
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Επιλογή της γλώσσας του παιχνιδιού
@@ -1127,6 +1131,7 @@ STR_GAME_OPTIONS_GUI_SCALE_2X                                   :2x
 STR_GAME_OPTIONS_GUI_SCALE_3X                                   :3x
 STR_GAME_OPTIONS_GUI_SCALE_4X                                   :4x
 STR_GAME_OPTIONS_GUI_SCALE_5X                                   :5x
+
 
 STR_GAME_OPTIONS_GRAPHICS                                       :{BLACK}Γραφικά
 
@@ -1310,6 +1315,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :Αριστερ�
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :Κέντρο
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :Δεξιά
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :Μέγιστο αρχικό δάνειο: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :Μέγιστο ποσό που μπορεί να δανειστεί μία εταιρία (χωρίς να λαμβάνεται υπόψη ο πληθωρισμός)
 ###setting-zero-is-special
@@ -1490,6 +1496,7 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Όταν είν
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :Αρχικό χρώμα εταιρίας: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :Επιλογή του αρχικού χρώματος της εταιρίας
 
+
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Τα αεροδρόμια δεν λήγουν ποτέ: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :Ενεργοποιώντας αυτήν τη ρύθμιση κάθε τύπος αεροδρομίου παραμένει διαθέσιμο για πάντα μετά την παρουσίασή του
 
@@ -1523,7 +1530,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :Ελάχιστ�
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :Διάρκεια μηνύματος σφάλματος: {STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :Διάρκεια εμφάνισης μηνύματων σφάλματος σε κόκκινο παράθυρο. Σημειώστε ότι μερικά (κρίσιμα) μηνύματα σφάλματος δεν κλείνουν αυτόματα μετά από αυτόν τον χρόνο, αλλά πρέπει να κλείσουν χειροκίνητα
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} δευτερόλεπτ{P 0 ο α}
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :Εμφάνιση αναδυόμενων μηνυμάτων: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :Καθυστέρηση πριν την εμφάνιση των επεξηγήσεων όταν ο δείκτης του ποντικιού βρίσκεται πάνω από κάποιο στοιχείο της διεπαφής. Εναλλακτικά, οι επεξηγήσεις συνδέονται με το δεξί κουμπί του ποντικιού όταν η τιμή αυτού του πεδίου είναι 0.
@@ -1691,9 +1697,7 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :Απενεργ�
 
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE                        :Κλείσιμο παραθύρου με δεξί-κλικ: {STRING}
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :Κλείνει το παράθυρο με δεξί πάτημα μέσα του. Απενεργοποιεί την ανάδυση επεξηγήσεων με το δεξί κουμπί!
-
-STR_CONFIG_SETTING_AUTOSAVE                                     :Αυτόματο σώσιμο: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Επιλέξτε το διάστημα ανάμεσα σε δυο διαδοχικά σωσίματα του παιχνιδιου
+###length 3
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :Χρήση της {STRING} ημερολογιακής μορφής στα ονόματα αποθηκευμένων παιχνιδιών
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :Μορφή της ημερομηνίας στα αρχεία αποθήκευσης παιχνιδιών
@@ -1907,13 +1911,6 @@ STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :Αρχικό
 STR_CONFIG_SETTING_ECONOMY_TYPE_SMOOTH                          :Ομαλή
 STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :Παγωμένο
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :Ενεργοποίηση της δυνατότητας αγοράς μετοχών από άλλες εταιρίες: {STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Όταν είναι ενεργοποιημένη, επιτρέπεται η αγοραπωλησία εταιρικών μετοχών. Οι μετοχές θα είναι διαθέσιμες μόνο όταν οι εταιρείες φτάνουν μια ορισμένη ηλικία
-
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Ελάχιστη ηλικία εταιρίας για συναλλαγή μετοχών: {STRING}
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Ορίστε την ελάχιστη ηλικία μίας εταιρίας για να μπορούν άλλοι να αγοράσουν ή να πουλήσουν μετοχές από αυτές.
-###setting-zero-is-special
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Το ποσοστό κέρδους από το σκέλος μεταφοράς στα συστήματα τροφοδότησης: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Το ποσοστό του εισοδήματος που δίνεται στα ενδιάμεσα σκέλη των συστημάτων τροφοδότησης, δίνοντας μεγαλύτερο έλεγχο στο εισόδημα
 
@@ -2027,10 +2024,6 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :Καμία
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :Αρχικός πολλαπλασιαστής μεγέθους πόλης: {STRING}
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER_HELPTEXT                :Μέσο μέγεθος μεγάλων πόλεων σε σχέση με τις κανονικές στην αρχή του παιχνιδιού
 
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL                           :Ενημέρωση γραφήματος κάθε {STRING}{NBSP}μέρ{P 0:2 α ες}
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT                  :Χρόνος που μεσολαβεί μεταξύ επαναυπολογισμών του γραφήματος συνδέσμου. Κάθε επαναυπολογισμός υπολογίζει το σχέδιο για ένα τμήματος του γραφήματος. Αυτό σημαίνει ότι μια τιμή Χ για αυτή τη ρύθμιση δεν σημαίνει ότι ολόκληρο το γράφημα θα ενημερώνεται κάθε Χ ημέρες, μονάχα κάποια τμήματα. Όσο μικρότερη ρύθμιση τεθεί τόσο μεγαλύτερος χρόνος επεξεργαστή απαιτείται για τον υπολογσιμό του. Όσο μεγαλύτερη ρύθμιση τεθεί  τόσο περισσότερο θα πάρει για να ξεκινήσει η διανομή φορτίου σε νέες διαδρομές.
-STR_CONFIG_SETTING_LINKGRAPH_TIME                               :Πάρε {STRING}{NBSP}μέρ{P 0:2 α ες} για επανυπολογσιμό του γραφήματος διανομής
-STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :Χρόνος που απαιτείται για επαναυπολογισμούς τμήματος γραφήματος συνδέσμου. Όταν ένας επαναυπολογισμός αρχίζει, προκύπτει ένα νήμα το οποίο επιτρέπεται να τρέξει για έναν συγκεκριμένο αριθμό ημερών. Όσο μικρότερος αριθμός τόσο μεγαλύτερες πιθανότητες ότι το νήμα δεν τελείωνει όταν πρέπει. Τότε το παιχνίδι σταματά μέχρι να ολοκληρωθεί («λαγκάρει»). Όσο μεγαλύτερος αριθμός τόσο μεγαλύτερο χρόνο παίρνει για να για να ενημερωθεί διανομή όταν αλλάζουν οι διαδρομές.
 
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :Τρόπος διανομής επιβατών: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :Το «συμμετρικό» σημαίνει ότι περίπου ο ίδιος αριθμός επιβατών θα σταλέι από έναν σταθμό Α σε ένα σταθμό Β όσο από τον Β στον Α. Το «ασυμμετρικό» σημαίνει ότι αυθαίρετος αριθμός επιβατών μπορεί να σταλούν σε οποιαδήποτε εκ των δύο κατευθύνσεων. Το «χειροκίνητο» σημαίνει ότι καμία αυτόματη διανομή δε θα γίνεται για τους επιβάτες.
@@ -2099,30 +2092,30 @@ STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :Αυτοκρα�
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :Μετρικό (m)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :SI (m)
 
-STR_CONFIG_SETTING_LOCALISATION                                 :{ORANGE}Τοπικοποίηση
-STR_CONFIG_SETTING_GRAPHICS                                     :{ORANGE}Γραφικά
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}Ήχος
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}Περιβάλλον Λειτουργίας
-STR_CONFIG_SETTING_INTERFACE_GENERAL                            :{ORANGE}Γενικά
-STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}Παράθυρα προβολών
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}Κατασκευή
-STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}Ειδήσεις / Σύμβουλοι
-STR_CONFIG_SETTING_COMPANY                                      :{ORANGE}Εταιρία
-STR_CONFIG_SETTING_ACCOUNTING                                   :{ORANGE}Λογιστικά
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}Οχήματα
-STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :{ORANGE}Φυσική
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}Δρομολογήσεις
-STR_CONFIG_SETTING_LIMITATIONS                                  :{ORANGE}Περιορισμοί
-STR_CONFIG_SETTING_ACCIDENTS                                    :{ORANGE}Καταστροφές/Ατυχήματα
-STR_CONFIG_SETTING_GENWORLD                                     :{ORANGE}Δημιουργία Κόσμου
-STR_CONFIG_SETTING_ENVIRONMENT                                  :{ORANGE}Περιβάλλον
-STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :{ORANGE}Αρχές
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}Πόλεις
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}Βιομηχανίες
-STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}Κατανομή φορτίων
-STR_CONFIG_SETTING_AI                                           :{ORANGE}Ανταγωνιστές
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Παίκτες υπολογιστή
-STR_CONFIG_SETTING_NETWORK                                      :{ORANGE}Δίκτυο
+STR_CONFIG_SETTING_LOCALISATION                                 :Τοπικοποίηση
+STR_CONFIG_SETTING_GRAPHICS                                     :Γραφικά
+STR_CONFIG_SETTING_SOUND                                        :Ήχος
+STR_CONFIG_SETTING_INTERFACE                                    :Περιβάλλον Λειτουργίας
+STR_CONFIG_SETTING_INTERFACE_GENERAL                            :Γενικά
+STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :Παράθυρα προβολών
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :Κατασκευή
+STR_CONFIG_SETTING_ADVISORS                                     :Ειδήσεις / Σύμβουλοι
+STR_CONFIG_SETTING_COMPANY                                      :Εταιρία
+STR_CONFIG_SETTING_ACCOUNTING                                   :Λογιστικά
+STR_CONFIG_SETTING_VEHICLES                                     :Οχήματα
+STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :Φυσική
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :Δρομολογήσεις
+STR_CONFIG_SETTING_LIMITATIONS                                  :Περιορισμοί
+STR_CONFIG_SETTING_ACCIDENTS                                    :Καταστροφές/Ατυχήματα
+STR_CONFIG_SETTING_GENWORLD                                     :Δημιουργία Κόσμου
+STR_CONFIG_SETTING_ENVIRONMENT                                  :Περιβάλλον
+STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :Αρχές
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :Πόλεις
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :Βιομηχανίες
+STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :Κατανομή φορτίων
+STR_CONFIG_SETTING_AI                                           :Ανταγωνιστές
+STR_CONFIG_SETTING_AI_NPC                                       :Παίκτες υπολογιστή
+STR_CONFIG_SETTING_NETWORK                                      :Δίκτυο
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :Μέθοδος δρομολόγησης για τρένα: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :Μέθοδος διαπίστωσης διαδρομής που χρησιμοποιείται για τα τρένα
@@ -2489,6 +2482,7 @@ STR_NETWORK_ASK_RELAY_NO                                        :{BLACK}Όχι
 STR_NETWORK_ASK_RELAY_YES_ONCE                                  :{BLACK}Ναι, μόνο αυτή τη φορά
 STR_NETWORK_ASK_RELAY_YES_ALWAYS                                :{BLACK}Ναι, μην ρωτήσεις ξανά
 
+
 STR_NETWORK_SPECTATORS                                          :Θεατές
 
 # Network set password
@@ -2694,7 +2688,6 @@ STR_TRANSPARENT_BUILDINGS_TOOLTIP                               :{BLACK}Εναλ
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}Εναλλαγή διαφάνειας για γέφυρες. Ctrl+Κλικ για να την κλειδώσετε
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}Εναλλαγή διαφάνειας για κτίρια όπως φάρους και κεραίες. Ctrl+Κλικ για να την κλειδώσετε
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}Εναλλαγή διαφάνειας για τις συνδέσεις. Ctrl+Κλικ για να την κλειδώσετε
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Εναλλαγή διαφάνειας για τις ενδείξεις φόρτωσης. Ctrl+Κλικ για να την κλειδώσετε
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}Επιλέξτε τα αντικείμενα που θα είναι αόρατα αντί για διάφανα
 
 # Linkgraph legend window
@@ -3804,7 +3797,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}{COMMA} 
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}{COMMA} πλοί{P ο α}
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}Κανένα
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}Αξία εταιρίας: {WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% είναι ιδιοκτησία της {COMPANY})
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}Υποδομή:
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}{COMMA} κομμάτι{P "" α} σιδηροτροχιάς
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}{COMMA} κομμάτι{P "" α} δρόμου
@@ -3832,11 +3824,6 @@ STR_COMPANY_VIEW_COMPANY_NAME_BUTTON                            :{BLACK}Όνομ
 STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}Αλλαγή του ονόματος της εταιρίας
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}Όνομα Διευθυντή
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}Αλλαγή του ονόματος του διευθυντή
-
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Αγορά μεριδίου 25% της εταιρία
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Πώληση μεριδίου 25% της εταιρίας
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Αγορά μεριδίου 25% σε αυτήν την εταιρεία. Με Shift+Κλικ εμφανίζεται το εκτιμώμενο κόστος χωρίς την αγορά μετοχών
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Πώληση μεριδίου 25% της εταιρίας. Με Shift+Κλικ εμφανίζεται το εκτιμώμενο κέρδος χωρίς την πώληση μετοχών
 
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :Όνομα Εταιρίας
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :Όνομα Διευθυντή
@@ -3915,8 +3902,6 @@ STR_VEHICLE_LIST_MANAGE_LIST_TOOLTIP                            :{BLACK}Στεί
 STR_VEHICLE_LIST_REPLACE_VEHICLES                               :Αντικατάσταση οχημάτων
 STR_VEHICLE_LIST_SEND_FOR_SERVICING                             :Στείλτε για Επισκευή
 STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR                     :{TINY_FONT}{BLACK}Κέρδος αυτό το έτος: {CURRENCY_LONG} (προηγούμενο έτος: {CURRENCY_LONG})
-STR_VEHICLE_LIST_CARGO                                          :{TINY_FONT}{BLACK}[{CARGO_LIST}]
-STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{TINY_FONT}{BLACK}{STRING} {STRING}
 
 STR_VEHICLE_LIST_SEND_TRAIN_TO_DEPOT                            :Στείλτε στο Υπόστεγο
 STR_VEHICLE_LIST_SEND_ROAD_VEHICLE_TO_DEPOT                     :Στείλτε στο Αμαξοστάσιο
@@ -4643,8 +4628,6 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}Αναμ
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}Προγραμματισμένη
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}Εναλλαγή μεταξύ αναμενόμενης και προγραμματισμένης
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :ΑΦ:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :ΑΝ:
 
 
 # Date window (for timetable)
@@ -4733,7 +4716,6 @@ STR_AI_SETTINGS_CAPTION_AI                                      :AI
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}Κλείσιμο
 STR_AI_SETTINGS_RESET                                           :{BLACK}Επαναφορά
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :Αριθμός ημερών για την εκκίνηση της επόμενης AI μετά από τη προηγούμενη (περίπου): {ORANGE}{STRING}
 
 
 # Textfile window
@@ -4742,7 +4724,7 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}Αναδ
 STR_TEXTFILE_VIEW_README                                        :{BLACK}Εμφάνιση readme
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}Ιστορικό αλλαγών
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}Άδεια
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING} readme του {STRING}
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{G=m}{WHITE}{STRING} ιστορικό αλλαγών του {STRING}
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} άδεια του {STRING}
@@ -4870,9 +4852,6 @@ STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}Δεν �
 STR_ERROR_CAN_T_GIVE_MONEY                                      :{WHITE}Δεν μπορείτε να δώσετε χρήματα σε αυτή την εταιρία...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}Αδύνατη η εξαγορά της εταιρίας...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}Δεν μπορεί να κτιστεί αρχηγείο εταιρίας...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Αδύνατη η αγορά μεριδίου 25% της εταιρίας...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Αδύνατη η πώληση μεριδίου 25% της εταιρίας...
-STR_ERROR_PROTECTED                                             :{WHITE}Αυτή η εταιρία δεν είναι αρκετά παλιά για συναλλαγή μετοχών...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}Αδύνατο να κτιστούν πόλεις
@@ -5607,10 +5586,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Ελικόπτ�
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}-{STRING}-{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}-{ZEROFILL_NUM}-{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM}
 STR_FORMAT_DATE_LONG                                            :{STRING.date} {STRING} {NUM}
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :(Εταιρία {COMMA})
 STR_FORMAT_GROUP_NAME                                           :Ομάδα {COMMA}
@@ -5691,33 +5670,8 @@ STR_JUST_RAW_STRING                                             :{STRING}
 STR_JUST_BIG_RAW_STRING                                         :{BIG_FONT}{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

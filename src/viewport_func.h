@@ -23,6 +23,7 @@ struct ViewportDrawerDynamic;
 static const int TILE_HEIGHT_STEP = 50; ///< One Z unit tile height difference is displayed as 50m.
 
 void SetSelectionRed(bool);
+void SetSelectionPalette(PaletteID);
 
 void ClearViewportCache(Viewport *vp);
 void ClearViewportLandPixelCache(Viewport *vp);
@@ -32,7 +33,8 @@ void InitializeWindowViewport(Window *w, int x, int y, int width, int height, ui
 Viewport *IsPtInWindowViewport(const Window *w, int x, int y);
 Point TranslateXYToTileCoord(const Viewport *vp, int x, int y, bool clamp_to_map = true);
 Point GetTileBelowCursor();
-void UpdateViewportPosition(Window *w);
+void UpdateNextViewportPosition(Window *w);
+void ApplyNextViewportPosition(Window *w);
 void UpdateViewportSizeZoom(Viewport *vp);
 
 void MarkViewportDirty(Viewport * const vp, int left, int top, int right, int bottom, ViewportMarkDirtyFlags flags);
@@ -41,12 +43,14 @@ void MarkAllViewportMapsDirty(int left, int top, int right, int bottom);
 void MarkAllViewportMapLandscapesDirty();
 void MarkWholeNonMapViewportsDirty();
 void MarkAllViewportOverlayStationLinksDirty(const Station *st);
-void MarkAllRouteStepsDirty(const Vehicle *veh);
 void MarkViewportLineDirty(Viewport * const vp, const Point from_pt, const Point to_pt, const int block_radius, ViewportMarkDirtyFlags flags);
 void MarkTileLineDirty(const TileIndex from_tile, const TileIndex to_tile, ViewportMarkDirtyFlags flags);
-void MarkAllRoutePathsDirty(const Vehicle *veh);
-void CheckMarkDirtyFocusedRoutePaths(const Vehicle *veh);
-void CheckMarkDirtyFocusedRoutePaths();
+void MarkDirtyFocusedRoutePaths(const Vehicle *veh);
+void CheckMarkDirtyViewportRoutePaths(const Vehicle *veh);
+void CheckMarkDirtyViewportRoutePaths();
+void AddFixedViewportRoutePath(VehicleID veh);
+void RemoveFixedViewportRoutePath(VehicleID veh);
+void ChangeFixedViewportRoutePath(VehicleID from, VehicleID to);
 
 bool DoZoomInOutWindow(ZoomStateChange how, Window *w);
 void ZoomInOrOutToCursorWindow(bool in, Window * w);
@@ -139,15 +143,34 @@ void ViewportMapBuildTunnelCache();
 void DrawTileSelectionRect(const TileInfo *ti, PaletteID pal);
 void DrawSelectionSprite(SpriteID image, PaletteID pal, const TileInfo *ti, int z_offset, FoundationPart foundation_part, int extra_offs_x = 0, int extra_offs_y = 0, const SubSprite *sub = nullptr);
 
+struct Waypoint;
 struct Town;
 struct TraceRestrictProgram;
 void SetViewportCatchmentStation(const Station *st, bool sel);
+void SetViewportCatchmentWaypoint(const Waypoint *wp, bool sel);
 void SetViewportCatchmentTown(const Town *t, bool sel);
 void SetViewportCatchmentTraceRestrictProgram(const TraceRestrictProgram *prog, bool sel);
+
+template<class T>
+void SetViewportCatchmentSpecializedStation(const T *st, bool sel);
+
+template<>
+inline void SetViewportCatchmentSpecializedStation(const Station *st, bool sel)
+{
+	SetViewportCatchmentStation(st, sel);
+}
+
+template<>
+inline void SetViewportCatchmentSpecializedStation(const Waypoint *st, bool sel)
+{
+	SetViewportCatchmentWaypoint(st, sel);
+}
 
 void MarkBridgeDirty(TileIndex begin, TileIndex end, DiagDirection direction, uint bridge_height, ViewportMarkDirtyFlags flags = VMDF_NONE);
 void MarkBridgeDirty(TileIndex tile, ViewportMarkDirtyFlags flags = VMDF_NONE);
 void MarkBridgeOrTunnelDirty(TileIndex tile, ViewportMarkDirtyFlags flags = VMDF_NONE);
 void MarkBridgeOrTunnelDirtyOnReservationChange(TileIndex tile, ViewportMarkDirtyFlags flags = VMDF_NONE);
+
+bool IsViewportMouseHoverActive();
 
 #endif /* VIEWPORT_FUNC_H */

@@ -28,28 +28,12 @@ STR_ORDER_CONDITIONAL_DISPATCH_SLOT                             :Abfahrztszeitfe
 
 STR_ORDER_STOP_LOCATION_THROUGH                                 :[durchgehendes Laden]
 
-STR_VIEWPORT_TOWN_POP_VERY_POOR_RATING                          :{WHITE}{TOWN} {RED}({COMMA})
-STR_VIEWPORT_TOWN_POP_MEDIOCRE_RATING                           :{WHITE}{TOWN} {ORANGE}({COMMA})
-STR_VIEWPORT_TOWN_POP_GOOD_RATING                               :{WHITE}{TOWN} {YELLOW}({COMMA})
-STR_VIEWPORT_TOWN_POP_EXCELLENT_RATING                          :{WHITE}{TOWN} {GREEN}({COMMA})
-
-STR_VIEWPORT_TOWN_VERY_POOR_RATING                              :{RED}{TOWN}
-STR_VIEWPORT_TOWN_MEDIOCRE_RATING                               :{ORANGE}{TOWN}
-STR_VIEWPORT_TOWN_GOOD_RATING                                   :{YELLOW}{TOWN}
-STR_VIEWPORT_TOWN_EXCELLENT_RATING                              :{GREEN}{TOWN}
-
-STR_VIEWPORT_TOWN_TINY_VERY_POOR_RATING                         :{TINY_FONT}{RED}{TOWN}
-STR_VIEWPORT_TOWN_TINY_MEDIOCRE_RATING                          :{TINY_FONT}{ORANGE}{TOWN}
-STR_VIEWPORT_TOWN_TINY_GOOD_RATING                              :{TINY_FONT}{YELLOW}{TOWN}
-STR_VIEWPORT_TOWN_TINY_EXCELLENT_RATING                         :{TINY_FONT}{GREEN}{TOWN}
-
 STR_CONFIG_SETTING_TOWN_GROWTH_EXTREME_SLOW                     :Extrem langsam
 STR_CONFIG_SETTING_TOWN_GROWTH_VERY_SLOW                        :Sehr langsam
 
 STR_ABOUT_MENU_SHOW_TOGGLE_MODIFIER_KEYS                        :Hilfstasten-Fenster
 
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM_LABEL      :Eigener Zeitraum (Tage)
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM_LABEL   :Eigener Zeitraum (Echtzeitminuten)
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM         :Alle {COMMA} Echtzeitminuten
 
 STR_UNIT_NAME_VELOCITY_IMPERIAL                                 :mph
 STR_UNIT_NAME_VELOCITY_METRIC                                   :km/h
@@ -95,11 +79,7 @@ STR_SMALLMAP_SCREENSHOT                                         :{BLACK}Screensh
 STR_NEWS_VEHICLE_NO_DEPOT_ORDER                                 :{WHITE}{VEHICLE} hat keinen Depotauftrag im Fahrplan
 STR_NEWS_TRAIN_OVERSHOT_STATION                                 :{WHITE}{VEHICLE} konnte wegen zu hoher Geschwindigkeit nicht bei {STRING} anhalten
 
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM            :Alle {COMMA}{NBSP}Tage
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_DAYS_CUSTOM_SINGULAR   :Jeden Tag
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM         :Alle {COMMA} Echtzeitminuten
-
-STR_GAME_OPTIONS_AUTOSAVE_DAYS_QUERY_CAPT                       :{WHITE}Autosicherungsintervall in Tagen
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_MINUTES_CUSTOM_LABEL   :Eigener Zeitraum (Echtzeitminuten)
 STR_GAME_OPTIONS_AUTOSAVE_MINUTES_QUERY_CAPT                    :{WHITE}Autosicherungsintervali in Echtzeitminuten
 
 STR_RIVERS_VERY_MANY                                            :{RED}Sehr viele
@@ -236,12 +216,6 @@ STR_CONFIG_SETTING_VEHICLE_NAMES_LONG                           :Lang
 STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES                       :Ändern des Farbtons der Bäume an Hängen: {STRING}
 STR_CONFIG_SETTING_SHADED_TREES_ON_SLOPES_HELPTEXT              :Ändert die Helligkeit der Bäume an Hängen. Dies verbessert das Aussehen in bergigem Gelände.
 
-STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE                  :Tooltips für Stationsbewertung: {STRING}
-STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_HELPTEXT         :Legt die Anzeige des Tooltips für die Stationsbewertung und den Detailgrad der angezeigten Informationen fest.
-STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_OFF              :Aus
-STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_SIMPLE           :Einfach
-STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_DETAILED         :Detailliert
-
 STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE                        :Abreißen von Strukturen erfordert Bestätigung: {STRING}
 STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_HELPTEXT               :Frage vor dem endgültigen Abreißen von Strukturen nach einer Bestätigung.
 STR_CONFIG_SETTING_DEMOLISH_CONFIRM_MODE_OFF                    :Aus
@@ -331,31 +305,35 @@ STR_CONFIG_SETTING_SHOW_VEHICLE_LIST_COMPANY_COLOUR_HELPTEXT    :Fahrzeuge in Fa
 STR_CONFIG_SETTING_ENABLE_SINGLE_VEH_SHARED_ORDER_GUI           :Erlaube ein einzelnes Fahrzeug im Fenster einer Gruppe mit gemeinsam genutzten Fahrplan: {STRING}
 STR_CONFIG_SETTING_ENABLE_SINGLE_VEH_SHARED_ORDER_GUI_HELPTEXT  :Erlaube die Benutzung des Fensters für Gruppen mit gemeinsam genutzten Fahrplan auch mit nur einem Fahrzeug ohne gemeinsam genutzten Fahrplan.
 
-STR_CONFIG_SETTING_VIEWPORT_MAP_SCAN_SURROUNDINGS               :Scanne die Umgebung einer Kachel (verbesserte Anzeige bei hohen Zoomstufen): {STRING}
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SLOPES                     :Zeige Geländesteigungen an: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_BRIDGES                    :Zeige Brücken an: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_TUNNELS                    :Zeige Tunnel an: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SCROLLING_VP               :Zeige Ausschnitt für scrollende Zusatzansicht: {STRING}
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SCROLLING_VP_NOTHING       :Aus
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SCROLLING_VP_CONTOUR       :Umrisse
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SCROLLING_VP_BLEND         :transparente weiße Fläche (nur 32bpp)
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_SCROLLING_VP_ALL           :Fläche und Umrisse
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_USE_OWNER_COLOUR_BRIDGE_TUNNEL  :Firmenfarben für Brücken und Tunnel: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_DEFAULT_MODE                    :Standardmodus: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_ACTION_DBLCLICK                 :Funktion des Doppelklicks: {STRING}
 STR_CONFIG_SETTING_VIEWPORT_MAP_ACTION_DBLCLICK_DO_NOTHING      :Keine
 STR_CONFIG_SETTING_VIEWPORT_MAP_ACTION_DBLCLICK_ZOOM_MAIN       :Zoome direkt auf Faktor 1x
 STR_CONFIG_SETTING_VIEWPORT_MAP_ACTION_DBLCLICK_NEW_EXTRA       :Öffne eine neue Zusatzansicht
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_SHOW_VEHICLE_ROUTE              :Zeige die Fahrzeugroute: {STRING}
+
 STR_CONFIG_SETTING_VIEWPORT_MAP_DRAW_ROUTE_DASH                 :Zeichenstil der Fahrzeugroute: {STRING}
 STR_CONFIG_SETTING_VIEWPORT_MAP_DRAW_ROUTE_DASH_VALUE           :gestrichelte Linie von {COMMA} Pixel{P "" n} Länge
 STR_CONFIG_SETTING_VIEWPORT_MAP_DRAW_ROUTE_DASH_DISABLED        :durchgezogene Linie
 
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS                         :Benutzerdefinierter Autosicherungsintervall in Tagen: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_DAYS_HELPTEXT                :Legt einen benutzerdefinierten Intervall für die Autosicherung in Tagen fest.
-
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES                      :Benutzerdefinierter Autosicherungsintervall in Echtzeitminuten: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_CUSTOM_MINUTES_HELPTEXT             :Legt eine Zeitspanne in Echtzeitminuten für den Abstand zwischen Autosicherungen fest.
+STR_CONFIG_SETTING_AUTOSAVE                                     :Autosicherung: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Intervall zwischen automatischen Speicherungen wählen
 
 STR_CONFIG_SETTING_AUTOSAVE_ON_NETWORK_DISCONNECT               :Autosichern bei Verbindungsabbruch: {STRING}
 STR_CONFIG_SETTING_AUTOSAVE_ON_NETWORK_DISCONNECT_HELPTEXT      :Falls aktiviert, sichern Multiplayer-Clients automatisch das Spiel, wenn die Verbindung zum Server abbricht
@@ -520,9 +498,6 @@ STR_CONFIG_SETTING_RANDOM_ROAD_RECONSTRUCTION_HELPTEXT          :Setze den Wert 
 STR_CONFIG_SETTING_TOWN_MIN_DISTANCE                            :Minimaler Abstand zwischen Städten: {STRING}
 STR_CONFIG_SETTING_TOWN_MIN_DISTANCE_HELPTEXT                   :Stelle den Mindestabstand zwischen Städten in Kacheln für die Kartenerzeugung und zufällige Stadtgründungen ein.
 
-STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED               :Skaliere die Laufzeit für jede Neuberechnung der Warenverteilung nicht um den Faktor der Tageslänge: {STRING}
-STR_CONFIG_SETTING_LINKGRAPH_NOT_DAYLENGTH_SCALED_HELPTEXT      :Wenn aktiviert, wird die Laufzeit das Intervall für jede Neuberechnung des Verteilungsgraphen in Tagen im Maßstab der originalen Tageslänge angegeben, anstelle der um den Tageslänge-Faktoren skalierten Kalendertage.
-
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO                       :Zu überschreibendes Verteilungsschema für folgede Frachtart: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_PARAM                 :Zu überschreibendes Verteilungsschema für {STRING}: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PER_CARGO_HELPTEXT              :"(standard)" bedeutet, dass das Standard-Verteilungsschema der Frachtklasse dieser Frachtart verwendet wird. "Symmetrisch" bedeutet, dass etwa dieselbe Menge an Fracht von Station A nach Station B transportiert wird wie umgekehrt von B nach A. "Asymmetrisch" bedeutet, dass eine unterschiedliche Menge in die jeweiligen Richtungen gesendet wird. "Manuell" bedeutet, dass keine automatische Verteilung stattfindet.
@@ -642,6 +617,7 @@ STR_NETWORK_MESSAGE_GIVE_MONEY_RECEIVE                          :*** {STRING} ga
 STR_NETWORK_MESSAGE_GAVE_MONEY_AWAY                             :*** Die eigene Firma übergab {1:STRING} {2:CURRENCY_LONG}
 STR_NETWORK_MESSAGE_MONEY_GIVE_SRC_DESCRIPTION                  :{STRING} ({COMPANY})
 
+STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Transparenz für Ladestandsanzeige einstellen. Strg+Klick, um Umschalten zu verhindern bzw. wieder zu erlauben
 STR_TRANSPARENT_TUNNELS_TOOLTIP                                 :{BLACK}Transparenz für Fahrzeuge innerhalb von Tunneln einstellen. Strg+Klick, um Umschalten zu verhindern bzw. wieder zu erlauben.
 
 STR_LINKGRAPH_STATS_TOOLTIP_TIME_EXTENSION_GENERAL              :{}Durchschnittliche Reisezeit: {STRING}
@@ -1007,7 +983,7 @@ STR_PROGSIG_COND_SLOT                                           :Slotauslastung
 STR_PROGSIG_COND_SLOT_REMAINING                                 :Verfügbare Slotkapazität
 STR_PROGSIG_COND_COUNTER                                        :Zählerwert
 STR_PROGSIG_CONDVAR_SIGNAL_STATE_SPECIFIED                      :Signal auf {NUM} x {NUM} ist Grün
-STR_PROGSIG_CONDVAR_SIGNAL_STATE_UNSPECIFIED                    :{RED}undefiniertes Signal{STRING} ist Grün
+STR_PROGSIG_CONDVAR_SIGNAL_STATE_UNSPECIFIED                    :{PUSH_COLOUR}{RED}undefiniertes Signal{POP_COLOUR} ist Grün
 STR_PROGSIG_CONDVAR_NUM_RED                                     :rote Signale
 STR_PROGSIG_CONDVAR_NUM_GREEN                                   :grüne Signale
 
@@ -1237,9 +1213,6 @@ STR_FINANCES_REPAY_TOOLTIP_EXTRA                                :{BLACK}{STRING}
 STR_FINANCES_BORROW_QUERY_CAPT                                  :{WHITE}Gib die zu leihende Summe ein
 STR_FINANCES_REPAY_QUERY_CAPT                                   :{WHITE}Gib die zurückzuzahlende Summe ein
 
-STR_INDUSTRY_VIEW_TRANSPORTED_TOOLTIP                           :{BLACK}{STRING}{STRING}
-STR_INDUSTRY_VIEW_TRANSPORTED_TOOLTIP_EXTENSION                 :{}{BLACK}{CARGO_LONG} ({COMMA}%)
-
 # Town tooltip
 STR_TOWN_NAME_TOOLTIP                                           :{BLACK}{TOWN}
 
@@ -1273,8 +1246,6 @@ STR_VEHICLE_LIST_CHANGE_ORDER_TRAIN_DEPOT                       :Verschiebe Auft
 STR_VEHICLE_LIST_CHANGE_ORDER_ROAD_VEHICLE_DEPOT                :Verschiebe Auftrag zu einem anderen Depot
 STR_VEHICLE_LIST_CHANGE_ORDER_SHIP_DEPOT                        :Verschiebe Auftrag zu einer anderen Werft
 STR_VEHICLE_LIST_CHANGE_ORDER_AIRCRAFT_HANGAR                   :Verschiebe Auftrag zu einem anderen Hangar
-
-STR_VEHICLE_LIST_CREATE_GROUP                                   :Erstelle Gruppe aus Liste
 
 STR_GROUP_EXPAND_ALL                                            :{BLACK}Alles ausklappen
 STR_GROUP_COLLAPSE_ALL                                          :{BLACK}Alles einklappen
@@ -1369,13 +1340,6 @@ STR_ORDER_DROP_SELL_DEPOT                                       :Fahrzeug verkau
 
 STR_ORDER_CONDITIONAL_VEHICLE_IN_SLOT                           :Fahrzeug im Zeitfenster
 
-STR_ORDER_CONDITIONAL_REQUIRES_SERVICE_ORDER                    :Wartung erforderlich {STRING}
-STR_ORDER_CONDITIONAL_CARGO_WAITING_ORDER                       :nächste Station {STRING} wartende{G 1 n "" s ""} {STRING}
-STR_ORDER_CONDITIONAL_ACCEPTANCE                                :nächste Station {STRING} {STRING}
-
-STR_CONDITIONAL_FREE_PLATFORMS                                  :Springe zu Auftrag {COMMA} wenn die nächste Station {STRING} {COMMA} freie{P n ""} Bahnsteig{P "" e}
-STR_CONDITIONAL_PERCENT                                         :Springe zu Auftrag {COMMA} in {COMMA} Prozent der Fälle
-
 STR_ORDER_CONDITIONAL_NEXT_STATION                              :nächste Station
 STR_ORDER_CONDITIONAL_CARGO_TOOLTIP                             :{BLACK}Frachtart, die mit der Stationsinformation verglichen wird
 STR_ORDER_CONDITIONAL_SLOT_TOOLTIP                              :{BLACK}Zugslot, dessen Auslastung geprüft wird
@@ -1448,15 +1412,16 @@ STR_ORDER_RV_DIR_SE                                             :[Südost-Richtu
 STR_ORDER_RV_DIR_SW                                             :[Südwest-Richtung]
 STR_ORDER_RV_DIR_NW                                             :[Nordwest-Richtung]
 
-STR_ORDER_CONDITIONAL_CARGO_ACCEPTANCE                          :Springe zu Auftrag {COMMA}, wenn nächste Station {STRING} {STRING}
-STR_ORDER_CONDITIONAL_CARGO_WAITING_DISPLAY                     :Springe zu Auftrag {COMMA}, wenn nächste Station {STRING} {STRING}
+STR_ORDER_CONDITIONAL_PERCENT_DISPLAY                           :Springe zu Auftrag {COMMA} in {COMMA} Prozent der Fälle
+STR_ORDER_CONDITIONAL_CARGO_ACCEPTANCE                          :Springe zu Auftrag {COMMA}, wenn {STRING} {STRING} {STRING}
+STR_ORDER_CONDITIONAL_CARGO_WAITING_DISPLAY                     :Springe zu Auftrag {COMMA}, wenn {STRING} {STRING} {STRING}
 STR_ORDER_CONDITIONAL_SLOT                                      :Springe zu Auftrag {COMMA}, wenn {TRSLOT} {STRING}
 STR_ORDER_CONDITIONAL_INVALID_SLOT                              :Springe zu Auftrag {COMMA}, wenn {PUSH_COLOUR}{RED}{STRING} {POP_COLOUR}{STRING}
 STR_ORDER_CONDITIONAL_IN_SLOT                                   :Springe zu Auftrag {COMMA}, wenn {STRING} Slot: {TRSLOT}
 STR_ORDER_CONDITIONAL_IN_INVALID_SLOT                           :Springe zu Auftrag {COMMA}, wenn {STRING} {PUSH_COLOUR}{RED}{STRING} {POP_COLOUR}
 STR_ORDER_CONDITIONAL_LOAD_PERCENTAGE_DISPLAY                   :Springe zu Auftrag {COMMA}, wenn Ladezustand (Prozent) gleich {STRING} {STRING} {COMMA} ist
-STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_DISPLAY              :Springe zu Auftrag {COMMA}, wenn {STRING} bei nächster Station {STRING} {CARGO_SHORT}
-STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_VIA_DISPLAY          :Springe zu Auftrag {COMMA}, wenn {STRING} bei nächster Station über {STATION} {STRING} {CARGO_SHORT}
+STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_DISPLAY              :Springe zu Auftrag {COMMA}, wenn {STRING} bei {STRING} {STRING} {CARGO_SHORT}
+STR_ORDER_CONDITIONAL_CARGO_WAITING_AMOUNT_VIA_DISPLAY          :Springe zu Auftrag {COMMA}, wenn {STRING} bei {STRING} über {STRING} {STRING} {CARGO_SHORT}
 STR_ORDER_CONDITIONAL_COUNTER                                   :Springe zu Auftrag {COMMA}, wenn Wert von {TRCOUNTER} {STRING} {COMMA} ist
 STR_ORDER_CONDITIONAL_INVALID_COUNTER                           :Springe zu Auftrag {COMMA}, wenn Wert von {PUSH_COLOUR}{RED}{STRING}{POP_COLOUR} {STRING} {COMMA} ist
 STR_ORDER_CONDITIONAL_TIME_HHMM                                 :Springe zu Auftrag {COMMA}, wenn {STRING} {STRING} {TIME_HHMM}
@@ -1468,10 +1433,10 @@ STR_ORDER_RELEASE_SLOT                                          :Gib Slot {STRIN
 STR_TIMETABLE_MINUTES                                           :{COMMA}{NBSP}Minute{P "" n}
 STR_TIMETABLE_HOURS                                             :{COMMA}{NBSP}Stunde{P "" n}
 STR_TIMETABLE_HOURS_MINUTES                                     :{COMMA}{NBSP}Stunde{P "" n} und {COMMA}{NBSP}Minute{P "" n}
+STR_TIMETABLE_MINUTES_SUFFIX                                    : ({STRING})
 
-STR_TIMETABLE_LEFTOVER_TICKS                                    :{STRING} + {COMMA} Tick{P "" s}
+STR_TIMETABLE_LEFTOVER_TICKS                                    : + {COMMA} Tick{P "" s}
 
-STR_TIMETABLE_MINUTES_LONG                                      :{COMMA}{NBSP}Minute{P "" n} ({STRING}){STRING}
 STR_TIMETABLE_AUTOMATE                                          :{BLACK}Automatisieren
 STR_TIMETABLE_AUTOMATE_TOOLTIP                                  :{BLACK}Verwaltet den Fahrplan durch automatisches Erfassen der Werte jeder Fahrt
 
@@ -1515,6 +1480,9 @@ STR_TIMETABLE_WARNING_SCHEDULED_DISPATCH_ORDER_NO_WAIT_TIME     :{BLACK}Der gepl
 STR_TIMETABLE_WARNING_SCHEDULE_ID                               :{BLACK}Zeitplan {NUM}: {STRING}
 
 STR_TIMETABLE_WARNINGS_OMITTED                                  :{BLACK}{NUM} keine weiteren Warnungen ...
+
+STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :an
+STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :ab
 
 STR_DATE_MINUTES_MINUTE_TOOLTIP                                 :{BLACK}Minute auswählen
 STR_DATE_MINUTES_HOUR_TOOLTIP                                   :{BLACK}Stunde auswählen
@@ -1633,26 +1601,7 @@ STR_VIEWPORT_SHOW_VEHICLE_ROUTE_STEP_IMPLICIT                   :{GRAY}IM
 STR_VIEWPORT_SHOW_VEHICLE_ROUTE_STEP_DEPOT                      :{RED}DE
 STR_VIEWPORT_SHOW_VEHICLE_ROUTE_STEP_OVERFLOW                   :{RED}{NUM}x
 
-STR_JUST_DECIMAL                                                :{DECIMAL}
-STR_JUST_DECIMAL1                                               :{DECIMAL1}
-
-STR_JUST_DATE_WALLCLOCK_TINY                                    :{DATE_WALLCLOCK_TINY}
-STR_JUST_DATE_WALLCLOCK_SHORT                                   :{DATE_WALLCLOCK_SHORT}
-STR_JUST_DATE_WALLCLOCK_LONG                                    :{DATE_WALLCLOCK_LONG}
-STR_JUST_DATE_WALLCLOCK_ISO                                     :{DATE_WALLCLOCK_ISO}
-STR_JUST_TIME_HHMM                                              :{TIME_HHMM}
-
-STR_JUST_STRING1                                                :{STRING}
-STR_JUST_STRING2                                                :{STRING}
-
-STR_BLACK_DECIMAL                                               :{BLACK}{DECIMAL}
-STR_WHITE_DATE_WALLCLOCK_LONG                                   :{WHITE}{DATE_WALLCLOCK_LONG}
-STR_WHITE_DATE_WALLCLOCK_SHORT                                  :{WHITE}{DATE_WALLCLOCK_SHORT}
-STR_BLACK_TIME_HHMM                                             :{BLACK}{TIME_HHMM}
-STR_RED_INT                                                     :{RED}{NUM}
 STR_BLACK_PLUS                                                  :{BLACK}+
-STR_WHITE                                                       :{WHITE}
-STR_BLACK                                                       :{BLACK}
 
 STR_ZONING_TOOLBAR                                              :{WHITE}Bereiche anzeigen
 STR_ZONING_OUTER                                                :{BLACK}Außenkante der Kachel:
@@ -1708,17 +1657,14 @@ STR_TMPL_SET_USEDEPOT                                           :{BLACK}Benutze 
 STR_TMPL_SET_USEDEPOT_TIP                                       :{BLACK}Benutze zur Zusammenstellung Fahrzeuge, welche innerhalb des Depots in einem neutralen und unbenutzten Zustand zur Verfügung stehen, um die Anschaffungskosten zu reduzieren.
 STR_TMPL_SET_KEEPREMAINDERS                                     :{BLACK}Bereithaltung verbleibender Fahrzeuge
 STR_TMPL_SET_KEEPREMAINDERS_TIP                                 :{BLACK}Behalte nach erfolgreicher Ersetzung alle verbleibenden Fahrzeuge des alten Zugs in einem neutralen und unbenutzen Zustand für spätere eine Benutzung bereit.
-STR_TMPL_SET_REFIT                                              :{BLACK}Benutze Umrüstungen
-STR_TMPL_SET_REFIT_TIP                                          :{BLACK}Benutze die exakten Umrüstungen, die in der Vorlage angegeben sind. Wenn nicht jedes Fahrzeug, das neu angeschafft oder aus dem Depot geholt wurde, umgerüstet werden kann, wird für jedes Fahrzeug zumindest *versucht* die Umrüstung durchzuführen. Bei nicht möglicher Umrüstung eines Fahrzeugs wird dessen Standardfracht benutzt.
 STR_TMPL_SET_OLD_ONLY                                           :{BLACK}Nur alte Fahrzeuge
 STR_TMPL_SET_OLD_ONLY_TIP                                       :{BLACK}Ersetze nur Fahrzeuge, welche alt und fällig für die automatische Erneuerung sind
 
 STR_TMPL_CONFIG_USEDEPOT                                        :Depotnutzung
 STR_TMPL_CONFIG_KEEPREMAINDERS                                  :Bereithaltung
-STR_TMPL_CONFIG_REFIT                                           :Umrüstungen
 STR_TMPL_CONFIG_OLD_ONLY                                        :Nur alte
 
-STR_TMPL_NUM_TRAINS_NEED_RPL                                    :# Züge zu ersetzen:
+STR_TMPL_NUM_TRAINS_NEED_RPL                                    :Züge zu ersetzen: {COLOUR}{COMMA}
 
 STR_TMPL_CARGO_SUMMARY                                          :{CARGO_LONG}
 STR_TMPL_CARGO_SUMMARY_MULTI                                    :{CARGO_LONG} (x{NUM})
@@ -1762,7 +1708,6 @@ STR_SCHDISPATCH_RESET_LAST_DISPATCH_TOOLTIP                     :{BLACK}Setzt di
 STR_SCHDISPATCH_CLEAR                                           :{BLACK}Lösche Abfahrtszeiten
 STR_SCHDISPATCH_CLEAR_TOOLTIP                                   :{BLACK}Lösche alle Abfahrtszeiten aus dem Zeitplan.
 STR_SCHDISPATCH_MANAGE                                          :{BLACK}Bearbeite Zeitplan
-STR_SCHDISPATCH_MANAGE_TOOLTIP                                  :{STRING}{}{}{STRING}{}{}{STRING}
 STR_SCHDISPATCH_PREV_SCHEDULE                                   :{BLACK}Vorheriger
 STR_SCHDISPATCH_PREV_SCHEDULE_TOOLTIP                           :{BLACK}Gehe zum vorherigen Zeitplan
 STR_SCHDISPATCH_NEXT_SCHEDULE                                   :{BLACK}Nächster
@@ -1805,3 +1750,29 @@ STR_SHIFT_KEY_NAME                                              :{BLACK}Shift
 STR_CTRL_KEY_NAME                                               :{BLACK}Strg
 STR_MODIFIER_TOGGLE_SHIFT_TOOLTIP                               :{BLACK}Klicken, um den Zustand der Shift-Taste umzuschalten
 STR_MODIFIER_TOGGLE_CTRL_TOOLTIP                                :{BLACK}Klicken, um den Zustand der Strg-Taste umzuschalten
+
+STR_CONFIG_SETTING_ALLOW_SHARES                                 :Handel mit Firmenanteilen erlauben: {STRING}
+STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Erlaube das Kaufen und Verkaufen von Firmenanteilen. Firmenanteile sind nur verfügbar für Firmen, die hinreichend lange existieren
+
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Minimales Alter einer Firma, um an der Börse gehandelt zu werden: {STRING}
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Setze das minimale Alter einer Firma, ab dem Andere Firmenanteile dieser Firma kaufen und verkaufen können.
+
+STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% Eigentum von {COMPANY})
+
+STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}25% der Aktien der Firma kaufen
+STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}25% der Aktien der Firma verkaufen
+STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}25% der Aktien dieser Firma kaufen. Umschalt+Klick zeigt einen Kostenvoranschlag
+STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}25% der Aktien dieser Firma verkaufen. Umschalt+Klick zeigt eine Gewinnschätzung
+
+STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kauf von 25% der Aktien dieser Firma nicht möglich ...
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Verkauf von 25% der Aktien dieser Firma nicht möglich ...
+STR_ERROR_PROTECTED                                             :{WHITE}Diese Firma ist noch nicht alt genug, um an der Börse gehandelt zu werden...
+
+STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE                  :Tooltips für Stationsbewertung: {STRING}
+STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_HELPTEXT         :Legt die Anzeige des Tooltips für die Stationsbewertung und den Detailgrad der angezeigten Informationen fest.
+STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_OFF              :Aus
+STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_SIMPLE           :Einfach
+STR_CONFIG_SETTING_STATION_RATING_TOOLTIP_MODE_DETAILED         :Detailliert
+
+STR_VIEWPORT_TOWN_COLOUR                                        :{1:COLOUR}{0:TOWN}
+STR_VIEWPORT_TOWN_COLOUR_POP                                    :{WHITE}{TOWN} {COLOUR}({COMMA})

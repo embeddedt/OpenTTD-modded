@@ -21,6 +21,8 @@
 typedef Pool<Industry, IndustryID, 64, 64000> IndustryPool;
 extern IndustryPool _industry_pool;
 
+static const Year PROCESSING_INDUSTRY_ABANDONMENT_YEARS = 5; ///< If a processing industry doesn't produce for this many consecutive years, it may close.
+
 /**
  * Production level maximum, minimum and default values.
  * It is not a value been really used in order to change, but rather an indicator
@@ -48,8 +50,10 @@ enum IndustryControlFlags : byte {
 	 * Industry can not close regardless of production level or time since last delivery.
 	 * This does not prevent a closure already announced. */
 	INDCTL_NO_CLOSURE             = 1 << 2,
+	/** Indicates that the production level of the industry is externally controlled. */
+	INDCTL_EXTERNAL_PROD_LEVEL    = 1 << 3,
 	/** Mask of all flags set */
-	INDCTL_MASK = INDCTL_NO_PRODUCTION_DECREASE | INDCTL_NO_PRODUCTION_INCREASE | INDCTL_NO_CLOSURE,
+	INDCTL_MASK = INDCTL_NO_PRODUCTION_DECREASE | INDCTL_NO_PRODUCTION_INCREASE | INDCTL_NO_CLOSURE | INDCTL_EXTERNAL_PROD_LEVEL,
 };
 DECLARE_ENUM_AS_BIT_SET(IndustryControlFlags);
 
@@ -129,6 +133,28 @@ struct Industry : IndustryPool::PoolItem<&_industry_pool> {
 		return pos - this->accepts_cargo;
 	}
 
+	/** Test if this industry accepts any cargo.
+	 * @return true iff the industry accepts any cargo.
+	 */
+	bool IsCargoAccepted() const { return std::any_of(std::begin(this->accepts_cargo), std::end(this->accepts_cargo), [](const auto &cargo) { return IsValidCargoID(cargo); }); }
+
+	/** Test if this industry produces any cargo.
+	 * @return true iff the industry produces any cargo.
+	 */
+	bool IsCargoProduced() const { return std::any_of(std::begin(this->produced_cargo), std::end(this->produced_cargo), [](const auto &cargo) { return IsValidCargoID(cargo); }); }
+
+	/** Test if this industry accepts a specific cargo.
+	 * @param cargo Cargo type to test.
+	 * @return true iff the industry accepts the given cargo type.
+	 */
+	bool IsCargoAccepted(CargoID cargo) const { return std::any_of(std::begin(this->accepts_cargo), std::end(this->accepts_cargo), [&cargo](const auto &cid) { return cid == cargo; }); }
+
+	/** Test if this industry produces a specific cargo.
+	 * @param cargo Cargo type to test.
+	 * @return true iff the industry produces the given cargo types.
+	 */
+	bool IsCargoProduced(CargoID cargo) const { return std::any_of(std::begin(this->produced_cargo), std::end(this->produced_cargo), [&cargo](const auto &cid) { return cid == cargo; }); }
+
 	/**
 	 * Get the industry of the given tile
 	 * @param tile the tile to get the industry from
@@ -182,10 +208,10 @@ struct Industry : IndustryPool::PoolItem<&_industry_pool> {
 		memset(&counts, 0, sizeof(counts));
 	}
 
-	inline const char *GetCachedName() const
+	inline const std::string &GetCachedName() const
 	{
 		if (this->cached_name.empty()) this->FillCachedName();
-		return this->cached_name.c_str();
+		return this->cached_name;
 	}
 
 	void UpdateVirtCoord();

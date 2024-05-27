@@ -20,6 +20,7 @@
 #include "3rdparty/cpp-btree/btree_map.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 #include "bitmap_type.h"
+#include "core/alloc_type.hpp"
 #include "core/endian_type.hpp"
 #include "strings_type.h"
 #include <map>
@@ -53,6 +54,9 @@ extern uint _extra_station_names_used;
 extern uint8 _extra_station_names_probability;
 
 class FlowStatMap;
+
+extern const StationCargoList _empty_cargo_list;
+extern const FlowStatMap _empty_flows;
 
 /**
  * Flow statistics telling how much flow should be sent along a link. This is
@@ -493,7 +497,22 @@ public:
 		return this->flows_index.begin()->first;
 	}
 
+	void reserve(size_t size)
+	{
+		this->flows_storage.reserve(size);
+	}
+
 	void SortStorage();
+};
+
+struct GoodsEntryData : ZeroedMemoryAllocator {
+	StationCargoList cargo; ///< The cargo packets of cargo waiting in this station
+	FlowStatMap flows;      ///< Planned flows through this station.
+
+	bool MayBeRemoved() const
+	{
+		return this->cargo.Packets()->MapSize() == 0 && this->cargo.ReservedCount() == 0 && this->flows.empty();
+	}
 };
 
 /**
@@ -592,11 +611,12 @@ struct GoodsEntry {
 	byte last_age;
 
 	byte amount_fract;      ///< Fractional part of the amount in the cargo list
-	StationCargoList cargo; ///< The cargo packets of cargo waiting in this station
+
+	std::unique_ptr<GoodsEntryData> data;
 
 	LinkGraphID link_graph; ///< Link graph this station belongs to.
 	NodeID node;            ///< ID of node in link graph referring to this goods entry.
-	FlowStatMap flows;      ///< Planned flows through this station.
+
 	uint max_waiting_cargo; ///< Max cargo from this station waiting at any station.
 
 	bool IsSupplyAllowed() const
@@ -627,8 +647,10 @@ struct GoodsEntry {
 	 */
 	inline StationID GetVia(StationID source) const
 	{
-		FlowStatMap::const_iterator flow_it(this->flows.find(source));
-		return flow_it != this->flows.end() ? flow_it->GetVia() : INVALID_STATION;
+		if (this->data == nullptr) return INVALID_STATION;
+
+		FlowStatMap::const_iterator flow_it(this->data->flows.find(source));
+		return flow_it != this->data->flows.end() ? flow_it->GetVia() : INVALID_STATION;
 	}
 
 	/**
@@ -641,8 +663,52 @@ struct GoodsEntry {
 	 */
 	inline StationID GetVia(StationID source, StationID excluded, StationID excluded2 = INVALID_STATION) const
 	{
-		FlowStatMap::const_iterator flow_it(this->flows.find(source));
-		return flow_it != this->flows.end() ? flow_it->GetVia(excluded, excluded2) : INVALID_STATION;
+		if (this->data == nullptr) return INVALID_STATION;
+
+		FlowStatMap::const_iterator flow_it(this->data->flows.find(source));
+		return flow_it != this->data->flows.end() ? flow_it->GetVia(excluded, excluded2) : INVALID_STATION;
+	}
+
+	GoodsEntryData &CreateData()
+	{
+		if (this->data == nullptr) this->data.reset(new GoodsEntryData());
+		return *this->data;
+	}
+
+	const GoodsEntryData &CreateData() const
+	{
+		if (this->data == nullptr) const_cast<GoodsEntry *>(this)->data.reset(new GoodsEntryData());
+		return *this->data;
+	}
+
+	inline uint CargoAvailableCount() const
+	{
+		return this->data != nullptr ? this->data->cargo.AvailableCount() : 0;
+	}
+
+	inline uint CargoReservedCount() const
+	{
+		return this->data != nullptr ? this->data->cargo.ReservedCount() : 0;
+	}
+
+	inline uint CargoTotalCount() const
+	{
+		return this->data != nullptr ? this->data->cargo.TotalCount() : 0;
+	}
+
+	inline uint CargoAvailableViaCount(StationID next) const
+	{
+		return this->data != nullptr ? this->data->cargo.AvailableViaCount(next) : 0;
+	}
+
+	const StationCargoList &ConstCargoList() const
+	{
+		return this->data != nullptr ? this->data->cargo : _empty_cargo_list;
+	}
+
+	const FlowStatMap &ConstFlows() const
+	{
+		return this->data != nullptr ? this->data->flows : _empty_flows;
 	}
 };
 

@@ -29,7 +29,7 @@
 #include "table/strings.h"
 
 static BuildingCounts<uint32> _building_counts;
-static HouseClassMapping _class_mapping[HOUSE_CLASS_MAX];
+static std::array<HouseClassMapping, HOUSE_CLASS_MAX> _class_mapping;
 
 HouseOverrideManager _house_mngr(NEW_HOUSE_OFFSET, NUM_HOUSES, INVALID_HOUSE_ID);
 
@@ -103,6 +103,11 @@ GrfSpecFeature FakeHouseResolverObject::GetFeature() const
 uint32 FakeHouseResolverObject::GetDebugID() const
 {
 	return HouseSpec::Get(this->house_scope.house_id)->grf_prop.local_id;
+}
+
+void ResetHouseClassIDs()
+{
+	_class_mapping = {};
 }
 
 HouseClassID AllocateHouseClassID(byte grf_class_id, uint32 grfid)
@@ -185,13 +190,12 @@ void DecreaseBuildingCount(Town *t, HouseID house_id)
 
 static uint32 GetNumHouses(HouseID house_id, const Town *town)
 {
-	uint8 map_id_count, town_id_count, map_class_count, town_class_count;
 	HouseClassID class_id = HouseSpec::Get(house_id)->class_id;
 
-	map_id_count     = ClampU(_building_counts.id_count[house_id], 0, 255);
-	map_class_count  = ClampU(_building_counts.class_count[class_id], 0, 255);
-	town_id_count    = ClampU(town->cache.building_counts.id_count[house_id], 0, 255);
-	town_class_count = ClampU(town->cache.building_counts.class_count[class_id], 0, 255);
+	uint8_t map_id_count     = ClampTo<uint8_t>(_building_counts.id_count[house_id]);
+	uint8_t map_class_count  = ClampTo<uint8_t>(_building_counts.class_count[class_id]);
+	uint8_t town_id_count    = ClampTo<uint8_t>(town->cache.building_counts.id_count[house_id]);
+	uint8_t town_class_count = ClampTo<uint8_t>(town->cache.building_counts.class_count[class_id]);
 
 	return map_class_count << 24 | town_class_count << 16 | map_id_count << 8 | town_id_count;
 }

@@ -10,11 +10,11 @@
 #ifndef VEHICLELIST_H
 #define VEHICLELIST_H
 
-#include "core/smallvec_type.hpp"
 #include "vehicle_type.h"
 #include "company_type.h"
 #include "tile_type.h"
 #include "cargo_type.h"
+#include <vector>
 
 /** Vehicle List type flags */
 enum VehicleListType {

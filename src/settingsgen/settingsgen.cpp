@@ -12,7 +12,7 @@
 #include "../strings_type.h"
 #include "../misc/getoptdata.h"
 #include "../ini_type.h"
-#include "../core/smallvec_type.hpp"
+#include "../core/mem_func.hpp"
 
 #include <stdarg.h>
 
@@ -35,7 +35,7 @@ void NORETURN CDECL error(const char *s, ...)
 	va_start(va, s);
 	vseprintf(buf, lastof(buf), s, va);
 	va_end(va);
-	fprintf(stderr, "FATAL: %s\n", buf);
+	fprintf(stderr, "settingsgen: FATAL: %s\n", buf);
 	exit(1);
 }
 
@@ -72,7 +72,7 @@ public:
 	void Write(FILE *out_fp) const
 	{
 		if (fwrite(this->data, 1, this->size, out_fp) != this->size) {
-			fprintf(stderr, "Error: Cannot write output\n");
+			error("Cannot write output");
 		}
 	}
 
@@ -235,8 +235,8 @@ static void DumpGroup(IniLoadFile *ifile, const char * const group_name)
  */
 static const char *FindItemValue(const char *name, IniGroup *grp, IniGroup *defaults)
 {
-	IniItem *item = grp->GetItem(name, false);
-	if (item == nullptr && defaults != nullptr) item = defaults->GetItem(name, false);
+	IniItem *item = grp->GetItem(name);
+	if (item == nullptr && defaults != nullptr) item = defaults->GetItem(name);
 	if (item == nullptr || !item->value.has_value()) return nullptr;
 	return item->value->c_str();
 }
@@ -327,15 +327,14 @@ static void DumpSections(IniLoadFile *ifile)
 		for (sgn = special_group_names; *sgn != nullptr; sgn++) if (grp->name == *sgn) break;
 		if (*sgn != nullptr) continue;
 
-		IniItem *template_item = templates_grp->GetItem(grp->name, false); // Find template value.
+		IniItem *template_item = templates_grp->GetItem(grp->name); // Find template value.
 		if (template_item == nullptr || !template_item->value.has_value()) {
-			fprintf(stderr, "settingsgen: Warning: Cannot find template %s\n", grp->name.c_str());
-			continue;
+			error("Cannot find template %s", grp->name.c_str());
 		}
 		DumpLine(template_item, grp, default_grp, _stored_output);
 
 		if (validation_grp != nullptr) {
-			IniItem *validation_item = validation_grp->GetItem(grp->name, false); // Find template value.
+			IniItem *validation_item = validation_grp->GetItem(grp->name); // Find template value.
 			if (validation_item != nullptr && validation_item->value.has_value()) {
 				DumpLine(validation_item, grp, default_grp, _post_amble_output);
 			}
@@ -354,8 +353,7 @@ static void CopyFile(const char *fname, FILE *out_fp)
 
 	FILE *in_fp = fopen(fname, "r");
 	if (in_fp == nullptr) {
-		fprintf(stderr, "settingsgen: Warning: Cannot open file %s for copying\n", fname);
-		return;
+		error("Cannot open file %s for copying", fname);
 	}
 
 	char buffer[4096];
@@ -363,8 +361,7 @@ static void CopyFile(const char *fname, FILE *out_fp)
 	do {
 		length = fread(buffer, 1, lengthof(buffer), in_fp);
 		if (fwrite(buffer, 1, length, out_fp) != length) {
-			fprintf(stderr, "Error: Cannot copy file\n");
-			break;
+			error("Cannot copy file");
 		}
 	} while (length == lengthof(buffer));
 
@@ -409,7 +406,6 @@ static bool CompareFiles(const char *n1, const char *n2)
 
 /** Options of settingsgen. */
 static const OptionData _opts[] = {
-	  GETOPT_NOVAL(     'v', "--version"),
 	  GETOPT_NOVAL(     'h', "--help"),
 	GETOPT_GENERAL('h', '?', nullptr, ODF_NO_VALUE),
 	  GETOPT_VALUE(     'o', "--output"),
@@ -464,15 +460,10 @@ int CDECL main(int argc, char *argv[])
 		if (i == -1) break;
 
 		switch (i) {
-			case 'v':
-				puts("$Revision$");
-				return 0;
-
 			case 'h':
-				puts("settingsgen - $Revision$\n"
+				puts("settingsgen\n"
 						"Usage: settingsgen [options] ini-file...\n"
 						"with options:\n"
-						"   -v, --version           Print version information and exit\n"
 						"   -h, -?, --help          Print this help message and exit\n"
 						"   -b FILE, --before FILE  Copy FILE before all settings\n"
 						"   -a FILE, --after FILE   Copy FILE after all settings\n"
@@ -513,8 +504,7 @@ int CDECL main(int argc, char *argv[])
 
 		FILE *fp = fopen(tmp_output, "w");
 		if (fp == nullptr) {
-			fprintf(stderr, "settingsgen: Warning: Cannot open file %s\n", tmp_output);
-			return 1;
+			error("Cannot open file %s", tmp_output);
 		}
 		CopyFile(before_file, fp);
 		_stored_output.Write(fp);

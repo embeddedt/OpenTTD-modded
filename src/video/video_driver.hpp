@@ -147,9 +147,9 @@ public:
 	 * Get a pointer to the animation buffer of the video back-end.
 	 * @return Pointer to the buffer or nullptr if no animation buffer is supported.
 	 */
-	virtual uint8 *GetAnimBuffer()
+	inline uint8 *GetAnimBuffer()
 	{
-		return nullptr;
+		return this->anim_buffer;
 	}
 
 	/**
@@ -207,6 +207,8 @@ public:
 	static VideoDriver *GetInstance() {
 		return static_cast<VideoDriver*>(*DriverFactoryBase::GetActiveDriver(Driver::DT_VIDEO));
 	}
+
+	static std::string GetCaption();
 
 	/**
 	 * Helper struct to ensure the video buffer is locked and ready for drawing. The destructor
@@ -361,6 +363,8 @@ protected:
 	std::thread game_thread;
 	std::recursive_mutex game_state_mutex;
 	std::mutex game_thread_wait_mutex;
+
+	uint8 *anim_buffer = nullptr; ///< Animation buffer, (not used by all drivers, here because it is accessed very frequently)
 
 	static void GameThreadThunk(VideoDriver *drv);
 

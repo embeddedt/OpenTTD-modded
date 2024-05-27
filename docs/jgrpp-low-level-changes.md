@@ -15,7 +15,7 @@ This document does not describe the player-visible changes/additions described i
 * Support using sigaction and sigaltstack for more information and correct handling of stack overflow crashes (Unix).
 * Attempt to log stack overflow and heap corruption exceptions (Windows).
 * Demangle C++ symbols (Unix).
-* Attempt to handle segfaults which occur within the crashlog handler (Unix).
+* Attempt to handle crashes which occur within the crashlog handler, by skipping or only partially writing the faulting section.
 * Emit a "crash" log, savegame and screenshot on multiplayer desync.
 * Add crash/desync information to output screenshot and savegame files.
 * Multiplayer server and client exchange desync logs after a desync occurs.
@@ -38,7 +38,7 @@ This document does not describe the player-visible changes/additions described i
 
 #### Logging
 
-* Add yapfdesync, linkgraph and sound log levels.
+* Add yapfdesync, linkgraph, sound, and command log levels.
 * Extend desync and random logging.
 
 ### Map
@@ -70,16 +70,20 @@ This document does not describe the player-visible changes/additions described i
 * Reduce unnecessary status bar and vehicle list window redraws.
 * Filter out tile parts which are entirely outside the drawing area, within DrawTileProc handlers.
 * Improve performance of drawing rail catenary.
+* Cache which window types are currently shown.
 
 ### Data structures
 
-* Various data structures have been replaced with B-tree maps/sets (cpp-btree library).
-* Various lists have been replaced with vectors or deques, etc.
+* Various data structures have been replaced with B-tree maps/sets (cpp-btree library), or robin-hood hash maps.
+* Various lists have been replaced with vectors, or other data structures.
+* Various deques and queues have been replaced with ring buffers.
 * Remove mutexes from SmallStack, only used from the main thread.
 * Add a third parameter p3, and an auxiliary data mechanism to DoCommand/CommandContainer.
 * Add a free bitmap for pool slots.
 * Maintain free list for text effect entries.
 * Many fields have been widened.
+* Change underlying data structures for ScriptList, create reverse mapping on demand instead of unconditionally.
+* Split GoodsEntry structure.
 
 ### Vehicles
 
@@ -99,11 +103,14 @@ This document does not describe the player-visible changes/additions described i
 * Paginate UDP packets longer than the MTU across multiple packets.
 * Use larger "packets" where useful in TCP connections.
 * Send vehicle caches from network server to clients to avoid desyncs caused by non-deterministic NewGRFs.
+* Change network protocol to send server/join and rcon passwords in an encrypted form (key exchange) instead of in clear text.
+* Encrypt the contents of rcon messages to the server and any responses.
 
 ### Sprites/blitter
 
 * Add a fast path to Blitter_32bppAnim::Draw.
 * Replace sprite cache implementation.
+* Only cache sprites at the currently required zoom levels instead of all of them.
 * Add brightness adjusting modes to non-8bpp blitters.
 
 ### Link graph
@@ -165,7 +172,6 @@ This document does not describe the player-visible changes/additions described i
 * Avoid redundant re-scans for AI and game script files.
 * Avoid iterating vehicle list to release disaster vehicles if there are none.
 * Avoid quadratic behaviour in updating station nearby lists in RecomputeCatchmentForAll.
-* Increase FIO buffer size.
 
 ### Command line
 

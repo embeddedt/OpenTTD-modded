@@ -15,6 +15,7 @@
 #include "../core/math_func.hpp"
 #include "../zoom_func.h"
 #include "../fileio_func.h"
+#include "../string_func.h"
 #include "truetypefontcache.h"
 
 #include "../table/control_codes.h"
@@ -33,16 +34,17 @@ private:
 	FT_Face face;  ///< The font face associated with this font.
 
 	void SetFontSize(FontSize fs, FT_Face face, int pixels);
-	virtual const void *InternalGetFontTable(uint32 tag, size_t &length);
-	virtual const Sprite *InternalGetGlyph(GlyphID key, bool aa);
+	const void *InternalGetFontTable(uint32 tag, size_t &length) override;
+	const Sprite *InternalGetGlyph(GlyphID key, bool aa) override;
 
 public:
 	FreeTypeFontCache(FontSize fs, FT_Face face, int pixels);
 	~FreeTypeFontCache();
-	virtual void ClearFontCache();
-	virtual GlyphID MapCharToGlyph(WChar key);
-	virtual const char *GetFontName() { return face->family_name; }
-	virtual bool IsBuiltInFont() { return false; }
+	void ClearFontCache() override;
+	GlyphID MapCharToGlyph(WChar key) override;
+	std::string GetFontName() override { return stdstr_fmt("%s, %s", face->family_name, face->style_name); }
+	bool IsBuiltInFont() override { return false; }
+	const void *GetOSHandle() override { return &face; }
 };
 
 FT_Library _library = nullptr;
@@ -141,21 +143,15 @@ void LoadFreeTypeFont(FontSize fs)
 	FT_Face face = nullptr;
 
 	/* If font is an absolute path to a ttf, try loading that first. */
-	FT_Error error = FT_New_Face(_library, font_name, 0, &face);
-
-#if defined(WITH_COCOA)
-	extern void MacOSRegisterExternalFont(const char *file_path);
-	if (error == FT_Err_Ok) MacOSRegisterExternalFont(font_name);
-#endif
+	int32_t index = 0;
+	if (settings->os_handle != nullptr) index = *static_cast<const int32_t *>(settings->os_handle);
+	FT_Error error = FT_New_Face(_library, font_name, index, &face);
 
 	if (error != FT_Err_Ok) {
 		/* Check if font is a relative filename in one of our search-paths. */
 		std::string full_font = FioFindFullPath(BASE_DIR, font_name);
 		if (!full_font.empty()) {
 			error = FT_New_Face(_library, full_font.c_str(), 0, &face);
-#if defined(WITH_COCOA)
-			if (error == FT_Err_Ok) MacOSRegisterExternalFont(full_font.c_str());
-#endif
 		}
 	}
 
@@ -243,7 +239,7 @@ const Sprite *FreeTypeFontCache::InternalGetGlyph(GlyphID key, bool aa)
 	/* FreeType has rendered the glyph, now we allocate a sprite and copy the image into it */
 	SpriteLoader::Sprite sprite;
 	sprite.AllocateData(ZOOM_LVL_NORMAL, static_cast<size_t>(width) * height);
-	sprite.type = ST_FONT;
+	sprite.type = SpriteType::Font;
 	sprite.colours = (aa ? SCC_PAL | SCC_ALPHA : SCC_PAL);
 	sprite.width = width;
 	sprite.height = height;
@@ -317,10 +313,10 @@ void UninitFreeType()
 	_library = nullptr;
 }
 
-#if !defined(_WIN32) && !defined(__APPLE__) && !defined(WITH_FONTCONFIG) && !defined(WITH_COCOA)
+#if !defined(WITH_FONTCONFIG)
 
 FT_Error GetFontByFaceName(const char *font_name, FT_Face *face) { return FT_Err_Cannot_Open_Resource; }
 
-#endif /* !defined(_WIN32) && !defined(__APPLE__) && !defined(WITH_FONTCONFIG) && !defined(WITH_COCOA) */
+#endif /* !defined(WITH_FONTCONFIG) */
 
 #endif /* WITH_FREETYPE */

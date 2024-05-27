@@ -17,7 +17,6 @@
 #include "../stdafx.h"
 #include "../openttd.h"
 #include "../gfx_func.h"
-#include "../rev.h"
 #include "../blitter/factory.hpp"
 #include "../core/random_func.hpp"
 #include "../core/math_func.hpp"
@@ -215,9 +214,8 @@ static bool CreateMainSurface(uint w, uint h)
 
 	InitPalette();
 
-	char caption[32];
-	seprintf(caption, lastof(caption), "OpenTTD %s", _openttd_revision);
-	set_window_title(caption);
+	std::string caption = VideoDriver::GetCaption();
+	set_window_title(caption.c_str());
 
 	enable_hardware_cursor();
 	select_mouse_cursor(MOUSE_CURSOR_ARROW);
@@ -390,7 +388,7 @@ bool VideoDriver_Allegro::PollEvent()
 	}
 
 	/* Mouse movement */
-	if (_cursor.UpdateCursorPosition(mouse_x, mouse_y, false)) {
+	if (_cursor.UpdateCursorPosition(mouse_x, mouse_y)) {
 		position_mouse(_cursor.pos.x, _cursor.pos.y);
 	}
 	if (_cursor.delta.x != 0 || _cursor.delta.y) mouse_action = true;

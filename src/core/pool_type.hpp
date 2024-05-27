@@ -10,8 +10,8 @@
 #ifndef POOL_TYPE_HPP
 #define POOL_TYPE_HPP
 
-#include "smallvec_type.hpp"
 #include "enum_type.hpp"
+#include <vector>
 
 /** Various types of a pool. */
 enum PoolType {

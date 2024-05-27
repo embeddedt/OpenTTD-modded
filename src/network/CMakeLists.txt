@@ -28,6 +28,9 @@ add_files(
     network_server.h
     network_stun.cpp
     network_stun.h
+    network_survey.cpp
+    network_survey.h
+    network_sync.h
     network_turn.cpp
     network_turn.h
     network_type.h

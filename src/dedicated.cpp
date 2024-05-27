@@ -9,6 +9,7 @@
 
 #include "stdafx.h"
 #include "fileio_func.h"
+#include "debug.h"
 #include <string>
 
 std::string _log_file; ///< File to reroute output of a forked OpenTTD to
@@ -20,14 +21,7 @@ std::unique_ptr<FILE, FileDeleter> _log_fd; ///< File to reroute output of a for
 
 #include "safeguards.h"
 
-#if defined(SUNOS) && !defined(_LP64) && !defined(_I32LPx)
-/* Solaris has, in certain situation, pid_t defined as long, while in other
- *  cases it has it defined as int... this handles all cases nicely.
- */
-# define PRINTF_PID_T "%ld"
-#else
-# define PRINTF_PID_T "%d"
-#endif
+#define PRINTF_PID_T "%d"
 
 void DedicatedFork()
 {
@@ -59,8 +53,8 @@ void DedicatedFork()
 
 		default:
 			/* We're the parent */
-			printf("Loading dedicated server...\n");
-			printf("  - Forked to background with pid " PRINTF_PID_T "\n", pid);
+			DEBUG(net, 0, "Loading dedicated server...\n");
+			DEBUG(net, 0, "  - Forked to background with pid " PRINTF_PID_T "\n", pid);
 			exit(0);
 	}
 }

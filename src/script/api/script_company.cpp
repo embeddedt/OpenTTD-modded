@@ -36,6 +36,7 @@
 
 /* static */ bool ScriptCompany::IsMine(ScriptCompany::CompanyID company)
 {
+	EnforceCompanyModeValid(false);
 	return ResolveCompanyID(company) == ResolveCompanyID(COMPANY_SELF);
 }
 
@@ -52,10 +53,10 @@
 	return ScriptObject::DoCommand(0, 0, 0, CMD_RENAME_COMPANY, text);
 }
 
-/* static */ char *ScriptCompany::GetName(ScriptCompany::CompanyID company)
+/* static */ std::optional<std::string> ScriptCompany::GetName(ScriptCompany::CompanyID company)
 {
 	company = ResolveCompanyID(company);
-	if (company == COMPANY_INVALID) return nullptr;
+	if (company == COMPANY_INVALID) return std::nullopt;
 
 	::SetDParam(0, company);
 	return GetString(STR_COMPANY_NAME);
@@ -74,20 +75,13 @@
 	return ScriptObject::DoCommand(0, 0, 0, CMD_RENAME_PRESIDENT, text);
 }
 
-/* static */ char *ScriptCompany::GetPresidentName(ScriptCompany::CompanyID company)
+/* static */ std::optional<std::string> ScriptCompany::GetPresidentName(ScriptCompany::CompanyID company)
 {
 	company = ResolveCompanyID(company);
+	if (company == COMPANY_INVALID) return std::nullopt;
 
-	static const int len = 64;
-	char *president_name = MallocT<char>(len);
-	if (company != COMPANY_INVALID) {
-		::SetDParam(0, company);
-		::GetString(president_name, STR_PRESIDENT_NAME, &president_name[len - 1]);
-	} else {
-		*president_name = '\0';
-	}
-
-	return president_name;
+	::SetDParam(0, company);
+	return GetString(STR_PRESIDENT_NAME);
 }
 
 /* static */ bool ScriptCompany::SetPresidentGender(Gender gender)
@@ -255,7 +249,7 @@
 	EnforcePrecondition(false, company != COMPANY_INVALID);
 
 	/* Network commands only allow 0 to indicate invalid tiles, not INVALID_TILE */
-	return ScriptObject::DoCommand(tile == INVALID_TILE ? 0 : tile , (uint32)(delta), company | expenses_type << 8 , CMD_CHANGE_BANK_BALANCE);
+	return ScriptObject::DoCommandEx(tile == INVALID_TILE ? 0 : tile, company | expenses_type << 8, 0, (uint64)(delta), CMD_CHANGE_BANK_BALANCE);
 }
 
 /* static */ bool ScriptCompany::BuildCompanyHQ(TileIndex tile)

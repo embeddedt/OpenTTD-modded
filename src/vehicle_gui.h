@@ -17,6 +17,7 @@
 #include "engine_type.h"
 #include "company_type.h"
 #include "widgets/dropdown_func.h"
+#include <vector>
 
 void ShowVehicleRefitWindow(const Vehicle *v, VehicleOrderID order, Window *parent, bool auto_refit = false, bool is_virtual_train = false);
 
@@ -42,7 +43,7 @@ struct TestedEngineDetails {
 	CargoID cargo;        ///< Cargo type
 	uint capacity;        ///< Cargo capacity
 	uint16 mail_capacity; ///< Mail capacity if available
-	CargoArray all_capacities; ///< Capacities for all cargoes
+	CargoArray all_capacities{}; ///< Capacities for all cargoes
 
 	void FillDefaultCapacities(const Engine *e);
 };

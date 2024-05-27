@@ -11,6 +11,7 @@
 #include "tracerestrict.h"
 #include "train.h"
 #include "core/bitmath_func.hpp"
+#include "core/container_func.hpp"
 #include "core/pool_func.hpp"
 #include "command_func.h"
 #include "company_func.h"
@@ -677,10 +678,24 @@ void TraceRestrictProgram::Execute(const Train* v, const TraceRestrictProgramInp
 						break;
 
 					case TRIT_LONG_RESERVE:
-						if (GetTraceRestrictValue(item)) {
-							out.flags &= ~TRPRF_LONG_RESERVE;
-						} else {
-							out.flags |= TRPRF_LONG_RESERVE;
+						switch (static_cast<TraceRestrictLongReserveValueField>(GetTraceRestrictValue(item))) {
+							case TRLRVF_LONG_RESERVE:
+								out.flags |= TRPRF_LONG_RESERVE;
+								break;
+
+							case TRLRVF_CANCEL_LONG_RESERVE:
+								out.flags &= ~TRPRF_LONG_RESERVE;
+								break;
+
+							case TRLRVF_LONG_RESERVE_UNLESS_STOPPING:
+								if (!(input.input_flags & TRPIF_PASSED_STOP)) {
+									out.flags |= TRPRF_LONG_RESERVE;
+								}
+								break;
+
+							default:
+								NOT_REACHED();
+								break;
 						}
 						break;
 
@@ -971,7 +986,7 @@ CommandCost TraceRestrictProgram::Validate(const std::vector<TraceRestrictItem> 
 
 		auto validation_error = [i](StringID str) -> CommandCost {
 			CommandCost result(str);
-			result.SetResultData((1 << 31) | (uint)i);
+			result.SetResultData((uint)i);
 			return result;
 		};
 
@@ -1785,7 +1800,7 @@ void TraceRestrictNotifySignalRemoval(TileIndex tile, Track track)
 {
 	TraceRestrictRefId ref = MakeTraceRestrictRefId(tile, track);
 	bool removed = TraceRestrictRemoveProgramMapping(ref);
-	DeleteWindowById(WC_TRACE_RESTRICT, ref);
+	CloseWindowById(WC_TRACE_RESTRICT, ref);
 	if (removed) InvalidateWindowClassesData(WC_TRACE_RESTRICT);
 }
 
@@ -1949,46 +1964,76 @@ CommandCost TraceRestrictProgramRemoveItemAt(std::vector<TraceRestrictItem> &ite
 	return CommandCost();
 }
 
+static CommandCost AdvanceItemEndIteratorForBlock(const std::vector<TraceRestrictItem> &items,
+		const std::vector<TraceRestrictItem>::iterator &move_start, std::vector<TraceRestrictItem>::iterator &move_end, bool allow_elif)
+{
+	TraceRestrictItem old_item = *move_start;
+	if (IsTraceRestrictConditional(old_item)) {
+		if (GetTraceRestrictType(old_item) == TRIT_COND_ENDIF) {
+			// this is an else or end if, can't move these
+			return CMD_ERROR;
+		}
+		if (GetTraceRestrictCondFlags(old_item) != 0) {
+			if (allow_elif) {
+				uint32 recursion_depth = 0;
+				for (; move_end != items.end(); InstructionIteratorAdvance(move_end)) {
+					TraceRestrictItem current_item = *move_end;
+					if (IsTraceRestrictConditional(current_item)) {
+						if (GetTraceRestrictCondFlags(current_item) == 0) {
+							if (GetTraceRestrictType(current_item) == TRIT_COND_ENDIF) {
+								// this is an end if
+								if (recursion_depth == 0) break;
+								recursion_depth--;
+							} else {
+								// this is an opening if
+								recursion_depth++;
+							}
+						} else if (recursion_depth == 0) {
+							// next elif/orif
+							break;
+						}
+					}
+				}
+				return CommandCost();
+			}
+			// can't move or/else blocks
+			return CMD_ERROR;
+		}
+
+		uint32 recursion_depth = 1;
+		// iterate until matching end block found
+		for (; move_end != items.end(); InstructionIteratorAdvance(move_end)) {
+			TraceRestrictItem current_item = *move_end;
+			if (IsTraceRestrictConditional(current_item)) {
+				if (GetTraceRestrictCondFlags(current_item) == 0) {
+					if (GetTraceRestrictType(current_item) == TRIT_COND_ENDIF) {
+						// this is an end if
+						recursion_depth--;
+						if (recursion_depth == 0) {
+							// inclusively remove up to here
+							InstructionIteratorAdvance(move_end);
+							break;
+						}
+					} else {
+						// this is an opening if
+						recursion_depth++;
+					}
+				}
+			}
+		}
+		if (recursion_depth != 0) return CMD_ERROR; // ran off the end
+	}
+	return CommandCost();
+}
+
 CommandCost TraceRestrictProgramMoveItemAt(std::vector<TraceRestrictItem> &items, uint32 &offset, bool up, bool shallow_mode)
 {
 	std::vector<TraceRestrictItem>::iterator move_start = TraceRestrictProgram::InstructionAt(items, offset);
 	std::vector<TraceRestrictItem>::iterator move_end = InstructionIteratorNext(move_start);
 
-	TraceRestrictItem old_item = *move_start;
 	if (!shallow_mode) {
-		if (IsTraceRestrictConditional(old_item)) {
-			if (GetTraceRestrictCondFlags(old_item) != 0) {
-				// can't move or/else blocks
-				return_cmd_error(STR_TRACE_RESTRICT_ERROR_CAN_T_MOVE_ITEM);
-			}
-			if (GetTraceRestrictType(old_item) == TRIT_COND_ENDIF) {
-				// this is an end if, can't move these
-				return_cmd_error(STR_TRACE_RESTRICT_ERROR_CAN_T_MOVE_ITEM);
-			}
-
-			uint32 recursion_depth = 1;
-			// iterate until matching end block found
-			for (; move_end != items.end(); InstructionIteratorAdvance(move_end)) {
-				TraceRestrictItem current_item = *move_end;
-				if (IsTraceRestrictConditional(current_item)) {
-					if (GetTraceRestrictCondFlags(current_item) == 0) {
-						if (GetTraceRestrictType(current_item) == TRIT_COND_ENDIF) {
-							// this is an end if
-							recursion_depth--;
-							if (recursion_depth == 0) {
-								// inclusively remove up to here
-								InstructionIteratorAdvance(move_end);
-								break;
-							}
-						} else {
-							// this is an opening if
-							recursion_depth++;
-						}
-					}
-				}
-			}
-			if (recursion_depth != 0) return CMD_ERROR; // ran off the end
-		}
+		CommandCost res = AdvanceItemEndIteratorForBlock(items, move_start, move_end, false);
+		if (res.Failed()) return CommandCost(STR_TRACE_RESTRICT_ERROR_CAN_T_MOVE_ITEM);
 	}
 
 	if (up) {
@@ -2001,6 +2046,32 @@ CommandCost TraceRestrictProgramMoveItemAt(std::vector<TraceRestrictItem> &items
 		offset++;
 	}
 	return CommandCost();
+}
+
+CommandCost TraceRestrictProgramDuplicateItemAt(std::vector<TraceRestrictItem> &items, uint32 offset)
+{
+	std::vector<TraceRestrictItem>::iterator dup_start = TraceRestrictProgram::InstructionAt(items, offset);
+	std::vector<TraceRestrictItem>::iterator dup_end = InstructionIteratorNext(dup_start);
+
+	CommandCost res = AdvanceItemEndIteratorForBlock(items, dup_start, dup_end, true);
+	if (res.Failed()) return CommandCost(STR_TRACE_RESTRICT_ERROR_CAN_T_DUPLICATE_ITEM);
+
+	std::vector<TraceRestrictItem> new_items;
+	new_items.reserve(items.size() + (dup_end - dup_start));
+	new_items.insert(new_items.end(), items.begin(), dup_end);
+	new_items.insert(new_items.end(), dup_start, dup_end);
+	new_items.insert(new_items.end(), dup_end, items.end());
+	items = std::move(new_items);
+	return CommandCost();
+}
+
+bool TraceRestrictProgramDuplicateItemAtDryRun(const std::vector<TraceRestrictItem> &items, uint32 offset)
+{
+	std::vector<TraceRestrictItem>::iterator dup_start = TraceRestrictProgram::InstructionAt(const_cast<std::vector<TraceRestrictItem> &>(items), offset);
+	std::vector<TraceRestrictItem>::iterator dup_end = InstructionIteratorNext(dup_start);
+
+	CommandCost res = AdvanceItemEndIteratorForBlock(items, dup_start, dup_end, true);
+	return res.Succeeded();
 }
 
 /**
@@ -2103,6 +2174,12 @@ CommandCost CmdProgramSignalTraceRestrict(TileIndex tile, DoCommandFlag flags, u
 			break;
 		}
 
+		case TRDCT_DUPLICATE_ITEM: {
+			CommandCost res = TraceRestrictProgramDuplicateItemAt(items, offset);
+			if (res.Failed()) return res;
+			break;
+		}
+
 		default:
 			return CMD_ERROR;
 	}
@@ -2176,16 +2253,20 @@ CommandCost CmdProgramSignalTraceRestrictProgMgmt(TileIndex tile, DoCommandFlag 
 		return ret;
 	}
 
-	if (type == TRDCT_PROG_SHARE || type == TRDCT_PROG_COPY) {
+	if (type == TRDCT_PROG_SHARE || type == TRDCT_PROG_SHARE_IF_UNMAPPED || type == TRDCT_PROG_COPY) {
 		if (self == source) {
 			return_cmd_error(STR_TRACE_RESTRICT_ERROR_SOURCE_SAME_AS_TARGET);
 		}
 	}
-	if (type == TRDCT_PROG_SHARE || type == TRDCT_PROG_COPY || type == TRDCT_PROG_COPY_APPEND) {
+	if (type == TRDCT_PROG_SHARE || type == TRDCT_PROG_SHARE_IF_UNMAPPED || type == TRDCT_PROG_COPY || type == TRDCT_PROG_COPY_APPEND) {
 		ret = TraceRestrictCheckTileIsUsable(source_tile, source_track);
 		if (ret.Failed()) {
 			return ret;
 		}
+	}
+
+	if (type == TRDCT_PROG_SHARE_IF_UNMAPPED && GetTraceRestrictProgram(self, false) != nullptr) {
+		return_cmd_error(STR_TRACE_RESTRICT_ERROR_TARGET_ALREADY_HAS_PROGRAM);
 	}
 
 	if (type != TRDCT_PROG_RESET && !TraceRestrictProgram::CanAllocateItem()) {
@@ -2236,7 +2317,8 @@ CommandCost CmdProgramSignalTraceRestrictProgMgmt(TileIndex tile, DoCommandFlag 
 			break;
 		}
 
-		case TRDCT_PROG_SHARE: {
+		case TRDCT_PROG_SHARE:
+		case TRDCT_PROG_SHARE_IF_UNMAPPED: {
 			TraceRestrictRemoveProgramMapping(self);
 			TraceRestrictProgram *source_prog = GetTraceRestrictProgram(source, true);
 			if (!source_prog) {

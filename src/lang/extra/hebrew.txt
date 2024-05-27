@@ -9,6 +9,11 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :כלי רכב
 STR_VEHICLE_TYPE_SHIPS                                          :כלי שייט
 STR_VEHICLE_TYPE_AIRCRAFT                                       :כלי טייס
 
+STR_CONFIG_SETTING_AUTOSAVE                                     :שמירה אוטומטית: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :בחר פרק זמן בין שמירות אוטומטיות
+
+STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}שנה שקיפות עבור מצביעי הטענה. Ctrl+לחיצה לנעילה
+
 # Tracerestrict GUI
 
 # Programmable Pre-Signals
@@ -26,6 +31,9 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}שנה �
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}מודל: {GOLD}{NUM}
 
+STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :A:
+STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :D:
+
 # Cargo type orders Window
 
 # Plans window
@@ -42,3 +50,19 @@ STR_TRADITIONAL_AIRCRAFT_NAME                                   :כלי טייס
 # Scheduled Dispatch
 
 # Modifier key toggle window
+
+STR_CONFIG_SETTING_ALLOW_SHARES                                 :אפשר קניית מניות מחברות אחרות: {STRING}
+STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :כאשר מאופשר, מתיר קנייה ומכירה של מניות של חברות. מניות יהיו זמינות רק עבור חברות המגיעות לגיל מסוים
+
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :גיל מינימלי לחברה לסחור במניותיה: {STRING}
+
+STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({1:COMPANY} נמצאים בבעלות{NBSP} {0:COMMA}%)
+
+STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}קנה 25% ממניות החברה
+STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}מכור 25% ממניות החברה שברשותך
+STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}קנה 25% ממניות חברה זו. Shift+לחיצה מציג הערכת עלות ללא רכישת המניה
+STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}מכור 25% ממניות חברה זו. Shift+לחיצה מציג הערכת הכנסות ללא מכירת המניה
+
+STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}אין באפשרותך לקנות 25% ממניות חברה זו...
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}אין באפשרותך למכור 25% ממניות חברה זו...
+STR_ERROR_PROTECTED                                             :{WHITE}חברה זו צעירה מידי ואינה יכולה לסחור במניותיה...

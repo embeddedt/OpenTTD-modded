@@ -129,39 +129,39 @@ STR_QUANTITY_N_A                                                :없음
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}승
-STR_ABBREV_COAL                                                 :{TINY_FONT}석
-STR_ABBREV_MAIL                                                 :{TINY_FONT}우
-STR_ABBREV_OIL                                                  :{TINY_FONT}유
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}축
-STR_ABBREV_GOODS                                                :{TINY_FONT}품
-STR_ABBREV_GRAIN                                                :{TINY_FONT}곡
-STR_ABBREV_WOOD                                                 :{TINY_FONT}목
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}광
-STR_ABBREV_STEEL                                                :{TINY_FONT}철
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}귀
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}구
-STR_ABBREV_MAIZE                                                :{TINY_FONT}옥
-STR_ABBREV_FRUIT                                                :{TINY_FONT}과
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}다
-STR_ABBREV_FOOD                                                 :{TINY_FONT}식
-STR_ABBREV_PAPER                                                :{TINY_FONT}종
-STR_ABBREV_GOLD                                                 :{TINY_FONT}금
-STR_ABBREV_WATER                                                :{TINY_FONT}물
-STR_ABBREV_WHEAT                                                :{TINY_FONT}밀
-STR_ABBREV_RUBBER                                               :{TINY_FONT}고
-STR_ABBREV_SUGAR                                                :{TINY_FONT}설
-STR_ABBREV_TOYS                                                 :{TINY_FONT}장
-STR_ABBREV_SWEETS                                               :{TINY_FONT}사
-STR_ABBREV_COLA                                                 :{TINY_FONT}콜
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}솜
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}거
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}토
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}건
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}플
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}탄
-STR_ABBREV_NONE                                                 :{TINY_FONT}X
-STR_ABBREV_ALL                                                  :{TINY_FONT}모두
+STR_ABBREV_PASSENGERS                                           :승
+STR_ABBREV_COAL                                                 :석
+STR_ABBREV_MAIL                                                 :우
+STR_ABBREV_OIL                                                  :유
+STR_ABBREV_LIVESTOCK                                            :축
+STR_ABBREV_GOODS                                                :품
+STR_ABBREV_GRAIN                                                :곡
+STR_ABBREV_WOOD                                                 :목
+STR_ABBREV_IRON_ORE                                             :광
+STR_ABBREV_STEEL                                                :철
+STR_ABBREV_VALUABLES                                            :귀
+STR_ABBREV_COPPER_ORE                                           :구
+STR_ABBREV_MAIZE                                                :옥
+STR_ABBREV_FRUIT                                                :과
+STR_ABBREV_DIAMONDS                                             :다
+STR_ABBREV_FOOD                                                 :식
+STR_ABBREV_PAPER                                                :종
+STR_ABBREV_GOLD                                                 :금
+STR_ABBREV_WATER                                                :물
+STR_ABBREV_WHEAT                                                :밀
+STR_ABBREV_RUBBER                                               :고
+STR_ABBREV_SUGAR                                                :설
+STR_ABBREV_TOYS                                                 :장
+STR_ABBREV_SWEETS                                               :사
+STR_ABBREV_COLA                                                 :콜
+STR_ABBREV_CANDYFLOSS                                           :솜
+STR_ABBREV_BUBBLES                                              :거
+STR_ABBREV_TOFFEE                                               :토
+STR_ABBREV_BATTERIES                                            :건
+STR_ABBREV_PLASTIC                                              :플
+STR_ABBREV_FIZZY_DRINKS                                         :탄
+STR_ABBREV_NONE                                                 :X
+STR_ABBREV_ALL                                                  :모두
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{G=m}{COMMA}명
@@ -191,16 +191,36 @@ STR_COLOUR_GREY                                                 :회색
 STR_COLOUR_WHITE                                                :흰색
 STR_COLOUR_RANDOM                                               :무작위
 
-# Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA}mph
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA}km/h
-STR_UNITS_VELOCITY_SI                                           :{COMMA}m/s
-STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}칸/일
-STR_UNITS_VELOCITY_KNOTS                                        :{COMMA}노트
+###length 17
+STR_COLOUR_SECONDARY_DARK_BLUE                                  :어두운 파랑
+STR_COLOUR_SECONDARY_PALE_GREEN                                 :연한 녹색
+STR_COLOUR_SECONDARY_SECONDARY_PINK                             :분홍
+STR_COLOUR_SECONDARY_YELLOW                                     :노랑
+STR_COLOUR_SECONDARY_RED                                        :빨강
+STR_COLOUR_SECONDARY_LIGHT_BLUE                                 :밝은 파랑
+STR_COLOUR_SECONDARY_GREEN                                      :녹색
+STR_COLOUR_SECONDARY_DARK_GREEN                                 :어두운 녹색
+STR_COLOUR_SECONDARY_BLUE                                       :파랑
+STR_COLOUR_SECONDARY_CREAM                                      :연한 분홍
+STR_COLOUR_SECONDARY_MAUVE                                      :연한 보라
+STR_COLOUR_SECONDARY_PURPLE                                     :보라
+STR_COLOUR_SECONDARY_ORANGE                                     :주황
+STR_COLOUR_SECONDARY_BROWN                                      :갈색
+STR_COLOUR_SECONDARY_GREY                                       :회색
+STR_COLOUR_SECONDARY_WHITE                                      :흰색
+STR_COLOUR_SECONDARY_SAME_AS_PRIMARY                            :주 색상과 같게
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}마력
-STR_UNITS_POWER_METRIC                                          :{COMMA}마력
-STR_UNITS_POWER_SI                                              :{COMMA}kW
+
+# Units used in OpenTTD
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL}mph
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL}km/h
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL}m/s
+STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}칸/일
+STR_UNITS_VELOCITY_KNOTS                                        :{DECIMAL}노트
+
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}마력
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}마력
+STR_UNITS_POWER_SI                                              :{DECIMAL}kW
 
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}마력/t
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}마력/t
@@ -212,29 +232,29 @@ STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL                           :{DECIMAL}kW/t
 STR_UNITS_POWER_SI_TO_WEIGHT_METRIC                             :{DECIMAL}kW/t
 STR_UNITS_POWER_SI_TO_WEIGHT_SI                                 :{DECIMAL}W/kg
 
-STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{COMMA}t
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}t
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}kg
+STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{DECIMAL}t
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}t
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}kg
 
-STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{COMMA}톤
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA}톤
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA}kg
+STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{DECIMAL}톤
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL}톤
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL}kg
 
-STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{COMMA}갤런
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}l
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}m³
+STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{DECIMAL}갤런
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}l
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}m³
 
-STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{COMMA}갤런
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA}리터
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA}m³
+STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{DECIMAL}갤런
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL}리터
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL}m³
 
-STR_UNITS_FORCE_IMPERIAL                                        :{COMMA}파운드중
-STR_UNITS_FORCE_METRIC                                          :{COMMA}kgf
-STR_UNITS_FORCE_SI                                              :{COMMA}kN
+STR_UNITS_FORCE_IMPERIAL                                        :{DECIMAL}파운드중
+STR_UNITS_FORCE_METRIC                                          :{DECIMAL}kgf
+STR_UNITS_FORCE_SI                                              :{DECIMAL}kN
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA}피트
-STR_UNITS_HEIGHT_METRIC                                         :{COMMA}m
-STR_UNITS_HEIGHT_SI                                             :{COMMA}m
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}피트
+STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL}m
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL}m
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}검색:
@@ -345,9 +365,9 @@ STR_GOTO_ORDER_VIEW_TOOLTIP                                     :{BLACK}경로 �
 ###length 31
 STR_TOOLBAR_TOOLTIP_PAUSE_GAME                                  :{BLACK}게임을 일시 정지합니다.
 STR_TOOLBAR_TOOLTIP_FORWARD                                     :{BLACK}게임 시간을 빠르게 가도록 합니다.
-STR_TOOLBAR_TOOLTIP_OPTIONS                                     :{BLACK}게임 기본 설정을 엽니다.
-STR_TOOLBAR_TOOLTIP_SAVE_GAME_ABANDON_GAME                      :{BLACK}게임을 저장하거나, 그만두거나, 게임을 종료합니다
-STR_TOOLBAR_TOOLTIP_DISPLAY_MAP                                 :{BLACK}지도, 외부 화면, 팻말 목록을 보여줍니다.
+STR_TOOLBAR_TOOLTIP_OPTIONS                                     :{BLACK}게임 기본 설정을 엽니다
+STR_TOOLBAR_TOOLTIP_SAVE_GAME_ABANDON_GAME                      :{BLACK}게임을 저장하거나, 불러오거나, 그만두거나, 게임을 종료합니다
+STR_TOOLBAR_TOOLTIP_DISPLAY_MAP                                 :{BLACK}지도, 외부 화면, 화물 흐름, 팻말 목록을 보여줍니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_TOWN_DIRECTORY                      :{BLACK}도시 메뉴를 표시합니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_SUBSIDIES                           :{BLACK}보조금 메뉴를 표시합니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_LIST_OF_COMPANY_STATIONS            :{BLACK}각 회사의 정거장 목록을 표시합니다.
@@ -355,9 +375,9 @@ STR_TOOLBAR_TOOLTIP_DISPLAY_COMPANY_FINANCES                    :{BLACK}각 회�
 STR_TOOLBAR_TOOLTIP_DISPLAY_COMPANY_GENERAL                     :{BLACK}각 회사의 기본 정보를 표시합니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_STORY_BOOK                          :{BLACK}스토리 북을 엽니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_GOALS_LIST                          :{BLACK}목표 목록을 보여줍니다.
-STR_TOOLBAR_TOOLTIP_DISPLAY_GRAPHS                              :{BLACK}그래프 메뉴를 표시합니다.
+STR_TOOLBAR_TOOLTIP_DISPLAY_GRAPHS                              :{BLACK}회사 그래프와 화물 운송단가 비율 창을 보여줍니다
 STR_TOOLBAR_TOOLTIP_DISPLAY_COMPANY_LEAGUE                      :{BLACK}회사의 성취도 순위를 표시합니다.
-STR_TOOLBAR_TOOLTIP_FUND_CONSTRUCTION_OF_NEW                    :{BLACK}새 산업시설에 투자하거나 산업시설의 목록을 표시합니다.
+STR_TOOLBAR_TOOLTIP_FUND_CONSTRUCTION_OF_NEW                    :{BLACK}새 산업시설의 위치를 무작위로 찾거나 원하는 위치에 새로운 산업시설을 건설합니다
 STR_TOOLBAR_TOOLTIP_DISPLAY_LIST_OF_COMPANY_TRAINS              :{BLACK}각 회사의 열차 목록을 표시합니다. CTRL+클릭하면 그룹화된 창은 일반 창으로, 일반 창은 그룹화된 창으로 표시됩니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_LIST_OF_COMPANY_ROAD_VEHICLES       :{BLACK}각 회사의 차량 목록을 표시합니다. CTRL+클릭하면 그룹화된 창은 일반 창으로, 일반 창은 그룹화된 창으로 표시됩니다.
 STR_TOOLBAR_TOOLTIP_DISPLAY_LIST_OF_COMPANY_SHIPS               :{BLACK}각 회사의 선박 목록을 표시합니다. CTRL+클릭하면 그룹화된 창은 일반 창으로, 일반 창은 그룹화된 창으로 표시됩니다.
@@ -371,8 +391,8 @@ STR_TOOLBAR_TOOLTIP_BUILD_SHIP_DOCKS                            :{BLACK}항만 �
 STR_TOOLBAR_TOOLTIP_BUILD_AIRPORTS                              :{BLACK}항공 시설을 건설합니다.
 STR_TOOLBAR_TOOLTIP_LANDSCAPING                                 :{BLACK}땅 올리기/내리기, 나무 심기 등의 일를 하기 위한 지형편집창을 엽니다.
 STR_TOOLBAR_TOOLTIP_SHOW_SOUND_MUSIC_WINDOW                     :{BLACK}효과음/배경 음악 창을 엽니다.
-STR_TOOLBAR_TOOLTIP_SHOW_LAST_MESSAGE_NEWS                      :{BLACK}최근 메시지/뉴스 기록이나 메시지 설정을 엽니다.
-STR_TOOLBAR_TOOLTIP_LAND_BLOCK_INFORMATION                      :{BLACK}지역 정보, 콘솔, 스크립트 디버그, 스크린샷, OpenTTD에 대한 정보를 보여줍니다.
+STR_TOOLBAR_TOOLTIP_SHOW_LAST_MESSAGE_NEWS                      :{BLACK}최근 메시지/뉴스 기록을 보거나, 모든 메시지를 삭제합니다
+STR_TOOLBAR_TOOLTIP_LAND_BLOCK_INFORMATION                      :{BLACK}지역 정보, 스크린샷, OpenTTD에 대한 정보, 개발자 도구 등을 보여줍니다
 STR_TOOLBAR_TOOLTIP_SWITCH_TOOLBAR                              :{BLACK}툴바를 변경합니다.
 
 # Extra tooltips for the scenario editor toolbar
@@ -605,7 +625,7 @@ STR_GRAPH_OPERATING_PROFIT_CAPTION                              :{WHITE}경영 �
 STR_GRAPH_INCOME_CAPTION                                        :{WHITE}수익 그래프
 STR_GRAPH_CARGO_DELIVERED_CAPTION                               :{WHITE}수송 화물량
 STR_GRAPH_COMPANY_PERFORMANCE_RATINGS_CAPTION                   :{WHITE}회사 성취도 (최고 1000)
-STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}회사 가치
+STR_GRAPH_COMPANY_VALUES_CAPTION                                :{WHITE}회사가치 그래프
 
 STR_GRAPH_CARGO_PAYMENT_RATES_CAPTION                           :{WHITE}화물 운송단가 비율
 STR_GRAPH_CARGO_PAYMENT_RATES_X_LABEL                           :{TINY_FONT}{BLACK}통과시간
@@ -847,7 +867,7 @@ STR_NEWS_COMPANY_BANKRUPT_TITLE                                 :{BIG_FONT}{BLAC
 STR_NEWS_COMPANY_BANKRUPT_DESCRIPTION                           :{BIG_FONT}{BLACK}{STRING} 회사가 채권자에 의해 모든 자산이 팔려 파산하였습니다!
 STR_NEWS_COMPANY_LAUNCH_TITLE                                   :{BIG_FONT}{BLACK}새로운 운송회사 등장!
 STR_NEWS_COMPANY_LAUNCH_DESCRIPTION                             :{BIG_FONT}{BLACK}{STRING}{G 0 "이" "가"} {TOWN}에서 공사를 시작했습니다!
-STR_NEWS_MERGER_TAKEOVER_TITLE                                  :{BIG_FONT}{BLACK}{STRING}의 관리권이 {STRING}(으)로 넘어갔습니다!
+STR_NEWS_MERGER_TAKEOVER_TITLE                                  :{BIG_FONT}{BLACK}{STRING} 회사가 비공개 금액에 {STRING} 회사로 인수되었습니다!
 STR_PRESIDENT_NAME_MANAGER                                      :{BLACK}{PRESIDENT_NAME}{}(사장)
 
 STR_NEWS_NEW_TOWN                                               :{BLACK}{BIG_FONT}{STRING}은(는) 새로운 도시 {TOWN}을(를) 건설했습니다!
@@ -930,53 +950,73 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW                                :{BLACK}이 장�
 STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}외부 화면에 저장된 장소로 이동합니다.
 
 # Game options window
-STR_GAME_OPTIONS_CAPTION                                        :{WHITE}게임 기본 설정
+STR_GAME_OPTIONS_CAPTION                                        :{WHITE}게임 설정
+
+STR_GAME_OPTIONS_TAB_GENERAL                                    :일반
+STR_GAME_OPTIONS_TAB_GENERAL_TT                                 :{BLACK}일반 설정을 선택합니다
+STR_GAME_OPTIONS_TAB_GRAPHICS                                   :그래픽
+STR_GAME_OPTIONS_TAB_GRAPHICS_TT                                :{BLACK}그래픽 설정을 선택합니다
+STR_GAME_OPTIONS_TAB_SOUND                                      :효과음
+STR_GAME_OPTIONS_TAB_SOUND_TT                                   :{BLACK}효과음과 배경음 설정을 선택합니다
+
+STR_GAME_OPTIONS_VOLUME                                         :음량
+STR_GAME_OPTIONS_SFX_VOLUME                                     :효과음
+STR_GAME_OPTIONS_MUSIC_VOLUME                                   :배경음
+
+STR_GAME_OPTIONS_VOLUME_0                                       :0%
+STR_GAME_OPTIONS_VOLUME_25                                      :25%
+STR_GAME_OPTIONS_VOLUME_50                                      :50%
+STR_GAME_OPTIONS_VOLUME_75                                      :75%
+STR_GAME_OPTIONS_VOLUME_100                                     :100%
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}화폐 단위
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}화폐 단위 선택
 
+STR_GAME_OPTIONS_CURRENCY_CODE                                  :{STRING} ({STRING})
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :영국 파운드 (GBP)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :미국 달러 (USD)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :유로 (EUR)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :일본 엔 (JPY)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :오스트리아 실링 (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :벨기에 프랑크 (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :스위스 프랑크 (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :체코 코루나 (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :독일 마르크 (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :덴마크 크로네 (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :스페인 페세타 (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :핀란드 마르카 (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :프랑스 프랑크 (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :그리스 드라크마 (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :헝가리 프로인트 (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :아이슬란드 크로나 (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :이탈리아 리라 (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :네덜란드 길더 (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :노르웨이 크로네 (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :폴란드 즈워티 (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :루마니아 레우 (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :러시아 루블 (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :슬로바키아 톨라 (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :스웨덴 크로나 (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :터키 리라 (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :슬로바키아 코루나 (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :브라질 레알 (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :에스토니아 크룬 (EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :리투아니아 리타스 (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :대한민국 원 (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :남아프리카공화국 자르 (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :영국 파운드
+STR_GAME_OPTIONS_CURRENCY_USD                                   :미국 달러
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :유로
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :일본 엔
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :오스트리아 실링
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :벨기에 프랑크
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :스위스 프랑크
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :체코 코루나
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :독일 마르크
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :덴마크 크로네
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :스페인 페세타
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :핀란드 마르카
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :프랑스 프랑크
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :그리스 드라크마
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :헝가리 프로인트
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :아이슬란드 크로나
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :이탈리아 리라
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :네덜란드 길더
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :노르웨이 크로네
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :폴란드 즈워티
+STR_GAME_OPTIONS_CURRENCY_RON                                   :루마니아 레우
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :러시아 루블
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :슬로바키아 톨라
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :스웨덴 크로나
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :터키 리라
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :슬로바키아 코루나
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :브라질 레알
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :에스토니아 크룬
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :리투아니아 리타스
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :대한민국 원
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :남아프리카공화국 자르
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :사용자 설정...
-STR_GAME_OPTIONS_CURRENCY_GEL                                   :그루지야 라리 (GEL)
-STR_GAME_OPTIONS_CURRENCY_IRR                                   :이란 리알 (IRR)
-STR_GAME_OPTIONS_CURRENCY_RUB                                   :신 러시아 루블 (RUB)
-STR_GAME_OPTIONS_CURRENCY_MXN                                   :멕시코 페소 (MXN)
-STR_GAME_OPTIONS_CURRENCY_NTD                                   :신 타이완 달러 (NTD)
-STR_GAME_OPTIONS_CURRENCY_CNY                                   :중국 위안 (CNY)
-STR_GAME_OPTIONS_CURRENCY_HKD                                   :홍콩 달러 (HKD)
-STR_GAME_OPTIONS_CURRENCY_INR                                   :인도 루피 (INR)
-STR_GAME_OPTIONS_CURRENCY_IDR                                   :인도네시아 루피아 (IDR)
-STR_GAME_OPTIONS_CURRENCY_MYR                                   :말레이시아 링깃 (MYR)
+STR_GAME_OPTIONS_CURRENCY_GEL                                   :그루지야 라리
+STR_GAME_OPTIONS_CURRENCY_IRR                                   :이란 리알
+STR_GAME_OPTIONS_CURRENCY_RUB                                   :신 러시아 루블
+STR_GAME_OPTIONS_CURRENCY_MXN                                   :멕시코 페소
+STR_GAME_OPTIONS_CURRENCY_NTD                                   :신 타이완 달러
+STR_GAME_OPTIONS_CURRENCY_CNY                                   :중국 위안
+STR_GAME_OPTIONS_CURRENCY_HKD                                   :홍콩 달러
+STR_GAME_OPTIONS_CURRENCY_INR                                   :인도 루피
+STR_GAME_OPTIONS_CURRENCY_IDR                                   :인도네시아 루피아
+STR_GAME_OPTIONS_CURRENCY_MYR                                   :말레이시아 링깃
 
 STR_GAME_OPTIONS_AUTOSAVE_FRAME                                 :{BLACK}자동 저장
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}게임 자동 저장 간격을 선택
@@ -984,10 +1024,10 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}게임 �
 # Autosave dropdown
 ###length 5
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :사용 안 함
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :매달
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :3개월마다
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :6개월마다
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :12개월마다
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_10_MINUTES             :매 10분마다
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_30_MINUTES             :매 30분마다
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_60_MINUTES             :매 60분마다
+STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_120_MINUTES            :매 120분마다
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}언어
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}사용할 언어를 선택하세요
@@ -1024,6 +1064,14 @@ STR_GAME_OPTIONS_GUI_SCALE_3X                                   :3x
 STR_GAME_OPTIONS_GUI_SCALE_4X                                   :4x
 STR_GAME_OPTIONS_GUI_SCALE_5X                                   :5x
 
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_FRAME                       :{BLACK}자동 설문
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY                             :{BLACK}자동 설문조사 참여
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_TOOLTIP                     :{BLACK}이 설정을 켜면, 게임을 종료할 때마다 OpenTTD가 관련 설문 통계를 전송합니다
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_LINK                        :{BLACK}설문조사와 개인정보 보호에 대하여
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_LINK_TOOLTIP                :{BLACK}자동 설문조사에 대한 더 많은 정보를 보여주기 위해 브라우저 창을 엽니다
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_PREVIEW                     :{BLACK}설문조사 결과 미리보기
+STR_GAME_OPTIONS_PARTICIPATE_SURVEY_PREVIEW_TOOLTIP             :{BLACK}현재 진행 중인 게임의 설문조사 결과를 보여줍니다
+
 STR_GAME_OPTIONS_GRAPHICS                                       :{BLACK}그래픽
 
 STR_GAME_OPTIONS_REFRESH_RATE                                   :{BLACK}화면 주사율
@@ -1032,12 +1080,12 @@ STR_GAME_OPTIONS_REFRESH_RATE_ITEM                              :{NUM}Hz
 STR_GAME_OPTIONS_REFRESH_RATE_WARNING                           :{WHITE}60Hz를 넘는 화면 주사율을 사용하면 성능에 영향이 갈 수도 있습니다.
 
 STR_GAME_OPTIONS_BASE_GRF                                       :{BLACK}기본 그래픽 세트
-STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}게임에 사용할 기본 그래픽 세트를 선택하세요
+STR_GAME_OPTIONS_BASE_GRF_TOOLTIP                               :{BLACK}게임에 사용할 기본 그래픽 세트를 선택하세요 (플레이 도중에는 변경할 수 없고 메인 메뉴에서만 변경 가능합니다)
 STR_GAME_OPTIONS_BASE_GRF_STATUS                                :{RED}{NUM}개 파일 손실
 STR_GAME_OPTIONS_BASE_GRF_DESCRIPTION_TOOLTIP                   :{BLACK}기본 그래픽 세트에 대한 추가 정보를 봅니다.
 
 STR_GAME_OPTIONS_BASE_SFX                                       :{BLACK}기본 효과음 세트
-STR_GAME_OPTIONS_BASE_SFX_TOOLTIP                               :{BLACK}게임에 사용할 기본 효과음 세트를 선택하세요
+STR_GAME_OPTIONS_BASE_SFX_TOOLTIP                               :{BLACK}게임에 사용할 기본 효과음 세트를 선택하세요 (플레이 도중에는 변경할 수 없고 메인 메뉴에서만 변경 가능합니다)
 STR_GAME_OPTIONS_BASE_SFX_DESCRIPTION_TOOLTIP                   :{BLACK}기본 효과음 세트에 대한 추가 정보를 봅니다.
 
 STR_GAME_OPTIONS_BASE_MUSIC                                     :{BLACK}기본 배경 음악 세트
@@ -1142,7 +1190,7 @@ STR_TERRAIN_TYPE_CUSTOM_VALUE                                   :사용자 지�
 STR_CITY_APPROVAL_LENIENT                                       :관대함
 STR_CITY_APPROVAL_TOLERANT                                      :신경 씀
 STR_CITY_APPROVAL_HOSTILE                                       :싫어함
-STR_CITY_APPROVAL_PERMISSIVE                                    :신경 안씀 (회사 행동에 영향 없음)
+STR_CITY_APPROVAL_PERMISSIVE                                    :신경 안 씀 (회사 행동에 영향 없음)
 
 STR_WARNING_NO_SUITABLE_AI                                      :{WHITE}사용할 수 있는 인공지능이 없습니다...{}'온라인 콘텐츠' 시스템을 통해 인공지능을 다운로드받을 수 있습니다.
 
@@ -1153,6 +1201,7 @@ STR_CONFIG_SETTING_EXPAND_ALL                                   :{BLACK}모두 �
 STR_CONFIG_SETTING_COLLAPSE_ALL                                 :{BLACK}모두 접기
 STR_CONFIG_SETTING_RESET_ALL                                    :{BLACK}모든 설정 초기화
 STR_CONFIG_SETTING_NO_EXPLANATION_AVAILABLE_HELPTEXT            :(설명이 존재하지 않습니다)
+STR_CONFIG_SETTING_VALUE                                        :{PUSH_COLOUR}{ORANGE}{STRING}{POP_COLOUR}
 STR_CONFIG_SETTING_DEFAULT_VALUE                                :{LTBLUE}기본값: {ORANGE}{STRING}
 STR_CONFIG_SETTING_TYPE                                         :{LTBLUE}설정 종류: {ORANGE}{STRING}
 STR_CONFIG_SETTING_TYPE_CLIENT                                  :접속자 설정 (게임 저장 파일에 저장되지 않음; 모든 게임에 적용됨)
@@ -1205,6 +1254,8 @@ STR_CONFIG_SETTING_REALISTIC                                    :현실적
 STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :왼쪽
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :가운데
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :오른쪽
+
+STR_CONFIG_SETTING_SECONDS_VALUE                                :{COMMA}초
 
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :최대 초기 대출금: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :한 회사가 최대한 빌릴 수 있는 대출금의 양을 조절할 수 있습니다. (여기서 설정한 값은 인플레이션에 의한 효과를 적용하지 않은 값입니다.)
@@ -1333,7 +1384,7 @@ STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT                           :새로 지정�
 STR_CONFIG_SETTING_NONSTOP_BY_DEFAULT_HELPTEXT                  :일반적으로 차량은 경로 상에 있는 모든 역에 정차하게 되어있습니다. 이 설정을 켜면, 차량이 마지막 목적지까지 정차없이 모든 역을 통과할 것입니다. 이 설정은 새로 경로를 지정하는 차량에만 적용되는 점을 알아두십시오. 하지만 각 차량의 경로는 두 가지 방법 중에 원하는 대로 다시 설정할 수 있습니다.
 
 STR_CONFIG_SETTING_STOP_LOCATION                                :새로 지정하는 역 정차 경로는 기본적으로 역의 {STRING}에 정지하도록 설정
-STR_CONFIG_SETTING_STOP_LOCATION_HELPTEXT                       :열차가 기본적으로 정거장의 어느 위치에 정차할 것인지를 설정합니다. '가까운 쪽'은 역에 진입하는 곳과 가까운 곳에, '중간'은 역 중앙에, '먼쪽'은 진입하는 곳과 먼 곳에 정차합니다. 이 설정은 새로 경로를 지정하는 차량에만 적용되는 점을 알아두십시오. 하지만 각 차량의 경로는 두 가지 방법 중에 원하는 대로 다시 설정할 수 있습니다.
+STR_CONFIG_SETTING_STOP_LOCATION_HELPTEXT                       :열차가 기본적으로 정거장의 어느 위치에 정차할 것인지를 설정합니다. '가까운 쪽'은 역에 진입하는 곳과 가까운 곳에, '중간'은 역 중앙에, '먼쪽'은 진입하는 곳과 먼 곳에 정차합니다. 이 설정은 새로 경로를 지정하는 차량에만 적용되는 점을 알아두십시오. 개별 경로의 정차 위치는 그 경로를 클릭해서 변경할 수 있습니다.
 ###length 3
 STR_CONFIG_SETTING_STOP_LOCATION_NEAR_END                       :가까운쪽
 STR_CONFIG_SETTING_STOP_LOCATION_MIDDLE                         :중간
@@ -1388,6 +1439,9 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :이 설정을 �
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :시작시 회사 색상: {STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :새 회사에서 사용할 색상을 선택합니다
 
+STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_SECONDARY            :시작시 회사 부 색상: {STRING}
+STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_SECONDARY_HELPTEXT   :부 색상을 지원하는 NewGRF를 사용할 경우, 새 회사에서 사용할 부 색상을 선택합니다.
+
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :옛날 공항을 사라지지 않고 계속 만들 수 있게 함: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :이 설정을 켜면, 소형 공항을 포함한 모든 공항 종류를 도입 이후에 계속 사용할 수 있게 됩니다.
 
@@ -1421,7 +1475,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :차량을 자�
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :오류 메시지 표시: {STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :오류 메시지를 표시할 시간을 설정합니다. 일부 (중요한) 오류 메시지는 이 시간이 지나도 자동으로 사라지지 않고 수동으로 꺼야할 수도 있음을 알아두십시오.
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA}초 동안
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :도움말 보이기: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :마우스를 올려놓았을 때 도움말이 뜨는데 걸리는 시간을 설정합니다. 마우스 오른쪽 클릭으로 바로 뜨도록 할 수도 있습니다.
@@ -1532,7 +1585,7 @@ STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREY_TO_RED                :회색 & 적색
 STR_CONFIG_SETTING_LINKGRAPH_COLOURS_GREYSCALE                  :흑백
 
 STR_CONFIG_SETTING_SCROLLMODE                                   :외부 화면 스크롤 행동: {STRING}
-STR_CONFIG_SETTING_SCROLLMODE_HELPTEXT                          :지도를 스크롤 할 때의 행동을 선택합니다.
+STR_CONFIG_SETTING_SCROLLMODE_HELPTEXT                          :지도를 스크롤 할 때의 행동을 선택합니다. "마우스 위치는 고정" 설정은 웹 기반 버전, 터치 스크린 환경, Wayland가 설치된 Linux 등의 환경에서는 모두 동작하지 않습니다
 ###length 4
 STR_CONFIG_SETTING_SCROLLMODE_DEFAULT                           :마우스 오른쪽 클릭으로 외부 화면 이동 (마우스 위치는 고정)
 STR_CONFIG_SETTING_SCROLLMODE_RMB_LOCKED                        :마우스 오른쪽 클릭으로 지도 이동 (마우스 위치는 고정)
@@ -1589,9 +1642,10 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :끄기
 
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE                        :오른쪽 클릭으로 창 닫기: {STRING}
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :창 내부를 오른쪽 클릭하여 창을 닫습니다. 오른쪽 클릭으로 도움말 표시 설정을 해제해야 합니다!
-
-STR_CONFIG_SETTING_AUTOSAVE                                     :자동 저장: {STRING}
-STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :게임을 자동으로 저장할 간격을 선택하세요
+###length 3
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_NO                     :아니요
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_YES                    :예
+STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_YES_EXCEPT_STICKY      :예 (고정한 창 제외)
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :저장 파일 이름으로 {STRING} 날짜 형식을 사용
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :게임 저장 파일 이름에 사용할 날짜 형식을 선택합니다
@@ -1713,7 +1767,7 @@ STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_HELPTEXT                   :스크립트 �
 STR_CONFIG_SETTING_SCRIPT_MAX_MEMORY_VALUE                      :{COMMA} MiB
 
 STR_CONFIG_SETTING_SERVINT_ISPERCENT                            :신뢰도에 따른 점검 설정: {STRING}
-STR_CONFIG_SETTING_SERVINT_ISPERCENT_HELPTEXT                   :차량 점검 방식을 "마지막 점검 이후 지난 시간 (또는) 최대 신뢰도에 대한 차량 신뢰도의 일정 퍼센트 하락 여부" 중에 하나로 선택합니다.
+STR_CONFIG_SETTING_SERVINT_ISPERCENT_HELPTEXT                   :이 설정을 켜면, 차량의 신뢰도가 최대 신뢰도에 비해 일정 비율만큼 하락했을 때 점검을 하러 가려고 합니다.{}{}예를 들어, 차량의 최대 신뢰도가 90%이고 점검 주기를 20%로 설정하면, 그 차량은 신뢰도가 72%가 되었을 때 점검을 하러 가게 됩니다.
 
 STR_CONFIG_SETTING_SERVINT_TRAINS                               :열차에 대한 기본 점검 기준: {STRING}
 STR_CONFIG_SETTING_SERVINT_TRAINS_HELPTEXT                      :열차에 따로 점검 기간이 설정되어있지 않은 경우에 사용할 기본 점검 기간을 설정합니다.
@@ -1805,15 +1859,6 @@ STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :기본
 STR_CONFIG_SETTING_ECONOMY_TYPE_SMOOTH                          :부드러움
 STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :멈춤
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :다른 회사의 지분을 사는 것을 허용: {STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :이 설정을 켜면, 회사의 지분을 거래할 수 있게 됩니다. 회사의 지분을 거래하려면 해당 회사가 어느 정도 오래되어야 합니다
-
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :지분 거래를 허용할 최소 회사 나이: {STRING}년
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :지분을 사고 팔기 위해 필요한 회사의 최소 나이를 설정합니다.
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_VALUE                   :{COMMA}년
-###setting-zero-is-special
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_NO_MIN                  :제한 없음
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :환승시 벌어들이는 중간 수익의 비율: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :더 많은 수익을 내기 위해, 수송 관계상 중간 구간에게 주어진 수익의 비율을 설정합니다.
 
@@ -1852,8 +1897,8 @@ STR_CONFIG_SETTING_ALLOW_TOWN_ROADS_HELPTEXT                    :도시가 성�
 STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS                   :도시가 회사 소유의 선로에 건널목을 만드는 것을 허용: {STRING}
 STR_CONFIG_SETTING_ALLOW_TOWN_LEVEL_CROSSINGS_HELPTEXT          :도시가 회사 소유의 선로에 건널목을 건설할 수 있도록 허용합니다
 
-STR_CONFIG_SETTING_NOISE_LEVEL                                  :도시가 공항에서 나오는 소음을 제한하도록 함: {STRING}
-STR_CONFIG_SETTING_NOISE_LEVEL_HELPTEXT                         :이 설정을 끄면, 한 도시에는 공항을 2개까지 지을 수 있습니다. 이 설정을 켜면, 한 도시에 지을 수 있는 공항의 수는 도시가 허용 가능한 소음 기준에 따라 달라집니다. 소음 기준은 도시 인구, 공항의 크기와 거리에 따라 다릅니다.
+STR_CONFIG_SETTING_NOISE_LEVEL                                  :소음 수준에 따라 공항 설치를 제한: {STRING}
+STR_CONFIG_SETTING_NOISE_LEVEL_HELPTEXT                         :도시의 인구와 공항 크기 및 거리에 따라 달라지는 도시의 소음 허용 수준에 따라, 도시가 공항 건설을 막을 수 있게 만듭니다. 이 설정을 끄면, 지역 당국의 태도 설정을 "신경 안 씀"으로 설정하지 않은 경우 한 도시에는 공항을 2개까지만 지을 수 있습니다.
 
 STR_CONFIG_SETTING_TOWN_FOUNDING                                :게임 도중에 도시 건설: {STRING}
 STR_CONFIG_SETTING_TOWN_FOUNDING_HELPTEXT                       :플레이어가 게임 중에 새로운 도시를 설립하는 것을 허용합니다.
@@ -1927,10 +1972,10 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :없음
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :초기 대도시 크기 비율: 일반 도시보다 {STRING}배 크게 시작
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER_HELPTEXT                :게임을 시작했을 때 일반 도시에 대한 대도시의 평균 크기를 설정합니다
 
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL                           :분배 상태를 매 {STRING}일 마다 갱신
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT                  :다음 연결 상태를 재계산하기까지의 시간입니다. 한 번의 재계산할 때마다 그래프의 한 요소를 위한 계획을 계산합니다. 이는 이 설정의 X값에 따라 모든 그래프가 매 X일마다 갱신되는 것이 아니라는 것을 뜻합니다. 일부 요소만 재계산된다는 뜻입니다. 값이 작으면 작을 수록 CPU가 계산해야 할 횟수가 늘어납니다. 값을 크게 설정할 수록 화물 분배 상태가 새롭게 지정되는 데 더 오랜 시간이 걸립니다.
-STR_CONFIG_SETTING_LINKGRAPH_TIME                               :화물 분배 연결 상태를 {STRING}일마다 다시 계산
-STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :각 연결 상태 요소의 재계산을 위해 필요한 시간입니다. 재계산이 시작될 때, 이 날짜만큼 작동하는 스레드가 생성됩니다. 이 값이 작으면 작을수록, 스레드가 끝나야할 때에 스레드가 끝나지 않게 됩니다. 그러면 게임이 랙에 걸려 멈추게 됩니다. 값을 크게 설정할수록 경로가 바뀔 때 분배 상태가 업데이트 되는 시간이 오래 걸리게 됩니다.
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_INTERVAL                    :분배 그래프를 매 {STRING}마다 업데이트
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_INTERVAL_HELPTEXT           :각 연결 그래프의 하위 시퀀스 재계산 사이의 시간입니다. 각 재계산은 그래프의 한 구성 요소에 대한 계획을 계산합니다. 즉, 이 설정을 X로 설정한다고 해서 전체 그래프를 X초마다 업데이트한다는 뜻은 아닙니다. 일부 구성 요소만 X초마다 업데이트됩니다. 이 값을 더 짧게 설정할 수록 계산하는데 더 많은 CPU 계산 시간이 필요합니다. 값을 더 길게 설정하면 화물 분배가 새 경로로 이뤄지기까지 더 오랜 시간이 걸리게 됩니다.
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_TIME                        :분배 그래프의 재계산을 위해 {STRING} 사용
+STR_CONFIG_SETTING_LINKGRAPH_RECALC_TIME_HELPTEXT               :각 연결 그래프의 구성 요소를 재계산하는데 걸리는 시간입니다. 재계산이 시작되면, 이 시간(초) 동안 실행할 수 있는 스레드가 생성됩니다. 이 값을 더 짧게 설정할수록 스레드가 완료되어야 할 때 완료되지 못할 가능성이 높아집니다. 그러면 이를 완료하기 전까지는 게임이 멈추게 됩니다. 값을 더 길게 설정하면 경로가 변경되었을 때 분배가 업데이트되는 데 더 오래 걸립니다.
 
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :승객에 대한 분배 형식: {STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :"대칭"은 A역에서 B역으로 가려는 승객의 수가 B에서 A로 가려는 승객의 수와 비슷하다는 뜻입니다. "비대칭"은 승객이 아무 방향이나 임의의 양만큼 가게 됨을 뜻합니다. "수동"은 자동적인 승객 분배가 일어나지 않고 기존 방식을 사용하겠음을 뜻합니다.
@@ -2001,30 +2046,30 @@ STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :야드파운드
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :미터법 (m)
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :국제표준규격 (m)
 
-STR_CONFIG_SETTING_LOCALISATION                                 :{ORANGE}단위 설정
-STR_CONFIG_SETTING_GRAPHICS                                     :{ORANGE}그래픽
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}효과음
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}인터페이스
-STR_CONFIG_SETTING_INTERFACE_GENERAL                            :{ORANGE}일반
-STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}게임 화면
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}건설
-STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}뉴스 / 정보
-STR_CONFIG_SETTING_COMPANY                                      :{ORANGE}회사
-STR_CONFIG_SETTING_ACCOUNTING                                   :{ORANGE}회계
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}차량
-STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :{ORANGE}물리
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}경로
-STR_CONFIG_SETTING_LIMITATIONS                                  :{ORANGE}제한
-STR_CONFIG_SETTING_ACCIDENTS                                    :{ORANGE}재앙 / 사고
-STR_CONFIG_SETTING_GENWORLD                                     :{ORANGE}세계 제작
-STR_CONFIG_SETTING_ENVIRONMENT                                  :{ORANGE}환경
-STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :{ORANGE}지역 당국
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}도시
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}산업시설
-STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}화물 분배
-STR_CONFIG_SETTING_AI                                           :{ORANGE}경쟁자
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}컴퓨터 플레이어
-STR_CONFIG_SETTING_NETWORK                                      :{ORANGE}네트워크
+STR_CONFIG_SETTING_LOCALISATION                                 :단위 설정
+STR_CONFIG_SETTING_GRAPHICS                                     :그래픽
+STR_CONFIG_SETTING_SOUND                                        :효과음
+STR_CONFIG_SETTING_INTERFACE                                    :인터페이스
+STR_CONFIG_SETTING_INTERFACE_GENERAL                            :일반
+STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :게임 화면
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :건설
+STR_CONFIG_SETTING_ADVISORS                                     :뉴스 / 정보
+STR_CONFIG_SETTING_COMPANY                                      :회사
+STR_CONFIG_SETTING_ACCOUNTING                                   :회계
+STR_CONFIG_SETTING_VEHICLES                                     :차량
+STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :물리
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :경로
+STR_CONFIG_SETTING_LIMITATIONS                                  :제한
+STR_CONFIG_SETTING_ACCIDENTS                                    :재앙 / 사고
+STR_CONFIG_SETTING_GENWORLD                                     :세계 제작
+STR_CONFIG_SETTING_ENVIRONMENT                                  :환경
+STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :지역 당국
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :도시
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :산업시설
+STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :화물 분배
+STR_CONFIG_SETTING_AI                                           :경쟁자
+STR_CONFIG_SETTING_AI_NPC                                       :컴퓨터 플레이어
+STR_CONFIG_SETTING_NETWORK                                      :네트워크
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :열차에 사용할 경로 탐색법: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :열차에 사용할 경로 탐색 방법을 선택합니다.
@@ -2063,6 +2108,7 @@ STR_CONFIG_ERROR_SPRITECACHE_TOO_BIG                            :{WHITE}{BYTES}�
 # Video initalization errors
 STR_VIDEO_DRIVER_ERROR                                          :{WHITE}비디오 설정 오류 발생...
 STR_VIDEO_DRIVER_ERROR_NO_HARDWARE_ACCELERATION                 :{WHITE}... 호환되는 GPU를 찾지 못했습니다. 하드웨어 가속이 비활성화됩니다
+STR_VIDEO_DRIVER_ERROR_HARDWARE_ACCELERATION_CRASH              :{WHITE}... GPU 드라이버가 게임을 종료시켰습니다. 하드웨어 가속이 비활성화됩니다
 
 # Intro window
 STR_INTRO_CAPTION                                               :{WHITE}OpenTTD {REV}
@@ -2393,6 +2439,13 @@ STR_NETWORK_ASK_RELAY_NO                                        :{BLACK}아니�
 STR_NETWORK_ASK_RELAY_YES_ONCE                                  :{BLACK}이번에만 사용
 STR_NETWORK_ASK_RELAY_YES_ALWAYS                                :{BLACK}항상 사용
 
+STR_NETWORK_ASK_SURVEY_CAPTION                                  :설문조사에 참여하시겠습니까?
+STR_NETWORK_ASK_SURVEY_TEXT                                     :자동 설문조사에 참여하시겠습니까?{}게임을 종료할 때마다 OpenTTD가 관련 설문 통계를 전송합니다.{}"게임 설정"에서 참여 여부를 변경할 수 있습니다.
+STR_NETWORK_ASK_SURVEY_PREVIEW                                  :설문조사 결과 미리보기
+STR_NETWORK_ASK_SURVEY_LINK                                     :설문조사와 개인정보 보호에 대하여
+STR_NETWORK_ASK_SURVEY_NO                                       :아니요
+STR_NETWORK_ASK_SURVEY_YES                                      :예
+
 STR_NETWORK_SPECTATORS                                          :관전자
 
 # Network set password
@@ -2598,7 +2651,6 @@ STR_TRANSPARENT_BUILDINGS_TOOLTIP                               :{BLACK}정거�
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}다리를 보여줄 지 선택합니다. 고정하려면 CTRL+클릭하세요
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}등대나 안테나 같은 구조물을 보여줄 지 선택합니다. 고정하려면 CTRL+클릭하세요
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}전차선을 보여줄 지 선택합니다. 고정하려면 CTRL+클릭하세요
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}적재율을 보여줄 지 선택합니다. 고정하려면 CTRL+클릭하세요
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}반투명 대신 아예 안 보이게 할 항목을 선택하세요
 
 # Linkgraph legend window
@@ -2682,8 +2734,11 @@ STR_STATION_BUILD_DRAG_DROP_TOOLTIP                             :{BLACK}드래�
 STR_STATION_BUILD_STATION_CLASS_TOOLTIP                         :{BLACK}표시할 역의 종류를 선택합니다
 STR_STATION_BUILD_STATION_TYPE_TOOLTIP                          :{BLACK}건설할 역의 종류를 선택합니다
 
-STR_STATION_CLASS_DFLT                                          :기본 역사
+STR_STATION_CLASS_DFLT                                          :기본
+STR_STATION_CLASS_DFLT_STATION                                  :기본 역
+STR_STATION_CLASS_DFLT_ROADSTOP                                 :기본 도로 정류장
 STR_STATION_CLASS_WAYP                                          :경유지
+STR_STATION_CLASS_WAYP_WAYPOINT                                 :기본 경유지
 
 # Signal window
 STR_BUILD_SIGNAL_CAPTION                                        :{WHITE}신호기 선택
@@ -2907,14 +2962,14 @@ STR_FUND_INDUSTRY_REMOVE_ALL_INDUSTRIES_CAPTION                 :{WHITE}모든 �
 STR_FUND_INDUSTRY_REMOVE_ALL_INDUSTRIES_QUERY                   :{YELLOW}정말 모든 산업시설을 제거하시겠습니까?
 
 # Industry cargoes window
-STR_INDUSTRY_CARGOES_INDUSTRY_CAPTION                           :{WHITE}{STRING}{G 0 "과" "와"} 관련된 산업시설 연계도
-STR_INDUSTRY_CARGOES_CARGO_CAPTION                              :{WHITE}{STRING}{G 0 "과" "와"} 관련된 산업시설 연계망
+STR_INDUSTRY_CARGOES_INDUSTRY_CAPTION                           :{WHITE}화물 연계도 - {STRING}
+STR_INDUSTRY_CARGOES_CARGO_CAPTION                              :{WHITE}화물 연계망 - {STRING}
 STR_INDUSTRY_CARGOES_PRODUCERS                                  :{WHITE}생산 산업시설
 STR_INDUSTRY_CARGOES_CUSTOMERS                                  :{WHITE}소비 산업시설
 STR_INDUSTRY_CARGOES_HOUSES                                     :{WHITE}도시 가구
 STR_INDUSTRY_CARGOES_INDUSTRY_TOOLTIP                           :{BLACK}이 산업시설의 공급자와 고객을 보려면 클릭하세요
 STR_INDUSTRY_CARGOES_CARGO_TOOLTIP                              :{BLACK}{STRING}{}이 화물의 공급자와 고객을 보려면 클릭하세요
-STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}산업시설 연계도 보기
+STR_INDUSTRY_DISPLAY_CHAIN                                      :{BLACK}산업시설 연계도
 STR_INDUSTRY_DISPLAY_CHAIN_TOOLTIP                              :{BLACK}이 산업시설에서 생산/소비하는 화물을 보여줍니다
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP                            :{BLACK}지도에 표시
 STR_INDUSTRY_CARGOES_NOTIFY_SMALLMAP_TOOLTIP                    :{BLACK}위 산업망에 표시된 산업을 소형 지도에서 볼 수 있게 합니다
@@ -3509,8 +3564,8 @@ STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_LARGE_ADVERTISING            :{PUSH_COLOUR}{Y
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_ROAD_RECONSTRUCTION          :{PUSH_COLOUR}{YELLOW}도시 도로망 보수공사를 시행합니다.{}앞으로 6개월간 극심한 도로 혼잡을 일으킵니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_STATUE_OF_COMPANY            :{PUSH_COLOUR}{YELLOW}당신의 회사를 대표하는 '명예의 동상'을 건설합니다.{}이 도시에 있는 역 등급을 영구적으로 올려줍니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
 STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_NEW_BUILDINGS                :{PUSH_COLOUR}{YELLOW}도시 상업 건물의 건설에 투자합니다.{}도시의 성장을 일시적으로 빠르게 만들어줍니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{PUSH_COLOUR}{YELLOW}1년 간 수송 권한 독점권을 구입합니다.{}도시 당국은 오직 당신 회사의 역에만 승객과 화물을 실을 것입니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
-STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{PUSH_COLOUR}{YELLOW}성취도를 올리기 위해 처벌을 감수하고 지역 당국에 뇌물을 줍니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
+STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_EXCLUSIVE_TRANSPORT          :{PUSH_COLOUR}{YELLOW}1년 간 수송 권한 독점권을 구입합니다.{}도시 당국은 오직 당신 회사의 역에만 승객과 화물을 실을 것입니다.{}경쟁사의 뇌물 수수가 성공하면 이 독점권 계약은 취소됩니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
+STR_LOCAL_AUTHORITY_ACTION_TOOLTIP_BRIBE                        :{PUSH_COLOUR}{YELLOW}성취도를 올리고 경쟁사의 독점권을 무효화하기 위해 처벌을 감수하고 지역 당국에 뇌물을 줍니다.{}{POP_COLOUR}가격: {CURRENCY_LONG}
 
 # Goal window
 STR_GOALS_CAPTION                                               :{WHITE}{COMPANY} 목표
@@ -3714,7 +3769,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}항공�
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}선박 {COMMA}대
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}없음
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}회사가치: {WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% {COMPANY}의 소유)
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}기반시설:
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}선로 {COMMA}칸
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}도로 {COMMA}칸
@@ -3733,6 +3787,8 @@ STR_COMPANY_VIEW_INFRASTRUCTURE_BUTTON                          :{BLACK}상세�
 STR_COMPANY_VIEW_INFRASTRUCTURE_TOOLTIP                         :{BLACK}기반시설 상세정보 창을 엽니다
 STR_COMPANY_VIEW_GIVE_MONEY_BUTTON                              :{BLACK}돈 보내기
 STR_COMPANY_VIEW_GIVE_MONEY_TOOLTIP                             :{BLACK}이 회사에 돈을 보냅니다
+STR_COMPANY_VIEW_HOSTILE_TAKEOVER_BUTTON                        :{BLACK}강제 인수
+STR_COMPANY_VIEW_HOSTILE_TAKEOVER_TOOLTIP                       :{BLACK}이 회사를 강제 인수
 
 STR_COMPANY_VIEW_NEW_FACE_BUTTON                                :{BLACK}새 얼굴
 STR_COMPANY_VIEW_NEW_FACE_TOOLTIP                               :{BLACK}사장의 얼굴을 선택합니다
@@ -3743,16 +3799,12 @@ STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}회사 �
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}사장 이름
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}사장의 이름을 변경합니다
 
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}회사 지분의 25%를 매입
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}회사 지분의 25%를 매도
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}이 회사 지분의 25%를 매입합니다. SHIFT+클릭으로 예상 매입 가격을 볼 수 있습니다
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}이 회사 지분의 25%를 매도합니다. SHIFT+클릭으로 예상 매도 가격을 볼 수 있습니다
-
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :회사 이름
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :사장 이름
 STR_COMPANY_VIEW_GIVE_MONEY_QUERY_CAPTION                       :보내고자 하는 돈의 액수를 입력하세요
 
 STR_BUY_COMPANY_MESSAGE                                         :{WHITE}저희 회사를 거두어주실 운송 회사를 찾고있습니다.{}{}저희 {COMPANY} 회사를 {CURRENCY_LONG}의 가격으로 인수합병하시겠습니까?
+STR_BUY_COMPANY_HOSTILE_TAKEOVER                                :{WHITE}{COMPANY} 회사를 강제 인수하려면 해당 회사의 모든 자산을 구매하고, 모든 대출을 상환하며 2년치 이익을 지불하게 됩니다.{}{}총 금액은 {CURRENCY_LONG} 가 될 것입니다.{}{}정말 강제 인수를 진행하시겠습니까?
 
 # Company infrastructure window
 STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}{COMPANY}의 기반시설
@@ -3824,9 +3876,10 @@ STR_VEHICLE_LIST_MANAGE_LIST                                    :{BLACK}관리
 STR_VEHICLE_LIST_MANAGE_LIST_TOOLTIP                            :{BLACK}이 목록에 있는 모든 열차에 지시를 내려 관리합니다
 STR_VEHICLE_LIST_REPLACE_VEHICLES                               :차량 교체
 STR_VEHICLE_LIST_SEND_FOR_SERVICING                             :점검하러 보내기
+STR_VEHICLE_LIST_CREATE_GROUP                                   :그룹 생성
 STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR                     :{TINY_FONT}{BLACK}올해 이익: {CURRENCY_LONG} (작년: {CURRENCY_LONG})
-STR_VEHICLE_LIST_CARGO                                          :{TINY_FONT}{BLACK}[{CARGO_LIST}]
-STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{TINY_FONT}{BLACK}{STRING} {STRING}
+STR_VEHICLE_LIST_CARGO                                          :[{CARGO_LIST}]
+STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{STRING} {STRING}
 
 STR_VEHICLE_LIST_SEND_TRAIN_TO_DEPOT                            :차량기지로 보내기
 STR_VEHICLE_LIST_SEND_ROAD_VEHICLE_TO_DEPOT                     :차고지로 보내기
@@ -4546,8 +4599,8 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}예정�
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}예정 소요시간 기준
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}시간표 검사 기준을 도착 예정일과 도착 예정 시간 기준 중에서 선택합니다
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :도착:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :출발:
+STR_TIMETABLE_ARRIVAL                                           :도착: {COLOUR}{DATE_TINY}
+STR_TIMETABLE_DEPARTURE                                         :착: {COLOUR}{DATE_TINY}
 
 
 # Date window (for timetable)
@@ -4593,6 +4646,7 @@ STR_AI_CONFIG_RANDOM_AI                                         :무작위 인�
 STR_AI_CONFIG_NONE                                              :(없음)
 STR_AI_CONFIG_NAME_VERSION                                      :{STRING} {YELLOW}v{NUM}
 STR_AI_CONFIG_MAX_COMPETITORS                                   :{LTBLUE}최대 경쟁자수: {ORANGE}{COMMA}
+STR_AI_CONFIG_COMPETITORS_INTERVAL                              :{LTBLUE}새 경쟁사가 나타나기 위해 필요한 최소 시간: {ORANGE}{COMMA}분
 
 STR_AI_CONFIG_MOVE_UP                                           :{BLACK}위로 이동
 STR_AI_CONFIG_MOVE_UP_TOOLTIP                                   :{BLACK}목록에서 선택한 인공지능의 순서를 한 칸 위로 옮깁니다
@@ -4639,7 +4693,6 @@ STR_AI_SETTINGS_CAPTION_GAMESCRIPT                              :게임 스크�
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}닫기
 STR_AI_SETTINGS_RESET                                           :{BLACK}초기화
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :이전 인공지능 이후 이 인공지능이 나타나기 위한 날짜수: {ORANGE}약 {STRING}일
 
 
 # Textfile window
@@ -4648,10 +4701,11 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}본문 �
 STR_TEXTFILE_VIEW_README                                        :{BLACK}Readme 보기
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}변경기록
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}저작권
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING} {STRING}의 Readme
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING} {STRING}의 변경기록
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} {STRING}의 저작권
+STR_TEXTFILE_SURVEY_RESULT_CAPTION                              :{WHITE}설문조사 결과 미리보기
 
 
 # Vehicle loading indicators
@@ -4776,9 +4830,6 @@ STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}은행�
 STR_ERROR_CAN_T_GIVE_MONEY                                      :{WHITE}이 회사에 돈을 보낼 수 없습니다...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}회사를 인수할 수 없습니다...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}본사를 건설할 수 없습니다...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}이 회사 지분의 25%를 매입할 수 없습니다...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}이 회사 지분의 25%를 매도할 수 없습니다...
-STR_ERROR_PROTECTED                                             :{WHITE}이 회사는 지분을 거래할 수 있을 만큼 오래되지 않았습니다...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}도시를 만들 수 없습니다
@@ -4837,7 +4888,7 @@ STR_ERROR_TOO_MANY_TRUCK_STOPS                                  :{WHITE}트럭 �
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_DOCK                             :{WHITE}다른 항구와 너무 가깝습니다
 STR_ERROR_TOO_CLOSE_TO_ANOTHER_AIRPORT                          :{WHITE}다른 공항과 너무 가깝습니다
 STR_ERROR_CAN_T_RENAME_STATION                                  :{WHITE}역 이름을 바꿀 수 없습니다...
-STR_ERROR_DRIVE_THROUGH_ON_TOWN_ROAD                            :{WHITE}... 여기는 도시 소유의 도로 입니다
+STR_ERROR_DRIVE_THROUGH_ON_TOWN_ROAD                            :{WHITE}... 도시 소유의 도로입니다
 STR_ERROR_DRIVE_THROUGH_DIRECTION                               :{WHITE}... 도로의 방향과 일치하지 않습니다
 STR_ERROR_DRIVE_THROUGH_CORNER                                  :{WHITE}... 통과식 도로 정류장은 굽은 도로에 건설할 수 없습니다
 STR_ERROR_DRIVE_THROUGH_JUNCTION                                :{WHITE}... 통과식 도로 정류장은 교차로에 건설할 수 없습니다
@@ -5111,6 +5162,7 @@ STR_ERROR_NO_BUOY                                               :{WHITE}부표�
 STR_ERROR_CAN_T_TIMETABLE_VEHICLE                               :{WHITE}차량의 시간표를 정할 수 없습니다...
 STR_ERROR_TIMETABLE_ONLY_WAIT_AT_STATIONS                       :{WHITE}차량은 정거장에서만 기다릴 수 있습니다
 STR_ERROR_TIMETABLE_NOT_STOPPING_HERE                           :{WHITE}이 차량은 이 정거장에 서지 않습니다
+STR_ERROR_TIMETABLE_INCOMPLETE                                  :{WHITE}... 시간표가 모두 작성되지 않았습니다
 
 # Sign related errors
 STR_ERROR_TOO_MANY_SIGNS                                        :{WHITE}... 팻말 수가 너무 많습니다
@@ -5522,10 +5574,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Powernaut 헬�
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{2:NUM}.{1:STRING}.{0:STRING}
+STR_FORMAT_DATE_TINY                                            :{2:NUM}.{1:ZEROFILL_NUM}.{0:ZEROFILL_NUM}
 STR_FORMAT_DATE_SHORT                                           :{1:NUM}년 {0:STRING}
 STR_FORMAT_DATE_LONG                                            :{2:NUM}년 {1:STRING}월 {0:STRING}일
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :(회사 {COMMA})
 STR_FORMAT_GROUP_NAME                                           :그룹 {COMMA}
@@ -5590,49 +5642,28 @@ STR_VEHICLE_NAME                                                :{VEHICLE}
 STR_WAYPOINT_NAME                                               :{WAYPOINT}
 
 STR_JUST_CARGO                                                  :{CARGO_LONG}
+STR_JUST_RIGHT_ARROW                                            :{RIGHT_ARROW}
 STR_JUST_CHECKMARK                                              :{CHECKMARK}
 STR_JUST_COMMA                                                  :{COMMA}
 STR_JUST_CURRENCY_SHORT                                         :{CURRENCY_SHORT}
 STR_JUST_CURRENCY_LONG                                          :{CURRENCY_LONG}
 STR_JUST_CARGO_LIST                                             :{CARGO_LIST}
+STR_JUST_DECIMAL                                                :{DECIMAL}
 STR_JUST_INT                                                    :{NUM}
 STR_JUST_DATE_TINY                                              :{DATE_TINY}
 STR_JUST_DATE_SHORT                                             :{DATE_SHORT}
 STR_JUST_DATE_LONG                                              :{DATE_LONG}
 STR_JUST_DATE_ISO                                               :{DATE_ISO}
 STR_JUST_STRING                                                 :{STRING}
+STR_JUST_STRING1                                                :{STRING}
+STR_JUST_STRING2                                                :{STRING}
 STR_JUST_STRING_STRING                                          :{STRING}{STRING}
 STR_JUST_RAW_STRING                                             :{STRING}
 STR_JUST_BIG_RAW_STRING                                         :{BIG_FONT}{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{G=m}{BLACK}1
 STR_BLACK_2                                                     :{G=f}{BLACK}2

@@ -214,11 +214,10 @@ static void TrainDetailsCargoTab(const CargoSummaryItem *item, int left, int rig
 		SetDParam(3, _settings_game.vehicle.freight_trains);
 		str = FreightWagonMult(item->cargo) > 1 ? STR_VEHICLE_DETAILS_CARGO_FROM_MULT : STR_VEHICLE_DETAILS_CARGO_FROM;
 	} else {
-		SetDParam(0, STR_QUANTITY_N_A);
-		str = item->cargo == INVALID_CARGO ? STR_LTBLUE_STRING : STR_VEHICLE_DETAILS_CARGO_EMPTY;
+		str = item->cargo == INVALID_CARGO ? STR_QUANTITY_N_A : STR_VEHICLE_DETAILS_CARGO_EMPTY;
 	}
 
-	DrawString(left, right, y, str);
+	DrawString(left, right, y, str, TC_LIGHT_BLUE);
 }
 
 /**
@@ -350,7 +349,7 @@ static void GetCargoSummaryOfArticulatedVehicle(const Train *v, CargoSummary *su
 
 		item->capacity += v->cargo_cap;
 		item->amount += v->cargo.StoredCount();
-		if (item->source == INVALID_STATION) item->source = v->cargo.Source();
+		if (item->source == INVALID_STATION) item->source = v->cargo.GetFirstStation();
 	} while ((v = v->Next()) != nullptr && v->IsArticulatedPart());
 }
 
@@ -381,19 +380,12 @@ int GetTrainDetailsWndVScroll(VehicleID veh_id, TrainDetailsWindowTabs det_tab)
 	int num = 0;
 
 	if (det_tab == TDW_TAB_TOTALS) { // Total cargo tab
-		CargoArray act_cargo;
-		CargoArray max_cargo;
+		CargoArray max_cargo{};
 		for (const Vehicle *v = Vehicle::Get(veh_id); v != nullptr; v = v->Next()) {
-			act_cargo[v->cargo_type] += v->cargo.StoredCount();
 			max_cargo[v->cargo_type] += v->cargo_cap;
 		}
 
-		/* Set scroll-amount separately from counting, as to not compute num double
-		 * for more carriages of the same type
-		 */
-		for (CargoID i = 0; i < NUM_CARGO; i++) {
-			if (max_cargo[i] > 0) num++; // only count carriages that the train has
-		}
+		num = max_cargo.GetCount();
 
 		if (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL) {
 			num += 5; // needs five more because first line is description string and we have the weight and speed info and the feeder share
@@ -451,7 +443,7 @@ void DrawTrainDetails(const Train *v, const Rect &r, int vscroll_pos, uint16 vsc
 					if (e->GetGRF() != nullptr) {
 						pitch = ScaleSpriteTrad(e->GetGRF()->traininfo_vehicle_pitch);
 					}
-					PaletteID pal = (v->vehstatus & VS_CRASHED) ? PALETTE_CRASH : GetVehiclePalette(v);
+					PaletteID pal = (v->vehstatus & VS_CRASHED) ? PALETTE_CRASH : GetVehiclePalette(u);
 					VehicleSpriteSeq seq;
 					u->GetImage(dir, EIT_IN_DETAILS, &seq);
 					seq.Draw(px + (rtl ? -offset.x : offset.x), r.top - line_height * vscroll_pos + sprite_y_offset + pitch, pal, (v->vehstatus & VS_CRASHED) != 0);
@@ -512,8 +504,8 @@ void DrawTrainDetails(const Train *v, const Rect &r, int vscroll_pos, uint16 vsc
 		}
 	} else {
 		int y = r.top;
-		CargoArray act_cargo;
-		CargoArray max_cargo;
+		CargoArray act_cargo{};
+		CargoArray max_cargo{};
 		Money feeder_share = 0;
 		int empty_weight = 0;
 		int loaded_weight = 0;
@@ -523,7 +515,7 @@ void DrawTrainDetails(const Train *v, const Rect &r, int vscroll_pos, uint16 vsc
 			const auto weight_without_cargo = train->GetWeightWithoutCargo();
 			act_cargo[u->cargo_type] += u->cargo.StoredCount();
 			max_cargo[u->cargo_type] += u->cargo_cap;
-			feeder_share             += u->cargo.FeederShare();
+			feeder_share             += u->cargo.GetFeederShare();
 			empty_weight             += weight_without_cargo;
 			loaded_weight            += weight_without_cargo + train->GetCargoWeight(train->cargo_cap);
 		}
@@ -573,7 +565,7 @@ void DrawTrainDetails(const Train *v, const Rect &r, int vscroll_pos, uint16 vsc
 		for (const Vehicle *u = v; u != nullptr; u = u->Next()) {
 			act_cargo[u->cargo_type] += u->cargo.StoredCount();
 			max_cargo[u->cargo_type] += u->cargo_cap;
-			feeder_share             += u->cargo.FeederShare();
+			feeder_share             += u->cargo.GetFeederShare();
 		}
 
 		if (--vscroll_pos < 0 && vscroll_pos >= -vscroll_cap) {

@@ -32,6 +32,7 @@
 #include "train.h"
 #include "roadveh.h"
 
+#include "newgrf_airport.h"
 #include "newgrf_airporttiles.h"
 #include "newgrf_debug.h"
 #include "newgrf_object.h"
@@ -109,10 +110,17 @@ struct NICallback {
 /** Mask to show no bit needs to be enabled for the callback. */
 static const int CBM_NO_BIT = UINT8_MAX;
 
+enum NIVariableFlags : uint16 {
+	NIVF_NONE                  = 0,
+	NIVF_SHOW_PARAMS           = 1 << 0,
+};
+DECLARE_ENUM_AS_BIT_SET(NIVariableFlags)
+
 /** Representation on the NewGRF variables. */
 struct NIVariable {
 	const char *name;
 	uint16 var;
+	NIVariableFlags flags;
 };
 
 struct NIExtraInfoOutput {
@@ -125,7 +133,7 @@ struct NIExtraInfoOutput {
 class NIHelper {
 public:
 	/** Silence a warning. */
-	virtual ~NIHelper() {}
+	virtual ~NIHelper() = default;
 
 	/**
 	 * Is the item with the given index inspectable?
@@ -295,7 +303,7 @@ static inline const NIHelper *GetFeatureHelper(uint window_number)
 /** Window used for inspecting NewGRFs. */
 struct NewGRFInspectWindow : Window {
 	/** The value for the variable 60 parameters. */
-	static uint32 var60params[GSF_FAKE_END][0x20];
+	btree::btree_map<uint16, uint32> var60params;
 
 	/** GRFID of the caller of this window, 0 if it has no caller. */
 	uint32 caller_grfid;
@@ -304,7 +312,7 @@ struct NewGRFInspectWindow : Window {
 	uint chain_index;
 
 	/** The currently edited parameter, to update the right one. */
-	byte current_edit_param;
+	uint16 current_edit_param;
 
 	Scrollbar *vscroll;
 
@@ -331,9 +339,9 @@ struct NewGRFInspectWindow : Window {
 	 * @param variable the variable to check.
 	 * @return true iff the variable has a parameter.
 	 */
-	static bool HasVariableParameter(uint variable)
+	static bool HasVariableParameter(const NIVariable *niv)
 	{
-		return IsInsideBS(variable, 0x60, 0x20);
+		return IsInsideBS(niv->var, 0x60, 0x20) || (niv->flags & NIVF_SHOW_PARAMS);
 	}
 
 	/**
@@ -636,7 +644,7 @@ struct NewGRFInspectWindow : Window {
 			GRFConfig *grfconfig = GetGRFConfig(grfid);
 			if (grfconfig) {
 				this->DrawString(r, i++, "  Name: %s", grfconfig->GetName());
-				this->DrawString(r, i++, "  File: %s", grfconfig->filename);
+				this->DrawString(r, i++, "  File: %s", grfconfig->filename.c_str());
 			}
 		}
 
@@ -646,52 +654,64 @@ struct NewGRFInspectWindow : Window {
 
 		if (nif->variables != nullptr) {
 			this->DrawString(r, i++, "Variables:");
-			uint prefix_width = 0;
+			int prefix_width = 0;
+			uint widest_num = 0;
 			for (const NIVariable *niv = nif->variables; niv->name != nullptr; niv++) {
 				if (niv->var >= 0x100) {
-					extern const GRFVariableMapDefinition _grf_action2_remappable_variables[];
-					for (const GRFVariableMapDefinition *info = _grf_action2_remappable_variables; info->name != nullptr; info++) {
-						if (niv->var == info->id) {
-							char buf[512];
-							seprintf(buf, lastof(buf), "  %s: ", info->name);
-							prefix_width = std::max<uint>(prefix_width, GetStringBoundingBox(buf).width);
-							break;
+					const char *name = GetExtendedVariableNameById(niv->var);
+					if (name != nullptr) {
+						char buf[512];
+						if (HasVariableParameter(niv)) {
+							if (widest_num == 0) widest_num = GetBroadestDigitsValue(2);
+							seprintf(buf, lastof(buf), "  %s [%u]: ", name, widest_num);
+						} else {
+							seprintf(buf, lastof(buf), "  %s: ", name);
 						}
+						prefix_width = std::max<int>(prefix_width, GetStringBoundingBox(buf).width);
 					}
 				}
 			}
 			for (const NIVariable *niv = nif->variables; niv->name != nullptr; niv++) {
 				GetVariableExtra extra;
-				uint param = HasVariableParameter(niv->var) ? NewGRFInspectWindow::var60params[GetFeatureNum(this->window_number)][niv->var - 0x60] : 0;
+				const bool has_param = HasVariableParameter(niv);
+				uint param = 0;
+				if (has_param) {
+					auto iter = this->var60params.find(niv->var);
+					if (iter != this->var60params.end()) param = iter->second;
+				}
 				uint value = nih->Resolve(index, niv->var, param, &extra);
 
 				if (!extra.available) continue;
 
-				if (HasVariableParameter(niv->var)) {
-					this->DrawString(r, i++, "  %02x[%02x]: %08x (%s)", niv->var, param, value, niv->name);
-				} else if (niv->var >= 0x100) {
-					extern const GRFVariableMapDefinition _grf_action2_remappable_variables[];
-					for (const GRFVariableMapDefinition *info = _grf_action2_remappable_variables; info->name != nullptr; info++) {
-						if (niv->var == info->id) {
-							if (_current_text_dir == TD_RTL) {
-								this->DrawString(r, i++, "  %s: %08x (%s)", info->name, value, niv->name);
-							} else {
-								if (this->log_console) DEBUG(misc, 0, "    %s: %08x (%s)", info->name, value, niv->name);
+				if (niv->var >= 0x100) {
+					const char *name = GetExtendedVariableNameById(niv->var);
+					if (name != nullptr) {
+						char buf[512];
+						if (has_param) {
+							seprintf(buf, lastof(buf), "  %s [%02X]: ", name, param);
+						} else {
+							seprintf(buf, lastof(buf), "  %s: ", name);
+						}
+						if (_current_text_dir == TD_RTL) {
+							this->DrawString(r, i++, "%s%08x (%s)", buf, value, niv->name);
+						} else {
+							if (this->log_console) DEBUG(misc, 0, "  %s%08x (%s)", buf, value, niv->name);
 
-								int offset = i - this->vscroll->GetPosition();
-								i++;
-								if (offset >= 0 && offset < this->vscroll->GetCapacity()) {
-									Rect sr = r.Shrink(WidgetDimensions::scaled.frametext).Shrink(0, offset * this->resize.step_height, 0, 0);
-									char buf[512];
-									seprintf(buf, lastof(buf), "  %s: ", info->name);
-									::DrawString(sr.left, sr.right, sr.top, buf, TC_BLACK);
-									seprintf(buf, lastof(buf), "%08x (%s)", value, niv->name);
-									::DrawString(sr.left + prefix_width, sr.right, sr.top, buf, TC_BLACK);
-								}
+							int offset = i - this->vscroll->GetPosition();
+							i++;
+							if (offset >= 0 && offset < this->vscroll->GetCapacity()) {
+								Rect sr = r.Shrink(WidgetDimensions::scaled.frametext).Shrink(0, offset * this->resize.step_height, 0, 0);
+								int edge = ::DrawString(sr.left, sr.right, sr.top, buf, TC_BLACK);
+								seprintf(buf, lastof(buf), "%08x (%s)", value, niv->name);
+								::DrawString(std::max(edge, sr.left + prefix_width), sr.right, sr.top, buf, TC_BLACK);
 							}
-							break;
 						}
 					}
+					continue;
+				}
+
+				if (has_param) {
+					this->DrawString(r, i++, "  %02x[%02x]: %08x (%s)", niv->var, param, value, niv->name);
 				} else {
 					this->DrawString(r, i++, "  %02x: %08x (%s)", niv->var, value, niv->name);
 				}
@@ -895,7 +915,7 @@ struct NewGRFInspectWindow : Window {
 				for (const NIVariable *niv = nif->variables; niv->name != nullptr; niv++, line--) {
 					if (line != 1) continue; // 1 because of the "Variables:" line
 
-					if (!HasVariableParameter(niv->var)) break;
+					if (!HasVariableParameter(niv)) break;
 
 					this->current_edit_param = niv->var;
 					ShowQueryString(STR_EMPTY, STR_NEWGRF_INSPECT_QUERY_CAPTION, 9, this, CS_HEXADECIMAL, QSF_NONE);
@@ -980,7 +1000,7 @@ struct NewGRFInspectWindow : Window {
 				this->SetWidgetDirty(WID_NGRFI_SCROLLBAR);
 			}
 		} else if (this->current_edit_param != 0 && !this->sprite_dump) {
-			NewGRFInspectWindow::var60params[GetFeatureNum(this->window_number)][this->current_edit_param - 0x60] = strtol(str, nullptr, 16);
+			this->var60params[this->current_edit_param] = std::strtol(str, nullptr, 16);
 			this->SetDirty();
 		}
 	}
@@ -1018,8 +1038,6 @@ struct NewGRFInspectWindow : Window {
 		this->redraw_scrollbar = false;
 	}
 };
-
-/* static */ uint32 NewGRFInspectWindow::var60params[GSF_FAKE_END][0x20] = { {0} }; // Use spec to have 0s in whole array
 
 static const NWidgetPart _nested_newgrf_inspect_chain_widgets[] = {
 	NWidget(NWID_HORIZONTAL),
@@ -1152,7 +1170,7 @@ void DeleteNewGRFInspectWindow(GrfSpecFeature feature, uint index)
 	if (index >= (1 << 27)) return;
 
 	WindowNumber wno = GetInspectWindowNumber(feature, index);
-	DeleteAllWindowsById(WC_NEWGRF_INSPECT, wno);
+	CloseAllWindowsById(WC_NEWGRF_INSPECT, wno);
 
 	/* Reinitialise the land information window to remove the "debug" sprite if needed.
 	 * Note: Since we might be called from a command here, it is important to not execute
@@ -1249,7 +1267,7 @@ struct SpriteAlignerWindow : Window {
 
 	SpriteID current_sprite;                   ///< The currently shown sprite.
 	Scrollbar *vscroll;
-	SmallMap<SpriteID, XyOffs> offs_start_map; ///< Mapping of starting offsets for the sprites which have been aligned in the sprite aligner window.
+	std::map<SpriteID, XyOffs> offs_start_map; ///< Mapping of starting offsets for the sprites which have been aligned in the sprite aligner window.
 
 	static bool centre;
 	static bool crosshair;
@@ -1258,18 +1276,19 @@ struct SpriteAlignerWindow : Window {
 	{
 		this->CreateNestedTree();
 		this->vscroll = this->GetScrollbar(WID_SA_SCROLLBAR);
+		this->vscroll->SetCount(_newgrf_debug_sprite_picker.sprites.size());
 		this->FinishInitNested(wno);
 
 		this->SetWidgetLoweredState(WID_SA_CENTRE, SpriteAlignerWindow::centre);
 		this->SetWidgetLoweredState(WID_SA_CROSSHAIR, SpriteAlignerWindow::crosshair);
 
 		/* Oh yes, we assume there is at least one normal sprite! */
-		while (GetSpriteType(this->current_sprite) != ST_NORMAL) this->current_sprite++;
+		while (GetSpriteType(this->current_sprite) != SpriteType::Normal) this->current_sprite++;
 	}
 
 	void SetStringParameters(int widget) const override
 	{
-		const Sprite *spr = GetSprite(this->current_sprite, ST_NORMAL);
+		const Sprite *spr = GetSprite(this->current_sprite, SpriteType::Normal, ZoomMask(ZOOM_LVL_GUI));
 		switch (widget) {
 			case WID_SA_CAPTION:
 				SetDParam(0, this->current_sprite);
@@ -1285,7 +1304,7 @@ struct SpriteAlignerWindow : Window {
 				/* Relative offset is new absolute offset - starting absolute offset.
 				 * Show 0, 0 as the relative offsets if entry is not in the map (meaning they have not been changed yet).
 				 */
-				const auto key_offs_pair = this->offs_start_map.Find(this->current_sprite);
+				const auto key_offs_pair = this->offs_start_map.find(this->current_sprite);
 				if (key_offs_pair != this->offs_start_map.end()) {
 					SetDParam(0, spr->x_offs - key_offs_pair->second.first);
 					SetDParam(1, spr->y_offs - key_offs_pair->second.second);
@@ -1309,7 +1328,7 @@ struct SpriteAlignerWindow : Window {
 				break;
 			case WID_SA_LIST:
 				SetDParamMaxDigits(0, 6);
-				size->width = GetStringBoundingBox(STR_BLACK_COMMA).width + padding.width;
+				size->width = GetStringBoundingBox(STR_JUST_COMMA).width + padding.width;
 				resize->height = FONT_HEIGHT_NORMAL + padding.height;
 				resize->width  = 1;
 				fill->height = resize->height;
@@ -1324,7 +1343,7 @@ struct SpriteAlignerWindow : Window {
 		switch (widget) {
 			case WID_SA_SPRITE: {
 				/* Center the sprite ourselves */
-				const Sprite *spr = GetSprite(this->current_sprite, ST_NORMAL);
+				const Sprite *spr = GetSprite(this->current_sprite, SpriteType::Normal, ZoomMask(ZOOM_LVL_GUI));
 				Rect ir = r.Shrink(WidgetDimensions::scaled.bevel);
 				int x;
 				int y;
@@ -1358,7 +1377,7 @@ struct SpriteAlignerWindow : Window {
 				Rect ir = r.Shrink(WidgetDimensions::scaled.matrix);
 				for (int i = this->vscroll->GetPosition(); i < max; i++) {
 					SetDParam(0, list[i]);
-					DrawString(ir, STR_BLACK_COMMA, TC_FROMSTRING, SA_RIGHT | SA_FORCE);
+					DrawString(ir, STR_JUST_COMMA, TC_BLACK, SA_RIGHT | SA_FORCE);
 					ir.top += step_size;
 				}
 				break;
@@ -1372,7 +1391,7 @@ struct SpriteAlignerWindow : Window {
 			case WID_SA_PREVIOUS:
 				do {
 					this->current_sprite = (this->current_sprite == 0 ? GetMaxSpriteID() :  this->current_sprite) - 1;
-				} while (GetSpriteType(this->current_sprite) != ST_NORMAL);
+				} while (GetSpriteType(this->current_sprite) != SpriteType::Normal);
 				this->SetDirty();
 				break;
 
@@ -1383,7 +1402,7 @@ struct SpriteAlignerWindow : Window {
 			case WID_SA_NEXT:
 				do {
 					this->current_sprite = (this->current_sprite + 1) % GetMaxSpriteID();
-				} while (GetSpriteType(this->current_sprite) != ST_NORMAL);
+				} while (GetSpriteType(this->current_sprite) != SpriteType::Normal);
 				this->SetDirty();
 				break;
 
@@ -1394,13 +1413,10 @@ struct SpriteAlignerWindow : Window {
 				break;
 
 			case WID_SA_LIST: {
-				const NWidgetBase *nwid = this->GetWidget<NWidgetBase>(widget);
-				int step_size = nwid->resize_y;
-
-				uint i = this->vscroll->GetPosition() + (pt.y - nwid->pos_y) / step_size;
-				if (i < _newgrf_debug_sprite_picker.sprites.size()) {
-					SpriteID spr = _newgrf_debug_sprite_picker.sprites[i];
-					if (GetSpriteType(spr) == ST_NORMAL) this->current_sprite = spr;
+				auto it = this->vscroll->GetScrolledItemFromWidget(_newgrf_debug_sprite_picker.sprites, pt.y, this, widget);
+				if (it != _newgrf_debug_sprite_picker.sprites.end()) {
+					SpriteID spr = *it;
+					if (GetSpriteType(spr) == SpriteType::Normal) this->current_sprite = spr;
 				}
 				this->SetDirty();
 				break;
@@ -1423,11 +1439,11 @@ struct SpriteAlignerWindow : Window {
 				 * used by someone and the sprite cache isn't big enough for that
 				 * particular NewGRF developer.
 				 */
-				Sprite *spr = const_cast<Sprite *>(GetSprite(this->current_sprite, ST_NORMAL));
+				Sprite *spr = const_cast<Sprite *>(GetSprite(this->current_sprite, SpriteType::Normal, 0));
 
 				/* Remember the original offsets of the current sprite, if not already in mapping. */
-				if (!(this->offs_start_map.Contains(this->current_sprite))) {
-					this->offs_start_map.Insert(this->current_sprite, XyOffs(spr->x_offs, spr->y_offs));
+				if (this->offs_start_map.count(this->current_sprite) == 0) {
+					this->offs_start_map[this->current_sprite] = XyOffs(spr->x_offs, spr->y_offs);
 				}
 				switch (widget) {
 					/* Move eight units at a time if ctrl is pressed. */
@@ -1444,7 +1460,7 @@ struct SpriteAlignerWindow : Window {
 
 			case WID_SA_RESET_REL:
 				/* Reset the starting offsets for the current sprite. */
-				this->offs_start_map.Erase(this->current_sprite);
+				this->offs_start_map.erase(this->current_sprite);
 				this->SetDirty();
 				break;
 
@@ -1468,7 +1484,7 @@ struct SpriteAlignerWindow : Window {
 
 		this->current_sprite = atoi(str);
 		if (this->current_sprite >= GetMaxSpriteID()) this->current_sprite = 0;
-		while (GetSpriteType(this->current_sprite) != ST_NORMAL) {
+		while (GetSpriteType(this->current_sprite) != SpriteType::Normal) {
 			this->current_sprite = (this->current_sprite + 1) % GetMaxSpriteID();
 		}
 		this->SetDirty();
@@ -1485,7 +1501,7 @@ struct SpriteAlignerWindow : Window {
 		if (data == 1) {
 			/* Sprite picker finished */
 			this->RaiseWidget(WID_SA_PICKER);
-			this->vscroll->SetCount((uint)_newgrf_debug_sprite_picker.sprites.size());
+			this->vscroll->SetCount(_newgrf_debug_sprite_picker.sprites.size());
 		}
 	}
 

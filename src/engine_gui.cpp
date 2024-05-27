@@ -128,7 +128,7 @@ struct EnginePreviewWindow : Window {
 				DoCommandP(0, this->window_number, 0, CMD_WANT_ENGINE_PREVIEW);
 				FALLTHROUGH;
 			case WID_EP_NO:
-				if (!_shift_pressed) delete this;
+				if (!_shift_pressed) this->Close();
 				break;
 		}
 	}
@@ -138,12 +138,12 @@ struct EnginePreviewWindow : Window {
 		if (!gui_scope) return;
 
 		EngineID engine = this->window_number;
-		if (Engine::Get(engine)->preview_company != _local_company) delete this;
+		if (Engine::Get(engine)->preview_company != _local_company) this->Close();
 	}
 };
 
 static WindowDesc _engine_preview_desc(
-	WDP_CENTER, "engine_preview", 0, 0,
+	WDP_CENTER, nullptr, 0, 0,
 	WC_ENGINE_PREVIEW, WC_NONE,
 	WDF_CONSTRUCTION,
 	_nested_engine_preview_widgets, lengthof(_nested_engine_preview_widgets)
@@ -166,6 +166,43 @@ uint GetTotalCapacityOfArticulatedParts(EngineID engine)
 	return cap.GetSum<uint>();
 }
 
+static StringID GetEngineInfoCapacityString(EngineID engine)
+{
+	char buffer[1024];
+
+	CargoArray cap = GetCapacityOfArticulatedParts(engine);
+	if (cap.GetSum<uint>() == 0) {
+		/* no cargo at all */
+		auto tmp_params = MakeParameters(CT_INVALID, 0);
+		GetStringWithArgs(buffer, STR_JUST_CARGO, tmp_params, lastof(buffer));
+	} else {
+		char *b = buffer;
+		for (uint i = 0; i < NUM_CARGO; i++) {
+			if (cap[i] == 0) continue;
+
+			if (b != buffer) {
+				auto tmp_params = MakeParameters();
+				b = GetStringWithArgs(b, STR_COMMA_SEPARATOR, tmp_params, lastof(buffer));
+			}
+
+			auto tmp_params = MakeParameters(i, cap[i]);
+			b = GetStringWithArgs(b, STR_JUST_CARGO, tmp_params, lastof(buffer));
+		}
+	}
+
+	_temp_special_strings[1].assign(buffer);
+	return SPECSTR_TEMP_START + 1;
+}
+
+static StringID ProcessEngineInfoString(StringID str)
+{
+	char str_buffer[1024];
+	strecpy(str_buffer, GetStringPtr(str), lastof(str_buffer));
+	str_replace_wchar(str_buffer, lastof(str_buffer), SCC_CARGO_LONG, SCC_STRING1);
+	_temp_special_strings[0].assign(str_buffer);
+	return SPECSTR_TEMP_START;
+}
+
 static StringID GetTrainEngineInfoString(const Engine *e)
 {
 	SetDParam(0, e->GetCost());
@@ -176,13 +213,8 @@ static StringID GetTrainEngineInfoString(const Engine *e)
 
 	SetDParam(4, e->GetDisplayRunningCost());
 
-	uint capacity = GetTotalCapacityOfArticulatedParts(e->index);
-	if (capacity != 0) {
-		SetDParam(5, e->GetDefaultCargoType());
-		SetDParam(6, capacity);
-	} else {
-		SetDParam(5, CT_INVALID);
-	}
+	SetDParam(5, GetEngineInfoCapacityString(e->index));
+
 	return (_settings_game.vehicle.train_acceleration_model != AM_ORIGINAL && GetRailTypeInfo(e->u.rail.railtype)->acceleration_type != 2) ? STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE : STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER;
 }
 
@@ -217,13 +249,7 @@ static StringID GetRoadVehEngineInfoString(const Engine *e)
 	if (_settings_game.vehicle.roadveh_acceleration_model == AM_ORIGINAL) {
 		SetDParam(0, e->GetCost());
 		SetDParam(1, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-		uint capacity = GetTotalCapacityOfArticulatedParts(e->index);
-		if (capacity != 0) {
-			SetDParam(2, e->GetDefaultCargoType());
-			SetDParam(3, capacity);
-		} else {
-			SetDParam(2, CT_INVALID);
-		}
+		SetDParam(2, GetEngineInfoCapacityString(e->index));
 		SetDParam(4, e->GetDisplayRunningCost());
 		return STR_ENGINE_PREVIEW_COST_MAX_SPEED_CAP_RUNCOST;
 	} else {
@@ -235,13 +261,7 @@ static StringID GetRoadVehEngineInfoString(const Engine *e)
 
 		SetDParam(4, e->GetDisplayRunningCost());
 
-		uint capacity = GetTotalCapacityOfArticulatedParts(e->index);
-		if (capacity != 0) {
-			SetDParam(5, e->GetDefaultCargoType());
-			SetDParam(6, capacity);
-		} else {
-			SetDParam(5, CT_INVALID);
-		}
+		SetDParam(5, GetEngineInfoCapacityString(e->index));
 		return STR_ENGINE_PREVIEW_COST_WEIGHT_SPEED_POWER_MAX_TE;
 	}
 }
@@ -250,8 +270,7 @@ static StringID GetShipEngineInfoString(const Engine *e)
 {
 	SetDParam(0, e->GetCost());
 	SetDParam(1, PackVelocity(e->GetDisplayMaxSpeed(), e->type));
-	SetDParam(2, e->GetDefaultCargoType());
-	SetDParam(3, e->GetDisplayDefaultCapacity());
+	SetDParam(2, GetEngineInfoCapacityString(e->index));
 	SetDParam(4, e->GetDisplayRunningCost());
 	return STR_ENGINE_PREVIEW_COST_MAX_SPEED_CAP_RUNCOST;
 }
@@ -269,13 +288,13 @@ StringID GetEngineInfoString(EngineID engine)
 
 	switch (e->type) {
 		case VEH_TRAIN:
-			return GetTrainEngineInfoString(e);
+			return ProcessEngineInfoString(GetTrainEngineInfoString(e));
 
 		case VEH_ROAD:
-			return GetRoadVehEngineInfoString(e);
+			return ProcessEngineInfoString(GetRoadVehEngineInfoString(e));
 
 		case VEH_SHIP:
-			return GetShipEngineInfoString(e);
+			return ProcessEngineInfoString(GetShipEngineInfoString(e));
 
 		case VEH_AIRCRAFT:
 			return GetAircraftEngineInfoString(e);
@@ -323,10 +342,10 @@ void DrawVehicleEngine(int left, int right, int preferred_x, int y, EngineID eng
  * @param el list to be sorted
  * @param compare function for evaluation of the quicksort
  */
-void EngList_Sort(GUIEngineList *el, EngList_SortTypeFunction compare)
+void EngList_Sort(GUIEngineList &el, EngList_SortTypeFunction compare)
 {
-	if (el->size() < 2) return;
-	std::sort(el->begin(), el->end(), compare);
+	if (el.size() < 2) return;
+	std::sort(el.begin(), el.end(), compare);
 }
 
 /**
@@ -336,11 +355,11 @@ void EngList_Sort(GUIEngineList *el, EngList_SortTypeFunction compare)
  * @param begin start of sorting
  * @param num_items count of items to be sorted
  */
-void EngList_SortPartial(GUIEngineList *el, EngList_SortTypeFunction compare, size_t begin, size_t num_items)
+void EngList_SortPartial(GUIEngineList &el, EngList_SortTypeFunction compare, size_t begin, size_t num_items)
 {
 	if (num_items < 2) return;
-	assert(begin < el->size());
-	assert(begin + num_items <= el->size());
-	std::sort(el->begin() + begin, el->begin() + begin + num_items, compare);
+	assert(begin < el.size());
+	assert(begin + num_items <= el.size());
+	std::sort(el.begin() + begin, el.begin() + begin + num_items, compare);
 }
 

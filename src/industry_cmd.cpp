@@ -67,6 +67,8 @@ IndustrySpec _industry_specs[NUM_INDUSTRYTYPES];
 IndustryTileSpec _industry_tile_specs[NUM_INDUSTRYTILES];
 IndustryBuildData _industry_builder; ///< In-game manager of industries.
 
+static int WhoCanServiceIndustry(Industry *ind);
+
 /**
  * This function initialize the spec arrays of both
  * industry and industry tiles.
@@ -75,21 +77,16 @@ IndustryBuildData _industry_builder; ///< In-game manager of industries.
  */
 void ResetIndustries()
 {
-	for (IndustryType i = 0; i < NUM_INDUSTRYTYPES; i++) {
-		/* Reset the spec to default */
-		if (i < lengthof(_origin_industry_specs)) {
-			_industry_specs[i] = _origin_industry_specs[i];
-		} else {
-			_industry_specs[i] = IndustrySpec{};
-		}
+	auto industry_insert = std::copy(std::begin(_origin_industry_specs), std::end(_origin_industry_specs), std::begin(_industry_specs));
+	std::fill(industry_insert, std::end(_industry_specs), IndustrySpec{});
 
+	for (IndustryType i = 0; i < lengthof(_origin_industry_specs); i++) {
 		/* Enable only the current climate industries */
-		_industry_specs[i].enabled = i < NEW_INDUSTRYOFFSET &&
-				HasBit(_origin_industry_specs[i].climate_availability, _settings_game.game_creation.landscape);
+		_industry_specs[i].enabled = HasBit(_industry_specs[i].climate_availability, _settings_game.game_creation.landscape);
 	}
 
-	memset(&_industry_tile_specs, 0, sizeof(_industry_tile_specs));
-	memcpy(&_industry_tile_specs, &_origin_industry_tile_specs, sizeof(_origin_industry_tile_specs));
+	auto industry_tile_insert = std::copy(std::begin(_origin_industry_tile_specs), std::end(_origin_industry_tile_specs), std::begin(_industry_tile_specs));
+	std::fill(industry_tile_insert, std::end(_industry_tile_specs), IndustryTileSpec{});
 
 	/* Reset any overrides that have been set. */
 	_industile_mngr.ResetOverride();
@@ -193,11 +190,11 @@ Industry::~Industry()
 	DecIndustryTypeCount(this->type);
 
 	DeleteIndustryNews(this->index);
-	DeleteWindowById(WC_INDUSTRY_VIEW, this->index);
+	CloseWindowById(WC_INDUSTRY_VIEW, this->index);
 	DeleteNewGRFInspectWindow(GSF_INDUSTRIES, this->index);
 
-	DeleteSubsidyWith(ST_INDUSTRY, this->index);
-	CargoPacket::InvalidateAllFrom(ST_INDUSTRY, this->index);
+	DeleteSubsidyWith(SourceType::Industry, this->index);
+	CargoPacket::InvalidateAllFrom(SourceType::Industry, this->index);
 
 	for (Station *st : this->stations_near) {
 		st->RemoveIndustryToDeliver(this);
@@ -213,6 +210,7 @@ Industry::~Industry()
 void Industry::PostDestructor(size_t index)
 {
 	InvalidateWindowData(WC_INDUSTRY_DIRECTORY, 0, IDIWD_FORCE_REBUILD);
+	SetWindowDirty(WC_BUILD_INDUSTRY, 0);
 }
 
 
@@ -465,16 +463,8 @@ static void AddAcceptedCargo_Industry(TileIndex tile, CargoArray &acceptance, Ca
 		/* Maybe set 'always accepted' bit (if it's not set already) */
 		if (HasBit(*always_accepted, a)) continue;
 
-		bool accepts = false;
-		for (uint cargo_index = 0; cargo_index < lengthof(ind->accepts_cargo); cargo_index++) {
-			/* Test whether the industry itself accepts the cargo type */
-			if (ind->accepts_cargo[cargo_index] == a) {
-				accepts = true;
-				break;
-			}
-		}
-
-		if (accepts) continue;
+		/* Test whether the industry itself accepts the cargo type */
+		if (ind->IsCargoAccepted(a)) continue;
 
 		/* If the industry itself doesn't accept this cargo, set 'always accepted' bit */
 		SetBit(*always_accepted, a);
@@ -489,7 +479,7 @@ static void GetTileDesc_Industry(TileIndex tile, TileDesc *td)
 	td->owner[0] = i->owner;
 	td->str = is->name;
 	if (!IsIndustryCompleted(tile)) {
-		SetDParamX(td->dparam, 0, td->str);
+		td->dparam[0] = td->str;
 		td->str = STR_LAI_TOWN_INDUSTRY_DESCRIPTION_UNDER_CONSTRUCTION;
 	}
 
@@ -547,7 +537,7 @@ static bool TransportIndustryGoods(TileIndex tile)
 
 			i->this_month_production[j] = std::min<uint>(i->this_month_production[j] + cw, 0xFFFF);
 
-			uint am = MoveGoodsToStation(i->produced_cargo[j], cw, ST_INDUSTRY, i->index, &i->stations_near, i->exclusive_consumer);
+			uint am = MoveGoodsToStation(i->produced_cargo[j], cw, SourceType::Industry, i->index, &i->stations_near, i->exclusive_consumer);
 			i->this_month_transported[j] += am;
 
 			moved_cargo |= (am != 0);
@@ -1189,7 +1179,7 @@ static void ChopLumberMillTrees(Industry *i)
 
 	TileIndex tile = i->location.tile;
 	if (CircularTileSearch(&tile, 40, SearchLumberMillTrees, nullptr)) { // 40x40 tiles  to search.
-		i->produced_cargo_waiting[0] = std::min(0xffff, i->produced_cargo_waiting[0] + 45); // Found a tree, add according value to waiting cargo.
+		i->produced_cargo_waiting[0] = ClampTo<uint16_t>(i->produced_cargo_waiting[0] + 45); // Found a tree, add according value to waiting cargo.
 	}
 }
 
@@ -1200,7 +1190,7 @@ static void ProduceIndustryGoodsFromRate(Industry *i, bool scale)
 		if (amount != 0 && scale) {
 			amount = ScaleQuantity(amount, _settings_game.economy.industry_cargo_scale_factor);
 		}
-		i->produced_cargo_waiting[j] = std::min<uint>(0xffff, i->produced_cargo_waiting[j] + amount);
+		i->produced_cargo_waiting[j] = ClampTo<uint16>(i->produced_cargo_waiting[j] + amount);
 	}
 }
 
@@ -1861,7 +1851,7 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 	/* Randomize inital production if non-original economy is used and there are no production related callbacks. */
 	if (!indspec->UsesOriginalEconomy()) {
 		for (size_t ci = 0; ci < lengthof(i->production_rate); ci++) {
-			i->production_rate[ci] = std::min((RandomRange(256) + 128) * i->production_rate[ci] >> 8, 255u);
+			i->production_rate[ci] = ClampTo<byte>((RandomRange(256) + 128) * i->production_rate[ci] >> 8);
 		}
 	}
 
@@ -2028,6 +2018,7 @@ static void DoCreateNewIndustry(Industry *i, TileIndex tile, IndustryType type, 
 		for (uint j = 0; j != 50; j++) PlantRandomFarmField(i);
 	}
 	InvalidateWindowData(WC_INDUSTRY_DIRECTORY, 0, IDIWD_FORCE_REBUILD);
+	SetWindowDirty(WC_BUILD_INDUSTRY, 0);
 
 	if (!_generating_world) PopulateStationsNearby(i);
 	if (_game_mode == GM_NORMAL) RegisterGameEvents(GEF_INDUSTRY_CREATE);
@@ -2218,6 +2209,81 @@ CommandCost CmdIndustrySetFlags(TileIndex tile, DoCommandFlag flags, uint32 p1, 
 	if (flags & DC_EXEC) ind->ctlflags = ((IndustryControlFlags)p2) & INDCTL_MASK;
 
 	return CommandCost();
+}
+
+/**
+ * Set industry production.
+ * @param flags Type of operation.
+ * @param ind_id IndustryID
+ * @param prod_level Production level.
+ * @param show_news Show a news message on production change.
+ * @param custom_news Custom news message text.
+ * @return Empty cost or an error.
+ */
+CommandCost CmdIndustrySetProduction(DoCommandFlag flags, IndustryID ind_id, byte prod_level, bool show_news, const std::string &custom_news)
+{
+	if (_current_company != OWNER_DEITY) return CMD_ERROR;
+	if (prod_level < PRODLEVEL_MINIMUM || prod_level > PRODLEVEL_MAXIMUM) return CMD_ERROR;
+
+	Industry *ind = Industry::GetIfValid(ind_id);
+	if (ind == nullptr) return CMD_ERROR;
+
+	if (flags & DC_EXEC) {
+		StringID str = STR_NULL;
+		if (prod_level > ind->prod_level) {
+			str = GetIndustrySpec(ind->type)->production_up_text;
+		} else if (prod_level < ind->prod_level) {
+			str = GetIndustrySpec(ind->type)->production_down_text;
+		}
+		if (prod_level != ind->prod_level && !custom_news.empty()) str = STR_NEWS_CUSTOM_ITEM;
+
+		ind->ctlflags |= INDCTL_EXTERNAL_PROD_LEVEL;
+		ind->prod_level = prod_level;
+		ind->RecomputeProductionMultipliers();
+
+		/* Show news message if requested. */
+		if (show_news && str != STR_NULL) {
+			NewsType nt;
+			switch (WhoCanServiceIndustry(ind)) {
+				case 0: nt = NT_INDUSTRY_NOBODY;  break;
+				case 1: nt = NT_INDUSTRY_OTHER;   break;
+				case 2: nt = NT_INDUSTRY_COMPANY; break;
+				default: NOT_REACHED();
+			}
+
+			/* Set parameters of news string */
+			NewsAllocatedData *data = nullptr;
+			if (str == STR_NEWS_CUSTOM_ITEM) {
+				NewsStringData *news = new NewsStringData(custom_news);
+				SetDParamStr(0, news->string);
+			} else if (str > STR_LAST_STRINGID) {
+				SetDParam(0, STR_TOWN_NAME);
+				SetDParam(1, ind->town->index);
+				SetDParam(2, GetIndustrySpec(ind->type)->name);
+			} else {
+				SetDParam(0, ind->index);
+			}
+			AddIndustryNewsItem(str, nt, ind->index, data);
+		}
+	}
+
+	return CommandCost();
+}
+
+/**
+ * Set industry production.
+ * @param tile unused.
+ * @param flags type of operation
+ * @param p1 IndustryID.
+ * @param p2 various bitstuffed elements
+ * - p2 = (bit  0 -  7) - production level
+ * - p2 = (bit  8)      - whether to show news
+ * @param text custom news message.
+ * @return the cost of this operation or an error
+ */
+CommandCost CmdIndustrySetProduction(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+{
+	return CmdIndustrySetProduction(flags, (IndustryID)p1, GB(p2, 0, 8), HasBit(p2, 8), text != nullptr ? std::string{ text } : std::string{});
 }
 
 /**
@@ -2513,7 +2579,7 @@ static void UpdateIndustryStatistics(Industry *i)
 			byte pct = 0;
 			if (i->this_month_production[j] != 0) {
 				i->last_prod_year = _cur_year;
-				pct = std::min(i->this_month_transported[j] * 256 / i->this_month_production[j], 255);
+				pct = ClampTo<byte>(i->this_month_transported[j] * 256 / i->this_month_production[j]);
 			}
 			for (size_t k = lengthof(i->past_pct_transported) - 1; k >= 1; k--){
 				i->past_pct_transported[k][j] = i->past_pct_transported[k-1][j];
@@ -2546,7 +2612,7 @@ void Industry::RecomputeProductionMultipliers()
 
 	/* Rates are rounded up, so e.g. oilrig always produces some passengers */
 	for (size_t i = 0; i < lengthof(this->production_rate); i++) {
-		this->production_rate[i] = std::min(CeilDiv(indspec->production_rate[i] * this->prod_level, PRODLEVEL_DEFAULT), 0xFFu);
+		this->production_rate[i] = ClampTo<byte>(CeilDiv(indspec->production_rate[i] * this->prod_level, PRODLEVEL_DEFAULT));
 	}
 }
 
@@ -2580,9 +2646,8 @@ void UpdateAllIndustryVirtCoords() {
 void Industry::FillCachedName() const
 {
 	char buf[256];
-	int64 args_array[] = { this->index };
-	StringParameters tmp_params(args_array);
-	char *end = GetStringWithArgs(buf, STR_INDUSTRY_NAME, &tmp_params, lastof(buf));
+	auto tmp_params = MakeParameters(this->index);
+	char *end = GetStringWithArgs(buf, STR_INDUSTRY_NAME, tmp_params, lastof(buf));
 	this->cached_name.assign(buf, end);
 }
 
@@ -2750,20 +2815,10 @@ static void CanCargoServiceIndustry(CargoID cargo, Industry *ind, bool *c_accept
 	if (cargo == CT_INVALID) return;
 
 	/* Check for acceptance of cargo */
-	for (byte j = 0; j < lengthof(ind->accepts_cargo); j++) {
-		if (cargo == ind->accepts_cargo[j] && !IndustryTemporarilyRefusesCargo(ind, cargo)) {
-			*c_accepts = true;
-			break;
-		}
-	}
+	if (ind->IsCargoAccepted(cargo) && !IndustryTemporarilyRefusesCargo(ind, cargo)) *c_accepts = true;
 
 	/* Check for produced cargo */
-	for (byte j = 0; j < lengthof(ind->produced_cargo); j++) {
-		if (cargo == ind->produced_cargo[j]) {
-			*c_produces = true;
-			break;
-		}
-	}
+	if (ind->IsCargoProduced(cargo)) *c_produces = true;
 }
 
 /**
@@ -2779,7 +2834,7 @@ static void CanCargoServiceIndustry(CargoID cargo, Industry *ind, bool *c_accept
  * service the industry, and 1 otherwise (only competitors can service the
  * industry)
  */
-static int WhoCanServiceIndustry(Industry *ind)
+int WhoCanServiceIndustry(Industry *ind)
 {
 	if (ind->stations_near.size() == 0) return 0; // No stations found at all => nobody services
 
@@ -2981,9 +3036,14 @@ static void ChangeIndustryProduction(Industry *i, bool monthly)
 	/* If override flags are set, prevent actually changing production if any was decided on */
 	if ((i->ctlflags & INDCTL_NO_PRODUCTION_DECREASE) && (div > 0 || increment < 0)) return;
 	if ((i->ctlflags & INDCTL_NO_PRODUCTION_INCREASE) && (mul > 0 || increment > 0)) return;
+	if (i->ctlflags & INDCTL_EXTERNAL_PROD_LEVEL) {
+		div = 0;
+		mul = 0;
+		increment = 0;
+	}
 
 	if (!callback_enabled && (indspec->life_type & INDUSTRYLIFE_PROCESSING)) {
-		if ( (byte)(_cur_year - i->last_prod_year) >= 5 && Chance16(1, original_economy ? 2 : 180)) {
+		if ((_cur_year - i->last_prod_year) >= PROCESSING_INDUSTRY_ABANDONMENT_YEARS && Chance16(1, original_economy ? 2 : 180)) {
 			closeit = true;
 		}
 	}

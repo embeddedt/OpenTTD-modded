@@ -40,6 +40,7 @@
 #include "roadstop_base.h"
 #include "core/random_func.hpp"
 #include "core/backup_type.hpp"
+#include "core/container_func.hpp"
 #include "infrastructure_func.h"
 #include "order_backup.h"
 #include "sound_func.h"
@@ -59,8 +60,10 @@
 #include "string_func.h"
 #include "scope_info.h"
 #include "debug_settings.h"
+#include "network/network_sync.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 #include "3rdparty/cpp-btree/btree_map.h"
+#include "3rdparty/robin_hood/robin_hood.h"
 
 #include "table/strings.h"
 
@@ -117,7 +120,7 @@ Rect16 VehicleSpriteSeq::GetBounds() const
 	Rect16 bounds;
 	bounds.left = bounds.top = bounds.right = bounds.bottom = 0;
 	for (uint i = 0; i < this->count; ++i) {
-		const Sprite *spr = GetSprite(this->seq[i].sprite, ST_NORMAL);
+		const Sprite *spr = GetSprite(this->seq[i].sprite, SpriteType::Normal, 0);
 		if (i == 0) {
 			bounds.left = spr->x_offs;
 			bounds.top  = spr->y_offs;
@@ -206,6 +209,7 @@ void VehicleServiceInDepot(Vehicle *v)
 
 	do {
 		v->date_of_last_service = _date;
+		v->date_of_last_service_newgrf = _date;
 		if (_settings_game.vehicle.pay_for_repair && v->breakdowns_since_last_service) {
 			_vehicles_to_pay_repair.insert(v->index);
 		} else {
@@ -285,16 +289,39 @@ bool Vehicle::NeedsServicing() const
 		/* Check refittability */
 		CargoTypes available_cargo_types, union_mask;
 		GetArticulatedRefitMasks(new_engine, true, &union_mask, &available_cargo_types);
+
+		/* Is this a multi-cargo ship? */
+		if (union_mask != 0 && v->type == VEH_SHIP && v->Next() != nullptr) {
+			CargoTypes cargoes = 0;
+			for (const Vehicle *u = v; u != nullptr; u = u->Next()) {
+				if (u->cargo_type != CT_INVALID && u->GetEngine()->CanCarryCargo()) {
+					SetBit(cargoes, u->cargo_type);
+				}
+			}
+			if (!HasAtMostOneBit(cargoes)) {
+				/* Ship has more than one cargo, special handling */
+				if (!AutoreplaceMultiPartShipWouldSucceed(new_engine, v, cargoes)) continue;
+				union_mask = 0;
+			}
+		}
+
 		/* Is there anything to refit? */
 		if (union_mask != 0) {
 			CargoID cargo_type;
-			/* We cannot refit to mixed cargoes in an automated way */
-			if (IsArticulatedVehicleCarryingDifferentCargoes(v, &cargo_type)) continue;
-
-			/* Did the old vehicle carry anything? */
-			if (cargo_type != CT_INVALID) {
-				/* We can't refit the vehicle to carry the cargo we want */
-				if (!HasBit(available_cargo_types, cargo_type)) continue;
+			CargoTypes cargo_mask = GetCargoTypesOfArticulatedVehicle(v, &cargo_type);
+			if (!HasAtMostOneBit(cargo_mask)) {
+				CargoTypes new_engine_default_cargoes = GetCargoTypesOfArticulatedParts(new_engine);
+				if ((cargo_mask & new_engine_default_cargoes) != cargo_mask) {
+					/* We cannot refit to mixed cargoes in an automated way */
+					continue;
+				}
+				/* engine_type is already a mixed cargo type which matches the incoming vehicle by default, no refit required */
+			} else {
+				/* Did the old vehicle carry anything? */
+				if (cargo_type != CT_INVALID) {
+					/* We can't refit the vehicle to carry the cargo we want */
+					if (!HasBit(available_cargo_types, cargo_type)) continue;
+				}
 			}
 		}
 
@@ -419,6 +446,13 @@ void VehicleLengthChanged(const Vehicle *u)
 {
 	/* show a warning once for each engine in whole game and once for each GRF after each game load */
 	const Engine *engine = u->GetEngine();
+	if (engine->grf_prop.grffile == nullptr) {
+		// This can be reached if an engine is unexpectedly no longer attached to a GRF at all
+		if (GamelogGRFBugReverse(0, engine->grf_prop.local_id)) {
+			ShowNewGrfVehicleError(u->engine_type, STR_NEWGRF_BROKEN, STR_NEWGRF_BROKEN_VEHICLE_LENGTH, GBUG_VEH_LENGTH, true);
+		}
+		return;
+	}
 	uint32 grfid = engine->grf_prop.grffile->grfid;
 	GRFConfig *grfconfig = GetGRFConfig(grfid);
 	if (GamelogGRFBugReverse(grfid, engine->grf_prop.local_id) || !HasBit(grfconfig->grf_bugs, GBUG_VEH_LENGTH)) {
@@ -446,37 +480,24 @@ Vehicle::Vehicle(VehicleType type)
 	this->vcache.cached_veh_flags = 0;
 }
 
-/**
- * Get a value for a vehicle's random_bits.
- * @return A random value from 0 to 255.
- */
-byte VehicleRandomBits()
-{
-	return GB(Random(), 0, 8);
-}
-
-/* Size of the hash, 6 = 64 x 64, 7 = 128 x 128. Larger sizes will (in theory) reduce hash
- * lookup times at the expense of memory usage. */
-const int HASH_BITS = 7;
-const int HASH_SIZE = 1 << HASH_BITS;
-const int HASH_MASK = HASH_SIZE - 1;
-const int TOTAL_HASH_SIZE = 1 << (HASH_BITS * 2);
-const int TOTAL_HASH_MASK = TOTAL_HASH_SIZE - 1;
-
-/* Resolution of the hash, 0 = 1*1 tile, 1 = 2*2 tiles, 2 = 4*4 tiles, etc.
- * Profiling results show that 0 is fastest. */
-const int HASH_RES = 0;
-
-static Vehicle *_vehicle_tile_hash[TOTAL_HASH_SIZE * 4];
+using VehicleTypeTileHash = robin_hood::unordered_map<TileIndex, VehicleID>;
+static std::array<VehicleTypeTileHash, 4> _vehicle_tile_hashes;
 
 static Vehicle *VehicleFromTileHash(int xl, int yl, int xu, int yu, VehicleType type, void *data, VehicleFromPosProc *proc, bool find_first)
 {
-	for (int y = yl; ; y = (y + (1 << HASH_BITS)) & (HASH_MASK << HASH_BITS)) {
-		for (int x = xl; ; x = (x + 1) & HASH_MASK) {
-			Vehicle *v = _vehicle_tile_hash[((x + y) & TOTAL_HASH_MASK) + (TOTAL_HASH_SIZE * type)];
-			for (; v != nullptr; v = v->hash_tile_next) {
-				Vehicle *a = proc(v, data);
-				if (find_first && a != nullptr) return a;
+	VehicleTypeTileHash &vhash = _vehicle_tile_hashes[type];
+
+	for (int y = yl; ; y++) {
+		for (int x = xl; ; x++) {
+			auto iter = vhash.find(TileXY(x, y));
+			if (iter != vhash.end()) {
+				Vehicle *v = Vehicle::Get(iter->second);
+				do {
+					Vehicle *a = proc(v, data);
+					if (find_first && a != nullptr) return a;
+
+					v = v->hash_tile_next;
+				} while (v != nullptr);
 			}
 			if (x == xu) break;
 		}
@@ -503,10 +524,10 @@ Vehicle *VehicleFromPosXY(int x, int y, VehicleType type, void *data, VehicleFro
 	const int COLL_DIST = 6;
 
 	/* Hash area to scan is from xl,yl to xu,yu */
-	int xl = GB((x - COLL_DIST) / TILE_SIZE, HASH_RES, HASH_BITS);
-	int xu = GB((x + COLL_DIST) / TILE_SIZE, HASH_RES, HASH_BITS);
-	int yl = GB((y - COLL_DIST) / TILE_SIZE, HASH_RES, HASH_BITS) << HASH_BITS;
-	int yu = GB((y + COLL_DIST) / TILE_SIZE, HASH_RES, HASH_BITS) << HASH_BITS;
+	int xl = (x - COLL_DIST) / TILE_SIZE;
+	int xu = (x + COLL_DIST) / TILE_SIZE;
+	int yl = (y - COLL_DIST) / TILE_SIZE;
+	int yu = (y + COLL_DIST) / TILE_SIZE;
 
 	return VehicleFromTileHash(xl, yl, xu, yu, type, data, proc, find_first);
 }
@@ -523,15 +544,17 @@ Vehicle *VehicleFromPosXY(int x, int y, VehicleType type, void *data, VehicleFro
  */
 Vehicle *VehicleFromPos(TileIndex tile, VehicleType type, void *data, VehicleFromPosProc *proc, bool find_first)
 {
-	int x = GB(TileX(tile), HASH_RES, HASH_BITS);
-	int y = GB(TileY(tile), HASH_RES, HASH_BITS) << HASH_BITS;
+	VehicleTypeTileHash &vhash = _vehicle_tile_hashes[type];
 
-	Vehicle *v = _vehicle_tile_hash[((x + y) & TOTAL_HASH_MASK) + (TOTAL_HASH_SIZE * type)];
-	for (; v != nullptr; v = v->hash_tile_next) {
-		if (v->tile != tile) continue;
+	auto iter = vhash.find(tile);
+	if (iter != vhash.end()) {
+		Vehicle *v = Vehicle::Get(iter->second);
+		do {
+			Vehicle *a = proc(v, data);
+			if (find_first && a != nullptr) return a;
 
-		Vehicle *a = proc(v, data);
-		if (find_first && a != nullptr) return a;
+			v = v->hash_tile_next;
+		} while (v != nullptr);
 	}
 
 	return nullptr;
@@ -662,7 +685,7 @@ bool IsTrainCollidableRoadVehicleOnGround(TileIndex tile)
 struct GetVehicleTunnelBridgeProcData {
 	const Vehicle *v;
 	TileIndex t;
-	bool across_only;
+	TunnelBridgeIsFreeMode mode;
 };
 
 /** Procedure called for every vehicle found in tunnel/bridge in the hash map */
@@ -671,9 +694,12 @@ static Vehicle *GetVehicleTunnelBridgeProc(Vehicle *v, void *data)
 	const GetVehicleTunnelBridgeProcData *info = (GetVehicleTunnelBridgeProcData*) data;
 	if (v == info->v) return nullptr;
 
-	if (v->type == VEH_TRAIN && info->across_only && IsBridge(info->t)) {
+	if (v->type == VEH_TRAIN && info->mode != TBIFM_ALL && IsBridge(info->t)) {
 		TrackBits vehicle_track = Train::From(v)->track;
-		if (!(vehicle_track & TRACK_BIT_WORMHOLE) && !(GetAcrossBridgePossibleTrackBits(info->t) & vehicle_track)) return nullptr;
+		if (!(vehicle_track & TRACK_BIT_WORMHOLE)) {
+			if (info->mode == TBIFM_ACROSS_ONLY && !(GetAcrossBridgePossibleTrackBits(info->t) & vehicle_track)) return nullptr;
+			if (info->mode == TBIFM_PRIMARY_ONLY && !(GetPrimaryTunnelBridgeTrackBits(info->t) & vehicle_track)) return nullptr;
+		}
 	}
 
 	return v;
@@ -684,10 +710,10 @@ static Vehicle *GetVehicleTunnelBridgeProc(Vehicle *v, void *data)
  * @param tile first end
  * @param endtile second end
  * @param ignore Ignore this vehicle when searching
- * @param across_only Only find vehicles which are passing across the bridge/tunnel or on connecting bridge head track pieces
+ * @param mode Whether to only find vehicles which are passing across the bridge/tunnel or on connecting bridge head track pieces, or only on primary track type pieces
  * @return Succeeded command (if tunnel/bridge is free) or failed command (if a vehicle is using the tunnel/bridge).
  */
-CommandCost TunnelBridgeIsFree(TileIndex tile, TileIndex endtile, const Vehicle *ignore, bool across_only)
+CommandCost TunnelBridgeIsFree(TileIndex tile, TileIndex endtile, const Vehicle *ignore, TunnelBridgeIsFreeMode mode)
 {
 	/* Value v is not safe in MP games, however, it is used to generate a local
 	 * error message only (which may be different for different machines).
@@ -696,7 +722,7 @@ CommandCost TunnelBridgeIsFree(TileIndex tile, TileIndex endtile, const Vehicle 
 	GetVehicleTunnelBridgeProcData data;
 	data.v = ignore;
 	data.t = tile;
-	data.across_only = across_only;
+	data.mode = mode;
 	VehicleType type = static_cast<VehicleType>(GetTunnelBridgeTransportType(tile));
 	Vehicle *v = VehicleFromPos(tile, type, &data, &GetVehicleTunnelBridgeProc, true);
 	if (v == nullptr) {
@@ -864,35 +890,53 @@ CommandCost EnsureNoTrainOnTrackBits(TileIndex tile, TrackBits track_bits)
 
 void UpdateVehicleTileHash(Vehicle *v, bool remove)
 {
-	Vehicle **old_hash = v->hash_tile_current;
-	Vehicle **new_hash;
+	TileIndex old_hash_tile = v->hash_tile_current;
+	TileIndex new_hash_tile;
 
 	if (remove || HasBit(v->subtype, GVSF_VIRTUAL) || (v->tile == 0 && _settings_game.construction.freeform_edges)) {
-		new_hash = nullptr;
+		new_hash_tile = INVALID_TILE;
 	} else {
-		int x = GB(TileX(v->tile), HASH_RES, HASH_BITS);
-		int y = GB(TileY(v->tile), HASH_RES, HASH_BITS) << HASH_BITS;
-		new_hash = &_vehicle_tile_hash[((x + y) & TOTAL_HASH_MASK) + (TOTAL_HASH_SIZE * v->type)];
+		new_hash_tile = v->tile;
 	}
 
-	if (old_hash == new_hash) return;
+	if (old_hash_tile == new_hash_tile) return;
+
+	VehicleTypeTileHash &vhash = _vehicle_tile_hashes[v->type];
 
 	/* Remove from the old position in the hash table */
-	if (old_hash != nullptr) {
+	if (old_hash_tile != INVALID_TILE) {
 		if (v->hash_tile_next != nullptr) v->hash_tile_next->hash_tile_prev = v->hash_tile_prev;
-		*v->hash_tile_prev = v->hash_tile_next;
+		if (v->hash_tile_prev != nullptr) {
+			v->hash_tile_prev->hash_tile_next = v->hash_tile_next;
+		} else {
+			/* This was the first vehicle in the chain */
+			if (v->hash_tile_next != nullptr) {
+				vhash[old_hash_tile] = v->hash_tile_next->index;
+			} else {
+				vhash.erase(old_hash_tile);
+			}
+		}
 	}
 
 	/* Insert vehicle at beginning of the new position in the hash table */
-	if (new_hash != nullptr) {
-		v->hash_tile_next = *new_hash;
-		if (v->hash_tile_next != nullptr) v->hash_tile_next->hash_tile_prev = &v->hash_tile_next;
-		v->hash_tile_prev = new_hash;
-		*new_hash = v;
+	if (new_hash_tile != INVALID_TILE) {
+		auto res = vhash.insert({ new_hash_tile, v->index });
+		if (res.second) {
+			/* Insert took place */
+			v->hash_tile_next = nullptr;
+			v->hash_tile_prev = nullptr;
+		} else {
+			/* Key already existed */
+			Vehicle *next = Vehicle::Get(res.first->second);
+			next->hash_tile_prev = v;
+			v->hash_tile_next = next;
+			v->hash_tile_prev = nullptr;
+			res.first->second = v->index;
+		}
 	}
 
-	/* Remember current hash position */
-	v->hash_tile_current = new_hash;
+	/* Remember current hash tile */
+	v->hash_tile_current = new_hash_tile;
 }
 
 bool ValidateVehicleTileHash(const Vehicle *v)
@@ -901,12 +945,19 @@ bool ValidateVehicleTileHash(const Vehicle *v)
 			|| (v->type == VEH_SHIP && HasBit(v->subtype, GVSF_VIRTUAL))
 			|| (v->type == VEH_AIRCRAFT && v->tile == 0 && _settings_game.construction.freeform_edges)
 			|| v->type >= VEH_COMPANY_END) {
-		return v->hash_tile_current == nullptr;
+		return v->hash_tile_current == INVALID_TILE;
 	}
 
-	int x = GB(TileX(v->tile), HASH_RES, HASH_BITS);
-	int y = GB(TileY(v->tile), HASH_RES, HASH_BITS) << HASH_BITS;
-	return v->hash_tile_current == &_vehicle_tile_hash[((x + y) & TOTAL_HASH_MASK) + (TOTAL_HASH_SIZE * v->type)];
+	if (v->hash_tile_current != v->tile) return false;
+
+	auto iter = _vehicle_tile_hashes[v->type].find(v->hash_tile_current);
+	if (iter == _vehicle_tile_hashes[v->type].end()) return false;
+
+	for (const Vehicle *u = Vehicle::GetIfValid(iter->second); u != nullptr; u = u->hash_tile_next) {
+		if (u == v) return true;
+	}
+
+	return false;
 }
 
 static Vehicle *_vehicle_viewport_hash[1 << (GEN_HASHX_BITS + GEN_HASHY_BITS)];
@@ -982,9 +1033,15 @@ static void ProcessDeferredUpdateVehicleViewportHashes()
 
 void ResetVehicleHash()
 {
-	for (Vehicle *v : Vehicle::Iterate()) { v->hash_tile_current = nullptr; }
+	for (Vehicle *v : Vehicle::Iterate()) {
+		v->hash_tile_next = nullptr;
+		v->hash_tile_prev = nullptr;
+		v->hash_tile_current = INVALID_TILE;
+	}
 	memset(_vehicle_viewport_hash, 0, sizeof(_vehicle_viewport_hash));
-	memset(_vehicle_tile_hash, 0, sizeof(_vehicle_tile_hash));
+	for (VehicleTypeTileHash &vhash : _vehicle_tile_hashes) {
+		vhash.clear();
+	}
 }
 
 void ResetVehicleColourMap()
@@ -1195,14 +1252,14 @@ void Vehicle::PreDestructor()
 	}
 
 	if (this->IsPrimaryVehicle()) {
-		DeleteWindowById(WC_VEHICLE_VIEW, this->index);
-		DeleteWindowById(WC_VEHICLE_ORDERS, this->index);
-		DeleteWindowById(WC_VEHICLE_REFIT, this->index);
-		DeleteWindowById(WC_VEHICLE_DETAILS, this->index);
-		DeleteWindowById(WC_VEHICLE_TIMETABLE, this->index);
-		DeleteWindowById(WC_SCHDISPATCH_SLOTS, this->index);
-		DeleteWindowById(WC_VEHICLE_CARGO_TYPE_LOAD_ORDERS, this->index);
-		DeleteWindowById(WC_VEHICLE_CARGO_TYPE_UNLOAD_ORDERS, this->index);
+		CloseWindowById(WC_VEHICLE_VIEW, this->index);
+		CloseWindowById(WC_VEHICLE_ORDERS, this->index);
+		CloseWindowById(WC_VEHICLE_REFIT, this->index);
+		CloseWindowById(WC_VEHICLE_DETAILS, this->index);
+		CloseWindowById(WC_VEHICLE_TIMETABLE, this->index);
+		CloseWindowById(WC_SCHDISPATCH_SLOTS, this->index);
+		CloseWindowById(WC_VEHICLE_CARGO_TYPE_LOAD_ORDERS, this->index);
+		CloseWindowById(WC_VEHICLE_CARGO_TYPE_UNLOAD_ORDERS, this->index);
 		SetWindowDirty(WC_COMPANY, this->owner);
 		OrderBackup::ClearVehicle(this);
 	}
@@ -1538,6 +1595,8 @@ void CallVehicleTicks()
 		}
 	}
 
+	RecordSyncEvent(NSRE_VEH_PERIODIC);
+
 	{
 		PerformanceMeasurer framerate(PFE_GL_ECONOMY);
 		Station *si_st = nullptr;
@@ -1547,6 +1606,8 @@ void CallVehicleTicks()
 			LoadUnloadStation(st);
 		}
 	}
+
+	RecordSyncEvent(NSRE_VEH_LOAD_UNLOAD);
 
 	if (!_tick_caches_valid || HasChickenBit(DCBF_VEH_TICK_CACHE)) RebuildVehicleTickCaches();
 
@@ -1563,9 +1624,10 @@ void CallVehicleTicks()
 			u->EffectVehicle::Tick();
 		}
 	}
+	if (!_tick_effect_veh_cache.empty()) RecordSyncEvent(NSRE_VEH_EFFECT);
 	{
 		PerformanceMeasurer framerate(PFE_GL_TRAINS);
-		for (Train *t :  _tick_train_too_heavy_cache) {
+		for (Train *t : _tick_train_too_heavy_cache) {
 			if (HasBit(t->flags, VRF_TOO_HEAVY)) {
 				if (t->owner == _local_company) {
 					SetDParam(0, t->index);
@@ -1586,6 +1648,7 @@ void CallVehicleTicks()
 			}
 		}
 	}
+	RecordSyncEvent(NSRE_VEH_TRAIN);
 	{
 		PerformanceMeasurer framerate(PFE_GL_ROADVEHS);
 		for (RoadVehicle *front : _tick_road_veh_front_cache) {
@@ -1598,6 +1661,7 @@ void CallVehicleTicks()
 			if (!(front->vehstatus & VS_STOPPED)) VehicleTickMotion(front, front);
 		}
 	}
+	if (!_tick_road_veh_front_cache.empty()) RecordSyncEvent(NSRE_VEH_ROAD);
 	{
 		PerformanceMeasurer framerate(PFE_GL_AIRCRAFT);
 		for (Aircraft *front : _tick_aircraft_front_cache) {
@@ -1609,6 +1673,7 @@ void CallVehicleTicks()
 			if (!(front->vehstatus & VS_STOPPED)) VehicleTickMotion(front, front);
 		}
 	}
+	if (!_tick_aircraft_front_cache.empty()) RecordSyncEvent(NSRE_VEH_AIR);
 	{
 		PerformanceMeasurer framerate(PFE_GL_SHIPS);
 		for (Ship *s : _tick_ship_cache) {
@@ -1620,6 +1685,7 @@ void CallVehicleTicks()
 			if (!(s->vehstatus & VS_STOPPED)) VehicleTickMotion(s, s);
 		}
 	}
+	if (!_tick_ship_cache.empty()) RecordSyncEvent(NSRE_VEH_SHIP);
 	{
 		for (Vehicle *u : _tick_other_veh_cache) {
 			if (!u) continue;
@@ -1628,6 +1694,7 @@ void CallVehicleTicks()
 		}
 	}
 	v = nullptr;
+	if (!_tick_other_veh_cache.empty()) RecordSyncEvent(NSRE_VEH_OTHER);
 
 	/* Handle vehicles marked for immediate sale */
 	Backup<CompanyID> sell_cur_company(_current_company, FILE_LINE);
@@ -1656,6 +1723,7 @@ void CallVehicleTicks()
 		_vehicles_to_autoreplace.erase(index);
 	}
 	sell_cur_company.Restore();
+	if (!_vehicles_to_sell.empty()) RecordSyncEvent(NSRE_VEH_SELL);
 
 	/* do Template Replacement */
 	Backup<CompanyID> tmpl_cur_company(_current_company, FILE_LINE);
@@ -1666,7 +1734,7 @@ void CallVehicleTicks()
 
 		auto it = _vehicles_to_autoreplace.find(index);
 		assert(it != _vehicles_to_autoreplace.end());
-		bool leaveDepot = it->second;
+		if (it->second) t->vehstatus &= ~VS_STOPPED;
 		_vehicles_to_autoreplace.erase(it);
 
 		/* Store the position of the effect as the vehicle pointer will become invalid later */
@@ -1678,8 +1746,7 @@ void CallVehicleTicks()
 
 		_new_vehicle_id = INVALID_VEHICLE;
 
-		t->vehstatus |= VS_STOPPED;
-		CommandCost res = DoCommand(t->tile, t->index, leaveDepot ? 1 : 0, DC_EXEC, CMD_TEMPLATE_REPLACE_VEHICLE);
+		CommandCost res = DoCommand(t->tile, t->index, 0, DC_EXEC, CMD_TEMPLATE_REPLACE_VEHICLE);
 
 		if (_new_vehicle_id != INVALID_VEHICLE) {
 			VehicleID t_new = _new_vehicle_id;
@@ -1687,6 +1754,9 @@ void CallVehicleTicks()
 			const Company *c = Company::Get(_current_company);
 			SubtractMoneyFromCompany(CommandCost(EXPENSES_NEW_VEHICLES, (Money)c->settings.engine_renew_money));
 			CommandCost res2 = DoCommand(0, t_new, 1, DC_EXEC, CMD_AUTOREPLACE_VEHICLE);
+			if (res2.HasResultData()) {
+				t = Train::Get(res2.GetResultData());
+			}
 			SubtractMoneyFromCompany(CommandCost(EXPENSES_NEW_VEHICLES, -(Money)c->settings.engine_renew_money));
 			if (res2.Succeeded() || res.GetCost() == 0) res.AddCost(res2);
 		}
@@ -1702,6 +1772,7 @@ void CallVehicleTicks()
 		}
 	}
 	tmpl_cur_company.Restore();
+	if (!_vehicles_to_templatereplace.empty()) RecordSyncEvent(NSRE_VEH_TBTR);
 
 	/* do Auto Replacement */
 	Backup<CompanyID> cur_company(_current_company, FILE_LINE);
@@ -1739,6 +1810,7 @@ void CallVehicleTicks()
 		ShowAutoReplaceAdviceMessage(res, v);
 	}
 	cur_company.Restore();
+	if (!_vehicles_to_autoreplace.empty()) RecordSyncEvent(NSRE_VEH_AUTOREPLACE);
 
 	Backup<CompanyID> repair_cur_company(_current_company, FILE_LINE);
 	for (VehicleID index : _vehicles_to_pay_repair) {
@@ -1781,6 +1853,7 @@ void CallVehicleTicks()
 		v->breakdowns_since_last_service = 0;
 	}
 	repair_cur_company.Restore();
+	if (!_vehicles_to_pay_repair.empty()) RecordSyncEvent(NSRE_VEH_REPAIR);
 	_vehicles_to_pay_repair.clear();
 }
 
@@ -2180,7 +2253,7 @@ void CheckVehicleBreakdown(Vehicle *v)
 	/* increase chance of failure */
 	int chance = v->breakdown_chance + 1;
 	if (Chance16I(1, 25, r)) chance += 25;
-	chance = std::min(255, chance);
+	chance = ClampTo<uint8>(chance);
 	v->breakdown_chance = chance;
 
 	if (_settings_game.vehicle.improved_breakdowns) {
@@ -2396,9 +2469,11 @@ void AgeVehicle(Vehicle *v)
 	if (!v->IsPrimaryVehicle() && (v->type != VEH_TRAIN || !Train::From(v)->IsEngine())) return;
 
 	int age = v->age - v->max_age;
-	if (age == DAYS_IN_LEAP_YEAR * 0 || age == DAYS_IN_LEAP_YEAR * 1 ||
-			age == DAYS_IN_LEAP_YEAR * 2 || age == DAYS_IN_LEAP_YEAR * 3 || age == DAYS_IN_LEAP_YEAR * 4) {
-		v->reliability_spd_dec <<= 1;
+	for (int i = 0; i <= 4; i++) {
+		if (age == DateAtStartOfYear(i)) {
+			v->reliability_spd_dec <<= 1;
+			break;
+		}
 	}
 
 	SetWindowDirty(WC_VEHICLE_DETAILS, v->index);
@@ -3355,8 +3430,7 @@ void Vehicle::CancelReservation(StationID next, Station *st)
 		VehicleCargoList &cargo = v->cargo;
 		if (cargo.ActionCount(VehicleCargoList::MTA_LOAD) > 0) {
 			DEBUG(misc, 1, "cancelling cargo reservation");
-			cargo.Return(UINT_MAX, &st->goods[v->cargo_type].cargo, next);
-			cargo.SetTransferLoadPlace(st->xy);
+			cargo.Return(UINT_MAX, &st->goods[v->cargo_type].CreateData().cargo, next, v->tile);
 		}
 		cargo.KeepAll();
 	}
@@ -4181,7 +4255,7 @@ void Vehicle::RemoveFromShared()
 
 	if (this->orders->GetNumVehicles() == 1 && !_settings_client.gui.enable_single_veh_shared_order_gui) {
 		/* When there is only one vehicle, remove the shared order list window. */
-		DeleteWindowById(GetWindowClassForVehicleType(this->type), vli.Pack());
+		CloseWindowById(GetWindowClassForVehicleType(this->type), vli.Pack());
 	} else if (were_first) {
 		/* If we were the first one, update to the new first one.
 		 * Note: FirstShared() is already the new first */
@@ -4278,6 +4352,11 @@ void DumpVehicleFlagsGeneric(const Vehicle *v, T dump, U dump_header)
 		dump('J', "VRF_CONSIST_SPEED_REDUCTION",       HasBit(t->flags, VRF_CONSIST_SPEED_REDUCTION));
 		dump('X', "VRF_PENDING_SPEED_RESTRICTION",     HasBit(t->flags, VRF_PENDING_SPEED_RESTRICTION));
 		dump('c', "VRF_SPEED_ADAPTATION_EXEMPT",       HasBit(t->flags, VRF_SPEED_ADAPTATION_EXEMPT));
+	}
+	if (v->type == VEH_ROAD) {
+		const RoadVehicle *rv = RoadVehicle::From(v);
+		dump_header("rvf:", "road vehicle flags:");
+		dump('L', "RVF_ON_LEVEL_CROSSING",             HasBit(rv->rvflags, RVF_ON_LEVEL_CROSSING));
 	}
 }
 
@@ -4625,6 +4704,8 @@ void ShiftVehicleDates(int interval)
 	for (Vehicle *v : Vehicle::Iterate()) {
 		v->date_of_last_service = std::max(v->date_of_last_service + interval, 0);
 	}
+	/* date_of_last_service_newgrf is not updated here as it must stay stable
+	 * for vehicles outside of a depot. */
 }
 
 extern void VehicleDayLengthChanged(DateTicksScaled old_scaled_date_ticks, DateTicksScaled old_scaled_date_ticks_offset, uint8 old_day_length_factor)

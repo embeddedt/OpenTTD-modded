@@ -62,7 +62,7 @@ public:
 		void AllocateData(ZoomLevel zoom, size_t size) { this->data = Sprite::buffer[zoom].ZeroAllocate(size); }
 	private:
 		/** Allocated memory to pass sprite data around */
-		static ReusableBuffer<SpriteLoader::CommonPixel> buffer[ZOOM_LVL_COUNT];
+		static ReusableBuffer<SpriteLoader::CommonPixel> buffer[ZOOM_LVL_SPR_COUNT];
 	};
 
 	/**
@@ -75,21 +75,54 @@ public:
 	 * @param control_flags Control flags, see SpriteCacheCtrlFlags.
 	 * @return Bit mask of the zoom levels successfully loaded or 0 if no sprite could be loaded.
 	 */
-	virtual uint8 LoadSprite(SpriteLoader::Sprite *sprite, SpriteFile &file, size_t file_pos, SpriteType sprite_type, bool load_32bpp, uint count, byte control_flags) = 0;
+	virtual uint8 LoadSprite(SpriteLoader::Sprite *sprite, SpriteFile &file, size_t file_pos, SpriteType sprite_type, bool load_32bpp, uint count, uint16 control_flags, uint8 zoom_levels) = 0;
 
-	virtual ~SpriteLoader() { }
+	virtual ~SpriteLoader() = default;
 };
 
 /** Interface for something that can encode a sprite. */
 class SpriteEncoder {
+	bool supports_missing_zoom_levels = false;
+	bool supports_32bpp = false;
+	bool no_data_required = false;
+
+protected:
+	inline void SetSupportsMissingZoomLevels(bool supported)
+	{
+		this->supports_missing_zoom_levels = supported;
+	}
+
+	inline void SetIs32BppSupported(bool supported)
+	{
+		this->supports_32bpp = supported;
+	}
+
+	inline void SetNoSpriteDataRequired(bool not_required)
+	{
+		this->no_data_required = not_required;
+	}
+
 public:
 
-	virtual ~SpriteEncoder() { }
+	virtual ~SpriteEncoder() = default;
+
+	inline bool SupportsMissingZoomLevels() const
+	{
+		return this->supports_missing_zoom_levels;
+	}
+
+	inline bool NoSpriteDataRequired() const
+	{
+		return this->no_data_required;
+	}
 
 	/**
 	 * Can the sprite encoder make use of RGBA sprites?
 	 */
-	virtual bool Is32BppSupported() = 0;
+	inline bool Is32BppSupported() const
+	{
+		return this->supports_32bpp;
+	}
 
 	/**
 	 * Convert a sprite from the loader to our own format.

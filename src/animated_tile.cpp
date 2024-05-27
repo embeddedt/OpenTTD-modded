@@ -10,12 +10,14 @@
 #include "stdafx.h"
 #include "animated_tile.h"
 #include "core/alloc_func.hpp"
-#include "core/smallvec_type.hpp"
+#include "core/container_func.hpp"
 #include "tile_cmd.h"
 #include "viewport_func.h"
 #include "framerate_type.h"
 #include "date_func.h"
 #include "3rdparty/cpp-btree/btree_map.h"
+
+#include INCLUDE_FOR_PREFETCH_NTA
 
 #include "safeguards.h"
 
@@ -109,6 +111,12 @@ void AnimateAnimatedTiles()
 			continue;
 		}
 
+		auto next = iter;
+		++next;
+		if (next != _animated_tiles.end()) {
+			PREFETCH_NTA(&(next->second));
+		}
+
 		if (iter->second.speed <= max_speed) {
 			const TileIndex curr = iter->first;
 			switch (GetTileType(curr)) {
@@ -132,7 +140,7 @@ void AnimateAnimatedTiles()
 					NOT_REACHED();
 			}
 		}
-		++iter;
+		iter = next;
 	}
 }
 

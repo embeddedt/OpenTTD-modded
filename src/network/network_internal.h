@@ -11,6 +11,7 @@
 #define NETWORK_INTERNAL_H
 
 #include "network_func.h"
+#include "network_sync.h"
 #include "core/tcp_coordinator.h"
 #include "core/tcp_game.h"
 
@@ -18,8 +19,6 @@
 #include "../date_type.h"
 
 #include <vector>
-#include <array>
-#include <memory>
 
 static const uint32 FIND_SERVER_EXTENDED_TOKEN = 0x2A49582A;
 
@@ -34,12 +33,6 @@ static const uint32 FIND_SERVER_EXTENDED_TOKEN = 0x2A49582A;
  *  nothing will happen.
  */
 #define ENABLE_NETWORK_SYNC_EVERY_FRAME
-
-/**
- * In theory sending 1 of the 2 seeds is enough to check for desyncs
- *   so in theory, this next define can be left off.
- */
-#define NETWORK_SEND_DOUBLE_SEED
 #endif /* RANDOM_DEBUG */
 
 /**
@@ -80,9 +73,6 @@ extern uint32 _last_sync_frame; // Used in the server to store the last time a s
 extern NetworkAddressList _broadcast_list;
 
 extern uint32 _sync_seed_1;
-#ifdef NETWORK_SEND_DOUBLE_SEED
-extern uint32 _sync_seed_2;
-#endif
 extern uint64 _sync_state_checksum;
 extern uint32 _sync_frame;
 extern Date   _last_sync_date;
@@ -105,22 +95,26 @@ extern uint8 _network_reconnect;
 
 extern CompanyMask _network_company_passworded;
 
-/* Sync debugging */
-struct NetworkSyncRecord {
-	uint32 frame;
-	uint32 seed_1;
-	uint64 state_checksum;
-};
-extern std::vector<NetworkSyncRecord> _network_client_sync_records;
-extern std::unique_ptr<std::array<NetworkSyncRecord, 1024>> _network_server_sync_records;
-extern uint32 _network_server_sync_records_next;
-
 void NetworkQueryServer(const std::string &connection_string);
 
 void GetBindAddresses(NetworkAddressList *addresses, uint16 port);
 struct NetworkGameList *NetworkAddServer(const std::string &connection_string, bool manually = true, bool never_expire = false);
 void NetworkRebuildHostList();
 void UpdateNetworkGameWindow();
+
+struct NetworkGameKeys {
+	byte x25519_priv_key[32];    ///< x25519 key: private part
+	byte x25519_pub_key[32];     ///< x25519 key: public part
+	bool inited = false;
+
+	void Initialise();
+};
+
+struct NetworkSharedSecrets {
+	byte shared_data[64];
+
+	~NetworkSharedSecrets();
+};
 
 /* From network_command.cpp */
 /**
@@ -147,6 +141,7 @@ uint NetworkCalculateLag(const NetworkClientSocket *cs);
 StringID GetNetworkErrorMsg(NetworkErrorCode err);
 bool NetworkMakeClientNameUnique(std::string &new_name);
 std::string GenerateCompanyPasswordHash(const std::string &password, const std::string &password_server_id, uint32 password_game_seed);
+std::vector<uint8> GenerateGeneralPasswordHash(const std::string &password, const std::string &password_server_id, uint64 password_game_seed);
 std::string NetworkGenerateRandomKeyString(uint bytes);
 
 std::string_view ParseCompanyFromConnectionString(const std::string &connection_string, CompanyID *company_id);
@@ -154,5 +149,7 @@ NetworkAddress ParseConnectionString(const std::string &connection_string, uint1
 std::string NormalizeConnectionString(const std::string &connection_string, uint16 default_port);
 
 void ClientNetworkEmergencySave();
+
+void NetworkRandomBytesWithFallback(void *buf, size_t n);
 
 #endif /* NETWORK_INTERNAL_H */

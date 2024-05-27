@@ -51,6 +51,7 @@
 #include "tracerestrict.h"
 #include "newgrf_roadstop.h"
 #include "newgrf_newsignals.h"
+#include "spritecache.h"
 
 #include "table/strings.h"
 #include "table/bridge_land.h"
@@ -1781,6 +1782,8 @@ static void DrawTunnelBridgeRampSingleSignal(const TileInfo *ti, bool is_green, 
 			sprite = { SPR_SIGNALS_BASE + ((type - 1) * 16 + variant * 64 + (position << 1) + is_green) + (IsSignalSpritePBS(type) ? 64 : 0), PAL_NONE };
 			if (_settings_client.gui.show_all_signal_default) sprite.sprite += SPR_DUP_SIGNALS_BASE - SPR_SIGNALS_BASE;
 		}
+		SpriteFile *file = GetOriginFile(sprite.sprite);
+		is_custom_sprite = (file != nullptr) && (file->flags & SFF_USERGRF);
 	}
 
 	if (is_custom_sprite && show_restricted && _settings_client.gui.show_restricted_signal_default && !result.restricted_valid && variant == SIG_ELECTRIC && style == 0) {
@@ -1791,15 +1794,8 @@ static void DrawTunnelBridgeRampSingleSignal(const TileInfo *ti, bool is_green, 
 	}
 
 	if (!is_custom_sprite && show_restricted && variant == SIG_ELECTRIC) {
-		if (type == SIGTYPE_PBS || type == SIGTYPE_PBS_ONEWAY) {
-			static const SubSprite lower_part = { -50, -10, 50, 50 };
-			static const SubSprite upper_part = { -50, -50, 50, -11 };
-
-			AddSortableSpriteToDraw(sprite.sprite, SPR_TRACERESTRICT_BASE, x, y, 1, 1, TILE_HEIGHT, z, false, 0, 0, BB_Z_SEPARATOR, &lower_part);
-			AddSortableSpriteToDraw(sprite.sprite,               PAL_NONE, x, y, 1, 1, TILE_HEIGHT, z, false, 0, 0, BB_Z_SEPARATOR, &upper_part);
-		} else {
-			AddSortableSpriteToDraw(sprite.sprite, SPR_TRACERESTRICT_BASE + (type == SIGTYPE_NO_ENTRY ? 0 : 1), x, y, 1, 1, TILE_HEIGHT, z, false, 0, 0, BB_Z_SEPARATOR);
-		}
+		extern void DrawRestrictedSignal(SignalType type, SpriteID sprite, int x, int y, int z, int dz, int bb_offset_z);
+		DrawRestrictedSignal(type, sprite.sprite, x, y, z, TILE_HEIGHT, BB_Z_SEPARATOR);
 	} else {
 		AddSortableSpriteToDraw(sprite.sprite, sprite.pal, x, y, 1, 1, TILE_HEIGHT, z, false, 0, 0, BB_Z_SEPARATOR);
 	}
@@ -2623,7 +2619,7 @@ static void GetTileDesc_TunnelBridge(TileIndex tile, TileDesc *td)
 		uint8 style = GetTunnelBridgeSignalStyle(tile);
 		if (style > 0) {
 			/* Add suffix about signal style */
-			SetDParamX(td->dparam, 0, td->str);
+			td->dparam[0] = td->str;
 			td->dparam[1] = style == 0 ? STR_BUILD_SIGNAL_DEFAULT_STYLE : _new_signal_styles[style - 1].name;
 			td->str = STR_LAI_RAIL_DESCRIPTION_TRACK_SIGNAL_STYLE;
 		}
@@ -2631,8 +2627,7 @@ static void GetTileDesc_TunnelBridge(TileIndex tile, TileDesc *td)
 			td->dparam[3] = td->dparam[2];
 			td->dparam[2] = td->dparam[1];
 			td->dparam[1] = td->dparam[0];
-			SetDParamX(td->dparam, 0, td->str);
-			SetDParamX(td->dparam, 0, td->str);
+			td->dparam[0] = td->str;
 			td->str = STR_LAI_RAIL_DESCRIPTION_RESTRICTED_SIGNAL;
 		}
 	}
@@ -3204,7 +3199,13 @@ static VehicleEnterTileStatus VehicleEnter_TunnelBridge(Vehicle *v, TileIndex ti
 					Train *t = Train::From(v);
 					t->track = TRACK_BIT_WORMHOLE;
 					SetBit(t->First()->flags, VRF_CONSIST_SPEED_REDUCTION);
-					PrepareToEnterBridge(t);
+
+					/* Do not call PrepareToEnterBridge because that also increments z_pos if
+					 * GVF_GOINGUP_BIT is set.
+					 * That is not required because this is occuring at frame == TILE_SIZE,
+					 * instead at TILE_SIZE - 1 */
+					ClrBit(t->gv_flags, GVF_GOINGUP_BIT);
+					ClrBit(t->gv_flags, GVF_GOINGDOWN_BIT);
 					break;
 				}
 

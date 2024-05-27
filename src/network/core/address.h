@@ -14,13 +14,14 @@
 #include "config.h"
 #include "../../company_type.h"
 #include "../../string_func.h"
-#include "../../core/smallmap_type.hpp"
 
+#include <map>
 #include <string>
+#include <vector>
 
 class NetworkAddress;
 typedef std::vector<NetworkAddress> NetworkAddressList; ///< Type for a list of addresses.
-typedef SmallMap<NetworkAddress, SOCKET> SocketList;    ///< Type for a mapping between address and socket.
+using SocketList = std::map<SOCKET, NetworkAddress>;    ///< Type for a mapping between address and socket.
 
 /**
  * Wrapper for (un)resolved network addresses; there's no reason to transform

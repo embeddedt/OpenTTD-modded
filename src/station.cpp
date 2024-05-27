@@ -42,6 +42,8 @@ std::array<ExtraStationNameInfo, MAX_EXTRA_STATION_NAMES> _extra_station_names;
 uint _extra_station_names_used;
 uint8 _extra_station_names_probability;
 
+const StationCargoList _empty_cargo_list{};
+const FlowStatMap _empty_flows{};
 
 StationKdtree _station_kdtree(Kdtree_StationXYFunc);
 
@@ -59,12 +61,12 @@ BaseStation::~BaseStation()
 {
 	if (CleaningPool()) return;
 
-	DeleteWindowById(WC_TRAINS_LIST,   VehicleListIdentifier(VL_STATION_LIST, VEH_TRAIN,    this->owner, this->index).Pack());
-	DeleteWindowById(WC_ROADVEH_LIST,  VehicleListIdentifier(VL_STATION_LIST, VEH_ROAD,     this->owner, this->index).Pack());
-	DeleteWindowById(WC_SHIPS_LIST,    VehicleListIdentifier(VL_STATION_LIST, VEH_SHIP,     this->owner, this->index).Pack());
-	DeleteWindowById(WC_AIRCRAFT_LIST, VehicleListIdentifier(VL_STATION_LIST, VEH_AIRCRAFT, this->owner, this->index).Pack());
-	DeleteWindowById(WC_DEPARTURES_BOARD, this->index);
-	DeleteWindowById(WC_STATION_CARGO, this->index);
+	CloseWindowById(WC_TRAINS_LIST,   VehicleListIdentifier(VL_STATION_LIST, VEH_TRAIN,    this->owner, this->index).Pack());
+	CloseWindowById(WC_ROADVEH_LIST,  VehicleListIdentifier(VL_STATION_LIST, VEH_ROAD,     this->owner, this->index).Pack());
+	CloseWindowById(WC_SHIPS_LIST,    VehicleListIdentifier(VL_STATION_LIST, VEH_SHIP,     this->owner, this->index).Pack());
+	CloseWindowById(WC_AIRCRAFT_LIST, VehicleListIdentifier(VL_STATION_LIST, VEH_AIRCRAFT, this->owner, this->index).Pack());
+	CloseWindowById(WC_DEPARTURES_BOARD, this->index);
+	CloseWindowById(WC_STATION_CARGO, this->index);
 }
 
 Station::Station(TileIndex tile) :
@@ -93,7 +95,7 @@ Station::~Station()
 {
 	if (CleaningPool()) {
 		for (CargoID c = 0; c < NUM_CARGO; c++) {
-			this->goods[c].cargo.OnCleanPool();
+			if (this->goods[c].data != nullptr) this->goods[c].data->cargo.OnCleanPool();
 		}
 		return;
 	}
@@ -113,9 +115,10 @@ Station::~Station()
 
 		for (NodeID node = 0; node < lg->Size(); ++node) {
 			Station *st = Station::Get((*lg)[node].Station());
-			st->goods[c].flows.erase(this->index);
+			GoodsEntryData *ged = st->goods[c].data.get();
+			if (ged != nullptr) ged->flows.erase(this->index);
 			if (lg->GetConstEdge(node, this->goods[c].node).LastUpdate() != INVALID_DATE) {
-				st->goods[c].flows.DeleteFlows(this->index);
+				if (ged != nullptr) ged->flows.DeleteFlows(this->index);
 				RerouteCargo(st, c, this->index, st->index);
 			}
 		}
@@ -149,7 +152,7 @@ Station::~Station()
 		InvalidateWindowData(WC_STATION_LIST, this->owner, 0);
 	}
 
-	DeleteWindowById(WC_STATION_VIEW, index);
+	CloseWindowById(WC_STATION_VIEW, index);
 	DeleteNewGRFInspectWindow(GSF_FAKE_STATION_STRUCT, this->index);
 
 	/* Now delete all orders that go to the station */
@@ -161,7 +164,7 @@ Station::~Station()
 	DeleteStationNews(this->index);
 
 	for (CargoID c = 0; c < NUM_CARGO; c++) {
-		this->goods[c].cargo.Truncate();
+		if (this->goods[c].data != nullptr) this->goods[c].data->cargo.Truncate();
 	}
 
 	CargoPacket::InvalidateAllFrom(this->index);
@@ -430,11 +433,7 @@ void Station::AddIndustryToDeliver(Industry *ind, TileIndex tile)
 	}
 
 	/* Include only industries that can accept cargo */
-	uint cargo_index;
-	for (cargo_index = 0; cargo_index < lengthof(ind->accepts_cargo); cargo_index++) {
-		if (ind->accepts_cargo[cargo_index] != CT_INVALID) break;
-	}
-	if (cargo_index >= lengthof(ind->accepts_cargo)) return;
+	if (!ind->IsCargoAccepted()) return;
 
 	this->industries_near.insert(IndustryListEntry{distance, ind});
 }

@@ -50,6 +50,9 @@ enum StringControlCode {
 	SCC_TR_SLOT_NAME,
 	SCC_TR_COUNTER_NAME,
 
+	SCC_VIEWPORT_TOWN_LABEL1,
+	SCC_VIEWPORT_TOWN_LABEL2,
+
 	SCC_CURRENCY_SHORT,
 	SCC_CURRENCY_LONG,
 
@@ -81,6 +84,7 @@ enum StringControlCode {
 
 	SCC_TIME_HHMM,
 	SCC_TT_TICKS,
+	SCC_TT_TICKS_LONG,
 
 	/* Must be consecutive */
 	SCC_STRING1,
@@ -129,6 +133,7 @@ enum StringControlCode {
 	SCC_GRAY,
 	SCC_DKBLUE,
 	SCC_BLACK,
+	SCC_COLOUR,
 	SCC_PUSH_COLOUR,
 	SCC_POP_COLOUR,
 
@@ -165,6 +170,7 @@ enum StringControlCode {
 	SCC_NEWGRF_PRINT_WORD_CARGO_SHORT,                ///< 9A 1C: Read 2 + 2 bytes from the stack as cargo type (translated) and unsigned cargo amount
 	SCC_NEWGRF_PRINT_WORD_CARGO_TINY,                 ///< 9A 1D: Read 2 + 2 bytes from the stack as cargo type (translated) and unsigned cargo amount
 	SCC_NEWGRF_PRINT_WORD_CARGO_NAME,                 ///< 9A 1E: Read 2 bytes from the stack as cargo name
+	SCC_NEWGRF_PRINT_DWORD_FORCE,                     ///< 9A 21: Read 4 bytes from the stack as unsigned force
 	SCC_NEWGRF_PUSH_WORD,                             ///< 9A 03: Pushes 2 bytes onto the stack
 	SCC_NEWGRF_UNPRINT,                               ///< 9A 04: "Unprints" the given number of bytes from the string
 	SCC_NEWGRF_DISCARD_WORD,                          ///< 85: Discard the next two bytes

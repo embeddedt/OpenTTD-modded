@@ -22,6 +22,10 @@ extern NetworkClientSocketPool _networkclientsocket_pool;
 
 /** Class for handling the server side of the game connection. */
 class ServerNetworkGameSocketHandler : public NetworkClientSocketPool::PoolItem<&_networkclientsocket_pool>, public NetworkGameSocketHandler, public TCPListenHandler<ServerNetworkGameSocketHandler, PACKET_SERVER_FULL, PACKET_SERVER_BANNED> {
+	NetworkGameKeys intl_keys;
+	uint64 min_key_message_id = 0;
+	byte *rcon_reply_key = nullptr;
+
 protected:
 	NetworkRecvStatus Receive_CLIENT_JOIN(Packet *p) override;
 	NetworkRecvStatus Receive_CLIENT_GAME_INFO(Packet *p) override;
@@ -51,6 +55,8 @@ protected:
 	NetworkRecvStatus SendNeedGamePassword();
 	NetworkRecvStatus SendNeedCompanyPassword();
 
+	bool ParseKeyPasswordPacket(Packet *p, NetworkSharedSecrets &ss, const std::string &password, std::string *payload, size_t length);
+
 public:
 	/** Status of a client */
 	enum ClientStatus {
@@ -76,9 +82,6 @@ public:
 	ClientStatus status;         ///< Status of this client
 	CommandQueue outgoing_queue; ///< The command-queue awaiting delivery
 	size_t receive_limit;        ///< Amount of bytes that we can receive at this moment
-	uint32 server_hash_bits;     ///< Server password hash entropy bits
-	uint32 rcon_hash_bits;       ///< Rcon password hash entropy bits
-	uint32 settings_hash_bits;   ///< Settings password hash entropy bits
 	bool settings_authed = false;///< Authorised to control all game settings
 	bool supports_zstd = false;  ///< Client supports zstd compression
 
@@ -86,9 +89,10 @@ public:
 	NetworkAddress client_address; ///< IP-address of the client (so they can be banned)
 
 	std::string desync_log;
+	std::string desync_frame_info;
 
-	uint desync_frame_seed = 0;
-	uint desync_frame_state_checksum = 0;
+	uint rcon_auth_failures = 0;
+	uint settings_auth_failures = 0;
 
 	ServerNetworkGameSocketHandler(SOCKET s);
 	~ServerNetworkGameSocketHandler();
@@ -106,6 +110,7 @@ public:
 	NetworkRecvStatus SendShutdown();
 	NetworkRecvStatus SendNewGame();
 	NetworkRecvStatus SendRConResult(uint16 colour, const std::string &command);
+	NetworkRecvStatus SendRConDenied();
 	NetworkRecvStatus SendMove(ClientID client_id, CompanyID company_id);
 
 	NetworkRecvStatus SendClientInfo(NetworkClientInfo *ci);
@@ -121,7 +126,15 @@ public:
 	NetworkRecvStatus SendConfigUpdate();
 	NetworkRecvStatus SendSettingsAccessUpdate(bool ok);
 
+	NetworkRecvStatus HandleAuthFailure(uint &failure_count);
+
 	std::string GetDebugInfo() const override;
+
+	const NetworkGameKeys &GetKeys()
+	{
+		if (!this->intl_keys.inited) this->intl_keys.Initialise();
+		return this->intl_keys;
+	}
 
 	static void Send();
 	static void AcceptConnection(SOCKET s, const NetworkAddress &address);

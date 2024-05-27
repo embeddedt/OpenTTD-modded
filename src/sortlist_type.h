@@ -12,8 +12,9 @@
 
 #include "core/enum_type.hpp"
 #include "core/bitmath_func.hpp"
-#include "core/smallvec_type.hpp"
+#include "core/mem_func.hpp"
 #include "date_type.h"
+#include <vector>
 
 /** Flags of the sort list. */
 enum SortListFlags {
@@ -241,7 +242,7 @@ public:
 	{
 		this->flags ^= VL_DESC;
 
-		if (this->IsSortable()) MemReverseT(std::vector<T>::data(), std::vector<T>::size());
+		if (this->IsSortable()) std::reverse(std::vector<T>::begin(), std::vector<T>::end());
 	}
 
 	/**

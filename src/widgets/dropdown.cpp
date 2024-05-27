@@ -31,11 +31,13 @@ void DropDownListItem::Draw(const Rect &r, bool sel, Colours bg_colour) const
 	GfxFillRect(r.left, mid, r.right, mid + WidgetDimensions::scaled.bevel.top - 1, c2);
 }
 
+DropDownListStringItem::DropDownListStringItem(StringID string, int result, bool masked) : DropDownListItem(result, masked), string(GetString(string))
+{
+}
+
 uint DropDownListStringItem::Width() const
 {
-	char buffer[512];
-	GetString(buffer, this->String(), lastof(buffer));
-	return GetStringBoundingBox(buffer).width + WidgetDimensions::scaled.dropdowntext.Horizontal();
+	return GetStringBoundingBox(this->String()).width + WidgetDimensions::scaled.dropdowntext.Horizontal();
 }
 
 void DropDownListStringItem::Draw(const Rect &r, bool sel, Colours bg_colour) const
@@ -53,25 +55,12 @@ void DropDownListStringItem::Draw(const Rect &r, bool sel, Colours bg_colour) co
  */
 /* static */ bool DropDownListStringItem::NatSortFunc(std::unique_ptr<const DropDownListItem> const &first, std::unique_ptr<const DropDownListItem> const &second)
 {
-	char buffer1[512], buffer2[512];
-	GetString(buffer1, static_cast<const DropDownListStringItem*>(first.get())->String(), lastof(buffer1));
-	GetString(buffer2, static_cast<const DropDownListStringItem*>(second.get())->String(), lastof(buffer2));
-	return strnatcmp(buffer1, buffer2) < 0;
+	std::string str1 = static_cast<const DropDownListStringItem*>(first.get())->String();
+	std::string str2 = static_cast<const DropDownListStringItem*>(second.get())->String();
+	return StrNaturalCompare(str1, str2) < 0;
 }
 
-StringID DropDownListParamStringItem::String() const
-{
-	for (uint i = 0; i < lengthof(this->decode_params); i++) SetDParam(i, this->decode_params[i]);
-	return this->string;
-}
-
-StringID DropDownListCharStringItem::String() const
-{
-	SetDParamStr(0, this->raw_string);
-	return this->string;
-}
-
-DropDownListIconItem::DropDownListIconItem(SpriteID sprite, PaletteID pal, StringID string, int result, bool masked) : DropDownListParamStringItem(string, result, masked), sprite(sprite), pal(pal)
+DropDownListIconItem::DropDownListIconItem(SpriteID sprite, PaletteID pal, StringID string, int result, bool masked) : DropDownListStringItem(string, result, masked), sprite(sprite), pal(pal)
 {
 	this->dim = GetSpriteSize(sprite);
 	this->sprite_y = dim.height;
@@ -84,7 +73,7 @@ uint DropDownListIconItem::Height(uint width) const
 
 uint DropDownListIconItem::Width() const
 {
-	return DropDownListParamStringItem::Width() + this->dim.width + WidgetDimensions::scaled.hsep_wide;
+	return DropDownListStringItem::Width() + this->dim.width + WidgetDimensions::scaled.hsep_wide;
 }
 
 void DropDownListIconItem::Draw(const Rect &r, bool sel, Colours bg_colour) const
@@ -179,8 +168,8 @@ struct DropdownWindow : Window {
 		}
 
 		/* Capacity is the average number of items visible */
-		this->vscroll->SetCapacity(size.height * (uint16)this->list.size() / list_height);
-		this->vscroll->SetCount((uint16)this->list.size());
+		this->vscroll->SetCapacity(size.height * this->list.size() / list_height);
+		this->vscroll->SetCount(this->list.size());
 
 		this->parent_button    = button;
 		this->selected_index   = selected;
@@ -190,12 +179,12 @@ struct DropdownWindow : Window {
 		this->scrolling_timer  = GUITimer(MILLISECONDS_PER_TICK);
 	}
 
-	~DropdownWindow()
+	void Close() override
 	{
 		/* Make the dropdown "invisible", so it doesn't affect new window placement.
 		 * Also mark it dirty in case the callback deals with the screen. (e.g. screenshots). */
-		this->window_class = WC_INVALID;
 		this->SetDirty();
+		this->Window::Close();
 
 		Window *w2 = FindWindowById(this->parent_wnd_class, this->parent_wnd_num);
 		if (w2 != nullptr) {
@@ -209,7 +198,7 @@ struct DropdownWindow : Window {
 		}
 	}
 
-	virtual Point OnInitialPosition(int16 sm_width, int16 sm_height, int window_number)
+	virtual Point OnInitialPosition(int16 sm_width, int16 sm_height, int window_number) override
 	{
 		return this->position;
 	}
@@ -246,7 +235,7 @@ struct DropdownWindow : Window {
 		return false;
 	}
 
-	virtual void DrawWidget(const Rect &r, int widget) const
+	virtual void DrawWidget(const Rect &r, int widget) const override
 	{
 		if (widget != WID_DM_ITEMS) return;
 
@@ -275,7 +264,7 @@ struct DropdownWindow : Window {
 		}
 	}
 
-	virtual void OnClick(Point pt, int widget, int click_count)
+	virtual void OnClick(Point pt, int widget, int click_count) override
 	{
 		if (widget != WID_DM_ITEMS) return;
 		int item;
@@ -286,28 +275,23 @@ struct DropdownWindow : Window {
 		}
 	}
 
-	virtual void OnRealtimeTick(uint delta_ms)
+	virtual void OnRealtimeTick(uint delta_ms) override
 	{
 		if (!this->scrolling_timer.Elapsed(delta_ms)) return;
 		this->scrolling_timer.SetInterval(MILLISECONDS_PER_TICK);
 
 		if (this->scrolling != 0) {
-			int pos = this->vscroll->GetPosition();
+			if (this->vscroll->UpdatePosition(this->scrolling)) this->SetDirty();
 
-			this->vscroll->UpdatePosition(this->scrolling);
 			this->scrolling = 0;
-
-			if (pos != this->vscroll->GetPosition()) {
-				this->SetDirty();
-			}
 		}
 	}
 
-	virtual void OnMouseLoop()
+	virtual void OnMouseLoop() override
 	{
 		Window *w2 = FindWindowById(this->parent_wnd_class, this->parent_wnd_num);
 		if (w2 == nullptr) {
-			delete this;
+			this->Close();
 			return;
 		}
 
@@ -318,7 +302,7 @@ struct DropdownWindow : Window {
 			this->SetDirty();
 
 			w2->OnDropdownSelect(this->parent_button, this->selected_index);
-			delete this;
+			this->Close();
 			return;
 		}
 
@@ -328,7 +312,7 @@ struct DropdownWindow : Window {
 			if (!_left_button_clicked) {
 				this->drag_mode = false;
 				if (!this->GetDropDownItem(item)) {
-					if (this->instant_close) delete this;
+					if (this->instant_close) this->Close();
 					return;
 				}
 				this->click_delay = 2;
@@ -353,7 +337,7 @@ struct DropdownWindow : Window {
 		}
 	}
 
-	virtual void OnFocus(Window *previously_focused_window)
+	virtual void OnFocus(Window *previously_focused_window) override
 	{
 		if (this->sync_parent_focus & DDSF_RECV_FOCUS) {
 			Window *parent = FindWindowById(this->parent_wnd_class, this->parent_wnd_num);
@@ -361,11 +345,11 @@ struct DropdownWindow : Window {
 		}
 	}
 
-	virtual void OnFocusLost(Window *newly_focused_window)
+	virtual void OnFocusLost(bool closing, Window *newly_focused_window) override
 	{
 		if (this->sync_parent_focus & DDSF_LOST_FOCUS) {
 			Window *parent = FindWindowById(this->parent_wnd_class, this->parent_wnd_num);
-			if (parent) parent->OnFocusLost(newly_focused_window);
+			if (parent) parent->OnFocusLost(false, newly_focused_window);
 		}
 	}
 };
@@ -378,14 +362,12 @@ struct DropdownWindow : Window {
  * @param button   The widget which is passed to Window::OnDropdownSelect and OnDropdownClose.
  *                 Unless you override those functions, this should be then widget index of the dropdown button.
  * @param wi_rect  Coord of the parent drop down button, used to position the dropdown menu.
- * @param auto_width The width is determined by the widest item in the list,
- *                   in this case only one of \a left or \a right is used (depending on text direction).
  * @param instant_close Set to true if releasing mouse button should close the
  *                      list regardless of where the cursor is.
  */
-void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button, Rect wi_rect, Colours wi_colour, bool auto_width, bool instant_close, DropDownSyncFocus sync_parent_focus)
+void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button, Rect wi_rect, Colours wi_colour, bool instant_close, DropDownSyncFocus sync_parent_focus)
 {
-	DeleteWindowById(WC_DROPDOWN_MENU, 0);
+	CloseWindowById(WC_DROPDOWN_MENU, 0);
 
 	/* The preferred position is just below the dropdown calling widget */
 	int top = w->top + wi_rect.bottom + 1;
@@ -393,7 +375,7 @@ void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button
 	/* The preferred width equals the calling widget */
 	uint width = wi_rect.Width();
 
-	/* Longest item in the list, if auto_width is enabled */
+	/* Longest item in the list */
 	uint max_item_width = 0;
 
 	/* Total height of list */
@@ -401,10 +383,10 @@ void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button
 
 	for (const auto &item : list) {
 		height += item->Height(width);
-		if (auto_width) max_item_width = std::max(max_item_width, item->Width());
+		max_item_width = std::max(max_item_width, item->Width());
 	}
 
-	if (auto_width) max_item_width += WidgetDimensions::scaled.fullbevel.Horizontal();
+	max_item_width += WidgetDimensions::scaled.fullbevel.Horizontal();
 
 	/* Scrollbar needed? */
 	bool scroll = false;
@@ -431,11 +413,8 @@ void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button
 			scroll = true;
 			uint avg_height = height / (uint)list.size();
 
-			/* Check at least there is space for one item. */
-			assert(available_height >= avg_height);
-
-			/* Fit the list. */
-			uint rows = available_height / avg_height;
+			/* Fit the list; create at least one row, even if there is no height available. */
+			uint rows = std::max<uint>(available_height / avg_height, 1);
 			height = rows * avg_height;
 
 			/* Add space for the scrollbar. */
@@ -448,7 +427,7 @@ void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button
 		}
 	}
 
-	if (auto_width) width = std::max(width, max_item_width);
+	width = std::max(width, max_item_width);
 
 	Point dw_pos = { w->left + (_current_text_dir == TD_RTL ? wi_rect.right + 1 - (int)width : wi_rect.left), top};
 	Dimension dw_size = {width, height};
@@ -467,12 +446,11 @@ void ShowDropDownListAt(Window *w, DropDownList &&list, int selected, int button
  * @param selected The initially selected list item.
  * @param button   The widget within the parent window that is used to determine
  *                 the list's location.
- * @param width    Override the width determined by the selected widget.
- * @param auto_width Maximum width is determined by the widest item in the list.
+ * @param width    Override the minimum width determined by the selected widget and list contents.
  * @param instant_close Set to true if releasing mouse button should close the
  *                      list regardless of where the cursor is.
  */
-void ShowDropDownList(Window *w, DropDownList &&list, int selected, int button, uint width, bool auto_width, bool instant_close, DropDownSyncFocus sync_parent_focus)
+void ShowDropDownList(Window *w, DropDownList &&list, int selected, int button, uint width, bool instant_close, DropDownSyncFocus sync_parent_focus)
 {
 	/* Our parent's button widget is used to determine where to place the drop
 	 * down list window. */
@@ -495,7 +473,7 @@ void ShowDropDownList(Window *w, DropDownList &&list, int selected, int button, 
 		}
 	}
 
-	ShowDropDownListAt(w, std::move(list), selected, button, wi_rect, wi_colour, auto_width, instant_close, sync_parent_focus);
+	ShowDropDownListAt(w, std::move(list), selected, button, wi_rect, wi_colour, instant_close, sync_parent_focus);
 }
 
 /**
@@ -507,7 +485,7 @@ void ShowDropDownList(Window *w, DropDownList &&list, int selected, int button, 
  * @param button        Button widget number of the parent window \a w that wants the dropdown menu.
  * @param disabled_mask Bitmask for disabled items (items with their bit set are displayed, but not selectable in the dropdown list).
  * @param hidden_mask   Bitmask for hidden items (items with their bit set are not copied to the dropdown list).
- * @param width         Width of the dropdown menu. If \c 0, use the width of parent widget \a button. If \c UINT_MAX, use the width of parent widget \a button, and use auto_width.
+ * @param width         Minimum width of the dropdown menu.
  */
 void ShowDropDownMenu(Window *w, const StringID *strings, int selected, int button, uint32 disabled_mask, uint32 hidden_mask, uint width, DropDownSyncFocus sync_parent_focus)
 {
@@ -519,13 +497,7 @@ void ShowDropDownMenu(Window *w, const StringID *strings, int selected, int butt
 		}
 	}
 
-	bool auto_width = false;
-	if (width == UINT_MAX) {
-		width = 0;
-		auto_width = true;
-	}
-
-	if (!list.empty()) ShowDropDownList(w, std::move(list), selected, button, width, auto_width, false, sync_parent_focus);
+	if (!list.empty()) ShowDropDownList(w, std::move(list), selected, button, width, false, sync_parent_focus);
 }
 
 /**
@@ -543,7 +515,7 @@ int HideDropDownMenu(Window *pw)
 		if (pw->window_class == dw->parent_wnd_class &&
 				pw->window_number == dw->parent_wnd_num) {
 			int parent_button = dw->parent_button;
-			delete dw;
+			dw->Close();
 			return parent_button;
 		}
 	}

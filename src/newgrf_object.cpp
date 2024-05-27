@@ -126,11 +126,11 @@ void ResetObjects()
 	_object_specs.clear();
 
 	/* And add our originals. */
-	_object_specs.resize(lengthof(_original_objects));
+	_object_specs.reserve(lengthof(_original_objects));
 
 	for (uint16 i = 0; i < lengthof(_original_objects); i++) {
-		_object_specs[i] = _original_objects[i];
-		_object_specs[i].grf_prop.local_id = i;
+		ObjectSpec &spec = _object_specs.emplace_back(_original_objects[i]);
+		spec.grf_prop.local_id = i;
 	}
 
 	/* Set class for originals. */
@@ -253,7 +253,7 @@ static uint32 GetCountAndDistanceOfClosestInstance(uint32 local_id, uint32 grfid
 	/* If the object type is invalid, there is none and the closest is far away. */
 	if (idx >= NUM_OBJECTS) return 0 | 0xFFFF;
 
-	return Object::GetTypeCount(idx) << 16 | std::min(GetClosestObject(tile, idx, current), 0xFFFFu);
+	return Object::GetTypeCount(idx) << 16 | ClampTo<uint16_t>(GetClosestObject(tile, idx, current));
 }
 
 /** Used by the resolver to get values for feature 0F deterministic spritegroups. */
@@ -334,10 +334,10 @@ static uint32 GetCountAndDistanceOfClosestInstance(uint32 local_id, uint32 grfid
 		case 0x44: return GetTileOwner(this->tile);
 
 		/* Get town zone and Manhattan distance of closest town */
-		case 0x45: return GetTownRadiusGroup(t, this->tile) << 16 | std::min(DistanceManhattan(this->tile, t->xy), 0xFFFFu);
+		case 0x45: return (t == nullptr) ? 0 : (GetTownRadiusGroup(t, this->tile) << 16 | ClampTo<uint16>(DistanceManhattan(this->tile, t->xy)));
 
 		/* Get square of Euclidian distance of closest town */
-		case 0x46: return DistanceSquare(this->tile, t->xy);
+		case 0x46: return (t == nullptr) ? 0 : DistanceSquare(this->tile, t->xy);
 
 		/* Object colour */
 		case 0x47: return this->obj->colour;
@@ -403,8 +403,8 @@ ObjectResolverObject::ObjectResolverObject(const ObjectSpec *spec, Object *obj, 
 	: ResolverObject(spec->grf_prop.grffile, callback, param1, param2), object_scope(*this, obj, spec, tile, view)
 {
 	this->town_scope = nullptr;
-	this->root_spritegroup = (obj == nullptr && spec->grf_prop.spritegroup[CT_PURCHASE_OBJECT] != nullptr) ?
-			spec->grf_prop.spritegroup[CT_PURCHASE_OBJECT] : spec->grf_prop.spritegroup[0];
+	this->root_spritegroup = (obj == nullptr && spec->grf_prop.spritegroup[OBJECT_SPRITE_GROUP_PURCHASE] != nullptr) ?
+			spec->grf_prop.spritegroup[OBJECT_SPRITE_GROUP_PURCHASE] : spec->grf_prop.spritegroup[OBJECT_SPRITE_GROUP_DEFAULT];
 }
 
 ObjectResolverObject::~ObjectResolverObject()

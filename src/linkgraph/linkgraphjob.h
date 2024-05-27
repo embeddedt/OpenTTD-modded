@@ -312,10 +312,14 @@ public:
 	inline DateTicks StartDateTicks() const { return start_date_ticks; }
 
 	/**
-	 * Change the join date on date cheating.
+	 * Change the start and join dates on date cheating.
 	 * @param interval Number of days to add.
 	 */
-	inline void ShiftJoinDate(int interval) { this->join_date_ticks += interval * DAY_TICKS; }
+	inline void ShiftJoinDate(int interval)
+	{
+		this->join_date_ticks += interval * DAY_TICKS;
+		this->start_date_ticks += interval * DAY_TICKS;
+	}
 
 	/**
 	 * Get the link graph settings for this component.
@@ -346,7 +350,7 @@ public:
 	 * Get the date when the underlying link graph was last compressed.
 	 * @return Compression date.
 	 */
-	inline Date LastCompression() const { return this->link_graph.LastCompression(); }
+	inline DateTicksScaled LastCompression() const { return this->link_graph.LastCompression(); }
 
 	/**
 	 * Get the ID of the underlying link graph.

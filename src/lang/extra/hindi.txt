@@ -19,3 +19,5 @@
 # Scheduled Dispatch
 
 # Modifier key toggle window
+
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}इस कंपनी का २५% अंश नहीं बेच सकते...

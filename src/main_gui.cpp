@@ -34,7 +34,7 @@
 #include "error.h"
 #include "news_gui.h"
 
-#include "saveload/saveload.h"
+#include "sl/saveload.h"
 
 #include "widgets/main_widget.h"
 
@@ -54,14 +54,14 @@ void CcGiveMoney(const CommandCost &result, TileIndex tile, uint32 p1, uint32 p2
 
 	/* Inform the company of the action of one of its clients (controllers). */
 	char msg[64];
-	SetDParam(0, p2);
+	SetDParam(0, p1);
 	GetString(msg, STR_COMPANY_NAME, lastof(msg));
 
 	/*
 	 * bits 31-16: source company
 	 * bits 15-0: target company
 	 */
-	uint64 auxdata = (p2 & 0xFFFF) | (((uint64) _local_company) << 16);
+	uint64 auxdata = (p1 & 0xFFFF) | (((uint64) _local_company) << 16);
 
 	if (!_network_server) {
 		NetworkClientSendChat(NETWORK_ACTION_GIVE_MONEY, DESTTYPE_BROADCAST_SS, p2, msg, NetworkTextMessageData(result.GetCost(), auxdata));
@@ -234,6 +234,8 @@ enum {
 	GHK_CHANGE_MAP_MODE_PREV,
 	GHK_CHANGE_MAP_MODE_NEXT,
 	GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE,
+	GHK_SWITCH_VIEWPORT_MAP_SLOPE_MODE,
+	GHK_SWITCH_VIEWPORT_MAP_HEIGHT_MODE,
 };
 
 struct MainWindow : Window
@@ -348,8 +350,8 @@ struct MainWindow : Window
 			}
 
 			case GHK_RESET_OBJECT_TO_PLACE: ResetObjectToPlace(); break;
-			case GHK_DELETE_WINDOWS: DeleteNonVitalWindows(); break;
-			case GHK_DELETE_NONVITAL_WINDOWS: DeleteAllNonVitalWindows(); break;
+			case GHK_DELETE_WINDOWS: CloseNonVitalWindows(); break;
+			case GHK_DELETE_NONVITAL_WINDOWS: CloseAllNonVitalWindows(); break;
 			case GHK_DELETE_ALL_MESSAGES: DeleteAllMessages(); break;
 			case GHK_REFRESH_SCREEN: MarkWholeScreenDirty(); break;
 
@@ -462,10 +464,22 @@ struct MainWindow : Window
 			case GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE:
 				if (_settings_client.gui.show_vehicle_route_mode != 0) {
 					_settings_client.gui.show_vehicle_route_mode ^= 3;
-					CheckMarkDirtyFocusedRoutePaths();
+					CheckMarkDirtyViewportRoutePaths();
 					SetWindowDirty(WC_GAME_OPTIONS, WN_GAME_OPTIONS_GAME_SETTINGS);
 				}
 				break;
+			case GHK_SWITCH_VIEWPORT_MAP_SLOPE_MODE: {
+				_settings_client.gui.show_slopes_on_viewport_map = !_settings_client.gui.show_slopes_on_viewport_map;
+				extern void MarkAllViewportMapLandscapesDirty();
+				MarkAllViewportMapLandscapesDirty();
+				break;
+			}
+			case GHK_SWITCH_VIEWPORT_MAP_HEIGHT_MODE: {
+				_settings_client.gui.show_height_on_viewport_map = !_settings_client.gui.show_height_on_viewport_map;
+				extern void MarkAllViewportMapLandscapesDirty();
+				MarkAllViewportMapLandscapesDirty();
+				break;
+			}
 
 			default: return ES_NOT_HANDLED;
 		}
@@ -521,7 +535,7 @@ struct MainWindow : Window
 
 	virtual void OnMouseOver(Point pt, int widget) override
 	{
-		if (pt.x != -1 && _game_mode != GM_MENU && (_settings_client.gui.hover_delay_ms == 0 ? _right_button_down : _mouse_hovering)) {
+		if (pt.x != -1 && _game_mode != GM_MENU && IsViewportMouseHoverActive()) {
 			/* Show tooltip with last month production or town name */
 			const Point p = GetTileBelowCursor();
 			const TileIndex tile = TileVirtXY(p.x, p.y);
@@ -585,6 +599,8 @@ static Hotkey global_hotkeys[] = {
 	Hotkey(WKC_PAGEUP,   "previous_map_mode", GHK_CHANGE_MAP_MODE_PREV),
 	Hotkey(WKC_PAGEDOWN, "next_map_mode",     GHK_CHANGE_MAP_MODE_NEXT),
 	Hotkey((uint16)0,    "switch_viewport_route_overlay_mode", GHK_SWITCH_VIEWPORT_ROUTE_OVERLAY_MODE),
+	Hotkey((uint16)0,    "switch_viewport_map_slope_mode", GHK_SWITCH_VIEWPORT_MAP_SLOPE_MODE),
+	Hotkey((uint16)0,    "switch_viewport_map_height_mode", GHK_SWITCH_VIEWPORT_MAP_HEIGHT_MODE),
 	HOTKEY_LIST_END
 };
 HotkeyList MainWindow::hotkeys("global", global_hotkeys);
@@ -592,7 +608,7 @@ HotkeyList MainWindow::hotkeys("global", global_hotkeys);
 static WindowDesc _main_window_desc(
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_MAIN_WINDOW, WC_NONE,
-	0,
+	WDF_NO_CLOSE,
 	_nested_main_window_widgets, lengthof(_nested_main_window_widgets),
 	&MainWindow::hotkeys
 );
@@ -617,7 +633,7 @@ void ShowSelectGameWindow();
 void SetupColoursAndInitialWindow()
 {
 	for (uint i = 0; i != 16; i++) {
-		const byte *b = GetNonSprite(PALETTE_RECOLOUR_START + i, ST_RECOLOUR);
+		const byte *b = GetNonSprite(PALETTE_RECOLOUR_START + i, SpriteType::Recolour);
 
 		assert(b);
 		memcpy(_colour_gradient[i], b + 0xC6, sizeof(_colour_gradient[i]));

@@ -24,7 +24,6 @@
 
 #include "../../openttd.h"
 #include "../../debug.h"
-#include "../../rev.h"
 #include "cocoa_v.h"
 #include "cocoa_wnd.h"
 #include "../../settings_type.h"
@@ -459,7 +458,7 @@ void CocoaDialog(const char *title, const char *message, const char *buttonLabel
 
 		[ self setContentMinSize:NSMakeSize(64.0f, 64.0f) ];
 
-		std::string caption = std::string{"OpenTTD "} + _openttd_revision;
+		std::string caption = VideoDriver::GetCaption();
 		NSString *nsscaption = [ [ NSString alloc ] initWithUTF8String:caption.c_str() ];
 		[ self setTitle:nsscaption ];
 		[ self setMiniwindowTitle:nsscaption ];
@@ -661,7 +660,7 @@ void CocoaDialog(const char *title, const char *message, const char *buttonLabel
 		_cursor.UpdateCursorPositionRelative(event.deltaX * self.getContentsScale, event.deltaY * self.getContentsScale);
 	} else {
 		NSPoint pt = [ self mousePositionFromEvent:event ];
-		_cursor.UpdateCursorPosition(pt.x, pt.y, false);
+		_cursor.UpdateCursorPosition(pt.x, pt.y);
 	}
 
 	HandleMouseEvents();
@@ -1059,10 +1058,11 @@ void CocoaDialog(const char *title, const char *message, const char *buttonLabel
 
 	Point pt = { (int)view_pt.x, (int)[ self frame ].size.height - (int)view_pt.y };
 
-	const char *ch = _focused_window->GetTextCharacterAtPosition(pt);
-	if (ch == nullptr) return NSNotFound;
+	auto index = _focused_window->GetTextCharacterAtPosition(pt);
+	if (index == -1) return NSNotFound;
 
-	return CountUtf16Units(_focused_window->GetFocusedText(), ch);
+	auto text = _focused_window->GetFocusedText();
+	return CountUtf16Units(text, text + index);
 }
 
 /** Get the bounding rect for the given range. */

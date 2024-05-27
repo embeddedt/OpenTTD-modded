@@ -129,39 +129,39 @@ STR_QUANTITY_N_A                                                :N/A
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}FF
-STR_ABBREV_COAL                                                 :{TINY_FONT}KL
-STR_ABBREV_MAIL                                                 :{TINY_FONT}PS
-STR_ABBREV_OIL                                                  :{TINY_FONT}OL
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}KÚ
-STR_ABBREV_GOODS                                                :{TINY_FONT}GS
-STR_ABBREV_GRAIN                                                :{TINY_FONT}KN
-STR_ABBREV_WOOD                                                 :{TINY_FONT}TM
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}ML
-STR_ABBREV_STEEL                                                :{TINY_FONT}ST
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}VL
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}KM
-STR_ABBREV_MAIZE                                                :{TINY_FONT}MS
-STR_ABBREV_FRUIT                                                :{TINY_FONT}FT
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}DM
-STR_ABBREV_FOOD                                                 :{TINY_FONT}MT
-STR_ABBREV_PAPER                                                :{TINY_FONT}PR
-STR_ABBREV_GOLD                                                 :{TINY_FONT}GL
-STR_ABBREV_WATER                                                :{TINY_FONT}VN
-STR_ABBREV_WHEAT                                                :{TINY_FONT}HV
-STR_ABBREV_RUBBER                                               :{TINY_FONT}GM
-STR_ABBREV_SUGAR                                                :{TINY_FONT}SK
-STR_ABBREV_TOYS                                                 :{TINY_FONT}LK
-STR_ABBREV_SWEETS                                               :{TINY_FONT}SL
-STR_ABBREV_COLA                                                 :{TINY_FONT}KL
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}KF
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}BL
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}TF
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}BA
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}PL
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}SV
-STR_ABBREV_NONE                                                 :{TINY_FONT}EI
-STR_ABBREV_ALL                                                  :{TINY_FONT}ALT
+STR_ABBREV_PASSENGERS                                           :FF
+STR_ABBREV_COAL                                                 :KL
+STR_ABBREV_MAIL                                                 :PS
+STR_ABBREV_OIL                                                  :OL
+STR_ABBREV_LIVESTOCK                                            :KÚ
+STR_ABBREV_GOODS                                                :GS
+STR_ABBREV_GRAIN                                                :KN
+STR_ABBREV_WOOD                                                 :TM
+STR_ABBREV_IRON_ORE                                             :ML
+STR_ABBREV_STEEL                                                :ST
+STR_ABBREV_VALUABLES                                            :VL
+STR_ABBREV_COPPER_ORE                                           :KM
+STR_ABBREV_MAIZE                                                :MS
+STR_ABBREV_FRUIT                                                :FT
+STR_ABBREV_DIAMONDS                                             :DM
+STR_ABBREV_FOOD                                                 :MT
+STR_ABBREV_PAPER                                                :PR
+STR_ABBREV_GOLD                                                 :GL
+STR_ABBREV_WATER                                                :VN
+STR_ABBREV_WHEAT                                                :HV
+STR_ABBREV_RUBBER                                               :GM
+STR_ABBREV_SUGAR                                                :SK
+STR_ABBREV_TOYS                                                 :LK
+STR_ABBREV_SWEETS                                               :SL
+STR_ABBREV_COLA                                                 :KL
+STR_ABBREV_CANDYFLOSS                                           :KF
+STR_ABBREV_BUBBLES                                              :BL
+STR_ABBREV_TOFFEE                                               :TF
+STR_ABBREV_BATTERIES                                            :BA
+STR_ABBREV_PLASTIC                                              :PL
+STR_ABBREV_FIZZY_DRINKS                                         :SV
+STR_ABBREV_NONE                                                 :EI
+STR_ABBREV_ALL                                                  :ALT
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA} ferðafólk
@@ -189,32 +189,35 @@ STR_COLOUR_BROWN                                                :Brúnt
 STR_COLOUR_GREY                                                 :Grátt
 STR_COLOUR_WHITE                                                :Hvítt
 
+###length 17
+
+
 # Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA} mph
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA} km/t
-STR_UNITS_VELOCITY_SI                                           :{COMMA} m/s
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL} mph
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL} km/t
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL} m/s
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}hp
-STR_UNITS_POWER_METRIC                                          :{COMMA}hp
-STR_UNITS_POWER_SI                                              :{COMMA}kW
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}hp
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}hp
+STR_UNITS_POWER_SI                                              :{DECIMAL}kW
 
 
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}t
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}kg
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}t
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}kg
 
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA} tons
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA} kg
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL} tons
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL} kg
 
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}l
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}m³
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}l
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}m³
 
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA} lit{P ur rar}
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA} m³
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL} lit{P ur rar}
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL} m³
 
-STR_UNITS_FORCE_SI                                              :{COMMA} kN
+STR_UNITS_FORCE_SI                                              :{DECIMAL} kN
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA} ft
-STR_UNITS_HEIGHT_SI                                             :{COMMA} m
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL} ft
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL} m
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}Filtur strong:
@@ -857,41 +860,46 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}Set sta�
 
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Spæli møguleikar
+
+
+
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}Gjaldsoyra eindir
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}Úrval av gjaldsoyra eindum
 
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :Bretsk Pund (GBP)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :Dollarar (USD)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :Evrir (EUR)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :Yen (JPY)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :Eysturríkskan Shilling (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :Belgiskan Frank (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :Sveisiskan Frank (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :Tjekkisk Koruna (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :Deutschmark (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :Danskar Krónir (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :Spanskir Peseta (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :Finskan Mark (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :Franskan Frank (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :Grikkskan Drachma (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ungarskan Forint (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :Íslenska Krónu (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :Italskan Lira (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :Niðurlendskan Gillin (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :Norskar Krónur (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :Polskan Zloty (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :Rumeniskan Leu (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :Russiskar Rublar (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :Slovenskar Tolar (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :Svenskar Krónur (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :Turkiskan Lira (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :Slovakiska Koruna (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :Brasilskan Real (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :Estoniska Krooni (EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :Litauiskir Litas (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :Suður Koreanskar Won (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Suður Afrikanskir Rand (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :Bretsk Pund
+STR_GAME_OPTIONS_CURRENCY_USD                                   :Dollarar
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :Evrir
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :Yen
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :Eysturríkskan Shilling
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :Belgiskan Frank
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :Sveisiskan Frank
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :Tjekkisk Koruna
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :Deutschmark
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :Danskar Krónir
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :Spanskir Peseta
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :Finskan Mark
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :Franskan Frank
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :Grikkskan Drachma
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :Ungarskan Forint
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :Íslenska Krónu
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :Italskan Lira
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :Niðurlendskan Gillin
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :Norskar Krónur
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :Polskan Zloty
+STR_GAME_OPTIONS_CURRENCY_RON                                   :Rumeniskan Leu
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :Russiskar Rublar
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :Slovenskar Tolar
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :Svenskar Krónur
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :Turkiskan Lira
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :Slovakiska Koruna
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :Brasilskan Real
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :Estoniska Krooni
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :Litauiskir Litas
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :Suður Koreanskar Won
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :Suður Afrikanskir Rand
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :Sjálvgjørt...
 STR_GAME_OPTIONS_CURRENCY_GEL                                   :Georgiskur Lari
 STR_GAME_OPTIONS_CURRENCY_IRR                                   :Iranskur Rial
@@ -902,10 +910,6 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}Vel tít
 # Autosave dropdown
 ###length 5
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :Sløkt
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :Hvønn mánað
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :Hvønn 3 mánað
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :Hvønn 6 mánað
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :Einaferð um árið
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}Mál
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}Vel mál at nýta í takførisflatu
@@ -916,6 +920,7 @@ STR_GAME_OPTIONS_FULLSCREEN_TOOLTIP                             :{BLACK}Marka he
 STR_GAME_OPTIONS_RESOLUTION                                     :{BLACK}Skerm upploysn
 STR_GAME_OPTIONS_RESOLUTION_TOOLTIP                             :{BLACK}Vel hvørja skermupploysn tú vil brúka
 STR_GAME_OPTIONS_RESOLUTION_OTHER                               :annað
+
 
 
 
@@ -1085,6 +1090,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :Vinstra
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :Miðja
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :Høgra
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :Hægst loyvda byrjunar lán: {STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :Mest loyvda upphæddin ein fyritøka kann lána (uttan at taka virðisminkan til eftirtektar)
 ###setting-zero-is-special
@@ -1250,6 +1256,7 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE                   :Innakervis við
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :Um gilda, innankervi elvir til viðlíkahalds kostnað. Kostnaðurin vaksur yvir-lutfalsliga við støddina á kervinum, og ávirkar harvið størri fyritøkur meira enn smærri fyritøkur
 
 
+
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :Floghavnir ganga ongantíð út: {STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :Gildan av hesi áseting ger at hvørt floghavna slag altíð er tøkt eftir tað er komi í nýtslu
 
@@ -1283,7 +1290,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :Minsta nøgd av
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :Tíðarlongd av villuboðum: {STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :Tíðarbili ið villu boð verða víst í einum reyðum vindeyga. Legg til merkis at nøkur (umráðandi) villu boð ikki verða sjálvvirkandi afturlatin eftir hetta tíðarbil, men mugu latast aftur manuelt
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} sekund{P 0 "" ir}
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :Vís góð ráð: {STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :Seinking áðrenn góð ráð vera víst tá músin sveimar yvur ein lut á takførisflatuni. Í øðrum lagi kunnu góðu ráðini bindast at høgra músa knøtti
@@ -1406,7 +1412,7 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_COMMAND                  :Command+trýst
 STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_CONTROL                  :Ctrl+trýst
 STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :Sløkt
 
-
+###length 3
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :Nýt {STRING} dato sniði til nøvnini á goymdum spølum
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :Sniði fyri dato í fíla navninum á goymdum spølum
@@ -1600,11 +1606,6 @@ STR_CONFIG_SETTING_STARTING_YEAR                                :Byrjunar ár: {
 
 ###length 3
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :Loyv keypi av partabrøvum frá øðrum fyritøkum: {STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Um gilda, er loyvt at keypa og selja fyritøku partabrøv. Partabrøv verða einans tøk hjá fyritøkum ið hava rokki ein ávísan aldur
-
-###setting-zero-is-special
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :Prosentpartur av deilvinningi at gjalda í veitingar kervum: {STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :Prosentpartur av inntøku ið verður útgoldi til millum liðini í veitara kervum (umskipan), gevur betri ræðið í inntøkuni
 
@@ -1693,15 +1694,15 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :Eingin
 
 ###length 3
 
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}Ljóð effektir
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}Takførisflati
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}Bygging
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}Flutningstól
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}Beining
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}Bygdir
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}Ídnaðir
-STR_CONFIG_SETTING_AI                                           :{ORANGE}Kappingarneytar
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}Teldu spælarir
+STR_CONFIG_SETTING_SOUND                                        :Ljóð effektir
+STR_CONFIG_SETTING_INTERFACE                                    :Takførisflati
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :Bygging
+STR_CONFIG_SETTING_VEHICLES                                     :Flutningstól
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :Beining
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :Bygdir
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :Ídnaðir
+STR_CONFIG_SETTING_AI                                           :Kappingarneytar
+STR_CONFIG_SETTING_AI_NPC                                       :Teldu spælarir
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :Leiðbeinari fyri tok: {STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :Leið beinari at nýta til tok
@@ -1979,6 +1980,7 @@ STR_NETWORK_COMPANY_LIST_CLIENT_LIST                            :Listi yvir klie
 
 
 
+
 STR_NETWORK_SPECTATORS                                          :Eygleiðarar
 
 # Network set password
@@ -2166,7 +2168,6 @@ STR_TRANSPARENT_INDUSTRIES_TOOLTIP                              :{BLACK}Tendra/s
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}Tendra/sløkk gjøgnumskygni fyri brúgvar. Ctrl+trýst fyri at læsa
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}Tendra/sløkk gjøgnumskygni fyri konstruktiónir sum vitar og antennur. Ctrl+trýst fyri at læsa
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}Tendra/sløkk gjøgnumskygni fyri ketulinju. Ctrl+trýst fyri at læsa
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Tendra/sløkk gjøgnumskygni fyri lessingar vísarar. Ctrl+trýst fyri at læsa
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}Ger lutir ósjónligar heldur enn gjøgnumskygdar
 
 # Linkgraph legend window
@@ -2954,7 +2955,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}{COMMA} 
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}{COMMA} skip
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}Einki
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}Virði á fyritøku: {WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% ogn hjá {COMPANY})
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}Innankervi:
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}{COMMA} jarnbreyta pett{P i ir}
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}{COMMA} vega pett{P i ir}
@@ -2980,11 +2980,6 @@ STR_COMPANY_VIEW_COMPANY_NAME_BUTTON                            :{BLACK}Fyritøk
 STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}Broyt navni á fyritøkuni
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}Leiðara navn
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}Broyt navni á leiðaranum
-
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Keyp 25% partabrøv í fyritøkuni
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Sel 25% partabrøv í fyritøkuni
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Keyp 25% partabrøv í hesi fyritøkuni. Shift+trýst vísir kostnaðar meting uttan at keypa nakað partabræv
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Sel 25% partabrøv í hesi fyritøkuni. Shift+trýst vísir inntøku meting uttan at selja nakað partabræv
 
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :Navn á Fyritøku
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :Navn á leiðara
@@ -3615,8 +3610,6 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}Væntað
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}Ætlað
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}Skift ímillum væntað og ætlað
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :K:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :F:
 
 
 # Date window (for timetable)
@@ -3690,14 +3683,13 @@ STR_AI_SETTINGS_CAPTION_AI                                      :AI
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}Lat aftur
 STR_AI_SETTINGS_RESET                                           :{BLACK}Endurstilla
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :Tali av døgum til hetta AI byrjar aftaná tað fyrra (umleið): {ORANGE}{STRING}
 
 
 # Textfile window
 STR_TEXTFILE_VIEW_README                                        :{BLACK}Sjá readme
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}Broytingarskrá
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}Loyvi
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING} readme fyri {STRING}
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING} broytingarskrá fyri {STRING}
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING} loyvi fyri {STRING}
@@ -3821,9 +3813,6 @@ STR_ERROR_CAN_T_REPAY_LOAN                                      :{WHITE}Kann ikk
 STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}Kann ikki geva pening burtur ið er lándur frá bankanum...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}Kann ikki keypa fyritøku...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}Kann ikki byggja fyritøku høvuðsborg...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kann ikki keypa 25% partabræv í hesi fyritøkuni...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Kann ikki selja 25% partabræv í hesari fyritøkuni...
-STR_ERROR_PROTECTED                                             :{WHITE}Hendan fyritøkan er ikki nóg gomul at býta partabrøv enn...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}Kann ikki byggja bygdir...
@@ -4522,10 +4511,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Powernaut Tyrla
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}-{STRING}-{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}-{ZEROFILL_NUM}-{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM}
 STR_FORMAT_DATE_LONG                                            :{STRING} {STRING} {NUM}
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :(Fyritøka {COMMA})
 STR_FORMAT_GROUP_NAME                                           :Bólkur {COMMA}
@@ -4603,33 +4592,8 @@ STR_JUST_STRING_STRING                                          :{STRING}{STRING
 STR_JUST_RAW_STRING                                             :{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

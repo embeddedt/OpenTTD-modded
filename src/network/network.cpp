@@ -36,8 +36,11 @@
 #include "../gfx_func.h"
 #include "../error.h"
 #include "../core/checksum_func.hpp"
+#include "../string_func.h"
 #include "../string_func_extra.h"
+#include "../core/serialisation.hpp"
 #include "../3rdparty/randombytes/randombytes.h"
+#include "../3rdparty/monocypher/monocypher.h"
 #include "../settings_internal.h"
 #include <sstream>
 #include <iomanip>
@@ -79,9 +82,6 @@ uint32 _frame_counter;                ///< The current frame.
 uint32 _last_sync_frame;              ///< Used in the server to store the last time a sync packet was sent to clients.
 NetworkAddressList _broadcast_list;   ///< List of broadcast addresses.
 uint32 _sync_seed_1;                  ///< Seed to compare during sync checks.
-#ifdef NETWORK_SEND_DOUBLE_SEED
-uint32 _sync_seed_2;                  ///< Second part of the seed.
-#endif
 uint64 _sync_state_checksum;          ///< State checksum to compare during sync checks.
 uint32 _sync_frame;                   ///< The frame to perform the sync check.
 Date   _last_sync_date;               ///< The game date of the last successfully received sync frame
@@ -91,14 +91,16 @@ uint32 _last_sync_frame_counter;      ///< "
 bool _network_first_time;             ///< Whether we have finished joining or not.
 CompanyMask _network_company_passworded; ///< Bitmask of the password status of all companies.
 
-std::vector<NetworkSyncRecord> _network_client_sync_records;
-std::unique_ptr<std::array<NetworkSyncRecord, 1024>> _network_server_sync_records;
-uint32 _network_server_sync_records_next;
+ring_buffer<NetworkSyncRecord> _network_sync_records;
+ring_buffer<uint> _network_sync_record_counts;
+bool _record_sync_records = false;
 
 static_assert((int)NETWORK_COMPANY_NAME_LENGTH == MAX_LENGTH_COMPANY_NAME_CHARS * MAX_CHAR_LENGTH);
 
 /** The amount of clients connected */
 byte _network_clients_connected = 0;
+
+extern std::string GenerateUid(std::string_view subject);
 
 /**
  * Return whether there is any client connected or trying to connect at all.
@@ -207,18 +209,40 @@ std::string GenerateCompanyPasswordHash(const std::string &password, const std::
 	}
 
 	Md5 checksum;
-	uint8 digest[16];
+	MD5Hash digest;
 
 	/* Generate the MD5 hash */
 	std::string salted_password_string = salted_password.str();
 	checksum.Append(salted_password_string.data(), salted_password_string.size());
 	checksum.Finish(digest);
 
-	std::ostringstream hashed_password;
-	hashed_password << std::hex << std::setfill('0');
-	for (int di = 0; di < 16; di++) hashed_password << std::setw(2) << (int)digest[di]; // Cast needed, otherwise interpreted as character to add
+	return FormatArrayAsHex(digest);
+}
 
-	return hashed_password.str();
+/**
+ * Hash the given password using server ID and game seed.
+ * @param password Password to hash.
+ * @param password_server_id Server ID.
+ * @param password_game_seed Game seed.
+ * @return The hashed password.
+ */
+std::vector<uint8> GenerateGeneralPasswordHash(const std::string &password, const std::string &password_server_id, uint64 password_game_seed)
+{
+	if (password.empty()) return {};
+
+	std::vector<byte> data;
+	data.reserve(password_server_id.size() + password.size() + 10);
+	BufferSerialiser buffer(data);
+
+	buffer.Send_uint64(password_game_seed);
+	buffer.Send_string(password_server_id);
+	buffer.Send_string(password);
+
+	std::vector<byte> output;
+	output.resize(64);
+	crypto_blake2b(output.data(), output.size(), data.data(), data.size());
+
+	return output;
 }
 
 /**
@@ -635,6 +659,7 @@ void NetworkClose(bool close_admins)
 
 		_network_coordinator_client.CloseAllConnections();
 	}
+	NetworkGameSocketHandler::ProcessDeferredDeletions();
 
 	TCPConnecter::KillAll();
 
@@ -650,9 +675,10 @@ void NetworkClose(bool close_admins)
 
 	InitializeNetworkPools(close_admins);
 
-	_network_client_sync_records.clear();
-	_network_client_sync_records.shrink_to_fit();
-	_network_server_sync_records.reset();
+	_network_sync_records.clear();
+	_network_sync_records.shrink_to_fit();
+	_network_sync_record_counts.clear();
+	_network_sync_record_counts.shrink_to_fit();
 }
 
 /* Initializes the network (cleans sockets and stuff) */
@@ -944,9 +970,9 @@ bool NetworkServerStart()
 	_last_sync_frame = 0;
 	_network_own_client_id = CLIENT_ID_SERVER;
 
-	_network_server_sync_records.reset(new std::array<NetworkSyncRecord, 1024>());
-	_network_server_sync_records->fill({ 0, 0, 0 });
-	_network_server_sync_records_next = 0;
+	_network_sync_records.clear();
+	_network_sync_record_counts.clear();
+	_record_sync_records = false;
 
 	_network_clients_connected = 0;
 	_network_company_passworded = 0;
@@ -1010,7 +1036,7 @@ void NetworkDisconnect(bool blocking, bool close_admins)
 		}
 	}
 
-	DeleteWindowById(WC_NETWORK_STATUS_WINDOW, WN_NETWORK_STATUS_WINDOW_JOIN);
+	CloseWindowById(WC_NETWORK_STATUS_WINDOW, WN_NETWORK_STATUS_WINDOW_JOIN);
 
 	NetworkClose(close_admins);
 
@@ -1047,12 +1073,15 @@ void NetworkUpdateServerGameType()
  */
 static bool NetworkReceive()
 {
+	bool result;
 	if (_network_server) {
 		ServerNetworkAdminSocketHandler::Receive();
-		return ServerNetworkGameSocketHandler::Receive();
+		result = ServerNetworkGameSocketHandler::Receive();
 	} else {
-		return ClientNetworkGameSocketHandler::Receive();
+		result = ClientNetworkGameSocketHandler::Receive();
 	}
+	NetworkGameSocketHandler::ProcessDeferredDeletions();
+	return result;
 }
 
 /* This sends all buffered commands (if possible) */
@@ -1064,6 +1093,7 @@ static void NetworkSend()
 	} else {
 		ClientNetworkGameSocketHandler::Send();
 	}
+	NetworkGameSocketHandler::ProcessDeferredDeletions();
 }
 
 /**
@@ -1078,8 +1108,45 @@ void NetworkBackgroundLoop()
 	TCPConnecter::CheckCallbacks();
 	NetworkHTTPSocketHandler::HTTPReceive();
 	QueryNetworkGameSocketHandler::SendReceive();
+	NetworkGameSocketHandler::ProcessDeferredDeletions();
 
 	NetworkBackgroundUDPLoop();
+}
+
+void RecordSyncEventData(NetworkSyncRecordEvents event)
+{
+	_network_sync_records.push_back({ event, _random.state[0], _state_checksum.state });
+}
+
+const char *GetSyncRecordEventName(NetworkSyncRecordEvents event)
+{
+	static const char *names[] = {
+		"BEGIN",
+		"CMD",
+		"AUX_TILE",
+		"TILE",
+		"TOWN",
+		"TREE",
+		"STATION",
+		"INDUSTRY",
+		"PRE_COMPANY_STATE",
+		"VEH_PERIODIC",
+		"VEH_LOAD_UNLOAD",
+		"VEH_EFFECT",
+		"VEH_TRAIN",
+		"VEH_ROAD",
+		"VEH_AIR",
+		"VEH_SHIP",
+		"VEH_OTHER",
+		"VEH_SELL",
+		"VEH_TBTR",
+		"VEH_AUTOREPLACE",
+		"VEH_REPAIR",
+		"FRAME_DONE"
+	};
+	static_assert(lengthof(names) == NSRE_LAST);
+	if (event < NSRE_LAST) return names[event];
+	return "???";
 }
 
 /* The main loop called from ttd.c
@@ -1225,6 +1292,10 @@ void NetworkGameLoop()
 			send_frame = true;
 		}
 
+		const size_t total_sync_records = _network_sync_records.size();
+		_network_sync_records.push_back({ _frame_counter, _random.state[0], _state_checksum.state });
+		_record_sync_records = true;
+
 		NetworkExecuteLocalCommandQueue();
 		if (_pause_countdown > 0 && --_pause_countdown == 0) DoCommandP(0, PM_PAUSED_NORMAL, 1, CMD_PAUSE);
 
@@ -1232,13 +1303,16 @@ void NetworkGameLoop()
 		StateGameLoop();
 
 		_sync_seed_1 = _random.state[0];
-#ifdef NETWORK_SEND_DOUBLE_SEED
-		_sync_seed_2 = _random.state[1];
-#endif
 		_sync_state_checksum = _state_checksum.state;
 
-		(*_network_server_sync_records)[_network_server_sync_records_next] = { _frame_counter, _random.state[0], _state_checksum.state };
-		_network_server_sync_records_next = (_network_server_sync_records_next + 1) % _network_server_sync_records->size();
+		_network_sync_records.push_back({ NSRE_FRAME_DONE, _random.state[0], _state_checksum.state });
+		_network_sync_record_counts.push_back((uint)(_network_sync_records.size() - total_sync_records));
+		_record_sync_records = false;
+		if (_network_sync_record_counts.size() >= 256) {
+			/* Remove records from start of queue */
+			_network_sync_records.erase(_network_sync_records.begin(), _network_sync_records.begin() + _network_sync_record_counts[0]);
+			_network_sync_record_counts.pop_front();
+		}
 
 		NetworkServer_Tick(send_frame);
 	} else {
@@ -1264,47 +1338,15 @@ void NetworkGameLoop()
 
 static void NetworkGenerateServerId()
 {
-	Md5 checksum;
-	uint8 digest[16];
-	char hex_output[16 * 2 + 1];
-	char coding_string[NETWORK_NAME_LENGTH];
-	int di;
-
-	seprintf(coding_string, lastof(coding_string), "%d%s", (uint)Random(), "OpenTTD Server ID");
-
-	/* Generate the MD5 hash */
-	checksum.Append((const uint8*)coding_string, strlen(coding_string));
-	checksum.Finish(digest);
-
-	for (di = 0; di < 16; ++di) {
-		seprintf(hex_output + di * 2, lastof(hex_output), "%02x", digest[di]);
-	}
-
-	/* _settings_client.network.network_id is our id */
-	_settings_client.network.network_id = hex_output;
+	_settings_client.network.network_id = GenerateUid("OpenTTD Server ID");
 }
 
 std::string NetworkGenerateRandomKeyString(uint bytes)
 {
 	uint8 *key = AllocaM(uint8, bytes);
-	char *hex_output = AllocaM(char, bytes * 2);
+	NetworkRandomBytesWithFallback(key, bytes);
 
-	if (randombytes(key, bytes) < 0) {
-		/* Fallback poor-quality random */
-		DEBUG(misc, 0, "High quality random source unavailable");
-		for (uint i = 0; i < bytes; i++) {
-			key[i] = (uint8)InteractiveRandom();
-		}
-	}
-
-	char txt[3];
-	for (uint i = 0; i < bytes; ++i) {
-		seprintf(txt, lastof(txt), "%02x", key[i]);
-		hex_output[i * 2] = txt[0];
-		hex_output[i * 2 + 1] = txt[1];
-	}
-
-	return std::string(hex_output, hex_output + bytes * 2);
+	return FormatArrayAsHex({key, bytes});
 }
 
 class TCPNetworkDebugConnecter : TCPConnecter {
@@ -1371,6 +1413,34 @@ void NetworkShutDown()
 	_network_available = false;
 
 	NetworkCoreShutdown();
+}
+
+void NetworkRandomBytesWithFallback(void *buf, size_t bytes)
+{
+	if (randombytes(buf, bytes) < 0) {
+		/* Fallback poor-quality random */
+		DEBUG(net, 0, "High quality random source unavailable");
+		for (uint i = 0; i < bytes; i++) {
+			reinterpret_cast<byte *>(buf)[i] = (byte)InteractiveRandom();
+		}
+	}
+}
+
+void NetworkGameKeys::Initialise()
+{
+	assert(!this->inited);
+
+	this->inited = true;
+
+	static_assert(sizeof(this->x25519_priv_key) == 32);
+	NetworkRandomBytesWithFallback(this->x25519_priv_key, sizeof(this->x25519_priv_key));
+	crypto_x25519_public_key(this->x25519_pub_key, this->x25519_priv_key);
+}
+
+NetworkSharedSecrets::~NetworkSharedSecrets()
+{
+	static_assert(sizeof(*this) == 64);
+	crypto_wipe(this, sizeof(*this));
 }
 
 #ifdef __EMSCRIPTEN__

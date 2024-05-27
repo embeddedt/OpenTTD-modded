@@ -128,39 +128,39 @@ STR_QUANTITY_N_A                                                :N/A
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}ПА
-STR_ABBREV_COAL                                                 :{TINY_FONT}ЈА
-STR_ABBREV_MAIL                                                 :{TINY_FONT}ПО
-STR_ABBREV_OIL                                                  :{TINY_FONT}НА
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}ГД
-STR_ABBREV_GOODS                                                :{TINY_FONT}СТ
-STR_ABBREV_GRAIN                                                :{TINY_FONT}ЖИ
-STR_ABBREV_WOOD                                                 :{TINY_FONT}ДР
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}ЖР
-STR_ABBREV_STEEL                                                :{TINY_FONT}ЧЕ
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}СЦ
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}БР
-STR_ABBREV_MAIZE                                                :{TINY_FONT}ПЧ
-STR_ABBREV_FRUIT                                                :{TINY_FONT}ОВ
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}ДИ
-STR_ABBREV_FOOD                                                 :{TINY_FONT}ХР
-STR_ABBREV_PAPER                                                :{TINY_FONT}ХА
-STR_ABBREV_GOLD                                                 :{TINY_FONT}ЗЛ
-STR_ABBREV_WATER                                                :{TINY_FONT}ВО
-STR_ABBREV_WHEAT                                                :{TINY_FONT}ПЦ
-STR_ABBREV_RUBBER                                               :{TINY_FONT}ГУ
-STR_ABBREV_SUGAR                                                :{TINY_FONT}ШЕ
-STR_ABBREV_TOYS                                                 :{TINY_FONT}ИГ
-STR_ABBREV_SWEETS                                               :{TINY_FONT}КЊ
-STR_ABBREV_COLA                                                 :{TINY_FONT}КЛ
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}СК
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}МЕ
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}КА
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}БА
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}ПЛ
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}ПП
-STR_ABBREV_NONE                                                 :{TINY_FONT}НТ
-STR_ABBREV_ALL                                                  :{TINY_FONT}Се`
+STR_ABBREV_PASSENGERS                                           :ПА
+STR_ABBREV_COAL                                                 :ЈА
+STR_ABBREV_MAIL                                                 :ПО
+STR_ABBREV_OIL                                                  :НА
+STR_ABBREV_LIVESTOCK                                            :ГД
+STR_ABBREV_GOODS                                                :СТ
+STR_ABBREV_GRAIN                                                :ЖИ
+STR_ABBREV_WOOD                                                 :ДР
+STR_ABBREV_IRON_ORE                                             :ЖР
+STR_ABBREV_STEEL                                                :ЧЕ
+STR_ABBREV_VALUABLES                                            :СЦ
+STR_ABBREV_COPPER_ORE                                           :БР
+STR_ABBREV_MAIZE                                                :ПЧ
+STR_ABBREV_FRUIT                                                :ОВ
+STR_ABBREV_DIAMONDS                                             :ДИ
+STR_ABBREV_FOOD                                                 :ХР
+STR_ABBREV_PAPER                                                :ХА
+STR_ABBREV_GOLD                                                 :ЗЛ
+STR_ABBREV_WATER                                                :ВО
+STR_ABBREV_WHEAT                                                :ПЦ
+STR_ABBREV_RUBBER                                               :ГУ
+STR_ABBREV_SUGAR                                                :ШЕ
+STR_ABBREV_TOYS                                                 :ИГ
+STR_ABBREV_SWEETS                                               :КЊ
+STR_ABBREV_COLA                                                 :КЛ
+STR_ABBREV_CANDYFLOSS                                           :СК
+STR_ABBREV_BUBBLES                                              :МЕ
+STR_ABBREV_TOFFEE                                               :КА
+STR_ABBREV_BATTERIES                                            :БА
+STR_ABBREV_PLASTIC                                              :ПЛ
+STR_ABBREV_FIZZY_DRINKS                                         :ПП
+STR_ABBREV_NONE                                                 :НТ
+STR_ABBREV_ALL                                                  :Се`
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA} патници{P "" s}
@@ -188,32 +188,35 @@ STR_COLOUR_BROWN                                                :Кафена
 STR_COLOUR_GREY                                                 :Сива
 STR_COLOUR_WHITE                                                :Бела
 
+###length 17
+
+
 # Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA} mph
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA} km/h
-STR_UNITS_VELOCITY_SI                                           :{COMMA} m/s
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL} mph
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL} km/h
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL} m/s
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}кс
-STR_UNITS_POWER_METRIC                                          :{COMMA}кс
-STR_UNITS_POWER_SI                                              :{COMMA}kW
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}кс
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}кс
+STR_UNITS_POWER_SI                                              :{DECIMAL}kW
 
 
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}t
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}kg
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}t
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}kg
 
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA} тон{P "" и}
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA} kg
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL} тон{P "" и}
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL} kg
 
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}l
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}m³
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}l
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}m³
 
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA} лит{P ар ри}
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA} m³
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL} лит{P ар ри}
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL} m³
 
-STR_UNITS_FORCE_SI                                              :{COMMA} kN
+STR_UNITS_FORCE_SI                                              :{DECIMAL} kN
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA} ft
-STR_UNITS_HEIGHT_SI                                             :{COMMA} m
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL} ft
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL} m
 
 # Common window strings
 STR_LIST_FILTER_OSKTITLE                                        :{BLACK}Внесете филтер низа
@@ -790,12 +793,17 @@ STR_NEWS_AIRCRAFT_DEST_TOO_FAR                                  :{WHITE}{VEHICLE
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}Опции на Играта
 
+
+
+
+
+
 ###length 42
 
 
 # Autosave dropdown
 ###length 5
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :Секој месец
+
 
 
 
@@ -859,6 +867,7 @@ STR_CONFIG_SETTING_REALISTIC                                    :Реален
 
 ###length 3
 
+
 ###setting-zero-is-special
 
 
@@ -916,6 +925,7 @@ STR_CONFIG_SETTING_SMOKE_AMOUNT                                 :Износ на
 
 
 STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE                   :Инфраструктура за одржување: {STRING}
+
 
 
 
@@ -980,7 +990,7 @@ STR_CONFIG_SETTING_GRAPH_LINE_THICKNESS                         :Дебелин�
 
 ###length 3
 
-
+###length 3
 
 ###length 3
 
@@ -1068,9 +1078,6 @@ STR_CONFIG_SETTING_NEWS_MESSAGES_FULL                           :целосна
 ###setting-zero-is-special
 
 ###length 3
-
-
-###setting-zero-is-special
 
 
 
@@ -1214,6 +1221,7 @@ STR_NETWORK_SERVER_LIST_MAP_SIZE_SHORT                          :{BLACK}{COMMA}x
 
 # Matches ConnectionType
 ###length 5
+
 
 
 
@@ -1626,7 +1634,6 @@ STR_COMPANY_VIEW_INFRASTRUCTURE_TOOLTIP                         :{BLACK}Погл
 
 
 
-
 # Company infrastructure window
 STR_COMPANY_INFRASTRUCTURE_VIEW_CAPTION                         :{WHITE}Инфраструктура на {COMPANY}
 STR_COMPANY_INFRASTRUCTURE_VIEW_RAIL_SECT                       :{GOLD}железнички парчиња:
@@ -1964,11 +1971,10 @@ STR_AI_LIST_CAPTION_GAMESCRIPT                                  :GameScripts
 # Script Parameters
 STR_AI_SETTINGS_CAPTION_AI                                      :АИ
 STR_AI_SETTINGS_SETTING                                         :{STRING}: {ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :Број на денови за да започнете оваа Пи по претходниот (се дава или зема): {ORANGE}{STRING}
 
 
 # Textfile window
-###length 3
+###length 4
 
 
 # Vehicle loading indicators
@@ -2175,10 +2181,10 @@ STR_SV_STNAME_WAYPOINT                                          :{STRING}
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}-{STRING}-{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}-{ZEROFILL_NUM}-{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM}
 STR_FORMAT_DATE_LONG                                            :{STRING} {STRING} {NUM}
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 
 ###length 2
@@ -2240,33 +2246,8 @@ STR_JUST_STRING_STRING                                          :{STRING}{STRING
 STR_JUST_RAW_STRING                                             :{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

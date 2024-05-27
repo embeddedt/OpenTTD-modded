@@ -46,6 +46,7 @@
 #include "pbs.h"
 #include "debug.h"
 #include "core/random_func.hpp"
+#include "core/container_func.hpp"
 #include "company_base.h"
 #include "table/airporttile_ids.h"
 #include "newgrf_airporttiles.h"
@@ -313,7 +314,8 @@ static StringID GenerateStationName(Station *st, TileIndex tile, StationNaming n
 
 	/* check close enough to town to get central as name? */
 	const bool is_central = DistanceMax(tile, t->xy) < 8;
-	if (HasBit(free_names, M(STR_SV_STNAME)) && (is_central || DistanceSquare(tile, t->xy) <= t->cache.squared_town_zone_radius[HZB_TOWN_INNER_SUBURB])) {
+	if (HasBit(free_names, M(STR_SV_STNAME)) && (is_central ||
+			DistanceSquare(tile, t->xy) <= std::max(t->cache.squared_town_zone_radius[HZB_TOWN_INNER_SUBURB], t->cache.squared_town_zone_radius[HZB_TOWN_OUTER_SUBURB]))) {
 		return STR_SV_STNAME;
 	}
 
@@ -467,7 +469,7 @@ void Station::UpdateCargoHistory()
 	uint storage_offset = 0;
 	bool update_window = false;
 	for (const CargoSpec *cs : CargoSpec::Iterate()) {
-		uint amount = this->goods[cs->Index()].cargo.TotalCount();
+		uint amount = this->goods[cs->Index()].CargoTotalCount();
 		if (!HasBit(this->station_cargo_history_cargoes, cs->Index())) {
 			if (amount == 0) {
 				/* No cargo present, and no history stored for this cargo, no work to do */
@@ -537,9 +539,8 @@ void UpdateAllStationVirtCoords()
 void BaseStation::FillCachedName() const
 {
 	char buf[MAX_LENGTH_STATION_NAME_CHARS * MAX_CHAR_LENGTH];
-	int64 args_array[] = { this->index };
-	StringParameters tmp_params(args_array);
-	char *end = GetStringWithArgs(buf, Waypoint::IsExpected(this) ? STR_WAYPOINT_NAME : STR_STATION_NAME, &tmp_params, lastof(buf));
+	auto tmp_params = MakeParameters(this->index);
+	char *end = GetStringWithArgs(buf, Waypoint::IsExpected(this) ? STR_WAYPOINT_NAME : STR_STATION_NAME, tmp_params, lastof(buf));
 	this->cached_name.assign(buf, end);
 }
 
@@ -588,7 +589,7 @@ static void ShowRejectOrAcceptNews(const Station *st, uint num_items, CargoID *c
  */
 CargoArray GetProductionAroundTiles(TileIndex north_tile, int w, int h, int rad)
 {
-	CargoArray produced;
+	CargoArray produced{};
 
 	btree::btree_set<IndustryID> industries;
 	TileArea ta = TileArea(north_tile, w, h).Expand(rad);
@@ -660,7 +661,7 @@ CargoArray GetProductionAroundRect(Rect rect) {
  */
 CargoArray GetAcceptanceAroundTiles(TileIndex center_tile, int w, int h, int rad, CargoTypes *always_accepted)
 {
-	CargoArray acceptance;
+	CargoArray acceptance{};
 	if (always_accepted != nullptr) *always_accepted = 0;
 
 	TileArea ta = TileArea(center_tile, w, h).Expand(rad);
@@ -682,7 +683,7 @@ CargoArray GetAcceptanceAroundTiles(TileIndex center_tile, int w, int h, int rad
  */
 static CargoArray GetAcceptanceAroundStation(const Station *st, CargoTypes *always_accepted)
 {
-	CargoArray acceptance;
+	CargoArray acceptance{};
 	if (always_accepted != nullptr) *always_accepted = 0;
 
 	BitmapTileIterator it(st->catchment_tiles);
@@ -704,7 +705,7 @@ void UpdateStationAcceptance(Station *st, bool show_msg)
 	CargoTypes old_acc = GetAcceptanceMask(st);
 
 	/* And retrieve the acceptance. */
-	CargoArray acceptance;
+	CargoArray acceptance{};
 	if (!st->rect.IsEmpty()) {
 		acceptance = GetAcceptanceAroundStation(st, &st->always_accepted);
 	}
@@ -1047,7 +1048,7 @@ CommandCost IsRoadStopBridgeAboveOK(TileIndex tile, const RoadStopSpec *spec, bo
  * @param numtracks Number of platforms.
  * @return The cost in case of success, or an error code if it failed.
  */
-static CommandCost CheckFlatLandRailStation(TileArea tile_area, DoCommandFlag flags, Axis axis, StationID *station, RailType rt, std::vector<Train *> &affected_vehicles, StationClassID spec_class, byte spec_index, byte plat_len, byte numtracks)
+static CommandCost CheckFlatLandRailStation(TileArea tile_area, DoCommandFlag flags, Axis axis, StationID *station, RailType rt, std::vector<Train *> &affected_vehicles, StationClassID spec_class, uint16_t spec_index, byte plat_len, byte numtracks)
 {
 	CommandCost cost(EXPENSES_CONSTRUCTION);
 	int allowed_z = -1;
@@ -1456,15 +1457,24 @@ CommandCost FindJoiningWaypoint(StationID existing_waypoint, StationID waypoint_
 }
 
 /**
+ * Clear any rail station platform reservation ahead of and behind train.
+ * @param v vehicle which may hold reservations
+ */
+void FreeTrainStationPlatformReservation(const Train *v)
+{
+	if (IsRailStationTile(v->tile)) SetRailStationPlatformReservation(v->tile, TrackdirToExitdir(v->GetVehicleTrackdir()), false);
+	v = v->Last();
+	if (IsRailStationTile(v->tile)) SetRailStationPlatformReservation(v->tile, TrackdirToExitdir(ReverseTrackdir(v->GetVehicleTrackdir())), false);
+}
+
+/**
  * Clear platform reservation during station building/removing.
  * @param v vehicle which holds reservation
  */
 static void FreeTrainReservation(Train *v)
 {
 	FreeTrainTrackReservation(v);
-	if (IsRailStationTile(v->tile)) SetRailStationPlatformReservation(v->tile, TrackdirToExitdir(v->GetVehicleTrackdir()), false);
-	v = v->Last();
-	if (IsRailStationTile(v->tile)) SetRailStationPlatformReservation(v->tile, TrackdirToExitdir(ReverseTrackdir(v->GetVehicleTrackdir())), false);
+	FreeTrainStationPlatformReservation(v);
 }
 
 /**
@@ -1507,7 +1517,7 @@ CommandCost CmdBuildRailStation(TileIndex tile_org, DoCommandFlag flags, uint32 
 	bool adjacent  = HasBit(p1, 24);
 
 	StationClassID spec_class = Extract<StationClassID, 0, 8>(p2);
-	byte spec_index           = GB(p3, 0, 16);
+	uint16 spec_index         = GB(p3, 0, 16);
 	StationID station_to_join = GB(p2, 16, 16);
 
 	/* Does the authority allow this? */
@@ -1662,7 +1672,18 @@ CommandCost CmdBuildRailStation(TileIndex tile_org, DoCommandFlag flags, uint32 
 				SetStationTileRandomBits(tile, GB(Random(), 0, 4));
 				SetAnimationFrame(tile, 0);
 
-				if (!IsStationTileBlocked(tile)) c->infrastructure.rail[rt]++;
+				/* Should be the same as layout but axis component could be wrong... */
+				StationGfx gfx = GetStationGfx(tile);
+				bool blocked = statspec != nullptr && HasBit(statspec->blocked, gfx);
+				/* Default stations do not draw pylons under roofs (gfx >= 4) */
+				bool pylons = statspec != nullptr ? HasBit(statspec->pylons, gfx) : gfx < 4;
+				bool wires = statspec == nullptr || !HasBit(statspec->wires, gfx);
+
+				SetStationTileBlocked(tile, blocked);
+				SetStationTileHavePylons(tile, pylons);
+				SetStationTileHaveWires(tile, wires);
+
+				if (!blocked) c->infrastructure.rail[rt]++;
 				c->infrastructure.station++;
 
 				if (statspec != nullptr) {
@@ -2827,9 +2848,9 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 			ZoningMarkDirtyStationCoverageArea(st);
 
 			for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
-				DeleteWindowById(
-					WC_VEHICLE_DEPOT, st->airport.GetHangarTile(i)
-				);
+				TileIndex tile_cur = st->airport.GetHangarTile(i);
+				OrderBackup::Reset(tile_cur, false);
+				CloseWindowById(WC_VEHICLE_DEPOT, tile_cur);
 			}
 
 			const AirportSpec *old_as = st->airport.GetSpec();
@@ -2845,7 +2866,6 @@ CommandCost CmdBuildAirport(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 			}
 
 			for (TileIndex tile_cur : st->airport) {
-				if (IsHangarTile(tile_cur)) OrderBackup::Reset(tile_cur, false);
 				DeleteAnimatedTile(tile_cur);
 				DoClearSquare(tile_cur);
 				DeleteNewGRFInspectWindow(GSF_AIRPORTTILES, tile_cur);
@@ -2923,7 +2943,7 @@ static CommandCost RemoveAirport(TileIndex tile, DoCommandFlag flags)
 		for (uint i = 0; i < st->airport.GetNumHangars(); ++i) {
 			TileIndex tile_cur = st->airport.GetHangarTile(i);
 			OrderBackup::Reset(tile_cur, false);
-			DeleteWindowById(WC_VEHICLE_DEPOT, tile_cur);
+			CloseWindowById(WC_VEHICLE_DEPOT, tile_cur);
 		}
 
 		ZoningMarkDirtyStationCoverageArea(st);
@@ -3614,8 +3634,10 @@ draw_default_foundation:
 			SpriteID image = t->ground.sprite;
 			PaletteID pal  = t->ground.pal;
 			image += HasBit(image, SPRITE_MODIFIER_CUSTOM_SPRITE) ? ground_relocation : total_offset;
-			if (HasBit(pal, SPRITE_MODIFIER_CUSTOM_SPRITE)) pal += ground_relocation;
-			DrawGroundSprite(image, GroundSpritePaletteTransform(image, pal, palette));
+			if (GB(image, 0, SPRITE_WIDTH) != 0) {
+				if (HasBit(pal, SPRITE_MODIFIER_CUSTOM_SPRITE)) pal += ground_relocation;
+				DrawGroundSprite(image, GroundSpritePaletteTransform(image, pal, palette));
+			}
 		}
 
 		if (IsDriveThroughStopTile(ti->tile)) {
@@ -4139,14 +4161,18 @@ static void TruncateCargo(const CargoSpec *cs, GoodsEntry *ge, uint amount = UIN
 	/* If truncating also punish the source stations' ratings to
 	 * decrease the flow of incoming cargo. */
 
+	if (ge->data == nullptr) return;
+
 	StationCargoAmountMap waiting_per_source;
-	ge->cargo.Truncate(amount, &waiting_per_source);
+	ge->data->cargo.Truncate(amount, &waiting_per_source);
 	for (StationCargoAmountMap::iterator i(waiting_per_source.begin()); i != waiting_per_source.end(); ++i) {
 		Station *source_station = Station::GetIfValid(i->first);
 		if (source_station == nullptr) continue;
 
 		GoodsEntry &source_ge = source_station->goods[cs->Index()];
-		source_ge.max_waiting_cargo = std::max(source_ge.max_waiting_cargo, i->second);
+		if (i->second > source_ge.max_waiting_cargo) {
+			source_ge.max_waiting_cargo += (i->second - source_ge.max_waiting_cargo) / 4;
+		}
 	}
 }
 
@@ -4277,7 +4303,7 @@ int GetTargetRating(const Station *st, const CargoSpec *cs, const GoodsEntry *ge
 	rating += GetStatueRating(st);
 	rating += GetVehicleAgeRating(ge);
 
-	return Clamp(rating, 0, 255);
+	return ClampTo<uint8>(rating);
 }
 
 static void UpdateStationRating(Station *st)
@@ -4312,12 +4338,12 @@ static void UpdateStationRating(Station *st)
 			{
 				int rating = GetTargetRating(st, cs, ge);
 
-				uint waiting = ge->cargo.AvailableCount();
+				uint waiting = ge->CargoAvailableCount();
 
 				/* num_dests is at least 1 if there is any cargo as
 				 * INVALID_STATION is also a destination.
 				 */
-				const uint num_dests = (uint)ge->cargo.Packets()->MapSize();
+				const uint num_dests = ge->data != nullptr ? (uint)ge->data->cargo.Packets()->MapSize() : 0;
 
 				/* Average amount of cargo per next hop, but prefer solitary stations
 				 * with only one or two next hops. They are allowed to have more
@@ -4374,12 +4400,12 @@ static void UpdateStationRating(Station *st)
 
 				/* We can't truncate cargo that's already reserved for loading.
 				 * Thus StoredCount() here. */
-				if (waiting_changed && waiting < ge->cargo.AvailableCount()) {
+				if (waiting_changed && waiting < ge->CargoAvailableCount()) {
 					/* Feed back the exact own waiting cargo at this station for the
 					 * next rating calculation. */
 					ge->max_waiting_cargo = 0;
 
-					TruncateCargo(cs, ge, ge->cargo.AvailableCount() - waiting);
+					TruncateCargo(cs, ge, ge->CargoAvailableCount() - waiting);
 				} else {
 					/* If the average number per next hop is low, be more forgiving. */
 					ge->max_waiting_cargo = waiting_avg;
@@ -4410,13 +4436,13 @@ void RerouteCargo(Station *st, CargoID c, StationID avoid, StationID avoid2)
 	GoodsEntry &ge = st->goods[c];
 
 	/* Reroute cargo in station. */
-	ge.cargo.Reroute(UINT_MAX, &ge.cargo, avoid, avoid2, &ge);
+	if (ge.data != nullptr) ge.data->cargo.Reroute(UINT_MAX, &ge.data->cargo, avoid, avoid2, &ge);
 
 	/* Reroute cargo staged to be transferred. */
 	for (Vehicle *v : st->loading_vehicles) {
-		for (; v != nullptr; v = v->Next()) {
-			if (v->cargo_type != c) continue;
-			v->cargo.Reroute(UINT_MAX, &v->cargo, avoid, avoid2, &ge);
+		for (Vehicle *u = v; u != nullptr; u = u->Next()) {
+			if (u->cargo_type != c) continue;
+			u->cargo.Reroute(UINT_MAX, &u->cargo, avoid, avoid2, &ge);
 		}
 	}
 }
@@ -4435,7 +4461,7 @@ void RerouteCargoFromSource(Station *st, CargoID c, StationID source, StationID 
 	GoodsEntry &ge = st->goods[c];
 
 	/* Reroute cargo in station. */
-	ge.cargo.RerouteFromSource(UINT_MAX, &ge.cargo, source, avoid, avoid2, &ge);
+	if (ge.data != nullptr) ge.data->cargo.RerouteFromSource(UINT_MAX, &ge.data->cargo, source, avoid, avoid2, &ge);
 
 	/* Reroute cargo staged to be transferred. */
 	for (Vehicle *v : st->loading_vehicles) {
@@ -4542,12 +4568,12 @@ void DeleteStaleLinks(Station *from)
 				if (!updated) {
 					/* If it's still considered dead remove it. */
 					result = LinkGraph::EdgeIterationResult::EraseEdge;
-					ge.flows.DeleteFlows(to->index);
+					if (ge.data != nullptr) ge.data->flows.DeleteFlows(to->index);
 					RerouteCargo(from, c, to->index, from->index);
 				}
 			} else if (edge.LastUnrestrictedUpdate() != INVALID_DATE && (uint)(_date - edge.LastUnrestrictedUpdate()) > timeout) {
 				edge.Restrict();
-				ge.flows.RestrictFlows(to->index);
+				if (ge.data != nullptr) ge.data->flows.RestrictFlows(to->index);
 				RerouteCargo(from, c, to->index, from->index);
 			} else if (edge.LastRestrictedUpdate() != INVALID_DATE && (uint)(_date - edge.LastRestrictedUpdate()) > timeout) {
 				edge.Release();
@@ -4555,8 +4581,8 @@ void DeleteStaleLinks(Station *from)
 
 			return result;
 		});
-		assert(_date >= lg->LastCompression());
-		if ((uint)(_date - lg->LastCompression()) > std::max<uint>(LinkGraph::COMPRESSION_INTERVAL / _settings_game.economy.day_length_factor, 1)) {
+		assert(_scaled_date_ticks >= lg->LastCompression());
+		if ((_scaled_date_ticks - lg->LastCompression()) > LinkGraph::COMPRESSION_INTERVAL) {
 			lg->Compress();
 		}
 	}
@@ -4697,7 +4723,7 @@ void ModifyStationRatingAround(TileIndex tile, Owner owner, int amount, uint rad
 				GoodsEntry *ge = &st->goods[i];
 
 				if (ge->status != 0) {
-					ge->rating = Clamp(ge->rating + amount, 0, 255);
+					ge->rating = ClampTo<uint8_t>(ge->rating + amount);
 				}
 			}
 		}
@@ -4719,7 +4745,7 @@ static uint UpdateStationWaiting(Station *st, CargoID type, uint amount, SourceT
 	if (amount == 0) return 0;
 
 	StationID next = ge.GetVia(st->index);
-	ge.cargo.Append(new CargoPacket(st->index, st->xy, amount, source_type, source_id), next);
+	ge.CreateData().cargo.Append(new CargoPacket(st->index, amount, source_type, source_id), next);
 	LinkGraph *lg = nullptr;
 	if (ge.link_graph == INVALID_LINK_GRAPH) {
 		if (LinkGraph::CanAllocateItem()) {
@@ -5524,7 +5550,7 @@ void FlowStat::ReleaseShare(StationID st)
 
 /**
  * Scale all shares from link graph's runtime to monthly values.
- * @param runtime Time the link graph has been running without compression.
+ * @param runtime Time the link graph has been running without compression, in scaled ticks.
  * @pre runtime must be greater than 0 as we don't want infinite flow values.
  */
 void FlowStat::ScaleToMonthly(uint runtime)
@@ -5532,7 +5558,7 @@ void FlowStat::ScaleToMonthly(uint runtime)
 	assert(runtime > 0);
 	uint share = 0;
 	for (iterator i = this->begin(); i != this->end(); ++i) {
-		share = std::max(share + 1, i->first * 30 / runtime);
+		share = std::max(share + 1, ClampTo<uint>((static_cast<uint64>(i->first) * 30 * DAY_TICKS * _settings_game.economy.day_length_factor) / runtime));
 		if (this->unrestricted == i->first) this->unrestricted = share;
 		i->first = share;
 	}
@@ -5583,8 +5609,7 @@ void FlowStatMap::PassOnFlow(StationID origin, StationID via, uint flow)
  */
 void FlowStatMap::FinalizeLocalConsumption(StationID self)
 {
-	for (FlowStatMap::iterator i = this->begin(); i != this->end(); ++i) {
-		FlowStat &fs = *i;
+	for (FlowStat &fs : *this) {
 		uint local = fs.GetShare(INVALID_STATION);
 		if (local > INT_MAX) { // make sure it fits in an int
 			fs.ChangeShare(self, -INT_MAX);
@@ -5628,8 +5653,8 @@ StationIDStack FlowStatMap::DeleteFlows(StationID via)
  */
 void FlowStatMap::RestrictFlows(StationID via)
 {
-	for (FlowStatMap::iterator it = this->begin(); it != this->end(); ++it) {
-		it->RestrictShare(via);
+	for (FlowStat &it : *this) {
+		it.RestrictShare(via);
 	}
 }
 
@@ -5640,9 +5665,9 @@ void FlowStatMap::RestrictFlows(StationID via)
 uint FlowStatMap::GetFlow() const
 {
 	uint ret = 0;
-	for (FlowStatMap::const_iterator i = this->begin(); i != this->end(); ++i) {
-		if (i->IsInvalid()) continue;
-		ret += (i->end() - 1)->first;
+	for (const FlowStat &it : *this) {
+		if (it.IsInvalid()) continue;
+		ret += (it.end() - 1)->first;
 	}
 	return ret;
 }
@@ -5655,9 +5680,9 @@ uint FlowStatMap::GetFlow() const
 uint FlowStatMap::GetFlowVia(StationID via) const
 {
 	uint ret = 0;
-	for (FlowStatMap::const_iterator i = this->begin(); i != this->end(); ++i) {
-		if (i->IsInvalid()) continue;
-		ret += i->GetShare(via);
+	for (const FlowStat &it : *this) {
+		if (it.IsInvalid()) continue;
+		ret += it.GetShare(via);
 	}
 	return ret;
 }
@@ -5709,7 +5734,8 @@ void DumpStationFlowStats(char *b, const char *last)
 	for (const Station *st : Station::Iterate()) {
 		for (CargoID i = 0; i < NUM_CARGO; i++) {
 			const GoodsEntry &ge = st->goods[i];
-			for (FlowStatMap::const_iterator it(ge.flows.begin()); it != ge.flows.end(); ++it) {
+			if (ge.data == nullptr) continue;
+			for (FlowStatMap::const_iterator it(ge.data->flows.begin()); it != ge.data->flows.end(); ++it) {
 				count_map[(uint32)it->size()]++;
 				invalid_map[it->GetRawFlags() & 0x1F]++;
 			}

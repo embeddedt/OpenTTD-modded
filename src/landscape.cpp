@@ -30,18 +30,21 @@
 #include "company_func.h"
 #include "tunnelbridge_map.h"
 #include "pathfinder/npf/aystar.h"
-#include "saveload/saveload.h"
+#include "sl/saveload.h"
 #include "framerate_type.h"
 #include "town.h"
 #include "3rdparty/cpp-btree/btree_set.h"
 #include "scope_info.h"
+#include "core/ring_buffer.hpp"
+#include "network/network_sync.h"
 #include <array>
 #include <list>
 #include <set>
-#include <deque>
 
 #include "table/strings.h"
 #include "table/sprites.h"
+
+#include INCLUDE_FOR_PREFETCH_NTA
 
 #include "safeguards.h"
 
@@ -222,98 +225,6 @@ uint ApplyFoundationToSlope(Foundation f, Slope *s)
 		default: NOT_REACHED();
 	}
 	return dz;
-}
-
-
-/**
- * Determines height at given coordinate of a slope.
- *
- * At the northern corner (0, 0) the result is always a multiple of TILE_HEIGHT.
- * When the height is a fractional Z, then the height is rounded down. For example,
- * when at the height is 0 at x = 0 and the height is 8 at x = 16 (actually x = 0
- * of the next tile), then height is 0 at x = 1, 1 at x = 2, and 7 at x = 15.
- * @param x x coordinate (value from 0 to 15)
- * @param y y coordinate (value from 0 to 15)
- * @param corners slope to examine
- * @return height of given point of given slope
- */
-static constexpr uint InternalGetPartialPixelZ(int x, int y, Slope corners)
-{
-	if (IsHalftileSlope(corners)) {
-		/* A foundation is placed on half the tile at a specific corner. This means that,
-		 * depending on the corner, that one half of the tile is at the maximum height. */
-		switch (GetHalftileSlopeCorner(corners)) {
-			case CORNER_W:
-				if (x > y) return GetSlopeMaxPixelZ(corners);
-				break;
-
-			case CORNER_S:
-				if (x + y >= (int)TILE_SIZE) return GetSlopeMaxPixelZ(corners);
-				break;
-
-			case CORNER_E:
-				if (x <= y) return GetSlopeMaxPixelZ(corners);
-				break;
-
-			case CORNER_N:
-				if (x + y < (int)TILE_SIZE) return GetSlopeMaxPixelZ(corners);
-				break;
-
-			default: NOT_REACHED();
-		}
-	}
-
-	switch (RemoveHalftileSlope(corners)) {
-		case SLOPE_FLAT: return 0;
-
-		/* One corner is up.*/
-		case SLOPE_N: return x + y <= (int)TILE_SIZE ? (TILE_SIZE - x - y)     >> 1 : 0;
-		case SLOPE_E: return y >= x                  ? (1 + y - x)             >> 1 : 0;
-		case SLOPE_S: return x + y >= (int)TILE_SIZE ? (1 + x + y - TILE_SIZE) >> 1 : 0;
-		case SLOPE_W: return x >= y                  ? (x - y)                 >> 1 : 0;
-
-		/* Two corners next to eachother are up. */
-		case SLOPE_NE: return (TILE_SIZE - x) >> 1;
-		case SLOPE_SE: return (y + 1) >> 1;
-		case SLOPE_SW: return (x + 1) >> 1;
-		case SLOPE_NW: return (TILE_SIZE - y) >> 1;
-
-		/* Three corners are up on the same level. */
-		case SLOPE_ENW: return x + y >= (int)TILE_SIZE ? TILE_HEIGHT - ((1 + x + y - TILE_SIZE) >> 1) : TILE_HEIGHT;
-		case SLOPE_SEN: return y < x                   ? TILE_HEIGHT - ((x - y)                 >> 1) : TILE_HEIGHT;
-		case SLOPE_WSE: return x + y <= (int)TILE_SIZE ? TILE_HEIGHT - ((TILE_SIZE - x - y)     >> 1) : TILE_HEIGHT;
-		case SLOPE_NWS: return x < y                   ? TILE_HEIGHT - ((1 + y - x)             >> 1) : TILE_HEIGHT;
-
-		/* Two corners at opposite sides are up. */
-		case SLOPE_NS: return x + y < (int)TILE_SIZE ? (TILE_SIZE - x - y) >> 1 : (1 + x + y - TILE_SIZE) >> 1;
-		case SLOPE_EW: return x >= y ? (x - y) >> 1 : (1 + y - x) >> 1;
-
-		/* Very special cases. */
-		case SLOPE_ELEVATED: return TILE_HEIGHT;
-
-		/* Steep slopes. The top is at 2 * TILE_HEIGHT. */
-		case SLOPE_STEEP_N: return (TILE_SIZE - x + TILE_SIZE - y) >> 1;
-		case SLOPE_STEEP_E: return (TILE_SIZE + 1 + y - x) >> 1;
-		case SLOPE_STEEP_S: return (1 + x + y) >> 1;
-		case SLOPE_STEEP_W: return (TILE_SIZE + x - y) >> 1;
-
-		default: NOT_REACHED();
-	}
-}
-
-#include "tests/landscape_partial_pixel_z.h"
-
-/**
- * Determines height at given coordinate of a slope.
- * See #InternalGetPartialPixelZ.
- * @param x x coordinate (value from 0 to 15)
- * @param y y coordinate (value from 0 to 15)
- * @param corners slope to examine
- * @return height of given point of given slope
- */
-uint GetPartialPixelZ(int x, int y, Slope corners)
-{
-	return InternalGetPartialPixelZ(x, y, corners);
 }
 
 /**
@@ -818,17 +729,40 @@ static uint32 GetTileLoopFeedback()
 	return feedbacks[MapLogX() + MapLogY() - 2 * MIN_MAP_SIZE_BITS];
 }
 
+static std::vector<uint> _tile_loop_counts;
+
+void SetupTileLoopCounts()
+{
+	_tile_loop_counts.resize(_settings_game.economy.day_length_factor);
+	if (_settings_game.economy.day_length_factor == 0) return;
+
+	uint64 count_per_tick_fp16 = (static_cast<uint64>(1) << (MapLogX() + MapLogY() + 8)) / _settings_game.economy.day_length_factor;
+	uint64 accumulator = 0;
+	for (uint &count : _tile_loop_counts) {
+		accumulator += count_per_tick_fp16;
+		count = static_cast<uint32>(accumulator >> 16);
+		accumulator &= 0xFFFF;
+	}
+	if (accumulator > 0) _tile_loop_counts[0]++;
+}
+
 /**
  * Gradually iterate over all tiles on the map, calling their TileLoopProcs once every 256 ticks.
  */
-void RunTileLoop()
+void RunTileLoop(bool apply_day_length)
 {
+	/* We update every tile every 256 ticks, so divide the map size by 2^8 = 256 */
+	uint count;
+	if (apply_day_length && _settings_game.economy.day_length_factor > 1) {
+		count = _tile_loop_counts[_tick_skip_counter];
+		if (count == 0) return;
+	} else {
+		count = 1 << (MapLogX() + MapLogY() - 8);
+	}
+
 	PerformanceAccumulator framerate(PFE_GL_LANDSCAPE);
 
 	const uint32 feedback = GetTileLoopFeedback();
-
-	/* We update every tile every 256 ticks, so divide the map size by 2^8 = 256 */
-	uint count = 1 << (MapLogX() + MapLogY() - 8);
 
 	TileIndex tile = _cur_tileloop_tile;
 	/* The LFSR cannot have a zeroed state. */
@@ -843,13 +777,19 @@ void RunTileLoop()
 	}
 
 	while (count--) {
+		/* Get the next tile in sequence using a Galois LFSR. */
+		TileIndex next = (tile >> 1) ^ (-(int32)(tile & 1) & feedback);
+		if (count > 0) {
+			PREFETCH_NTA(&_m[next]);
+		}
+
 		_tile_type_procs[GetTileType(tile)]->tile_loop_proc(tile);
 
-		/* Get the next tile in sequence using a Galois LFSR. */
-		tile = (tile >> 1) ^ (-(int32)(tile & 1) & feedback);
+		tile = next;
 	}
 
 	_cur_tileloop_tile = tile;
+	RecordSyncEvent(NSRE_TILE);
 }
 
 void RunAuxiliaryTileLoop()
@@ -864,16 +804,22 @@ void RunAuxiliaryTileLoop()
 	TileIndex tile = _aux_tileloop_tile;
 
 	while (count--) {
-		if (!IsNonFloodingWaterTile(tile)) {
+		/* Get the next tile in sequence using a Galois LFSR. */
+		TileIndex next = (tile >> 1) ^ (-(int32)(tile & 1) & feedback);
+		if (count > 0) {
+			PREFETCH_NTA(&_m[next]);
+		}
+
+		if (IsFloodingTypeTile(tile) && !IsNonFloodingWaterTile(tile)) {
 			FloodingBehaviour fb = GetFloodingBehaviour(tile);
 			if (fb != FLOOD_NONE) TileLoopWaterFlooding(fb, tile);
 		}
 
-		/* Get the next tile in sequence using a Galois LFSR. */
-		tile = (tile >> 1) ^ (-(int32)(tile & 1) & feedback);
+		tile = next;
 	}
 
 	_aux_tileloop_tile = tile;
+	RecordSyncEvent(NSRE_AUX_TILE);
 }
 
 void InitializeLandscape()
@@ -899,7 +845,7 @@ static void GenerateTerrain(int type, uint flag)
 	uint32 r = Random();
 
 	/* Choose one of the templates from the graphics file. */
-	const Sprite *templ = GetSprite((((r >> 24) * _genterrain_tbl_1[type]) >> 8) + _genterrain_tbl_2[type] + SPR_MAPGEN_BEGIN, ST_MAPGEN);
+	const Sprite *templ = GetSprite((((r >> 24) * _genterrain_tbl_1[type]) >> 8) + _genterrain_tbl_2[type] + SPR_MAPGEN_BEGIN, SpriteType::MapGen, 0);
 	if (templ == nullptr) usererror("Map generator sprites could not be loaded");
 
 	/* Chose a random location to apply the template to. */
@@ -1328,7 +1274,7 @@ static bool FlowRiver(TileIndex spring, TileIndex begin, uint min_river_length)
 	SET_MARK(begin);
 
 	/* Breadth first search for the closest tile we can flow down to. */
-	std::deque<TileIndex> queue;
+	ring_buffer<TileIndex> queue;
 	queue.push_back(begin);
 
 	bool found = false;
@@ -1688,9 +1634,13 @@ void CallLandscapeTick()
 		PerformanceAccumulator framerate(PFE_GL_LANDSCAPE);
 
 		OnTick_Town();
+		RecordSyncEvent(NSRE_TOWN);
 		OnTick_Trees();
+		RecordSyncEvent(NSRE_TREE);
 		OnTick_Station();
+		RecordSyncEvent(NSRE_STATION);
 		OnTick_Industry();
+		RecordSyncEvent(NSRE_INDUSTRY);
 	}
 
 	OnTick_LinkGraph();

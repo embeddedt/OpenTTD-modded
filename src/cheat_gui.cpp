@@ -13,7 +13,7 @@
 #include "company_base.h"
 #include "company_func.h"
 #include "date_func.h"
-#include "saveload/saveload.h"
+#include "sl/saveload.h"
 #include "textbuf_gui.h"
 #include "window_gui.h"
 #include "string_func.h"
@@ -58,7 +58,7 @@ static int32 _money_cheat_amount = 10000000;
  */
 static int32 ClickMoneyCheat(int32 p1, int32 p2)
 {
-	DoCommandP(0, (uint32)(p2 * _money_cheat_amount), 0, _network_server || _network_settings_access ? CMD_MONEY_CHEAT_ADMIN : CMD_MONEY_CHEAT);
+	DoCommandPEx(0, 0, 0, (uint64)(p2 * _money_cheat_amount), _network_server || _network_settings_access ? CMD_MONEY_CHEAT_ADMIN : CMD_MONEY_CHEAT);
 	return _money_cheat_amount;
 }
 
@@ -98,23 +98,28 @@ extern void EnginesMonthlyLoop();
 
 /**
  * Handle changing of the current year.
- * @param p1 Unused.
+ * @param p1 The chosen year to change to.
  * @param p2 +1 (increase) or -1 (decrease).
  * @return New year.
  */
 static int32 ClickChangeDateCheat(int32 p1, int32 p2)
 {
-	YearMonthDay ymd;
-	ConvertDateToYMD(_date, &ymd);
-
+	/* Don't allow changing to an invalid year, or the current year. */
 	p1 = Clamp(p1, MIN_YEAR, MAX_YEAR);
 	if (p1 == _cur_year) return _cur_year;
 
+	YearMonthDay ymd;
+	ConvertDateToYMD(_date, &ymd);
 	Date new_date = ConvertYMDToDate(p1, ymd.month, ymd.day);
+
+	/* Shift cached dates. */
 	LinkGraphSchedule::instance.ShiftDates(new_date - _date);
 	ShiftOrderDates(new_date - _date);
 	ShiftVehicleDates(new_date - _date);
+
+	/* Change the date. */
 	SetDate(new_date, _date_fract);
+
 	EnginesMonthlyLoop();
 	InvalidateWindowClassesData(WC_BUILD_STATION, 0);
 	InvalidateWindowClassesData(WC_BUS_STATION, 0);
@@ -276,7 +281,7 @@ struct CheatWindow : Window {
 					/* Change inflation factors */
 
 					/* Draw [<][>] boxes for settings of an integer-type */
-					DrawArrowButtons(button_left, y + icon_y_offset, COLOUR_YELLOW, clicked - (i * 2), true, true);
+					DrawArrowButtons(button_left, y + button_y_offset, COLOUR_YELLOW, clicked - (i * 2), true, true);
 
 					uint64 val = (uint64)ReadValue(ce->variable, SLE_UINT64);
 					SetDParam(0, val * 1000 >> 16);
@@ -294,7 +299,6 @@ struct CheatWindow : Window {
 
 				default: {
 					int32 val = (int32)ReadValue(ce->variable, ce->type);
-					char buf[512];
 
 					/* Draw [<][>] boxes for settings of an integer-type */
 					DrawArrowButtons(button_left, y + button_y_offset, COLOUR_YELLOW, clicked - (i * 2), true, true);
@@ -306,8 +310,7 @@ struct CheatWindow : Window {
 						/* Draw coloured flag for change company cheat */
 						case STR_CHEAT_CHANGE_COMPANY: {
 							SetDParam(0, val + 1);
-							GetString(buf, STR_CHEAT_CHANGE_COMPANY, lastof(buf));
-							uint offset = WidgetDimensions::scaled.hsep_indent + GetStringBoundingBox(buf).width;
+							uint offset = WidgetDimensions::scaled.hsep_indent + GetStringBoundingBox(ce->str).width;
 							DrawCompanyIcon(_local_company, rtl ? text_right - offset - WidgetDimensions::scaled.hsep_indent : text_left + offset, y + icon_y_offset);
 							break;
 						}
@@ -430,12 +433,22 @@ struct CheatWindow : Window {
 
 		if (!_networking) *ce->been_used = true;
 
+		auto get_arrow_button_value = [&]() -> int {
+			return (x >= WidgetDimensions::scaled.hsep_wide * 2 + this->box.width + SETTING_BUTTON_WIDTH / 2) ? 1 : -1;
+		};
+
+		auto register_arrow_button_clicked = [&]() {
+			this->clicked = btn * 2 + 1 + ((x >= WidgetDimensions::scaled.hsep_wide * 2 + this->box.width + SETTING_BUTTON_WIDTH / 2) != rtl ? 1 : 0);
+		};
+
 		switch (ce->type) {
 			case SLF_ALLOW_CONTROL: {
 				/* Change inflation factors */
-				uint64 value = (uint64)ReadValue(ce->variable, SLE_UINT64) + (((x >= 10 + this->box.width + SETTING_BUTTON_WIDTH / 2) ? 1 : -1) << 16);
+				uint64 oldvalue = (uint64)ReadValue(ce->variable, SLE_UINT64);
+				uint64 value = oldvalue + (uint64)(get_arrow_button_value() << 16);
 				value = Clamp<uint64>(value, 1 << 16, MAX_INFLATION);
 				DoCommandP(0, (uint32)btn, (uint32)value, CMD_CHEAT_SETTING);
+				if (value != oldvalue) register_arrow_button_clicked();
 				break;
 			}
 
@@ -446,10 +459,11 @@ struct CheatWindow : Window {
 
 			default:
 				/* Take whatever the function returns */
-				value = ce->proc(value + ((x >= WidgetDimensions::scaled.hsep_wide * 2 + this->box.width + SETTING_BUTTON_WIDTH / 2) ? 1 : -1), (x >= WidgetDimensions::scaled.hsep_wide * 2 + this->box.width + SETTING_BUTTON_WIDTH / 2) ? 1 : -1);
+				int offset = get_arrow_button_value();
+				value = ce->proc(value + offset, offset);
 
 				/* The first cheat (money), doesn't return a different value. */
-				if (value != oldvalue || btn == CHT_MONEY) this->clicked = btn * 2 + 1 + ((x >= WidgetDimensions::scaled.hsep_wide * 2 + this->box.width + SETTING_BUTTON_WIDTH / 2) != rtl ? 1 : 0);
+				if (value != oldvalue || btn == CHT_MONEY) register_arrow_button_clicked();
 				break;
 		}
 
@@ -488,7 +502,7 @@ struct CheatWindow : Window {
 		}
 		if (ce->mode == CNM_MONEY) {
 			if (!_networking) *ce->been_used = true;
-			DoCommandP(0, (strtoll(str, nullptr, 10) / _currency->rate), 0, _network_server || _network_settings_access ? CMD_MONEY_CHEAT_ADMIN : CMD_MONEY_CHEAT);
+			DoCommandPEx(0, 0, 0, (std::strtoll(str, nullptr, 10) / _currency->rate), _network_server || _network_settings_access ? CMD_MONEY_CHEAT_ADMIN : CMD_MONEY_CHEAT);
 			return;
 		}
 
@@ -514,7 +528,7 @@ static WindowDesc _cheats_desc(
 /** Open cheat window. */
 void ShowCheatWindow()
 {
-	DeleteWindowById(WC_CHEATS, 0);
+	CloseWindowById(WC_CHEATS, 0);
 	if (!_networking || _network_server || _network_settings_access || _settings_game.difficulty.money_cheat_in_multiplayer) {
 		new CheatWindow(&_cheats_desc);
 	}

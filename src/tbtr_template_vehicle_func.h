@@ -47,6 +47,7 @@ uint CountsTrainsNeedingTemplateReplacement(GroupID g_id, const TemplateVehicle 
 CommandCost TestBuyAllTemplateVehiclesInChain(TemplateVehicle *tv, TileIndex tile);
 
 CommandCost CmdRefitTrainFromTemplate(Train *t, TemplateVehicle *tv, DoCommandFlag flags);
+CommandCost CmdSetTrainUnitDirectionFromTemplate(Train *t, TemplateVehicle *tv, DoCommandFlag flags);
 void BreakUpRemainders(Train *t);
 
 bool TemplateVehicleContainsEngineOfRailtype(const TemplateVehicle *tv, RailType type);
@@ -55,8 +56,16 @@ void TransferCargoForTrain(Train *old_veh, Train *new_head);
 
 void NeutralizeStatus(Train *t);
 
-bool TrainMatchesTemplate(const Train *t, const TemplateVehicle *tv);
-bool TrainMatchesTemplateRefit(const Train *t, const TemplateVehicle *tv);
+enum TBTRDiffFlags {
+	TBTRDF_NONE    = 0,      ///< no difference between train and template
+	TBTRDF_CONSIST = 1 << 0, ///< consist (vehicle units) differs between train and template
+	TBTRDF_REFIT   = 1 << 1, ///< refit differs between train and template
+	TBTRDF_DIR     = 1 << 2, ///< unit direction differs between train and template
+	TBTRDF_ALL     = TBTRDF_CONSIST | TBTRDF_REFIT | TBTRDF_DIR,
+};
+DECLARE_ENUM_AS_BIT_SET(TBTRDiffFlags)
+
+TBTRDiffFlags TrainTemplateDifference(const Train *t, const TemplateVehicle *tv);
 
 void UpdateAllTemplateVehicleImages();
 

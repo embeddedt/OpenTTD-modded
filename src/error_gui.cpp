@@ -8,6 +8,7 @@
 /** @file error_gui.cpp GUI related to errors. */
 
 #include "stdafx.h"
+#include "core/mem_func.hpp"
 #include "landscape.h"
 #include "newgrf_text.h"
 #include "error.h"
@@ -15,6 +16,7 @@
 #include "gfx_func.h"
 #include "string_func.h"
 #include "company_base.h"
+#include "company_func.h"
 #include "company_manager_face.h"
 #include "strings_func.h"
 #include "zoom_func.h"
@@ -40,7 +42,7 @@ static const NWidgetPart _nested_errmsg_widgets[] = {
 };
 
 static WindowDesc _errmsg_desc(
-	WDP_MANUAL, "error", 0, 0,
+	WDP_MANUAL, nullptr, 0, 0,
 	WC_ERRMSG, WC_NONE,
 	0,
 	_nested_errmsg_widgets, lengthof(_nested_errmsg_widgets)
@@ -60,7 +62,7 @@ static const NWidgetPart _nested_errmsg_face_widgets[] = {
 };
 
 static WindowDesc _errmsg_face_desc(
-	WDP_MANUAL, "error_face", 0, 0,
+	WDP_MANUAL, nullptr, 0, 0,
 	WC_ERRMSG, WC_NONE,
 	0,
 	_nested_errmsg_face_widgets, lengthof(_nested_errmsg_face_widgets)
@@ -71,24 +73,10 @@ static WindowDesc _errmsg_face_desc(
  * @param data The data to copy.
  */
 ErrorMessageData::ErrorMessageData(const ErrorMessageData &data) :
-	display_timer(data.display_timer), textref_stack_grffile(data.textref_stack_grffile), textref_stack_size(data.textref_stack_size),
+	display_timer(data.display_timer), params(data.params), textref_stack_grffile(data.textref_stack_grffile), textref_stack_size(data.textref_stack_size),
 	summary_msg(data.summary_msg), detailed_msg(data.detailed_msg), extra_msg(data.extra_msg), position(data.position), face(data.face)
 {
 	memcpy(this->textref_stack, data.textref_stack, sizeof(this->textref_stack));
-	memcpy(this->decode_params, data.decode_params, sizeof(this->decode_params));
-	memcpy(this->strings,       data.strings,       sizeof(this->strings));
-	for (size_t i = 0; i < lengthof(this->strings); i++) {
-		if (this->strings[i] != nullptr) {
-			this->strings[i] = stredup(this->strings[i]);
-			this->decode_params[i] = (size_t)this->strings[i];
-		}
-	}
-}
-
-/** Free all the strings. */
-ErrorMessageData::~ErrorMessageData()
-{
-	for (size_t i = 0; i < lengthof(this->strings); i++) free(this->strings[i]);
 }
 
 /**
@@ -114,9 +102,6 @@ ErrorMessageData::ErrorMessageData(StringID summary_msg, StringID detailed_msg, 
 	this->position.x = x;
 	this->position.y = y;
 
-	memset(this->decode_params, 0, sizeof(this->decode_params));
-	memset(this->strings, 0, sizeof(this->strings));
-
 	if (textref_stack_size > 0) MemCpyT(this->textref_stack, textref_stack, textref_stack_size);
 
 	assert(summary_msg != INVALID_STRING_ID);
@@ -129,20 +114,16 @@ ErrorMessageData::ErrorMessageData(StringID summary_msg, StringID detailed_msg, 
  */
 void ErrorMessageData::CopyOutDParams()
 {
-	/* Reset parameters */
-	for (size_t i = 0; i < lengthof(this->strings); i++) free(this->strings[i]);
-	memset(this->decode_params, 0, sizeof(this->decode_params));
-	memset(this->strings, 0, sizeof(this->strings));
+	if (this->detailed_msg == STR_ERROR_OWNED_BY) {
+		/* The parameters are set by SetDParamsForOwnedBy. */
+		CompanyID company = (CompanyID)GetDParam(OWNED_BY_OWNER_IN_PARAMETERS_OFFSET);
+		if (company < MAX_COMPANIES) face = company;
+	}
 
 	/* Get parameters using type information */
 	if (this->textref_stack_size > 0) StartTextRefStackUsage(this->textref_stack_grffile, this->textref_stack_size, this->textref_stack);
-	CopyOutDParam(this->decode_params, this->strings, this->detailed_msg == INVALID_STRING_ID ? this->summary_msg : this->detailed_msg, lengthof(this->decode_params));
+	CopyOutDParam(this->params, 20);
 	if (this->textref_stack_size > 0) StopTextRefStackUsage();
-
-	if (this->detailed_msg == STR_ERROR_OWNED_BY) {
-		CompanyID company = (CompanyID)GetDParamX(this->decode_params, 2);
-		if (company < MAX_COMPANIES) face = company;
-	}
 }
 
 /**
@@ -152,7 +133,8 @@ void ErrorMessageData::CopyOutDParams()
  */
 void ErrorMessageData::SetDParam(uint n, uint64 v)
 {
-	this->decode_params[n] = v;
+	if (n >= this->params.size()) this->params.resize(n + 1);
+	this->params[n] = v;
 }
 
 /**
@@ -162,8 +144,8 @@ void ErrorMessageData::SetDParam(uint n, uint64 v)
  */
 void ErrorMessageData::SetDParamStr(uint n, const char *str)
 {
-	free(this->strings[n]);
-	this->strings[n] = stredup(str);
+	if (n >= this->params.size()) this->params.resize(n + 1);
+	this->params[n] = str;
 }
 
 /**
@@ -173,7 +155,8 @@ void ErrorMessageData::SetDParamStr(uint n, const char *str)
  */
 void ErrorMessageData::SetDParamStr(uint n, const std::string &str)
 {
-	this->SetDParamStr(n, str.c_str());
+	if (n >= this->params.size()) this->params.resize(n + 1);
+	this->params[n] = str;
 }
 
 /** The actual queue with errors. */
@@ -198,7 +181,7 @@ public:
 	{
 		switch (widget) {
 			case WID_EM_MESSAGE: {
-				CopyInDParam(0, this->decode_params, lengthof(this->decode_params));
+				CopyInDParam(this->params);
 				if (this->textref_stack_size > 0) StartTextRefStackUsage(this->textref_stack_grffile, this->textref_stack_size, this->textref_stack);
 
 				this->height_summary = GetStringHeight(this->summary_msg, size->width);
@@ -214,7 +197,7 @@ public:
 				break;
 			}
 			case WID_EM_FACE: {
-				Dimension face_size = GetSpriteSize(SPR_GRADIENT);
+				Dimension face_size = GetScaledSpriteSize(SPR_GRADIENT);
 				size->width = std::max(size->width, face_size.width);
 				size->height = std::max(size->height, face_size.height);
 				break;
@@ -261,12 +244,12 @@ public:
 	void OnInvalidateData(int data = 0, bool gui_scope = true) override
 	{
 		/* If company gets shut down, while displaying an error about it, remove the error message. */
-		if (this->face != INVALID_COMPANY && !Company::IsValidID(this->face)) delete this;
+		if (this->face != INVALID_COMPANY && !Company::IsValidID(this->face)) this->Close();
 	}
 
 	void SetStringParameters(int widget) const override
 	{
-		if (widget == WID_EM_CAPTION) CopyInDParam(0, this->decode_params, lengthof(this->decode_params));
+		if (widget == WID_EM_CAPTION) CopyInDParam(this->params);
 	}
 
 	void DrawWidget(const Rect &r, int widget) const override
@@ -274,12 +257,12 @@ public:
 		switch (widget) {
 			case WID_EM_FACE: {
 				const Company *c = Company::Get(this->face);
-				DrawCompanyManagerFace(c->face, c->colour, r.left, r.top);
+				DrawCompanyManagerFace(c->face, c->colour, r);
 				break;
 			}
 
 			case WID_EM_MESSAGE:
-				CopyInDParam(0, this->decode_params, lengthof(this->decode_params));
+				CopyInDParam(this->params);
 				if (this->textref_stack_size > 0) StartTextRefStackUsage(this->textref_stack_grffile, this->textref_stack_size, this->textref_stack);
 
 				if (this->detailed_msg == INVALID_STRING_ID) {
@@ -315,20 +298,21 @@ public:
 	void OnMouseLoop() override
 	{
 		/* Disallow closing the window too easily, if timeout is disabled */
-		if (_right_button_down && !this->display_timer.HasElapsed()) delete this;
+		if (_right_button_down && !this->display_timer.HasElapsed()) this->Close();
 	}
 
 	void OnRealtimeTick(uint delta_ms) override
 	{
 		if (this->display_timer.CountElapsed(delta_ms) == 0) return;
 
-		delete this;
+		this->Close();
 	}
 
-	~ErrmsgWindow()
+	void Close() override
 	{
 		SetRedErrorSquare(INVALID_TILE);
 		if (_window_system_initialized) ShowFirstError();
+		this->Window::Close();
 	}
 
 	/**
@@ -371,7 +355,7 @@ void UnshowCriticalError()
 	if (_window_system_initialized && w != nullptr) {
 		if (w->IsCritical()) _error_list.push_front(*w);
 		_window_system_initialized = false;
-		delete w;
+		w->Close();
 	}
 }
 
@@ -425,18 +409,20 @@ void ShowErrorMessage(StringID summary_msg, StringID detailed_msg, WarningLevel 
 	data.CopyOutDParams();
 
 	ErrmsgWindow *w = (ErrmsgWindow*)FindWindowById(WC_ERRMSG, 0);
-	if (w != nullptr && w->IsCritical()) {
-		/* A critical error is currently shown. */
-		if (wl == WL_CRITICAL) {
-			/* Push another critical error in the queue of errors,
-			 * but do not put other errors in the queue. */
-			_error_list.push_back(data);
+	if (w != nullptr) {
+		if (w->IsCritical()) {
+			/* A critical error is currently shown. */
+			if (wl == WL_CRITICAL) {
+				/* Push another critical error in the queue of errors,
+				 * but do not put other errors in the queue. */
+				_error_list.push_back(data);
+			}
+			return;
 		}
-	} else {
-		/* Nothing or a non-critical error was shown. */
-		delete w;
-		new ErrmsgWindow(data);
+		/* A non-critical error was shown. */
+		w->Close();
 	}
+	new ErrmsgWindow(data);
 }
 
 
@@ -447,7 +433,7 @@ void ShowErrorMessage(StringID summary_msg, StringID detailed_msg, WarningLevel 
 bool HideActiveErrorMessage() {
 	ErrmsgWindow *w = (ErrmsgWindow*)FindWindowById(WC_ERRMSG, 0);
 	if (w == nullptr) return false;
-	delete w;
+	w->Close();
 	return true;
 }
 

@@ -9,6 +9,8 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Akfør
 STR_VEHICLE_TYPE_SHIPS                                          :Skip
 STR_VEHICLE_TYPE_AIRCRAFT                                       :Flogfør
 
+STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Tendra/sløkk gjøgnumskygni fyri lessingar vísarar. Ctrl+trýst fyri at læsa
+
 # Tracerestrict GUI
 
 # Programmable Pre-Signals
@@ -26,6 +28,9 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Broyt h�
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Sniðgivi: {GOLD}{NUM}
 
+STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :K:
+STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :F:
+
 # Cargo type orders Window
 
 # Plans window
@@ -42,3 +47,17 @@ STR_TRADITIONAL_AIRCRAFT_NAME                                   :{G=n}Flogfar {C
 # Scheduled Dispatch
 
 # Modifier key toggle window
+
+STR_CONFIG_SETTING_ALLOW_SHARES                                 :Loyv keypi av partabrøvum frá øðrum fyritøkum: {STRING}
+STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Um gilda, er loyvt at keypa og selja fyritøku partabrøv. Partabrøv verða einans tøk hjá fyritøkum ið hava rokki ein ávísan aldur
+
+STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% ogn hjá {COMPANY})
+
+STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Keyp 25% partabrøv í fyritøkuni
+STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Sel 25% partabrøv í fyritøkuni
+STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Keyp 25% partabrøv í hesi fyritøkuni. Shift+trýst vísir kostnaðar meting uttan at keypa nakað partabræv
+STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Sel 25% partabrøv í hesi fyritøkuni. Shift+trýst vísir inntøku meting uttan at selja nakað partabræv
+
+STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Kann ikki keypa 25% partabræv í hesi fyritøkuni...
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Kann ikki selja 25% partabræv í hesari fyritøkuni...
+STR_ERROR_PROTECTED                                             :{WHITE}Hendan fyritøkan er ikki nóg gomul at býta partabrøv enn...

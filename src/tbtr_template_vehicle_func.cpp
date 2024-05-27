@@ -78,6 +78,8 @@ void DrawTemplate(const TemplateVehicle *tv, int left, int right, int y, int hei
 {
 	if (!tv) return;
 
+	bool rtl = _current_text_dir == TD_RTL;
+
 	DrawPixelInfo tmp_dpi;
 	int max_width = right - left + 1;
 	int veh_height = ScaleSpriteTrad(14);
@@ -87,12 +89,12 @@ void DrawTemplate(const TemplateVehicle *tv, int left, int right, int y, int hei
 	AutoRestoreBackup dpi_backup(_cur_dpi, &tmp_dpi);
 
 	const TemplateVehicle *t = tv;
-	int offset = 0;
+	int offset = rtl ? max_width : 0;
 
 	while (t) {
-		t->sprite_seq.Draw(offset + t->image_dimensions.GetOffsetX(), t->image_dimensions.GetOffsetY() + ScaleSpriteTrad(10), t->colourmap, false);
+		t->sprite_seq.Draw(offset + ((rtl ? -1 : 1) * t->image_dimensions.GetOffsetX()), t->image_dimensions.GetOffsetY() + ScaleSpriteTrad(10), t->colourmap, false);
 
-		offset += t->image_dimensions.GetDisplayImageWidth();
+		offset += (rtl ? -1 : 1) * t->image_dimensions.GetDisplayImageWidth();
 		t = t->Next();
 	}
 }
@@ -133,7 +135,7 @@ void SetupTemplateVehicleFromVirtual(TemplateVehicle *tmp, TemplateVehicle *prev
 		tmp->air_drag = gcache->cached_air_drag;
 	}
 
-	virt->GetImage(DIR_W, EIT_IN_DEPOT, &tmp->sprite_seq);
+	virt->GetImage(_current_text_dir == TD_RTL ? DIR_E : DIR_W, EIT_IN_DEPOT, &tmp->sprite_seq);
 	tmp->image_dimensions.SetFromTrain(virt);
 	tmp->colourmap = GetUncachedTrainPaletteIgnoringGroup(virt);
 }
@@ -277,35 +279,25 @@ void NeutralizeStatus(Train *t)
 	DoCommand(0, t->index, 0, DC_EXEC, CMD_RENAME_VEHICLE, nullptr);
 }
 
-bool TrainMatchesTemplate(const Train *t, const TemplateVehicle *tv) {
-	while (t && tv) {
+TBTRDiffFlags TrainTemplateDifference(const Train *t, const TemplateVehicle *tv) {
+	TBTRDiffFlags diff = TBTRDF_NONE;
+	while (t != nullptr && tv != nullptr) {
 		if (t->engine_type != tv->engine_type) {
-			return false;
+			return TBTRDF_ALL;
+		}
+		if (tv->refit_as_template && (t->cargo_type != tv->cargo_type || t->cargo_subtype != tv->cargo_subtype)) {
+			diff |= TBTRDF_REFIT;
+		}
+		if (HasBit(t->flags, VRF_REVERSE_DIRECTION) != HasBit(tv->ctrl_flags, TVCF_REVERSED)) {
+			diff |= TBTRDF_DIR;
 		}
 		t = t->GetNextUnit();
 		tv = tv->GetNextUnit();
 	}
-	if ((t && !tv) || (!t && tv)) {
-		return false;
+	if ((t != nullptr) != (tv != nullptr)) {
+		return TBTRDF_ALL;
 	}
-	return true;
-}
-
-
-bool TrainMatchesTemplateRefit(const Train *t, const TemplateVehicle *tv)
-{
-	if (!tv->refit_as_template) {
-		return true;
-	}
-
-	while (t && tv) {
-		if (t->cargo_type != tv->cargo_type || t->cargo_subtype != tv->cargo_subtype || HasBit(t->flags, VRF_REVERSE_DIRECTION) != HasBit(tv->ctrl_flags, TVCF_REVERSED)) {
-			return false;
-		}
-		t = t->GetNextUnit();
-		tv = tv->GetNextUnit();
-	}
-	return true;
+	return diff;
 }
 
 void BreakUpRemainders(Train *t)
@@ -336,7 +328,7 @@ uint CountsTrainsNeedingTemplateReplacement(GroupID g_id, const TemplateVehicle 
 	if (!tv) return count;
 
 	for (Train *t : Train::Iterate()) {
-		if (t->IsPrimaryVehicle() && t->group_id == g_id && (!TrainMatchesTemplate(t, tv) || !TrainMatchesTemplateRefit(t, tv))) {
+		if (t->IsPrimaryVehicle() && t->group_id == g_id && TrainTemplateDifference(t, tv) != TBTRDF_NONE) {
 			count++;
 		}
 	}
@@ -354,6 +346,20 @@ CommandCost CmdRefitTrainFromTemplate(Train *t, TemplateVehicle *tv, DoCommandFl
 
 		cost.AddCost(DoCommand(t->tile, t->index, tv->cargo_type | tv->cargo_subtype << 8 | (1 << 16) | (1 << 31), flags, cb));
 
+		// next
+		t = t->GetNextUnit();
+		tv = tv->GetNextUnit();
+	}
+	return cost;
+}
+
+// set unit direction of each vehicle in t as is in tv, assume t and tv contain the same types of vehicles
+CommandCost CmdSetTrainUnitDirectionFromTemplate(Train *t, TemplateVehicle *tv, DoCommandFlag flags)
+{
+	CommandCost cost(t->GetExpenseType(false));
+
+	while (t && tv) {
+		// refit t as tv
 		if (HasBit(t->flags, VRF_REVERSE_DIRECTION) != HasBit(tv->ctrl_flags, TVCF_REVERSED)) {
 			cost.AddCost(DoCommand(t->tile, t->index, true, flags, CMD_REVERSE_TRAIN_DIRECTION | CMD_MSG(STR_ERROR_CAN_T_REVERSE_DIRECTION_RAIL_VEHICLE)));
 		}
@@ -437,7 +443,7 @@ void UpdateAllTemplateVehicleImages()
 				if (t_len == tv_len) {
 					Train *v = t;
 					for (TemplateVehicle *u = tv; u != nullptr; u = u->Next(), v = v->Next()) {
-						v->GetImage(DIR_W, EIT_IN_DEPOT, &u->sprite_seq);
+						v->GetImage(_current_text_dir == TD_RTL ? DIR_E : DIR_W, EIT_IN_DEPOT, &u->sprite_seq);
 						u->image_dimensions.SetFromTrain(v);
 						u->colourmap = GetVehiclePalette(v);
 					}

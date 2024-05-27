@@ -48,9 +48,11 @@
 	<li><a href="#a0objects">Action 0 - Objects</a></li>
 	<li><a href="#variable-mapping">Action 14 - Variable Mapping for Variational Action 2</a></li>
 	<li><a href="#varaction2_additional_types">Variational Action 2 - Additional Types</a></li>
+	<li><a href="#varaction2_vehicles">Variational Action 2 - Vehicles</a></li>
 	<li><a href="#varaction2_station">Variational Action 2 - Stations</a></li>
 	<li><a href="#varaction2_railtypes">Variational Action 2 - Railtypes</a></li>
 	<li><a href="#varaction2_object">Variational Action 2 - Objects</a></li>
+	<li><a href="#varaction2_airporttiles">Variational Action 2 - Airport tiles</a></li>
 	<li><a href="#varaction2_signals">Variational Action 2 - Signals (Feature 0E)</a></li>
 	<li><a href="#callbacks_ships">Callbacks - Ships</a></li>
 	<li><a href="#a3objects">Action 3 - Objects</a></li>
@@ -514,17 +516,21 @@
 	<p>This is indicated by the feature name: <font face="monospace">action0_signals_style</font>, version 1</p>
 	<h4 id="signals_style_lookahead_extra_aspects">Set custom signal style train look-ahead extra aspects (mappable property: signals_style_lookahead_extra_aspects)</h4>
 	<p>This applies to the most recent custom signal style defined using the <a href="#signals_define_style">signals_define_style</a> property.<br />
-	This property only makes a difference when the "limit train lookahead to signal aspect" game setting is enabled.<br />
+	This property only makes a difference when the "realistic train braking is aspect limited" game setting is enabled.<br />
 	This limits the signal aspect which the hypothetical train driver can "read" from the signal without affecting signal aspect propagation to other signals, or variable 0x18.<br />
 	Example values could include: 1 for traditional banner repeater signals.<br />
 	Shunt signals should use <a href="#signals_style_lookahead_single_signal_only#">signals_style_lookahead_single_signal_only</a> instead.</p>
 	<p>The property length is 1 byte. The value is clamped to be less than or equal to the value set in the <a href="#signals_extra_aspects">signals_extra_aspects</a> property.<br />
 	The Action 0 Id field is not used, the value is ignored.
 	</p>
-	<p>This is indicated by the feature name: <font face="monospace">action0_signals_style</font>, version 1</p>
+	<p>As a special case, a value of 255 (0xFF) disables the "realistic train braking is aspect limited" setting entirely for signals using this style.<br />
+	This should only be used for signal types which are intended to emulate in-cab signalling, instead of the "driver" visually reading a signal.<br />
+	This special case is indicated by the feature name <font face="monospace">action0_signals_style</font>, version 2.
+	</p>
+	<p>This property is indicated by the feature name: <font face="monospace">action0_signals_style</font>, version 1</p>
 	<h4 id="signals_style_lookahead_single_signal_only">Set custom signal style train look-ahead to single signal only mode (mappable property: signals_style_lookahead_single_signal_only)</h4>
 	<p>This applies to the most recent custom signal style defined using the <a href="#signals_define_style">signals_define_style</a> property.<br />
-	This property only makes a difference when the "limit train lookahead to signal aspect" game setting is enabled, or when using a different signal
+	This property only makes a difference when the "realistic train braking is aspect limited" game setting is enabled, or when using a different signal
 	type which uses <a href="#signals_style_combined_normal_shunt">signals_style_combined_normal_shunt</a>.<br />
 	This is similar to <a href="#signals_style_lookahead_extra_aspects">signals_style_lookahead_extra_aspects</a> with a value of 0, except the lookahead always ends at the
 	next signal, even if that signal type sets <a href="#signals_style_no_aspect_increase">signals_style_no_aspect_increase</a>.<br />
@@ -779,9 +785,36 @@
 	Bit 7 of the <font face="monospace">mode</font> byte must be set to use temporary variable 0x100 instead.</p>
 	<p>Note: Using temporary variable 0x100 as the offset should be used with caution.</p>
 	<br />
+	<h3 id="varaction2_vehicles"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Vehicles">Variational Action 2 - Vehicles</a></h3>
+	<h4 id="varaction2_vehicles_var61">Query variable of n-th vehicle in chain (61)</h4>
+	<p>This variable is also enabled for ships if indicated by the feature name: <font face="monospace">multi_part_ships</font>, version 2.</p>
+	<br />
 	<h3 id="varaction2_station"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Stations">Variational Action 2 - Stations</a></h3>
 	<h4 id="varaction2_station_var42">Track type in purchase list (42)</h4>
 	<p>This is indicated by the feature name: <font face="monospace">varaction2_station_var42</font>, version 1</p>
+	<h4 id="station_station_info_nearby_tiles_v2">Station info of nearby tiles v2 (mappable variable: station_station_info_nearby_tiles_v2)</h4>
+	<p>This has a similar value to <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Stations#Station_info_of_nearby_tiles_.2868.29">68/Station info of nearby tiles</a>.<br />
+	<table>
+	<tr><th>Bits</th><th>Meaning</th></tr>
+	<tr><td>0 - 15</td><td>If the tile is defined in the current GRF, this is the setID used in the definition. Otherwise, the content is undefined. </td></tr>
+	<tr><td>16 - 17</td><td>
+		0 - The tile uses original TTD graphics<br />
+		1 - The tile is defined in the current GRF<br />
+		2 - The tile is defined in another GRF
+	</td></tr>
+	<tr><td>18</td><td>Set if the selected tile belongs to the current station, clear otherwise</td></tr>
+	<tr><td>19</td><td>Clear if the selected tile is parallel with the current one, set if perpendicular to it </td></tr>
+	<tr><td>20 - 21</td><td>
+		0 - plain platform<br />
+		1 - platform with building<br />
+		2 - platform with roof, left side<br />
+		3 - platform with roof, right side
+	</td></tr>
+	</table>
+	<br />
+	The remaining bits are reserved for future use and should be masked.<br />
+	This requires <font face="monospace">varaction2_station_station_nearby_info_v2</font>, version 1.
+	</p>
 	<br />
 	<h3 id="varaction2_railtypes"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Railtypes">Variational Action 2 - Railtypes</a></h3>
 	<h4 id="railtype_signal_restriction_info">Signal routing restriction information (mappable variable: railtype_signal_restriction_info)</h4>
@@ -849,6 +882,14 @@
 	If this variable is non-zero a foundation is present.<br />
 	This is useful for xoring with bits 8-12 of variable 41, because if this variable is unavailable then the result is still the underlying tile slope.</p>
 	<p>This is indicated by the feature name: <font face="monospace">action0_object_edge_foundation_mode</font>, version 2</p>
+	<br />
+	<h3 id="varaction2_airporttiles"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Airport_Tiles">Variational Action 2 - Airport Tiles</a></h3>
+	<h4 id="airporttiles_airport_id">Airport ID (mappable variable: airporttiles_airport_id)</h4>
+	<p>This is the local GRF ID of the airport type.</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_airporttiles_airport_info</font>, version 1</p>
+	<h4 id="airporttiles_airport_layout">Airport layout number (mappable variable: airporttiles_airport_layout)</h4>
+	<p>This is the airport layout number (as defined in <a href="https://newgrf-specs.tt-wiki.net/wiki/Action0/Airports#Set_airportlayout.28s.29_.280A.29">airport property 0A</a>).</p>
+	<p>This is indicated by the feature name: <font face="monospace">varaction2_airporttiles_airport_info</font>, version 1</p>
 	<br />
 	<h3 id="varaction2_signals"><a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2">Variational Action 2 - Signals (Feature 0E)</a></h3>
 	<h4 id="signals_signal_restriction_info">Signal routing restriction information (mappable variable: signals_signal_restriction_info)</h4>
@@ -939,8 +980,10 @@
 	<br />
 	<br />
 	<h3 id="a3objects"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action3">Action 3 - Objects</a></h3>
-	<p>If feature name <font face="monospace">more_objects_per_grf</font> is present and the feature is successfully tested for, the Action 3 ID field is an extended byte, and GRFs may define more than 255 object types.<br />
+	<p>Before JGRPP 0.54 and vanilla OpenTTD 14.0, if feature name <font face="monospace">more_objects_per_grf</font> is present and the feature is successfully tested for, the Action 3 ID field is an extended byte, and GRFs may define more than 255 object types.<br />
 	Otherwise, only 255 object types may be defined per GRF, and the extended byte format may not be used.</p>
+	<p>From JGRPP 0.54 and vanilla OpenTTD 14.0, the extended byte format may always be used.</p>
+	<p>NewGRFs may check whether either the <font face="monospace">more_objects_per_grf</font> feature is present, or if the NewGRF version indicates OpenTTD 14.0 or later.</p>
 	<br />
 	<br />
 	<h3 id="a3signals"><a href="https://newgrf-specs.tt-wiki.net/wiki/Action3">Action 3 - Signals (Feature 0E)</a></h3>

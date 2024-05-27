@@ -12,7 +12,6 @@
 #include "../stdafx.h"
 #include "../openttd.h"
 #include "../gfx_func.h"
-#include "../rev.h"
 #include "../blitter/factory.hpp"
 #include "../thread.h"
 #include "../progress.h"
@@ -231,7 +230,6 @@ static void GetAvailableVideoMode(uint *w, uint *h)
 bool VideoDriver_SDL::CreateMainSurface(uint w, uint h)
 {
 	SDL_Surface *newscreen, *icon;
-	char caption[50];
 	int bpp = BlitterFactory::GetCurrentBlitter()->GetScreenDepth();
 	bool want_hwpalette;
 
@@ -365,8 +363,8 @@ bool VideoDriver_SDL::CreateMainSurface(uint w, uint h)
 
 	InitPalette();
 
-	seprintf(caption, lastof(caption), "OpenTTD %s", _openttd_revision);
-	SDL_WM_SetCaption(caption, caption);
+	std::string caption = VideoDriver::GetCaption();
+	SDL_WM_SetCaption(caption.c_str(), caption.c_str());
 
 	GameSizeChanged();
 
@@ -454,7 +452,7 @@ static uint ConvertSdlKeyIntoMy(SDL_keysym *sym, WChar *character)
 	}
 
 	/* check scancode for BACKQUOTE key, because we want the key left of "1", not anything else (on non-US keyboards) */
-#if defined(_WIN32) || defined(__OS2__)
+#if defined(_WIN32)
 	if (sym->scancode == 41) key = WKC_BACKQUOTE;
 #elif defined(__APPLE__)
 	if (sym->scancode == 10) key = WKC_BACKQUOTE;
@@ -484,12 +482,25 @@ bool VideoDriver_SDL::PollEvent()
 	if (!SDL_PollEvent(&ev)) return false;
 
 	switch (ev.type) {
-		case SDL_MOUSEMOTION:
-			if (_cursor.UpdateCursorPosition(ev.motion.x, ev.motion.y, true)) {
+		case SDL_MOUSEMOTION: {
+			int32_t x = ev.motion.x;
+			int32_t y = ev.motion.y;
+
+			if (_cursor.fix_at) {
+				/* Get all queued mouse events now in case we have to warp the cursor. In the
+				 * end, we only care about the current mouse position and not bygone events. */
+				while (SDL_PeepEvents(&ev, 1, SDL_GETEVENT, SDL_MOUSEMOTION)) {
+					x = ev.motion.x;
+					y = ev.motion.y;
+				}
+			}
+
+			if (_cursor.UpdateCursorPosition(x, y)) {
 				SDL_WarpMouse(_cursor.pos.x, _cursor.pos.y);
 			}
 			HandleMouseEvents();
 			break;
+		}
 
 		case SDL_MOUSEBUTTONDOWN:
 			if (_rightclick_emulate && SDL_GetModState() & KMOD_CTRL) {

@@ -17,6 +17,7 @@
 #include "core/geometry_type.hpp"
 #include "core/tinystring_type.hpp"
 #include <memory>
+#include <vector>
 
 typedef Pool<BaseStation, StationID, 32, 64000> StationPool;
 extern StationPool _station_pool;
@@ -24,7 +25,7 @@ extern StationPool _station_pool;
 struct StationSpecList {
 	const StationSpec *spec;
 	uint32 grfid;      ///< GRF ID of this custom station
-	uint8  localidx;   ///< Station ID within GRF of station
+	uint16 localidx;   ///< Station ID within GRF of station
 };
 
 struct RoadStopSpecList {

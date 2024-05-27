@@ -4,6 +4,7 @@
 #define DEMANDS_H
 
 #include "linkgraphjob_base.h"
+#include <vector>
 
 /**
  * Calculate the demands. This class has a state, but is recreated for each
@@ -40,7 +41,7 @@ public:
 	/**
 	 * Virtual destructor has to be defined because of virtual Run().
 	 */
-	virtual ~DemandHandler() {}
+	virtual ~DemandHandler() = default;
 };
 
 #endif /* DEMANDS_H */

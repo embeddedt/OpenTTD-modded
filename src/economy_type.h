@@ -234,4 +234,18 @@ static const uint LOCK_DEPOT_TILE_FACTOR = 2;
 struct CargoPayment;
 typedef uint32 CargoPaymentID;
 
+enum CargoPaymentAlgorithm : byte {
+	CPA_BEGIN = 0,       ///< Used for iterations and limit testing
+	CPA_TRADITIONAL = 0, ///< Traditional algorithm
+	CPA_MODERN,          ///< Modern algorithm
+	CPA_END,             ///< Used for iterations and limit testing
+};
+
+enum TickRateMode : byte {
+	TRM_BEGIN = 0,       ///< Used for iterations and limit testing
+	TRM_TRADITIONAL = 0, ///< Traditional value (30ms)
+	TRM_MODERN,          ///< Modern value (27ms)
+	TRM_END,             ///< Used for iterations and limit testing
+};
+
 #endif /* ECONOMY_TYPE_H */

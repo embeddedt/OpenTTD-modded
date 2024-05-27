@@ -15,6 +15,7 @@
 #include "station_base.h"
 #include "order_base.h"
 #include "vehicle_base.h"
+#include <vector>
 
 /** Whether or not a vehicle has arrived for a departure. */
 typedef enum {
@@ -63,6 +64,11 @@ struct CallAt {
 	}
 };
 
+struct RemoveVia {
+	StationID via;
+	uint calling_at_offset;
+};
+
 /** A scheduled departure. */
 struct Departure {
 	DateTicksScaled scheduled_date;        ///< The date this departure is scheduled to finish on (i.e. when the vehicle leaves the station)
@@ -71,6 +77,7 @@ struct Departure {
 	StationID via;                         ///< The station the departure should list as going via
 	StationID via2;                        ///< Secondary station the departure should list as going via
 	std::vector<CallAt> calling_at;        ///< The stations both called at and unloaded at by the vehicle after this departure before it terminates
+	std::vector<RemoveVia> remove_vias;    ///< Vias to remove when using smart terminus.
 	DepartureStatus status;                ///< Whether the vehicle has arrived yet for this departure
 	DepartureType type;                    ///< The type of the departure (departure or arrival)
 	const Vehicle *vehicle;                ///< The vehicle performing this departure

@@ -53,6 +53,7 @@ extern int _debug_yapfdesync_level;
 extern int _debug_console_level;
 extern int _debug_linkgraph_level;
 extern int _debug_sound_level;
+extern int _debug_command_level;
 #ifdef RANDOM_DEBUG
 extern int _debug_random_level;
 extern int _debug_statecsum_level;
@@ -68,7 +69,7 @@ void debug_print(const char *dbg, const char *buf);
 
 char *DumpDebugFacilityNames(char *buf, char *last);
 void SetDebugString(const char *s, void (*error_func)(const char *));
-const char *GetDebugString();
+std::string GetDebugString();
 
 /* Shorter form for passing filename and linenumber */
 #define FILE_LINE __FILE__, __LINE__

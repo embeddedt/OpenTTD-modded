@@ -10,6 +10,11 @@ STR_VEHICLE_TYPE_ROAD_VEHICLES                                  :Drumska vozila
 STR_VEHICLE_TYPE_SHIPS                                          :Brodovi
 STR_VEHICLE_TYPE_AIRCRAFT                                       :Letelice
 
+STR_CONFIG_SETTING_AUTOSAVE                                     :Autočuvanje: {STRING}
+STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :Odabir vremenskog intervala između dve automatski sačuvane igre
+
+STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}Promena prozirnosti pokazatelja utovara. Sa Ctrl+klik se zaključava
+
 # Tracerestrict GUI
 
 # Programmable Pre-Signals
@@ -27,6 +32,9 @@ STR_MAPGEN_SNOW_LINE_QUERY_CAPT                                 :{WHITE}Promena 
 
 STR_PURCHASE_INFO_DESIGNED                                      :{BLACK}Projektovan: {GOLD}{NUM}
 
+STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :D:
+STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :P:
+
 # Cargo type orders Window
 
 # Plans window
@@ -43,3 +51,20 @@ STR_TRADITIONAL_AIRCRAFT_NAME                                   :Letilica {COMMA
 # Scheduled Dispatch
 
 # Modifier key toggle window
+
+STR_CONFIG_SETTING_ALLOW_SHARES                                 :Dozvoljena kupovina deonica drugih preduzeća: {STRING}
+STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :Ako je omogućeno, dozvoljava kupovinu i prodaju deonica preduzeća. Deonice su dostupne tek kad preduzeće dostigne određenu starost
+
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :Najmanja starost preduzeća za trgovinu akcijama: {STRING}
+STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :Podesi najmanju starost preduzeća da bi drugi mogli da trguju akcijama sa njom.
+
+STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% u vlasništvu preduzeća {COMPANY})
+
+STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}Otkupi 25% udela u preduzeću
+STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}Prodaj 25% udela u preduzeću
+STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}Otkup 25% udela u ovom preduzeću. Shift+klik prikazuje procenu troškova bez kupovine udela
+STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}Prodaja 25% udela u ovom preduzeću. Shift+klik prikazuje procenu zarade bez prodaje udela
+
+STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}Otkup 25% udela ovog preduzeća nije moguć...
+STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}Prodaja 25% udela ovog preduzeća nije moguća...
+STR_ERROR_PROTECTED                                             :{WHITE}Ovo preduzeće nije dovoljno dugo aktivno za trgovinu akcijama...

@@ -27,7 +27,8 @@ enum CharSetFilter {
 	CS_ALPHANUMERAL,      ///< Both numeric and alphabetic and spaces and stuff
 	CS_NUMERAL,           ///< Only numeric ones
 	CS_NUMERAL_SIGNED,    ///< Only numeric ones, and minus/negative
-	CS_NUMERAL_DECIMAL,   ///< Only numeric, decimal separaters, and minus/negative
+	CS_NUMERAL_DECIMAL,   ///< Only numeric, decimal separaters
+	CS_NUMERAL_DECIMAL_SIGNED, ///< Only numeric, decimal separaters, and minus/negative
 	CS_NUMERAL_SPACE,     ///< Only numbers and spaces
 	CS_ALPHA,             ///< Only alphabetic values
 	CS_HEXADECIMAL,       ///< Only hexadecimal characters
@@ -50,9 +51,14 @@ static const WChar CHAR_TD_PDF = 0x202C; ///< Restore the text-direction state t
 enum StringValidationSettings {
 	SVS_NONE                       = 0,      ///< Allow nothing and replace nothing.
 	SVS_REPLACE_WITH_QUESTION_MARK = 1 << 0, ///< Replace the unknown/bad bits with question marks.
-	SVS_ALLOW_NEWLINE              = 1 << 1, ///< Allow newlines.
+	SVS_ALLOW_NEWLINE              = 1 << 1, ///< Allow newlines; replaces '\r\n' with '\n' during processing.
 	SVS_ALLOW_CONTROL_CODE         = 1 << 2, ///< Allow the special control codes.
-	SVS_ALLOW_SEPARATOR_CODE       = 1 << 3, ///< Allow separator control code (0x1F).
+	/**
+	 * Replace tabs ('\t'), carriage returns ('\r') and newlines ('\n') with spaces.
+	 * When #SVS_ALLOW_NEWLINE is set, a '\n' or '\r\n' combination are not replaced with a space. A lone '\r' is replaced with a space.
+	 * When #SVS_REPLACE_WITH_QUESTION_MARK is set, this replacement runs first.
+	 */
+	SVS_REPLACE_TAB_CR_NL_WITH_SPACE = 1 << 3,
 };
 DECLARE_ENUM_AS_BIT_SET(StringValidationSettings)
 

@@ -102,8 +102,9 @@ static uint16 ParseCode(const char *start, const char *end)
 	assert(start <= end);
 	while (start < end && *start == ' ') start++;
 	while (end > start && *end == ' ') end--;
+	std::string_view str{start, (size_t)(end - start)};
 	for (uint i = 0; i < lengthof(_keycode_to_name); i++) {
-		if (strlen(_keycode_to_name[i].name) == (size_t)(end - start) && strncasecmp(start, _keycode_to_name[i].name, end - start) == 0) {
+		if (StrEqualsIgnoreCase(str, _keycode_to_name[i].name)) {
 			return _keycode_to_name[i].keycode;
 		}
 	}
@@ -169,53 +170,41 @@ static void ParseHotkeys(Hotkey *hotkey, const char *value)
  * by a '+'.
  * @param keycode The keycode to convert to a string.
  * @return A string representation of this keycode.
- * @note The return value is a static buffer, stredup the result before calling
- *  this function again.
  */
-static const char *KeycodeToString(uint16 keycode)
+static std::string KeycodeToString(uint16 keycode)
 {
-	static char buf[32];
-	buf[0] = '\0';
-	bool first = true;
+	std::string str;
 	if (keycode & WKC_GLOBAL_HOTKEY) {
-		strecat(buf, "GLOBAL", lastof(buf));
-		first = false;
+		str += "GLOBAL";
 	}
 	if (keycode & WKC_SHIFT) {
-		if (!first) strecat(buf, "+", lastof(buf));
-		strecat(buf, "SHIFT", lastof(buf));
-		first = false;
+		if (!str.empty()) str += "+";
+		str += "SHIFT";
 	}
 	if (keycode & WKC_CTRL) {
-		if (!first) strecat(buf, "+", lastof(buf));
-		strecat(buf, "CTRL", lastof(buf));
-		first = false;
+		if (!str.empty()) str += "+";
+		str += "CTRL";
 	}
 	if (keycode & WKC_ALT) {
-		if (!first) strecat(buf, "+", lastof(buf));
-		strecat(buf, "ALT", lastof(buf));
-		first = false;
+		if (!str.empty()) str += "+";
+		str += "ALT";
 	}
 	if (keycode & WKC_META) {
-		if (!first) strecat(buf, "+", lastof(buf));
-		strecat(buf, "META", lastof(buf));
-		first = false;
+		if (!str.empty()) str += "+";
+		str += "META";
 	}
-	if (!first) strecat(buf, "+", lastof(buf));
+	if (!str.empty()) str += "+";
 	keycode = keycode & ~WKC_SPECIAL_KEYS;
 
 	for (uint i = 0; i < lengthof(_keycode_to_name); i++) {
 		if (_keycode_to_name[i].keycode == keycode) {
-			strecat(buf, _keycode_to_name[i].name, lastof(buf));
-			return buf;
+			str += _keycode_to_name[i].name;
+			return str;
 		}
 	}
 	assert(keycode < 128);
-	char key[2];
-	key[0] = keycode;
-	key[1] = '\0';
-	strecat(buf, key, lastof(buf));
-	return buf;
+	str.push_back(keycode);
+	return str;
 }
 
 /**
@@ -223,19 +212,15 @@ static const char *KeycodeToString(uint16 keycode)
  * keycodes are attached to the hotkey they are split by a comma.
  * @param hotkey The keycodes of this hotkey need to be converted to a string.
  * @return A string representation of all keycodes.
- * @note The return value is a static buffer, stredup the result before calling
- *  this function again.
  */
-const char *SaveKeycodes(const Hotkey *hotkey)
+std::string SaveKeycodes(const Hotkey *hotkey)
 {
-	static char buf[128];
-	buf[0] = '\0';
-	for (uint i = 0; i < hotkey->keycodes.size(); i++) {
-		const char *str = KeycodeToString(hotkey->keycodes[i]);
-		if (i > 0) strecat(buf, ",", lastof(buf));
-		strecat(buf, str, lastof(buf));
+	std::string str;
+	for (auto keycode : hotkey->keycodes) {
+		if (!str.empty()) str += ",";
+		str += KeycodeToString(keycode);
 	}
-	return buf;
+	return str;
 }
 
 /**
@@ -275,7 +260,7 @@ Hotkey::Hotkey(const uint16 *default_keycodes, const char *name, int num) :
  */
 void Hotkey::AddKeycode(uint16 keycode)
 {
-	include(this->keycodes, keycode);
+	this->keycodes.insert(keycode);
 }
 
 HotkeyList::HotkeyList(const char *ini_group, Hotkey *items, GlobalHotkeyHandlerFunc global_hotkey_handler) :
@@ -298,7 +283,7 @@ void HotkeyList::Load(IniFile *ini)
 {
 	IniGroup *group = ini->GetGroup(this->ini_group);
 	for (Hotkey *hotkey = this->items; hotkey->name != nullptr; ++hotkey) {
-		IniItem *item = group->GetItem(hotkey->name, false);
+		IniItem *item = group->GetItem(hotkey->name);
 		if (item != nullptr) {
 			hotkey->keycodes.clear();
 			if (item->value.has_value()) ParseHotkeys(hotkey, item->value->c_str());
@@ -314,8 +299,8 @@ void HotkeyList::Save(IniFile *ini) const
 {
 	IniGroup *group = ini->GetGroup(this->ini_group);
 	for (const Hotkey *hotkey = this->items; hotkey->name != nullptr; ++hotkey) {
-		IniItem *item = group->GetItem(hotkey->name, true);
-		item->SetValue(SaveKeycodes(hotkey));
+		IniItem &item = group->GetOrCreateItem(hotkey->name);
+		item.SetValue(SaveKeycodes(hotkey));
 	}
 }
 

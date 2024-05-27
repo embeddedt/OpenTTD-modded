@@ -123,7 +123,7 @@ public:
 
 		ResetObjectToPlace();
 
-		this->vscroll->SetCount((int)this->object_classes.size());
+		this->vscroll->SetCount(this->object_classes.size());
 
 		EnsureSelectedObjectClassIsVisible();
 
@@ -140,11 +140,9 @@ public:
 	static bool TagNameFilter(ObjectClassID const *oc, StringFilter &filter)
 	{
 		ObjectClass *objclass = ObjectClass::Get(*oc);
-		char buffer[DRAW_STRING_BUFFER];
-		GetString(buffer, objclass->name, lastof(buffer));
 
 		filter.ResetState();
-		filter.AddLine(buffer);
+		filter.AddLine(GetString(objclass->name));
 		return filter.GetState();
 	}
 
@@ -166,7 +164,7 @@ public:
 		this->object_classes.RebuildDone();
 		this->object_classes.Sort();
 
-		this->vscroll->SetCount((uint)this->object_classes.size());
+		this->vscroll->SetCount(this->object_classes.size());
 	}
 
 	/**
@@ -182,19 +180,8 @@ public:
 		} else {
 			/* Check if the previously selected object class is not available anymore as a
 			 * result of starting a new game without the corresponding NewGRF. */
-			bool available = false;
-			for (uint i = 0; ObjectClass::IsClassIDValid((ObjectClassID)i); ++i) {
-				if ((ObjectClassID)i == _selected_object_class) {
-					available = true;
-					break;
-				}
-			}
-
-			if (available) {
-				this->SelectOtherClass(_selected_object_class);
-			} else {
-				this->SelectOtherClass(this->object_classes[0]);
-			}
+			bool available = _selected_object_class < ObjectClass::GetClassCount();
+			this->SelectOtherClass(available ? _selected_object_class : this->object_classes[0]);
 		}
 
 		if (this->CanRestoreSelectedObject()) {
@@ -431,6 +418,24 @@ public:
 	}
 
 	/**
+	 * Clear class filter if the selected class is not included in the filter.
+	 * @param object_class Object class select.
+	 */
+	void ClearFilterIsClassNotIncluded(ObjectClassID object_class)
+	{
+		/* Filter is not enabled */
+		if (!this->object_classes.IsFilterEnabled()) return;
+
+		for (auto oc : this->object_classes) {
+			if (oc == object_class) {
+				return;
+			}
+		}
+
+		this->ClearEditBox(WID_BO_FILTER);
+	}
+
+	/**
 	 * Select the specified object class.
 	 * @param object_class Object class select.
 	 */
@@ -467,6 +472,22 @@ public:
 		}
 
 		this->UpdateButtons(_selected_object_class, _selected_object_index, _selected_object_view);
+	}
+
+	/**
+	 * Scrolls #WID_BO_SCROLLBAR so that the selected class is visible.
+	 */
+	void EnsureSelectedClassIsVisible()
+	{
+		uint pos = 0;
+		for (auto object_class : this->object_classes) {
+			if (object_class == _selected_object_class) {
+				this->vscroll->SetCount(this->object_classes.size());
+				this->vscroll->ScrollTowards(pos);
+				return;
+			}
+			pos++;
+		}
 	}
 
 	void UpdateSelectSize()
@@ -522,10 +543,10 @@ public:
 	{
 		switch (GB(widget, 0, 16)) {
 			case WID_BO_CLASS_LIST: {
-				int num_clicked = this->vscroll->GetPosition() + (pt.y - this->GetWidget<NWidgetBase>(widget)->pos_y) / this->line_height;
-				if (num_clicked >= (int)this->object_classes.size()) break;
+				auto it = this->vscroll->GetScrolledItemFromWidget(this->object_classes, pt.y, this, widget);
+				if (it == this->object_classes.end()) break;
 
-				this->SelectOtherClass(this->object_classes[num_clicked]);
+				this->SelectOtherClass(*it);
 				this->SelectFirstAvailableObject(false);
 				break;
 			}
@@ -715,7 +736,7 @@ static const NWidgetPart _nested_build_object_widgets[] = {
 						NWidget(WWT_PANEL, COLOUR_GREY, WID_BO_OBJECT_SPRITE), SetDataTip(0x0, STR_OBJECT_BUILD_PREVIEW_TOOLTIP), EndContainer(),
 					EndContainer(),
 				EndContainer(),
-				NWidget(WWT_TEXT, COLOUR_DARK_GREEN, WID_BO_OBJECT_NAME), SetDataTip(STR_ORANGE_STRING, STR_NULL),
+				NWidget(WWT_TEXT, COLOUR_DARK_GREEN, WID_BO_OBJECT_NAME), SetDataTip(STR_JUST_STRING, STR_NULL), SetTextStyle(TC_ORANGE),
 				NWidget(WWT_TEXT, COLOUR_DARK_GREEN, WID_BO_OBJECT_SIZE), SetDataTip(STR_OBJECT_BUILD_SIZE, STR_NULL),
 			EndContainer(),
 			NWidget(WWT_PANEL, COLOUR_DARK_GREEN), SetScrollbar(WID_BO_SELECT_SCROLL),
@@ -755,6 +776,29 @@ Window *ShowBuildObjectPicker()
 		return AllocateWindowDescFront<BuildObjectWindow>(&_build_object_desc, 0);
 	}
 	return nullptr;
+}
+
+/** Show our object picker, and select a particular spec.  */
+void ShowBuildObjectPickerAndSelect(const ObjectSpec *spec)
+{
+	if (spec == nullptr || !spec->IsAvailable() || !ObjectClass::HasUIClass() || spec->cls_id == INVALID_OBJECT_CLASS) return;
+
+	int spec_id = -1;
+	const ObjectClass *objclass = ObjectClass::Get(spec->cls_id);
+	for (int i = 0; i < (int)objclass->GetSpecCount(); i++) {
+		if (objclass->GetSpec(i) == spec) {
+			spec_id = i;
+		}
+	}
+	if (spec_id < 0) return;
+
+	BuildObjectWindow *w = AllocateWindowDescFront<BuildObjectWindow>(&_build_object_desc, 0, true);
+	if (w != nullptr) {
+		w->ClearFilterIsClassNotIncluded(spec->cls_id);
+		w->SelectOtherClass(spec->cls_id);
+		w->SelectOtherObject(spec_id);
+		w->EnsureSelectedClassIsVisible();
+	}
 }
 
 /** Reset all data of the object GUI. */

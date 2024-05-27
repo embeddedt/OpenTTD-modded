@@ -15,10 +15,10 @@
 
 #include "sprite.h"
 #include "core/alloc_type.hpp"
-#include "core/smallvec_type.hpp"
 #include "command_type.h"
 #include "direction_type.h"
 #include "company_type.h"
+#include <vector>
 
 /** Context for tile accesses */
 enum TileContext : uint8 {
@@ -204,7 +204,7 @@ public:
 	std::vector<EntityIDMapping> mappings; ///< mapping of ids from grf files.  Public out of convenience
 
 	OverrideManagerBase(uint16 offset, uint16 maximum, uint16 invalid);
-	virtual ~OverrideManagerBase() {}
+	virtual ~OverrideManagerBase() = default;
 
 	void ResetOverride();
 	void ResetMapping();

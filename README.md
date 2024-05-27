@@ -4,7 +4,7 @@ This is my personal collection of patches applied to [JGR's Patch Pack](https://
 
 Prebuilt bundles are linked here:
 
-* Play in your browser: https://embeddedt.github.io/OpenTTD-modded/ 
+* Play in your browser: https://embeddedt.github.io/OpenTTD-modded/
 * Windows, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x64.zip
 * Windows, 32-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-windows-x86.zip
 * Linux, 64-bit: https://nightly.link/embeddedt/OpenTTD-modded/workflows/nightly-build/stock_jgr/openttd-linux-generic.zip
@@ -26,7 +26,7 @@ MacOS binaries are also not provided due to a lack of hardware to test with, but
 * Default mouse scrolling mode is changed to RMB without pointer locking (see [relevant upstream discussion](https://github.com/OpenTTD/OpenTTD/discussions/9150)) to improve the experience on the web version. This will not affect your existing choice for this setting; it only affects new players.
 * ~~["Unload all" order option adds "leave empty"](https://www.tt-forums.net/viewtopic.php?t=59611)~~ (applied to vanilla in https://github.com/OpenTTD/OpenTTD/pull/9301)
 
-## JGR's Patchpack version 0.52.1
+## JGR's Patchpack version 0.55.3
 
 This is a collection of patches applied to [OpenTTD](http://www.openttd.org/)
 
@@ -46,7 +46,7 @@ See [below](#openttd) for the original OpenTTD readme.
 
 The thread for this patchpack can be found [here](http://www.tt-forums.net/viewtopic.php?f=33&t=73469).
 
-See [jgrpp-changelog.md](jgrpp-changelog.md) for changelog.
+See [jgrpp-changelog.md](jgrpp-changelog.md) for the changelog.
 
 See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki) for guides on how to use some of the included features.
 
@@ -58,19 +58,19 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 * Drive-through train depots.
 * [Template-based train replacement](http://www.tt-forums.net/viewtopic.php?f=33&t=58904).
-* [Routing restrictions](http://www.tt-forums.net/viewtopic.php?f=33&t=73397).  
+* [Routing restrictions](http://www.tt-forums.net/viewtopic.php?f=33&t=73397).
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
-* [Programmable pre-signals](http://www.tt-forums.net/viewtopic.php?f=33&t=47690).  
-  These are not shown in the build signal window by default.  
+* [Programmable pre-signals](http://www.tt-forums.net/viewtopic.php?f=33&t=47690).
+  These are not shown in the build signal window by default.
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
-* Freight train through load.  
+* Freight train through load.
   This is an alternative loading mode for freight trains for the case where the train is longer then the platform.
 * Multiple rail types per tile.
 * [Polyline rail track building tool](http://www.tt-forums.net/viewtopic.php?f=33&t=57080).
 * Add news setting for trains waiting due to routing restrictions.
 * Add setting to enable flipping direction of all train types in depot.
-* Realistic train braking.  
-  In this mode, trains have a stopping distance and will reserve ahead accordingly, trains cannot stop instantly.  
+* Realistic train braking.
+  In this mode, trains have a stopping distance and will reserve ahead accordingly, trains cannot stop instantly.
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Realistic-braking) for more information.
 * Allow converting track type under trains when compatible with the new rail type.
 * Add feature where trains adjust their speed to match the train in front to avoid stop-start behaviour.
@@ -78,17 +78,18 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add information about train full and empty loads and achievable speeds to the train info window.
 * Add setting to sort track types by category and speed.
 * Add a setting for whether to pathfind up to back of a one-way path signal.
-* Multi-aspect signal graphics.  
+* Multi-aspect signal graphics.
   This requires a NewGRF which supports this and realistic train braking.
-* No-entry signals.  
+* No-entry signals.
   These are not shown in the build signal window by default.
 * Add client setting to show all signals using the default baseset sprites.
 * Remember the last-used signal type between games.
 * Add client setting to show the introduction year for train wagons.
+* Add setting for rail depot maximum speed.
 
 #### Roads and Road Vehicles
 
-* One-way road and road vehicle overtaking enhancements.  
+* One-way road and road vehicle overtaking enhancements.
   See the [wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/One-way-roads) for full details.
 * Add setting to allow articulated road vehicles to overtake other vehicles.
 * Add setting to control road vehicle re-routing on road layout changes.
@@ -149,7 +150,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add feature to create a new auto-named group when dragging and dropping a vehicle onto the new group button (ctrl includes shared order vehicles).
 * Add settings to reduce vehicle running costs when a vehicle is stationary or in a depot.
 * If a vehicle's next order is for the current station when leaving, start loading again without moving, instead of leaving.
-* Slots and counters.  
+* Slots and counters.
   See the [guide on the wiki](https://github.com/JGRennison/OpenTTD-patches/wiki/Signalling) for more information.
 * Add cargo capacity / running cost sort mode to the build vehicle window.
 * Add client settings to show the full group hierarchy in group and vehicle names.
@@ -157,21 +158,21 @@ See [installation.md](/installation.md) for instructions on how to install.
 #### Orders and Timetabling
 
 * [Automated timetables and separation](http://www.tt-forums.net/viewtopic.php?f=33&t=46391).
-* Allow clearing of timetable time fields which are at 0. Allow explicitly setting timetable time fields to 0 without clearing them.  
-* Allow changing/clearing the timetabled waiting time and max speed of all of a vehicle's orders at once.  
-* Add client setting to show the remainder ticks in timetable, after dividing to days or minutes.  
+* Allow clearing of timetable time fields which are at 0. Allow explicitly setting timetable time fields to 0 without clearing them.
+* Allow changing/clearing the timetabled waiting time and max speed of all of a vehicle's orders at once.
+* Add client setting to show the remainder ticks in timetable, after dividing to days or minutes.
 * Add a company setting to control the number of ticks used in auto-fill timetable rounding.
-* [Cargo type orders](https://www.tt-forums.net/viewtopic.php?p=1047749).  
+* [Cargo type orders](https://www.tt-forums.net/viewtopic.php?p=1047749).
   This allows order load/unload types to be set per cargo type. (This does work with cargodist).
-* Order occupancy.  
+* Order occupancy.
   Add column to the orders GUI to show occupancy running average, show the average order occupancy, and add a vehicle sort mode.
 * [Timetabling waiting time in depots](http://www.tt-forums.net/viewtopic.php?f=33&t=70969).
-* Scheduled dispatch.  
+* Scheduled dispatch.
   This allows dispatching vehicles from timing points using one or more repeating schedules. This is useful for clock-face timetabling.
-* [More conditional orders](http://www.tt-forums.net/viewtopic.php?f=33&t=38317).  
-  Next station: is cargo waiting, is cargo accepted, number of free platforms, amount of cargo waiting.  
-  Percent of times, per-cargo load percentage, current time/date, timetable lateness.  
-  Slots/counters: train in slot, slot occupancy, counter value.  
+* [More conditional orders](http://www.tt-forums.net/viewtopic.php?f=33&t=38317).
+  Next station: is cargo waiting, is cargo accepted, number of free platforms, amount of cargo waiting.
+  Percent of times, per-cargo load percentage, current time/date, timetable lateness.
+  Slots/counters: train in slot, slot occupancy, counter value.
   Scheduled dispatch departure slots.
 * Reverse at waypoint orders.
 * Add a menu item to the vehicle list to change order target, e.g. for moving depot orders to a different depot.
@@ -181,11 +182,13 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Leave early and leave early if any/all cargoes fully loaded order timetable flags.
 * Timetabled wait times at waypoints.
 * Add warning/info messages to the timetable window.
-* Add features to reverse the order of an order list, and to append the reverse of an order list.  
+* Add features to reverse the order of an order list, and to append the reverse of an order list.
   (Use the ctrl key when the end of orders marker is selected, or enable the order management button).
 * Add features to duplicate an individual order and to change the jump target of conditional orders.
 * Add company setting for whether to advance the current order when cloning/copying/sharing (if current depot is in order list).
 * Add vehicle list menu item to mass cancel go to or service at depot orders.
+* Allow changing colour of orders in order list and timetable windows.
+* Add text label and departure board via order types.
 
 #### Stations
 
@@ -207,6 +210,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to allow hiding viewport labels of individual waypoints.
 * Increase the distance a station can be from the town centre and still be assigned have the same name as the town (no suffix/prefix), for large towns.
 * [Allow NewGRFs to supply additional station name strings](https://github.com/JGRennison/OpenTTD-patches/wiki/GRF-features#extra-station-names).
+* Allow generating new default name for station (ctrl-click default button in rename station query window).
+* Allow exchanging a station's name with another station in the same town.
 
 #### Towns
 
@@ -220,8 +225,10 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add public roads (road network automatically built between towns) at map generation and in the scenario editor.
 * Add settings for if/when towns can build road bridges and tunnels.
 * Add setting to limit length of continuous inclined roads built by towns.
+* Add setting for whether to allow converting town road to non-house types.
 * Allow overriding town road construction settings and whether town growth is enabled on a per-town basis, add setting to enable this for multiplayer clients.
 * Allow NewGRFs to set town zone radii.
+* Show town count in town directory window.
 
 #### Industries
 
@@ -250,6 +257,7 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Add setting to disable object expiry after a given year.
 * Add setting to ignore object introduction dates.
 * Add setting for whether to confirm before demolishing industries and/or rail stations.
+* Add picker tool for objects, rail types, road types, rail stations/waypoint, road stops/waypoints and signals, to the main toolbar help menu.
 
 #### Scenario Editor
 
@@ -261,10 +269,10 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 * [Zoning](http://www.tt-forums.net/viewtopic.php?f=33&t=33701).
 * [Measurement tools](http://www.tt-forums.net/viewtopic.php?f=33&t=49212).
-* [Enhanced viewport](https://www.tt-forums.net/viewtopic.php?f=33&t=53394).  
-  Extra zoomed-out zoom levels with different map display modes (page up/down or ctrl-mousewheel).  
-  Selected vehicle order overlays.  
-  Industry tooltips.   
+* [Enhanced viewport](https://www.tt-forums.net/viewtopic.php?f=33&t=53394).
+  Extra zoomed-out zoom levels with different map display modes (page up/down or ctrl-mousewheel).
+  Selected vehicle order overlays.
+  Industry tooltips.
   Plans (useful in multiplayer).
 * Add setting for shading trees on slopes in viewports (default on).
 * Add setting for alternative linkgraph overlay colour schemes.
@@ -277,6 +285,8 @@ See [installation.md](/installation.md) for instructions on how to install.
 * Make the company infrastructure window scrollable.
 * Add setting to disable water animation depending on zoom level.
 * Add zoom in support to the minimap window.
+* Add setting to increase the size of the main toolbar.
+* Add cargo filtering and a show by cargo mode to the company delivered cargo graph.
 
 #### Limits
 
@@ -295,13 +305,13 @@ See [installation.md](/installation.md) for instructions on how to install.
 
 #### Multiplayer
 
-* [Infrastructure sharing](http://www.tt-forums.net/viewtopic.php?f=33&t=42254)  
-* Add company settings to enable competitors to buy/renew vehicles in this company's depots.  
+* [Infrastructure sharing](http://www.tt-forums.net/viewtopic.php?f=33&t=42254)
+* Add company settings to enable competitors to buy/renew vehicles in this company's depots.
 * Add setting to control whether trains can crash with trains owned by other companies.
 * [Give money to company, instead of player](https://www.tt-forums.net/viewtopic.php?f=33&t=63899), broadcast money transfer notifications to all players.
 * Add setting to enable non-admin multiplayer clients to rename towns.
 * Add a password mechanism to change network game settings from a network client.
-* Change network protocol to send server/join and rcon passwords in hashed form instead of in clear text.
+* Auto-kick clients after too many failed rcon/settings attempts.
 * Various changes to reduce the probability of desyncs and improve desync reporting/diagnostics.
 * Add support for zstd savegame compression for autosaves and network joins.
 * Increase the number of settings which can be changed in multiplayer.
@@ -359,51 +369,45 @@ See [installation.md](/installation.md) for instructions on how to install.
 * [AI/GS script additions](docs/script-additions.html) ([online copy](https://jgrennison.github.io/OpenTTD-patches/script-additions.html)).
 * [Low-level code/performance changes](docs/jgrpp-low-level-changes.md).
 
-#### Translations
-
-* German (by Auge and Kruemelchen)  
-* Korean (by kiwitreekor and TELK)  
-* Japanese (by Qwerty Asd)
-
-#### Save/load and savegame format changes  
-* Various changes to improve handling of savegames which use features not in trunk.  
-* Savegames from this patchpack are not loadable in trunk.  
-* Savegames from trunk up to the last savegame version which has been merged into this branch (*jgrpp*) should be loadable in this patchpack.  
-* Savegames from other branches which use the save/load code in the *save_ext* branch (usually suffixed: *-sx*) which are also merged into this branch (*jgrpp*), or where the added feature is marked as discardable/ignorable, should be loadable in this patchpack.  
-* Savegames from other patched versions are not loadable in this patchpack except for savegames from:  
-  * The *tracerestrict* branch ([routing restrictions patch](http://www.tt-forums.net/viewtopic.php?f=33&t=73397))  
-  * The [Spring 2013 Patch Pack](http://www.tt-forums.net/viewtopic.php?f=33&t=66892) v2.0 - v2.4 (subject to caveats, see below)  
-  * [Joker's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=74365) v1.19 - v1.27 (subject to caveats, see below)  
+#### Save/load and savegame format changes
+* Various changes to improve handling of savegames which use features not in trunk.
+* Savegames from this patchpack are not loadable in trunk.
+* Savegames from trunk up to the last savegame version which has been merged into this branch (*jgrpp*) should be loadable in this patchpack.
+* Savegames from other branches which use the save/load code in the *save_ext* branch (usually suffixed: *-sx*) which are also merged into this branch (*jgrpp*), or where the added feature is marked as discardable/ignorable, should be loadable in this patchpack.
+* Savegames from other patched versions are not loadable in this patchpack except for savegames from:
+  * The *tracerestrict* branch ([routing restrictions patch](http://www.tt-forums.net/viewtopic.php?f=33&t=73397))
+  * The [Spring 2013 Patch Pack](http://www.tt-forums.net/viewtopic.php?f=33&t=66892) v2.0 - v2.4 (subject to caveats, see below)
+  * [Joker's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=74365) v1.19 - v1.27 (subject to caveats, see below)
   * [Chill's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=47622) v8 and v14.7 (subject to caveats, see below)
 
-#### Caveats for loading savegames from the [Spring 2013 Patch Pack](http://www.tt-forums.net/viewtopic.php?f=33&t=66892):  
-* This is not guaranteed to be bug free  
-* Savegames with huge airports are rejected  
-* Map sizes greater than 16k x 16k are rejected  
-* PAX signals/stations and traffic lights are cleared, leaving ordinary signals/stations/roads  
-* Rail ageing/grass on tracks, trip histories, leave order/wait for cargo, auto advertising campaigns, base cost multipliers and other features not in this patch pack are dropped/ignored.  
-* SpringPP v2.0.102/103 only:  
-  * Savegames which have aircraft approaching, landing, taking off or landed at an oil rig are rejected  
+#### Caveats for loading savegames from the [Spring 2013 Patch Pack](http://www.tt-forums.net/viewtopic.php?f=33&t=66892):
+* This is not guaranteed to be bug free
+* Savegames with huge airports are rejected
+* Map sizes greater than 16k x 16k are rejected
+* PAX signals/stations and traffic lights are cleared, leaving ordinary signals/stations/roads
+* Rail ageing/grass on tracks, trip histories, leave order/wait for cargo, auto advertising campaigns, base cost multipliers and other features not in this patch pack are dropped/ignored.
+* SpringPP v2.0.102/103 only:
+  * Savegames which have aircraft approaching, landing, taking off or landed at an oil rig are rejected
   * The inflation cost multiplier is adjusted on load
 
-#### Caveats for loading savegames from [Joker's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=74365):  
-* This is not guaranteed to be bug free  
-* Logic signals are cleared, leaving ordinary signals  
-* Various vehicle separation settings and partially-automatic modes are not supported.  
+#### Caveats for loading savegames from [Joker's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=74365):
+* This is not guaranteed to be bug free
+* Logic signals are cleared, leaving ordinary signals
+* Various vehicle separation settings and partially-automatic modes are not supported.
 * Rail ageing/grass on tracks, trip histories, waiting cargo histories, station cargo punishment and other features not in this patch pack are dropped/ignored.
 
-#### Caveats for loading savegames from [Chill's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=47622):  
-* This is not guaranteed to be bug free  
-* Speed signals are cleared, leaving ordinary signals  
-* Various vehicle, economy, town and other settings are not supported  
-* Link graph data (but not settings) is cleared  
+#### Caveats for loading savegames from [Chill's Patch Pack](https://www.tt-forums.net/viewtopic.php?f=33&t=47622):
+* This is not guaranteed to be bug free
+* Speed signals are cleared, leaving ordinary signals
+* Various vehicle, economy, town and other settings are not supported
+* Link graph data (but not settings) is cleared
 * Train stuck counters, traffic lights and other features not in this patch pack are dropped/ignored.
 
 #### A note on branches
 
-Many features have two branches, the *feature* branches are just the raw features, without any modified savegame code.  
-There are not generally savegame compatible with anything else, except for loading of trunk savegame versions at or before the point where the branch diverged from trunk.  
-All other load attempts may result in undefined behaviour.  
+Many features have two branches, the *feature* branches are just the raw features, without any modified savegame code.
+There are not generally savegame compatible with anything else, except for loading of trunk savegame versions at or before the point where the branch diverged from trunk.
+All other load attempts may result in undefined behaviour.
 The *feature-sx* branches use the savegame framework in the *save_ext* branch.
 
 * * *
@@ -586,12 +590,14 @@ See `src/3rdparty/squirrel/COPYRIGHT` for the complete license text.
 The md5 implementation in `src/3rdparty/md5` is licensed under the Zlib license.
 See the comments in the source files in `src/3rdparty/md5` for the complete license text.
 
-The implementations of Posix `getaddrinfo` and `getnameinfo` for OS/2 in `src/3rdparty/os2` are distributed partly under the GNU Lesser General Public License 2.1, and partly under the (3-clause) BSD license.
-The exact licensing terms can be found in `src/3rdparty/os2/getaddrinfo.c` resp. `src/3rdparty/os2/getnameinfo.c`.
+The fmt implementation in `src/3rdparty/fmt` is licensed under the MIT license.
+See `src/3rdparty/fmt/LICENSE.rst` for the complete license text.
 
-The implementation of C++17 `std::optional` in `src/3rdparty/optional` is licensed under the Boost Software License - Version 1.0.
-See `src/3rdparty/optional/LICENSE_1_0.txt` for the complete license text.
+The catch2 implementation in `src/3rdparty/catch2` is licensed under the Boost Software License, Version 1.0.
+See `src/3rdparty/catch2/LICENSE.txt` for the complete license text.
 
+The icu scriptrun implementation in `src/3rdparty/icu` is licensed under the Unicode license.
+See `src/3rdparty/icu/LICENSE` for the complete license text.
 
 ## 4.0 Credits
 

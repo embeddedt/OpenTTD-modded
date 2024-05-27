@@ -14,6 +14,8 @@
 #include "company_type.h"
 #include "core/geometry_type.hpp"
 
+#include <bitset>
+
 Window *FindWindowById(WindowClass cls, WindowNumber number);
 Window *FindWindowByClass(WindowClass cls);
 Window *GetMainWindow();
@@ -37,11 +39,11 @@ void InputLoop();
 void InvalidateWindowData(WindowClass cls, WindowNumber number, int data = 0, bool gui_scope = false);
 void InvalidateWindowClassesData(WindowClass cls, int data = 0, bool gui_scope = false);
 
-void DeleteNonVitalWindows();
-void DeleteAllNonVitalWindows();
+void CloseNonVitalWindows();
+void CloseAllNonVitalWindows();
 void DeleteAllMessages();
-void DeleteConstructionWindows();
-void DeleteNetworkClientWindows();
+void CloseConstructionWindows();
+void CloseNetworkClientWindows();
 void HideVitalWindows();
 void ShowVitalWindows();
 
@@ -55,11 +57,17 @@ void SetWindowWidgetDirty(WindowClass cls, WindowNumber number, byte widget_inde
 void SetWindowDirty(WindowClass cls, WindowNumber number);
 void SetWindowClassesDirty(WindowClass cls);
 
-void DeleteWindowById(WindowClass cls, WindowNumber number, bool force = true);
-void DeleteAllWindowsById(WindowClass cls, WindowNumber number, bool force = true);
-void DeleteWindowByClass(WindowClass cls);
+void CloseWindowById(WindowClass cls, WindowNumber number, bool force = true);
+void CloseAllWindowsById(WindowClass cls, WindowNumber number, bool force = true);
+void CloseWindowByClass(WindowClass cls);
 
 bool FocusWindowById(WindowClass cls, WindowNumber number);
+
+inline bool HaveWindowByClass(WindowClass wc)
+{
+	extern std::bitset<WC_END> _present_window_types;
+	return wc < WC_END && _present_window_types[wc];
+}
 
 bool EditBoxInGlobalFocus();
 bool FocusedWindowIsConsole();

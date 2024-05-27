@@ -18,9 +18,14 @@ public:
 	/** Data stored about a (single) sprite. */
 	struct SpriteData {
 		BlitterSpriteFlags flags;
-		uint32 offset[ZOOM_LVL_COUNT][2]; ///< Offsets (from .data) to streams for different zoom levels, and the normal and remap image information.
+		uint32 offset[ZOOM_LVL_SPR_COUNT][2]; ///< Offsets (from .data) to streams for different zoom levels, and the normal and remap image information.
 		byte data[];                      ///< Data, all zoomlevels.
 	};
+
+	Blitter_32bppOptimized()
+	{
+		this->SetSupportsMissingZoomLevels(true);
+	}
 
 	void Draw(Blitter::BlitterParams *bp, BlitterMode mode, ZoomLevel zoom) override;
 	Sprite *Encode(const SpriteLoader::Sprite *sprite, AllocatorProc *allocator) override;

@@ -17,9 +17,10 @@
 #include "debug.h"
 #include "core/bitmath_func.hpp"
 #include "core/alloc_type.hpp"
-#include "core/smallvec_type.hpp"
+#include "core/mem_func.hpp"
 #include "3rdparty/cpp-btree/btree_map.h"
 #include <bitset>
+#include <vector>
 
 /**
  * List of different canal 'features'.
@@ -209,6 +210,22 @@ struct GRFVariableMapDefinition {
 	{}
 };
 
+struct GRFNameOnlyVariableMapDefinition {
+	const char *name; // nullptr indicates the end of the list
+	int id;
+
+	/** Create empty object used to identify the end of a list. */
+	GRFNameOnlyVariableMapDefinition() :
+		name(nullptr),
+		id(0)
+	{}
+
+	GRFNameOnlyVariableMapDefinition(int id, const char *name) :
+		name(name),
+		id(id)
+	{}
+};
+
 struct GRFVariableMapEntry {
 	uint16 id = 0;
 	uint8 feature = 0;
@@ -307,21 +324,21 @@ struct NewSignalStyle;
 
 /** Dynamic data of a loaded NewGRF */
 struct GRFFile : ZeroedMemoryAllocator {
-	char *filename;
+	std::string filename;
 	uint32 grfid;
 	byte grf_version;
 
 	uint sound_offset;
 	uint16 num_sounds;
 
-	struct StationSpec **stations;
-	struct HouseSpec **housespec;
-	struct IndustrySpec **industryspec;
-	struct IndustryTileSpec **indtspec;
-	std::vector<struct ObjectSpec *> objectspec;
-	struct AirportSpec **airportspec;
-	struct AirportTileSpec **airtspec;
-	std::vector<struct RoadStopSpec *> roadstops;
+	std::vector<std::unique_ptr<struct StationSpec>> stations;
+	std::vector<std::unique_ptr<struct HouseSpec>> housespec;
+	std::vector<std::unique_ptr<struct IndustrySpec>> industryspec;
+	std::vector<std::unique_ptr<struct IndustryTileSpec>> indtspec;
+	std::vector<std::unique_ptr<struct ObjectSpec>> objectspec;
+	std::vector<std::unique_ptr<struct AirportSpec>> airportspec;
+	std::vector<std::unique_ptr<struct AirportTileSpec>> airtspec;
+	std::vector<std::unique_ptr<struct RoadStopSpec>> roadstops;
 
 	GRFFeatureMapRemapSet feature_id_remaps;
 	GRFFilePropertyRemapSet action0_property_remaps[GSF_END];
@@ -330,7 +347,7 @@ struct GRFFile : ZeroedMemoryAllocator {
 	std::vector<GRFVariableMapEntry> grf_variable_remaps;
 	std::vector<std::unique_ptr<const char, FreeDeleter>> remap_unknown_property_names;
 
-	uint32 param[0x80];
+	std::array<uint32_t, 0x80> param;
 	uint param_end;  ///< one more than the highest set parameter
 
 	std::vector<GRFLabel> labels;                   ///< List of labels
@@ -382,9 +399,9 @@ struct GRFFile : ZeroedMemoryAllocator {
 	/** Get GRF Parameter with range checking */
 	uint32 GetParam(uint number) const
 	{
-		/* Note: We implicitly test for number < lengthof(this->param) and return 0 for invalid parameters.
+		/* Note: We implicitly test for number < this->param.size() and return 0 for invalid parameters.
 		 *       In fact this is the more important test, as param is zeroed anyway. */
-		assert(this->param_end <= lengthof(this->param));
+		assert(this->param_end <= this->param.size());
 		return (number < this->param_end) ? this->param[number] : 0;
 	}
 };
@@ -449,5 +466,7 @@ const char *GetFeatureString(GrfSpecFeatureRef feature);
 const char *GetFeatureString(GrfSpecFeature feature);
 
 void InitGRFGlobalVars();
+
+const char *GetExtendedVariableNameById(int id);
 
 #endif /* NEWGRF_H */

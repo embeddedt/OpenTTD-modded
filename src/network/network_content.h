@@ -12,7 +12,9 @@
 
 #include "core/tcp_content.h"
 #include "core/http.h"
+#include "../core/container_func.hpp"
 #include "../3rdparty/cpp-btree/btree_map.h"
+#include <vector>
 
 /** Vector with content info */
 typedef std::vector<ContentInfo *> ContentVector;
@@ -57,7 +59,7 @@ struct ContentCallback {
 	virtual void OnDownloadComplete(ContentID cid) {}
 
 	/** Silentium */
-	virtual ~ContentCallback() {}
+	virtual ~ContentCallback() = default;
 };
 
 /**

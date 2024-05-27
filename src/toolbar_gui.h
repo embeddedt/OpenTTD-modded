@@ -45,6 +45,7 @@ enum MainToolbarHotkeys {
 	MTHK_BUILD_TREES,
 	MTHK_MUSIC,
 	MTHK_LANDINFO,
+	MTHK_PICKER,
 	MTHK_SCRIPT_DEBUG,
 	MTHK_SMALL_SCREENSHOT,
 	MTHK_ZOOMEDIN_SCREENSHOT,
@@ -70,5 +71,13 @@ void ToggleDirtyBlocks();
 DropDownListItem *MakeCompanyDropDownListItem(CompanyID cid);
 
 extern uint _toolbar_width;
+
+struct MainToolbarScaleAdjuster {
+	ZoomLevel old_gui_zoom;
+	int old_gui_scale;
+
+	MainToolbarScaleAdjuster();
+	~MainToolbarScaleAdjuster();
+};
 
 #endif /* TOOLBAR_GUI_H */

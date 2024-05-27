@@ -10,6 +10,7 @@
 #include "stdafx.h"
 #include "debug.h"
 #include "newgrf_airporttiles.h"
+#include "newgrf_extension.h"
 #include "newgrf_spritegroup.h"
 #include "newgrf_sound.h"
 #include "station_base.h"
@@ -60,6 +61,9 @@ void AirportTileSpec::ResetAirportTiles()
 	memset(&AirportTileSpec::tiles, 0, sizeof(AirportTileSpec::tiles));
 	memcpy(&AirportTileSpec::tiles, &_origin_airporttile_specs, sizeof(_origin_airporttile_specs));
 	memcpy(&AirportTileSpec::tiles[HUGE_AIRPORTTILE_OFFSET], &_huge_airporttile_specs, sizeof(_huge_airporttile_specs));
+    // TODO (embeddedt) modernize the initialization of airport tile specs as done in vanilla below
+	// auto insert = std::copy(std::begin(_origin_airporttile_specs), std::end(_origin_airporttile_specs), std::begin(AirportTileSpec::tiles));
+	// std::fill(insert, std::end(AirportTileSpec::tiles), AirportTileSpec{});
 
 	/* Reset any overrides that have been set. */
 	_airporttile_mngr.ResetOverride();
@@ -74,7 +78,7 @@ void AirportTileOverrideManager::SetEntitySpec(const AirportTileSpec *airpts)
 		return;
 	}
 
-	memcpy(&AirportTileSpec::tiles[airpt_id], airpts, sizeof(*airpts));
+	AirportTileSpec::tiles[airpt_id] = *airpts;
 
 	/* Now add the overrides. */
 	for (int i = 0; i < this->max_offset; i++) {
@@ -193,6 +197,12 @@ static uint32 GetAirportTileIDAtOffset(TileIndex tile, const Station *st, uint32
 
 		/* Get airport tile ID at offset */
 		case 0x62: return GetAirportTileIDAtOffset(GetNearbyTile(parameter, this->tile), this->st, this->ro.grffile->grfid);
+
+		case A2VRI_AIRPORTTILES_AIRPORT_LAYOUT:
+			return this->st->airport.layout;
+
+		case A2VRI_AIRPORTTILES_AIRPORT_ID:
+			return this->st->airport.GetSpec()->grf_prop.local_id;
 	}
 
 	DEBUG(grf, 1, "Unhandled airport tile variable 0x%X", variable);
@@ -217,7 +227,9 @@ static uint32 GetAirportTileIDAtOffset(TileIndex tile, const Station *st, uint32
  */
 AirportTileResolverObject::AirportTileResolverObject(const AirportTileSpec *ats, TileIndex tile, Station *st,
 		CallbackID callback, uint32 callback_param1, uint32 callback_param2)
-	: ResolverObject(ats->grf_prop.grffile, callback, callback_param1, callback_param2), tiles_scope(*this, ats, tile, st)
+	: ResolverObject(ats->grf_prop.grffile, callback, callback_param1, callback_param2),
+		tiles_scope(*this, ats, tile, st),
+		airport_scope(*this, tile, st, st != nullptr ? st->airport.type : (byte)AT_DUMMY, st != nullptr ? st->airport.layout : 0)
 {
 	this->root_spritegroup = ats->grf_prop.spritegroup[0];
 }

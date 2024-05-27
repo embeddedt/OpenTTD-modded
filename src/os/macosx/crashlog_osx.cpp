@@ -11,11 +11,13 @@
 #include "../../crashlog.h"
 #include "../../string_func.h"
 #include "../../gamelog.h"
-#include "../../saveload/saveload.h"
+#include "../../sl/saveload.h"
 #include "../../thread.h"
 #include "../../screenshot.h"
 #include "../../debug.h"
 #include "../../video/video_driver.hpp"
+#include "../../scope.h"
+#include "../../walltime_func.h"
 #include "macos.h"
 
 #include <errno.h>
@@ -24,6 +26,7 @@
 #include <dlfcn.h>
 #include <cxxabi.h>
 #include <sys/mman.h>
+#include <execinfo.h>
 #ifdef WITH_UCONTEXT
 #include <sys/ucontext.h>
 #endif
@@ -184,73 +187,16 @@ class CrashLogOSX : public CrashLog {
 
 	char *LogStacktrace(char *buffer, const char *last) const override
 	{
-		/* As backtrace() is only implemented in 10.5 or later,
-		 * we're rolling our own here. Mostly based on
-		 * http://stackoverflow.com/questions/289820/getting-the-current-stack-trace-on-mac-os-x
-		 * and some details looked up in the Darwin sources. */
 		buffer += seprintf(buffer, last, "\nStacktrace:\n");
 
-		void **frame;
-		int i = 0;
+		void *trace[64];
+		int trace_size = backtrace(trace, lengthof(trace));
 
-		auto print_frame = [&](void *ip) {
-			/* Print running index. */
-			buffer += seprintf(buffer, last, " [%02d]", i);
-
-			Dl_info dli;
-			bool dl_valid = dladdr(ip, &dli) != 0;
-
-			const char *fname = "???";
-			if (dl_valid && dli.dli_fname) {
-				/* Valid image name? Extract filename from the complete path. */
-				const char *s = strrchr(dli.dli_fname, '/');
-				if (s != nullptr) {
-					fname = s + 1;
-				} else {
-					fname = dli.dli_fname;
-				}
-			}
-			/* Print image name and IP. */
-			buffer += seprintf(buffer, last, " %-20s " PRINTF_PTR, fname, (uintptr_t)ip);
-
-			/* Print function offset if information is available. */
-			if (dl_valid && dli.dli_sname != nullptr && dli.dli_saddr != nullptr) {
-				/* Try to demangle a possible C++ symbol. */
-				int status = -1;
-				char *func_name = abi::__cxa_demangle(dli.dli_sname, nullptr, 0, &status);
-
-				long int offset = (intptr_t)ip - (intptr_t)dli.dli_saddr;
-				buffer += seprintf(buffer, last, " (%s + %ld)", func_name != nullptr ? func_name : dli.dli_sname, offset);
-
-				free(func_name);
-			}
-			buffer += seprintf(buffer, last, "\n");
-		};
-
-#if defined(__ppc__) || defined(__ppc64__)
-		/* Apple says __builtin_frame_address can be broken on PPC. */
-		__asm__ volatile("mr %0, r1" : "=r" (frame));
-#else
-		frame = (void **)__builtin_frame_address(0);
-#endif
-
-		for (; frame != nullptr && i < MAX_STACK_FRAMES; i++) {
-			/* Get IP for current stack frame. */
-#if defined(__ppc__) || defined(__ppc64__)
-			void *ip = frame[2];
-#else
-			void *ip = frame[1];
-#endif
-			if (ip == nullptr) break;
-
-			print_frame(ip);
-
-			/* Get address of next stack frame. */
-			void **next = (void **)frame[0];
-			/* Frame address not increasing or not aligned? Broken stack, exit! */
-			if (next <= frame || !IS_ALIGNED(next)) break;
-			frame = next;
+		char **messages = backtrace_symbols(trace, trace_size);
+		for (int i = 0; i < trace_size; i++) {
+			buffer += seprintf(buffer, last, "%s\n", messages[i]);
 		}
+		free(messages);
 
 		return buffer + seprintf(buffer, last, "\n");
 	}
@@ -306,10 +252,16 @@ class CrashLogOSX : public CrashLog {
 	/**
 	 * Log LLDB information if available
 	 */
+	char *LogDebugExtra(char *buffer, const char *last) const override
+	{
+		return this->LogLldbInfo(buffer, last);
+	}
+
+	/**
+	 * Log registers if available
+	 */
 	char *LogRegisters(char *buffer, const char *last) const override
 	{
-		buffer = LogLldbInfo(buffer, last);
-
 #ifdef WITH_UCONTEXT
 		ucontext_t *ucontext = static_cast<ucontext_t *>(context);
 #if defined(__x86_64__)
@@ -404,30 +356,40 @@ public:
 		bool ret = true;
 
 		printf("Crash encountered, generating crash log...\n");
-		this->FillCrashLog(buffer, last);
-		printf("%s\n", buffer);
-		printf("Crash log generated.\n\n");
+
+		char *name_buffer_date = this->name_buffer + seprintf(this->name_buffer, lastof(this->name_buffer), "crash-");
+		UTCTime::Format(name_buffer_date, lastof(this->name_buffer), "%Y%m%dT%H%M%SZ");
 
 		printf("Writing crash log to disk...\n");
-		if (!this->WriteCrashLog(buffer, filename_log, lastof(filename_log))) {
-			filename_log[0] = '\0';
+		bool bret = this->WriteCrashLog("", this->filename_log, lastof(this->filename_log), this->name_buffer, &(this->crash_file));
+		if (bret) {
+			printf("Crash log written to %s. Please add this file to any bug reports.\n\n", this->filename_log);
+		} else {
+			printf("Writing crash log failed. Please attach the output above to any bug reports.\n\n");
 			ret = false;
 		}
+		this->crash_buffer_write = buffer;
+
+		this->FillCrashLog(buffer, last);
+		this->CloseCrashLogFile();
+		printf("Crash log generated.\n\n");
 
 		printf("Writing crash savegame...\n");
 		_savegame_DBGL_data = buffer;
 		_save_DBGC_data = true;
-		if (!this->WriteSavegame(filename_save, lastof(filename_save))) {
+		if (!this->WriteSavegame(filename_save, lastof(filename_save), this->name_buffer)) {
 			filename_save[0] = '\0';
 			ret = false;
 		}
 
 		printf("Writing crash screenshot...\n");
 		SetScreenshotAuxiliaryText("Crash Log", buffer);
-		if (!this->WriteScreenshot(filename_screenshot, lastof(filename_screenshot))) {
+		if (!this->WriteScreenshot(filename_screenshot, lastof(filename_screenshot), this->name_buffer)) {
 			filename_screenshot[0] = '\0';
 			ret = false;
 		}
+
+		this->SendSurvey();
 
 		return ret;
 	}
@@ -466,6 +428,8 @@ static const int _signals_to_handle[] = { SIGSEGV, SIGABRT, SIGFPE, SIGBUS, SIGI
  */
 void CDECL HandleCrash(int signum, siginfo_t *si, void *context)
 {
+	CrashLog::RegisterCrashed();
+
 	/* Disable all handling of signals by us, so we don't go into infinite loops. */
 	for (const int *i = _signals_to_handle; i != endof(_signals_to_handle); i++) {
 		signal(*i, SIG_DFL);

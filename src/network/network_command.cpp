@@ -55,6 +55,7 @@ static CommandCallback * const _callback_table[] = {
 	/* 0x20 */ CcAddVirtualEngine,
 	/* 0x21 */ CcMoveNewVirtualEngine,
 	/* 0x22 */ CcAddNewSchDispatchSchedule,
+	/* 0x23 */ CcSwapSchDispatchSchedules,
 };
 
 /**
@@ -214,6 +215,7 @@ void NetworkExecuteLocalCommandQueue()
 
 	CommandQueue &queue = (_network_server ? _local_execution_queue : ClientNetworkGameSocketHandler::my_client->incoming_queue);
 
+	bool record_sync_event = false;
 	CommandPacket *cp;
 	while ((cp = queue.Peek()) != nullptr) {
 		/* The queue is always in order, which means
@@ -233,11 +235,15 @@ void NetworkExecuteLocalCommandQueue()
 		DoCommandP(cp, cp->my_cmd);
 
 		queue.Pop();
+
+		record_sync_event = true;
 	}
 
 	/* Local company may have changed, so we should not restore the old value */
 	_current_company = _local_company;
 	_cmd_client_id = INVALID_CLIENT_ID;
+
+	if (record_sync_event) RecordSyncEvent(NSRE_CMD);
 }
 
 /**
@@ -286,6 +292,10 @@ static void DistributeQueue(CommandQueue *queue, const NetworkClientSocket *owne
 	int to_go = UINT16_MAX;
 #else
 	int to_go = _settings_client.network.commands_per_frame;
+	if (owner == nullptr) {
+		/* This is the server, use the commands_per_frame_server setting if higher */
+		to_go = std::max<int>(to_go, _settings_client.network.commands_per_frame_server);
+	}
 #endif
 
 	std::unique_ptr<CommandPacket> cp;
@@ -339,7 +349,7 @@ const char *NetworkGameSocketHandler::ReceiveCommand(Packet *p, CommandPacket *c
 		CommandAuxiliarySerialised *aux_data = new CommandAuxiliarySerialised();
 		cp->aux_data.reset(aux_data);
 		aux_data->serialised_data.resize(aux_data_size);
-		p->Recv_binary((char *)(aux_data->serialised_data.data()), aux_data_size);
+		p->Recv_binary((aux_data->serialised_data.data()), aux_data_size);
 	}
 
 	return nullptr;

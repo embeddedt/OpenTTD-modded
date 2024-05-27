@@ -17,6 +17,7 @@
 #include "genworld.h"
 #include "network/network_gui.h"
 #include "network/network_content.h"
+#include "network/network_survey.h"
 #include "landscape_type.h"
 #include "landscape.h"
 #include "strings_func.h"
@@ -250,7 +251,8 @@ struct SelectGameWindow : public Window {
 		/* Update the viewport position. */
 		mw->viewport->dest_scrollpos_x = mw->viewport->scrollpos_x = pos.x;
 		mw->viewport->dest_scrollpos_y = mw->viewport->scrollpos_y = pos.y;
-		UpdateViewportPosition(mw);
+		UpdateNextViewportPosition(mw);
+		ApplyNextViewportPosition(mw);
 		mw->SetDirty(); // Required during panning, otherwise logo graphics disappears
 
 		/* If there is only one command, we just executed it and don't need to do any more */
@@ -493,7 +495,7 @@ static const NWidgetPart _nested_select_game_widgets[] = {
 static WindowDesc _select_game_desc(
 	WDP_CENTER, nullptr, 0, 0,
 	WC_SELECT_GAME, WC_NONE,
-	0,
+	WDF_NO_CLOSE,
 	_nested_select_game_widgets, lengthof(_nested_select_game_widgets)
 );
 
@@ -504,7 +506,10 @@ void ShowSelectGameWindow()
 
 static void AskExitGameCallback(Window *w, bool confirmed)
 {
-	if (confirmed) _exit_game = true;
+	if (confirmed) {
+		_survey.Transmit(NetworkSurveyHandler::Reason::EXIT, true);
+		_exit_game = true;
+	}
 }
 
 void AskExitGame()
@@ -513,7 +518,8 @@ void AskExitGame()
 		STR_QUIT_CAPTION,
 		STR_QUIT_ARE_YOU_SURE_YOU_WANT_TO_EXIT_OPENTTD,
 		nullptr,
-		AskExitGameCallback
+		AskExitGameCallback,
+		true
 	);
 }
 
@@ -532,6 +538,7 @@ void AskExitToGameMenu()
 		STR_ABANDON_GAME_CAPTION,
 		(_game_mode != GM_EDITOR) ? STR_ABANDON_GAME_QUERY : STR_ABANDON_SCENARIO_QUERY,
 		nullptr,
-		AskExitToGameMenuCallback
+		AskExitToGameMenuCallback,
+		true
 	);
 }

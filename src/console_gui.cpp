@@ -21,7 +21,7 @@
 #include "console_func.h"
 #include "rev.h"
 #include "video/video_driver.hpp"
-#include <deque>
+#include "core/ring_buffer.hpp"
 #include <string>
 
 #include "widgets/console_widget.h"
@@ -65,15 +65,15 @@ struct IConsoleLine {
 };
 
 /** The console backlog buffer. Item index 0 is the newest line. */
-static std::deque<IConsoleLine> _iconsole_buffer;
+static ring_buffer<IConsoleLine> _iconsole_buffer;
 
 static bool TruncateBuffer();
 
 
 /* ** main console cmd buffer ** */
 static Textbuf _iconsole_cmdline(ICON_CMDLN_SIZE);
-static char *_iconsole_history[ICON_HISTORY_SIZE];
-static int _iconsole_historypos;
+static ring_buffer<std::string> _iconsole_history;
+static ptrdiff_t _iconsole_historypos;
 IConsoleModes _iconsole_mode;
 
 /* *************** *
@@ -133,10 +133,11 @@ struct IConsoleWindow : Window
 		this->line_offset = GetStringBoundingBox("] ").width + WidgetDimensions::scaled.frametext.left;
 	}
 
-	~IConsoleWindow()
+	void Close() override
 	{
 		_iconsole_mode = ICONSOLE_CLOSED;
 		VideoDriver::GetInstance()->EditBoxLostFocus();
+		this->Window::Close();
 	}
 
 	/**
@@ -320,17 +321,17 @@ struct IConsoleWindow : Window
 		int delta = std::min<int>(this->width - this->line_offset - _iconsole_cmdline.pixels - ICON_RIGHT_BORDERWIDTH, 0);
 
 		Point p1 = GetCharPosInString(_iconsole_cmdline.buf, from, FS_NORMAL);
-		Point p2 = from != to ? GetCharPosInString(_iconsole_cmdline.buf, from) : p1;
+		Point p2 = from != to ? GetCharPosInString(_iconsole_cmdline.buf, to, FS_NORMAL) : p1;
 
 		Rect r = {this->line_offset + delta + p1.x, this->height - this->line_height, this->line_offset + delta + p2.x, this->height};
 		return r;
 	}
 
-	const char *GetTextCharacterAtPosition(const Point &pt) const override
+	ptrdiff_t GetTextCharacterAtPosition(const Point &pt) const override
 	{
 		int delta = std::min<int>(this->width - this->line_offset - _iconsole_cmdline.pixels - ICON_RIGHT_BORDERWIDTH, 0);
 
-		if (!IsInsideMM(pt.y, this->height - this->line_height, this->height)) return nullptr;
+		if (!IsInsideMM(pt.y, this->height - this->line_height, this->height)) return -1;
 
 		return GetCharAtPosition(_iconsole_cmdline.buf, pt.x - delta);
 	}
@@ -345,7 +346,7 @@ struct IConsoleWindow : Window
 		VideoDriver::GetInstance()->EditBoxGainedFocus();
 	}
 
-	void OnFocusLost(Window *newly_focused_window) override
+	void OnFocusLost(bool closing, Window *newly_focused_window) override
 	{
 		VideoDriver::GetInstance()->EditBoxLostFocus();
 	}
@@ -359,7 +360,6 @@ void IConsoleGUIInit()
 	_iconsole_mode = ICONSOLE_CLOSED;
 
 	IConsoleClearBuffer();
-	memset(_iconsole_history, 0, sizeof(_iconsole_history));
 
 	IConsolePrintF(CC_WARNING, "OpenTTD Game Console Revision 7 - %s", _openttd_revision);
 	IConsolePrint(CC_WHITE,  "------------------------------------");
@@ -405,7 +405,7 @@ void IConsoleSwitch()
 			break;
 
 		case ICONSOLE_OPENED: case ICONSOLE_FULL:
-			DeleteWindowById(WC_CONSOLE, 0);
+			CloseWindowById(WC_CONSOLE, 0);
 			break;
 	}
 
@@ -433,15 +433,14 @@ static const char *IConsoleHistoryAdd(const char *cmd)
 	if (StrEmpty(cmd)) return nullptr;
 
 	/* Do not put in history if command is same as previous */
-	if (_iconsole_history[0] == nullptr || strcmp(_iconsole_history[0], cmd) != 0) {
-		free(_iconsole_history[ICON_HISTORY_SIZE - 1]);
-		memmove(&_iconsole_history[1], &_iconsole_history[0], sizeof(_iconsole_history[0]) * (ICON_HISTORY_SIZE - 1));
-		_iconsole_history[0] = stredup(cmd);
+	if (_iconsole_history.empty() || _iconsole_history.front() != cmd) {
+		_iconsole_history.emplace_front(cmd);
+		while (_iconsole_history.size() > ICON_HISTORY_SIZE) _iconsole_history.pop_back();
 	}
 
 	/* Reset the history position */
 	IConsoleResetHistoryPos();
-	return _iconsole_history[0];
+	return _iconsole_history.front().c_str();
 }
 
 /**
@@ -450,10 +449,8 @@ static const char *IConsoleHistoryAdd(const char *cmd)
  */
 static void IConsoleHistoryNavigate(int direction)
 {
-	if (_iconsole_history[0] == nullptr) return; // Empty history
-	_iconsole_historypos = Clamp(_iconsole_historypos + direction, -1, ICON_HISTORY_SIZE - 1);
-
-	if (direction > 0 && _iconsole_history[_iconsole_historypos] == nullptr) _iconsole_historypos--;
+	if (_iconsole_history.empty()) return; // Empty history
+	_iconsole_historypos = Clamp<ptrdiff_t>(_iconsole_historypos + direction, -1, _iconsole_history.size() - 1);
 
 	if (_iconsole_historypos == -1) {
 		_iconsole_cmdline.DeleteAll();

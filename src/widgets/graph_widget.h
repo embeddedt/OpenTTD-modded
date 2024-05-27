@@ -29,6 +29,12 @@ enum CompanyValueWidgets {
 	WID_CV_RESIZE,     ///< Resize button.
 };
 
+/** Extra widgets of the #DeliveredCargoGraphWindow class. */
+enum DeliveredCargoGraphWindowWidgets {
+	WID_DCG_BY_COMPANY = 0x40, ///< By company button.
+	WID_DCG_BY_CARGO,          ///< By cargo button.
+};
+
 /** Widget of the #PerformanceHistoryGraphWindow class. */
 enum PerformanceHistoryGraphWidgets {
 	WID_PHG_KEY,                  ///< Key button.
@@ -86,6 +92,16 @@ enum IndustryProductionGraphWidgets {
 	WID_IP_DISABLE_CARGOES,  ///< Disable cargoes button.
 	WID_IP_MATRIX,           ///< Cargo list.
 	WID_IP_MATRIX_SCROLLBAR, ///< Cargo list scrollbar.
+};
+
+/** Widget of the #ExcludingCargoBaseGraphWindow class. */
+enum ExcludingCargoBaseGraphWindowWidgets {
+	WID_ECBG_FOOTER = 0x80,   ///< Footer.
+	WID_ECBG_ENABLE_CARGOES,  ///< Enable cargoes button.
+	WID_ECBG_DISABLE_CARGOES, ///< Disable cargoes button.
+	WID_ECBG_MATRIX,          ///< Cargo list.
+	WID_ECBG_MATRIX_SCROLLBAR,///< Cargo list scrollbar.
+	WID_ECBG_CARGO_FIRST,     ///< First cargo in the list.
 };
 
 #endif /* WIDGETS_GRAPH_WIDGET_H */

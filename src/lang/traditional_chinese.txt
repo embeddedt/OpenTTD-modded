@@ -128,39 +128,39 @@ STR_QUANTITY_N_A                                                :N/A
 
 # Two letter abbreviation of cargo name
 STR_ABBREV_NOTHING                                              :
-STR_ABBREV_PASSENGERS                                           :{TINY_FONT}客
-STR_ABBREV_COAL                                                 :{TINY_FONT}煤
-STR_ABBREV_MAIL                                                 :{TINY_FONT}郵
-STR_ABBREV_OIL                                                  :{TINY_FONT}油
-STR_ABBREV_LIVESTOCK                                            :{TINY_FONT}畜
-STR_ABBREV_GOODS                                                :{TINY_FONT}商
-STR_ABBREV_GRAIN                                                :{TINY_FONT}穀
-STR_ABBREV_WOOD                                                 :{TINY_FONT}木
-STR_ABBREV_IRON_ORE                                             :{TINY_FONT}鐵
-STR_ABBREV_STEEL                                                :{TINY_FONT}鋼
-STR_ABBREV_VALUABLES                                            :{TINY_FONT}貴
-STR_ABBREV_COPPER_ORE                                           :{TINY_FONT}銅
-STR_ABBREV_MAIZE                                                :{TINY_FONT}玉
-STR_ABBREV_FRUIT                                                :{TINY_FONT}果
-STR_ABBREV_DIAMONDS                                             :{TINY_FONT}鑽
-STR_ABBREV_FOOD                                                 :{TINY_FONT}食
-STR_ABBREV_PAPER                                                :{TINY_FONT}紙
-STR_ABBREV_GOLD                                                 :{TINY_FONT}金
-STR_ABBREV_WATER                                                :{TINY_FONT}水
-STR_ABBREV_WHEAT                                                :{TINY_FONT}麥
-STR_ABBREV_RUBBER                                               :{TINY_FONT}橡
-STR_ABBREV_SUGAR                                                :{TINY_FONT}糖
-STR_ABBREV_TOYS                                                 :{TINY_FONT}玩
-STR_ABBREV_SWEETS                                               :{TINY_FONT}甜
-STR_ABBREV_COLA                                                 :{TINY_FONT}可
-STR_ABBREV_CANDYFLOSS                                           :{TINY_FONT}棉
-STR_ABBREV_BUBBLES                                              :{TINY_FONT}泡
-STR_ABBREV_TOFFEE                                               :{TINY_FONT}太
-STR_ABBREV_BATTERIES                                            :{TINY_FONT}電
-STR_ABBREV_PLASTIC                                              :{TINY_FONT}塑
-STR_ABBREV_FIZZY_DRINKS                                         :{TINY_FONT}汽
-STR_ABBREV_NONE                                                 :{TINY_FONT}無
-STR_ABBREV_ALL                                                  :{TINY_FONT}全
+STR_ABBREV_PASSENGERS                                           :客
+STR_ABBREV_COAL                                                 :煤
+STR_ABBREV_MAIL                                                 :郵
+STR_ABBREV_OIL                                                  :油
+STR_ABBREV_LIVESTOCK                                            :畜
+STR_ABBREV_GOODS                                                :商
+STR_ABBREV_GRAIN                                                :穀
+STR_ABBREV_WOOD                                                 :木
+STR_ABBREV_IRON_ORE                                             :鐵
+STR_ABBREV_STEEL                                                :鋼
+STR_ABBREV_VALUABLES                                            :貴
+STR_ABBREV_COPPER_ORE                                           :銅
+STR_ABBREV_MAIZE                                                :玉
+STR_ABBREV_FRUIT                                                :果
+STR_ABBREV_DIAMONDS                                             :鑽
+STR_ABBREV_FOOD                                                 :食
+STR_ABBREV_PAPER                                                :紙
+STR_ABBREV_GOLD                                                 :金
+STR_ABBREV_WATER                                                :水
+STR_ABBREV_WHEAT                                                :麥
+STR_ABBREV_RUBBER                                               :橡
+STR_ABBREV_SUGAR                                                :糖
+STR_ABBREV_TOYS                                                 :玩
+STR_ABBREV_SWEETS                                               :甜
+STR_ABBREV_COLA                                                 :可
+STR_ABBREV_CANDYFLOSS                                           :棉
+STR_ABBREV_BUBBLES                                              :泡
+STR_ABBREV_TOFFEE                                               :太
+STR_ABBREV_BATTERIES                                            :電
+STR_ABBREV_PLASTIC                                              :塑
+STR_ABBREV_FIZZY_DRINKS                                         :汽
+STR_ABBREV_NONE                                                 :無
+STR_ABBREV_ALL                                                  :全
 
 # 'Mode' of transport for cargoes
 STR_PASSENGERS                                                  :{COMMA}{NBSP}名乘客
@@ -190,15 +190,18 @@ STR_COLOUR_GREY                                                 :灰
 STR_COLOUR_WHITE                                                :白
 STR_COLOUR_RANDOM                                               :隨機
 
+###length 17
+
+
 # Units used in OpenTTD
-STR_UNITS_VELOCITY_IMPERIAL                                     :{COMMA}{NBSP}英里/小時
-STR_UNITS_VELOCITY_METRIC                                       :{COMMA}{NBSP}公里/小時
-STR_UNITS_VELOCITY_SI                                           :{COMMA}{NBSP}米/秒
+STR_UNITS_VELOCITY_IMPERIAL                                     :{DECIMAL}{NBSP}英里/小時
+STR_UNITS_VELOCITY_METRIC                                       :{DECIMAL}{NBSP}公里/小時
+STR_UNITS_VELOCITY_SI                                           :{DECIMAL}{NBSP}米/秒
 STR_UNITS_VELOCITY_GAMEUNITS                                    :{DECIMAL}{NBSP}格/日
 
-STR_UNITS_POWER_IMPERIAL                                        :{COMMA}{NBSP}匹
-STR_UNITS_POWER_METRIC                                          :{COMMA}{NBSP}匹
-STR_UNITS_POWER_SI                                              :{COMMA}{NBSP}千瓦
+STR_UNITS_POWER_IMPERIAL                                        :{DECIMAL}{NBSP}匹
+STR_UNITS_POWER_METRIC                                          :{DECIMAL}{NBSP}匹
+STR_UNITS_POWER_SI                                              :{DECIMAL}{NBSP}千瓦
 
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_IMPERIAL                     :{DECIMAL}{NBSP}匹/短噸
 STR_UNITS_POWER_IMPERIAL_TO_WEIGHT_METRIC                       :{DECIMAL}{NBSP}匹/公噸
@@ -210,29 +213,29 @@ STR_UNITS_POWER_SI_TO_WEIGHT_IMPERIAL                           :{DECIMAL}{NBSP}
 STR_UNITS_POWER_SI_TO_WEIGHT_METRIC                             :{DECIMAL}{NBSP}千瓦/公噸
 STR_UNITS_POWER_SI_TO_WEIGHT_SI                                 :{DECIMAL}{NBSP}瓦/公斤
 
-STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{COMMA}{NBSP}短噸
-STR_UNITS_WEIGHT_SHORT_METRIC                                   :{COMMA}{NBSP}噸
-STR_UNITS_WEIGHT_SHORT_SI                                       :{COMMA}{NBSP}公斤
+STR_UNITS_WEIGHT_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}短噸
+STR_UNITS_WEIGHT_SHORT_METRIC                                   :{DECIMAL}{NBSP}噸
+STR_UNITS_WEIGHT_SHORT_SI                                       :{DECIMAL}{NBSP}公斤
 
-STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{COMMA}{NBSP}短噸
-STR_UNITS_WEIGHT_LONG_METRIC                                    :{COMMA}{NBSP}公噸
-STR_UNITS_WEIGHT_LONG_SI                                        :{COMMA}{NBSP}公斤
+STR_UNITS_WEIGHT_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}短噸
+STR_UNITS_WEIGHT_LONG_METRIC                                    :{DECIMAL}{NBSP}公噸
+STR_UNITS_WEIGHT_LONG_SI                                        :{DECIMAL}{NBSP}公斤
 
-STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{COMMA}{NBSP}加侖
-STR_UNITS_VOLUME_SHORT_METRIC                                   :{COMMA}{NBSP}升
-STR_UNITS_VOLUME_SHORT_SI                                       :{COMMA}{NBSP}米³
+STR_UNITS_VOLUME_SHORT_IMPERIAL                                 :{DECIMAL}{NBSP}加侖
+STR_UNITS_VOLUME_SHORT_METRIC                                   :{DECIMAL}{NBSP}升
+STR_UNITS_VOLUME_SHORT_SI                                       :{DECIMAL}{NBSP}米³
 
-STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{COMMA}{NBSP}加侖
-STR_UNITS_VOLUME_LONG_METRIC                                    :{COMMA}{NBSP}公升
-STR_UNITS_VOLUME_LONG_SI                                        :{COMMA}{NBSP}立方米
+STR_UNITS_VOLUME_LONG_IMPERIAL                                  :{DECIMAL}{NBSP}加侖
+STR_UNITS_VOLUME_LONG_METRIC                                    :{DECIMAL}{NBSP}公升
+STR_UNITS_VOLUME_LONG_SI                                        :{DECIMAL}{NBSP}立方米
 
-STR_UNITS_FORCE_IMPERIAL                                        :{COMMA}{NBSP}磅力
-STR_UNITS_FORCE_METRIC                                          :{COMMA}{NBSP}公斤力
-STR_UNITS_FORCE_SI                                              :{COMMA}{NBSP}千牛頓
+STR_UNITS_FORCE_IMPERIAL                                        :{DECIMAL}{NBSP}磅力
+STR_UNITS_FORCE_METRIC                                          :{DECIMAL}{NBSP}公斤力
+STR_UNITS_FORCE_SI                                              :{DECIMAL}{NBSP}千牛頓
 
-STR_UNITS_HEIGHT_IMPERIAL                                       :{COMMA}{NBSP}英呎
-STR_UNITS_HEIGHT_METRIC                                         :{COMMA}{NBSP}米
-STR_UNITS_HEIGHT_SI                                             :{COMMA}{NBSP}公尺
+STR_UNITS_HEIGHT_IMPERIAL                                       :{DECIMAL}{NBSP}英呎
+STR_UNITS_HEIGHT_METRIC                                         :{DECIMAL}{NBSP}米
+STR_UNITS_HEIGHT_SI                                             :{DECIMAL}{NBSP}公尺
 
 # Common window strings
 STR_LIST_FILTER_TITLE                                           :{BLACK}篩選：
@@ -929,52 +932,57 @@ STR_EXTRA_VIEW_MOVE_MAIN_TO_VIEW_TT                             :{BLACK}將主�
 
 # Game options window
 STR_GAME_OPTIONS_CAPTION                                        :{WHITE}遊戲選項
+
+
+
+
 STR_GAME_OPTIONS_CURRENCY_UNITS_FRAME                           :{BLACK}幣值單位
 STR_GAME_OPTIONS_CURRENCY_UNITS_DROPDOWN_TOOLTIP                :{BLACK}選擇幣值單位
 
+
 ###length 42
-STR_GAME_OPTIONS_CURRENCY_GBP                                   :英鎊 (GBP)
-STR_GAME_OPTIONS_CURRENCY_USD                                   :美元 (USD)
-STR_GAME_OPTIONS_CURRENCY_EUR                                   :歐元 (EUR)
-STR_GAME_OPTIONS_CURRENCY_JPY                                   :日圓 (JPY)
-STR_GAME_OPTIONS_CURRENCY_ATS                                   :奧地利先令 (ATS)
-STR_GAME_OPTIONS_CURRENCY_BEF                                   :比利時法郎 (BEF)
-STR_GAME_OPTIONS_CURRENCY_CHF                                   :瑞士法郎 (CHF)
-STR_GAME_OPTIONS_CURRENCY_CZK                                   :捷克克朗 (CZK)
-STR_GAME_OPTIONS_CURRENCY_DEM                                   :德國馬克 (DEM)
-STR_GAME_OPTIONS_CURRENCY_DKK                                   :捷克克朗 (DKK)
-STR_GAME_OPTIONS_CURRENCY_ESP                                   :西班牙披索 (ESP)
-STR_GAME_OPTIONS_CURRENCY_FIM                                   :芬蘭馬克 (FIM)
-STR_GAME_OPTIONS_CURRENCY_FRF                                   :法國法朗 (FRF)
-STR_GAME_OPTIONS_CURRENCY_GRD                                   :希臘德拉克馬 (GRD)
-STR_GAME_OPTIONS_CURRENCY_HUF                                   :匈牙利福林 (HUF)
-STR_GAME_OPTIONS_CURRENCY_ISK                                   :冰島克朗 (ISK)
-STR_GAME_OPTIONS_CURRENCY_ITL                                   :義大利里拉 (ITL)
-STR_GAME_OPTIONS_CURRENCY_NLG                                   :荷蘭盾 (NLG)
-STR_GAME_OPTIONS_CURRENCY_NOK                                   :挪威克朗 (NOK)
-STR_GAME_OPTIONS_CURRENCY_PLN                                   :波蘭茲羅提 (PLN)
-STR_GAME_OPTIONS_CURRENCY_RON                                   :羅馬尼亞列伊 (RON)
-STR_GAME_OPTIONS_CURRENCY_RUR                                   :俄羅斯舊盧布 (RUR)
-STR_GAME_OPTIONS_CURRENCY_SIT                                   :斯洛文尼亞托拉 (SIT)
-STR_GAME_OPTIONS_CURRENCY_SEK                                   :瑞典克朗 (SEK)
-STR_GAME_OPTIONS_CURRENCY_TRY                                   :土耳其里拉 (TRY)
-STR_GAME_OPTIONS_CURRENCY_SKK                                   :斯洛伐克克朗 (SKK)
-STR_GAME_OPTIONS_CURRENCY_BRL                                   :巴西里拉 (BRL)
-STR_GAME_OPTIONS_CURRENCY_EEK                                   :愛沙尼亞克魯恩(EEK)
-STR_GAME_OPTIONS_CURRENCY_LTL                                   :立陶宛立特 (LTL)
-STR_GAME_OPTIONS_CURRENCY_KRW                                   :韓圓 (KRW)
-STR_GAME_OPTIONS_CURRENCY_ZAR                                   :南非蘭特 (ZAR)
+STR_GAME_OPTIONS_CURRENCY_GBP                                   :英鎊
+STR_GAME_OPTIONS_CURRENCY_USD                                   :美元
+STR_GAME_OPTIONS_CURRENCY_EUR                                   :歐元
+STR_GAME_OPTIONS_CURRENCY_JPY                                   :日圓
+STR_GAME_OPTIONS_CURRENCY_ATS                                   :奧地利先令
+STR_GAME_OPTIONS_CURRENCY_BEF                                   :比利時法郎
+STR_GAME_OPTIONS_CURRENCY_CHF                                   :瑞士法郎
+STR_GAME_OPTIONS_CURRENCY_CZK                                   :捷克克朗
+STR_GAME_OPTIONS_CURRENCY_DEM                                   :德國馬克
+STR_GAME_OPTIONS_CURRENCY_DKK                                   :捷克克朗
+STR_GAME_OPTIONS_CURRENCY_ESP                                   :西班牙披索
+STR_GAME_OPTIONS_CURRENCY_FIM                                   :芬蘭馬克
+STR_GAME_OPTIONS_CURRENCY_FRF                                   :法國法朗
+STR_GAME_OPTIONS_CURRENCY_GRD                                   :希臘德拉克馬
+STR_GAME_OPTIONS_CURRENCY_HUF                                   :匈牙利福林
+STR_GAME_OPTIONS_CURRENCY_ISK                                   :冰島克朗
+STR_GAME_OPTIONS_CURRENCY_ITL                                   :義大利里拉
+STR_GAME_OPTIONS_CURRENCY_NLG                                   :荷蘭盾
+STR_GAME_OPTIONS_CURRENCY_NOK                                   :挪威克朗
+STR_GAME_OPTIONS_CURRENCY_PLN                                   :波蘭茲羅提
+STR_GAME_OPTIONS_CURRENCY_RON                                   :羅馬尼亞列伊
+STR_GAME_OPTIONS_CURRENCY_RUR                                   :俄羅斯舊盧布
+STR_GAME_OPTIONS_CURRENCY_SIT                                   :斯洛文尼亞托拉
+STR_GAME_OPTIONS_CURRENCY_SEK                                   :瑞典克朗
+STR_GAME_OPTIONS_CURRENCY_TRY                                   :土耳其里拉
+STR_GAME_OPTIONS_CURRENCY_SKK                                   :斯洛伐克克朗
+STR_GAME_OPTIONS_CURRENCY_BRL                                   :巴西里拉
+STR_GAME_OPTIONS_CURRENCY_EEK                                   :愛沙尼亞克魯恩
+STR_GAME_OPTIONS_CURRENCY_LTL                                   :立陶宛立特
+STR_GAME_OPTIONS_CURRENCY_KRW                                   :韓圓
+STR_GAME_OPTIONS_CURRENCY_ZAR                                   :南非蘭特
 STR_GAME_OPTIONS_CURRENCY_CUSTOM                                :自訂...
-STR_GAME_OPTIONS_CURRENCY_GEL                                   :喬治亞拉里 (GEL)
-STR_GAME_OPTIONS_CURRENCY_IRR                                   :伊朗里亞爾 (IRR)
-STR_GAME_OPTIONS_CURRENCY_RUB                                   :俄羅斯盧布 (RUB)
-STR_GAME_OPTIONS_CURRENCY_MXN                                   :墨西哥披索 (MXN)
+STR_GAME_OPTIONS_CURRENCY_GEL                                   :喬治亞拉里
+STR_GAME_OPTIONS_CURRENCY_IRR                                   :伊朗里亞爾
+STR_GAME_OPTIONS_CURRENCY_RUB                                   :俄羅斯盧布
+STR_GAME_OPTIONS_CURRENCY_MXN                                   :墨西哥披索
 STR_GAME_OPTIONS_CURRENCY_NTD                                   :新臺幣 (NTD)
-STR_GAME_OPTIONS_CURRENCY_CNY                                   :中國人民幣(CNY)
-STR_GAME_OPTIONS_CURRENCY_HKD                                   :港幣 (HKD)
-STR_GAME_OPTIONS_CURRENCY_INR                                   :印度盧比(INR)
-STR_GAME_OPTIONS_CURRENCY_IDR                                   :印尼盾 (IDR)
-STR_GAME_OPTIONS_CURRENCY_MYR                                   :馬來西亞令吉 (MYR)
+STR_GAME_OPTIONS_CURRENCY_CNY                                   :中國人民幣
+STR_GAME_OPTIONS_CURRENCY_HKD                                   :港幣
+STR_GAME_OPTIONS_CURRENCY_INR                                   :印度盧比
+STR_GAME_OPTIONS_CURRENCY_IDR                                   :印尼盾
+STR_GAME_OPTIONS_CURRENCY_MYR                                   :馬來西亞令吉
 
 STR_GAME_OPTIONS_AUTOSAVE_FRAME                                 :{BLACK}自動存檔
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}選擇自動存檔頻率
@@ -982,10 +990,6 @@ STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_TOOLTIP                      :{BLACK}選擇�
 # Autosave dropdown
 ###length 5
 STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_OFF                          :關閉
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_1_MONTH                :每個月
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_3_MONTHS               :每 3 個月
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_6_MONTHS               :每 6 個月
-STR_GAME_OPTIONS_AUTOSAVE_DROPDOWN_EVERY_12_MONTHS              :每 12 個月
 
 STR_GAME_OPTIONS_LANGUAGE                                       :{BLACK}語言
 STR_GAME_OPTIONS_LANGUAGE_TOOLTIP                               :{BLACK}選擇要用的介面語言
@@ -1021,6 +1025,7 @@ STR_GAME_OPTIONS_GUI_SCALE_2X                                   :2倍
 STR_GAME_OPTIONS_GUI_SCALE_3X                                   :3倍
 STR_GAME_OPTIONS_GUI_SCALE_4X                                   :4倍
 STR_GAME_OPTIONS_GUI_SCALE_5X                                   :5倍
+
 
 STR_GAME_OPTIONS_GRAPHICS                                       :{BLACK}圖形
 
@@ -1204,6 +1209,7 @@ STR_CONFIG_SETTING_HORIZONTAL_POS_LEFT                          :靠左
 STR_CONFIG_SETTING_HORIZONTAL_POS_CENTER                        :置中
 STR_CONFIG_SETTING_HORIZONTAL_POS_RIGHT                         :靠右
 
+
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN                         :最大貸款額：{STRING}
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_HELPTEXT                :公司最多可借多少錢（此設定的值排除了通貨膨脹因素）。
 STR_CONFIG_SETTING_MAXIMUM_INITIAL_LOAN_VALUE                   :{CURRENCY_LONG}
@@ -1386,6 +1392,7 @@ STR_CONFIG_SETTING_INFRASTRUCTURE_MAINTENANCE_HELPTEXT          :如啟用此選
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR                      :初始公司顏色：{STRING}
 STR_CONFIG_SETTING_COMPANY_STARTING_COLOUR_HELPTEXT             :選擇公司的初始顏色。
 
+
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS                        :機場永不過期：{STRING}
 STR_CONFIG_SETTING_NEVER_EXPIRE_AIRPORTS_HELPTEXT               :如啟用此選項，所有機場一經面世，就永遠可以選擇建設。
 
@@ -1419,7 +1426,6 @@ STR_CONFIG_SETTING_AUTORENEW_MONEY_HELPTEXT                     :如果公司銀
 
 STR_CONFIG_SETTING_ERRMSG_DURATION                              :錯誤訊息持續時間：{STRING}
 STR_CONFIG_SETTING_ERRMSG_DURATION_HELPTEXT                     :設定所有以紅色對話窗顯示的錯誤訊息之持續時間。請注意有些較嚴重的錯誤訊息必須手動關閉。
-STR_CONFIG_SETTING_ERRMSG_DURATION_VALUE                        :{COMMA} 秒
 
 STR_CONFIG_SETTING_HOVER_DELAY                                  :顯示工具提示：{STRING}
 STR_CONFIG_SETTING_HOVER_DELAY_HELPTEXT                         :設定游標需在工具按鈕之上停留多久才會顯示工具使用提示。如此選項的值為 0，您需在工具按鈕上右撳鼠键以顯示工具使用提示。
@@ -1587,9 +1593,7 @@ STR_CONFIG_SETTING_RIGHT_MOUSE_BTN_EMU_OFF                      :無
 
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE                        :右鍵關閉視窗：{STRING}
 STR_CONFIG_SETTING_RIGHT_MOUSE_WND_CLOSE_HELPTEXT               :在視窗內以右鍵點擊可關閉視窗。可用右鍵關閉工具提示。
-
-STR_CONFIG_SETTING_AUTOSAVE                                     :自動儲存：{STRING}
-STR_CONFIG_SETTING_AUTOSAVE_HELPTEXT                            :選擇自動存檔的週期。
+###length 3
 
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES                    :使用 {STRING} 時間格式作為存檔檔名
 STR_CONFIG_SETTING_DATE_FORMAT_IN_SAVE_NAMES_HELPTEXT           :在存檔的檔名中使用的日期格式。
@@ -1803,13 +1807,6 @@ STR_CONFIG_SETTING_ECONOMY_TYPE_ORIGINAL                        :原版
 STR_CONFIG_SETTING_ECONOMY_TYPE_SMOOTH                          :平滑
 STR_CONFIG_SETTING_ECONOMY_TYPE_FROZEN                          :凍結
 
-STR_CONFIG_SETTING_ALLOW_SHARES                                 :允許購買其他公司的股票：{STRING}
-STR_CONFIG_SETTING_ALLOW_SHARES_HELPTEXT                        :啟用此選項以容許公司買賣股票。一所公司必須達到一定的年齡方能買賣股票。
-
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES                         :容許公司買賣股票的最小年齡：{STRING}
-STR_CONFIG_SETTING_MIN_YEARS_FOR_SHARES_HELPTEXT                :設定容許公司買賣股票的最小年齡。
-###setting-zero-is-special
-
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE                         :轉運服務所得的收入百分比：{STRING}
 STR_CONFIG_SETTING_FEEDER_PAYMENT_SHARE_HELPTEXT                :設定進行轉運的車輛在卸載被轉運的貨物時，獲得的收入佔貨物總收入的百分比。此選項讓玩家更有效地控制收入分配方式。
 
@@ -1923,10 +1920,6 @@ STR_CONFIG_SETTING_LARGER_TOWNS_DISABLED                        :無
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER                         :初始城市規模倍率：{STRING}
 STR_CONFIG_SETTING_CITY_SIZE_MULTIPLIER_HELPTEXT                :設定遊戲開始時城市的大小 (相對於一般市鎮而言)。
 
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL                           :每{STRING}日更新貨物分配圖
-STR_CONFIG_SETTING_LINKGRAPH_INTERVAL_HELPTEXT                  :指定每次計算貨物分配圖之間的時間。由於每次重新計算只會處理一個貨物分配圖元件，因此本設定不代表「每若干日重新計算整個貨物分配圖」。{}如果此設定賦值越小，則系統需要使用更多處理器時間計算貨物分配圖。相反，如果此設定賦值越大，則貨物被派往新路線所需的時間越長。
-STR_CONFIG_SETTING_LINKGRAPH_TIME                               :用 {STRING}{NBSP}天更新貨物分配圖
-STR_CONFIG_SETTING_LINKGRAPH_TIME_HELPTEXT                      :當更新貨物分配圖時，系統會衍生一條執行緒。本設定的值即為執行緒的持續時間。{}這設定賦值越小，執行緒越有可能在應當停止的時候仍未完成運算，遊戲會暫停運行至執行緒完成工作。相反，這設定賦值越大，則貨物分配功能需要較長時間反映路線網絡變動的影響。
 
 STR_CONFIG_SETTING_DISTRIBUTION_PAX                             :乘客分配方式：{STRING}
 STR_CONFIG_SETTING_DISTRIBUTION_PAX_HELPTEXT                    :設使有交通路線連接甲、乙兩站。「對稱」指甲站往乙站的乘客數量與乙站往甲站的乘客數量大致相同。「不對稱」指任何一站往另一站的乘客數量皆由系統隨意決定。「手動」指系統不會自動分配乘客的目的地。
@@ -1995,30 +1988,30 @@ STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_IMPERIAL           :英制（英呎
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_METRIC             :米制（米）
 STR_CONFIG_SETTING_LOCALISATION_UNITS_HEIGHT_SI                 :國際單位（米）
 
-STR_CONFIG_SETTING_LOCALISATION                                 :{ORANGE}本地化
-STR_CONFIG_SETTING_GRAPHICS                                     :{ORANGE}圖形
-STR_CONFIG_SETTING_SOUND                                        :{ORANGE}音效
-STR_CONFIG_SETTING_INTERFACE                                    :{ORANGE}界面
-STR_CONFIG_SETTING_INTERFACE_GENERAL                            :{ORANGE}基本顯示
-STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :{ORANGE}顯示設定
-STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :{ORANGE}建造
-STR_CONFIG_SETTING_ADVISORS                                     :{ORANGE}訊息提示
-STR_CONFIG_SETTING_COMPANY                                      :{ORANGE}公司
-STR_CONFIG_SETTING_ACCOUNTING                                   :{ORANGE}財務
-STR_CONFIG_SETTING_VEHICLES                                     :{ORANGE}車輛
-STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :{ORANGE}物理
-STR_CONFIG_SETTING_VEHICLES_ROUTING                             :{ORANGE}路線
-STR_CONFIG_SETTING_LIMITATIONS                                  :{ORANGE}遊戲限制
-STR_CONFIG_SETTING_ACCIDENTS                                    :{ORANGE}災難／事故
-STR_CONFIG_SETTING_GENWORLD                                     :{ORANGE}地圖的產生
-STR_CONFIG_SETTING_ENVIRONMENT                                  :{ORANGE}環境
-STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :{ORANGE}地方政府
-STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :{ORANGE}市鎮
-STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :{ORANGE}工業
-STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :{ORANGE}貨物分配
-STR_CONFIG_SETTING_AI                                           :{ORANGE}競爭對手
-STR_CONFIG_SETTING_AI_NPC                                       :{ORANGE}電腦玩家
-STR_CONFIG_SETTING_NETWORK                                      :{ORANGE}網路
+STR_CONFIG_SETTING_LOCALISATION                                 :本地化
+STR_CONFIG_SETTING_GRAPHICS                                     :圖形
+STR_CONFIG_SETTING_SOUND                                        :音效
+STR_CONFIG_SETTING_INTERFACE                                    :界面
+STR_CONFIG_SETTING_INTERFACE_GENERAL                            :基本顯示
+STR_CONFIG_SETTING_INTERFACE_VIEWPORTS                          :顯示設定
+STR_CONFIG_SETTING_INTERFACE_CONSTRUCTION                       :建造
+STR_CONFIG_SETTING_ADVISORS                                     :訊息提示
+STR_CONFIG_SETTING_COMPANY                                      :公司
+STR_CONFIG_SETTING_ACCOUNTING                                   :財務
+STR_CONFIG_SETTING_VEHICLES                                     :車輛
+STR_CONFIG_SETTING_VEHICLES_PHYSICS                             :物理
+STR_CONFIG_SETTING_VEHICLES_ROUTING                             :路線
+STR_CONFIG_SETTING_LIMITATIONS                                  :遊戲限制
+STR_CONFIG_SETTING_ACCIDENTS                                    :災難／事故
+STR_CONFIG_SETTING_GENWORLD                                     :地圖的產生
+STR_CONFIG_SETTING_ENVIRONMENT                                  :環境
+STR_CONFIG_SETTING_ENVIRONMENT_AUTHORITIES                      :地方政府
+STR_CONFIG_SETTING_ENVIRONMENT_TOWNS                            :市鎮
+STR_CONFIG_SETTING_ENVIRONMENT_INDUSTRIES                       :工業
+STR_CONFIG_SETTING_ENVIRONMENT_CARGODIST                        :貨物分配
+STR_CONFIG_SETTING_AI                                           :競爭對手
+STR_CONFIG_SETTING_AI_NPC                                       :電腦玩家
+STR_CONFIG_SETTING_NETWORK                                      :網路
 
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS                        :列車的路徑搜尋方式：{STRING}
 STR_CONFIG_SETTING_PATHFINDER_FOR_TRAINS_HELPTEXT               :設定列車使用的路徑搜尋方式。
@@ -2387,6 +2380,7 @@ STR_NETWORK_ASK_RELAY_NO                                        :{BLACK}否
 STR_NETWORK_ASK_RELAY_YES_ONCE                                  :{BLACK}是，僅此一次
 STR_NETWORK_ASK_RELAY_YES_ALWAYS                                :{BLACK}是，且不再詢問
 
+
 STR_NETWORK_SPECTATORS                                          :旁觀者
 
 # Network set password
@@ -2592,7 +2586,6 @@ STR_TRANSPARENT_BUILDINGS_TOOLTIP                               :{BLACK}切換�
 STR_TRANSPARENT_BRIDGES_TOOLTIP                                 :{BLACK}切換橋樑是否透明。按住 CTRL 點選可鎖定
 STR_TRANSPARENT_STRUCTURES_TOOLTIP                              :{BLACK}切換公用設施是否透明，如燈塔、天線塔等。按住 CTRL 點選可鎖定
 STR_TRANSPARENT_CATENARY_TOOLTIP                                :{BLACK}切換供電線是否透明。按住 CTRL 點選可鎖定
-STR_TRANSPARENT_LOADING_TOOLTIP                                 :{BLACK}切換裝載進度指示是否透明。按住 CTRL 點選可鎖定
 STR_TRANSPARENT_INVISIBLE_TOOLTIP                               :{BLACK}讓物件完全隱藏，而非透明顯示
 
 # Linkgraph legend window
@@ -3708,7 +3701,6 @@ STR_COMPANY_VIEW_AIRCRAFT                                       :{WHITE}飛機 {
 STR_COMPANY_VIEW_SHIPS                                          :{WHITE}船舶 {COMMA} 艘
 STR_COMPANY_VIEW_VEHICLES_NONE                                  :{WHITE}無
 STR_COMPANY_VIEW_COMPANY_VALUE                                  :{GOLD}公司價值：{WHITE}{CURRENCY_LONG}
-STR_COMPANY_VIEW_SHARES_OWNED_BY                                :{WHITE}({COMMA}% 由 {COMPANY} 擁有)
 STR_COMPANY_VIEW_INFRASTRUCTURE                                 :{GOLD}基礎建設：
 STR_COMPANY_VIEW_INFRASTRUCTURE_RAIL                            :{WHITE}{COMMA} 鐵路區塊
 STR_COMPANY_VIEW_INFRASTRUCTURE_ROAD                            :{WHITE}{COMMA} 道路區塊
@@ -3736,11 +3728,6 @@ STR_COMPANY_VIEW_COMPANY_NAME_BUTTON                            :{BLACK}公司�
 STR_COMPANY_VIEW_COMPANY_NAME_TOOLTIP                           :{BLACK}修改公司名稱
 STR_COMPANY_VIEW_PRESIDENT_NAME_BUTTON                          :{BLACK}總經理姓名
 STR_COMPANY_VIEW_PRESIDENT_NAME_TOOLTIP                         :{BLACK}修改總經理姓名
-
-STR_COMPANY_VIEW_BUY_SHARE_BUTTON                               :{BLACK}購買 25% 公司股份
-STR_COMPANY_VIEW_SELL_SHARE_BUTTON                              :{BLACK}出售 25% 公司股份
-STR_COMPANY_VIEW_BUY_SHARE_TOOLTIP                              :{BLACK}購入這所公司的 25% 股份。按住 Shift 點選以顯示預估的購買費用而不作購入
-STR_COMPANY_VIEW_SELL_SHARE_TOOLTIP                             :{BLACK}出售這所公司的 25% 股份。按住 Shift 點選以顯示預估的出售所得而不賣出任何股份
 
 STR_COMPANY_VIEW_COMPANY_NAME_QUERY_CAPTION                     :公司名稱
 STR_COMPANY_VIEW_PRESIDENT_S_NAME_QUERY_CAPTION                 :總經理姓名
@@ -3819,8 +3806,6 @@ STR_VEHICLE_LIST_MANAGE_LIST_TOOLTIP                            :{BLACK}向清�
 STR_VEHICLE_LIST_REPLACE_VEHICLES                               :替換車輛
 STR_VEHICLE_LIST_SEND_FOR_SERVICING                             :送去維護
 STR_VEHICLE_LIST_PROFIT_THIS_YEAR_LAST_YEAR                     :{TINY_FONT}{BLACK}今年盈利：{CURRENCY_LONG} (去年盈利：{CURRENCY_LONG})
-STR_VEHICLE_LIST_CARGO                                          :{TINY_FONT}{BLACK}[{CARGO_LIST}]
-STR_VEHICLE_LIST_NAME_AND_CARGO                                 :{TINY_FONT}{BLACK}{STRING} {STRING}
 
 STR_VEHICLE_LIST_SEND_TRAIN_TO_DEPOT                            :送到機廠
 STR_VEHICLE_LIST_SEND_ROAD_VEHICLE_TO_DEPOT                     :送到車廠
@@ -4540,8 +4525,6 @@ STR_TIMETABLE_EXPECTED                                          :{BLACK}實際�
 STR_TIMETABLE_SCHEDULED                                         :{BLACK}表定時間
 STR_TIMETABLE_EXPECTED_TOOLTIP                                  :{BLACK}切換顯示 (根據實際情況的) 預期時間 或 表定時間
 
-STR_TIMETABLE_ARRIVAL_ABBREVIATION                              :到:
-STR_TIMETABLE_DEPARTURE_ABBREVIATION                            :開:
 
 
 # Date window (for timetable)
@@ -4632,7 +4615,6 @@ STR_AI_SETTINGS_CAPTION_GAMESCRIPT                              :遊戲腳本
 STR_AI_SETTINGS_CLOSE                                           :{BLACK}關閉
 STR_AI_SETTINGS_RESET                                           :{BLACK}重設
 STR_AI_SETTINGS_SETTING                                         :{STRING}：{ORANGE}{STRING}
-STR_AI_SETTINGS_START_DELAY                                     :此 AI 與上一個 AI 的啟動時間相隔天數 (近似值)：{ORANGE}{STRING}
 
 
 # Textfile window
@@ -4641,7 +4623,7 @@ STR_TEXTFILE_WRAP_TEXT_TOOLTIP                                  :{BLACK}強迫�
 STR_TEXTFILE_VIEW_README                                        :{BLACK}檢視Readme
 STR_TEXTFILE_VIEW_CHANGELOG                                     :{BLACK}修訂紀錄
 STR_TEXTFILE_VIEW_LICENCE                                       :{BLACK}授權條款
-###length 3
+###length 4
 STR_TEXTFILE_README_CAPTION                                     :{WHITE}{STRING}{STRING}的 Readme
 STR_TEXTFILE_CHANGELOG_CAPTION                                  :{WHITE}{STRING}{STRING}的修訂紀錄
 STR_TEXTFILE_LICENCE_CAPTION                                    :{WHITE}{STRING}{STRING}的授權條款
@@ -4769,9 +4751,6 @@ STR_ERROR_INSUFFICIENT_FUNDS                                    :{WHITE}無法�
 STR_ERROR_CAN_T_GIVE_MONEY                                      :{WHITE}無法將資金給予此公司...
 STR_ERROR_CAN_T_BUY_COMPANY                                     :{WHITE}無法購買公司...
 STR_ERROR_CAN_T_BUILD_COMPANY_HEADQUARTERS                      :{WHITE}無法興建公司總部...
-STR_ERROR_CAN_T_BUY_25_SHARE_IN_THIS                            :{WHITE}無法購買這間公司的股份...
-STR_ERROR_CAN_T_SELL_25_SHARE_IN                                :{WHITE}無法出售這間公司的股份...
-STR_ERROR_PROTECTED                                             :{WHITE}這間公司才剛成立，還不能交易股票...
 
 # Town related errors
 STR_ERROR_CAN_T_GENERATE_TOWN                                   :{WHITE}無法建立市鎮
@@ -5515,10 +5494,10 @@ STR_VEHICLE_NAME_AIRCRAFT_POWERNAUT_HELICOPTER                  :Powernaut 直�
 
 ##id 0x8800
 # Formatting of some strings
-STR_FORMAT_DATE_TINY                                            :{STRING}-{STRING}-{NUM}
+STR_FORMAT_DATE_TINY                                            :{ZEROFILL_NUM}-{ZEROFILL_NUM}-{NUM}
 STR_FORMAT_DATE_SHORT                                           :{STRING} {NUM}
 STR_FORMAT_DATE_LONG                                            :{2:NUM} 年 {1:STRING} 月 {0:STRING} 日
-STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:STRING}-{0:STRING}
+STR_FORMAT_DATE_ISO                                             :{2:NUM}-{1:ZEROFILL_NUM}-{0:ZEROFILL_NUM}
 
 STR_FORMAT_COMPANY_NUM                                          :(公司 {COMMA})
 STR_FORMAT_GROUP_NAME                                           :群組 {COMMA}
@@ -5599,33 +5578,8 @@ STR_JUST_RAW_STRING                                             :{STRING}
 STR_JUST_BIG_RAW_STRING                                         :{BIG_FONT}{STRING}
 
 # Slightly 'raw' stringcodes with colour or size
-STR_BLACK_COMMA                                                 :{BLACK}{COMMA}
-STR_TINY_BLACK_COMA                                             :{TINY_FONT}{BLACK}{COMMA}
-STR_TINY_COMMA                                                  :{TINY_FONT}{COMMA}
-STR_BLUE_COMMA                                                  :{BLUE}{COMMA}
-STR_RED_COMMA                                                   :{RED}{COMMA}
-STR_WHITE_COMMA                                                 :{WHITE}{COMMA}
-STR_TINY_BLACK_DECIMAL                                          :{TINY_FONT}{BLACK}{DECIMAL}
-STR_COMPANY_MONEY                                               :{WHITE}{CURRENCY_LONG}
-STR_BLACK_DATE_LONG                                             :{BLACK}{DATE_LONG}
-STR_WHITE_DATE_LONG                                             :{WHITE}{DATE_LONG}
-STR_SHORT_DATE                                                  :{WHITE}{DATE_TINY}
-STR_DATE_LONG_SMALL                                             :{TINY_FONT}{BLACK}{DATE_LONG}
-STR_TINY_GROUP                                                  :{TINY_FONT}{GROUP}
-STR_BLACK_INT                                                   :{BLACK}{NUM}
-STR_ORANGE_INT                                                  :{ORANGE}{NUM}
 STR_WHITE_SIGN                                                  :{WHITE}{SIGN}
-STR_TINY_BLACK_STATION                                          :{TINY_FONT}{BLACK}{STATION}
-STR_BLACK_STRING                                                :{BLACK}{STRING}
-STR_BLACK_RAW_STRING                                            :{BLACK}{STRING}
-STR_ORANGE_STRING                                               :{ORANGE}{STRING}
-STR_LTBLUE_STRING                                               :{LTBLUE}{STRING}
-STR_WHITE_STRING                                                :{WHITE}{STRING}
-STR_ORANGE_STRING1_WHITE                                        :{ORANGE}{STRING}{WHITE}
-STR_ORANGE_STRING1_LTBLUE                                       :{ORANGE}{STRING}{LTBLUE}
 STR_TINY_BLACK_HEIGHT                                           :{TINY_FONT}{BLACK}{HEIGHT}
-STR_TINY_BLACK_VEHICLE                                          :{TINY_FONT}{BLACK}{VEHICLE}
-STR_TINY_RIGHT_ARROW                                            :{TINY_FONT}{RIGHT_ARROW}
 
 STR_BLACK_1                                                     :{BLACK}1
 STR_BLACK_2                                                     :{BLACK}2

@@ -29,6 +29,7 @@ enum RailToolbarWidgets {
 	WID_RAT_BUILD_TUNNEL,   ///< Build a tunnel.
 	WID_RAT_REMOVE,         ///< Bulldozer to remove rail.
 	WID_RAT_CONVERT_RAIL,   ///< Convert other rail to this type.
+	WID_RAT_CONVERT_RAIL_TRACK, ///< Convert other rail to this type (track).
 };
 
 /** Widgets of the #BuildRailStationWindow class. */
@@ -132,9 +133,11 @@ enum BuildRailDepotWidgets {
 
 /** Widgets of the #BuildRailWaypointWindow class. */
 enum BuildRailWaypointWidgets {
+	WID_BRW_FILTER,          ///< Text filter.
 	WID_BRW_WAYPOINT_MATRIX, ///< Matrix with waypoints.
 	WID_BRW_WAYPOINT,        ///< A single waypoint.
 	WID_BRW_SCROLL,          ///< Scrollbar for the matrix.
+	WID_BRW_NAME,            ///< Name of selected waypoint.
 };
 
 #endif /* WIDGETS_RAIL_WIDGET_H */

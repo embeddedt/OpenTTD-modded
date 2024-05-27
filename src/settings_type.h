@@ -64,11 +64,25 @@ enum IndustryDensity {
 	ID_END,       ///< Number of industry density settings.
 };
 
-/** Possible values for "userelayservice" setting. */
+/** Possible values for "use_relay_service" setting. */
 enum UseRelayService {
 	URS_NEVER = 0,
 	URS_ASK,
 	URS_ALLOW,
+};
+
+/** Possible values for "participate_survey" setting. */
+enum ParticipateSurvey {
+	PS_ASK = 0,
+	PS_NO,
+	PS_YES,
+};
+
+/** Right-click to close window actions. */
+enum RightClickClose : uint8_t {
+	RCC_NO = 0,
+	RCC_YES,
+	RCC_YES_EXCEPT_STICKY,
 };
 
 /** Settings related to the difficulty of the game */
@@ -77,6 +91,7 @@ struct DifficultySettings {
 	byte   competitor_intelligence;          ///< Unused value, used to load old savegames.
 
 	byte   max_no_competitors;               ///< the number of competitors (AIs)
+	uint16 competitors_interval;             ///< the interval (in minutes) between adding competitors
 	byte   number_towns;                     ///< the amount of towns
 	byte   industry_density;                 ///< The industry density. @see IndustryDensity
 	uint32 max_loan;                         ///< the maximum initial loan
@@ -131,6 +146,18 @@ struct GUISettings : public TimeSettings {
 	uint8  auto_scrolling;                   ///< scroll when moving mouse to the edge (see #ViewportAutoscrolling)
 	byte   errmsg_duration;                  ///< duration of error message
 	uint16 hover_delay_ms;                   ///< time required to activate a hover event, in milliseconds
+	bool   instant_tile_tooltip;             ///< don't require a right click to activate a hover event to show a tooltip for an in-game tile (e.g. industry).
+	uint8  town_name_tooltip_mode;           ///< when to display town names when hovering over roads and houses. (0 = never, 1 = only if town names are hidden, 2 = always)
+	bool   industry_tooltip_show;            ///< whether to display tooltips, when hovering over industry tiles.
+	bool   industry_tooltip_show_name;       ///< whether to display the name of the industry, when hovering over one of its tiles.
+	bool   industry_tooltip_show_required;   ///< whether to display cargoes required by the industry, when hovering over one of its tiles.
+	bool   industry_tooltip_show_stockpiled; ///< whether to display cargoes stockpiled by the industry, when hovering over one of its tiles.
+	bool   industry_tooltip_show_produced;   ///< whether to display cargoes produced by the industry, when hovering over one of its tiles.
+	uint8  depot_tooltip_mode;               ///< Display mode for depot viewport tooltips. (0 = never, 1 = just a total number of vehicles, 2 = total number of vehicles in the depot along with a breakdown of numbers)
+	uint8  waypoint_viewport_tooltip_name;   ///< Show the name of the waypoint or buoy in a viewport tooltip. (0 = never, 1 = only if waypoint names are hidden, 2 = always)
+	uint8  station_viewport_tooltip_name;    ///< Show the name of the station in a viewport tooltip. (0 = never, 1 = only if station names are hidden, 2 = always)
+	bool   station_viewport_tooltip_cargo;   ///< Show a list of cargo details at the station in a viewport tooltip.
+	uint8  station_rating_tooltip_mode;      ///< Station rating tooltip mode
 	bool   link_terraform_toolbar;           ///< display terraform toolbar when displaying rail, road, water and airport toolbars
 	uint8  smallmap_land_colour;             ///< colour used for land and heightmap at the smallmap
 	uint8  scroll_mode;                      ///< viewport scroll mode
@@ -149,22 +176,23 @@ struct GUISettings : public TimeSettings {
 	ZoomLevel zoom_min;                      ///< minimum zoom out level
 	ZoomLevel zoom_max;                      ///< maximum zoom out level
 	ZoomLevel sprite_zoom_min;               ///< maximum zoom level at which higher-resolution alternative sprites will be used (if available) instead of scaling a lower resolution sprite
-	byte   autosave;                         ///< how often should we do autosaves?
-	uint16 autosave_custom_days;             ///< custom autosave interval in days
-	uint16 autosave_custom_minutes;          ///< custom autosave interval in real-time minutes
+	uint32 autosave_interval;                ///< how often should we do autosaves?
+	bool   autosave_realtime;                ///< autosaves based on real elapsed time (with pause handling)
 	bool   threaded_saves;                   ///< should we do threaded saves?
 	bool   keep_all_autosave;                ///< name the autosave in a different way
 	bool   autosave_on_exit;                 ///< save an autosave when you quit the game, but do not ask "Do you really want to quit?"
 	bool   autosave_on_network_disconnect;   ///< save an autosave when you get disconnected from a network game with an error?
 	uint8  date_format_in_default_names;     ///< should the default savegame/screenshot name use long dates (31th Dec 2008), short dates (31-12-2008) or ISO dates (2008-12-31)
 	byte   max_num_autosaves;                ///< controls how many autosavegames are made before the game starts to overwrite (names them 0 to max_num_autosaves - 1)
+	byte   max_num_lt_autosaves;             ///< controls how many long-term autosavegames are made before the game starts to overwrite (names them 0 to max_num_lt_autosaves - 1)
 	uint8  savegame_overwrite_confirm;       ///< Mode for when to warn about overwriting an existing savegame
 	bool   population_in_label;              ///< show the population of a town in its label?
+	bool   city_in_label;                    ///< show cities in label?
 	uint8  right_mouse_btn_emulation;        ///< should we emulate right mouse clicking?
 	uint8  scrollwheel_scrolling;            ///< scrolling using the scroll wheel?
 	uint8  scrollwheel_multiplier;           ///< how much 'wheel' per incoming event from the OS?
-	bool   viewport_map_scan_surroundings;   ///< look for the most important tile in surroundings
 	bool   show_slopes_on_viewport_map;      ///< use slope orientation to render the ground
+	bool   show_height_on_viewport_map;      ///< use height for shading when rendering the ground
 	uint32 default_viewport_map_mode;        ///< the mode to use by default when a viewport is in map mode, 0=owner, 1=industry, 2=vegetation
 	uint32 action_when_viewport_map_is_dblclicked; ///< what to do when a doubleclick occurs on the viewport map
 	uint32 show_scrolling_viewport_on_map;   ///< when a no map viewport is scrolled, its location is marked on the other map viewports
@@ -174,7 +202,8 @@ struct GUISettings : public TimeSettings {
 	bool   use_owner_colour_for_tunnelbridge;///< bridges and tunnels are rendered with their owner's colour
 	bool   timetable_arrival_departure;      ///< show arrivals and departures in vehicle timetables
 	uint8  max_departures;                   ///< maximum number of departures to show per station
-	uint16 max_departure_time;               ///< maximum time in advance to show departures
+	uint16 max_departure_time;               ///< maximum time in advance to show departures (days)
+	uint16 max_departure_time_minutes;       ///< maximum time in advance to show departures (minutes)
 	uint16 departure_calc_frequency;         ///< how often to calculate departures (in ticks)
 	bool   departure_show_vehicle;           ///< whether to show vehicle names with departures
 	bool   departure_show_group;             ///< whether to show group names with departures
@@ -189,7 +218,7 @@ struct GUISettings : public TimeSettings {
 	uint8  departure_conditionals;           ///< how to handle conditional orders
 	bool   departure_show_all_stops;         ///< whether to show stops regardless of loading/unloading done at them
 	bool   departure_merge_identical;        ///< whether to merge identical departures
-	bool   right_mouse_wnd_close;            ///< close window with right click
+	RightClickClose  right_click_wnd_close;  ///< close window with right click
 	bool   pause_on_newgame;                 ///< whether to start new games paused or not
 	SignalGUISettings signal_gui_mode;       ///< select which signal types are shown in the signal GUI
 	SignalCycleSettings cycle_signal_types;  ///< Which signal types to cycle with the build signal tool.
@@ -226,6 +255,7 @@ struct GUISettings : public TimeSettings {
 	bool   show_veh_list_cargo_filter;       ///< Show cargo list filter in UI
 	uint8  osk_activation;                   ///< Mouse gesture to trigger the OSK.
 	byte   starting_colour;                  ///< default color scheme for the company to start a new game with
+	byte   starting_colour_secondary;        ///< default secondary color scheme for the company to start a new game with
 	bool   show_newgrf_name;                 ///< Show the name of the NewGRF in the build vehicle window
 	bool   show_cargo_in_vehicle_lists;      ///< Show the cargoes the vehicles can carry in the list windows
 	bool   show_wagon_intro_year;            ///< Show the introduction year for wagons in the build vehicle window
@@ -247,16 +277,16 @@ struct GUISettings : public TimeSettings {
 	uint8  linkgraph_colours;                ///< linkgraph overlay colours
 	uint8  vehicle_names;                    ///< Vehicle naming scheme
 	bool   shade_trees_on_slopes;            ///< Shade trees on slopes
-	uint8  station_rating_tooltip_mode;      ///< Station rating tooltip mode
 	uint8  demolish_confirm_mode;            ///< Demolition confirmation mode
 	bool   dual_pane_train_purchase_window;  ///< Dual pane train purchase window
 	bool   dual_pane_train_purchase_window_dual_buttons;  ///< Dual pane train purchase window: dual buttons
 	bool   allow_hiding_waypoint_labels;     ///< Allow hiding waypoint viewport labels
 	uint8  disable_water_animation;          ///< Disable water animation depending on zoom level
 	bool   show_order_occupancy_by_default;  ///< Show order occupancy by default in vehicle order window
-	bool   show_order_management_button;     ///< Show order management button in vehicle order window
 	bool   show_group_hierarchy_name;        ///< Show the full hierarchy in group names
 	bool   show_vehicle_group_hierarchy_name;///< Show the full group hierarchy in vehicle names
+	bool   show_order_number_vehicle_view;   ///< Show order number in vehicle view window
+	bool   hide_default_stop_location;       ///< Hide default stop location for orders
 
 	uint16 console_backlog_timeout;          ///< the minimum amount of time items should be in the console backlog before they will be removed in ~3 seconds granularity.
 	uint16 console_backlog_length;           ///< the minimum amount of items in the console backlog before items will be removed.
@@ -280,6 +310,7 @@ struct GUISettings : public TimeSettings {
 	bool   newgrf_disable_big_gui;           ///< whether to disable "big GUI" NewGRFs
 
 	bool   scale_bevels;                     ///< bevels are scaled with GUI scale.
+	bool   bigger_main_toolbar;              ///< bigger main toolbar.
 
 	/**
 	 * Returns true when the user has sufficient privileges to edit newgrfs on a running game
@@ -354,6 +385,7 @@ struct NetworkSettings {
 	uint16      sync_freq;                                ///< how often do we check whether we are still in-sync
 	uint8       frame_freq;                               ///< how often do we send commands to the clients
 	uint16      commands_per_frame;                       ///< how many commands may be sent each frame_freq frames?
+	uint16      commands_per_frame_server;                ///< how many commands may be sent each frame_freq frames? (server-originating commands)
 	uint16      max_commands_in_queue;                    ///< how many commands may there be in the incoming queue before dropping the connection?
 	uint16      bytes_per_frame;                          ///< how many bytes may, over a long period, be received per frame?
 	uint16      bytes_per_frame_burst;                    ///< how many bytes may, over a short period, be received?
@@ -380,6 +412,7 @@ struct NetworkSettings {
 	std::string network_id;                               ///< network ID for servers
 	std::string company_password_storage_token;           ///< company password storage token
 	std::string company_password_storage_secret;          ///< company password storage secret
+	uint8       max_auth_failures;                        ///< maximum auth failures before client is kicked
 	bool        autoclean_companies;                      ///< automatically remove companies that are not in use
 	uint8       autoclean_unprotected;                    ///< remove passwordless companies after this many months
 	uint8       autoclean_protected;                      ///< remove the password from passworded companies after this many months
@@ -390,8 +423,9 @@ struct NetworkSettings {
 	uint8       min_active_clients;                       ///< minimum amount of active clients to unpause the game
 	bool        reload_cfg;                               ///< reload the config file before restarting
 	std::string last_joined;                              ///< Last joined server
-	bool        no_http_content_downloads;                     ///< do not do content downloads over HTTP
+	bool        no_http_content_downloads;                ///< do not do content downloads over HTTP
 	UseRelayService use_relay_service;                    ///< Use relay service?
+	ParticipateSurvey participate_survey;                 ///< Participate in the automated survey
 };
 
 /** Settings related to the creation of games. */
@@ -451,6 +485,7 @@ struct ConstructionSettings {
 	uint8  raw_industry_construction;        ///< type of (raw) industry construction (none, "normal", prospecting)
 	uint8  industry_platform;                ///< the amount of flat land around an industry
 	bool   freeform_edges;                   ///< allow terraforming the tiles at the map edges
+	bool   flood_from_edges;                 ///< whether water floods from map edges
 	uint8  extra_tree_placement;             ///< (dis)allow building extra trees in-game
 	uint8  trees_around_snow_line_range;     ///< range around snowline for mixed and arctic forest.
 	bool   trees_around_snow_line_enabled;   ///< enable mixed and arctic forest around snowline, and no trees above snowline
@@ -470,6 +505,7 @@ struct ConstructionSettings {
 	bool   build_object_area_permitted;      ///< whether building objects by area is permitted
 	Year   no_expire_objects_after;          ///< do not expire objects after this year
 	bool   ignore_object_intro_dates;        ///< allow players to build objects before their introduction dates (does not include during map generation)
+	bool   convert_town_road_no_houses;      ///< allow converting town roads to a type which does not allow houses
 
 	uint32 terraform_per_64k_frames;         ///< how many tile heights may, over a long period, be terraformed per 65536 frames?
 	uint16 terraform_frame_burst;            ///< how many tile heights may, over a short period, be terraformed?
@@ -617,6 +653,7 @@ struct VehicleSettings {
 	uint8  train_acceleration_model;         ///< realistic acceleration for trains
 	uint8  train_braking_model;              ///< braking model for trains
 	uint8  realistic_braking_aspect_limited; ///< realistic braking lookahead is aspect limited
+	bool   limit_train_acceleration;         ///< when using realistic braking, also limit train acceleration
 	uint8  roadveh_acceleration_model;       ///< realistic acceleration for road vehicles
 	uint8  train_slope_steepness;            ///< Steepness of hills for trains when using realistic acceleration
 	uint8  roadveh_slope_steepness;          ///< Steepness of hills for road vehicles when using realistic acceleration
@@ -650,6 +687,7 @@ struct VehicleSettings {
 	bool   drive_through_train_depot;        ///< enable drive-through train depot emulation
 	uint16 through_load_speed_limit;         ///< maximum speed for through load
 	uint16 rail_depot_speed_limit;           ///< maximum speed entering/existing rail depots
+	bool   non_leading_engines_keep_name;    ///< allow engines moved to a non-leading position to retain their custom name
 };
 
 /** Settings related to the economy. */
@@ -707,12 +745,13 @@ struct EconomySettings {
 	uint8  day_length_factor;                ///< factor which the length of day is multiplied
 	uint16 random_road_reconstruction;       ///< chance out of 1000 per tile loop for towns to start random road re-construction
 	bool disable_inflation_newgrf_flag;      ///< Disable NewGRF inflation flag
+	CargoPaymentAlgorithm payment_algorithm; ///< Cargo payment algorithm
+	TickRateMode tick_rate;                  ///< Tick rate mode
 };
 
 struct LinkGraphSettings {
 	uint16 recalc_time;                         ///< time (in days) for recalculating each link graph component.
 	uint16 recalc_interval;                     ///< time (in days) between subsequent checks for link graphs to be calculated.
-	bool recalc_not_scaled_by_daylength;        ///< whether the time should be in daylength-scaled days (false) or unscaled days (true)
 	DistributionType distribution_pax;          ///< distribution type for passengers
 	DistributionType distribution_mail;         ///< distribution type for mail
 	DistributionType distribution_armoured;     ///< distribution type for armoured cargo class

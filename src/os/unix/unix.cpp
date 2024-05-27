@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <time.h>
 #include <signal.h>
+#include <pthread.h>
 
 #ifdef WITH_SDL2
 #include <SDL.h>
@@ -50,10 +51,6 @@
 #include <sys/sysctl.h>
 #endif
 
-#ifndef NO_THREADS
-#include <pthread.h>
-#endif
-
 #if defined(__APPLE__)
 #	if defined(WITH_SDL)
 		/* the mac implementation needs this file included in the same file as main() */
@@ -75,23 +72,18 @@ void FiosGetDrives(FileList &file_list)
 	return;
 }
 
-bool FiosGetDiskFreeSpace(const char *path, uint64 *tot)
+std::optional<uint64_t> FiosGetDiskFreeSpace(const std::string &path)
 {
-	uint64 free = 0;
-
 #ifdef __APPLE__
 	struct statfs s;
 
-	if (statfs(path, &s) != 0) return false;
-	free = (uint64)s.f_bsize * s.f_bavail;
+	if (statfs(path.c_str(), &s) == 0) return static_cast<uint64_t>(s.f_bsize) * s.f_bavail;
 #elif defined(HAS_STATVFS)
 	struct statvfs s;
 
-	if (statvfs(path, &s) != 0) return false;
-	free = (uint64)s.f_frsize * s.f_bavail;
+	if (statvfs(path.c_str(), &s) == 0) return static_cast<uint64_t>(s.f_frsize) * s.f_bavail;
 #endif
-	if (tot != nullptr) *tot = free;
-	return true;
+	return std::nullopt;
 }
 
 bool FiosIsValidFile(const char *path, const struct dirent *ent, struct stat *sb)
@@ -146,29 +138,30 @@ static const char *GetLocalCode()
  * Convert between locales, which from and which to is set in the calling
  * functions OTTD2FS() and FS2OTTD().
  */
-static const char *convert_tofrom_fs(iconv_t convd, const char *name, char *outbuf, size_t outlen)
+static std::string convert_tofrom_fs(iconv_t convd, const std::string &name)
 {
 	/* There are different implementations of iconv. The older ones,
 	 * e.g. SUSv2, pass a const pointer, whereas the newer ones, e.g.
 	 * IEEE 1003.1 (2004), pass a non-const pointer. */
 #ifdef HAVE_NON_CONST_ICONV
-	char *inbuf = const_cast<char*>(name);
+	char *inbuf = const_cast<char*>(name.data());
 #else
-	const char *inbuf = name;
+	const char *inbuf = name.data();
 #endif
 
-	size_t inlen  = strlen(name);
-	char *buf = outbuf;
+	/* If the output is UTF-32, then 1 ASCII character becomes 4 bytes. */
+	size_t inlen = name.size();
+	std::string buf(inlen * 4, '\0');
 
-	strecpy(outbuf, name, outbuf + outlen);
-
+	size_t outlen = buf.size();
+	char *outbuf = buf.data();
 	iconv(convd, nullptr, nullptr, nullptr, nullptr);
 	if (iconv(convd, &inbuf, &inlen, &outbuf, &outlen) == (size_t)(-1)) {
-		DEBUG(misc, 0, "[iconv] error converting '%s'. Errno %d", name, errno);
+		DEBUG(misc, 0, "[iconv] error converting '%s'. Errno %d", name.c_str(), errno);
+		return name;
 	}
 
-	*outbuf = '\0';
-	/* FIX: invalid characters will abort conversion, but they shouldn't occur? */
+	buf.resize(outbuf - buf.data());
 	return buf;
 }
 
@@ -180,8 +173,6 @@ static const char *convert_tofrom_fs(iconv_t convd, const char *name, char *outb
 std::string OTTD2FS(const std::string &name)
 {
 	static iconv_t convd = (iconv_t)(-1);
-	char buf[1024] = {};
-
 	if (convd == (iconv_t)(-1)) {
 		const char *env = GetLocalCode();
 		convd = iconv_open(env, INTERNALCODE);
@@ -191,7 +182,7 @@ std::string OTTD2FS(const std::string &name)
 		}
 	}
 
-	return convert_tofrom_fs(convd, name.c_str(), buf, lengthof(buf));
+	return convert_tofrom_fs(convd, name);
 }
 
 /**
@@ -202,8 +193,6 @@ std::string OTTD2FS(const std::string &name)
 std::string FS2OTTD(const std::string &name)
 {
 	static iconv_t convd = (iconv_t)(-1);
-	char buf[1024] = {};
-
 	if (convd == (iconv_t)(-1)) {
 		const char *env = GetLocalCode();
 		convd = iconv_open(INTERNALCODE, env);
@@ -213,7 +202,7 @@ std::string FS2OTTD(const std::string &name)
 		}
 	}
 
-	return convert_tofrom_fs(convd, name.c_str(), buf, lengthof(buf));
+	return convert_tofrom_fs(convd, name);
 }
 
 #endif /* WITH_ICONV */
@@ -232,6 +221,11 @@ void ShowOSErrorBox(const char *buf, bool system)
 	} else {
 		fprintf(stderr, "Error: %s\n", buf);
 	}
+}
+
+void NORETURN DoOSAbort()
+{
+	abort();
 }
 #endif
 
@@ -270,22 +264,20 @@ int CDECL main(int argc, char *argv[])
 }
 
 #ifndef WITH_COCOA
-bool GetClipboardContents(char *buffer, const char *last)
+std::optional<std::string> GetClipboardContents()
 {
 #ifdef WITH_SDL2
-	if (SDL_HasClipboardText() == SDL_FALSE) {
-		return false;
-	}
+	if (SDL_HasClipboardText() == SDL_FALSE) return std::nullopt;
 
 	char *clip = SDL_GetClipboardText();
 	if (clip != nullptr) {
-		strecpy(buffer, clip, last);
+		std::string result = clip;
 		SDL_free(clip);
-		return true;
+		return result;
 	}
 #endif
 
-	return false;
+	return std::nullopt;
 }
 #endif
 
@@ -313,11 +305,9 @@ void OSOpenBrowser(const char *url)
 #endif /* __APPLE__ */
 
 void SetCurrentThreadName(const char *threadName) {
-#if !defined(NO_THREADS) && defined(__GLIBC__)
-#if __GLIBC_PREREQ(2, 12)
+#if defined(__GLIBC__)
 	if (threadName) pthread_setname_np(pthread_self(), threadName);
-#endif /* __GLIBC_PREREQ(2, 12) */
-#endif /* !defined(NO_THREADS) && defined(__GLIBC__) */
+#endif /* defined(__GLIBC__) */
 #if defined(__APPLE__)
 	MacOSSetThreadName(threadName);
 #endif /* defined(__APPLE__) */

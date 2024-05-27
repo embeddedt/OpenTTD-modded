@@ -12,10 +12,12 @@
 #include "../network/network.h"
 #include "../blitter/factory.hpp"
 #include "../debug.h"
+#include "../driver.h"
 #include "../fontcache.h"
 #include "../gfx_func.h"
 #include "../gfxinit.h"
 #include "../progress.h"
+#include "../rev.h"
 #include "../thread.h"
 #include "../window_func.h"
 #include "video_driver.hpp"
@@ -102,6 +104,8 @@ void VideoDriver::StartGameThread()
 		this->is_game_threaded = StartNewThread(&this->game_thread, "ottd:game", &VideoDriver::GameThreadThunk, this);
 	}
 
+	if (!this->is_game_threaded) SetSelfAsGameThread();
+
 	DEBUG(driver, 1, "using %sthread for game-loop", this->is_game_threaded ? "" : "no ");
 }
 
@@ -176,6 +180,13 @@ void VideoDriver::Tick()
 		this->Paint();
 
 		this->UnlockVideoBuffer();
+
+		/* Wait till the first successful drawing tick before marking the driver as operational. */
+		static bool first_draw_tick = true;
+		if (first_draw_tick) {
+			first_draw_tick = false;
+			DriverFactoryBase::MarkVideoDriverOperational();
+		}
 	}
 }
 
@@ -196,4 +207,13 @@ void VideoDriver::SleepTillNextTick()
 void VideoDriver::InvalidateGameOptionsWindow()
 {
 	InvalidateWindowClassesData(WC_GAME_OPTIONS, 3);
+}
+
+/**
+ * Get the caption to use for the game's title bar.
+ * @return The caption.
+ */
+/* static */ std::string VideoDriver::GetCaption()
+{
+	return stdstr_fmt("OpenTTD %s", _openttd_revision);
 }

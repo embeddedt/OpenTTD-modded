@@ -15,6 +15,7 @@
 #include "../../fileio_func.h"
 #include <pthread.h>
 #include <array>
+#include <optional>
 
 #define Rect  OTTDRect
 #define Point OTTDPoint
@@ -158,6 +159,11 @@ void ShowOSErrorBox(const char *buf, bool system)
 	}
 }
 
+void DoOSAbort()
+{
+	abort();
+}
+
 void OSOpenBrowser(const char *url)
 {
 	[ [ NSWorkspace sharedWorkspace ] openURL:[ NSURL URLWithString:[ NSString stringWithUTF8String:url ] ] ];
@@ -184,25 +190,21 @@ const char *GetCurrentLocale(const char *)
 /**
  * Return the contents of the clipboard (COCOA).
  *
- * @param buffer Clipboard content.
- * @param last The pointer to the last element of the destination buffer
- * @return Whether clipboard is empty or not.
+ * @return The (optional) clipboard contents.
  */
-bool GetClipboardContents(char *buffer, const char *last)
+std::optional<std::string> GetClipboardContents()
 {
 	NSPasteboard *pb = [ NSPasteboard generalPasteboard ];
 	NSArray *types = [ NSArray arrayWithObject:NSPasteboardTypeString ];
 	NSString *bestType = [ pb availableTypeFromArray:types ];
 
 	/* Clipboard has no text data available. */
-	if (bestType == nil) return false;
+	if (bestType == nil) return std::nullopt;
 
 	NSString *string = [ pb stringForType:NSPasteboardTypeString ];
-	if (string == nil || [ string length ] == 0) return false;
+	if (string == nil || [ string length ] == 0) return std::nullopt;
 
-	strecpy(buffer, [ string UTF8String ], last);
-
-	return true;
+	return [ string UTF8String ];
 }
 
 /** Set the application's bundle directory.
@@ -271,4 +273,9 @@ void MacOSSetThreadName(const char *name)
 	if (cur != nil && [ cur respondsToSelector:@selector(setName:) ]) {
 		[ cur performSelector:@selector(setName:) withObject:[ NSString stringWithUTF8String:name ] ];
 	}
+}
+
+uint64 MacOSGetPhysicalMemory()
+{
+	return [ [ NSProcessInfo processInfo ] physicalMemory ];
 }

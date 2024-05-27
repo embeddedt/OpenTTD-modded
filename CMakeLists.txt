@@ -17,7 +17,7 @@ if (EMSCRIPTEN)
 endif()
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake")
-set(CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 
 # Use GNUInstallDirs to allow customisation
 # but set our own default data and bin dir
@@ -120,6 +120,7 @@ find_package(LibLZMA)
 find_package(LZO)
 find_package(ZSTD 1.4)
 find_package(PNG)
+find_package(nlohmann_json)
 
 if(WIN32 OR EMSCRIPTEN)
     # Windows uses WinHttp for HTTP requests.
@@ -139,8 +140,11 @@ if(NOT OPTION_DEDICATED)
                 find_package(SDL)
             endif()
             find_package(Fluidsynth)
-            find_package(Fontconfig)
-            find_package(ICU OPTIONAL_COMPONENTS i18n lx)
+            if(Freetype_FOUND)
+                find_package(Fontconfig)
+            endif()
+            find_package(Harfbuzz)
+            find_package(ICU OPTIONAL_COMPONENTS i18n)
         endif()
     endif()
 endif()
@@ -208,6 +212,12 @@ if(UNIX AND NOT APPLE AND NOT OPTION_DEDICATED)
     if(NOT SDL_FOUND AND NOT SDL2_FOUND AND NOT ALLEGRO_FOUND)
         message(FATAL_ERROR "SDL, SDL2 or Allegro is required for this platform")
     endif()
+    if(HARFBUZZ_FOUND AND NOT ICU_i18n_FOUND)
+        message(WARNING "HarfBuzz depends on ICU i18n to function; HarfBuzz will be disabled")
+    endif()
+    if(NOT HARFBUZZ_FOUND)
+        message(WARNING "Without HarfBuzz and ICU i18n the game will not be able to render right-to-left languages correctly")
+    endif()
 endif()
 if(APPLE)
     if(NOT AUDIOTOOLBOX_LIBRARY)
@@ -266,6 +276,7 @@ if(OPTION_PACKAGE_DEPENDENCIES)
     set(CMAKE_BUILD_WITH_INSTALL_RPATH ON)
 endif()
 
+include(CTest)
 include(SourceList)
 
 # Needed by rev.cpp
@@ -277,6 +288,9 @@ include(MSVCFilters)
 
 add_executable(openttd WIN32 ${GENERATED_SOURCE_FILES})
 set_target_properties(openttd PROPERTIES OUTPUT_NAME "${BINARY_NAME}")
+
+add_executable(openttd_test)
+set_target_properties(openttd_test PROPERTIES EXCLUDE_FROM_ALL TRUE)
 # All other files are added via target_sources()
 
 set(host_tools_list strgen settingsgen)
@@ -314,6 +328,13 @@ endif()
 if(MSVC)
     # Add DPI manifest to project; other WIN32 targets get this via ottdres.rc
     target_sources(openttd PRIVATE "${CMAKE_SOURCE_DIR}/os/windows/openttd.manifest")
+
+    # If target -static is used, switch our project to static (/MT) too.
+    # If the target ends on -static-md, it will remain dynamic (/MD).
+    if(VCPKG_TARGET_TRIPLET MATCHES "-static" AND NOT VCPKG_TARGET_TRIPLET MATCHES "-md")
+        set_property(TARGET openttd PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+        set_property(TARGET openttd_test PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+     endif()
 endif()
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/bin)
@@ -340,12 +361,15 @@ target_link_libraries(openttd
     openttd::binfiles
     Threads::Threads
 )
+target_link_libraries(openttd_test)
+include(Catch)
+catch_discover_tests(openttd_test)
 
 if(HAIKU)
     target_link_libraries(openttd "be" "network" "midi")
 endif()
 
-if(IPO_FOUND)
+if(IPO_FOUND AND NOT OPTION_NO_LTO)
     set_target_properties(openttd PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
     set_target_properties(openttd PROPERTIES INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL True)
     set_target_properties(openttd PROPERTIES INTERPROCEDURAL_OPTIMIZATION_RELWITHDEBINFO True)
@@ -359,6 +383,7 @@ link_package(ZLIB TARGET ZLIB::ZLIB ENCOURAGED)
 link_package(LIBLZMA TARGET LibLZMA::LibLZMA ENCOURAGED)
 link_package(LZO)
 link_package(ZSTD TARGET ZSTD::ZSTD RECOMMENDED)
+link_package(nlohmann_json ENCOURAGED)
 
 if(NOT WIN32 AND NOT EMSCRIPTEN)
     link_package(CURL ENCOURAGED)
@@ -371,7 +396,7 @@ if(NOT OPTION_DEDICATED)
     link_package(Allegro)
     link_package(FREETYPE TARGET Freetype::Freetype)
     link_package(Fontconfig TARGET Fontconfig::Fontconfig)
-    link_package(ICU_lx)
+    link_package(Harfbuzz TARGET harfbuzz::harfbuzz)
     link_package(ICU_i18n)
     link_package(Fcitx)
     link_package(DBus1)
@@ -412,6 +437,7 @@ if(EMSCRIPTEN)
     target_link_libraries(WASM::WASM INTERFACE "-s ALLOW_MEMORY_GROWTH=1")
     target_link_libraries(WASM::WASM INTERFACE "-s INITIAL_MEMORY=33554432")
     target_link_libraries(WASM::WASM INTERFACE "-s DISABLE_EXCEPTION_CATCHING=0")
+    target_link_libraries(WASM::WASM INTERFACE "-s WASM_BIGINT")
     add_definitions(-s DISABLE_EXCEPTION_CATCHING=0)
 
     # Export functions to Javascript.

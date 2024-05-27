@@ -13,7 +13,8 @@
 #include "game_info.hpp"
 #include "game_scanner.hpp"
 #include "../debug.h"
-#include <set>
+#include <algorithm>
+#include <initializer_list>
 
 #include "../safeguards.h"
 
@@ -21,21 +22,21 @@
  * Check if the API version provided by the Game is supported.
  * @param api_version The API version as provided by the Game.
  */
-static bool CheckAPIVersion(const char *api_version)
+static bool CheckAPIVersion(const std::string &api_version)
 {
-	static const std::set<std::string> versions = { "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "12", "13", "14" };
-	return versions.find(api_version) != versions.end();
+	static constexpr std::initializer_list<const char*> versions{ "1.2", "1.3", "1.4", "1.5", "1.6", "1.7", "1.8", "1.9", "1.10", "1.11", "12", "13", "14" };
+	return std::find_if(versions.begin(), versions.end(), [&](const char *v) { return api_version == v; }) != versions.end();
 }
 
 #if defined(_WIN32)
 #undef GetClassName
 #endif /* _WIN32 */
-template <> const char *GetClassName<GameInfo, ST_GS>() { return "GSInfo"; }
+template <> const char *GetClassName<GameInfo, ScriptType::GS>() { return "GSInfo"; }
 
 /* static */ void GameInfo::RegisterAPI(Squirrel *engine)
 {
 	/* Create the GSInfo class, and add the RegisterGS function */
-	DefSQClass<GameInfo, ST_GS> SQGSInfo("GSInfo");
+	DefSQClass<GameInfo, ScriptType::GS> SQGSInfo("GSInfo");
 	SQGSInfo.PreRegister(engine);
 	SQGSInfo.AddConstructor<void (GameInfo::*)(), 1>(engine, "x");
 	SQGSInfo.DefSQAdvancedMethod(engine, &GameInfo::AddSetting, "AddSetting");
@@ -60,22 +61,22 @@ template <> const char *GetClassName<GameInfo, ST_GS>() { return "GSInfo"; }
 	SQInteger res = ScriptInfo::Constructor(vm, info);
 	if (res != 0) return res;
 
-	if (info->engine->MethodExists(*info->SQ_instance, "MinVersionToLoad")) {
-		if (!info->engine->CallIntegerMethod(*info->SQ_instance, "MinVersionToLoad", &info->min_loadable_version, MAX_GET_OPS)) return SQ_ERROR;
+	if (info->engine->MethodExists(info->SQ_instance, "MinVersionToLoad")) {
+		if (!info->engine->CallIntegerMethod(info->SQ_instance, "MinVersionToLoad", &info->min_loadable_version, MAX_GET_OPS)) return SQ_ERROR;
 	} else {
 		info->min_loadable_version = info->GetVersion();
 	}
 	/* When there is an IsSelectable function, call it. */
-	if (info->engine->MethodExists(*info->SQ_instance, "IsDeveloperOnly")) {
-		if (!info->engine->CallBoolMethod(*info->SQ_instance, "IsDeveloperOnly", &info->is_developer_only, MAX_GET_OPS)) return SQ_ERROR;
+	if (info->engine->MethodExists(info->SQ_instance, "IsDeveloperOnly")) {
+		if (!info->engine->CallBoolMethod(info->SQ_instance, "IsDeveloperOnly", &info->is_developer_only, MAX_GET_OPS)) return SQ_ERROR;
 	} else {
 		info->is_developer_only = false;
 	}
 	/* Try to get the API version the AI is written for. */
 	if (!info->CheckMethod("GetAPIVersion")) return SQ_ERROR;
-	if (!info->engine->CallStringMethodStrdup(*info->SQ_instance, "GetAPIVersion", &info->api_version, MAX_GET_OPS)) return SQ_ERROR;
+	if (!info->engine->CallStringMethod(info->SQ_instance, "GetAPIVersion", &info->api_version, MAX_GET_OPS)) return SQ_ERROR;
 	if (!CheckAPIVersion(info->api_version)) {
-		DEBUG(script, 1, "Loading info.nut from (%s.%d): GetAPIVersion returned invalid version", info->GetName(), info->GetVersion());
+		DEBUG(script, 1, "Loading info.nut from (%s.%d): GetAPIVersion returned invalid version", info->GetName().c_str(), info->GetVersion());
 		return SQ_ERROR;
 	}
 
@@ -88,14 +89,8 @@ template <> const char *GetClassName<GameInfo, ST_GS>() { return "GSInfo"; }
 
 GameInfo::GameInfo() :
 	min_loadable_version(0),
-	is_developer_only(false),
-	api_version(nullptr)
+	is_developer_only(false)
 {
-}
-
-GameInfo::~GameInfo()
-{
-	free(this->api_version);
 }
 
 bool GameInfo::CanLoadFromVersion(int version) const
@@ -104,11 +99,6 @@ bool GameInfo::CanLoadFromVersion(int version) const
 	return version >= this->min_loadable_version && version <= this->GetVersion();
 }
 
-
-GameLibrary::~GameLibrary()
-{
-	free(this->category);
-}
 
 /* static */ void GameLibrary::RegisterAPI(Squirrel *engine)
 {
@@ -130,7 +120,7 @@ GameLibrary::~GameLibrary()
 	}
 
 	/* Cache the category */
-	if (!library->CheckMethod("GetCategory") || !library->engine->CallStringMethodStrdup(*library->SQ_instance, "GetCategory", &library->category, MAX_GET_OPS)) {
+	if (!library->CheckMethod("GetCategory") || !library->engine->CallStringMethod(library->SQ_instance, "GetCategory", &library->category, MAX_GET_OPS)) {
 		delete library;
 		return SQ_ERROR;
 	}

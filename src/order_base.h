@@ -20,7 +20,7 @@
 #include "date_type.h"
 #include "schdispatch.h"
 #include "gfx_type.h"
-#include "saveload/saveload_common.h"
+#include "sl/saveload_common.h"
 
 #include <memory>
 #include <vector>
@@ -71,10 +71,18 @@ void ClearOrderDestinationRefcountMap();
  * OCV_DISPATCH_SLOT: Bits 0-15: Dispatch schedule ID
  * OCV_PERCENT: Bits 0-7: Jump counter
  */
+/*
+ * xdata2 users:
+ * OCV_CARGO_WAITING: Bits 0-15: Station ID to test + 1
+ * OCV_CARGO_ACCEPTANCE: Bits 0-15: Station ID to test + 1
+ * OCV_FREE_PLATFORMS: Bits 0-15: Station ID to test + 1
+ * OCV_CARGO_WAITING_AMOUNT: Bits 0-15: Station ID to test + 1
+ */
 
 struct OrderExtraInfo {
 	uint8 cargo_type_flags[NUM_CARGO] = {}; ///< Load/unload types for each cargo type.
 	uint32 xdata = 0;                       ///< Extra arbitrary data
+	uint32 xdata2 = 0;                      ///< Extra arbitrary data
 	uint16 dispatch_index = 0;              ///< Scheduled dispatch index + 1
 	uint8 xflags = 0;                       ///< Extra flags
 	uint8 colour = 0;                       ///< Order colour + 1
@@ -148,6 +156,17 @@ public:
 	{
 		CheckExtraInfoAlloced();
 		return this->extra->xdata;
+	}
+
+	inline uint32 GetXData2() const
+	{
+		return this->extra != nullptr ? this->extra->xdata2 : 0;
+	}
+
+	inline uint32 &GetXData2Ref()
+	{
+		CheckExtraInfoAlloced();
+		return this->extra->xdata2;
 	}
 
 	Order *next;          ///< Pointer to next order. If nullptr, end of list
@@ -621,6 +640,11 @@ public:
 		return (OrderLabelSubType)GB(this->flags, 0, 8);
 	}
 
+	inline void SetLabelSubType(OrderLabelSubType subtype)
+	{
+		SB(this->flags, 0, 8, subtype);
+	}
+
 	const char *GetLabelText() const;
 	void SetLabelText(const char *text);
 
@@ -697,6 +721,8 @@ private:
 	int32 scheduled_dispatch_last_dispatch = 0;                         ///< Last vehicle dispatched offset
 	int32 scheduled_dispatch_max_delay = 0;                             ///< Maximum allowed delay
 
+	std::string name;                                                   ///< Name of dispatch schedule
+
 	inline void CopyBasicFields(const DispatchSchedule &other)
 	{
 		this->scheduled_dispatch_duration              = other.scheduled_dispatch_duration;
@@ -716,6 +742,7 @@ public:
 	void SetScheduledDispatch(std::vector<uint32> dispatch_list);
 	void AddScheduledDispatch(uint32 offset);
 	void RemoveScheduledDispatch(uint32 offset);
+	void AdjustScheduledDispatch(int32 adjust);
 	void ClearScheduledDispatch() { this->scheduled_dispatch.clear(); }
 	bool UpdateScheduledDispatchToDate(DateTicksScaled now);
 	void UpdateScheduledDispatch(const Vehicle *v);
@@ -801,6 +828,9 @@ public:
 	{
 		other.scheduled_dispatch = std::move(this->scheduled_dispatch);
 	}
+
+	inline std::string &ScheduleName() { return this->name; }
+	inline const std::string &ScheduleName() const { return this->name; }
 };
 
 /**

@@ -105,7 +105,7 @@ static void ChangeTimetable(Vehicle *v, VehicleOrderID order_number, uint32 val,
 	v->orders->UpdateTotalDuration(total_delta);
 	v->orders->UpdateTimetableDuration(timetable_delta);
 
-	SetTimetableWindowsDirty(v, mtf == MTF_ASSIGN_SCHEDULE);
+	SetTimetableWindowsDirty(v, (mtf == MTF_ASSIGN_SCHEDULE) ? STWDF_SCHEDULED_DISPATCH : STWDF_NONE);
 
 	for (v = v->FirstShared(); v != nullptr; v = v->NextShared()) {
 		if (v->cur_real_order_index == order_number && v->current_order.Equals(*order)) {
@@ -478,7 +478,7 @@ CommandCost CmdSetTimetableStart(TileIndex tile, DoCommandFlag flags, uint32 p1,
 	CommandCost ret = CheckOwnership(v->owner);
 	if (ret.Failed()) return ret;
 
-	if (timetable_all && !v->orders->IsCompleteTimetable()) return CMD_ERROR;
+	if (timetable_all && !v->orders->IsCompleteTimetable()) return CommandCost(STR_ERROR_TIMETABLE_INCOMPLETE);
 
 	const DateTicksScaled now = _scaled_date_ticks;
 	DateTicksScaled start_date_scaled = DateTicksToScaledDateTicks(_date * DAY_TICKS + _date_fract + (int32)p2) + sub_ticks;
@@ -655,7 +655,7 @@ CommandCost CmdTimetableSeparation(TileIndex tile, DoCommandFlag flags, uint32 p
 			}
 			v2->ClearSeparation();
 		}
-		SetTimetableWindowsDirty(v, true);
+		SetTimetableWindowsDirty(v, STWDF_SCHEDULED_DISPATCH);
 	}
 
 	return CommandCost();
@@ -1011,10 +1011,13 @@ void UpdateVehicleTimetable(Vehicle *v, bool travelling)
 		}
 	}
 
+	bool is_timetabled = travel_field ? real_timetable_order->IsTravelTimetabled() :
+			real_timetable_order->IsWaitTimetabled();
+
 	/* Vehicles will wait at stations if they arrive early even if they are not
 	 * timetabled to wait there, so make sure the lateness counter is updated
 	 * when this happens. */
-	if (timetabled == 0 && (travelling || v->lateness_counter >= 0)) return;
+	if (timetabled == 0 && !is_timetabled && (travelling || v->lateness_counter >= 0)) return;
 
 	if (set_scheduled_dispatch) {
 		// do nothing

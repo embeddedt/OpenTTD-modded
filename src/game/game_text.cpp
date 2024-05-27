@@ -288,10 +288,9 @@ static void ExtractStringParams(const StringData &data, StringParamsList &params
 
 		if (ls != nullptr) {
 			StringParams &param = params.emplace_back();
-			ParsedCommandStruct pcs;
-			ExtractCommandString(&pcs, ls->english, false);
+			ParsedCommandStruct pcs = ExtractCommandString(ls->english.c_str(), false);
 
-			for (const CmdStruct *cs : pcs.cmd) {
+			for (const CmdStruct *cs : pcs.consuming_commands) {
 				if (cs == nullptr) break;
 				param.emplace_back(GetParamType(cs), cs->consumes);
 			}
@@ -385,7 +384,7 @@ void RegisterGameTranslation(Squirrel *engine)
 
 	int idx = 0;
 	for (const auto &p : _current_data->string_names) {
-		sq_pushstring(vm, p.c_str(), -1);
+		sq_pushstring(vm, p, -1);
 		sq_pushinteger(vm, idx);
 		sq_rawset(vm, -3);
 		idx++;

@@ -24,6 +24,7 @@
 #include "tile_cmd.h"
 #include "error.h"
 #include "scope.h"
+#include "zoom_func.h"
 
 #include "table/sprites.h"
 #include "table/strings.h"
@@ -139,7 +140,7 @@ static const StringID _program_sigstate[] = {
 };
 
 /** Get the string for a condition */
-static char *GetConditionString(SignalCondition *cond, char *buf, char *buflast, bool selected)
+static char *GetConditionString(SignalCondition *cond, char *buf, char *buflast)
 {
 	StringID string = INVALID_STRING_ID;
 	if (cond->ConditionCode() == PSC_SLOT_OCC || cond->ConditionCode() == PSC_SLOT_OCC_REM) {
@@ -180,7 +181,6 @@ static char *GetConditionString(SignalCondition *cond, char *buf, char *buflast,
 				SetDParam(1, TileY(sig_cond->sig_tile));
 			} else {
 				string = STR_PROGSIG_CONDVAR_SIGNAL_STATE_UNSPECIFIED;
-				SetDParam(0, selected ? STR_WHITE : STR_BLACK);
 			}
 		}
 	}
@@ -213,7 +213,7 @@ static void DrawInstructionString(SignalInstruction *instruction, int y, bool se
 
 		case PSO_IF: {
 			SignalIf *if_ins = static_cast<SignalIf*>(instruction);
-			GetConditionString(if_ins->condition, condstr, lastof(condstr), selected);
+			GetConditionString(if_ins->condition, condstr, lastof(condstr));
 			SetDParamStr(0, condstr);
 			instruction_string = STR_PROGSIG_IF;
 			break;
@@ -237,7 +237,8 @@ static void DrawInstructionString(SignalInstruction *instruction, int y, bool se
 		default: NOT_REACHED();
 	}
 
-	DrawString(left + indent * 16, right, y, instruction_string, selected ? TC_WHITE : TC_BLACK);
+	bool rtl = _current_text_dir == TD_RTL;
+	DrawString(left + (rtl ? 0 : ScaleGUITrad(indent * 16)), right - (rtl ? ScaleGUITrad(indent * 16) : 0), y, instruction_string, selected ? TC_WHITE : TC_BLACK);
 }
 
 struct GuiInstruction {
@@ -272,7 +273,7 @@ public:
 			case PROGRAM_WIDGET_INSTRUCTION_LIST: {
 				int sel = this->GetInstructionFromPt(pt.y);
 
-				this->DeleteChildWindows();
+				this->CloseChildWindows();
 				HideDropDownMenu(this);
 
 				if (sel == -1 || this->GetOwner() != _local_company) {
@@ -300,7 +301,7 @@ public:
 				SB(p1, 0, 3, this->track);
 				SB(p1, 3, 16, ins->Id());
 
-				DoCommandP(this->tile, p1, 0, CMD_REMOVE_SIGNAL_INSTRUCTION | CMD_MSG(STR_ERROR_CAN_T_MODIFY_INSTRUCTION));
+				DoCommandP(this->tile, p1, 0, CMD_REMOVE_SIGNAL_INSTRUCTION | CMD_MSG(STR_ERROR_CAN_T_REMOVE_INSTRUCTION));
 				this->RebuildInstructionList();
 			} break;
 
@@ -368,7 +369,7 @@ public:
 
 				int selected;
 				DropDownList list = GetSlotDropDownList(this->GetOwner(), sc->slot_id, selected, VEH_TRAIN, true);
-				if (!list.empty()) ShowDropDownList(this, std::move(list), selected, PROGRAM_WIDGET_COND_SLOT, 0, true);
+				if (!list.empty()) ShowDropDownList(this, std::move(list), selected, PROGRAM_WIDGET_COND_SLOT);
 			} break;
 
 			case PROGRAM_WIDGET_COND_COUNTER: {
@@ -380,7 +381,7 @@ public:
 
 				int selected;
 				DropDownList list = GetCounterDropDownList(this->GetOwner(), sc->ctr_id, selected);
-				if (!list.empty()) ShowDropDownList(this, std::move(list), selected, PROGRAM_WIDGET_COND_COUNTER, 0, true);
+				if (!list.empty()) ShowDropDownList(this, std::move(list), selected, PROGRAM_WIDGET_COND_COUNTER);
 			} break;
 
 			case PROGRAM_WIDGET_COND_SET_SIGNAL: {
@@ -938,7 +939,7 @@ static const NWidgetPart _nested_program_widgets[] = {
 			EndContainer(),
 			NWidget(NWID_SELECTION, INVALID_COLOUR, PROGRAM_WIDGET_SEL_TOP_RIGHT),
 				NWidget(WWT_TEXTBTN, COLOUR_GREY, PROGRAM_WIDGET_COND_VALUE), SetMinimalSize(124, 12), SetFill(1, 0),
-														SetDataTip(STR_BLACK_COMMA, STR_PROGSIG_COND_VALUE_TOOLTIP), SetResize(1, 0),
+														SetDataTip(STR_JUST_COMMA, STR_PROGSIG_COND_VALUE_TOOLTIP), SetResize(1, 0),
 				NWidget(WWT_TEXTBTN, COLOUR_GREY, PROGRAM_WIDGET_COND_SET_SIGNAL), SetMinimalSize(124, 12), SetFill(1, 0),
 														SetDataTip(STR_PROGSIG_COND_SET_SIGNAL, STR_PROGSIG_COND_SET_SIGNAL_TOOLTIP), SetResize(1, 0),
 			EndContainer(),

@@ -14,7 +14,7 @@
 #include "strings_type.h"
 #include "tile_type.h"
 #include "core/span_type.hpp"
-#include "3rdparty/optional/ottd_optional.h"
+#include <optional>
 #include <string>
 
 struct GRFFile;
@@ -25,6 +25,7 @@ enum CommandCostIntlFlags : uint8 {
 	CCIF_INLINE_EXTRA_MSG         = 1 << 1,
 	CCIF_INLINE_TILE              = 1 << 2,
 	CCIF_INLINE_RESULT            = 1 << 3,
+	CCIF_VALID_RESULT             = 1 << 4,
 };
 DECLARE_ENUM_AS_BIT_SET(CommandCostIntlFlags)
 
@@ -217,9 +218,9 @@ public:
 
 	/**
 	 * @param cmd_msg optional failure string as passed to DoCommand
-	 * @return an allocated string summarising the command result
+	 * @return a string summarising the command result
 	 */
-	char *AllocSummaryMessage(StringID cmd_msg = 0) const;
+	std::string SummaryMessage(StringID cmd_msg = 0) const;
 
 	/**
 	 * Write a string summarising the command result
@@ -256,6 +257,11 @@ public:
 	}
 
 	void SetTile(TileIndex tile);
+
+	bool HasResultData() const
+	{
+		return (this->flags & CCIF_VALID_RESULT);
+	}
 
 	uint32 GetResultData() const
 	{
@@ -296,6 +302,7 @@ enum Commands {
 
 	CMD_REMOVE_FROM_RAIL_STATION,     ///< remove a (rectangle of) tiles from a rail station
 	CMD_CONVERT_RAIL,                 ///< convert a rail type
+	CMD_CONVERT_RAIL_TRACK,           ///< convert a rail type (track)
 
 	CMD_BUILD_RAIL_WAYPOINT,          ///< build a waypoint
 	CMD_BUILD_ROAD_WAYPOINT,          ///< build a road waypoint
@@ -344,6 +351,7 @@ enum Commands {
 	CMD_INDUSTRY_SET_FLAGS,           ///< change industry control flags
 	CMD_INDUSTRY_SET_EXCLUSIVITY,     ///< change industry exclusive consumer/supplier
 	CMD_INDUSTRY_SET_TEXT,            ///< change additional text for the industry
+	CMD_INDUSTRY_SET_PRODUCTION,      ///< change industry production
 
 	CMD_SET_COMPANY_MANAGER_FACE,     ///< set the manager's face of the company
 	CMD_SET_COMPANY_COLOUR,           ///< set the colour of the company
@@ -405,6 +413,7 @@ enum Commands {
 	CMD_CUSTOM_NEWS_ITEM,             ///< create a custom news message
 	CMD_CREATE_GOAL,                  ///< create a new goal
 	CMD_REMOVE_GOAL,                  ///< remove a goal
+	CMD_SET_GOAL_DESTINATION,         ///< update goal destination of a goal
 	CMD_SET_GOAL_TEXT,                ///< update goal text of a goal
 	CMD_SET_GOAL_PROGRESS,            ///< update goal progress text of a goal
 	CMD_SET_GOAL_COMPLETED,           ///< update goal completed status of a goal
@@ -436,7 +445,7 @@ enum Commands {
 
 	CMD_TOGGLE_REUSE_DEPOT_VEHICLES,  ///< toggle 'reuse depot vehicles' on template
 	CMD_TOGGLE_KEEP_REMAINING_VEHICLES, ///< toggle 'keep remaining vehicles' on template
-	CMD_TOGGLE_REFIT_AS_TEMPLATE,     ///< toggle 'refit as template' on template
+	CMD_SET_REFIT_AS_TEMPLATE,        ///< set/unset 'refit as template' on template
 	CMD_TOGGLE_TMPL_REPLACE_OLD_ONLY, ///< toggle 'replace old vehicles only' on template
 	CMD_RENAME_TMPL_REPLACE,          ///< rename a template
 
@@ -516,6 +525,11 @@ enum Commands {
 	CMD_SCHEDULED_DISPATCH_CLEAR,               ///< scheduled dispatch clear schedule
 	CMD_SCHEDULED_DISPATCH_ADD_NEW_SCHEDULE,    ///< scheduled dispatch add new schedule
 	CMD_SCHEDULED_DISPATCH_REMOVE_SCHEDULE,     ///< scheduled dispatch remove schedule
+	CMD_SCHEDULED_DISPATCH_RENAME_SCHEDULE,     ///< scheduled dispatch rename schedule
+	CMD_SCHEDULED_DISPATCH_DUPLICATE_SCHEDULE,  ///< scheduled dispatch duplicate schedule
+	CMD_SCHEDULED_DISPATCH_APPEND_VEHICLE_SCHEDULE, ///< scheduled dispatch append schedules from another vehicle
+	CMD_SCHEDULED_DISPATCH_ADJUST,              ///< scheduled dispatch adjust time offsets in schedule
+	CMD_SCHEDULED_DISPATCH_SWAP_SCHEDULES,      ///< scheduled dispatch swap schedules in order
 
 	CMD_ADD_PLAN,
 	CMD_ADD_PLAN_LINE,
@@ -703,7 +717,7 @@ struct CommandAuxiliaryBase {
 
 	virtual CommandAuxiliaryBase *Clone() const = 0;
 
-	virtual opt::optional<span<const uint8>> GetDeserialisationSrc() const = 0;
+	virtual std::optional<span<const uint8>> GetDeserialisationSrc() const = 0;
 
 	virtual void Serialise(CommandSerialisationBuffer &buffer) const = 0;
 };

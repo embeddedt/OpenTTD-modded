@@ -16,13 +16,14 @@
 #include "tile_type.h"
 #include "settings_type.h"
 #include "group.h"
+#include <array>
 #include <string>
 
 /** Statistics about the economy. */
 struct CompanyEconomyEntry {
 	Money income;               ///< The amount of income.
 	Money expenses;             ///< The amount of expenses.
-	CargoArray delivered_cargo; ///< The amount of delivered cargo.
+	CargoArray delivered_cargo{}; ///< The amount of delivered cargo.
 	int32 performance_history;  ///< Company score (scale 0-1000)
 	Money company_value;        ///< The value of the company.
 };
@@ -83,7 +84,7 @@ struct CompanyProperties {
 	TileIndex location_of_HQ;        ///< Northern tile of HQ; #INVALID_TILE when there is none.
 	TileIndex last_build_coordinate; ///< Coordinate of the last build thing by this company.
 
-	Owner share_owners[4];           ///< Owners of the 4 shares of the company. #INVALID_OWNER if nobody has bought them yet.
+	std::array<Owner, MAX_COMPANY_SHARE_OWNERS> share_owners; ///< Owners of the shares of the company. #INVALID_OWNER if nobody has bought them yet.
 
 	Year inaugurated_year;           ///< Year of starting the company.
 
@@ -180,8 +181,8 @@ struct Company : CompanyPool::PoolItem<&_company_pool>, CompanyProperties {
 
 Money CalculateCompanyValue(const Company *c, bool including_loan = true);
 Money CalculateCompanyValueExcludingShares(const Company *c, bool including_loan = true);
+Money CalculateHostileTakeoverValue(const Company *c);
 
-extern uint _next_competitor_start;
 extern uint _cur_company_tick_index;
 
 #endif /* COMPANY_BASE_H */

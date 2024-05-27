@@ -478,7 +478,7 @@ static PBSTileInfo FollowReservation(Owner o, RailTypes rts, TileIndex tile, Tra
 			if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && IsTunnelBridgeSignalSimulationEntrance(tile)) {
 				TileIndex end = GetOtherTunnelBridgeEnd(tile);
 				if (HasAcrossTunnelBridgeReservation(end) && GetTunnelBridgeExitSignalState(end) == SIGNAL_STATE_GREEN &&
-						((flags & FRF_TB_EXIT_FREE) || TunnelBridgeIsFree(tile, end, nullptr, true).Succeeded())) {
+						((flags & FRF_TB_EXIT_FREE) || TunnelBridgeIsFree(tile, end, nullptr, TBIFM_ACROSS_ONLY).Succeeded())) {
 					/* skip far end */
 					if (lookahead != nullptr) {
 						lookahead->reservation_end_position += (DistanceManhattan(tile, end) - 1) * TILE_SIZE;
@@ -501,7 +501,7 @@ static PBSTileInfo FollowReservation(Owner o, RailTypes rts, TileIndex tile, Tra
 			if ((flags & FRF_IGNORE_ONEWAY) && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && IsTunnelBridgeSignalSimulationExit(tile) &&
 					GetTunnelBridgeExitSignalState(tile) == SIGNAL_STATE_GREEN) {
 				TileIndex end = GetOtherTunnelBridgeEnd(tile);
-				if (HasAcrossTunnelBridgeReservation(end) && TunnelBridgeIsFree(tile, end, nullptr, true).Succeeded()) {
+				if (HasAcrossTunnelBridgeReservation(end) && TunnelBridgeIsFree(tile, end, nullptr, TBIFM_ACROSS_ONLY).Succeeded()) {
 					/* skip far end */
 					tile = end;
 					trackdir = GetTunnelBridgeExitTrackdir(tile);
@@ -729,7 +729,7 @@ static void FollowReservationEnumerate(Owner o, RailTypes rts, TileIndex tile, T
 			if (_settings_game.vehicle.train_braking_model == TBM_REALISTIC && IsTunnelBridgeSignalSimulationEntrance(tile)) {
 				TileIndex end = GetOtherTunnelBridgeEnd(tile);
 				if (HasAcrossTunnelBridgeReservation(end) && GetTunnelBridgeExitSignalState(end) == SIGNAL_STATE_GREEN &&
-						((flags & FRF_TB_EXIT_FREE) || TunnelBridgeIsFree(tile, end, nullptr, true).Succeeded())) {
+						((flags & FRF_TB_EXIT_FREE) || TunnelBridgeIsFree(tile, end, nullptr, TBIFM_ACROSS_ONLY).Succeeded())) {
 					/* skip far end */
 					Trackdir end_trackdir = GetTunnelBridgeExitTrackdir(end);
 					tile = end;
@@ -741,7 +741,7 @@ static void FollowReservationEnumerate(Owner o, RailTypes rts, TileIndex tile, T
 			if ((flags & FRF_IGNORE_ONEWAY) && _settings_game.vehicle.train_braking_model == TBM_REALISTIC && IsTunnelBridgeSignalSimulationExit(tile) &&
 					GetTunnelBridgeExitSignalState(tile) == SIGNAL_STATE_GREEN) {
 				TileIndex end = GetOtherTunnelBridgeEnd(tile);
-				if (HasAcrossTunnelBridgeReservation(end) && TunnelBridgeIsFree(tile, end, nullptr, true).Succeeded()) {
+				if (HasAcrossTunnelBridgeReservation(end) && TunnelBridgeIsFree(tile, end, nullptr, TBIFM_ACROSS_ONLY).Succeeded()) {
 					/* skip far end */
 					tile = end;
 					trackdir = GetTunnelBridgeExitTrackdir(tile);
@@ -1099,14 +1099,13 @@ void TryCreateLookAheadForTrainInTunnelBridge(Train *t)
 	}
 }
 
-void SetTrainReservationLookaheadEnd(Train *v)
+int AdvanceTrainReservationLookaheadEnd(const Train *v, int lookahead_end_position)
 {
 	if (_settings_game.vehicle.realistic_braking_aspect_limited != TRBALM_ON || _extra_aspects == 0) {
-		v->lookahead->lookahead_end_position = v->lookahead->reservation_end_position + 1;
-		return;
+		return v->lookahead->reservation_end_position + 1;
 	}
 
-	if (v->lookahead->lookahead_end_position > v->lookahead->reservation_end_position) return;
+	if (lookahead_end_position > v->lookahead->reservation_end_position) return lookahead_end_position;
 
 	int32 threshold = v->lookahead->current_position + 24;
 	uint8 known_signals_ahead = 1;
@@ -1125,8 +1124,8 @@ void SetTrainReservationLookaheadEnd(Train *v)
 					known_signals_ahead = 1;
 					continue;
 				} else {
-					if (item.start > v->lookahead->lookahead_end_position) v->lookahead->lookahead_end_position = item.start;
-					return;
+					if (item.start > lookahead_end_position) lookahead_end_position = item.start;
+					return lookahead_end_position;
 				}
 			}
 
@@ -1134,6 +1133,10 @@ void SetTrainReservationLookaheadEnd(Train *v)
 				/* Signal is within visual range */
 				uint8 style = item.data_aux >> 8;
 				uint8 max_aspect = (style == 0) ? _extra_aspects : _new_signal_styles[style - 1].lookahead_extra_aspects;
+				if (max_aspect == 0xFF) {
+					/* This signal has unlimited lookahead */
+					return v->lookahead->reservation_end_position + 1;
+				}
 				if (!HasBit(item.data_aux, TRSLAI_NEXT_ONLY)) allow_skip_no_aspect_inc = true;
 				max_aspect += ((HasBit(item.data_aux, TRSLAI_NO_ASPECT_INC) && allow_skip_no_aspect_inc) ? 1 : 2);
 				if (max_aspect > known_signals_ahead) known_signals_ahead = max_aspect;
@@ -1141,18 +1144,24 @@ void SetTrainReservationLookaheadEnd(Train *v)
 			if (!HasBit(item.data_aux, TRSLAI_NO_ASPECT_INC) || !allow_skip_no_aspect_inc) {
 				known_signals_ahead--;
 				if (known_signals_ahead == 0) {
-					if (item.start > v->lookahead->lookahead_end_position) v->lookahead->lookahead_end_position = item.start;
-					return;
+					if (item.start > lookahead_end_position) lookahead_end_position = item.start;
+					return lookahead_end_position;
 				}
 			}
 		}
 	}
 
 	/* Didn't need to stop at a signal along the reservation */
-	if (v->lookahead->reservation_end_position >= v->lookahead->lookahead_end_position) {
-		v->lookahead->lookahead_end_position = v->lookahead->reservation_end_position;
-		if (known_signals_ahead > 1) v->lookahead->lookahead_end_position++;
+	if (v->lookahead->reservation_end_position >= lookahead_end_position) {
+		lookahead_end_position = v->lookahead->reservation_end_position;
+		if (known_signals_ahead > 1) lookahead_end_position++;
 	}
+	return lookahead_end_position;
+}
+
+void SetTrainReservationLookaheadEnd(Train *v)
+{
+	v->lookahead->lookahead_end_position = AdvanceTrainReservationLookaheadEnd(v, v->lookahead->lookahead_end_position);
 }
 
 void FillTrainReservationLookAhead(Train *v)

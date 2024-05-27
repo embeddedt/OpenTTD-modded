@@ -14,52 +14,9 @@
 #include "newgrf_text.h"
 #include "station_base.h"
 #include "newgrf_class_func.h"
+#include "town.h"
 
 #include "safeguards.h"
-
-/** Resolver for the airport scope. */
-struct AirportScopeResolver : public ScopeResolver {
-	struct Station *st; ///< Station of the airport for which the callback is run, or \c nullptr for build gui.
-	byte airport_id;    ///< Type of airport for which the callback is run.
-	byte layout;        ///< Layout of the airport to build.
-	TileIndex tile;     ///< Tile for the callback, only valid for airporttile callbacks.
-
-	/**
-	 * Constructor of the scope resolver for an airport.
-	 * @param ro Surrounding resolver.
-	 * @param tile %Tile for the callback, only valid for airporttile callbacks.
-	 * @param st %Station of the airport for which the callback is run, or \c nullptr for build gui.
-	 * @param airport_id Type of airport for which the callback is run.
-	 * @param layout Layout of the airport to build.
-	 */
-	AirportScopeResolver(ResolverObject &ro, TileIndex tile, Station *st, byte airport_id, byte layout)
-			: ScopeResolver(ro), st(st), airport_id(airport_id), layout(layout), tile(tile)
-	{
-	}
-
-	uint32 GetRandomBits() const override;
-	uint32 GetVariable(uint16 variable, uint32 parameter, GetVariableExtra *extra) const override;
-	void StorePSA(uint pos, int32 value) override;
-};
-
-/** Resolver object for airports. */
-struct AirportResolverObject : public ResolverObject {
-	AirportScopeResolver airport_scope;
-
-	AirportResolverObject(TileIndex tile, Station *st, byte airport_id, byte layout,
-			CallbackID callback = CBID_NO_CALLBACK, uint32 callback_param1 = 0, uint32 callback_param2 = 0);
-
-	ScopeResolver *GetScope(VarSpriteGroupScope scope = VSG_SCOPE_SELF, VarSpriteGroupScopeOffset relative = 0) override
-	{
-		switch (scope) {
-			case VSG_SCOPE_SELF: return &this->airport_scope;
-			default: return ResolverObject::GetScope(scope, relative);
-		}
-	}
-
-	GrfSpecFeature GetFeature() const override;
-	uint32 GetDebugID() const override;
-};
 
 /**
  * Reset airport classes to their default state.
@@ -153,9 +110,10 @@ bool AirportSpec::IsWithinMapBounds(byte table, TileIndex tile) const
  */
 void AirportSpec::ResetAirports()
 {
-	extern const AirportSpec _origin_airport_specs[];
-	memset(&AirportSpec::specs, 0, sizeof(AirportSpec::specs));
-	memcpy(&AirportSpec::specs, &_origin_airport_specs, sizeof(AirportSpec) * NEW_AIRPORT_OFFSET);
+	extern const AirportSpec _origin_airport_specs[NEW_AIRPORT_OFFSET];
+
+	auto insert = std::copy(std::begin(_origin_airport_specs), std::end(_origin_airport_specs), std::begin(AirportSpec::specs));
+	std::fill(insert, std::end(AirportSpec::specs), AirportSpec{});
 
 	_airport_mngr.ResetOverride();
 }
@@ -181,7 +139,7 @@ void AirportOverrideManager::SetEntitySpec(AirportSpec *as)
 		return;
 	}
 
-	memcpy(AirportSpec::GetWithoutOverride(airport_id), as, sizeof(*as));
+	*AirportSpec::GetWithoutOverride(airport_id) = *as;
 
 	/* Now add the overrides. */
 	for (int i = 0; i < this->max_offset; i++) {
@@ -212,7 +170,7 @@ void AirportOverrideManager::SetEntitySpec(AirportSpec *as)
 		case 0x7C: return (this->st->airport.psa != nullptr) ? this->st->airport.psa->GetValue(parameter) : 0;
 
 		case 0xF0: return this->st->facilities;
-		case 0xFA: return Clamp(this->st->build_date - DAYS_TILL_ORIGINAL_BASE_YEAR, 0, 65535);
+		case 0xFA: return ClampTo<uint16_t>(this->st->build_date - DAYS_TILL_ORIGINAL_BASE_YEAR);
 	}
 
 	return this->st->GetNewGRFVariable(this->ro, variable, parameter, &(extra->available));
@@ -252,6 +210,26 @@ uint32 AirportResolverObject::GetDebugID() const
 		this->st->airport.psa = new PersistentStorage(grfid, GSF_AIRPORTS, this->st->airport.tile);
 	}
 	this->st->airport.psa->StoreValue(pos, value);
+}
+
+/**
+ * Get the town scope associated with a station, if it exists.
+ * On the first call, the town scope is created (if possible).
+ * @return Town scope, if available.
+ */
+TownScopeResolver *AirportResolverObject::GetTown()
+{
+	if (!this->town_scope) {
+		Town *t = nullptr;
+		if (this->airport_scope.st != nullptr) {
+			t = this->airport_scope.st->town;
+		} else if (this->airport_scope.tile != INVALID_TILE) {
+			t = ClosestTownFromTile(this->airport_scope.tile, UINT_MAX);
+		}
+		if (t == nullptr) return nullptr;
+		this->town_scope.reset(new TownScopeResolver(*this, t, this->airport_scope.st == nullptr));
+	}
+	return this->town_scope.get();
 }
 
 /**

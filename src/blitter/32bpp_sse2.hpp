@@ -29,7 +29,7 @@
 /** Base methods for 32bpp SSE blitters. */
 class Blitter_32bppSSE_Base {
 public:
-	virtual ~Blitter_32bppSSE_Base() {}
+	virtual ~Blitter_32bppSSE_Base() = default;
 
 	struct MapValue {
 		uint8 m;
@@ -60,7 +60,7 @@ public:
 	};
 	struct SpriteData {
 		BlitterSpriteFlags flags;
-		SpriteInfo infos[ZOOM_LVL_COUNT];
+		SpriteInfo infos[ZOOM_LVL_SPR_COUNT];
 		byte data[]; ///< Data, all zoomlevels.
 	};
 
@@ -70,6 +70,11 @@ public:
 /** The SSE2 32 bpp blitter (without palette animation). */
 class Blitter_32bppSSE2 : public Blitter_32bppSimple, public Blitter_32bppSSE_Base {
 public:
+	Blitter_32bppSSE2()
+	{
+		this->SetSupportsMissingZoomLevels(true);
+	}
+
 	void Draw(Blitter::BlitterParams *bp, BlitterMode mode, ZoomLevel zoom) override;
 	template <BlitterMode mode, Blitter_32bppSSE_Base::ReadMode read_mode, Blitter_32bppSSE_Base::BlockType bt_last, bool translucent>
 	void Draw(const Blitter::BlitterParams *bp, ZoomLevel zoom);

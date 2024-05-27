@@ -520,6 +520,12 @@ enum WindowClass {
 	WC_NETWORK_ASK_RELAY,
 
 	/**
+	 * Network ask survey window; %Window numbers:
+	 *  - 0 - #NetworkAskSurveyWidgets
+	 */
+	WC_NETWORK_ASK_SURVEY,
+
+	/**
 	 * Chatbox; %Window numbers:
 	 *   - #DestType = #NetWorkChatWidgets
 	 */
@@ -793,6 +799,7 @@ enum WindowClass {
 	 */
 	WC_MODIFIER_KEY_TOGGLE,
 
+	WC_END,              ///< End sentinel.
 	WC_INVALID = 0xFFFF, ///< Invalid window.
 };
 

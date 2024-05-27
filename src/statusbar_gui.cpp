@@ -20,7 +20,7 @@
 #include "news_gui.h"
 #include "company_gui.h"
 #include "window_gui.h"
-#include "saveload/saveload.h"
+#include "sl/saveload.h"
 #include "window_func.h"
 #include "statusbar_gui.h"
 #include "toolbar_gui.h"
@@ -37,40 +37,19 @@
 
 static bool DrawScrollingStatusText(const NewsItem *ni, int scroll_pos, int left, int right, int top, int bottom)
 {
-	CopyInDParam(0, ni->params, lengthof(ni->params));
-	StringID str = ni->string_id;
+	CopyInDParam(ni->params);
 
-	char buf[512];
-	GetString(buf, str, lastof(buf));
-	const char *s = buf;
-
-	char buffer[256];
-	char *d = buffer;
-	const char *last = lastof(buffer);
-
-	for (;;) {
-		WChar c = Utf8Consume(&s);
-		if (c == 0) {
-			break;
-		} else if (c == '\n') {
-			if (d + 4 >= last) break;
-			d[0] = d[1] = d[2] = d[3] = ' ';
-			d += 4;
-		} else if (IsPrintable(c)) {
-			if (d + Utf8CharLen(c) >= last) break;
-			d += Utf8Encode(d, c);
-		}
-	}
-	*d = '\0';
+	/* Replace newlines and the likes with spaces. */
+	std::string message = StrMakeValid(GetString(ni->string_id), SVS_REPLACE_TAB_CR_NL_WITH_SPACE);
 
 	DrawPixelInfo tmp_dpi;
 	if (!FillDrawPixelInfo(&tmp_dpi, left, top, right - left, bottom)) return true;
 
-	int width = GetStringBoundingBox(buffer).width;
+	int width = GetStringBoundingBox(message).width;
 	int pos = (_current_text_dir == TD_RTL) ? (scroll_pos - width) : (right - scroll_pos - left);
 
 	AutoRestoreBackup dpi_backup(_cur_dpi, &tmp_dpi);
-	DrawString(pos, INT16_MAX, 0, buffer, TC_LIGHT_BLUE, SA_LEFT | SA_FORCE);
+	DrawString(pos, INT16_MAX, 0, message, TC_LIGHT_BLUE, SA_LEFT | SA_FORCE);
 
 	return (_current_text_dir == TD_RTL) ? (pos < right - left) : (pos + width > 0);
 }
@@ -115,14 +94,14 @@ struct StatusBarWindow : Window {
 		switch (widget) {
 			case WID_S_LEFT:
 				SetDParam(0, DateToScaledDateTicks(MAX_YEAR * DAYS_IN_YEAR));
-				d = GetStringBoundingBox(STR_WHITE_DATE_WALLCLOCK_LONG);
+				d = GetStringBoundingBox(STR_JUST_DATE_WALLCLOCK_LONG);
 				break;
 
 			case WID_S_RIGHT: {
 				int64 max_money = UINT32_MAX;
 				for (const Company *c : Company::Iterate()) max_money = std::max<int64>(c->money, max_money);
 				SetDParam(0, 100LL * max_money);
-				d = GetStringBoundingBox(STR_COMPANY_MONEY);
+				d = GetStringBoundingBox(STR_JUST_CURRENCY_LONG);
 				break;
 			}
 
@@ -143,7 +122,7 @@ struct StatusBarWindow : Window {
 			case WID_S_LEFT:
 				/* Draw the date */
 				SetDParam(0, _scaled_date_ticks);
-				DrawString(tr, STR_WHITE_DATE_WALLCLOCK_LONG, TC_FROMSTRING, SA_HOR_CENTER);
+				DrawString(tr, STR_JUST_DATE_WALLCLOCK_LONG, TC_WHITE, SA_HOR_CENTER);
 				break;
 
 			case WID_S_RIGHT: {
@@ -154,7 +133,7 @@ struct StatusBarWindow : Window {
 					const Company *c = Company::GetIfValid(_local_company);
 					if (c != nullptr) {
 						SetDParam(0, c->money);
-						DrawString(tr, STR_COMPANY_MONEY, TC_FROMSTRING, SA_HOR_CENTER);
+						DrawString(tr, STR_JUST_CURRENCY_LONG, TC_WHITE, SA_HOR_CENTER);
 					}
 				}
 				break;
@@ -263,7 +242,7 @@ static const NWidgetPart _nested_main_status_widgets[] = {
 static WindowDesc _main_status_desc(
 	WDP_MANUAL, nullptr, 0, 0,
 	WC_STATUS_BAR, WC_NONE,
-	WDF_NO_FOCUS,
+	WDF_NO_FOCUS | WDF_NO_CLOSE,
 	_nested_main_status_widgets, lengthof(_nested_main_status_widgets)
 );
 

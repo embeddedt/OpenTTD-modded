@@ -179,7 +179,7 @@
 	The first byte is the build cost multiplier.<br />
 	The second byte is the removal cost multiplier.<br />
 	The total property length is 2 bytes.<br />
-	A value of 16 produces a build or removal cost the same as non-NewGRF road stops.</a>.
+	A value of 16 produces a build or removal cost the same as non-NewGRF road stops.
 	</p>
 	<h4 id="roadstop_height">Road stop height (in the build window) (16, or mappable property: roadstop_height)</h4>
 	<p>This property sets the height used to size the road stop build window previews.<br />
@@ -261,13 +261,20 @@
 	</p>
 
 	<h4 id="roadstop_terrain_type">Road stop tile terrain type (42, or mappable variable: roadstop_terrain_type)</h4>
-	<p>This has the same value as bits 0 - 7 of <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Objects#Tile_information_.2841.29">object (feature F) variable 41</a>.
+	<p>This has the same value as bits 0 - 15 of <a href="https://newgrf-specs.tt-wiki.net/wiki/VariationalAction2/Objects#Tile_information_.2841.29">object (feature F) variable 41</a>.
 		<table>
-		<tr><th>Value</th><th>Meaning</th></tr>
-		<tr><td>0</td><td>Normal</td></tr>
-		<tr><td>1</td><td>Desert</td></tr>
-		<tr><td>2</td><td>Rainforest</td></tr>
-		<tr><td>4</td><td>On or above snowline</td></tr>
+		<tr><th>Bit</th><th>Meaning</th></tr>
+		<tr><td>0 - 7</td><td>
+			Terrain type:<br />
+			0 - Normal<br />
+			1 - Desert<br />
+			2 - Rainforest<br />
+			3 - On or above snowline
+		</td></tr>
+		<tr><td>8 - 15</td><td>
+			Tile slope<br />
+			This requires <font face="monospace">road_stops</font>, version 10.
+		</td></tr>
 		</table>
 	</p>
 
@@ -341,7 +348,9 @@
 	<tr><th>Bits</th><th>Meaning</th></tr>
 	<tr><td>0 - 7</td><td>
 		If the tile is defined in the current GRF, this is the lower 8 bits of the setID used in the definition. Otherwise, the content is undefined.<br />
-		Note that if this GRF has any road stop setIDs greater than 255, bits 24 - 31 need to be used as well.
+		Note that if this GRF has any road stop setIDs greater than 255, bits 24 - 31 need to be used as well.<br />
+		<br />
+		If the <font face="monospace">road_stops</font> feature is not tested for, this is the entire setID, clamped to the range 0..255.
 	</td></tr>
 	<tr><td>8 - 9</td><td>
 		0 - The tile uses original TTD graphics<br />
@@ -367,7 +376,9 @@
 	<tr><td>24 - 31</td><td>
 		If the tile is defined in the current GRF, this is the upper 8 bits of the setID used in the definition. Otherwise, the content is undefined.<br />
 		This can be ignored if this GRF does not have any road stop setIDs greater than 255 (does not define more than 256 road stop types).<br />
-		This requires <font face="monospace">road_stops</font>, version 7.
+		This requires <font face="monospace">road_stops</font>, version 7.<br />
+		<br />
+		If the <font face="monospace">road_stops</font> feature is not tested for, this is set to 0.
 	</td></tr>
 	</table>
 	<br />
@@ -400,6 +411,7 @@
 		1 - North-bound only<br />
 		2 - South-bound only<br />
 		3 - No entry
+	</td></tr>
 	</table>
 	<br />
 	The remaining bits are reserved for future use and should be masked.<br />
@@ -474,6 +486,7 @@
 
 	<p>In feature name <font face="monospace">road_stops</font> version 7 and later, the Action 3 ID field is an extended byte; GRFs may define more than 255 road stop types.<br />
 	In versions 1 to 6 (inclusive), only 255 road stop types may be defined per GRF, and the extended byte format may not be used.</p>
+	<p>In vanilla OpenTTD 14.0 and later, the extended byte format may always be used.</p>
 	<br />
 
 	<h3 id="erata">Erata</h3>

@@ -564,23 +564,10 @@ CommandCost CmdPlantTree(TileIndex end_tile, DoCommandFlag flags, uint32 p1, uin
 		TileIndex tile = *iter;
 		switch (GetTileType(tile)) {
 			case MP_TREES: {
-				bool grow_existing_tree_instead = false;
-
 				/* no more space for trees? */
-				if (_settings_game.game_creation.tree_placer == TP_PERFECT) {
-					if (GetTreeCount(tile) >= 4 || ((GetTreeType(tile) != TREE_CACTUS) && ((int)GetTreeCount(tile) >= MaxTreeCount(tile)))) {
-						if (GetTreeGrowth(tile) < 3) {
-							grow_existing_tree_instead = true;
-						} else {
-							msg = STR_ERROR_TREE_ALREADY_HERE;
-							continue;
-						}
-					}
-				} else {
-					if (GetTreeCount(tile) == 4) {
-						msg = STR_ERROR_TREE_ALREADY_HERE;
-						continue;
-					}
+				if (GetTreeCount(tile) == 4) {
+					msg = STR_ERROR_TREE_ALREADY_HERE;
+					continue;
 				}
 
 				/* Test tree limit. */
@@ -590,11 +577,7 @@ CommandCost CmdPlantTree(TileIndex end_tile, DoCommandFlag flags, uint32 p1, uin
 				}
 
 				if (flags & DC_EXEC) {
-					if (grow_existing_tree_instead) {
-						SetTreeGrowth(tile, 3);
-					} else {
-						AddTreeCount(tile, 1);
-					}
+					AddTreeCount(tile, 1);
 					MarkTileDirtyByTile(tile, VMDF_NOT_MAP_MODE_NON_VEG);
 					if (c != nullptr) c->tree_limit -= 1 << 16;
 				}
@@ -995,10 +978,17 @@ static void TileLoop_Trees(TileIndex tile)
 							}
 						} else {
 							const TreeType tree_type = GetTreeType(tile);
+							const TileIndex old_tile = tile;
 
 							tile += TileOffsByDir((Direction)(Random() & 7));
 
 							if (!CanPlantTreesOnTile(tile, false)) return;
+
+							/* Don't spread temperate trees uphill if above lower snow line in arctic */
+							if (_settings_game.game_creation.landscape == LT_ARCTIC && IsInsideMM(tree_type, TREE_TEMPERATE, TREE_SUB_ARCTIC)) {
+								const int new_z = GetTileZ(tile);
+								if (new_z >= LowestTreePlacementSnowLine() && new_z > GetTileZ(old_tile)) return;
+							}
 
 							// Don't plant trees, if ground was freshly cleared
 							if (IsTileType(tile, MP_CLEAR) && GetClearGround(tile) == CLEAR_GRASS && GetClearDensity(tile) != 3) return;

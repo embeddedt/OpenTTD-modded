@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-20.04
     container:
       # If you change this version, change the number in the cache step too.
-      image: emscripten/emsdk:3.1.28
+      image: emscripten/emsdk:3.1.42
 
     steps:
     - name: Checkout
@@ -42,12 +42,13 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /emsdk/upstream/emscripten/cache
-        key: 3.1.28-${{ runner.os }}
+        key: 3.1.42-${{ runner.os }}
 
-    - name: Patch Emscripten to support LZMA
+    - name: Patch Emscripten to support LZMA and nlohmann-json
       run: |
         cd /emsdk/upstream/emscripten
         patch -p1 < ${GITHUB_WORKSPACE}/os/emscripten/emsdk-liblzma.patch
+        patch -p1 < ${GITHUB_WORKSPACE}/os/emscripten/emsdk-nlohmann-json.patch
 
     - name: Build (host tools)
       run: |
@@ -77,28 +78,34 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        cmake --build . -j $(nproc)
+        cmake --build . -j $(nproc) -t openttd
         echo "::endgroup::"
 
   linux:
-    name: Linux
 
     strategy:
       fail-fast: false
       matrix:
         include:
-        - compiler: clang
+        - name: Clang
+          compiler: clang
           cxxcompiler: clang++
-          libsdl: libsdl2-dev
-        - compiler: gcc
+          libraries: libsdl2-dev nlohmann-json3-dev
+        - name: GCC - SDL2
+          compiler: gcc
           cxxcompiler: g++
-          libsdl: libsdl2-dev
-        - compiler: gcc
+          libraries: libsdl2-dev nlohmann-json3-dev
+        - name: GCC - SDL1.2
+          compiler: gcc
           cxxcompiler: g++
-          libsdl: libsdl1.2-dev
-        - compiler: gcc
+          libraries: libsdl1.2-dev nlohmann-json3-dev
+        - name: GCC - Dedicated
+          compiler: gcc
           cxxcompiler: g++
           extra-cmake-parameters: -DOPTION_DEDICATED=ON -DCMAKE_CXX_FLAGS_INIT="-DRANDOM_DEBUG"
+          # Compile without SDL / SDL2 / nlohmann-json, as that should compile fine too.
+
+    name: Linux (${{ matrix.name }})
 
     runs-on: ubuntu-20.04
     env:
@@ -107,7 +114,14 @@ jobs:
 
     steps:
     - name: Checkout
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/checkout@v3
+
+    - name: Checkout (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Install dependencies
       run: |
@@ -120,11 +134,12 @@ jobs:
           liballegro4-dev \
           libcurl4-openssl-dev \
           libfontconfig-dev \
+          libharfbuzz-dev \
           libicu-dev \
           liblzma-dev \
           libzstd-dev \
           liblzo2-dev \
-          ${{ matrix.libsdl }} \
+          ${{ matrix.libraries }} \
           zlib1g-dev \
           # EOF
         echo "::endgroup::"
@@ -160,12 +175,15 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        cmake --build . -j $(nproc)
+        cmake --build . -j $(nproc) -t all openttd_test
         echo "::endgroup::"
 
-  macos:
-    name: Mac OS
+    - name: Test
+      run: |
+        cd build
+        ctest -j $(nproc) --timeout 120
 
+  macos:
     strategy:
       fail-fast: false
       matrix:
@@ -173,13 +191,22 @@ jobs:
         - arch: x64
           full_arch: x86_64
 
+    name: Mac OS (${{ matrix.arch }})
+
     runs-on: macos-latest
     env:
-      MACOSX_DEPLOYMENT_TARGET: 10.9
+      MACOSX_DEPLOYMENT_TARGET: 10.13
 
     steps:
     - name: Checkout
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/checkout@v3
+
+    - name: Checkout (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Install dependencies
       env:
@@ -199,7 +226,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: /usr/local/share/vcpkg/installed
-        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-0 # Increase the number whenever dependencies are modified
+        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-1 # Increase the number whenever dependencies are modified
         restore-keys: |
           ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}
 
@@ -210,6 +237,7 @@ jobs:
           liblzma \
           libpng \
           lzo \
+          nlohmann-json \
           zlib \
           zstd \
           # EOF
@@ -217,7 +245,7 @@ jobs:
     - name: Install OpenGFX
       run: |
         mkdir -p ~/Documents/OpenTTD/baseset
-        cd ~/Documents//OpenTTD/baseset
+        cd ~/Documents/OpenTTD/baseset
 
         echo "::group::Download OpenGFX"
         curl -L https://cdn.openttd.org/opengfx-releases/0.6.0/opengfx-0.6.0-all.zip -o opengfx-all.zip
@@ -238,7 +266,7 @@ jobs:
         cd build
 
         echo "::group::CMake"
-        cmake ${GITHUB_WORKSPACE} \
+        cmake .. \
           -DCMAKE_OSX_ARCHITECTURES=${{ matrix.full_arch }} \
           -DVCPKG_TARGET_TRIPLET=${{ matrix.arch }}-osx \
           -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake \
@@ -247,23 +275,35 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(sysctl -n hw.logicalcpu) cores"
-        cmake --build . -j $(sysctl -n hw.logicalcpu)
+        cmake --build . -j $(sysctl -n hw.logicalcpu) -t all openttd_test
         echo "::endgroup::"
 
-  windows:
-    name: Windows
+    - name: Test
+      run: |
+        cd build
+        ctest -j $(sysctl -n hw.logicalcpu) --timeout 120
 
+  windows:
     strategy:
       fail-fast: false
       matrix:
         os: [windows-latest, windows-2019]
         arch: [x86, x64]
 
+    name: Windows (${{ matrix.os }} / ${{ matrix.arch }})
+
     runs-on: ${{ matrix.os }}
 
     steps:
     - name: Checkout
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/checkout@v3
+
+    - name: Checkout (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Prepare cache key
       id: key
@@ -278,7 +318,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: vcpkg/installed
-        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-0 # Increase the number whenever dependencies are modified
+        key: ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}-1 # Increase the number whenever dependencies are modified
         restore-keys: |
           ${{ steps.key.outputs.image }}-vcpkg-${{ matrix.arch }}
 
@@ -289,6 +329,7 @@ jobs:
           liblzma \
           libpng \
           lzo \
+          nlohmann-json \
           zlib \
           zstd \
           # EOF
@@ -332,12 +373,17 @@ jobs:
         echo "::endgroup::"
 
         echo "::group::Build"
-        cmake --build .
+        cmake --build . -t all openttd_test
         echo "::endgroup::"
 
-  msys2:
-    name: msys2
+    - name: Test
+      shell: bash
+      run: |
+        cd build
+        ctest --timeout 120
 
+
+  msys2:
     strategy:
       fail-fast: false
       matrix:
@@ -347,11 +393,20 @@ jobs:
           - msystem: MINGW32
             arch: i686
 
+    name: MinGW (${{ matrix.arch }})
+
     runs-on: windows-latest
 
     steps:
     - name: Checkout
+      if: github.event_name != 'workflow_dispatch'
       uses: actions/checkout@v3
+
+    - name: Checkout (Manual)
+      if: github.event_name == 'workflow_dispatch'
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.inputs.ref }}
 
     - name: Setup MSYS2
       uses: msys2/setup-msys2@v2
@@ -365,6 +420,7 @@ jobs:
           mingw-w64-${{ matrix.arch }}-gcc
           mingw-w64-${{ matrix.arch }}-lzo2
           mingw-w64-${{ matrix.arch }}-libpng
+          mingw-w64-${{ matrix.arch }}-nlohmann-json
 
     - name: Install OpenGFX
       shell: bash
@@ -397,8 +453,14 @@ jobs:
 
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        cmake --build . -j $(nproc)
+        cmake --build . -j $(nproc) -t all openttd_test
         echo "::endgroup::"
+
+    - name: Test
+      shell: msys2 {0}
+      run: |
+        cd build
+        ctest --timeout 120
 
   check_annotations:
     name: Check Annotations

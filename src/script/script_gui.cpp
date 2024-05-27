@@ -78,7 +78,7 @@ struct ScriptListWindow : public Window {
 		this->vscroll = this->GetScrollbar(WID_SCRL_SCROLLBAR);
 		this->FinishInitNested(); // Initializes 'this->line_height' as side effect.
 
-		this->vscroll->SetCount((int)this->info_list->size() + 1);
+		this->vscroll->SetCount(this->info_list->size() + 1);
 
 		/* Try if we can find the currently selected AI */
 		this->selected = -1;
@@ -154,7 +154,7 @@ struct ScriptListWindow : public Window {
 					SetDParam(0, selected_info->GetVersion());
 					DrawString(tr, STR_AI_LIST_VERSION);
 					tr.top += FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.vsep_normal;
-					if (selected_info->GetURL() != nullptr) {
+					if (!selected_info->GetURL().empty()) {
 						SetDParamStr(0, selected_info->GetURL());
 						DrawString(tr, STR_AI_LIST_URL);
 						tr.top += FONT_HEIGHT_NORMAL + WidgetDimensions::scaled.vsep_normal;
@@ -174,16 +174,16 @@ struct ScriptListWindow : public Window {
 	{
 		if (_game_mode == GM_NORMAL && slot == OWNER_DEITY) Game::Uninitialize(false);
 		if (this->selected == -1) {
-			GetConfig(slot)->Change(nullptr);
+			GetConfig(slot)->Change(std::nullopt);
 		} else {
-			ScriptInfoList::const_iterator it = this->info_list->begin();
-			for (int i = 0; i < this->selected; i++) it++;
-			GetConfig(slot)->Change((*it).second->GetName(), (*it).second->GetVersion());
+			ScriptInfoList::const_iterator it = this->info_list->cbegin();
+			std::advance(it, this->selected);
+			GetConfig(slot)->Change(it->second->GetName(), it->second->GetVersion());
 			if (_game_mode == GM_NORMAL && slot == OWNER_DEITY) Game::StartNew();
 		}
 		InvalidateWindowData(WC_GAME_OPTIONS, slot == OWNER_DEITY ? WN_GAME_OPTIONS_GS : WN_GAME_OPTIONS_AI);
 		InvalidateWindowClassesData(WC_SCRIPT_SETTINGS);
-		DeleteWindowByClass(WC_QUERY_STRING);
+		CloseWindowByClass(WC_QUERY_STRING);
 		InvalidateWindowClassesData(WC_TEXTFILE);
 		if (_game_mode == GM_NORMAL && slot == OWNER_DEITY) {
 			InvalidateWindowData(WC_SCRIPT_DEBUG, 0, -1);
@@ -201,7 +201,7 @@ struct ScriptListWindow : public Window {
 					this->SetDirty();
 					if (click_count > 1) {
 						this->ChangeScript();
-						delete this;
+						this->Close();
 					}
 				}
 				break;
@@ -209,12 +209,12 @@ struct ScriptListWindow : public Window {
 
 			case WID_SCRL_ACCEPT: {
 				this->ChangeScript();
-				delete this;
+				this->Close();
 				break;
 			}
 
 			case WID_SCRL_CANCEL:
-				delete this;
+				this->Close();
 				break;
 		}
 	}
@@ -232,13 +232,13 @@ struct ScriptListWindow : public Window {
 	void OnInvalidateData(int data = 0, bool gui_scope = true) override
 	{
 		if (_game_mode == GM_NORMAL && Company::IsValidID(this->slot)) {
-			delete this;
+			this->Close();
 			return;
 		}
 
 		if (!gui_scope) return;
 
-		this->vscroll->SetCount((int)this->info_list->size() + 1);
+		this->vscroll->SetCount(this->info_list->size() + 1);
 
 		/* selected goes from -1 .. length of ai list - 1. */
 		this->selected = std::min(this->selected, this->vscroll->GetCount() - 2);
@@ -282,7 +282,7 @@ static WindowDesc _script_list_desc(
  */
 void ShowScriptListWindow(CompanyID slot, bool show_all)
 {
-	DeleteWindowByClass(WC_SCRIPT_LIST);
+	CloseWindowByClass(WC_SCRIPT_LIST);
 	new ScriptListWindow(&_script_list_desc, slot, show_all);
 }
 
@@ -325,6 +325,12 @@ struct ScriptSettingsWindow : public Window {
 		this->RebuildVisibleSettings();
 	}
 
+	void Close() override
+	{
+		HideDropDownMenu(this);
+		this->Window::Close();
+	}
+
 	/**
 	 * Rebuilds the list of visible settings. AI settings with the flag
 	 * AICONFIG_AI_DEVELOPER set will only be visible if the game setting
@@ -341,7 +347,7 @@ struct ScriptSettingsWindow : public Window {
 			}
 		}
 
-		this->vscroll->SetCount((int)this->visible_settings.size());
+		this->vscroll->SetCount(this->visible_settings.size());
 	}
 
 	void SetStringParameters(int widget) const override
@@ -387,15 +393,9 @@ struct ScriptSettingsWindow : public Window {
 			StringID str;
 			TextColour colour;
 			uint idx = 0;
-			if (StrEmpty(config_item.description)) {
-				if (this->slot != OWNER_DEITY && !strcmp(config_item.name, "start_date")) {
-					/* Build-in translation */
-					str = STR_AI_SETTINGS_START_DELAY;
-					colour = TC_LIGHT_BLUE;
-				} else {
-					str = STR_JUST_STRING;
-					colour = TC_ORANGE;
-				}
+			if (config_item.description.empty()) {
+				str = STR_JUST_STRING1;
+				colour = TC_ORANGE;
 			} else {
 				str = STR_AI_SETTINGS_SETTING;
 				colour = TC_LIGHT_BLUE;
@@ -411,9 +411,11 @@ struct ScriptSettingsWindow : public Window {
 				} else {
 					DrawArrowButtons(br.left, y + button_y_offset, COLOUR_YELLOW, (this->clicked_button == i) ? 1 + (this->clicked_increase != rtl) : 0, editable && current_value > config_item.min_value, editable && current_value < config_item.max_value);
 				}
-				if (config_item.labels != nullptr && config_item.labels->Contains(current_value)) {
+
+				auto config_iterator = config_item.labels.find(current_value);
+				if (config_iterator != config_item.labels.end()) {
 					SetDParam(idx++, STR_JUST_RAW_STRING);
-					SetDParamStr(idx++, config_item.labels->Find(current_value)->second);
+					SetDParamStr(idx++, config_iterator->second);
 				} else {
 					SetDParam(idx++, STR_JUST_INT);
 					SetDParam(idx++, current_value);
@@ -438,17 +440,15 @@ struct ScriptSettingsWindow : public Window {
 	{
 		switch (widget) {
 			case WID_SCRS_BACKGROUND: {
-				Rect r = this->GetWidget<NWidgetBase>(widget)->GetCurrentRect().Shrink(WidgetDimensions::scaled.matrix, RectPadding::zero);
-				int num = (pt.y - r.top) / this->line_height + this->vscroll->GetPosition();
-				if (num >= (int)this->visible_settings.size()) break;
+				auto it = this->vscroll->GetScrolledItemFromWidget(this->visible_settings, pt.y, this, widget);
+				if (it == this->visible_settings.end()) break;
 
-				VisibleSettingsList::const_iterator it = this->visible_settings.begin();
-				for (int i = 0; i < num; i++) it++;
-				const ScriptConfigItem config_item = **it;
+				const ScriptConfigItem &config_item = **it;
 				if (!this->IsEditableItem(config_item)) return;
 
+				int num = it - this->visible_settings.begin();
 				if (this->clicked_row != num) {
-					this->DeleteChildWindows(WC_QUERY_STRING);
+					this->CloseChildWindows(WC_QUERY_STRING);
 					HideDropDownMenu(this);
 					this->clicked_row = num;
 					this->clicked_dropdown = false;
@@ -456,6 +456,7 @@ struct ScriptSettingsWindow : public Window {
 
 				bool bool_item = (config_item.flags & SCRIPTCONFIG_BOOLEAN) != 0;
 
+				Rect r = this->GetWidget<NWidgetBase>(widget)->GetCurrentRect().Shrink(WidgetDimensions::scaled.matrix, RectPadding::zero);
 				int x = pt.x - r.left;
 				if (_current_text_dir == TD_RTL) x = r.Width() - 1 - x;
 
@@ -483,10 +484,10 @@ struct ScriptSettingsWindow : public Window {
 
 							DropDownList list;
 							for (int i = config_item.min_value; i <= config_item.max_value; i++) {
-								list.emplace_back(new DropDownListCharStringItem(config_item.labels->Find(i)->second, i, false));
+								list.emplace_back(new DropDownListStringItem(config_item.labels.find(i)->second, i, false));
 							}
 
-							ShowDropDownListAt(this, std::move(list), old_val, -1, wi_rect, COLOUR_ORANGE, true);
+							ShowDropDownListAt(this, std::move(list), old_val, -1, wi_rect, COLOUR_ORANGE);
 						}
 					}
 				} else if (IsInsideMM(x, 0, SETTING_BUTTON_WIDTH)) {
@@ -520,7 +521,7 @@ struct ScriptSettingsWindow : public Window {
 			}
 
 			case WID_SCRS_ACCEPT:
-				delete this;
+				this->Close();
 				break;
 
 			case WID_SCRS_RESET:
@@ -577,7 +578,7 @@ struct ScriptSettingsWindow : public Window {
 	{
 		this->RebuildVisibleSettings();
 		HideDropDownMenu(this);
-		this->DeleteChildWindows(WC_QUERY_STRING);
+		this->CloseChildWindows(WC_QUERY_STRING);
 	}
 
 private:
@@ -592,9 +593,7 @@ private:
 
 	void SetValue(int value)
 	{
-		VisibleSettingsList::const_iterator it = this->visible_settings.begin();
-		for (int i = 0; i < this->clicked_row; i++) it++;
-		const ScriptConfigItem config_item = **it;
+		const ScriptConfigItem &config_item = *this->visible_settings[this->clicked_row];
 		if (_game_mode == GM_NORMAL && ((this->slot == OWNER_DEITY) || Company::IsValidID(this->slot)) && (config_item.flags & SCRIPTCONFIG_INGAME) == 0) return;
 		this->script_config->SetSetting(config_item.name, value);
 		this->SetDirty();
@@ -635,8 +634,8 @@ static WindowDesc _script_settings_desc(
  */
 void ShowScriptSettingsWindow(CompanyID slot)
 {
-	DeleteWindowByClass(WC_SCRIPT_LIST);
-	DeleteWindowByClass(WC_SCRIPT_SETTINGS);
+	CloseWindowByClass(WC_SCRIPT_LIST);
+	CloseWindowByClass(WC_SCRIPT_SETTINGS);
 	new ScriptSettingsWindow(&_script_settings_desc, slot);
 }
 
@@ -662,7 +661,7 @@ struct ScriptTextfileWindow : public TextfileWindow {
 	{
 		const char *textfile = GetConfig(slot)->GetTextfile(file_type, slot);
 		if (textfile == nullptr) {
-			delete this;
+			this->Close();
 		} else {
 			this->LoadTextfile(textfile, (slot == OWNER_DEITY) ? GAME_DIR : AI_DIR);
 		}
@@ -676,7 +675,7 @@ struct ScriptTextfileWindow : public TextfileWindow {
  */
 void ShowScriptTextfileWindow(TextfileType file_type, CompanyID slot)
 {
-	DeleteWindowById(WC_TEXTFILE, file_type);
+	CloseWindowById(WC_TEXTFILE, file_type);
 	new ScriptTextfileWindow(file_type, slot);
 }
 
@@ -714,17 +713,17 @@ struct ScriptDebugWindow : public Window {
 	bool autoscroll;                                       ///< Whether automatically scrolling should be enabled or not.
 	bool show_break_box;                                   ///< Whether the break/debug box is visible.
 	static bool break_check_enabled;                       ///< Stop an AI when it prints a matching string
-	static char break_string[MAX_BREAK_STR_STRING_LENGTH]; ///< The string to match to the AI output
+	static std::string break_string;                       ///< The string to match to the AI output
 	QueryString break_editbox;                             ///< Break editbox
 	static StringFilter break_string_filter;               ///< Log filter for break.
 	static bool case_sensitive_break_check;                ///< Is the matching done case-sensitive
 	int highlight_row;                                     ///< The output row that matches the given string, or -1
 	Scrollbar *vscroll;                                    ///< Cache of the vertical scrollbar.
 
-	ScriptLog::LogData *GetLogPointer() const
+	ScriptLogTypes::LogData &GetLogData() const
 	{
-		if (script_debug_company == OWNER_DEITY) return (ScriptLog::LogData *)Game::GetInstance()->GetLogPointer();
-		return (ScriptLog::LogData *)Company::Get(script_debug_company)->ai_instance->GetLogPointer();
+		if (script_debug_company == OWNER_DEITY) return Game::GetInstance()->GetLogData();
+		return Company::Get(script_debug_company)->ai_instance->GetLogData();
 	}
 
 	/**
@@ -862,9 +861,9 @@ struct ScriptDebugWindow : public Window {
 		/* If there are no active companies, don't display anything else. */
 		if (script_debug_company == INVALID_COMPANY) return;
 
-		ScriptLog::LogData *log = this->GetLogPointer();
+		ScriptLogTypes::LogData &log = this->GetLogData();
 
-		int scroll_count = (log == nullptr) ? 0 : log->used;
+		int scroll_count = (int)log.size();
 		if (this->vscroll->GetCount() != scroll_count) {
 			this->vscroll->SetCount(scroll_count);
 
@@ -872,16 +871,15 @@ struct ScriptDebugWindow : public Window {
 			this->SetWidgetDirty(WID_SCRD_SCROLLBAR);
 		}
 
-		if (log == nullptr) return;
+		if (log.empty()) return;
 
 		/* Detect when the user scrolls the window. Enable autoscroll when the
 		 * bottom-most line becomes visible. */
 		if (this->last_vscroll_pos != this->vscroll->GetPosition()) {
-			this->autoscroll = this->vscroll->GetPosition() >= log->used - this->vscroll->GetCapacity();
+			this->autoscroll = this->vscroll->GetPosition() + this->vscroll->GetCapacity() >= (int)log.size();
 		}
 		if (this->autoscroll) {
-			int scroll_pos = std::max(0, log->used - this->vscroll->GetCapacity());
-			if (this->vscroll->SetPosition(scroll_pos)) {
+			if (this->vscroll->SetPosition((int)log.size())) {
 				/* We need a repaint */
 				this->SetWidgetDirty(WID_SCRD_SCROLLBAR);
 				this->SetWidgetDirty(WID_SCRD_LOG_PANEL);
@@ -917,32 +915,31 @@ struct ScriptDebugWindow : public Window {
 
 		if (widget != WID_SCRD_LOG_PANEL) return;
 
-		ScriptLog::LogData *log = this->GetLogPointer();
-		if (log == nullptr) return;
+		ScriptLogTypes::LogData &log = this->GetLogData();
+		if (log.empty()) return;
 
 		Rect br = r.Shrink(WidgetDimensions::scaled.bevel);
 		Rect tr = r.Shrink(WidgetDimensions::scaled.framerect);
-		for (int i = this->vscroll->GetPosition(); this->vscroll->IsVisible(i) && i < log->used; i++) {
-			int pos = (i + log->pos + 1 - log->used + log->count) % log->count;
-			if (log->lines[pos] == nullptr) break;
+		for (int i = this->vscroll->GetPosition(); this->vscroll->IsVisible(i) && (size_t)i < log.size(); i++) {
+			const ScriptLogTypes::LogLine &line = log[i];
 
 			TextColour colour;
-			switch (log->type[pos]) {
-				case ScriptLog::LOG_SQ_INFO:  colour = TC_BLACK;  break;
-				case ScriptLog::LOG_SQ_ERROR: colour = TC_WHITE;  break;
-				case ScriptLog::LOG_INFO:     colour = TC_BLACK;  break;
-				case ScriptLog::LOG_WARNING:  colour = TC_YELLOW; break;
-				case ScriptLog::LOG_ERROR:    colour = TC_RED;    break;
-				default:                      colour = TC_BLACK;  break;
+			switch (line.type) {
+				case ScriptLogTypes::LOG_SQ_INFO:  colour = TC_BLACK;  break;
+				case ScriptLogTypes::LOG_SQ_ERROR: colour = TC_WHITE;  break;
+				case ScriptLogTypes::LOG_INFO:     colour = TC_BLACK;  break;
+				case ScriptLogTypes::LOG_WARNING:  colour = TC_YELLOW; break;
+				case ScriptLogTypes::LOG_ERROR:    colour = TC_RED;    break;
+				default:                           colour = TC_BLACK;  break;
 			}
 
 			/* Check if the current line should be highlighted */
-			if (pos == this->highlight_row) {
+			if (i == this->highlight_row) {
 				GfxFillRect(br.left, tr.top, br.right, tr.top + this->resize.step_height - 1, PC_BLACK);
 				if (colour == TC_BLACK) colour = TC_WHITE; // Make black text readable by inverting it to white.
 			}
 
-			DrawString(tr, log->lines[pos], colour, SA_LEFT | SA_FORCE);
+			DrawString(tr, line.text, colour, SA_LEFT | SA_FORCE);
 			tr.top += this->resize.step_height;
 		}
 	}
@@ -960,7 +957,7 @@ struct ScriptDebugWindow : public Window {
 		this->highlight_row = -1; // The highlight of one Script make little sense for another Script.
 
 		/* Close AI settings window to prevent confusion */
-		DeleteWindowByClass(WC_SCRIPT_SETTINGS);
+		CloseWindowByClass(WC_SCRIPT_SETTINGS);
 
 		this->InvalidateData(-1);
 
@@ -1049,7 +1046,7 @@ struct ScriptDebugWindow : public Window {
 		if (wid != WID_SCRD_BREAK_STR_EDIT_BOX) return;
 
 		/* Save the current string to static member so it can be restored next time the window is opened. */
-		strecpy(this->break_string, this->break_editbox.text.buf, lastof(this->break_string));
+		this->break_string = this->break_editbox.text.buf;
 		break_string_filter.SetFilterTerm(this->break_string);
 	}
 
@@ -1065,11 +1062,11 @@ struct ScriptDebugWindow : public Window {
 		 * This needs to be done in gameloop-scope, so the AI is suspended immediately. */
 		if (!gui_scope && data == script_debug_company && this->IsValidDebugCompany(script_debug_company) && this->break_check_enabled && !this->break_string_filter.IsEmpty()) {
 			/* Get the log instance of the active company */
-			ScriptLog::LogData *log = this->GetLogPointer();
+			ScriptLogTypes::LogData &log = this->GetLogData();
 
-			if (log != nullptr) {
+			if (!log.empty()) {
 				this->break_string_filter.ResetState();
-				this->break_string_filter.AddLine(log->lines[log->pos]);
+				this->break_string_filter.AddLine(log.back().text);
 				if (this->break_string_filter.GetState()) {
 					/* Pause execution of script. */
 					if (!this->IsDead()) {
@@ -1086,7 +1083,7 @@ struct ScriptDebugWindow : public Window {
 					}
 
 					/* Highlight row that matched */
-					this->highlight_row = log->pos;
+					this->highlight_row = (int)(log.size() - 1);
 				}
 			}
 		}
@@ -1095,8 +1092,7 @@ struct ScriptDebugWindow : public Window {
 
 		this->SelectValidDebugCompany();
 
-		ScriptLog::LogData *log = script_debug_company != INVALID_COMPANY ? this->GetLogPointer() : nullptr;
-		this->vscroll->SetCount((log == nullptr) ? 0 : log->used);
+		this->vscroll->SetCount(script_debug_company != INVALID_COMPANY ? this->GetLogData().size() : 0);
 
 		/* Update company buttons */
 		for (CompanyID i = COMPANY_FIRST; i < MAX_COMPANIES; i++) {
@@ -1113,7 +1109,7 @@ struct ScriptDebugWindow : public Window {
 		this->SetWidgetDisabledState(WID_SCRD_SETTINGS, script_debug_company == INVALID_COMPANY);
 		extern CompanyID _local_company;
 		this->SetWidgetDisabledState(WID_SCRD_RELOAD_TOGGLE, script_debug_company == INVALID_COMPANY ||
-			script_debug_company == OWNER_DEITY || (script_debug_company == _local_company && !UserIsAllowedToChangeGameScript()));
+			script_debug_company == _local_company || (script_debug_company == OWNER_DEITY && !UserIsAllowedToChangeGameScript()));
 		this->SetWidgetDisabledState(WID_SCRD_CONTINUE_BTN, script_debug_company == INVALID_COMPANY ||
 			(script_debug_company == OWNER_DEITY ? !Game::IsPaused() : !AI::IsPaused(script_debug_company)));
 	}
@@ -1127,7 +1123,7 @@ struct ScriptDebugWindow : public Window {
 };
 
 CompanyID ScriptDebugWindow::script_debug_company = INVALID_COMPANY;
-char ScriptDebugWindow::break_string[MAX_BREAK_STR_STRING_LENGTH] = "";
+std::string ScriptDebugWindow::break_string;
 bool ScriptDebugWindow::break_check_enabled = true;
 bool ScriptDebugWindow::case_sensitive_break_check = false;
 StringFilter ScriptDebugWindow::break_string_filter(&ScriptDebugWindow::case_sensitive_break_check);
@@ -1192,7 +1188,7 @@ static const NWidgetPart _nested_script_debug_widgets[] = {
 	EndContainer(),
 	NWidget(NWID_HORIZONTAL),
 		NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_SCRD_SCRIPT_GAME), SetMinimalSize(100, 20), SetResize(1, 0), SetDataTip(STR_AI_GAME_SCRIPT, STR_AI_GAME_SCRIPT_TOOLTIP),
-		NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_SCRD_NAME_TEXT), SetFill(1, 0), SetResize(1, 0), SetDataTip(STR_JUST_STRING, STR_AI_DEBUG_NAME_TOOLTIP),
+		NWidget(WWT_TEXTBTN, COLOUR_GREY, WID_SCRD_NAME_TEXT), SetFill(1, 0), SetResize(1, 0), SetDataTip(STR_JUST_STRING2, STR_AI_DEBUG_NAME_TOOLTIP),
 		NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_SCRD_SETTINGS), SetMinimalSize(100, 20), SetDataTip(STR_AI_DEBUG_SETTINGS, STR_AI_DEBUG_SETTINGS_TOOLTIP),
 		NWidget(WWT_PUSHTXTBTN, COLOUR_GREY, WID_SCRD_RELOAD_TOGGLE), SetMinimalSize(100, 20), SetDataTip(STR_AI_DEBUG_RELOAD, STR_AI_DEBUG_RELOAD_TOOLTIP),
 	EndContainer(),

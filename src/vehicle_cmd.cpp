@@ -72,10 +72,10 @@ const uint32 _send_to_depot_proc_table[] = {
 };
 
 
-CommandCost CmdBuildRailVehicle(TileIndex tile, DoCommandFlag flags, const Engine *e, uint16 data, Vehicle **v);
-CommandCost CmdBuildRoadVehicle(TileIndex tile, DoCommandFlag flags, const Engine *e, uint16 data, Vehicle **v);
-CommandCost CmdBuildShip       (TileIndex tile, DoCommandFlag flags, const Engine *e, uint16 data, Vehicle **v);
-CommandCost CmdBuildAircraft   (TileIndex tile, DoCommandFlag flags, const Engine *e, uint16 data, Vehicle **v);
+CommandCost CmdBuildRailVehicle(TileIndex tile, DoCommandFlag flags, const Engine *e, Vehicle **v);
+CommandCost CmdBuildRoadVehicle(TileIndex tile, DoCommandFlag flags, const Engine *e, Vehicle **v);
+CommandCost CmdBuildShip       (TileIndex tile, DoCommandFlag flags, const Engine *e, Vehicle **v);
+CommandCost CmdBuildAircraft   (TileIndex tile, DoCommandFlag flags, const Engine *e, Vehicle **v);
 static CommandCost GetRefitCost(const Vehicle *v, EngineID engine_type, CargoID new_cid, byte new_subtype, bool *auto_refit_allowed);
 
 /**
@@ -84,7 +84,9 @@ static CommandCost GetRefitCost(const Vehicle *v, EngineID engine_type, CargoID 
  * @param flags for command
  * @param p1 various bitstuffed data
  *  bits  0-15: vehicle type being built.
- *  bits 16-23: vehicle type specific bits passed on to the vehicle build functions.
+ *  bits 16-23: vehicle type specific bits.
+ *              Trains:
+ *              * bit 16: prevent any free cars from being added to the train.
  *  bits 24-31: refit cargo type.
  * @param p2 User
  * @param text unused
@@ -149,10 +151,10 @@ CommandCost CmdBuildVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 
 	Vehicle *v = nullptr;
 	switch (type) {
-		case VEH_TRAIN:    value.AddCost(CmdBuildRailVehicle(tile, subflags, e, GB(p1, 16, 8), &v)); break;
-		case VEH_ROAD:     value.AddCost(CmdBuildRoadVehicle(tile, subflags, e, GB(p1, 16, 8), &v)); break;
-		case VEH_SHIP:     value.AddCost(CmdBuildShip       (tile, subflags, e, GB(p1, 16, 8), &v)); break;
-		case VEH_AIRCRAFT: value.AddCost(CmdBuildAircraft   (tile, subflags, e, GB(p1, 16, 8), &v)); break;
+		case VEH_TRAIN:    value.AddCost(CmdBuildRailVehicle(tile, subflags, e, &v)); break;
+		case VEH_ROAD:     value.AddCost(CmdBuildRoadVehicle(tile, subflags, e, &v)); break;
+		case VEH_SHIP:     value.AddCost(CmdBuildShip       (tile, subflags, e, &v)); break;
+		case VEH_AIRCRAFT: value.AddCost(CmdBuildAircraft   (tile, subflags, e, &v)); break;
 		default: NOT_REACHED(); // Safe due to IsDepotTile()
 	}
 
@@ -180,6 +182,11 @@ CommandCost CmdBuildVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 		}
 
 		if (flags & DC_EXEC) {
+			if (type == VEH_TRAIN && !HasBit(p1, 16) && !(flags & DC_AUTOREPLACE)) {
+				/* Move any free wagons to the new vehicle. */
+				NormalizeTrainVehInDepot(Train::From(v));
+			}
+
 			InvalidateWindowData(WC_VEHICLE_DEPOT, v->tile);
 			InvalidateWindowClassesData(GetWindowClassForVehicleType(type), 0);
 			InvalidateWindowClassesData(WC_DEPARTURES_BOARD, 0);
@@ -505,7 +512,6 @@ static CommandCost RefitVehicle(Vehicle *v, bool only_this, uint8 num_vehicles, 
  *                      Only used if "refit only this vehicle" is false.
  * - p2 = (bit 24)     - Automatic refitting.
  * - p2 = (bit 25)     - Refit only this vehicle. Used only for cloning vehicles.
- * - p2 = (bit 31)     - Is a virtual train (used by template replacement to allow refitting without stopped-in-depot checks)
  * @param text unused
  * @return the cost of this operation or an error
  */
@@ -522,10 +528,9 @@ CommandCost CmdRefitVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 
 	bool auto_refit = HasBit(p2, 24);
 	bool is_virtual_train = v->type == VEH_TRAIN && Train::From(front)->IsVirtual();
-	bool virtual_train_mode = HasBit(p2, 31) || is_virtual_train;
 	bool free_wagon = v->type == VEH_TRAIN && Train::From(front)->IsFreeWagon(); // used by autoreplace/renew
 
-	if (virtual_train_mode) {
+	if (is_virtual_train) {
 		CommandCost ret = CheckOwnership(front->owner);
 		if (ret.Failed()) return ret;
 	} else {
@@ -537,7 +542,7 @@ CommandCost CmdRefitVehicle(TileIndex tile, DoCommandFlag flags, uint32 p1, uint
 	if (v != front && (v->type == VEH_AIRCRAFT)) return CMD_ERROR;
 
 	/* Allow auto-refitting only during loading and normal refitting only in a depot. */
-	if (!virtual_train_mode) {
+	if (!is_virtual_train) {
 		if ((flags & DC_QUERY_COST) == 0 && // used by the refit GUI, including the order refit GUI.
 				!free_wagon && // used by autoreplace/renew
 				(!auto_refit || !front->current_order.IsType(OT_LOADING)) && // refit inside stations
@@ -808,6 +813,17 @@ CommandCost CmdDepotMassAutoReplace(TileIndex tile, DoCommandFlag flags, uint32 
 		/* Ensure that the vehicle completely in the depot */
 		if (!v->IsChainInDepot()) continue;
 
+		if (v->type == VEH_TRAIN) {
+			_new_vehicle_id = INVALID_VEHICLE;
+
+			CommandCost ret = DoCommand(v->tile, v->index, 0, flags, CMD_TEMPLATE_REPLACE_VEHICLE);
+			if (ret.Succeeded()) cost.AddCost(ret);
+
+			if (_new_vehicle_id != INVALID_VEHICLE) {
+				v = Vehicle::Get(_new_vehicle_id);
+			}
+		}
+
 		CommandCost ret = DoCommand(0, v->index, 0, flags, CMD_AUTOREPLACE_VEHICLE);
 
 		if (ret.Succeeded()) cost.AddCost(ret);
@@ -820,7 +836,7 @@ CommandCost CmdDepotMassAutoReplace(TileIndex tile, DoCommandFlag flags, uint32 
  * @param name Name to test.
  * @return True if the name is unique.
  */
-static bool IsUniqueVehicleName(const char *name)
+bool IsUniqueVehicleName(const char *name)
 {
 	for (const Vehicle *v : Vehicle::Iterate()) {
 		if (!v->name.empty() && v->name == name) return false;
@@ -926,15 +942,15 @@ CommandCost CmdToggleKeepRemainingVehicles(TileIndex tile, DoCommandFlag flags, 
 }
 
 /**
- * Toggles 'refit as template' on a template vehicle.
+ * Set/unset 'refit as template' on a template vehicle.
  * @param tile unused
  * @param flags type of operation
  * @param p1 the template vehicle's index
- * @param p2 unused
+ * @param p2 whether 'refit as template' should be set
  * @param text unused
  * @return the cost of this operation or an error
  */
-CommandCost CmdToggleRefitAsTemplate(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
+CommandCost CmdSetRefitAsTemplate(TileIndex tile, DoCommandFlag flags, uint32 p1, uint32 p2, const char *text)
 {
 	// Identify template to toggle
 	TemplateVehicle *template_vehicle = TemplateVehicle::GetIfValid(p1);
@@ -946,7 +962,7 @@ CommandCost CmdToggleRefitAsTemplate(TileIndex tile, DoCommandFlag flags, uint32
 	bool should_execute = (flags & DC_EXEC) != 0;
 
 	if (should_execute) {
-		template_vehicle->ToggleRefitAsTemplate();
+		template_vehicle->SetRefitAsTemplate(p2 != 0);
 		MarkTrainsUsingTemplateAsPendingTemplateReplacement(template_vehicle);
 
 		InvalidateWindowClassesData(WC_TEMPLATEGUI_MAIN, 0);
