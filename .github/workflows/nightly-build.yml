@@ -46,12 +46,7 @@ jobs:
     - name: Prepare vcpkg
       shell: bash
       run: |
-        vcpkg install --triplet=${{ matrix.arch }}-windows-static \
-          liblzma \
-          libpng \
-          lzo \
-          zlib \
-          # EOF
+        vcpkg install --triplet=${{ matrix.arch }}-windows-static
 
     - name: Install MSVC problem matcher
       uses: ammaraskar/msvc-problem-matcher@master
