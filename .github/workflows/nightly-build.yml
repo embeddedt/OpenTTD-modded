@@ -198,9 +198,6 @@ jobs:
           ./bootstrap-vcpkg.sh -disableMetrics
         )
 
-    - name: Install GCC problem matcher
-      uses: ammaraskar/gcc-problem-matcher@master
-
     - name: Build
       run: |
         mkdir -p build
