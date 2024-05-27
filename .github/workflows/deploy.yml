@@ -69,9 +69,8 @@ jobs:
         mv openttd.html index.html
         echo "::endgroup::"
     - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@3.7.1
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: em_build # The folder the action should deploy.
-        CLEAN: true # Automatically remove deleted files from the deploy branch- name: Deploy 🚀
+        branch: gh-pages # The branch the action should deploy to.
+        folder: em_build # The folder the action should deploy.
+        clean: true # Automatically remove deleted files from the deploy branch- name: Deploy 🚀
