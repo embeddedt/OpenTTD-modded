@@ -95,7 +95,7 @@ jobs:
   linux-generic:
     name: Build generic linux binary
 
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     container:
       # manylinux2014 is based on CentOS 7, but already has a lot of things
       # installed and preconfigured. It makes it easier to build OpenTTD.
