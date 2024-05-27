@@ -11,11 +11,11 @@
 #include "../template/template_bridgelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptBridgeList, ST_GS>() { return "GSBridgeList"; }
+template <> const char *GetClassName<ScriptBridgeList, ScriptType::GS>() { return "GSBridgeList"; }
 
 void SQGSBridgeList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridgeList, ST_GS> SQGSBridgeList("GSBridgeList");
+	DefSQClass<ScriptBridgeList, ScriptType::GS> SQGSBridgeList("GSBridgeList");
 	SQGSBridgeList.PreRegister(engine, "GSList");
 	SQGSBridgeList.AddConstructor<void (ScriptBridgeList::*)(), 1>(engine, "x");
 
@@ -23,11 +23,11 @@ void SQGSBridgeList_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptBridgeList_Length, ST_GS>() { return "GSBridgeList_Length"; }
+template <> const char *GetClassName<ScriptBridgeList_Length, ScriptType::GS>() { return "GSBridgeList_Length"; }
 
 void SQGSBridgeList_Length_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridgeList_Length, ST_GS> SQGSBridgeList_Length("GSBridgeList_Length");
+	DefSQClass<ScriptBridgeList_Length, ScriptType::GS> SQGSBridgeList_Length("GSBridgeList_Length");
 	SQGSBridgeList_Length.PreRegister(engine, "GSList");
 	SQGSBridgeList_Length.AddConstructor<void (ScriptBridgeList_Length::*)(SQInteger length), 2>(engine, "xi");
 

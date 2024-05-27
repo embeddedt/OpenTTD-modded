@@ -11,11 +11,11 @@
 #include "../template/template_inflation.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptInflation, ST_AI>() { return "AIInflation"; }
+template <> const char *GetClassName<ScriptInflation, ScriptType::AI>() { return "AIInflation"; }
 
 void SQAIInflation_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptInflation, ST_AI> SQAIInflation("AIInflation");
+	DefSQClass<ScriptInflation, ScriptType::AI> SQAIInflation("AIInflation");
 	SQAIInflation.PreRegister(engine);
 	SQAIInflation.AddConstructor<void (ScriptInflation::*)(), 1>(engine, "x");
 

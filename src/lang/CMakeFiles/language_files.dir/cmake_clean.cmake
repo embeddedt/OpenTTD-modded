@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/language_files"
-  "../../lang/english.lng"
   "../../lang/afrikaans.lng"
   "../../lang/arabic_egypt.lng"
   "../../lang/basque.lng"
@@ -13,6 +11,7 @@ file(REMOVE_RECURSE
   "../../lang/czech.lng"
   "../../lang/danish.lng"
   "../../lang/dutch.lng"
+  "../../lang/english.lng"
   "../../lang/english_AU.lng"
   "../../lang/english_US.lng"
   "../../lang/esperanto.lng"
@@ -61,10 +60,11 @@ file(REMOVE_RECURSE
   "../../lang/thai.lng"
   "../../lang/traditional_chinese.lng"
   "../../lang/turkish.lng"
-  "../../lang/urdu.lng"
   "../../lang/ukrainian.lng"
+  "../../lang/urdu.lng"
   "../../lang/vietnamese.lng"
   "../../lang/welsh.lng"
+  "CMakeFiles/language_files"
 )
 
 # Per-language clean rules from dependency scanning.

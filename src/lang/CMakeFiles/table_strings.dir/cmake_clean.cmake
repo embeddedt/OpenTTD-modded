@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../generated/table/strings.h"
   "CMakeFiles/table_strings"
   "strings.h.timestamp"
-  "../../generated/table/strings.h"
 )
 
 # Per-language clean rules from dependency scanning.

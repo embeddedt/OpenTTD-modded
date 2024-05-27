@@ -11,11 +11,11 @@
 #include "../template/template_date.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptDate, ST_GS>() { return "GSDate"; }
+template <> const char *GetClassName<ScriptDate, ScriptType::GS>() { return "GSDate"; }
 
 void SQGSDate_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptDate, ST_GS> SQGSDate("GSDate");
+	DefSQClass<ScriptDate, ScriptType::GS> SQGSDate("GSDate");
 	SQGSDate.PreRegister(engine);
 	SQGSDate.AddConstructor<void (ScriptDate::*)(), 1>(engine, "x");
 

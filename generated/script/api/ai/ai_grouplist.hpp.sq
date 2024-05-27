@@ -11,13 +11,13 @@
 #include "../template/template_grouplist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptGroupList, ST_AI>() { return "AIGroupList"; }
+template <> const char *GetClassName<ScriptGroupList, ScriptType::AI>() { return "AIGroupList"; }
 
 void SQAIGroupList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptGroupList, ST_AI> SQAIGroupList("AIGroupList");
+	DefSQClass<ScriptGroupList, ScriptType::AI> SQAIGroupList("AIGroupList");
 	SQAIGroupList.PreRegister(engine, "AIList");
-	SQAIGroupList.AddConstructor<void (ScriptGroupList::*)(), 1>(engine, "x");
+	SQAIGroupList.AddSQAdvancedConstructor(engine);
 
 	SQAIGroupList.PostRegister(engine);
 }

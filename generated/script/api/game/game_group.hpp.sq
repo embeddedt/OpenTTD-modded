@@ -7,3 +7,47 @@
 
 /* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
 
+#include "../script_group.hpp"
+#include "../template/template_group.hpp.sq"
+
+
+template <> const char *GetClassName<ScriptGroup, ScriptType::GS>() { return "GSGroup"; }
+
+void SQGSGroup_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptGroup, ScriptType::GS> SQGSGroup("GSGroup");
+	SQGSGroup.PreRegister(engine);
+	SQGSGroup.AddConstructor<void (ScriptGroup::*)(), 1>(engine, "x");
+
+	SQGSGroup.DefSQConst(engine, ScriptGroup::GROUP_ALL,     "GROUP_ALL");
+	SQGSGroup.DefSQConst(engine, ScriptGroup::GROUP_DEFAULT, "GROUP_DEFAULT");
+	SQGSGroup.DefSQConst(engine, ScriptGroup::GROUP_INVALID, "GROUP_INVALID");
+
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::IsValidGroup,                "IsValidGroup",                2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::CreateGroup,                 "CreateGroup",                 3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::DeleteGroup,                 "DeleteGroup",                 2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetVehicleType,              "GetVehicleType",              2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::SetName,                     "SetName",                     3, ".i.");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetName,                     "GetName",                     2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::SetParent,                   "SetParent",                   3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetParent,                   "GetParent",                   2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::EnableAutoReplaceProtection, "EnableAutoReplaceProtection", 3, ".ib");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetAutoReplaceProtection,    "GetAutoReplaceProtection",    2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetNumEngines,               "GetNumEngines",               3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetNumVehicles,              "GetNumVehicles",              3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::MoveVehicle,                 "MoveVehicle",                 3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::EnableWagonRemoval,          "EnableWagonRemoval",          2, ".b");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::HasWagonRemoval,             "HasWagonRemoval",             1, ".");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::SetAutoReplace,              "SetAutoReplace",              4, ".iii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetEngineReplacement,        "GetEngineReplacement",        3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::StopAutoReplace,             "StopAutoReplace",             3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetProfitThisYear,           "GetProfitThisYear",           2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetProfitLastYear,           "GetProfitLastYear",           2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetCurrentUsage,             "GetCurrentUsage",             2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::SetPrimaryColour,            "SetPrimaryColour",            3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::SetSecondaryColour,          "SetSecondaryColour",          3, ".ii");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetPrimaryColour,            "GetPrimaryColour",            2, ".i");
+	SQGSGroup.DefSQStaticMethod(engine, &ScriptGroup::GetSecondaryColour,          "GetSecondaryColour",          2, ".i");
+
+	SQGSGroup.PostRegister(engine);
+}

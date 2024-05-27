@@ -11,11 +11,11 @@
 #include "../template/template_accounting.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptAccounting, ST_AI>() { return "AIAccounting"; }
+template <> const char *GetClassName<ScriptAccounting, ScriptType::AI>() { return "AIAccounting"; }
 
 void SQAIAccounting_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptAccounting, ST_AI> SQAIAccounting("AIAccounting");
+	DefSQClass<ScriptAccounting, ScriptType::AI> SQAIAccounting("AIAccounting");
 	SQAIAccounting.PreRegister(engine);
 	SQAIAccounting.AddConstructor<void (ScriptAccounting::*)(), 1>(engine, "x");
 

@@ -11,11 +11,11 @@
 #include "../template/template_event.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptEvent, ST_AI>() { return "AIEvent"; }
+template <> const char *GetClassName<ScriptEvent, ScriptType::AI>() { return "AIEvent"; }
 
 void SQAIEvent_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEvent, ST_AI> SQAIEvent("AIEvent");
+	DefSQClass<ScriptEvent, ScriptType::AI> SQAIEvent("AIEvent");
 	SQAIEvent.PreRegister(engine);
 	SQAIEvent.AddConstructor<void (ScriptEvent::*)(ScriptEvent::ScriptEventType type), 2>(engine, "xi");
 
@@ -59,11 +59,11 @@ void SQAIEvent_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventController, ST_AI>() { return "AIEventController"; }
+template <> const char *GetClassName<ScriptEventController, ScriptType::AI>() { return "AIEventController"; }
 
 void SQAIEventController_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventController, ST_AI> SQAIEventController("AIEventController");
+	DefSQClass<ScriptEventController, ScriptType::AI> SQAIEventController("AIEventController");
 	SQAIEventController.PreRegister(engine);
 	SQAIEventController.AddConstructor<void (ScriptEventController::*)(), 1>(engine, "x");
 

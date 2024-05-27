@@ -11,11 +11,11 @@
 #include "../template/template_viewport.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptViewport, ST_GS>() { return "GSViewport"; }
+template <> const char *GetClassName<ScriptViewport, ScriptType::GS>() { return "GSViewport"; }
 
 void SQGSViewport_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptViewport, ST_GS> SQGSViewport("GSViewport");
+	DefSQClass<ScriptViewport, ScriptType::GS> SQGSViewport("GSViewport");
 	SQGSViewport.PreRegister(engine);
 	SQGSViewport.AddConstructor<void (ScriptViewport::*)(), 1>(engine, "x");
 

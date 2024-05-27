@@ -1,7 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/boo.dir/main.cpp.o"
-  "boo.pdb"
+  "CMakeFiles/boo.dir/main.cpp.o.d"
   "boo.js"
+  "boo.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

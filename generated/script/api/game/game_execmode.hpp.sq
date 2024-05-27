@@ -11,11 +11,11 @@
 #include "../template/template_execmode.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptExecMode, ST_GS>() { return "GSExecMode"; }
+template <> const char *GetClassName<ScriptExecMode, ScriptType::GS>() { return "GSExecMode"; }
 
 void SQGSExecMode_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptExecMode, ST_GS> SQGSExecMode("GSExecMode");
+	DefSQClass<ScriptExecMode, ScriptType::GS> SQGSExecMode("GSExecMode");
 	SQGSExecMode.PreRegister(engine);
 	SQGSExecMode.AddConstructor<void (ScriptExecMode::*)(), 1>(engine, "x");
 

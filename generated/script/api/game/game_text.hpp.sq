@@ -11,11 +11,11 @@
 #include "../template/template_text.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptText, ST_GS>() { return "GSText"; }
+template <> const char *GetClassName<ScriptText, ScriptType::GS>() { return "GSText"; }
 
 void SQGSText_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptText, ST_GS> SQGSText("GSText");
+	DefSQClass<ScriptText, ScriptType::GS> SQGSText("GSText");
 	SQGSText.PreRegister(engine);
 	SQGSText.AddSQAdvancedConstructor(engine);
 

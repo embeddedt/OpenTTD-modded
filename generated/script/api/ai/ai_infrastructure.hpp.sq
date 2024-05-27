@@ -11,11 +11,11 @@
 #include "../template/template_infrastructure.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptInfrastructure, ST_AI>() { return "AIInfrastructure"; }
+template <> const char *GetClassName<ScriptInfrastructure, ScriptType::AI>() { return "AIInfrastructure"; }
 
 void SQAIInfrastructure_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptInfrastructure, ST_AI> SQAIInfrastructure("AIInfrastructure");
+	DefSQClass<ScriptInfrastructure, ScriptType::AI> SQAIInfrastructure("AIInfrastructure");
 	SQAIInfrastructure.PreRegister(engine);
 	SQAIInfrastructure.AddConstructor<void (ScriptInfrastructure::*)(), 1>(engine, "x");
 

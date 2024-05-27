@@ -1,5 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/binfiles_files"
   "../ai/compat_0.7.nut"
   "../ai/compat_1.0.nut"
   "../ai/compat_1.1.nut"
@@ -16,6 +15,7 @@ file(REMOVE_RECURSE
   "../ai/compat_12.nut"
   "../ai/compat_13.nut"
   "../ai/compat_14.nut"
+  "../ai/compat_15.nut"
   "../game/compat_1.10.nut"
   "../game/compat_1.11.nut"
   "../game/compat_1.2.nut"
@@ -29,6 +29,7 @@ file(REMOVE_RECURSE
   "../game/compat_12.nut"
   "../game/compat_13.nut"
   "../game/compat_14.nut"
+  "../game/compat_15.nut"
   "../game/compat_brgs.nut"
   "../scripts/autoexec.scr.example"
   "../scripts/game_start.scr.example"
@@ -39,6 +40,7 @@ file(REMOVE_RECURSE
   "../scripts/pre_dedicated.scr.example"
   "../scripts/pre_server.scr.example"
   "../scripts/readme.txt"
+  "CMakeFiles/binfiles_files"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -11,11 +11,11 @@
 #include "../template/template_execmode.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptExecMode, ST_AI>() { return "AIExecMode"; }
+template <> const char *GetClassName<ScriptExecMode, ScriptType::AI>() { return "AIExecMode"; }
 
 void SQAIExecMode_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptExecMode, ST_AI> SQAIExecMode("AIExecMode");
+	DefSQClass<ScriptExecMode, ScriptType::AI> SQAIExecMode("AIExecMode");
 	SQAIExecMode.PreRegister(engine);
 	SQAIExecMode.AddConstructor<void (ScriptExecMode::*)(), 1>(engine, "x");
 

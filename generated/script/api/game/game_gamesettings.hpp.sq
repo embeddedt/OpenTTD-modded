@@ -11,17 +11,18 @@
 #include "../template/template_gamesettings.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptGameSettings, ST_GS>() { return "GSGameSettings"; }
+template <> const char *GetClassName<ScriptGameSettings, ScriptType::GS>() { return "GSGameSettings"; }
 
 void SQGSGameSettings_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptGameSettings, ST_GS> SQGSGameSettings("GSGameSettings");
+	DefSQClass<ScriptGameSettings, ScriptType::GS> SQGSGameSettings("GSGameSettings");
 	SQGSGameSettings.PreRegister(engine);
 	SQGSGameSettings.AddConstructor<void (ScriptGameSettings::*)(), 1>(engine, "x");
 
-	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::IsValid,  "IsValid",  2, "..");
-	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::GetValue, "GetValue", 2, "..");
-	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::SetValue, "SetValue", 3, "..i");
+	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::IsValid,               "IsValid",               2, "..");
+	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::GetValue,              "GetValue",              2, "..");
+	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::SetValue,              "SetValue",              3, "..i");
+	SQGSGameSettings.DefSQStaticMethod(engine, &ScriptGameSettings::IsDisabledVehicleType, "IsDisabledVehicleType", 2, ".i");
 
 	SQGSGameSettings.PostRegister(engine);
 }

@@ -11,23 +11,23 @@
 #include "../template/template_vehiclelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptVehicleList, ST_GS>() { return "GSVehicleList"; }
+template <> const char *GetClassName<ScriptVehicleList, ScriptType::GS>() { return "GSVehicleList"; }
 
 void SQGSVehicleList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList, ST_GS> SQGSVehicleList("GSVehicleList");
+	DefSQClass<ScriptVehicleList, ScriptType::GS> SQGSVehicleList("GSVehicleList");
 	SQGSVehicleList.PreRegister(engine, "GSList");
-	SQGSVehicleList.AddConstructor<void (ScriptVehicleList::*)(), 1>(engine, "x");
+	SQGSVehicleList.AddSQAdvancedConstructor(engine);
 
 	SQGSVehicleList.PostRegister(engine);
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_Station, ST_GS>() { return "GSVehicleList_Station"; }
+template <> const char *GetClassName<ScriptVehicleList_Station, ScriptType::GS>() { return "GSVehicleList_Station"; }
 
 void SQGSVehicleList_Station_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_Station, ST_GS> SQGSVehicleList_Station("GSVehicleList_Station");
+	DefSQClass<ScriptVehicleList_Station, ScriptType::GS> SQGSVehicleList_Station("GSVehicleList_Station");
 	SQGSVehicleList_Station.PreRegister(engine, "GSList");
 	SQGSVehicleList_Station.AddConstructor<void (ScriptVehicleList_Station::*)(StationID station_id), 2>(engine, "xi");
 
@@ -35,11 +35,11 @@ void SQGSVehicleList_Station_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_Depot, ST_GS>() { return "GSVehicleList_Depot"; }
+template <> const char *GetClassName<ScriptVehicleList_Depot, ScriptType::GS>() { return "GSVehicleList_Depot"; }
 
 void SQGSVehicleList_Depot_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_Depot, ST_GS> SQGSVehicleList_Depot("GSVehicleList_Depot");
+	DefSQClass<ScriptVehicleList_Depot, ScriptType::GS> SQGSVehicleList_Depot("GSVehicleList_Depot");
 	SQGSVehicleList_Depot.PreRegister(engine, "GSList");
 	SQGSVehicleList_Depot.AddConstructor<void (ScriptVehicleList_Depot::*)(TileIndex tile), 2>(engine, "xi");
 
@@ -47,13 +47,37 @@ void SQGSVehicleList_Depot_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_SharedOrders, ST_GS>() { return "GSVehicleList_SharedOrders"; }
+template <> const char *GetClassName<ScriptVehicleList_SharedOrders, ScriptType::GS>() { return "GSVehicleList_SharedOrders"; }
 
 void SQGSVehicleList_SharedOrders_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_SharedOrders, ST_GS> SQGSVehicleList_SharedOrders("GSVehicleList_SharedOrders");
+	DefSQClass<ScriptVehicleList_SharedOrders, ScriptType::GS> SQGSVehicleList_SharedOrders("GSVehicleList_SharedOrders");
 	SQGSVehicleList_SharedOrders.PreRegister(engine, "GSList");
 	SQGSVehicleList_SharedOrders.AddConstructor<void (ScriptVehicleList_SharedOrders::*)(VehicleID vehicle_id), 2>(engine, "xi");
 
 	SQGSVehicleList_SharedOrders.PostRegister(engine);
+}
+
+
+template <> const char *GetClassName<ScriptVehicleList_Group, ScriptType::GS>() { return "GSVehicleList_Group"; }
+
+void SQGSVehicleList_Group_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptVehicleList_Group, ScriptType::GS> SQGSVehicleList_Group("GSVehicleList_Group");
+	SQGSVehicleList_Group.PreRegister(engine, "GSList");
+	SQGSVehicleList_Group.AddConstructor<void (ScriptVehicleList_Group::*)(GroupID group_id), 2>(engine, "xi");
+
+	SQGSVehicleList_Group.PostRegister(engine);
+}
+
+
+template <> const char *GetClassName<ScriptVehicleList_DefaultGroup, ScriptType::GS>() { return "GSVehicleList_DefaultGroup"; }
+
+void SQGSVehicleList_DefaultGroup_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptVehicleList_DefaultGroup, ScriptType::GS> SQGSVehicleList_DefaultGroup("GSVehicleList_DefaultGroup");
+	SQGSVehicleList_DefaultGroup.PreRegister(engine, "GSList");
+	SQGSVehicleList_DefaultGroup.AddConstructor<void (ScriptVehicleList_DefaultGroup::*)(ScriptVehicle::VehicleType vehicle_type), 2>(engine, "xi");
+
+	SQGSVehicleList_DefaultGroup.PostRegister(engine);
 }

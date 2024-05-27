@@ -11,11 +11,11 @@
 #include "../template/template_game.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptGame, ST_GS>() { return "GSGame"; }
+template <> const char *GetClassName<ScriptGame, ScriptType::GS>() { return "GSGame"; }
 
 void SQGSGame_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptGame, ST_GS> SQGSGame("GSGame");
+	DefSQClass<ScriptGame, ScriptType::GS> SQGSGame("GSGame");
 	SQGSGame.PreRegister(engine);
 	SQGSGame.AddConstructor<void (ScriptGame::*)(), 1>(engine, "x");
 

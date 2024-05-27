@@ -11,11 +11,11 @@
 #include "../template/template_tile.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTile, ST_AI>() { return "AITile"; }
+template <> const char *GetClassName<ScriptTile, ScriptType::AI>() { return "AITile"; }
 
 void SQAITile_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTile, ST_AI> SQAITile("AITile");
+	DefSQClass<ScriptTile, ScriptType::AI> SQAITile("AITile");
 	SQAITile.PreRegister(engine);
 	SQAITile.AddConstructor<void (ScriptTile::*)(), 1>(engine, "x");
 

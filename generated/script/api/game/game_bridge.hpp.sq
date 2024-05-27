@@ -11,11 +11,11 @@
 #include "../template/template_bridge.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptBridge, ST_GS>() { return "GSBridge"; }
+template <> const char *GetClassName<ScriptBridge, ScriptType::GS>() { return "GSBridge"; }
 
 void SQGSBridge_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridge, ST_GS> SQGSBridge("GSBridge");
+	DefSQClass<ScriptBridge, ScriptType::GS> SQGSBridge("GSBridge");
 	SQGSBridge.PreRegister(engine);
 	SQGSBridge.AddConstructor<void (ScriptBridge::*)(), 1>(engine, "x");
 

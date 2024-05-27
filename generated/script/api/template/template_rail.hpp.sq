@@ -11,21 +11,21 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> struct Param<ScriptRail::ErrorMessages> { static inline ScriptRail::ErrorMessages Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::ErrorMessages)tmp; } };
+	template <> struct Param<ScriptRail::ErrorMessages> { static inline ScriptRail::ErrorMessages Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::ErrorMessages)tmp; } };
 	template <> struct Return<ScriptRail::ErrorMessages> { static inline int Set(HSQUIRRELVM vm, ScriptRail::ErrorMessages res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptRail::RailType> { static inline ScriptRail::RailType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::RailType)tmp; } };
+	template <> struct Param<ScriptRail::RailType> { static inline ScriptRail::RailType Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::RailType)tmp; } };
 	template <> struct Return<ScriptRail::RailType> { static inline int Set(HSQUIRRELVM vm, ScriptRail::RailType res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptRail::RailTrack> { static inline ScriptRail::RailTrack Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::RailTrack)tmp; } };
+	template <> struct Param<ScriptRail::RailTrack> { static inline ScriptRail::RailTrack Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::RailTrack)tmp; } };
 	template <> struct Return<ScriptRail::RailTrack> { static inline int Set(HSQUIRRELVM vm, ScriptRail::RailTrack res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptRail::SignalType> { static inline ScriptRail::SignalType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::SignalType)tmp; } };
+	template <> struct Param<ScriptRail::SignalType> { static inline ScriptRail::SignalType Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::SignalType)tmp; } };
 	template <> struct Return<ScriptRail::SignalType> { static inline int Set(HSQUIRRELVM vm, ScriptRail::SignalType res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptRail::BuildType> { static inline ScriptRail::BuildType Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::BuildType)tmp; } };
+	template <> struct Param<ScriptRail::BuildType> { static inline ScriptRail::BuildType Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptRail::BuildType)tmp; } };
 	template <> struct Return<ScriptRail::BuildType> { static inline int Set(HSQUIRRELVM vm, ScriptRail::BuildType res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptRail to be used as Squirrel parameter */
-	template <> struct Param<ScriptRail *> { static inline ScriptRail *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRail *)instance; } };
-	template <> struct Param<ScriptRail &> { static inline ScriptRail &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRail *)instance; } };
-	template <> struct Param<const ScriptRail *> { static inline const ScriptRail *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRail *)instance; } };
-	template <> struct Param<const ScriptRail &> { static inline const ScriptRail &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRail *)instance; } };
+	template <> struct Param<ScriptRail *> { static inline ScriptRail *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRail *)instance; } };
+	template <> struct Param<ScriptRail &> { static inline ScriptRail &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRail *)instance; } };
+	template <> struct Param<const ScriptRail *> { static inline const ScriptRail *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptRail *)instance; } };
+	template <> struct Param<const ScriptRail &> { static inline const ScriptRail &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptRail *)instance; } };
 	template <> struct Return<ScriptRail *> { static inline int Set(HSQUIRRELVM vm, ScriptRail *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Rail", res, nullptr, DefSQDestructorCallback<ScriptRail>, true); return 1; } };
 } // namespace SQConvert

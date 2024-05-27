@@ -11,23 +11,23 @@
 #include "../template/template_vehiclelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptVehicleList, ST_AI>() { return "AIVehicleList"; }
+template <> const char *GetClassName<ScriptVehicleList, ScriptType::AI>() { return "AIVehicleList"; }
 
 void SQAIVehicleList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList, ST_AI> SQAIVehicleList("AIVehicleList");
+	DefSQClass<ScriptVehicleList, ScriptType::AI> SQAIVehicleList("AIVehicleList");
 	SQAIVehicleList.PreRegister(engine, "AIList");
-	SQAIVehicleList.AddConstructor<void (ScriptVehicleList::*)(), 1>(engine, "x");
+	SQAIVehicleList.AddSQAdvancedConstructor(engine);
 
 	SQAIVehicleList.PostRegister(engine);
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_Station, ST_AI>() { return "AIVehicleList_Station"; }
+template <> const char *GetClassName<ScriptVehicleList_Station, ScriptType::AI>() { return "AIVehicleList_Station"; }
 
 void SQAIVehicleList_Station_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_Station, ST_AI> SQAIVehicleList_Station("AIVehicleList_Station");
+	DefSQClass<ScriptVehicleList_Station, ScriptType::AI> SQAIVehicleList_Station("AIVehicleList_Station");
 	SQAIVehicleList_Station.PreRegister(engine, "AIList");
 	SQAIVehicleList_Station.AddConstructor<void (ScriptVehicleList_Station::*)(StationID station_id), 2>(engine, "xi");
 
@@ -35,11 +35,11 @@ void SQAIVehicleList_Station_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_Depot, ST_AI>() { return "AIVehicleList_Depot"; }
+template <> const char *GetClassName<ScriptVehicleList_Depot, ScriptType::AI>() { return "AIVehicleList_Depot"; }
 
 void SQAIVehicleList_Depot_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_Depot, ST_AI> SQAIVehicleList_Depot("AIVehicleList_Depot");
+	DefSQClass<ScriptVehicleList_Depot, ScriptType::AI> SQAIVehicleList_Depot("AIVehicleList_Depot");
 	SQAIVehicleList_Depot.PreRegister(engine, "AIList");
 	SQAIVehicleList_Depot.AddConstructor<void (ScriptVehicleList_Depot::*)(TileIndex tile), 2>(engine, "xi");
 
@@ -47,11 +47,11 @@ void SQAIVehicleList_Depot_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_SharedOrders, ST_AI>() { return "AIVehicleList_SharedOrders"; }
+template <> const char *GetClassName<ScriptVehicleList_SharedOrders, ScriptType::AI>() { return "AIVehicleList_SharedOrders"; }
 
 void SQAIVehicleList_SharedOrders_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_SharedOrders, ST_AI> SQAIVehicleList_SharedOrders("AIVehicleList_SharedOrders");
+	DefSQClass<ScriptVehicleList_SharedOrders, ScriptType::AI> SQAIVehicleList_SharedOrders("AIVehicleList_SharedOrders");
 	SQAIVehicleList_SharedOrders.PreRegister(engine, "AIList");
 	SQAIVehicleList_SharedOrders.AddConstructor<void (ScriptVehicleList_SharedOrders::*)(VehicleID vehicle_id), 2>(engine, "xi");
 
@@ -59,11 +59,11 @@ void SQAIVehicleList_SharedOrders_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_Group, ST_AI>() { return "AIVehicleList_Group"; }
+template <> const char *GetClassName<ScriptVehicleList_Group, ScriptType::AI>() { return "AIVehicleList_Group"; }
 
 void SQAIVehicleList_Group_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_Group, ST_AI> SQAIVehicleList_Group("AIVehicleList_Group");
+	DefSQClass<ScriptVehicleList_Group, ScriptType::AI> SQAIVehicleList_Group("AIVehicleList_Group");
 	SQAIVehicleList_Group.PreRegister(engine, "AIList");
 	SQAIVehicleList_Group.AddConstructor<void (ScriptVehicleList_Group::*)(GroupID group_id), 2>(engine, "xi");
 
@@ -71,11 +71,11 @@ void SQAIVehicleList_Group_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptVehicleList_DefaultGroup, ST_AI>() { return "AIVehicleList_DefaultGroup"; }
+template <> const char *GetClassName<ScriptVehicleList_DefaultGroup, ScriptType::AI>() { return "AIVehicleList_DefaultGroup"; }
 
 void SQAIVehicleList_DefaultGroup_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptVehicleList_DefaultGroup, ST_AI> SQAIVehicleList_DefaultGroup("AIVehicleList_DefaultGroup");
+	DefSQClass<ScriptVehicleList_DefaultGroup, ScriptType::AI> SQAIVehicleList_DefaultGroup("AIVehicleList_DefaultGroup");
 	SQAIVehicleList_DefaultGroup.PreRegister(engine, "AIList");
 	SQAIVehicleList_DefaultGroup.AddConstructor<void (ScriptVehicleList_DefaultGroup::*)(ScriptVehicle::VehicleType vehicle_type), 2>(engine, "xi");
 

@@ -11,11 +11,11 @@
 #include "../template/template_companymode.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptCompanyMode, ST_GS>() { return "GSCompanyMode"; }
+template <> const char *GetClassName<ScriptCompanyMode, ScriptType::GS>() { return "GSCompanyMode"; }
 
 void SQGSCompanyMode_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptCompanyMode, ST_GS> SQGSCompanyMode("GSCompanyMode");
+	DefSQClass<ScriptCompanyMode, ScriptType::GS> SQGSCompanyMode("GSCompanyMode");
 	SQGSCompanyMode.PreRegister(engine);
 	SQGSCompanyMode.AddConstructor<void (ScriptCompanyMode::*)(SQInteger company), 2>(engine, "xi");
 

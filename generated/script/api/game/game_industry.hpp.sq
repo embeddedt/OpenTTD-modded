@@ -11,11 +11,11 @@
 #include "../template/template_industry.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptIndustry, ST_GS>() { return "GSIndustry"; }
+template <> const char *GetClassName<ScriptIndustry, ScriptType::GS>() { return "GSIndustry"; }
 
 void SQGSIndustry_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptIndustry, ST_GS> SQGSIndustry("GSIndustry");
+	DefSQClass<ScriptIndustry, ScriptType::GS> SQGSIndustry("GSIndustry");
 	SQGSIndustry.PreRegister(engine);
 	SQGSIndustry.AddConstructor<void (ScriptIndustry::*)(), 1>(engine, "x");
 
@@ -25,11 +25,13 @@ void SQGSIndustry_Register(Squirrel *engine)
 	SQGSIndustry.DefSQConst(engine, ScriptIndustry::INDCTL_NO_PRODUCTION_DECREASE, "INDCTL_NO_PRODUCTION_DECREASE");
 	SQGSIndustry.DefSQConst(engine, ScriptIndustry::INDCTL_NO_PRODUCTION_INCREASE, "INDCTL_NO_PRODUCTION_INCREASE");
 	SQGSIndustry.DefSQConst(engine, ScriptIndustry::INDCTL_NO_CLOSURE,             "INDCTL_NO_CLOSURE");
+	SQGSIndustry.DefSQConst(engine, ScriptIndustry::INDCTL_EXTERNAL_PROD_LEVEL,    "INDCTL_EXTERNAL_PROD_LEVEL");
 
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetIndustryCount,                  "GetIndustryCount",                  1, ".");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::IsValidIndustry,                   "IsValidIndustry",                   2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetIndustryID,                     "GetIndustryID",                     2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetName,                           "GetName",                           2, ".i");
+	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetConstructionDate,               "GetConstructionDate",               2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::SetText,                           "SetText",                           3, ".i.");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::IsCargoAccepted,                   "IsCargoAccepted",                   3, ".ii");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetStockpiledCargo,                "GetStockpiledCargo",                3, ".ii");
@@ -54,6 +56,8 @@ void SQGSIndustry_Register(Squirrel *engine)
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::SetExclusiveSupplier,              "SetExclusiveSupplier",              3, ".ii");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetExclusiveConsumer,              "GetExclusiveConsumer",              2, ".i");
 	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::SetExclusiveConsumer,              "SetExclusiveConsumer",              3, ".ii");
+	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::GetProductionLevel,                "GetProductionLevel",                2, ".i");
+	SQGSIndustry.DefSQStaticMethod(engine, &ScriptIndustry::SetProductionLevel,                "SetProductionLevel",                5, ".iib.");
 
 	SQGSIndustry.PostRegister(engine);
 }

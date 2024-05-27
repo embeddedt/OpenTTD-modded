@@ -11,11 +11,11 @@
 #include "../template/template_cargo.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptCargo, ST_AI>() { return "AICargo"; }
+template <> const char *GetClassName<ScriptCargo, ScriptType::AI>() { return "AICargo"; }
 
 void SQAICargo_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptCargo, ST_AI> SQAICargo("AICargo");
+	DefSQClass<ScriptCargo, ScriptType::AI> SQAICargo("AICargo");
 	SQAICargo.PreRegister(engine);
 	SQAICargo.AddConstructor<void (ScriptCargo::*)(), 1>(engine, "x");
 

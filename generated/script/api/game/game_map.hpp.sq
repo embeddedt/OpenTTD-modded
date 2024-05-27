@@ -11,11 +11,11 @@
 #include "../template/template_map.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptMap, ST_GS>() { return "GSMap"; }
+template <> const char *GetClassName<ScriptMap, ScriptType::GS>() { return "GSMap"; }
 
 void SQGSMap_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptMap, ST_GS> SQGSMap("GSMap");
+	DefSQClass<ScriptMap, ScriptType::GS> SQGSMap("GSMap");
 	SQGSMap.PreRegister(engine);
 	SQGSMap.AddConstructor<void (ScriptMap::*)(), 1>(engine, "x");
 

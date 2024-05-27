@@ -11,11 +11,11 @@
 #include "../template/template_priorityqueue.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptPriorityQueue, ST_AI>() { return "AIPriorityQueue"; }
+template <> const char *GetClassName<ScriptPriorityQueue, ScriptType::AI>() { return "AIPriorityQueue"; }
 
 void SQAIPriorityQueue_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptPriorityQueue, ST_AI> SQAIPriorityQueue("AIPriorityQueue");
+	DefSQClass<ScriptPriorityQueue, ScriptType::AI> SQAIPriorityQueue("AIPriorityQueue");
 	SQAIPriorityQueue.PreRegister(engine);
 	SQAIPriorityQueue.AddConstructor<void (ScriptPriorityQueue::*)(), 1>(engine, "x");
 

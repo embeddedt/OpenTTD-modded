@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/emsdk/upstream/emscripten/cache/sysroot")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,6 +32,11 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "TRUE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/emsdk/upstream/bin/llvm-objdump")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/script/cmake_install.cmake")
@@ -51,10 +56,12 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/os/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/pathfinder/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/saveload/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/sl/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/sound/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/spriteloader/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/table/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/tests/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/timer/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/video/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/widgets/cmake_install.cmake")
 

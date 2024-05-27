@@ -11,11 +11,11 @@
 #include "../template/template_map.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptMap, ST_AI>() { return "AIMap"; }
+template <> const char *GetClassName<ScriptMap, ScriptType::AI>() { return "AIMap"; }
 
 void SQAIMap_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptMap, ST_AI> SQAIMap("AIMap");
+	DefSQClass<ScriptMap, ScriptType::AI> SQAIMap("AIMap");
 	SQAIMap.PreRegister(engine);
 	SQAIMap.AddConstructor<void (ScriptMap::*)(), 1>(engine, "x");
 

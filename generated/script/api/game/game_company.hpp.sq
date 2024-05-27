@@ -11,11 +11,11 @@
 #include "../template/template_company.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptCompany, ST_GS>() { return "GSCompany"; }
+template <> const char *GetClassName<ScriptCompany, ScriptType::GS>() { return "GSCompany"; }
 
 void SQGSCompany_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptCompany, ST_GS> SQGSCompany("GSCompany");
+	DefSQClass<ScriptCompany, ScriptType::GS> SQGSCompany("GSCompany");
 	SQGSCompany.PreRegister(engine);
 	SQGSCompany.AddConstructor<void (ScriptCompany::*)(), 1>(engine, "x");
 
@@ -88,15 +88,19 @@ void SQGSCompany_Register(Squirrel *engine)
 	SQGSCompany.DefSQConst(engine, ScriptCompany::EXPENSES_INVALID,            "EXPENSES_INVALID");
 
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ResolveCompanyID,              "ResolveCompanyID",              2, ".i");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::IsMine,                        "IsMine",                        2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetName,                       "SetName",                       2, "..");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetName,                       "GetName",                       2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetPresidentName,              "SetPresidentName",              2, "..");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetPresidentName,              "GetPresidentName",              2, ".i");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetPresidentGender,            "SetPresidentGender",            2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetPresidentGender,            "GetPresidentGender",            2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetLoanAmount,                 "SetLoanAmount",                 2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetMinimumLoanAmount,          "SetMinimumLoanAmount",          2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetLoanAmount,                 "GetLoanAmount",                 1, ".");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetMaxLoanAmount,              "GetMaxLoanAmount",              1, ".");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetMaxLoanAmountForCompany,    "SetMaxLoanAmountForCompany",    3, ".ii");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ResetMaxLoanAmountForCompany,  "ResetMaxLoanAmountForCompany",  2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetLoanInterval,               "GetLoanInterval",               1, ".");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetBankBalance,                "GetBankBalance",                2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::ChangeBankBalance,             "ChangeBankBalance",             5, ".iiii");
@@ -108,8 +112,11 @@ void SQGSCompany_Register(Squirrel *engine)
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAnnualExpenseValue,         "GetAnnualExpenseValue",         4, ".iii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::BuildCompanyHQ,                "BuildCompanyHQ",                2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetCompanyHQ,                  "GetCompanyHQ",                  2, ".i");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetAutoRenewStatus,            "SetAutoRenewStatus",            2, ".b");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAutoRenewStatus,            "GetAutoRenewStatus",            2, ".i");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetAutoRenewMonths,            "SetAutoRenewMonths",            2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAutoRenewMonths,            "GetAutoRenewMonths",            2, ".i");
+	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetAutoRenewMoney,             "SetAutoRenewMoney",             2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::GetAutoRenewMoney,             "GetAutoRenewMoney",             2, ".i");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetPrimaryLiveryColour,        "SetPrimaryLiveryColour",        3, ".ii");
 	SQGSCompany.DefSQStaticMethod(engine, &ScriptCompany::SetSecondaryLiveryColour,      "SetSecondaryLiveryColour",      3, ".ii");

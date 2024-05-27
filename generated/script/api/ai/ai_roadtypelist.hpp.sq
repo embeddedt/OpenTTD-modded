@@ -11,11 +11,11 @@
 #include "../template/template_roadtypelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptRoadTypeList, ST_AI>() { return "AIRoadTypeList"; }
+template <> const char *GetClassName<ScriptRoadTypeList, ScriptType::AI>() { return "AIRoadTypeList"; }
 
 void SQAIRoadTypeList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptRoadTypeList, ST_AI> SQAIRoadTypeList("AIRoadTypeList");
+	DefSQClass<ScriptRoadTypeList, ScriptType::AI> SQAIRoadTypeList("AIRoadTypeList");
 	SQAIRoadTypeList.PreRegister(engine, "AIList");
 	SQAIRoadTypeList.AddConstructor<void (ScriptRoadTypeList::*)(ScriptRoad::RoadTramTypes rtts), 2>(engine, "xi");
 

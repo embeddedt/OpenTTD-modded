@@ -11,11 +11,11 @@
 #include "../template/template_event_types.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptEventVehicleCrashed, ST_GS>() { return "GSEventVehicleCrashed"; }
+template <> const char *GetClassName<ScriptEventVehicleCrashed, ScriptType::GS>() { return "GSEventVehicleCrashed"; }
 
 void SQGSEventVehicleCrashed_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventVehicleCrashed, ST_GS> SQGSEventVehicleCrashed("GSEventVehicleCrashed");
+	DefSQClass<ScriptEventVehicleCrashed, ScriptType::GS> SQGSEventVehicleCrashed("GSEventVehicleCrashed");
 	SQGSEventVehicleCrashed.PreRegister(engine, "GSEvent");
 
 	SQGSEventVehicleCrashed.DefSQConst(engine, ScriptEventVehicleCrashed::CRASH_TRAIN,               "CRASH_TRAIN");
@@ -35,11 +35,11 @@ void SQGSEventVehicleCrashed_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventSubsidyOffer, ST_GS>() { return "GSEventSubsidyOffer"; }
+template <> const char *GetClassName<ScriptEventSubsidyOffer, ScriptType::GS>() { return "GSEventSubsidyOffer"; }
 
 void SQGSEventSubsidyOffer_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventSubsidyOffer, ST_GS> SQGSEventSubsidyOffer("GSEventSubsidyOffer");
+	DefSQClass<ScriptEventSubsidyOffer, ScriptType::GS> SQGSEventSubsidyOffer("GSEventSubsidyOffer");
 	SQGSEventSubsidyOffer.PreRegister(engine, "GSEvent");
 
 	SQGSEventSubsidyOffer.DefSQStaticMethod(engine, &ScriptEventSubsidyOffer::Convert, "Convert", 2, ".x");
@@ -50,11 +50,11 @@ void SQGSEventSubsidyOffer_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventSubsidyOfferExpired, ST_GS>() { return "GSEventSubsidyOfferExpired"; }
+template <> const char *GetClassName<ScriptEventSubsidyOfferExpired, ScriptType::GS>() { return "GSEventSubsidyOfferExpired"; }
 
 void SQGSEventSubsidyOfferExpired_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventSubsidyOfferExpired, ST_GS> SQGSEventSubsidyOfferExpired("GSEventSubsidyOfferExpired");
+	DefSQClass<ScriptEventSubsidyOfferExpired, ScriptType::GS> SQGSEventSubsidyOfferExpired("GSEventSubsidyOfferExpired");
 	SQGSEventSubsidyOfferExpired.PreRegister(engine, "GSEvent");
 
 	SQGSEventSubsidyOfferExpired.DefSQStaticMethod(engine, &ScriptEventSubsidyOfferExpired::Convert, "Convert", 2, ".x");
@@ -65,11 +65,11 @@ void SQGSEventSubsidyOfferExpired_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventSubsidyAwarded, ST_GS>() { return "GSEventSubsidyAwarded"; }
+template <> const char *GetClassName<ScriptEventSubsidyAwarded, ScriptType::GS>() { return "GSEventSubsidyAwarded"; }
 
 void SQGSEventSubsidyAwarded_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventSubsidyAwarded, ST_GS> SQGSEventSubsidyAwarded("GSEventSubsidyAwarded");
+	DefSQClass<ScriptEventSubsidyAwarded, ScriptType::GS> SQGSEventSubsidyAwarded("GSEventSubsidyAwarded");
 	SQGSEventSubsidyAwarded.PreRegister(engine, "GSEvent");
 
 	SQGSEventSubsidyAwarded.DefSQStaticMethod(engine, &ScriptEventSubsidyAwarded::Convert, "Convert", 2, ".x");
@@ -80,11 +80,11 @@ void SQGSEventSubsidyAwarded_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventSubsidyExpired, ST_GS>() { return "GSEventSubsidyExpired"; }
+template <> const char *GetClassName<ScriptEventSubsidyExpired, ScriptType::GS>() { return "GSEventSubsidyExpired"; }
 
 void SQGSEventSubsidyExpired_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventSubsidyExpired, ST_GS> SQGSEventSubsidyExpired("GSEventSubsidyExpired");
+	DefSQClass<ScriptEventSubsidyExpired, ScriptType::GS> SQGSEventSubsidyExpired("GSEventSubsidyExpired");
 	SQGSEventSubsidyExpired.PreRegister(engine, "GSEvent");
 
 	SQGSEventSubsidyExpired.DefSQStaticMethod(engine, &ScriptEventSubsidyExpired::Convert, "Convert", 2, ".x");
@@ -95,11 +95,11 @@ void SQGSEventSubsidyExpired_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventCompanyNew, ST_GS>() { return "GSEventCompanyNew"; }
+template <> const char *GetClassName<ScriptEventCompanyNew, ScriptType::GS>() { return "GSEventCompanyNew"; }
 
 void SQGSEventCompanyNew_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventCompanyNew, ST_GS> SQGSEventCompanyNew("GSEventCompanyNew");
+	DefSQClass<ScriptEventCompanyNew, ScriptType::GS> SQGSEventCompanyNew("GSEventCompanyNew");
 	SQGSEventCompanyNew.PreRegister(engine, "GSEvent");
 
 	SQGSEventCompanyNew.DefSQStaticMethod(engine, &ScriptEventCompanyNew::Convert, "Convert", 2, ".x");
@@ -110,11 +110,11 @@ void SQGSEventCompanyNew_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventCompanyInTrouble, ST_GS>() { return "GSEventCompanyInTrouble"; }
+template <> const char *GetClassName<ScriptEventCompanyInTrouble, ScriptType::GS>() { return "GSEventCompanyInTrouble"; }
 
 void SQGSEventCompanyInTrouble_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventCompanyInTrouble, ST_GS> SQGSEventCompanyInTrouble("GSEventCompanyInTrouble");
+	DefSQClass<ScriptEventCompanyInTrouble, ScriptType::GS> SQGSEventCompanyInTrouble("GSEventCompanyInTrouble");
 	SQGSEventCompanyInTrouble.PreRegister(engine, "GSEvent");
 
 	SQGSEventCompanyInTrouble.DefSQStaticMethod(engine, &ScriptEventCompanyInTrouble::Convert, "Convert", 2, ".x");
@@ -125,11 +125,11 @@ void SQGSEventCompanyInTrouble_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventCompanyMerger, ST_GS>() { return "GSEventCompanyMerger"; }
+template <> const char *GetClassName<ScriptEventCompanyMerger, ScriptType::GS>() { return "GSEventCompanyMerger"; }
 
 void SQGSEventCompanyMerger_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventCompanyMerger, ST_GS> SQGSEventCompanyMerger("GSEventCompanyMerger");
+	DefSQClass<ScriptEventCompanyMerger, ScriptType::GS> SQGSEventCompanyMerger("GSEventCompanyMerger");
 	SQGSEventCompanyMerger.PreRegister(engine, "GSEvent");
 
 	SQGSEventCompanyMerger.DefSQStaticMethod(engine, &ScriptEventCompanyMerger::Convert, "Convert", 2, ".x");
@@ -141,11 +141,11 @@ void SQGSEventCompanyMerger_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventCompanyBankrupt, ST_GS>() { return "GSEventCompanyBankrupt"; }
+template <> const char *GetClassName<ScriptEventCompanyBankrupt, ScriptType::GS>() { return "GSEventCompanyBankrupt"; }
 
 void SQGSEventCompanyBankrupt_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventCompanyBankrupt, ST_GS> SQGSEventCompanyBankrupt("GSEventCompanyBankrupt");
+	DefSQClass<ScriptEventCompanyBankrupt, ScriptType::GS> SQGSEventCompanyBankrupt("GSEventCompanyBankrupt");
 	SQGSEventCompanyBankrupt.PreRegister(engine, "GSEvent");
 
 	SQGSEventCompanyBankrupt.DefSQStaticMethod(engine, &ScriptEventCompanyBankrupt::Convert, "Convert", 2, ".x");
@@ -156,11 +156,11 @@ void SQGSEventCompanyBankrupt_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventIndustryOpen, ST_GS>() { return "GSEventIndustryOpen"; }
+template <> const char *GetClassName<ScriptEventIndustryOpen, ScriptType::GS>() { return "GSEventIndustryOpen"; }
 
 void SQGSEventIndustryOpen_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventIndustryOpen, ST_GS> SQGSEventIndustryOpen("GSEventIndustryOpen");
+	DefSQClass<ScriptEventIndustryOpen, ScriptType::GS> SQGSEventIndustryOpen("GSEventIndustryOpen");
 	SQGSEventIndustryOpen.PreRegister(engine, "GSEvent");
 
 	SQGSEventIndustryOpen.DefSQStaticMethod(engine, &ScriptEventIndustryOpen::Convert, "Convert", 2, ".x");
@@ -171,11 +171,11 @@ void SQGSEventIndustryOpen_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventIndustryClose, ST_GS>() { return "GSEventIndustryClose"; }
+template <> const char *GetClassName<ScriptEventIndustryClose, ScriptType::GS>() { return "GSEventIndustryClose"; }
 
 void SQGSEventIndustryClose_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventIndustryClose, ST_GS> SQGSEventIndustryClose("GSEventIndustryClose");
+	DefSQClass<ScriptEventIndustryClose, ScriptType::GS> SQGSEventIndustryClose("GSEventIndustryClose");
 	SQGSEventIndustryClose.PreRegister(engine, "GSEvent");
 
 	SQGSEventIndustryClose.DefSQStaticMethod(engine, &ScriptEventIndustryClose::Convert, "Convert", 2, ".x");
@@ -186,11 +186,11 @@ void SQGSEventIndustryClose_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventStationFirstVehicle, ST_GS>() { return "GSEventStationFirstVehicle"; }
+template <> const char *GetClassName<ScriptEventStationFirstVehicle, ScriptType::GS>() { return "GSEventStationFirstVehicle"; }
 
 void SQGSEventStationFirstVehicle_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventStationFirstVehicle, ST_GS> SQGSEventStationFirstVehicle("GSEventStationFirstVehicle");
+	DefSQClass<ScriptEventStationFirstVehicle, ScriptType::GS> SQGSEventStationFirstVehicle("GSEventStationFirstVehicle");
 	SQGSEventStationFirstVehicle.PreRegister(engine, "GSEvent");
 
 	SQGSEventStationFirstVehicle.DefSQStaticMethod(engine, &ScriptEventStationFirstVehicle::Convert, "Convert", 2, ".x");
@@ -202,11 +202,11 @@ void SQGSEventStationFirstVehicle_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventTownFounded, ST_GS>() { return "GSEventTownFounded"; }
+template <> const char *GetClassName<ScriptEventTownFounded, ScriptType::GS>() { return "GSEventTownFounded"; }
 
 void SQGSEventTownFounded_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventTownFounded, ST_GS> SQGSEventTownFounded("GSEventTownFounded");
+	DefSQClass<ScriptEventTownFounded, ScriptType::GS> SQGSEventTownFounded("GSEventTownFounded");
 	SQGSEventTownFounded.PreRegister(engine, "GSEvent");
 
 	SQGSEventTownFounded.DefSQStaticMethod(engine, &ScriptEventTownFounded::Convert, "Convert", 2, ".x");
@@ -217,11 +217,11 @@ void SQGSEventTownFounded_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventAdminPort, ST_GS>() { return "GSEventAdminPort"; }
+template <> const char *GetClassName<ScriptEventAdminPort, ScriptType::GS>() { return "GSEventAdminPort"; }
 
 void SQGSEventAdminPort_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventAdminPort, ST_GS> SQGSEventAdminPort("GSEventAdminPort");
+	DefSQClass<ScriptEventAdminPort, ScriptType::GS> SQGSEventAdminPort("GSEventAdminPort");
 	SQGSEventAdminPort.PreRegister(engine, "GSEvent");
 
 	SQGSEventAdminPort.DefSQStaticMethod(engine, &ScriptEventAdminPort::Convert, "Convert", 2, ".x");
@@ -232,11 +232,11 @@ void SQGSEventAdminPort_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventWindowWidgetClick, ST_GS>() { return "GSEventWindowWidgetClick"; }
+template <> const char *GetClassName<ScriptEventWindowWidgetClick, ScriptType::GS>() { return "GSEventWindowWidgetClick"; }
 
 void SQGSEventWindowWidgetClick_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventWindowWidgetClick, ST_GS> SQGSEventWindowWidgetClick("GSEventWindowWidgetClick");
+	DefSQClass<ScriptEventWindowWidgetClick, ScriptType::GS> SQGSEventWindowWidgetClick("GSEventWindowWidgetClick");
 	SQGSEventWindowWidgetClick.PreRegister(engine, "GSEvent");
 
 	SQGSEventWindowWidgetClick.DefSQStaticMethod(engine, &ScriptEventWindowWidgetClick::Convert, "Convert", 2, ".x");
@@ -249,11 +249,11 @@ void SQGSEventWindowWidgetClick_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventGoalQuestionAnswer, ST_GS>() { return "GSEventGoalQuestionAnswer"; }
+template <> const char *GetClassName<ScriptEventGoalQuestionAnswer, ScriptType::GS>() { return "GSEventGoalQuestionAnswer"; }
 
 void SQGSEventGoalQuestionAnswer_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventGoalQuestionAnswer, ST_GS> SQGSEventGoalQuestionAnswer("GSEventGoalQuestionAnswer");
+	DefSQClass<ScriptEventGoalQuestionAnswer, ScriptType::GS> SQGSEventGoalQuestionAnswer("GSEventGoalQuestionAnswer");
 	SQGSEventGoalQuestionAnswer.PreRegister(engine, "GSEvent");
 
 	SQGSEventGoalQuestionAnswer.DefSQStaticMethod(engine, &ScriptEventGoalQuestionAnswer::Convert, "Convert", 2, ".x");
@@ -266,11 +266,11 @@ void SQGSEventGoalQuestionAnswer_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventCompanyTown, ST_GS>() { return "GSEventCompanyTown"; }
+template <> const char *GetClassName<ScriptEventCompanyTown, ScriptType::GS>() { return "GSEventCompanyTown"; }
 
 void SQGSEventCompanyTown_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventCompanyTown, ST_GS> SQGSEventCompanyTown("GSEventCompanyTown");
+	DefSQClass<ScriptEventCompanyTown, ScriptType::GS> SQGSEventCompanyTown("GSEventCompanyTown");
 	SQGSEventCompanyTown.PreRegister(engine, "GSEvent");
 
 	SQGSEventCompanyTown.DefSQStaticMethod(engine, &ScriptEventCompanyTown::Convert, "Convert", 2, ".x");
@@ -282,11 +282,11 @@ void SQGSEventCompanyTown_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventExclusiveTransportRights, ST_GS>() { return "GSEventExclusiveTransportRights"; }
+template <> const char *GetClassName<ScriptEventExclusiveTransportRights, ScriptType::GS>() { return "GSEventExclusiveTransportRights"; }
 
 void SQGSEventExclusiveTransportRights_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventExclusiveTransportRights, ST_GS> SQGSEventExclusiveTransportRights("GSEventExclusiveTransportRights");
+	DefSQClass<ScriptEventExclusiveTransportRights, ScriptType::GS> SQGSEventExclusiveTransportRights("GSEventExclusiveTransportRights");
 	SQGSEventExclusiveTransportRights.PreRegister(engine, "GSEventCompanyTown");
 
 	SQGSEventExclusiveTransportRights.DefSQStaticMethod(engine, &ScriptEventExclusiveTransportRights::Convert, "Convert", 2, ".x");
@@ -295,11 +295,11 @@ void SQGSEventExclusiveTransportRights_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventRoadReconstruction, ST_GS>() { return "GSEventRoadReconstruction"; }
+template <> const char *GetClassName<ScriptEventRoadReconstruction, ScriptType::GS>() { return "GSEventRoadReconstruction"; }
 
 void SQGSEventRoadReconstruction_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventRoadReconstruction, ST_GS> SQGSEventRoadReconstruction("GSEventRoadReconstruction");
+	DefSQClass<ScriptEventRoadReconstruction, ScriptType::GS> SQGSEventRoadReconstruction("GSEventRoadReconstruction");
 	SQGSEventRoadReconstruction.PreRegister(engine, "GSEventCompanyTown");
 
 	SQGSEventRoadReconstruction.DefSQStaticMethod(engine, &ScriptEventRoadReconstruction::Convert, "Convert", 2, ".x");
@@ -308,11 +308,11 @@ void SQGSEventRoadReconstruction_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventStoryPageButtonClick, ST_GS>() { return "GSEventStoryPageButtonClick"; }
+template <> const char *GetClassName<ScriptEventStoryPageButtonClick, ScriptType::GS>() { return "GSEventStoryPageButtonClick"; }
 
 void SQGSEventStoryPageButtonClick_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventStoryPageButtonClick, ST_GS> SQGSEventStoryPageButtonClick("GSEventStoryPageButtonClick");
+	DefSQClass<ScriptEventStoryPageButtonClick, ScriptType::GS> SQGSEventStoryPageButtonClick("GSEventStoryPageButtonClick");
 	SQGSEventStoryPageButtonClick.PreRegister(engine, "GSEvent");
 
 	SQGSEventStoryPageButtonClick.DefSQStaticMethod(engine, &ScriptEventStoryPageButtonClick::Convert, "Convert", 2, ".x");
@@ -325,11 +325,11 @@ void SQGSEventStoryPageButtonClick_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventStoryPageTileSelect, ST_GS>() { return "GSEventStoryPageTileSelect"; }
+template <> const char *GetClassName<ScriptEventStoryPageTileSelect, ScriptType::GS>() { return "GSEventStoryPageTileSelect"; }
 
 void SQGSEventStoryPageTileSelect_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventStoryPageTileSelect, ST_GS> SQGSEventStoryPageTileSelect("GSEventStoryPageTileSelect");
+	DefSQClass<ScriptEventStoryPageTileSelect, ScriptType::GS> SQGSEventStoryPageTileSelect("GSEventStoryPageTileSelect");
 	SQGSEventStoryPageTileSelect.PreRegister(engine, "GSEvent");
 
 	SQGSEventStoryPageTileSelect.DefSQStaticMethod(engine, &ScriptEventStoryPageTileSelect::Convert, "Convert", 2, ".x");
@@ -343,11 +343,11 @@ void SQGSEventStoryPageTileSelect_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptEventStoryPageVehicleSelect, ST_GS>() { return "GSEventStoryPageVehicleSelect"; }
+template <> const char *GetClassName<ScriptEventStoryPageVehicleSelect, ScriptType::GS>() { return "GSEventStoryPageVehicleSelect"; }
 
 void SQGSEventStoryPageVehicleSelect_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptEventStoryPageVehicleSelect, ST_GS> SQGSEventStoryPageVehicleSelect("GSEventStoryPageVehicleSelect");
+	DefSQClass<ScriptEventStoryPageVehicleSelect, ScriptType::GS> SQGSEventStoryPageVehicleSelect("GSEventStoryPageVehicleSelect");
 	SQGSEventStoryPageVehicleSelect.PreRegister(engine, "GSEvent");
 
 	SQGSEventStoryPageVehicleSelect.DefSQStaticMethod(engine, &ScriptEventStoryPageVehicleSelect::Convert, "Convert", 2, ".x");

@@ -11,11 +11,11 @@
 #include "../template/template_league.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptLeagueTable, ST_GS>() { return "GSLeagueTable"; }
+template <> const char *GetClassName<ScriptLeagueTable, ScriptType::GS>() { return "GSLeagueTable"; }
 
 void SQGSLeagueTable_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptLeagueTable, ST_GS> SQGSLeagueTable("GSLeagueTable");
+	DefSQClass<ScriptLeagueTable, ScriptType::GS> SQGSLeagueTable("GSLeagueTable");
 	SQGSLeagueTable.PreRegister(engine);
 	SQGSLeagueTable.AddConstructor<void (ScriptLeagueTable::*)(), 1>(engine, "x");
 

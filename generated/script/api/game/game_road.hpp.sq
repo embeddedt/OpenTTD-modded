@@ -11,11 +11,11 @@
 #include "../template/template_road.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptRoad, ST_GS>() { return "GSRoad"; }
+template <> const char *GetClassName<ScriptRoad, ScriptType::GS>() { return "GSRoad"; }
 
 void SQGSRoad_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptRoad, ST_GS> SQGSRoad("GSRoad");
+	DefSQClass<ScriptRoad, ScriptType::GS> SQGSRoad("GSRoad");
 	SQGSRoad.PreRegister(engine);
 	SQGSRoad.AddConstructor<void (ScriptRoad::*)(), 1>(engine, "x");
 
@@ -37,6 +37,27 @@ void SQGSRoad_Register(Squirrel *engine)
 	SQGSRoad.DefSQConst(engine, ScriptRoad::BT_DEPOT,                                     "BT_DEPOT");
 	SQGSRoad.DefSQConst(engine, ScriptRoad::BT_BUS_STOP,                                  "BT_BUS_STOP");
 	SQGSRoad.DefSQConst(engine, ScriptRoad::BT_TRUCK_STOP,                                "BT_TRUCK_STOP");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_NONE,                              "ROADPIECES_NONE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_NW,                                "ROADPIECES_NW");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_SW,                                "ROADPIECES_SW");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_SE,                                "ROADPIECES_SE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_NE,                                "ROADPIECES_NE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_X,                                 "ROADPIECES_X");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_Y,                                 "ROADPIECES_Y");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_N,                                 "ROADPIECES_N");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_E,                                 "ROADPIECES_E");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_S,                                 "ROADPIECES_S");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_W,                                 "ROADPIECES_W");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_S_NW,                              "ROADPIECES_S_NW");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_W_NE,                              "ROADPIECES_W_NE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_N_SE,                              "ROADPIECES_N_SE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_E_SW,                              "ROADPIECES_E_SW");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ROADPIECES_ALL,                               "ROADPIECES_ALL");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ONEWAY_NONE,                                  "ONEWAY_NONE");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ONEWAY_NORTHWEST,                             "ONEWAY_NORTHWEST");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ONEWAY_SOUTHWEST,                             "ONEWAY_SOUTHWEST");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ONEWAY_SOUTHEAST,                             "ONEWAY_SOUTHEAST");
+	SQGSRoad.DefSQConst(engine, ScriptRoad::ONEWAY_NORTHEAST,                             "ONEWAY_NORTHEAST");
 
 	ScriptError::RegisterErrorMap(STR_ERROR_ROAD_WORKS_IN_PROGRESS,           ScriptRoad::ERR_ROAD_WORKS_IN_PROGRESS);
 	ScriptError::RegisterErrorMap(STR_ERROR_DRIVE_THROUGH_DIRECTION,          ScriptRoad::ERR_ROAD_DRIVE_THROUGH_WRONG_DIRECTION);
@@ -67,9 +88,11 @@ void SQGSRoad_Register(Squirrel *engine)
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::ConvertRoadType,                "ConvertRoadType",                4, ".iii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::HasRoadType,                    "HasRoadType",                    3, ".ii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::HasRoadTramType,                "HasRoadTramType",                3, ".ii");
+	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadPieces,                  "GetRoadPieces",                  3, ".ii");
+	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetOneWayInfo,                  "GetOneWayInfo",                  2, ".i");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadType,                    "GetRoadType",                    3, ".ii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::AreRoadTilesConnected,          "AreRoadTilesConnected",          3, ".ii");
-	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadParts,     "CanBuildConnectedRoadParts",     5, ".iiii");
+	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadParts,     "CanBuildConnectedRoadParts",     5, ".iaii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::CanBuildConnectedRoadPartsHere, "CanBuildConnectedRoadPartsHere", 4, ".iii");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetNeighbourRoadCount,          "GetNeighbourRoadCount",          2, ".i");
 	SQGSRoad.DefSQStaticMethod(engine, &ScriptRoad::GetRoadDepotFrontTile,          "GetRoadDepotFrontTile",          2, ".i");

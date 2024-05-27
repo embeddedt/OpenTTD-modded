@@ -11,11 +11,11 @@
 #include "../template/template_waypointlist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptWaypointList, ST_AI>() { return "AIWaypointList"; }
+template <> const char *GetClassName<ScriptWaypointList, ScriptType::AI>() { return "AIWaypointList"; }
 
 void SQAIWaypointList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptWaypointList, ST_AI> SQAIWaypointList("AIWaypointList");
+	DefSQClass<ScriptWaypointList, ScriptType::AI> SQAIWaypointList("AIWaypointList");
 	SQAIWaypointList.PreRegister(engine, "AIList");
 	SQAIWaypointList.AddConstructor<void (ScriptWaypointList::*)(ScriptWaypoint::WaypointType waypoint_type), 2>(engine, "xi");
 
@@ -23,11 +23,11 @@ void SQAIWaypointList_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptWaypointList_Vehicle, ST_AI>() { return "AIWaypointList_Vehicle"; }
+template <> const char *GetClassName<ScriptWaypointList_Vehicle, ScriptType::AI>() { return "AIWaypointList_Vehicle"; }
 
 void SQAIWaypointList_Vehicle_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptWaypointList_Vehicle, ST_AI> SQAIWaypointList_Vehicle("AIWaypointList_Vehicle");
+	DefSQClass<ScriptWaypointList_Vehicle, ScriptType::AI> SQAIWaypointList_Vehicle("AIWaypointList_Vehicle");
 	SQAIWaypointList_Vehicle.PreRegister(engine, "AIList");
 	SQAIWaypointList_Vehicle.AddConstructor<void (ScriptWaypointList_Vehicle::*)(VehicleID vehicle_id), 2>(engine, "xi");
 

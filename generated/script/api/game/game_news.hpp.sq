@@ -11,11 +11,11 @@
 #include "../template/template_news.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptNews, ST_GS>() { return "GSNews"; }
+template <> const char *GetClassName<ScriptNews, ScriptType::GS>() { return "GSNews"; }
 
 void SQGSNews_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptNews, ST_GS> SQGSNews("GSNews");
+	DefSQClass<ScriptNews, ScriptType::GS> SQGSNews("GSNews");
 	SQGSNews.PreRegister(engine);
 	SQGSNews.AddConstructor<void (ScriptNews::*)(), 1>(engine, "x");
 

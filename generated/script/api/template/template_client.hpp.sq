@@ -11,13 +11,13 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> struct Param<ScriptClient::ClientID> { static inline ScriptClient::ClientID Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptClient::ClientID)tmp; } };
+	template <> struct Param<ScriptClient::ClientID> { static inline ScriptClient::ClientID Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptClient::ClientID)tmp; } };
 	template <> struct Return<ScriptClient::ClientID> { static inline int Set(HSQUIRRELVM vm, ScriptClient::ClientID res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptClient to be used as Squirrel parameter */
-	template <> struct Param<ScriptClient *> { static inline ScriptClient *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptClient *)instance; } };
-	template <> struct Param<ScriptClient &> { static inline ScriptClient &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptClient *)instance; } };
-	template <> struct Param<const ScriptClient *> { static inline const ScriptClient *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptClient *)instance; } };
-	template <> struct Param<const ScriptClient &> { static inline const ScriptClient &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptClient *)instance; } };
+	template <> struct Param<ScriptClient *> { static inline ScriptClient *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptClient *)instance; } };
+	template <> struct Param<ScriptClient &> { static inline ScriptClient &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptClient *)instance; } };
+	template <> struct Param<const ScriptClient *> { static inline const ScriptClient *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptClient *)instance; } };
+	template <> struct Param<const ScriptClient &> { static inline const ScriptClient &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptClient *)instance; } };
 	template <> struct Return<ScriptClient *> { static inline int Set(HSQUIRRELVM vm, ScriptClient *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Client", res, nullptr, DefSQDestructorCallback<ScriptClient>, true); return 1; } };
 } // namespace SQConvert

@@ -11,11 +11,11 @@
 #include "../template/template_objecttypelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptObjectTypeList, ST_GS>() { return "GSObjectTypeList"; }
+template <> const char *GetClassName<ScriptObjectTypeList, ScriptType::GS>() { return "GSObjectTypeList"; }
 
 void SQGSObjectTypeList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptObjectTypeList, ST_GS> SQGSObjectTypeList("GSObjectTypeList");
+	DefSQClass<ScriptObjectTypeList, ScriptType::GS> SQGSObjectTypeList("GSObjectTypeList");
 	SQGSObjectTypeList.PreRegister(engine, "GSList");
 	SQGSObjectTypeList.AddConstructor<void (ScriptObjectTypeList::*)(), 1>(engine, "x");
 

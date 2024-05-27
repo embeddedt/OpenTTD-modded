@@ -11,23 +11,23 @@
 #include "../template/template_industrylist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptIndustryList, ST_AI>() { return "AIIndustryList"; }
+template <> const char *GetClassName<ScriptIndustryList, ScriptType::AI>() { return "AIIndustryList"; }
 
 void SQAIIndustryList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptIndustryList, ST_AI> SQAIIndustryList("AIIndustryList");
+	DefSQClass<ScriptIndustryList, ScriptType::AI> SQAIIndustryList("AIIndustryList");
 	SQAIIndustryList.PreRegister(engine, "AIList");
-	SQAIIndustryList.AddConstructor<void (ScriptIndustryList::*)(), 1>(engine, "x");
+	SQAIIndustryList.AddSQAdvancedConstructor(engine);
 
 	SQAIIndustryList.PostRegister(engine);
 }
 
 
-template <> const char *GetClassName<ScriptIndustryList_CargoAccepting, ST_AI>() { return "AIIndustryList_CargoAccepting"; }
+template <> const char *GetClassName<ScriptIndustryList_CargoAccepting, ScriptType::AI>() { return "AIIndustryList_CargoAccepting"; }
 
 void SQAIIndustryList_CargoAccepting_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptIndustryList_CargoAccepting, ST_AI> SQAIIndustryList_CargoAccepting("AIIndustryList_CargoAccepting");
+	DefSQClass<ScriptIndustryList_CargoAccepting, ScriptType::AI> SQAIIndustryList_CargoAccepting("AIIndustryList_CargoAccepting");
 	SQAIIndustryList_CargoAccepting.PreRegister(engine, "AIList");
 	SQAIIndustryList_CargoAccepting.AddConstructor<void (ScriptIndustryList_CargoAccepting::*)(CargoID cargo_id), 2>(engine, "xi");
 
@@ -35,11 +35,11 @@ void SQAIIndustryList_CargoAccepting_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptIndustryList_CargoProducing, ST_AI>() { return "AIIndustryList_CargoProducing"; }
+template <> const char *GetClassName<ScriptIndustryList_CargoProducing, ScriptType::AI>() { return "AIIndustryList_CargoProducing"; }
 
 void SQAIIndustryList_CargoProducing_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptIndustryList_CargoProducing, ST_AI> SQAIIndustryList_CargoProducing("AIIndustryList_CargoProducing");
+	DefSQClass<ScriptIndustryList_CargoProducing, ScriptType::AI> SQAIIndustryList_CargoProducing("AIIndustryList_CargoProducing");
 	SQAIIndustryList_CargoProducing.PreRegister(engine, "AIList");
 	SQAIIndustryList_CargoProducing.AddConstructor<void (ScriptIndustryList_CargoProducing::*)(CargoID cargo_id), 2>(engine, "xi");
 

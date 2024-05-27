@@ -11,11 +11,11 @@
 #include "../template/template_depotlist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptDepotList, ST_GS>() { return "GSDepotList"; }
+template <> const char *GetClassName<ScriptDepotList, ScriptType::GS>() { return "GSDepotList"; }
 
 void SQGSDepotList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptDepotList, ST_GS> SQGSDepotList("GSDepotList");
+	DefSQClass<ScriptDepotList, ScriptType::GS> SQGSDepotList("GSDepotList");
 	SQGSDepotList.PreRegister(engine, "GSList");
 	SQGSDepotList.AddConstructor<void (ScriptDepotList::*)(ScriptTile::TransportType transport_type), 2>(engine, "xi");
 

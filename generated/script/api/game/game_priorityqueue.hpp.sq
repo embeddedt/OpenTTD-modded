@@ -11,11 +11,11 @@
 #include "../template/template_priorityqueue.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptPriorityQueue, ST_GS>() { return "GSPriorityQueue"; }
+template <> const char *GetClassName<ScriptPriorityQueue, ScriptType::GS>() { return "GSPriorityQueue"; }
 
 void SQGSPriorityQueue_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptPriorityQueue, ST_GS> SQGSPriorityQueue("GSPriorityQueue");
+	DefSQClass<ScriptPriorityQueue, ScriptType::GS> SQGSPriorityQueue("GSPriorityQueue");
 	SQGSPriorityQueue.PreRegister(engine);
 	SQGSPriorityQueue.AddConstructor<void (ScriptPriorityQueue::*)(), 1>(engine, "x");
 

@@ -11,11 +11,11 @@
 #include "../template/template_waypoint.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptWaypoint, ST_AI>() { return "AIWaypoint"; }
+template <> const char *GetClassName<ScriptWaypoint, ScriptType::AI>() { return "AIWaypoint"; }
 
 void SQAIWaypoint_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptWaypoint, ST_AI> SQAIWaypoint("AIWaypoint");
+	DefSQClass<ScriptWaypoint, ScriptType::AI> SQAIWaypoint("AIWaypoint");
 	SQAIWaypoint.PreRegister(engine, "AIBaseStation");
 	SQAIWaypoint.AddConstructor<void (ScriptWaypoint::*)(), 1>(engine, "x");
 

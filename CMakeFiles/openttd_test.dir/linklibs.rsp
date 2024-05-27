@@ -1,0 +1,1 @@
+ -sUSE_LIBPNG=1 -sUSE_ZLIB=1 -sUSE_SDL=2 

@@ -11,11 +11,11 @@
 #include "../template/template_marine.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptMarine, ST_GS>() { return "GSMarine"; }
+template <> const char *GetClassName<ScriptMarine, ScriptType::GS>() { return "GSMarine"; }
 
 void SQGSMarine_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptMarine, ST_GS> SQGSMarine("GSMarine");
+	DefSQClass<ScriptMarine, ScriptType::GS> SQGSMarine("GSMarine");
 	SQGSMarine.PreRegister(engine);
 	SQGSMarine.AddConstructor<void (ScriptMarine::*)(), 1>(engine, "x");
 

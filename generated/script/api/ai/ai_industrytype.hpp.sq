@@ -11,11 +11,11 @@
 #include "../template/template_industrytype.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptIndustryType, ST_AI>() { return "AIIndustryType"; }
+template <> const char *GetClassName<ScriptIndustryType, ScriptType::AI>() { return "AIIndustryType"; }
 
 void SQAIIndustryType_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptIndustryType, ST_AI> SQAIIndustryType("AIIndustryType");
+	DefSQClass<ScriptIndustryType, ScriptType::AI> SQAIIndustryType("AIIndustryType");
 	SQAIIndustryType.PreRegister(engine);
 	SQAIIndustryType.AddConstructor<void (ScriptIndustryType::*)(), 1>(engine, "x");
 

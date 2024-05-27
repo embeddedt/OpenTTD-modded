@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptViewport to be used as Squirrel parameter */
-	template <> struct Param<ScriptViewport *> { static inline ScriptViewport *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptViewport *)instance; } };
-	template <> struct Param<ScriptViewport &> { static inline ScriptViewport &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptViewport *)instance; } };
-	template <> struct Param<const ScriptViewport *> { static inline const ScriptViewport *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptViewport *)instance; } };
-	template <> struct Param<const ScriptViewport &> { static inline const ScriptViewport &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptViewport *)instance; } };
+	template <> struct Param<ScriptViewport *> { static inline ScriptViewport *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptViewport *)instance; } };
+	template <> struct Param<ScriptViewport &> { static inline ScriptViewport &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptViewport *)instance; } };
+	template <> struct Param<const ScriptViewport *> { static inline const ScriptViewport *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptViewport *)instance; } };
+	template <> struct Param<const ScriptViewport &> { static inline const ScriptViewport &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptViewport *)instance; } };
 	template <> struct Return<ScriptViewport *> { static inline int Set(HSQUIRRELVM vm, ScriptViewport *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Viewport", res, nullptr, DefSQDestructorCallback<ScriptViewport>, true); return 1; } };
 } // namespace SQConvert

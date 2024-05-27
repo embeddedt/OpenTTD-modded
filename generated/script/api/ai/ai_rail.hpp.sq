@@ -11,11 +11,11 @@
 #include "../template/template_rail.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptRail, ST_AI>() { return "AIRail"; }
+template <> const char *GetClassName<ScriptRail, ScriptType::AI>() { return "AIRail"; }
 
 void SQAIRail_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptRail, ST_AI> SQAIRail("AIRail");
+	DefSQClass<ScriptRail, ScriptType::AI> SQAIRail("AIRail");
 	SQAIRail.PreRegister(engine);
 	SQAIRail.AddConstructor<void (ScriptRail::*)(), 1>(engine, "x");
 

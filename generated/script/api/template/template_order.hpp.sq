@@ -11,23 +11,23 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> struct Param<ScriptOrder::ErrorMessages> { static inline ScriptOrder::ErrorMessages Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::ErrorMessages)tmp; } };
+	template <> struct Param<ScriptOrder::ErrorMessages> { static inline ScriptOrder::ErrorMessages Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::ErrorMessages)tmp; } };
 	template <> struct Return<ScriptOrder::ErrorMessages> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::ErrorMessages res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptOrder::ScriptOrderFlags> { static inline ScriptOrder::ScriptOrderFlags Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::ScriptOrderFlags)tmp; } };
+	template <> struct Param<ScriptOrder::ScriptOrderFlags> { static inline ScriptOrder::ScriptOrderFlags Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::ScriptOrderFlags)tmp; } };
 	template <> struct Return<ScriptOrder::ScriptOrderFlags> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::ScriptOrderFlags res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptOrder::OrderCondition> { static inline ScriptOrder::OrderCondition Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::OrderCondition)tmp; } };
+	template <> struct Param<ScriptOrder::OrderCondition> { static inline ScriptOrder::OrderCondition Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::OrderCondition)tmp; } };
 	template <> struct Return<ScriptOrder::OrderCondition> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::OrderCondition res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptOrder::CompareFunction> { static inline ScriptOrder::CompareFunction Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::CompareFunction)tmp; } };
+	template <> struct Param<ScriptOrder::CompareFunction> { static inline ScriptOrder::CompareFunction Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::CompareFunction)tmp; } };
 	template <> struct Return<ScriptOrder::CompareFunction> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::CompareFunction res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptOrder::OrderPosition> { static inline ScriptOrder::OrderPosition Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::OrderPosition)tmp; } };
+	template <> struct Param<ScriptOrder::OrderPosition> { static inline ScriptOrder::OrderPosition Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::OrderPosition)tmp; } };
 	template <> struct Return<ScriptOrder::OrderPosition> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::OrderPosition res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptOrder::StopLocation> { static inline ScriptOrder::StopLocation Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::StopLocation)tmp; } };
+	template <> struct Param<ScriptOrder::StopLocation> { static inline ScriptOrder::StopLocation Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptOrder::StopLocation)tmp; } };
 	template <> struct Return<ScriptOrder::StopLocation> { static inline int Set(HSQUIRRELVM vm, ScriptOrder::StopLocation res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptOrder to be used as Squirrel parameter */
-	template <> struct Param<ScriptOrder *> { static inline ScriptOrder *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptOrder *)instance; } };
-	template <> struct Param<ScriptOrder &> { static inline ScriptOrder &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptOrder *)instance; } };
-	template <> struct Param<const ScriptOrder *> { static inline const ScriptOrder *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptOrder *)instance; } };
-	template <> struct Param<const ScriptOrder &> { static inline const ScriptOrder &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptOrder *)instance; } };
+	template <> struct Param<ScriptOrder *> { static inline ScriptOrder *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptOrder *)instance; } };
+	template <> struct Param<ScriptOrder &> { static inline ScriptOrder &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptOrder *)instance; } };
+	template <> struct Param<const ScriptOrder *> { static inline const ScriptOrder *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptOrder *)instance; } };
+	template <> struct Param<const ScriptOrder &> { static inline const ScriptOrder &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptOrder *)instance; } };
 	template <> struct Return<ScriptOrder *> { static inline int Set(HSQUIRRELVM vm, ScriptOrder *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Order", res, nullptr, DefSQDestructorCallback<ScriptOrder>, true); return 1; } };
 } // namespace SQConvert

@@ -11,11 +11,11 @@
 #include "../template/template_newgrf.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptNewGRFList, ST_GS>() { return "GSNewGRFList"; }
+template <> const char *GetClassName<ScriptNewGRFList, ScriptType::GS>() { return "GSNewGRFList"; }
 
 void SQGSNewGRFList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptNewGRFList, ST_GS> SQGSNewGRFList("GSNewGRFList");
+	DefSQClass<ScriptNewGRFList, ScriptType::GS> SQGSNewGRFList("GSNewGRFList");
 	SQGSNewGRFList.PreRegister(engine, "GSList");
 	SQGSNewGRFList.AddConstructor<void (ScriptNewGRFList::*)(), 1>(engine, "x");
 
@@ -23,11 +23,11 @@ void SQGSNewGRFList_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptNewGRF, ST_GS>() { return "GSNewGRF"; }
+template <> const char *GetClassName<ScriptNewGRF, ScriptType::GS>() { return "GSNewGRF"; }
 
 void SQGSNewGRF_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptNewGRF, ST_GS> SQGSNewGRF("GSNewGRF");
+	DefSQClass<ScriptNewGRF, ScriptType::GS> SQGSNewGRF("GSNewGRF");
 	SQGSNewGRF.PreRegister(engine);
 	SQGSNewGRF.AddConstructor<void (ScriptNewGRF::*)(), 1>(engine, "x");
 

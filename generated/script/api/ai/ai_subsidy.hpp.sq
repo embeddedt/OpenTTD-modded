@@ -11,11 +11,11 @@
 #include "../template/template_subsidy.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptSubsidy, ST_AI>() { return "AISubsidy"; }
+template <> const char *GetClassName<ScriptSubsidy, ScriptType::AI>() { return "AISubsidy"; }
 
 void SQAISubsidy_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptSubsidy, ST_AI> SQAISubsidy("AISubsidy");
+	DefSQClass<ScriptSubsidy, ScriptType::AI> SQAISubsidy("AISubsidy");
 	SQAISubsidy.PreRegister(engine);
 	SQAISubsidy.AddConstructor<void (ScriptSubsidy::*)(), 1>(engine, "x");
 

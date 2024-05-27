@@ -11,11 +11,11 @@
 #include "../template/template_order.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptOrder, ST_GS>() { return "GSOrder"; }
+template <> const char *GetClassName<ScriptOrder, ScriptType::GS>() { return "GSOrder"; }
 
 void SQGSOrder_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptOrder, ST_GS> SQGSOrder("GSOrder");
+	DefSQClass<ScriptOrder, ScriptType::GS> SQGSOrder("GSOrder");
 	SQGSOrder.PreRegister(engine);
 	SQGSOrder.AddConstructor<void (ScriptOrder::*)(), 1>(engine, "x");
 
@@ -93,6 +93,23 @@ void SQGSOrder_Register(Squirrel *engine)
 	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::GetOrderCompareValue,          "GetOrderCompareValue",          3, ".ii");
 	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::GetStopLocation,               "GetStopLocation",               3, ".ii");
 	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::GetOrderRefit,                 "GetOrderRefit",                 3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderJumpTo,                "SetOrderJumpTo",                4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderCondition,             "SetOrderCondition",             4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderCompareFunction,       "SetOrderCompareFunction",       4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderCompareValue,          "SetOrderCompareValue",          4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetStopLocation,               "SetStopLocation",               4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderRefit,                 "SetOrderRefit",                 4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::AppendOrder,                   "AppendOrder",                   4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::AppendConditionalOrder,        "AppendConditionalOrder",        3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::InsertOrder,                   "InsertOrder",                   5, ".iiii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::InsertConditionalOrder,        "InsertConditionalOrder",        4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::RemoveOrder,                   "RemoveOrder",                   3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SetOrderFlags,                 "SetOrderFlags",                 4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::MoveOrder,                     "MoveOrder",                     4, ".iii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::SkipToOrder,                   "SkipToOrder",                   3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::CopyOrders,                    "CopyOrders",                    3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::ShareOrders,                   "ShareOrders",                   3, ".ii");
+	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::UnshareOrders,                 "UnshareOrders",                 2, ".i");
 	SQGSOrder.DefSQStaticMethod(engine, &ScriptOrder::GetOrderDistance,              "GetOrderDistance",              4, ".iii");
 
 	SQGSOrder.PostRegister(engine);

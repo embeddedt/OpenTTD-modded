@@ -11,11 +11,11 @@
 #include "../template/template_order.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptOrder, ST_AI>() { return "AIOrder"; }
+template <> const char *GetClassName<ScriptOrder, ScriptType::AI>() { return "AIOrder"; }
 
 void SQAIOrder_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptOrder, ST_AI> SQAIOrder("AIOrder");
+	DefSQClass<ScriptOrder, ScriptType::AI> SQAIOrder("AIOrder");
 	SQAIOrder.PreRegister(engine);
 	SQAIOrder.AddConstructor<void (ScriptOrder::*)(), 1>(engine, "x");
 

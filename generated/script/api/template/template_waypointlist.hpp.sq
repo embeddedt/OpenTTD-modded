@@ -11,18 +11,18 @@
 
 namespace SQConvert {
 	/* Allow ScriptWaypointList to be used as Squirrel parameter */
-	template <> struct Param<ScriptWaypointList *> { static inline ScriptWaypointList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList *)instance; } };
-	template <> struct Param<ScriptWaypointList &> { static inline ScriptWaypointList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList *)instance; } };
-	template <> struct Param<const ScriptWaypointList *> { static inline const ScriptWaypointList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList *)instance; } };
-	template <> struct Param<const ScriptWaypointList &> { static inline const ScriptWaypointList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList *)instance; } };
+	template <> struct Param<ScriptWaypointList *> { static inline ScriptWaypointList *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList *)instance; } };
+	template <> struct Param<ScriptWaypointList &> { static inline ScriptWaypointList &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList *)instance; } };
+	template <> struct Param<const ScriptWaypointList *> { static inline const ScriptWaypointList *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList *)instance; } };
+	template <> struct Param<const ScriptWaypointList &> { static inline const ScriptWaypointList &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList *)instance; } };
 	template <> struct Return<ScriptWaypointList *> { static inline int Set(HSQUIRRELVM vm, ScriptWaypointList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "WaypointList", res, nullptr, DefSQDestructorCallback<ScriptWaypointList>, true); return 1; } };
 } // namespace SQConvert
 
 namespace SQConvert {
 	/* Allow ScriptWaypointList_Vehicle to be used as Squirrel parameter */
-	template <> struct Param<ScriptWaypointList_Vehicle *> { static inline ScriptWaypointList_Vehicle *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList_Vehicle *)instance; } };
-	template <> struct Param<ScriptWaypointList_Vehicle &> { static inline ScriptWaypointList_Vehicle &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList_Vehicle *)instance; } };
-	template <> struct Param<const ScriptWaypointList_Vehicle *> { static inline const ScriptWaypointList_Vehicle *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList_Vehicle *)instance; } };
-	template <> struct Param<const ScriptWaypointList_Vehicle &> { static inline const ScriptWaypointList_Vehicle &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList_Vehicle *)instance; } };
+	template <> struct Param<ScriptWaypointList_Vehicle *> { static inline ScriptWaypointList_Vehicle *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList_Vehicle *)instance; } };
+	template <> struct Param<ScriptWaypointList_Vehicle &> { static inline ScriptWaypointList_Vehicle &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList_Vehicle *)instance; } };
+	template <> struct Param<const ScriptWaypointList_Vehicle *> { static inline const ScriptWaypointList_Vehicle *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptWaypointList_Vehicle *)instance; } };
+	template <> struct Param<const ScriptWaypointList_Vehicle &> { static inline const ScriptWaypointList_Vehicle &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptWaypointList_Vehicle *)instance; } };
 	template <> struct Return<ScriptWaypointList_Vehicle *> { static inline int Set(HSQUIRRELVM vm, ScriptWaypointList_Vehicle *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "WaypointList_Vehicle", res, nullptr, DefSQDestructorCallback<ScriptWaypointList_Vehicle>, true); return 1; } };
 } // namespace SQConvert

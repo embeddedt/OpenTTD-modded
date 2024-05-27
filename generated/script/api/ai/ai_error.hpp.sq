@@ -11,11 +11,11 @@
 #include "../template/template_error.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptError, ST_AI>() { return "AIError"; }
+template <> const char *GetClassName<ScriptError, ScriptType::AI>() { return "AIError"; }
 
 void SQAIError_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptError, ST_AI> SQAIError("AIError");
+	DefSQClass<ScriptError, ScriptType::AI> SQAIError("AIError");
 	SQAIError.PreRegister(engine);
 	SQAIError.AddConstructor<void (ScriptError::*)(), 1>(engine, "x");
 

@@ -11,11 +11,11 @@
 #include "../template/template_story_page.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptStoryPage, ST_GS>() { return "GSStoryPage"; }
+template <> const char *GetClassName<ScriptStoryPage, ScriptType::GS>() { return "GSStoryPage"; }
 
 void SQGSStoryPage_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptStoryPage, ST_GS> SQGSStoryPage("GSStoryPage");
+	DefSQClass<ScriptStoryPage, ScriptType::GS> SQGSStoryPage("GSStoryPage");
 	SQGSStoryPage.PreRegister(engine);
 	SQGSStoryPage.AddConstructor<void (ScriptStoryPage::*)(), 1>(engine, "x");
 
@@ -102,23 +102,27 @@ void SQGSStoryPage_Register(Squirrel *engine)
 	SQGSStoryPage.DefSQConst(engine, ScriptStoryPage::SPBC_GREY,                  "SPBC_GREY");
 	SQGSStoryPage.DefSQConst(engine, ScriptStoryPage::SPBC_WHITE,                 "SPBC_WHITE");
 
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPage,           "IsValidStoryPage",           2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageElement,    "IsValidStoryPageElement",    2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::New,                        "New",                        3, ".i.");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::NewElement,                 "NewElement",                 5, ".iii.");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::UpdateElement,              "UpdateElement",              4, ".ii.");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetPageSortValue,           "GetPageSortValue",           2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetPageElementSortValue,    "GetPageElementSortValue",    2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetCompany,                 "GetCompany",                 2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetDate,                    "GetDate",                    2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::SetDate,                    "SetDate",                    3, ".ii");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::SetTitle,                   "SetTitle",                   3, ".i.");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::Show,                       "Show",                       2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::Remove,                     "Remove",                     2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::RemoveElement,              "RemoveElement",              2, ".i");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakePushButtonReference,    "MakePushButtonReference",    3, ".ii");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakeTileButtonReference,    "MakeTileButtonReference",    4, ".iii");
-	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakeVehicleButtonReference, "MakeVehicleButtonReference", 5, ".iiii");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPage,             "IsValidStoryPage",             2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageElement,      "IsValidStoryPageElement",      2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageElementType,  "IsValidStoryPageElementType",  2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::New,                          "New",                          3, ".i.");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::NewElement,                   "NewElement",                   5, ".iii.");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::UpdateElement,                "UpdateElement",                4, ".ii.");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetPageSortValue,             "GetPageSortValue",             2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetPageElementSortValue,      "GetPageElementSortValue",      2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetCompany,                   "GetCompany",                   2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::GetDate,                      "GetDate",                      2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::SetDate,                      "SetDate",                      3, ".ii");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::SetTitle,                     "SetTitle",                     3, ".i.");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::Show,                         "Show",                         2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::Remove,                       "Remove",                       2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::RemoveElement,                "RemoveElement",                2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageButtonColour, "IsValidStoryPageButtonColour", 2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageButtonFlags,  "IsValidStoryPageButtonFlags",  2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::IsValidStoryPageButtonCursor, "IsValidStoryPageButtonCursor", 2, ".i");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakePushButtonReference,      "MakePushButtonReference",      3, ".ii");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakeTileButtonReference,      "MakeTileButtonReference",      4, ".iii");
+	SQGSStoryPage.DefSQStaticMethod(engine, &ScriptStoryPage::MakeVehicleButtonReference,   "MakeVehicleButtonReference",   5, ".iiii");
 
 	SQGSStoryPage.PostRegister(engine);
 }

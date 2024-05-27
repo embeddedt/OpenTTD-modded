@@ -7,3 +7,17 @@
 
 /* THIS FILE IS AUTO-GENERATED; PLEASE DO NOT ALTER MANUALLY */
 
+#include "../script_grouplist.hpp"
+#include "../template/template_grouplist.hpp.sq"
+
+
+template <> const char *GetClassName<ScriptGroupList, ScriptType::GS>() { return "GSGroupList"; }
+
+void SQGSGroupList_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptGroupList, ScriptType::GS> SQGSGroupList("GSGroupList");
+	SQGSGroupList.PreRegister(engine, "GSList");
+	SQGSGroupList.AddSQAdvancedConstructor(engine);
+
+	SQGSGroupList.PostRegister(engine);
+}

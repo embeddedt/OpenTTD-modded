@@ -161,6 +161,7 @@ void SQAI_RegisterAll(Squirrel *engine)
 	SQAITileList_Register(engine);
 	SQAITileList_IndustryAccepting_Register(engine);
 	SQAITileList_IndustryProducing_Register(engine);
+	SQAITileList_StationCoverage_Register(engine);
 	SQAITileList_StationType_Register(engine);
 	SQAITown_Register(engine);
 	SQAITownEffectList_Register(engine);

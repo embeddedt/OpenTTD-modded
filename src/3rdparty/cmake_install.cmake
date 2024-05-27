@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/usr/local")
+  set(CMAKE_INSTALL_PREFIX "/emsdk/upstream/emscripten/cache/sysroot")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,18 +32,23 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "TRUE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/emsdk/upstream/bin/llvm-objdump")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/catch2/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/fmt/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/icu/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/md5/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/squirrel/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/opengl/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/os2/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/cpp-btree/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/mingw-std-threads/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/monocypher/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/randombytes/cmake_install.cmake")
-  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/optional/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/squirrel/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/nlohmann/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/opengl/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/openttd_social_integration_api/cmake_install.cmake")
+  include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/cpp-btree/cmake_install.cmake")
   include("/__w/OpenTTD-modded/OpenTTD-modded/em_build/src/3rdparty/robin_hood/cmake_install.cmake")
 
 endif()

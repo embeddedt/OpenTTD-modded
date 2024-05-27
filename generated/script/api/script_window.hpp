@@ -38,6 +38,7 @@
 #include "../../widgets/goal_widget.h"
 #include "../../widgets/graph_widget.h"
 #include "../../widgets/group_widget.h"
+#include "../../widgets/help_widget.h"
 #include "../../widgets/highscore_widget.h"
 #include "../../widgets/industry_widget.h"
 #include "../../widgets/intro_widget.h"
@@ -611,6 +612,12 @@ public:
 		WC_NETWORK_ASK_RELAY                         = ::WC_NETWORK_ASK_RELAY,
 
 		/**
+		 * Network ask survey window; %Window numbers:
+		 *  - 0 - #NetworkAskSurveyWidgets
+		 */
+		WC_NETWORK_ASK_SURVEY                        = ::WC_NETWORK_ASK_SURVEY,
+
+		/**
 		 * Chatbox; %Window numbers:
 		 *   - #DestType = #NetWorkChatWidgets
 		 */
@@ -790,7 +797,7 @@ public:
 
 		/**
 		 * Script debug window; %Window numbers:
-		 *   - 0 = #ScriptDebugWidgets
+		 *   - Ascending value = #ScriptDebugWidgets
 		 */
 		WC_SCRIPT_DEBUG                              = ::WC_SCRIPT_DEBUG,
 
@@ -835,6 +842,12 @@ public:
 		 *   - 0 = #ScreenshotWidgets
 		 */
 		WC_SCREENSHOT                                = ::WC_SCREENSHOT,
+
+		/**
+		 * Help and manuals window; %Window numbers:
+		 *   - 0 = #HelpWindowWidgets
+		 */
+		WC_HELPWIN                                   = ::WC_HELPWIN,
 
 		/**
 		 * Trace restrict programme window; %Window numbers:
@@ -884,6 +897,7 @@ public:
 		 */
 		WC_MODIFIER_KEY_TOGGLE                       = ::WC_MODIFIER_KEY_TOGGLE,
 
+		WC_END                                       = ::WC_END,                                       ///< End sentinel.
 		WC_INVALID                                   = ::WC_INVALID,                                   ///< Invalid window.
 	};
 
@@ -932,7 +946,7 @@ public:
 	 * Close a window.
 	 * @param window The class of the window to close.
 	 * @param number The number of the window to close, or NUMBER_ALL to close all of this class.
-	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
+	 *               The value will be clamped to 0 .. MAX(int32_t) when value is not NUMBER_ALL.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 */
 	static void Close(WindowClass window, SQInteger number);
@@ -941,7 +955,7 @@ public:
 	 * Check if a window is open.
 	 * @param window The class of the window to check for.
 	 * @param number The number of the window to check for, or NUMBER_ALL to check for any in the class.
-	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
+	 *               The value will be clamped to 0 .. MAX(int32_t) when value is not NUMBER_ALL.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 * @return True if the window is open.
 	 */
@@ -951,9 +965,9 @@ public:
 	 * Highlight a widget in a window.
 	 * @param window The class of the window to highlight a widget in.
 	 * @param number The number of the window to highlight a widget in.
-	 *               The value will be clamped to 0 .. MAX(int32) when value is not NUMBER_ALL.
+	 *               The value will be clamped to 0 .. MAX(int32_t) when value is not NUMBER_ALL.
 	 * @param widget The widget in the window to highlight, or WIDGET_ALL (in combination with TC_INVALID) to disable all widget highlighting on this window.
-	 *               The value will be clamped to 0 .. MAX(uint8) when value is not WIDGET_ALL.
+	 *               The value will be clamped to 0 .. MAX(uint8_t) when value is not WIDGET_ALL.
 	 * @param colour The colour of the highlight, or TC_INVALID for disabling.
 	 * @pre !ScriptGame::IsMultiplayer().
 	 * @pre number != NUMBER_ALL.
@@ -967,16 +981,19 @@ public:
 	/** Widgets of the #AIConfigWindow class. */
 	enum AIConfigWidgets {
 		WID_AIC_BACKGROUND                           = ::WID_AIC_BACKGROUND,                           ///< Window background.
-		WID_AIC_DECREASE                             = ::WID_AIC_DECREASE,                             ///< Decrease the number of AIs.
-		WID_AIC_INCREASE                             = ::WID_AIC_INCREASE,                             ///< Increase the number of AIs.
+		WID_AIC_DECREASE_NUMBER                      = ::WID_AIC_DECREASE_NUMBER,                      ///< Decrease the number of AIs.
+		WID_AIC_INCREASE_NUMBER                      = ::WID_AIC_INCREASE_NUMBER,                      ///< Increase the number of AIs.
 		WID_AIC_NUMBER                               = ::WID_AIC_NUMBER,                               ///< Number of AIs.
+		WID_AIC_DECREASE_INTERVAL                    = ::WID_AIC_DECREASE_INTERVAL,                    ///< Decrease the interval.
+		WID_AIC_INCREASE_INTERVAL                    = ::WID_AIC_INCREASE_INTERVAL,                    ///< Increase the interval.
+		WID_AIC_INTERVAL                             = ::WID_AIC_INTERVAL,                             ///< Interval between time AIs start.
 		WID_AIC_LIST                                 = ::WID_AIC_LIST,                                 ///< List with currently selected AIs.
 		WID_AIC_SCROLLBAR                            = ::WID_AIC_SCROLLBAR,                            ///< Scrollbar to scroll through the selected AIs.
 		WID_AIC_MOVE_UP                              = ::WID_AIC_MOVE_UP,                              ///< Move up button.
 		WID_AIC_MOVE_DOWN                            = ::WID_AIC_MOVE_DOWN,                            ///< Move down button.
 		WID_AIC_CHANGE                               = ::WID_AIC_CHANGE,                               ///< Select another AI button.
 		WID_AIC_CONFIGURE                            = ::WID_AIC_CONFIGURE,                            ///< Change AI settings button.
-		WID_AIC_CLOSE                                = ::WID_AIC_CLOSE,                                ///< Close window button.
+		WID_AIC_OPEN_URL                             = ::WID_AIC_OPEN_URL,                             ///< Open AI URL.
 		WID_AIC_TEXTFILE                             = ::WID_AIC_TEXTFILE,                             ///< Open AI readme, changelog (+1) or license (+2).
 		WID_AIC_CONTENT_DOWNLOAD                     = ::WID_AIC_CONTENT_DOWNLOAD,                     ///< Download content button.
 	};
@@ -986,6 +1003,8 @@ public:
 	enum AirportToolbarWidgets {
 		WID_AT_AIRPORT                               = ::WID_AT_AIRPORT,                               ///< Build airport button.
 		WID_AT_DEMOLISH                              = ::WID_AT_DEMOLISH,                              ///< Demolish button.
+
+		INVALID_WID_AT                               = ::INVALID_WID_AT,
 	};
 
 	/** Widgets of the #BuildAirportWindow class. */
@@ -998,7 +1017,6 @@ public:
 		WID_AP_LAYOUT_INCREASE                       = ::WID_AP_LAYOUT_INCREASE,                       ///< Increase the layout number.
 		WID_AP_AIRPORT_SPRITE                        = ::WID_AP_AIRPORT_SPRITE,                        ///< A visual display of the airport currently selected.
 		WID_AP_EXTRA_TEXT                            = ::WID_AP_EXTRA_TEXT,                            ///< Additional text about the airport.
-		WID_AP_BOTTOMPANEL                           = ::WID_AP_BOTTOMPANEL,                           ///< Panel at the bottom.
 		WID_AP_COVERAGE_LABEL                        = ::WID_AP_COVERAGE_LABEL,                        ///< Label if you want to see the coverage.
 		WID_AP_BTN_DONTHILIGHT                       = ::WID_AP_BTN_DONTHILIGHT,                       ///< Don't show the coverage button.
 		WID_AP_BTN_DOHILIGHT                         = ::WID_AP_BTN_DOHILIGHT,                         ///< Show the coverage button.
@@ -1028,12 +1046,13 @@ public:
 		WID_RV_INFO_TAB                              = ::WID_RV_INFO_TAB,                              ///< Info tab.
 		WID_RV_STOP_REPLACE                          = ::WID_RV_STOP_REPLACE,                          ///< Stop Replacing button.
 
-		/* Train/road only widgets */
-		WID_RV_RAIL_ROAD_TYPE_DROPDOWN               = ::WID_RV_RAIL_ROAD_TYPE_DROPDOWN,               ///< Dropdown menu about the rail/roadtype.
-
 		/* Train only widgets. */
+		WID_RV_RAIL_TYPE_DROPDOWN                    = ::WID_RV_RAIL_TYPE_DROPDOWN,                    ///< Dropdown to select railtype.
 		WID_RV_TRAIN_ENGINEWAGON_DROPDOWN            = ::WID_RV_TRAIN_ENGINEWAGON_DROPDOWN,            ///< Dropdown to select engines and/or wagons.
 		WID_RV_TRAIN_WAGONREMOVE_TOGGLE              = ::WID_RV_TRAIN_WAGONREMOVE_TOGGLE,              ///< Button to toggle removing wagons.
+
+		/* Road only widgets. */
+		WID_RV_ROAD_TYPE_DROPDOWN                    = ::WID_RV_ROAD_TYPE_DROPDOWN,                    ///< Dropdown to select roadtype.
 	};
 
 	/* automatically generated from ../../widgets/bootstrap_widget.h */
@@ -1073,6 +1092,7 @@ public:
 		WID_BV_SORT_ASCENDING_DESCENDING             = ::WID_BV_SORT_ASCENDING_DESCENDING,             ///< Sort direction.
 		WID_BV_SORT_DROPDOWN                         = ::WID_BV_SORT_DROPDOWN,                         ///< Criteria of sorting dropdown.
 		WID_BV_CARGO_FILTER_DROPDOWN                 = ::WID_BV_CARGO_FILTER_DROPDOWN,                 ///< Cargo filter dropdown.
+		WID_BV_FILTER                                = ::WID_BV_FILTER,                                ///< Filter by name.
 		WID_BV_SHOW_HIDDEN_ENGINES                   = ::WID_BV_SHOW_HIDDEN_ENGINES,                   ///< Toggle whether to display the hidden vehicles.
 		WID_BV_LIST                                  = ::WID_BV_LIST,                                  ///< List of vehicles.
 		WID_BV_SCROLLBAR                             = ::WID_BV_SCROLLBAR,                             ///< Scrollbar of list.
@@ -1094,6 +1114,7 @@ public:
 		WID_BV_BUILD_LOCO                            = ::WID_BV_BUILD_LOCO,                            ///< Build panel.
 		WID_BV_BUILD_SEL_LOCO                        = ::WID_BV_BUILD_SEL_LOCO,                        ///< Build button.
 		WID_BV_RENAME_LOCO                           = ::WID_BV_RENAME_LOCO,                           ///< Rename button.
+		WID_BV_FILTER_LOCO                           = ::WID_BV_FILTER_LOCO,                           ///< Filter by name.
 
 		WID_BV_CAPTION_WAGON                         = ::WID_BV_CAPTION_WAGON,                         ///< Caption of wagon half of the window.
 		WID_BV_SORT_ASCENDING_DESCENDING_WAGON       = ::WID_BV_SORT_ASCENDING_DESCENDING_WAGON,       ///< Sort direction.
@@ -1107,6 +1128,7 @@ public:
 		WID_BV_BUILD_WAGON                           = ::WID_BV_BUILD_WAGON,                           ///< Build panel.
 		WID_BV_BUILD_SEL_WAGON                       = ::WID_BV_BUILD_SEL_WAGON,                       ///< Build button.
 		WID_BV_RENAME_WAGON                          = ::WID_BV_RENAME_WAGON,                          ///< Rename button.
+		WID_BV_FILTER_WAGON                          = ::WID_BV_FILTER_WAGON,                          ///< Filter by name.
 
 		WID_BV_LOCO_BUTTONS_SEL                      = ::WID_BV_LOCO_BUTTONS_SEL,                      ///< Locomotive buttons selector.
 		WID_BV_WAGON_BUTTONS_SEL                     = ::WID_BV_WAGON_BUTTONS_SEL,                     ///< Wagon buttons selector.
@@ -1164,6 +1186,9 @@ public:
 
 		WID_C_SELECT_GIVE_MONEY                      = ::WID_C_SELECT_GIVE_MONEY,                      ///< Selection widget for the give money button.
 		WID_C_GIVE_MONEY                             = ::WID_C_GIVE_MONEY,                             ///< Button to give money.
+
+		WID_C_SELECT_HOSTILE_TAKEOVER                = ::WID_C_SELECT_HOSTILE_TAKEOVER,                ///< Selection widget for the hostile takeover button.
+		WID_C_HOSTILE_TAKEOVER                       = ::WID_C_HOSTILE_TAKEOVER,                       ///< Button to hostile takeover another company.
 
 		WID_C_HAS_PASSWORD                           = ::WID_C_HAS_PASSWORD,                           ///< Has company password lock.
 		WID_C_SELECT_MULTIPLAYER                     = ::WID_C_SELECT_MULTIPLAYER,                     ///< Multiplayer selection panel.
@@ -1457,10 +1482,12 @@ public:
 		WID_GSC_SETTINGS                             = ::WID_GSC_SETTINGS,                             ///< Panel to draw the Game Script settings on
 		WID_GSC_SCROLLBAR                            = ::WID_GSC_SCROLLBAR,                            ///< Scrollbar to scroll through the selected AIs.
 		WID_GSC_CHANGE                               = ::WID_GSC_CHANGE,                               ///< Select another Game Script button.
+		WID_GSC_OPEN_URL                             = ::WID_GSC_OPEN_URL,                             ///< Open GS URL.
 		WID_GSC_TEXTFILE                             = ::WID_GSC_TEXTFILE,                             ///< Open GS readme, changelog (+1) or license (+2).
 		WID_GSC_CONTENT_DOWNLOAD                     = ::WID_GSC_CONTENT_DOWNLOAD,                     ///< Download content button.
-		WID_GSC_ACCEPT                               = ::WID_GSC_ACCEPT,                               ///< Accept ("Close") button
 		WID_GSC_RESET                                = ::WID_GSC_RESET,                                ///< Reset button.
+
+		WID_GSC_SETTING_DROPDOWN                     = ::WID_GSC_SETTING_DROPDOWN,                     ///< Dynamically created dropdown for changing setting value.
 	};
 
 	/* automatically generated from ../../widgets/genworld_widget.h */
@@ -1574,7 +1601,6 @@ public:
 		WID_GQ_BUTTON_1                              = ::WID_GQ_BUTTON_1,                              ///< First button.
 		WID_GQ_BUTTON_2                              = ::WID_GQ_BUTTON_2,                              ///< Second button.
 		WID_GQ_BUTTON_3                              = ::WID_GQ_BUTTON_3,                              ///< Third button.
-		WID_GQ_BUTTON_SPACER                         = ::WID_GQ_BUTTON_SPACER,                         ///< Selection to hide extra padding if there are no buttons
 	};
 
 	/* automatically generated from ../../widgets/graph_widget.h */
@@ -1586,48 +1612,29 @@ public:
 		WID_GL_LAST_COMPANY                          = ::WID_GL_LAST_COMPANY,                          ///< Last company in the legend.
 	};
 
-	/** Widgets of the #OperatingProfitGraphWindow class, #IncomeGraphWindow class, #DeliveredCargoGraphWindow class, and #CompanyValueGraphWindow class. */
-	enum CompanyValueWidgets {
-		WID_CV_KEY_BUTTON                            = ::WID_CV_KEY_BUTTON,                            ///< Key button.
-		WID_CV_BACKGROUND                            = ::WID_CV_BACKGROUND,                            ///< Background of the window.
-		WID_CV_GRAPH                                 = ::WID_CV_GRAPH,                                 ///< Graph itself.
-		WID_CV_RESIZE                                = ::WID_CV_RESIZE,                                ///< Resize button.
-	};
+	/** Widgets of the #BaseGraphWindow class and derived classes. */
+	enum GraphWidgets {
+		WID_GRAPH_KEY_BUTTON                         = ::WID_GRAPH_KEY_BUTTON,                         ///< Key button.
+		WID_GRAPH_BACKGROUND                         = ::WID_GRAPH_BACKGROUND,                         ///< Background of the window.
+		WID_GRAPH_GRAPH                              = ::WID_GRAPH_GRAPH,                              ///< Graph itself.
+		WID_GRAPH_RESIZE                             = ::WID_GRAPH_RESIZE,                             ///< Resize button.
+		WID_GRAPH_HEADER                             = ::WID_GRAPH_HEADER,                             ///< Header.
+		WID_GRAPH_FOOTER                             = ::WID_GRAPH_FOOTER,                             ///< Footer.
+		WID_GRAPH_FOOTER_CUSTOM                      = ::WID_GRAPH_FOOTER_CUSTOM,                      ///< Footer (custom).
 
-	/** Widget of the #PerformanceHistoryGraphWindow class. */
-	enum PerformanceHistoryGraphWidgets {
-		WID_PHG_KEY                                  = ::WID_PHG_KEY,                                  ///< Key button.
 		WID_PHG_DETAILED_PERFORMANCE                 = ::WID_PHG_DETAILED_PERFORMANCE,                 ///< Detailed performance.
-		WID_PHG_BACKGROUND                           = ::WID_PHG_BACKGROUND,                           ///< Background of the window.
-		WID_PHG_GRAPH                                = ::WID_PHG_GRAPH,                                ///< Graph itself.
-		WID_PHG_RESIZE                               = ::WID_PHG_RESIZE,                               ///< Resize button.
-	};
 
-	/** Widget of the #PaymentRatesGraphWindow class. */
-	enum CargoPaymentRatesWidgets {
-		WID_CPR_BACKGROUND                           = ::WID_CPR_BACKGROUND,                           ///< Background of the window.
-		WID_CPR_HEADER                               = ::WID_CPR_HEADER,                               ///< Header.
-		WID_CPR_GRAPH                                = ::WID_CPR_GRAPH,                                ///< Graph itself.
-		WID_CPR_RESIZE                               = ::WID_CPR_RESIZE,                               ///< Resize button.
-		WID_CPR_FOOTER                               = ::WID_CPR_FOOTER,                               ///< Footer.
 		WID_CPR_ENABLE_CARGOES                       = ::WID_CPR_ENABLE_CARGOES,                       ///< Enable cargoes button.
 		WID_CPR_DISABLE_CARGOES                      = ::WID_CPR_DISABLE_CARGOES,                      ///< Disable cargoes button.
 		WID_CPR_MATRIX                               = ::WID_CPR_MATRIX,                               ///< Cargo list.
 		WID_CPR_MATRIX_SCROLLBAR                     = ::WID_CPR_MATRIX_SCROLLBAR,                     ///< Cargo list scrollbar.
 		WID_CPR_DAYS                                 = ::WID_CPR_DAYS,                                 ///< Days in transit mode.
 		WID_CPR_SPEED                                = ::WID_CPR_SPEED,                                ///< Speed mode.
-	};
 
-	/** Widget of the #StationCargoGraphWindow class. */
-	enum StationCargoWidgets {
+		WID_DCG_BY_COMPANY                           = ::WID_DCG_BY_COMPANY,                           ///< By company button.
+		WID_DCG_BY_CARGO                             = ::WID_DCG_BY_CARGO,                             ///< By cargo button.
+
 		WID_SCG_CAPTION                              = ::WID_SCG_CAPTION,                              ///< Window title
-		WID_SCG_BACKGROUND                           = ::WID_SCG_BACKGROUND,                           ///< Background of the window.
-		WID_SCG_HEADER                               = ::WID_SCG_HEADER,                               ///< Header.
-		WID_SCG_GRAPH                                = ::WID_SCG_GRAPH,                                ///< Graph itself.
-		WID_SCG_RESIZE                               = ::WID_SCG_RESIZE,                               ///< Resize button.
-		WID_SCG_FOOTER                               = ::WID_SCG_FOOTER,                               ///< Footer.
-		WID_SCG_ENABLE_CARGOES                       = ::WID_SCG_ENABLE_CARGOES,                       ///< Enable cargoes button.
-		WID_SCG_DISABLE_CARGOES                      = ::WID_SCG_DISABLE_CARGOES,                      ///< Disable cargoes button.
 		WID_SCG_MATRIX                               = ::WID_SCG_MATRIX,                               ///< Cargo list.
 		WID_SCG_MATRIX_SCROLLBAR                     = ::WID_SCG_MATRIX_SCROLLBAR,                     ///< Cargo list scrollbar.
 	};
@@ -1651,6 +1658,16 @@ public:
 		WID_IP_DISABLE_CARGOES                       = ::WID_IP_DISABLE_CARGOES,                       ///< Disable cargoes button.
 		WID_IP_MATRIX                                = ::WID_IP_MATRIX,                                ///< Cargo list.
 		WID_IP_MATRIX_SCROLLBAR                      = ::WID_IP_MATRIX_SCROLLBAR,                      ///< Cargo list scrollbar.
+	};
+
+	/** Widget of the #ExcludingCargoBaseGraphWindow class. */
+	enum ExcludingCargoBaseGraphWindowWidgets {
+		WID_ECBG_FOOTER                              = ::WID_ECBG_FOOTER,                              ///< Footer.
+		WID_ECBG_ENABLE_CARGOES                      = ::WID_ECBG_ENABLE_CARGOES,                      ///< Enable cargoes button.
+		WID_ECBG_DISABLE_CARGOES                     = ::WID_ECBG_DISABLE_CARGOES,                     ///< Disable cargoes button.
+		WID_ECBG_MATRIX                              = ::WID_ECBG_MATRIX,                              ///< Cargo list.
+		WID_ECBG_MATRIX_SCROLLBAR                    = ::WID_ECBG_MATRIX_SCROLLBAR,                    ///< Cargo list scrollbar.
+		WID_ECBG_CARGO_FIRST                         = ::WID_ECBG_CARGO_FIRST,                         ///< First cargo in the list.
 	};
 
 	/* automatically generated from ../../widgets/group_widget.h */
@@ -1682,6 +1699,19 @@ public:
 		WID_GL_EXPAND_ALL_GROUPS                     = ::WID_GL_EXPAND_ALL_GROUPS,                     ///< Expand all groups button.
 		WID_GL_REPLACE_PROTECTION                    = ::WID_GL_REPLACE_PROTECTION,                    ///< Replace protection button.
 		WID_GL_INFO                                  = ::WID_GL_INFO,                                  ///< Group info.
+	};
+
+	/* automatically generated from ../../widgets/help_widget.h */
+	/** Widgets of the #HelpWindow class. */
+	enum HelpWindowWidgets {
+		WID_HW_README                                = ::WID_HW_README,
+		WID_HW_CHANGELOG                             = ::WID_HW_CHANGELOG,
+		WID_HW_KNOWN_BUGS                            = ::WID_HW_KNOWN_BUGS,
+		WID_HW_LICENSE                               = ::WID_HW_LICENSE,
+		WID_HW_WEBSITE                               = ::WID_HW_WEBSITE,
+		WID_HW_WIKI                                  = ::WID_HW_WIKI,
+		WID_HW_BUGTRACKER                            = ::WID_HW_BUGTRACKER,
+		WID_HW_COMMUNITY                             = ::WID_HW_COMMUNITY,
 	};
 
 	/* automatically generated from ../../widgets/highscore_widget.h */
@@ -1721,7 +1751,8 @@ public:
 		WID_ID_FILTER_BY_PROD_CARGO                  = ::WID_ID_FILTER_BY_PROD_CARGO,                  ///< Produced cargo filter dropdown list.
 		WID_ID_FILTER                                = ::WID_ID_FILTER,                                ///< Textbox to filter industry name.
 		WID_ID_INDUSTRY_LIST                         = ::WID_ID_INDUSTRY_LIST,                         ///< Industry list.
-		WID_ID_SCROLLBAR                             = ::WID_ID_SCROLLBAR,                             ///< Scrollbar of the list.
+		WID_ID_HSCROLLBAR                            = ::WID_ID_HSCROLLBAR,                            ///< Horizontal scrollbar of the list.
+		WID_ID_VSCROLLBAR                            = ::WID_ID_VSCROLLBAR,                            ///< Vertical scrollbar of the list.
 	};
 
 	/** Widgets of the #IndustryCargoesWindow class */
@@ -1753,6 +1784,7 @@ public:
 		WID_SGI_TRANSLATION                          = ::WID_SGI_TRANSLATION,                          ///< Translation errors.
 		WID_SGI_OPTIONS                              = ::WID_SGI_OPTIONS,                              ///< Options button.
 		WID_SGI_HIGHSCORE                            = ::WID_SGI_HIGHSCORE,                            ///< Highscore button.
+		WID_SGI_HELP                                 = ::WID_SGI_HELP,                                 ///< Help and manuals button.
 		WID_SGI_SETTINGS_OPTIONS                     = ::WID_SGI_SETTINGS_OPTIONS,                     ///< Settings button.
 		WID_SGI_GRF_SETTINGS                         = ::WID_SGI_GRF_SETTINGS,                         ///< NewGRF button.
 		WID_SGI_CONTENT_DOWNLOAD                     = ::WID_SGI_CONTENT_DOWNLOAD,                     ///< Content Download button.
@@ -1841,7 +1873,11 @@ public:
 	/** Widgets of the #TextfileWindow class. */
 	enum TextfileWidgets {
 		WID_TF_CAPTION                               = ::WID_TF_CAPTION,                               ///< The caption of the window.
+		WID_TF_NAVBACK                               = ::WID_TF_NAVBACK,                               ///< Navigate back button.
+		WID_TF_NAVFORWARD                            = ::WID_TF_NAVFORWARD,                            ///< Navigate forward button.
 		WID_TF_WRAPTEXT                              = ::WID_TF_WRAPTEXT,                              ///< Whether or not to wrap the text.
+		WID_TF_JUMPLIST                              = ::WID_TF_JUMPLIST,                              ///< List to jump around the file.
+		WID_TF_SEL_JUMPLIST                          = ::WID_TF_SEL_JUMPLIST,                          ///< Selection to display the jump list or not.
 		WID_TF_BACKGROUND                            = ::WID_TF_BACKGROUND,                            ///< Panel to draw the textfile on.
 		WID_TF_VSCROLLBAR                            = ::WID_TF_VSCROLLBAR,                            ///< Vertical scrollbar to scroll through the textfile up-and-down.
 		WID_TF_HSCROLLBAR                            = ::WID_TF_HSCROLLBAR,                            ///< Horizontal scrollbar to scroll through the textfile left-to-right.
@@ -1950,7 +1986,6 @@ public:
 		WID_NG_FILTER_LABEL                          = ::WID_NG_FILTER_LABEL,                          ///< Label in front of the filter/search edit box.
 		WID_NG_FILTER                                = ::WID_NG_FILTER,                                ///< Panel with the edit box to enter the search text.
 
-		WID_NG_HEADER                                = ::WID_NG_HEADER,                                ///< Header container of the matrix.
 		WID_NG_NAME                                  = ::WID_NG_NAME,                                  ///< 'Name' button.
 		WID_NG_CLIENTS                               = ::WID_NG_CLIENTS,                               ///< 'Clients' button.
 		WID_NG_MAPSIZE                               = ::WID_NG_MAPSIZE,                               ///< 'Map size' button.
@@ -1966,7 +2001,6 @@ public:
 		WID_NG_LASTJOINED_SPACER                     = ::WID_NG_LASTJOINED_SPACER,                     ///< Spacer after last joined server panel.
 
 		WID_NG_DETAILS                               = ::WID_NG_DETAILS,                               ///< Panel with game details.
-		WID_NG_DETAILS_SPACER                        = ::WID_NG_DETAILS_SPACER,                        ///< Spacer for game actual details.
 		WID_NG_JOIN                                  = ::WID_NG_JOIN,                                  ///< 'Join game' button.
 		WID_NG_REFRESH                               = ::WID_NG_REFRESH,                               ///< 'Refresh server' button.
 		WID_NG_NEWGRF                                = ::WID_NG_NEWGRF,                                ///< 'NewGRF Settings' button.
@@ -2050,6 +2084,16 @@ public:
 		WID_NAR_YES_ALWAYS                           = ::WID_NAR_YES_ALWAYS,                           ///< "Yes, always" button.
 	};
 
+	/** Widgets of the #NetworkAskSurveyWindow class. */
+	enum NetworkAskSurveyWidgets {
+		WID_NAS_CAPTION                              = ::WID_NAS_CAPTION,                              ///< Caption of the window.
+		WID_NAS_TEXT                                 = ::WID_NAS_TEXT,                                 ///< Text in the window.
+		WID_NAS_PREVIEW                              = ::WID_NAS_PREVIEW,                              ///< "Preview" button.
+		WID_NAS_LINK                                 = ::WID_NAS_LINK,                                 ///< "Details & Privacy" button.
+		WID_NAS_NO                                   = ::WID_NAS_NO,                                   ///< "No" button.
+		WID_NAS_YES                                  = ::WID_NAS_YES,                                  ///< "Yes" button.
+	};
+
 	/* automatically generated from ../../widgets/newgrf_debug_widget.h */
 	/** Widgets of the #NewGRFInspectWindow class. */
 	enum NewGRFInspectWidgets {
@@ -2067,8 +2111,9 @@ public:
 		WID_NGRFI_SPRITE_DUMP_SEL                    = ::WID_NGRFI_SPRITE_DUMP_SEL,                    ///< Selection widget for WID_NGRFI_SPRITE_DUMP
 		WID_NGRFI_SPRITE_DUMP_UNOPT                  = ::WID_NGRFI_SPRITE_DUMP_UNOPT,                  ///< Dump unoptimised sprite group
 		WID_NGRFI_SPRITE_DUMP_UNOPT_SEL              = ::WID_NGRFI_SPRITE_DUMP_UNOPT_SEL,              ///< Selection widget for WID_NGRFI_SPRITE_DUMP_UNOPT
-		WID_NGRFI_SPRITE_DUMP_GOTO                   = ::WID_NGRFI_SPRITE_DUMP_GOTO,                   ///< Goto sprite
-		WID_NGRFI_SPRITE_DUMP_GOTO_SEL               = ::WID_NGRFI_SPRITE_DUMP_GOTO_SEL,               ///< Selection widget for WID_NGRFI_SPRITE_DUMP_GOTO
+		WID_NGRFI_SPRITE_DUMP_OPTIONS                = ::WID_NGRFI_SPRITE_DUMP_OPTIONS,                ///< Options dropdown (sprite dump)
+		WID_NGRFI_MAIN_OPTIONS                       = ::WID_NGRFI_MAIN_OPTIONS,                       ///< Options dropdown (main view)
+		WID_NGRFI_OPTIONS_SEL                        = ::WID_NGRFI_OPTIONS_SEL,                        ///< Selection widget for WID_NGRFI_SPRITE_DUMP_OPTIONS
 	};
 
 	/** Widgets of the #SpriteAlignerWindow class. */
@@ -2087,6 +2132,8 @@ public:
 		WID_SA_PICKER                                = ::WID_SA_PICKER,                                ///< Sprite picker.
 		WID_SA_LIST                                  = ::WID_SA_LIST,                                  ///< Queried sprite list.
 		WID_SA_SCROLLBAR                             = ::WID_SA_SCROLLBAR,                             ///< Scrollbar for sprite list.
+		WID_SA_ZOOM                                  = ::WID_SA_ZOOM,                                  ///< Zoom level buttons (from ZOOM_LVL_BEGIN to ZOOM_LVL_SPR_COUNT).
+		WID_SA_ZOOM_LAST                             = ::WID_SA_ZOOM_LAST,                             ///< Marker for last zoom level button.
 		WID_SA_RESET_REL                             = ::WID_SA_RESET_REL,                             ///< Reset relative sprite offset
 		WID_SA_CENTRE                                = ::WID_SA_CENTRE,                                ///< Toggle centre sprite.
 		WID_SA_CROSSHAIR                             = ::WID_SA_CROSSHAIR,                             ///< Toggle crosshair.
@@ -2095,6 +2142,7 @@ public:
 	/* automatically generated from ../../widgets/newgrf_widget.h */
 	/** Widgets of the #NewGRFParametersWindow class. */
 	enum NewGRFParametersWidgets {
+		WID_NP_CAPTION                               = ::WID_NP_CAPTION,                               ///< Caption of the window.
 		WID_NP_SHOW_NUMPAR                           = ::WID_NP_SHOW_NUMPAR,                           ///< #NWID_SELECTION to optionally display #WID_NP_NUMPAR.
 		WID_NP_NUMPAR_DEC                            = ::WID_NP_NUMPAR_DEC,                            ///< Button to decrease number of parameters.
 		WID_NP_NUMPAR_INC                            = ::WID_NP_NUMPAR_INC,                            ///< Button to increase number of parameters.
@@ -2106,6 +2154,8 @@ public:
 		WID_NP_RESET                                 = ::WID_NP_RESET,                                 ///< Reset button.
 		WID_NP_SHOW_DESCRIPTION                      = ::WID_NP_SHOW_DESCRIPTION,                      ///< #NWID_SELECTION to optionally display parameter descriptions.
 		WID_NP_DESCRIPTION                           = ::WID_NP_DESCRIPTION,                           ///< Multi-line description of a parameter.
+
+		WID_NP_SETTING_DROPDOWN                      = ::WID_NP_SETTING_DROPDOWN,                      ///< Dynamically created dropdown for changing setting value.
 	};
 
 	/** Widgets of the #NewGRFWindow class. */
@@ -2209,18 +2259,17 @@ public:
 		WID_O_ORDER_LIST                             = ::WID_O_ORDER_LIST,                             ///< Order list panel.
 		WID_O_SCROLLBAR                              = ::WID_O_SCROLLBAR,                              ///< Order list scrollbar.
 		WID_O_SKIP                                   = ::WID_O_SKIP,                                   ///< Skip current order.
-		WID_O_MANAGE_LIST                            = ::WID_O_MANAGE_LIST,                            ///< Manage order list.
 		WID_O_MGMT_BTN                               = ::WID_O_MGMT_BTN,                               ///< Management button.
 		WID_O_MGMT_LIST_BTN                          = ::WID_O_MGMT_LIST_BTN,                          ///< Management list button.
 		WID_O_DELETE                                 = ::WID_O_DELETE,                                 ///< Delete selected order.
 		WID_O_STOP_SHARING                           = ::WID_O_STOP_SHARING,                           ///< Stop sharing orders.
 		WID_O_NON_STOP                               = ::WID_O_NON_STOP,                               ///< Goto non-stop to destination.
+		WID_O_DEPOT_UNBUNCHING                       = ::WID_O_DEPOT_UNBUNCHING,                       ///< Toggle unbunching.
 		WID_O_GOTO                                   = ::WID_O_GOTO,                                   ///< Goto destination.
 		WID_O_FULL_LOAD                              = ::WID_O_FULL_LOAD,                              ///< Select full load.
 		WID_O_UNLOAD                                 = ::WID_O_UNLOAD,                                 ///< Select unload.
 		WID_O_REFIT                                  = ::WID_O_REFIT,                                  ///< Select refit.
-		WID_O_SERVICE                                = ::WID_O_SERVICE,                                ///< Select service (at depot).
-		WID_O_EMPTY                                  = ::WID_O_EMPTY,                                  ///< Placeholder for refit dropdown when not owner.
+		WID_O_DEPOT_ACTION                           = ::WID_O_DEPOT_ACTION,                           ///< Dropdown to select the depot action (stop, service if needed, unbunch).
 		WID_O_REFIT_DROPDOWN                         = ::WID_O_REFIT_DROPDOWN,                         ///< Open refit options.
 		WID_O_REVERSE                                = ::WID_O_REVERSE,                                ///< Select waypoint reverse type
 		WID_O_COND_VARIABLE                          = ::WID_O_COND_VARIABLE,                          ///< Choose condition variable.
@@ -2235,21 +2284,23 @@ public:
 		WID_O_COND_SCHED_SELECT                      = ::WID_O_COND_SCHED_SELECT,                      ///< Choose scheduled dispatch schedule.
 		WID_O_COND_AUX_VIA                           = ::WID_O_COND_AUX_VIA,                           ///< Condition via button.
 		WID_O_COND_SCHED_TEST                        = ::WID_O_COND_SCHED_TEST,                        ///< Choose scheduled dispatch test.
-		WID_O_RELEASE_SLOT                           = ::WID_O_RELEASE_SLOT,                           ///< Choose slot to release.
+		WID_O_COND_AUX_STATION                       = ::WID_O_COND_AUX_STATION,                       ///< Condition station button.
+		WID_O_SLOT                                   = ::WID_O_SLOT,                                   ///< Choose slot to try acquire/release.
 		WID_O_COUNTER_OP                             = ::WID_O_COUNTER_OP,                             ///< Choose counter operation.
 		WID_O_CHANGE_COUNTER                         = ::WID_O_CHANGE_COUNTER,                         ///< Choose counter to change.
 		WID_O_COUNTER_VALUE                          = ::WID_O_COUNTER_VALUE,                          ///< Choose counter value.
 		WID_O_TEXT_LABEL                             = ::WID_O_TEXT_LABEL,                             ///< Choose text label.
+		WID_O_DEPARTURE_VIA_TYPE                     = ::WID_O_DEPARTURE_VIA_TYPE,                     ///< Choose departure board via subtype.
 		WID_O_SEL_COND_VALUE                         = ::WID_O_SEL_COND_VALUE,                         ///< Widget for conditional value or conditional cargo type.
 		WID_O_SEL_COND_AUX                           = ::WID_O_SEL_COND_AUX,                           ///< Widget for auxiliary conditional cargo type.
 		WID_O_SEL_COND_AUX2                          = ::WID_O_SEL_COND_AUX2,                          ///< Widget for auxiliary conditional via button.
+		WID_O_SEL_COND_AUX3                          = ::WID_O_SEL_COND_AUX3,                          ///< Widget for auxiliary conditional station button.
 		WID_O_SEL_MGMT                               = ::WID_O_SEL_MGMT,                               ///< Widget for management buttons.
 		WID_O_SEL_TOP_LEFT                           = ::WID_O_SEL_TOP_LEFT,                           ///< #NWID_SELECTION widget for left part of the top row of the 'your train' order window.
 		WID_O_SEL_TOP_MIDDLE                         = ::WID_O_SEL_TOP_MIDDLE,                         ///< #NWID_SELECTION widget for middle part of the top row of the 'your train' order window.
 		WID_O_SEL_TOP_RIGHT                          = ::WID_O_SEL_TOP_RIGHT,                          ///< #NWID_SELECTION widget for right part of the top row of the 'your train' order window.
 		WID_O_SEL_TOP_ROW_GROUNDVEHICLE              = ::WID_O_SEL_TOP_ROW_GROUNDVEHICLE,              ///< #NWID_SELECTION widget for the top row of the 'your train' order window.
 		WID_O_SEL_TOP_ROW                            = ::WID_O_SEL_TOP_ROW,                            ///< #NWID_SELECTION widget for the top row of the 'your non-trains' order window.
-		WID_O_SEL_BOTTOM_LEFT                        = ::WID_O_SEL_BOTTOM_LEFT,                        ///< #NWID_SELECTION widget for the left part of the bottom row of the 'your train' order window.
 		WID_O_SEL_BOTTOM_MIDDLE                      = ::WID_O_SEL_BOTTOM_MIDDLE,                      ///< #NWID_SELECTION widget for the middle part of the bottom row of the 'your train' order window.
 		WID_O_SEL_SHARED                             = ::WID_O_SEL_SHARED,                             ///< #NWID_SELECTION widget for WID_O_SHARED_ORDER_LIST and WID_O_ADD_VEH_GROUP
 		WID_O_SHARED_ORDER_LIST                      = ::WID_O_SHARED_ORDER_LIST,                      ///< Open list of shared vehicles.
@@ -2257,7 +2308,6 @@ public:
 		WID_O_SEL_OCCUPANCY                          = ::WID_O_SEL_OCCUPANCY,                          ///< #NWID_SELECTION widget for the occupancy list panel.
 		WID_O_OCCUPANCY_LIST                         = ::WID_O_OCCUPANCY_LIST,                         ///< Occupancy list panel.
 		WID_O_OCCUPANCY_TOGGLE                       = ::WID_O_OCCUPANCY_TOGGLE,                       ///< Toggle display of occupancy measures.
-		WID_O_TOGGLE_SIZE                            = ::WID_O_TOGGLE_SIZE,                            ///< Toggle show order management button.
 	};
 
 	/** Widgets of the #CargoTypeOrdersWindow class. */
@@ -2320,6 +2370,8 @@ public:
 		WID_PLN_DELETE                               = ::WID_PLN_DELETE,
 		WID_PLN_HIDE_ALL_SEL                         = ::WID_PLN_HIDE_ALL_SEL,
 		WID_PLN_RENAME                               = ::WID_PLN_RENAME,
+		WID_PLN_RENAME_SEL                           = ::WID_PLN_RENAME_SEL,
+		WID_PLN_TAKE_OWNERSHIP                       = ::WID_PLN_TAKE_OWNERSHIP,
 	};
 
 	/* automatically generated from ../../widgets/rail_widget.h */
@@ -2333,6 +2385,7 @@ public:
 		WID_RAT_BUILD_Y                              = ::WID_RAT_BUILD_Y,                              ///< Build rail along the game grid Y axis.
 		WID_RAT_AUTORAIL                             = ::WID_RAT_AUTORAIL,                             ///< Autorail tool.
 		WID_RAT_POLYRAIL                             = ::WID_RAT_POLYRAIL,                             ///< Polyline rail tool.
+		WID_RAT_POLYRAIL_SEL                         = ::WID_RAT_POLYRAIL_SEL,                         ///< Select widget for polyline rail tool.
 		WID_RAT_DEMOLISH                             = ::WID_RAT_DEMOLISH,                             ///< Destroy something with dynamite!
 		WID_RAT_BUILD_DEPOT                          = ::WID_RAT_BUILD_DEPOT,                          ///< Build a depot.
 		WID_RAT_BUILD_WAYPOINT                       = ::WID_RAT_BUILD_WAYPOINT,                       ///< Build a waypoint.
@@ -2342,6 +2395,9 @@ public:
 		WID_RAT_BUILD_TUNNEL                         = ::WID_RAT_BUILD_TUNNEL,                         ///< Build a tunnel.
 		WID_RAT_REMOVE                               = ::WID_RAT_REMOVE,                               ///< Bulldozer to remove rail.
 		WID_RAT_CONVERT_RAIL                         = ::WID_RAT_CONVERT_RAIL,                         ///< Convert other rail to this type.
+		WID_RAT_CONVERT_RAIL_TRACK                   = ::WID_RAT_CONVERT_RAIL_TRACK,                   ///< Convert other rail to this type (track).
+
+		INVALID_WID_RAT                              = ::INVALID_WID_RAT,
 	};
 
 	/** Widgets of the #BuildRailStationWindow class. */
@@ -2445,9 +2501,11 @@ public:
 
 	/** Widgets of the #BuildRailWaypointWindow class. */
 	enum BuildRailWaypointWidgets {
+		WID_BRW_FILTER                               = ::WID_BRW_FILTER,                               ///< Text filter.
 		WID_BRW_WAYPOINT_MATRIX                      = ::WID_BRW_WAYPOINT_MATRIX,                      ///< Matrix with waypoints.
 		WID_BRW_WAYPOINT                             = ::WID_BRW_WAYPOINT,                             ///< A single waypoint.
 		WID_BRW_SCROLL                               = ::WID_BRW_SCROLL,                               ///< Scrollbar for the matrix.
+		WID_BRW_NAME                                 = ::WID_BRW_NAME,                                 ///< Name of selected waypoint.
 	};
 
 	/* automatically generated from ../../widgets/road_widget.h */
@@ -2468,6 +2526,8 @@ public:
 		WID_ROT_BUILD_TUNNEL                         = ::WID_ROT_BUILD_TUNNEL,                         ///< Build tunnel.
 		WID_ROT_REMOVE                               = ::WID_ROT_REMOVE,                               ///< Remove road.
 		WID_ROT_CONVERT_ROAD                         = ::WID_ROT_CONVERT_ROAD,                         ///< Convert road.
+
+		INVALID_WID_ROT                              = ::INVALID_WID_ROT,
 	};
 
 	/** Widgets of the #BuildRoadDepotWindow class. */
@@ -2484,7 +2544,6 @@ public:
 	enum BuildRoadStationWidgets {
 		/* Name starts with BRO instead of BR, because of collision with BuildRailStationWidgets */
 		WID_BROS_CAPTION                             = ::WID_BROS_CAPTION,                             ///< Caption of the window.
-		WID_BROS_BACKGROUND                          = ::WID_BROS_BACKGROUND,                          ///< Background of the window.
 		WID_BROS_STATION_NE                          = ::WID_BROS_STATION_NE,                          ///< Terminal station with NE entry.
 		WID_BROS_STATION_SE                          = ::WID_BROS_STATION_SE,                          ///< Terminal station with SE entry.
 		WID_BROS_STATION_SW                          = ::WID_BROS_STATION_SW,                          ///< Terminal station with SW entry.
@@ -2493,14 +2552,13 @@ public:
 		WID_BROS_STATION_Y                           = ::WID_BROS_STATION_Y,                           ///< Drive-through station in y-direction.
 		WID_BROS_LT_OFF                              = ::WID_BROS_LT_OFF,                              ///< Turn off area highlight.
 		WID_BROS_LT_ON                               = ::WID_BROS_LT_ON,                               ///< Turn on area highlight.
-		WID_BROS_INFO                                = ::WID_BROS_INFO,                                ///< Station acceptance info.
-
+		WID_BROS_ACCEPTANCE                          = ::WID_BROS_ACCEPTANCE,                          ///< Station acceptance info.
 		WID_BROS_MATRIX                              = ::WID_BROS_MATRIX,                              ///< Matrix widget displaying all available road stops.
 		WID_BROS_IMAGE                               = ::WID_BROS_IMAGE,                               ///< Panel used for each image of the matrix.
 		WID_BROS_MATRIX_SCROLL                       = ::WID_BROS_MATRIX_SCROLL,                       ///< Scrollbar of the #WID_BROS_SHOW_NEWST_ADDITIONS.
-
 		WID_BROS_FILTER_CONTAINER                    = ::WID_BROS_FILTER_CONTAINER,                    ///< Container for the filter text box for the road stop class list.
 		WID_BROS_FILTER_EDITBOX                      = ::WID_BROS_FILTER_EDITBOX,                      ///< Filter text box for the road stop class list.
+		WID_BROS_AVAILABLE_ORIENTATIONS              = ::WID_BROS_AVAILABLE_ORIENTATIONS,              ///< Selection for selecting 6 or 2 orientations.
 		WID_BROS_SHOW_NEWST_DEFSIZE                  = ::WID_BROS_SHOW_NEWST_DEFSIZE,                  ///< Selection for default-size button for new road stops.
 		WID_BROS_SHOW_NEWST_ADDITIONS                = ::WID_BROS_SHOW_NEWST_ADDITIONS,                ///< Selection for new class selection list.
 		WID_BROS_SHOW_NEWST_MATRIX                   = ::WID_BROS_SHOW_NEWST_MATRIX,                   ///< Selection for new stop image matrix.
@@ -2514,9 +2572,11 @@ public:
 
 	/** Widgets of the #BuildRoadWaypointWindow class. */
 	enum BuildRoadWaypointWidgets {
+		WID_BROW_FILTER                              = ::WID_BROW_FILTER,                              ///< Text filter.
 		WID_BROW_WAYPOINT_MATRIX                     = ::WID_BROW_WAYPOINT_MATRIX,                     ///< Matrix with waypoints.
 		WID_BROW_WAYPOINT                            = ::WID_BROW_WAYPOINT,                            ///< A single waypoint.
 		WID_BROW_SCROLL                              = ::WID_BROW_SCROLL,                              ///< Scrollbar for the matrix.
+		WID_BROW_NAME                                = ::WID_BROW_NAME,                                ///< Name of selected waypoint.
 	};
 
 	/* automatically generated from ../../widgets/screenshot_widget.h */
@@ -2551,6 +2611,8 @@ public:
 		WID_SCRS_SCROLLBAR                           = ::WID_SCRS_SCROLLBAR,                           ///< Scrollbar to scroll through all settings.
 		WID_SCRS_ACCEPT                              = ::WID_SCRS_ACCEPT,                              ///< Accept button.
 		WID_SCRS_RESET                               = ::WID_SCRS_RESET,                               ///< Reset button.
+
+		WID_SCRS_SETTING_DROPDOWN                    = ::WID_SCRS_SETTING_DROPDOWN,                    ///< Dynamically created dropdown for changing setting value.
 	};
 
 	/** Widgets of the #ScriptDebugWindow class. */
@@ -2561,7 +2623,7 @@ public:
 		WID_SCRD_SCRIPT_GAME                         = ::WID_SCRD_SCRIPT_GAME,                         ///< Game Script button.
 		WID_SCRD_RELOAD_TOGGLE                       = ::WID_SCRD_RELOAD_TOGGLE,                       ///< Reload button.
 		WID_SCRD_LOG_PANEL                           = ::WID_SCRD_LOG_PANEL,                           ///< Panel where the log is in.
-		WID_SCRD_SCROLLBAR                           = ::WID_SCRD_SCROLLBAR,                           ///< Scrollbar of the log panel.
+		WID_SCRD_VSCROLLBAR                          = ::WID_SCRD_VSCROLLBAR,                          ///< Vertical scrollbar of the log panel.
 		WID_SCRD_COMPANY_BUTTON_START                = ::WID_SCRD_COMPANY_BUTTON_START,                ///< Buttons in the VIEW.
 		WID_SCRD_COMPANY_BUTTON_END                  = ::WID_SCRD_COMPANY_BUTTON_END,                  ///< Last possible button in the VIEW.
 		WID_SCRD_BREAK_STRING_WIDGETS                = ::WID_SCRD_BREAK_STRING_WIDGETS,                ///< The panel to handle the breaking on string.
@@ -2569,12 +2631,17 @@ public:
 		WID_SCRD_BREAK_STR_EDIT_BOX                  = ::WID_SCRD_BREAK_STR_EDIT_BOX,                  ///< Edit box for the string to break on.
 		WID_SCRD_MATCH_CASE_BTN                      = ::WID_SCRD_MATCH_CASE_BTN,                      ///< Checkbox to use match caching or not.
 		WID_SCRD_CONTINUE_BTN                        = ::WID_SCRD_CONTINUE_BTN,                        ///< Continue button.
+		WID_SCRD_HSCROLLBAR                          = ::WID_SCRD_HSCROLLBAR,                          ///< Horizontal scrollbar of the log panel.
 	};
 
 	/* automatically generated from ../../widgets/settings_widget.h */
 	/** Widgets of the #GameOptionsWindow class. */
 	enum GameOptionsWidgets {
-		WID_GO_BACKGROUND                            = ::WID_GO_BACKGROUND,                            ///< Background of the window.
+		WID_GO_TAB_GENERAL                           = ::WID_GO_TAB_GENERAL,                           ///< General tab.
+		WID_GO_TAB_GRAPHICS                          = ::WID_GO_TAB_GRAPHICS,                          ///< Graphics tab.
+		WID_GO_TAB_SOUND                             = ::WID_GO_TAB_SOUND,                             ///< Sound tab.
+		WID_GO_TAB_SOCIAL                            = ::WID_GO_TAB_SOCIAL,                            ///< Social tab.
+		WID_GO_TAB_SELECTION                         = ::WID_GO_TAB_SELECTION,                         ///< Background of the tab selection.
 		WID_GO_CURRENCY_DROPDOWN                     = ::WID_GO_CURRENCY_DROPDOWN,                     ///< Currency dropdown.
 		WID_GO_DISTANCE_DROPDOWN                     = ::WID_GO_DISTANCE_DROPDOWN,                     ///< Measuring unit dropdown.
 		WID_GO_AUTOSAVE_DROPDOWN                     = ::WID_GO_AUTOSAVE_DROPDOWN,                     ///< Dropdown to say how often to autosave.
@@ -2584,24 +2651,39 @@ public:
 		WID_GO_GUI_SCALE                             = ::WID_GO_GUI_SCALE,                             ///< GUI Scale slider.
 		WID_GO_GUI_SCALE_AUTO                        = ::WID_GO_GUI_SCALE_AUTO,                        ///< Autodetect GUI scale button.
 		WID_GO_GUI_SCALE_BEVEL_BUTTON                = ::WID_GO_GUI_SCALE_BEVEL_BUTTON,                ///< Toggle for chunky bevels.
+		WID_GO_GUI_FONT_SPRITE                       = ::WID_GO_GUI_FONT_SPRITE,                       ///< Toggle whether to prefer the sprite font over TTF fonts.
+		WID_GO_GUI_FONT_AA                           = ::WID_GO_GUI_FONT_AA,                           ///< Toggle whether to anti-alias fonts.
+		WID_GO_GUI_SCALE_MAIN_TOOLBAR                = ::WID_GO_GUI_SCALE_MAIN_TOOLBAR,                ///< Toggle for bigger main toolbar.
 		WID_GO_BASE_GRF_DROPDOWN                     = ::WID_GO_BASE_GRF_DROPDOWN,                     ///< Use to select a base GRF.
-		WID_GO_BASE_GRF_STATUS                       = ::WID_GO_BASE_GRF_STATUS,                       ///< Info about missing files etc.
+		WID_GO_BASE_GRF_PARAMETERS                   = ::WID_GO_BASE_GRF_PARAMETERS,                   ///< Base GRF parameters.
+		WID_GO_BASE_GRF_OPEN_URL                     = ::WID_GO_BASE_GRF_OPEN_URL,                     ///< Open base GRF URL.
 		WID_GO_BASE_GRF_TEXTFILE                     = ::WID_GO_BASE_GRF_TEXTFILE,                     ///< Open base GRF readme, changelog (+1) or license (+2).
 		WID_GO_BASE_GRF_DESCRIPTION                  = ::WID_GO_BASE_GRF_DESCRIPTION,                  ///< Description of selected base GRF.
 		WID_GO_BASE_SFX_DROPDOWN                     = ::WID_GO_BASE_SFX_DROPDOWN,                     ///< Use to select a base SFX.
+		WID_GO_TEXT_SFX_VOLUME                       = ::WID_GO_TEXT_SFX_VOLUME,                       ///< Sound effects volume label.
 		WID_GO_BASE_SFX_VOLUME                       = ::WID_GO_BASE_SFX_VOLUME,                       ///< Change sound effects volume.
+		WID_GO_BASE_SFX_OPEN_URL                     = ::WID_GO_BASE_SFX_OPEN_URL,                     ///< Open base SFX URL.
 		WID_GO_BASE_SFX_TEXTFILE                     = ::WID_GO_BASE_SFX_TEXTFILE,                     ///< Open base SFX readme, changelog (+1) or license (+2).
 		WID_GO_BASE_SFX_DESCRIPTION                  = ::WID_GO_BASE_SFX_DESCRIPTION,                  ///< Description of selected base SFX.
 		WID_GO_BASE_MUSIC_DROPDOWN                   = ::WID_GO_BASE_MUSIC_DROPDOWN,                   ///< Use to select a base music set.
+		WID_GO_TEXT_MUSIC_VOLUME                     = ::WID_GO_TEXT_MUSIC_VOLUME,                     ///< Music volume label.
 		WID_GO_BASE_MUSIC_VOLUME                     = ::WID_GO_BASE_MUSIC_VOLUME,                     ///< Change music volume.
 		WID_GO_BASE_MUSIC_JUKEBOX                    = ::WID_GO_BASE_MUSIC_JUKEBOX,                    ///< Open the jukebox.
-		WID_GO_BASE_MUSIC_STATUS                     = ::WID_GO_BASE_MUSIC_STATUS,                     ///< Info about corrupted files etc.
+		WID_GO_BASE_MUSIC_OPEN_URL                   = ::WID_GO_BASE_MUSIC_OPEN_URL,                   ///< Open base music URL.
 		WID_GO_BASE_MUSIC_TEXTFILE                   = ::WID_GO_BASE_MUSIC_TEXTFILE,                   ///< Open base music readme, changelog (+1) or license (+2).
 		WID_GO_BASE_MUSIC_DESCRIPTION                = ::WID_GO_BASE_MUSIC_DESCRIPTION,                ///< Description of selected base music set.
 		WID_GO_VIDEO_ACCEL_BUTTON                    = ::WID_GO_VIDEO_ACCEL_BUTTON,                    ///< Toggle for video acceleration.
 		WID_GO_VIDEO_VSYNC_BUTTON                    = ::WID_GO_VIDEO_VSYNC_BUTTON,                    ///< Toggle for video vsync.
 		WID_GO_REFRESH_RATE_DROPDOWN                 = ::WID_GO_REFRESH_RATE_DROPDOWN,                 ///< Dropdown for all available refresh rates.
 		WID_GO_VIDEO_DRIVER_INFO                     = ::WID_GO_VIDEO_DRIVER_INFO,                     ///< Label showing details about the current video driver.
+		WID_GO_SURVEY_SEL                            = ::WID_GO_SURVEY_SEL,                            ///< Selection to hide survey if no JSON library is compiled in.
+		WID_GO_SURVEY_PARTICIPATE_BUTTON             = ::WID_GO_SURVEY_PARTICIPATE_BUTTON,             ///< Toggle for participating in the automated survey.
+		WID_GO_SURVEY_LINK_BUTTON                    = ::WID_GO_SURVEY_LINK_BUTTON,                    ///< Button to open browser to go to the survey website.
+		WID_GO_SURVEY_PREVIEW_BUTTON                 = ::WID_GO_SURVEY_PREVIEW_BUTTON,                 ///< Button to open a preview window with the survey results
+		WID_GO_SOCIAL_PLUGINS                        = ::WID_GO_SOCIAL_PLUGINS,                        ///< Main widget handling the social plugins.
+		WID_GO_SOCIAL_PLUGIN_TITLE                   = ::WID_GO_SOCIAL_PLUGIN_TITLE,                   ///< Title of the frame of the social plugin.
+		WID_GO_SOCIAL_PLUGIN_PLATFORM                = ::WID_GO_SOCIAL_PLUGIN_PLATFORM,                ///< Platform of the social plugin.
+		WID_GO_SOCIAL_PLUGIN_STATE                   = ::WID_GO_SOCIAL_PLUGIN_STATE,                   ///< State of the social plugin.
 	};
 
 	/** Widgets of the #GameSettingsWindow class. */
@@ -2617,6 +2699,8 @@ public:
 		WID_GS_RESTRICT_TYPE                         = ::WID_GS_RESTRICT_TYPE,                         ///< Label upfront to the type drop-down box to restrict the list of settings to show
 		WID_GS_RESTRICT_DROPDOWN                     = ::WID_GS_RESTRICT_DROPDOWN,                     ///< The drop down box to restrict the list of settings
 		WID_GS_TYPE_DROPDOWN                         = ::WID_GS_TYPE_DROPDOWN,                         ///< The drop down box to choose client/game/company/all settings
+
+		WID_GS_SETTING_DROPDOWN                      = ::WID_GS_SETTING_DROPDOWN,                      ///< Dynamically created dropdown for changing setting value.
 	};
 
 	/** Widgets of the #CustomCurrencyWindow class. */
@@ -2725,13 +2809,10 @@ public:
 		WID_STL_SHIP                                 = ::WID_STL_SHIP,                                 ///< 'SHIP' button - list only facilities where is a dock.
 		WID_STL_FACILALL                             = ::WID_STL_FACILALL,                             ///< 'ALL' button - list all facilities.
 
-		WID_STL_NOCARGOWAITING                       = ::WID_STL_NOCARGOWAITING,                       ///< 'NO' button - list stations where no cargo is waiting.
-		WID_STL_CARGOALL                             = ::WID_STL_CARGOALL,                             ///< 'ALL' button - list all stations.
-
 		WID_STL_SORTBY                               = ::WID_STL_SORTBY,                               ///< 'Sort by' button - reverse sort direction.
 		WID_STL_SORTDROPBTN                          = ::WID_STL_SORTDROPBTN,                          ///< Dropdown button.
 
-		WID_STL_CARGOSTART                           = ::WID_STL_CARGOSTART,                           ///< Widget numbers used for list of cargo types (not present in _company_stations_widgets).
+		WID_STL_CARGODROPDOWN                        = ::WID_STL_CARGODROPDOWN,                        ///< Cargo type dropdown list.
 	};
 
 	/** Widgets of the #SelectStationWindow class. */
@@ -2782,6 +2863,8 @@ public:
 		WID_TT_MEASUREMENT_TOOL                      = ::WID_TT_MEASUREMENT_TOOL,                      ///< Ruler tool button
 		WID_TT_PLACE_SIGN                            = ::WID_TT_PLACE_SIGN,                            ///< Place sign button.
 		WID_TT_PLACE_OBJECT                          = ::WID_TT_PLACE_OBJECT,                          ///< Place object button.
+
+		INVALID_WID_TT                               = ::INVALID_WID_TT,
 	};
 
 	/** Widgets of the #ScenarioEditorLandscapeGenerationWindow class. */
@@ -2805,6 +2888,8 @@ public:
 		WID_ETT_NEW_SCENARIO                         = ::WID_ETT_NEW_SCENARIO,                         ///< Button for generating a new scenario.
 		WID_ETT_RESET_LANDSCAPE                      = ::WID_ETT_RESET_LANDSCAPE,                      ///< Button for removing all company-owned property.
 		WID_ETT_PUBLIC_ROADS                         = ::WID_ETT_PUBLIC_ROADS,                         ///< Button for creating public roads.
+
+		INVALID_WID_ETT                              = ::INVALID_WID_ETT,
 	};
 
 	/* automatically generated from ../../widgets/timetable_widget.h */
@@ -3075,6 +3160,7 @@ public:
 		WID_VD_DETAILS_TRAIN_VEHICLES                = ::WID_VD_DETAILS_TRAIN_VEHICLES,                ///< Show all parts of the train with their description.
 		WID_VD_DETAILS_CAPACITY_OF_EACH              = ::WID_VD_DETAILS_CAPACITY_OF_EACH,              ///< Show the capacity of all train parts.
 		WID_VD_DETAILS_TOTAL_CARGO                   = ::WID_VD_DETAILS_TOTAL_CARGO,                   ///< Show the capacity and carried cargo amounts aggregated per cargo of the train.
+		WID_VD_EXTRA_ACTIONS                         = ::WID_VD_EXTRA_ACTIONS,                         ///< Extra actions drop-down.
 	};
 
 	/** Widgets of the #VehicleListWindow class. */
@@ -3118,6 +3204,7 @@ public:
 		WID_W_RENAME                                 = ::WID_W_RENAME,                                 ///< Rename this waypoint.
 		WID_W_SHOW_VEHICLES                          = ::WID_W_SHOW_VEHICLES,                          ///< Show the vehicles visiting this waypoint.
 		WID_W_DEPARTURES                             = ::WID_W_DEPARTURES,                             ///< Departures button.
+		WID_W_CATCHMENT                              = ::WID_W_CATCHMENT,                              ///< Coverage button.
 		WID_W_TOGGLE_HIDDEN                          = ::WID_W_TOGGLE_HIDDEN,                          ///< Toggle label hidden.
 		WID_W_TOGGLE_HIDDEN_SEL                      = ::WID_W_TOGGLE_HIDDEN_SEL,                      ///< Toggle label hidden selector.
 	};

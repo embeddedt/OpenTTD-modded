@@ -11,11 +11,11 @@
 #include "../template/template_bridge.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptBridge, ST_AI>() { return "AIBridge"; }
+template <> const char *GetClassName<ScriptBridge, ScriptType::AI>() { return "AIBridge"; }
 
 void SQAIBridge_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridge, ST_AI> SQAIBridge("AIBridge");
+	DefSQClass<ScriptBridge, ScriptType::AI> SQAIBridge("AIBridge");
 	SQAIBridge.PreRegister(engine);
 	SQAIBridge.AddConstructor<void (ScriptBridge::*)(), 1>(engine, "x");
 

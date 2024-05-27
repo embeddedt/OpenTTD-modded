@@ -11,11 +11,11 @@
 #include "../template/template_testmode.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTestMode, ST_AI>() { return "AITestMode"; }
+template <> const char *GetClassName<ScriptTestMode, ScriptType::AI>() { return "AITestMode"; }
 
 void SQAITestMode_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTestMode, ST_AI> SQAITestMode("AITestMode");
+	DefSQClass<ScriptTestMode, ScriptType::AI> SQAITestMode("AITestMode");
 	SQAITestMode.PreRegister(engine);
 	SQAITestMode.AddConstructor<void (ScriptTestMode::*)(), 1>(engine, "x");
 

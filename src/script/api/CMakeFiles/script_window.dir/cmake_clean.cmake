@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../../generated/script/api/script_window.hpp"
   "CMakeFiles/script_window"
   "script_window.hpp.timestamp"
-  "../../../generated/script/api/script_window.hpp"
 )
 
 # Per-language clean rules from dependency scanning.

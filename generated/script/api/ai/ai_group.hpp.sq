@@ -11,11 +11,11 @@
 #include "../template/template_group.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptGroup, ST_AI>() { return "AIGroup"; }
+template <> const char *GetClassName<ScriptGroup, ScriptType::AI>() { return "AIGroup"; }
 
 void SQAIGroup_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptGroup, ST_AI> SQAIGroup("AIGroup");
+	DefSQClass<ScriptGroup, ScriptType::AI> SQAIGroup("AIGroup");
 	SQAIGroup.PreRegister(engine);
 	SQAIGroup.AddConstructor<void (ScriptGroup::*)(), 1>(engine, "x");
 

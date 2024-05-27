@@ -11,11 +11,11 @@
 #include "../template/template_tunnel.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTunnel, ST_AI>() { return "AITunnel"; }
+template <> const char *GetClassName<ScriptTunnel, ScriptType::AI>() { return "AITunnel"; }
 
 void SQAITunnel_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTunnel, ST_AI> SQAITunnel("AITunnel");
+	DefSQClass<ScriptTunnel, ScriptType::AI> SQAITunnel("AITunnel");
 	SQAITunnel.PreRegister(engine);
 	SQAITunnel.AddConstructor<void (ScriptTunnel::*)(), 1>(engine, "x");
 

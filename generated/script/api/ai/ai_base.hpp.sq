@@ -11,11 +11,11 @@
 #include "../template/template_base.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptBase, ST_AI>() { return "AIBase"; }
+template <> const char *GetClassName<ScriptBase, ScriptType::AI>() { return "AIBase"; }
 
 void SQAIBase_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBase, ST_AI> SQAIBase("AIBase");
+	DefSQClass<ScriptBase, ScriptType::AI> SQAIBase("AIBase");
 	SQAIBase.PreRegister(engine);
 	SQAIBase.AddConstructor<void (ScriptBase::*)(), 1>(engine, "x");
 

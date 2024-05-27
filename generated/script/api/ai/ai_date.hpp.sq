@@ -11,11 +11,11 @@
 #include "../template/template_date.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptDate, ST_AI>() { return "AIDate"; }
+template <> const char *GetClassName<ScriptDate, ScriptType::AI>() { return "AIDate"; }
 
 void SQAIDate_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptDate, ST_AI> SQAIDate("AIDate");
+	DefSQClass<ScriptDate, ScriptType::AI> SQAIDate("AIDate");
 	SQAIDate.PreRegister(engine);
 	SQAIDate.AddConstructor<void (ScriptDate::*)(), 1>(engine, "x");
 

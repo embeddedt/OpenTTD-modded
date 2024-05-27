@@ -11,11 +11,11 @@
 #include "../template/template_objecttype.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptObjectType, ST_GS>() { return "GSObjectType"; }
+template <> const char *GetClassName<ScriptObjectType, ScriptType::GS>() { return "GSObjectType"; }
 
 void SQGSObjectType_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptObjectType, ST_GS> SQGSObjectType("GSObjectType");
+	DefSQClass<ScriptObjectType, ScriptType::GS> SQGSObjectType("GSObjectType");
 	SQGSObjectType.PreRegister(engine);
 	SQGSObjectType.AddConstructor<void (ScriptObjectType::*)(), 1>(engine, "x");
 

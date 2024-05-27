@@ -11,11 +11,11 @@
 #include "../template/template_town.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTown, ST_AI>() { return "AITown"; }
+template <> const char *GetClassName<ScriptTown, ScriptType::AI>() { return "AITown"; }
 
 void SQAITown_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTown, ST_AI> SQAITown("AITown");
+	DefSQClass<ScriptTown, ScriptType::AI> SQAITown("AITown");
 	SQAITown.PreRegister(engine);
 	SQAITown.AddConstructor<void (ScriptTown::*)(), 1>(engine, "x");
 

@@ -11,11 +11,11 @@
 #include "../template/template_marine.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptMarine, ST_AI>() { return "AIMarine"; }
+template <> const char *GetClassName<ScriptMarine, ScriptType::AI>() { return "AIMarine"; }
 
 void SQAIMarine_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptMarine, ST_AI> SQAIMarine("AIMarine");
+	DefSQClass<ScriptMarine, ScriptType::AI> SQAIMarine("AIMarine");
 	SQAIMarine.PreRegister(engine);
 	SQAIMarine.AddConstructor<void (ScriptMarine::*)(), 1>(engine, "x");
 

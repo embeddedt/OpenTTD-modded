@@ -11,23 +11,23 @@
 #include "../template/template_townlist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTownList, ST_GS>() { return "GSTownList"; }
+template <> const char *GetClassName<ScriptTownList, ScriptType::GS>() { return "GSTownList"; }
 
 void SQGSTownList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTownList, ST_GS> SQGSTownList("GSTownList");
+	DefSQClass<ScriptTownList, ScriptType::GS> SQGSTownList("GSTownList");
 	SQGSTownList.PreRegister(engine, "GSList");
-	SQGSTownList.AddConstructor<void (ScriptTownList::*)(), 1>(engine, "x");
+	SQGSTownList.AddSQAdvancedConstructor(engine);
 
 	SQGSTownList.PostRegister(engine);
 }
 
 
-template <> const char *GetClassName<ScriptTownEffectList, ST_GS>() { return "GSTownEffectList"; }
+template <> const char *GetClassName<ScriptTownEffectList, ScriptType::GS>() { return "GSTownEffectList"; }
 
 void SQGSTownEffectList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTownEffectList, ST_GS> SQGSTownEffectList("GSTownEffectList");
+	DefSQClass<ScriptTownEffectList, ScriptType::GS> SQGSTownEffectList("GSTownEffectList");
 	SQGSTownEffectList.PreRegister(engine, "GSList");
 	SQGSTownEffectList.AddConstructor<void (ScriptTownEffectList::*)(), 1>(engine, "x");
 

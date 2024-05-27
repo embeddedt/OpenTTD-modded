@@ -11,11 +11,11 @@
 #include "../template/template_waypoint.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptWaypoint, ST_GS>() { return "GSWaypoint"; }
+template <> const char *GetClassName<ScriptWaypoint, ScriptType::GS>() { return "GSWaypoint"; }
 
 void SQGSWaypoint_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptWaypoint, ST_GS> SQGSWaypoint("GSWaypoint");
+	DefSQClass<ScriptWaypoint, ScriptType::GS> SQGSWaypoint("GSWaypoint");
 	SQGSWaypoint.PreRegister(engine, "GSBaseStation");
 	SQGSWaypoint.AddConstructor<void (ScriptWaypoint::*)(), 1>(engine, "x");
 

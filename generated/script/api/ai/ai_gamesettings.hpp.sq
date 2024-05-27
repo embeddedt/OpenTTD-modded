@@ -11,11 +11,11 @@
 #include "../template/template_gamesettings.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptGameSettings, ST_AI>() { return "AIGameSettings"; }
+template <> const char *GetClassName<ScriptGameSettings, ScriptType::AI>() { return "AIGameSettings"; }
 
 void SQAIGameSettings_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptGameSettings, ST_AI> SQAIGameSettings("AIGameSettings");
+	DefSQClass<ScriptGameSettings, ScriptType::AI> SQAIGameSettings("AIGameSettings");
 	SQAIGameSettings.PreRegister(engine);
 	SQAIGameSettings.AddConstructor<void (ScriptGameSettings::*)(), 1>(engine, "x");
 

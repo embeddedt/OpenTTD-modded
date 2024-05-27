@@ -11,11 +11,11 @@
 #include "../template/template_bridgelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptBridgeList, ST_AI>() { return "AIBridgeList"; }
+template <> const char *GetClassName<ScriptBridgeList, ScriptType::AI>() { return "AIBridgeList"; }
 
 void SQAIBridgeList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridgeList, ST_AI> SQAIBridgeList("AIBridgeList");
+	DefSQClass<ScriptBridgeList, ScriptType::AI> SQAIBridgeList("AIBridgeList");
 	SQAIBridgeList.PreRegister(engine, "AIList");
 	SQAIBridgeList.AddConstructor<void (ScriptBridgeList::*)(), 1>(engine, "x");
 
@@ -23,11 +23,11 @@ void SQAIBridgeList_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptBridgeList_Length, ST_AI>() { return "AIBridgeList_Length"; }
+template <> const char *GetClassName<ScriptBridgeList_Length, ScriptType::AI>() { return "AIBridgeList_Length"; }
 
 void SQAIBridgeList_Length_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptBridgeList_Length, ST_AI> SQAIBridgeList_Length("AIBridgeList_Length");
+	DefSQClass<ScriptBridgeList_Length, ScriptType::AI> SQAIBridgeList_Length("AIBridgeList_Length");
 	SQAIBridgeList_Length.PreRegister(engine, "AIList");
 	SQAIBridgeList_Length.AddConstructor<void (ScriptBridgeList_Length::*)(SQInteger length), 2>(engine, "xi");
 

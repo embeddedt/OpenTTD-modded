@@ -11,13 +11,13 @@
 #include "../template/template_signlist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptSignList, ST_AI>() { return "AISignList"; }
+template <> const char *GetClassName<ScriptSignList, ScriptType::AI>() { return "AISignList"; }
 
 void SQAISignList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptSignList, ST_AI> SQAISignList("AISignList");
+	DefSQClass<ScriptSignList, ScriptType::AI> SQAISignList("AISignList");
 	SQAISignList.PreRegister(engine, "AIList");
-	SQAISignList.AddConstructor<void (ScriptSignList::*)(), 1>(engine, "x");
+	SQAISignList.AddSQAdvancedConstructor(engine);
 
 	SQAISignList.PostRegister(engine);
 }

@@ -28,16 +28,16 @@ bool IsReleasedVersion()
  * - "<tag>", like "<major>.<minor>.<build>[-RC<rc>]",
  * - "<commitdate>-g<shorthash><modified>" in "master",
  * - "<commitdate>-<branch>-g<shorthash><modified>" in other branches, or
- * - "norev000", if the version is unknown.
+ * - "norev0000", if the version is unknown.
  *
  * The major, minor and build are the numbers that describe releases of
  * OpenTTD (like 0.5.3). "-RC" is used to flag release candidates.
  *
  * <modified> shows a "M", if the binary is made from modified source code.
  */
-const char _openttd_revision[] = "20230414-stock_jgr-g9e33bad646";
+const char _openttd_revision[] = "--g";
 
-const char _openttd_release_version[] = "0.52.1";
+const char _openttd_release_version[] = "0.59.1";
 
 /**
  * The text version of OpenTTD's build date.
@@ -50,17 +50,17 @@ const char _openttd_build_date[] = __DATE__ " " __TIME__;
 /**
  * The configure defines used to build OpenTTD
  */
-const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGACTION TTD_ENDIAN=TTD_LITTLE_ENDIAN UNIX WITH_PNG WITH_ZLIB WITH_SDL2 WITH_PERSONAL_DIR NO_THREADS WITH_ASSERT";
+const char _openttd_build_configure_defines[] = "NDEBUG WITH_DEMANGLE WITH_SIGACTION WITH_SIGALTSTACK TTD_ENDIAN=TTD_LITTLE_ENDIAN UNIX WITH_PNG WITH_ZLIB WITH_SDL2 WITH_PERSONAL_DIR NO_THREADS WITH_ASSERT";
 
 /**
  * The git revision hash of this version.
  */
-const char _openttd_revision_hash[] = "9e33bad64662f32227968e9adfd3c1e506453253";
+const char _openttd_revision_hash[] = "";
 
 /**
  * The year of this version.
  */
-const char _openttd_revision_year[] = "2023";
+const char _openttd_revision_year[] = "";
 
 /**
  * Let us know if current build was modified. This detection
@@ -70,21 +70,21 @@ const char _openttd_revision_year[] = "2023";
  * (compiling from sources without any version control software)
  * and 2 is for modified revision.
  */
-const byte _openttd_revision_modified = 0;
+const uint8_t _openttd_revision_modified = 0;
 
 /**
  * Indicate whether this is a tagged version.
  * If this is non-0, then _openttd_revision is the name of the tag,
  * and the version is likely a beta, release candidate, or real release.
  */
-const byte _openttd_revision_tagged = 0;
+const uint8_t _openttd_revision_tagged = 0;
 
 /**
  * To check compatibility of BaNaNaS content, this version string is used.
  * It should never contain things like "beta", but only the release version
  * we are compatible with.
  */
-const char _openttd_content_version[] = "13.0";
+const char _openttd_content_version[] = "14.1";
 
 /**
  * The NewGRF revision of OTTD:
@@ -103,4 +103,4 @@ const char _openttd_content_version[] = "13.0";
  * have to adjust the major by 16.
  */
 /** 0 removed */
-const uint32 _openttd_newgrf_version = (14 + 16) << 24 | 0 << 20 | 0 << 19 | 28004;
+const uint32_t _openttd_newgrf_version = (15 + 16) << 24 | 0 << 20 | 0 << 19 | 28004;

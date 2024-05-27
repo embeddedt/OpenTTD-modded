@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../../generated/table/settings.h"
   "CMakeFiles/table_settings"
   "settings.h.timestamp"
-  "../../../generated/table/settings.h"
 )
 
 # Per-language clean rules from dependency scanning.

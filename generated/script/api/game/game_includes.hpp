@@ -10,6 +10,7 @@
 #include "game_accounting.hpp.sq"
 #include "game_admin.hpp.sq"
 #include "game_airport.hpp.sq"
+#include "game_asyncmode.hpp.sq"
 #include "game_base.hpp.sq"
 #include "game_basestation.hpp.sq"
 #include "game_bridge.hpp.sq"
@@ -33,6 +34,8 @@
 #include "game_game.hpp.sq"
 #include "game_gamesettings.hpp.sq"
 #include "game_goal.hpp.sq"
+#include "game_group.hpp.sq"
+#include "game_grouplist.hpp.sq"
 #include "game_industry.hpp.sq"
 #include "game_industrylist.hpp.sq"
 #include "game_industrytype.hpp.sq"
@@ -83,6 +86,7 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSAccounting_Register(engine);
 	SQGSAdmin_Register(engine);
 	SQGSAirport_Register(engine);
+	SQGSAsyncMode_Register(engine);
 	SQGSBase_Register(engine);
 	SQGSBaseStation_Register(engine);
 	SQGSBridge_Register(engine);
@@ -132,6 +136,8 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSGame_Register(engine);
 	SQGSGameSettings_Register(engine);
 	SQGSGoal_Register(engine);
+	SQGSGroup_Register(engine);
+	SQGSGroupList_Register(engine);
 	SQGSIndustry_Register(engine);
 	SQGSIndustryList_Register(engine);
 	SQGSIndustryList_CargoAccepting_Register(engine);
@@ -182,6 +188,7 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSTileList_Register(engine);
 	SQGSTileList_IndustryAccepting_Register(engine);
 	SQGSTileList_IndustryProducing_Register(engine);
+	SQGSTileList_StationCoverage_Register(engine);
 	SQGSTileList_StationType_Register(engine);
 	SQGSTown_Register(engine);
 	SQGSTownEffectList_Register(engine);
@@ -189,7 +196,9 @@ void SQGS_RegisterAll(Squirrel *engine)
 	SQGSTunnel_Register(engine);
 	SQGSVehicle_Register(engine);
 	SQGSVehicleList_Register(engine);
+	SQGSVehicleList_DefaultGroup_Register(engine);
 	SQGSVehicleList_Depot_Register(engine);
+	SQGSVehicleList_Group_Register(engine);
 	SQGSVehicleList_SharedOrders_Register(engine);
 	SQGSVehicleList_Station_Register(engine);
 	SQGSViewport_Register(engine);

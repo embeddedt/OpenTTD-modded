@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../../generated/script/api/game/game_includes.hpp"
   "CMakeFiles/script_game_includes"
   "game_includes.hpp.timestamp"
-  "../../../generated/script/api/game/game_includes.hpp"
 )
 
 # Per-language clean rules from dependency scanning.

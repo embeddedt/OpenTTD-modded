@@ -11,11 +11,11 @@
 #include "../template/template_sign.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptSign, ST_GS>() { return "GSSign"; }
+template <> const char *GetClassName<ScriptSign, ScriptType::GS>() { return "GSSign"; }
 
 void SQGSSign_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptSign, ST_GS> SQGSSign("GSSign");
+	DefSQClass<ScriptSign, ScriptType::GS> SQGSSign("GSSign");
 	SQGSSign.PreRegister(engine);
 	SQGSSign.AddConstructor<void (ScriptSign::*)(), 1>(engine, "x");
 

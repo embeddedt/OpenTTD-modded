@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "../../../generated/script/api/ai/ai_includes.hpp"
   "CMakeFiles/script_ai_includes"
   "ai_includes.hpp.timestamp"
-  "../../../generated/script/api/ai/ai_includes.hpp"
 )
 
 # Per-language clean rules from dependency scanning.

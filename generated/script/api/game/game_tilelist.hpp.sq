@@ -11,11 +11,11 @@
 #include "../template/template_tilelist.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptTileList, ST_GS>() { return "GSTileList"; }
+template <> const char *GetClassName<ScriptTileList, ScriptType::GS>() { return "GSTileList"; }
 
 void SQGSTileList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTileList, ST_GS> SQGSTileList("GSTileList");
+	DefSQClass<ScriptTileList, ScriptType::GS> SQGSTileList("GSTileList");
 	SQGSTileList.PreRegister(engine, "GSList");
 	SQGSTileList.AddConstructor<void (ScriptTileList::*)(), 1>(engine, "x");
 
@@ -28,11 +28,11 @@ void SQGSTileList_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptTileList_IndustryAccepting, ST_GS>() { return "GSTileList_IndustryAccepting"; }
+template <> const char *GetClassName<ScriptTileList_IndustryAccepting, ScriptType::GS>() { return "GSTileList_IndustryAccepting"; }
 
 void SQGSTileList_IndustryAccepting_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTileList_IndustryAccepting, ST_GS> SQGSTileList_IndustryAccepting("GSTileList_IndustryAccepting");
+	DefSQClass<ScriptTileList_IndustryAccepting, ScriptType::GS> SQGSTileList_IndustryAccepting("GSTileList_IndustryAccepting");
 	SQGSTileList_IndustryAccepting.PreRegister(engine, "GSTileList");
 	SQGSTileList_IndustryAccepting.AddConstructor<void (ScriptTileList_IndustryAccepting::*)(IndustryID industry_id, SQInteger radius), 3>(engine, "xii");
 
@@ -40,11 +40,11 @@ void SQGSTileList_IndustryAccepting_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptTileList_IndustryProducing, ST_GS>() { return "GSTileList_IndustryProducing"; }
+template <> const char *GetClassName<ScriptTileList_IndustryProducing, ScriptType::GS>() { return "GSTileList_IndustryProducing"; }
 
 void SQGSTileList_IndustryProducing_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTileList_IndustryProducing, ST_GS> SQGSTileList_IndustryProducing("GSTileList_IndustryProducing");
+	DefSQClass<ScriptTileList_IndustryProducing, ScriptType::GS> SQGSTileList_IndustryProducing("GSTileList_IndustryProducing");
 	SQGSTileList_IndustryProducing.PreRegister(engine, "GSTileList");
 	SQGSTileList_IndustryProducing.AddConstructor<void (ScriptTileList_IndustryProducing::*)(IndustryID industry_id, SQInteger radius), 3>(engine, "xii");
 
@@ -52,13 +52,25 @@ void SQGSTileList_IndustryProducing_Register(Squirrel *engine)
 }
 
 
-template <> const char *GetClassName<ScriptTileList_StationType, ST_GS>() { return "GSTileList_StationType"; }
+template <> const char *GetClassName<ScriptTileList_StationType, ScriptType::GS>() { return "GSTileList_StationType"; }
 
 void SQGSTileList_StationType_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptTileList_StationType, ST_GS> SQGSTileList_StationType("GSTileList_StationType");
+	DefSQClass<ScriptTileList_StationType, ScriptType::GS> SQGSTileList_StationType("GSTileList_StationType");
 	SQGSTileList_StationType.PreRegister(engine, "GSTileList");
 	SQGSTileList_StationType.AddConstructor<void (ScriptTileList_StationType::*)(StationID station_id, ScriptStation::StationType station_type), 3>(engine, "xii");
 
 	SQGSTileList_StationType.PostRegister(engine);
+}
+
+
+template <> const char *GetClassName<ScriptTileList_StationCoverage, ScriptType::GS>() { return "GSTileList_StationCoverage"; }
+
+void SQGSTileList_StationCoverage_Register(Squirrel *engine)
+{
+	DefSQClass<ScriptTileList_StationCoverage, ScriptType::GS> SQGSTileList_StationCoverage("GSTileList_StationCoverage");
+	SQGSTileList_StationCoverage.PreRegister(engine, "GSTileList");
+	SQGSTileList_StationCoverage.AddConstructor<void (ScriptTileList_StationCoverage::*)(StationID station_id), 2>(engine, "xi");
+
+	SQGSTileList_StationCoverage.PostRegister(engine);
 }

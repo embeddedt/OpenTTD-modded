@@ -11,9 +11,9 @@
 
 namespace SQConvert {
 	/* Allow ScriptSubsidyList to be used as Squirrel parameter */
-	template <> struct Param<ScriptSubsidyList *> { static inline ScriptSubsidyList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidyList *)instance; } };
-	template <> struct Param<ScriptSubsidyList &> { static inline ScriptSubsidyList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidyList *)instance; } };
-	template <> struct Param<const ScriptSubsidyList *> { static inline const ScriptSubsidyList *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidyList *)instance; } };
-	template <> struct Param<const ScriptSubsidyList &> { static inline const ScriptSubsidyList &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidyList *)instance; } };
+	template <> struct Param<ScriptSubsidyList *> { static inline ScriptSubsidyList *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidyList *)instance; } };
+	template <> struct Param<ScriptSubsidyList &> { static inline ScriptSubsidyList &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidyList *)instance; } };
+	template <> struct Param<const ScriptSubsidyList *> { static inline const ScriptSubsidyList *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptSubsidyList *)instance; } };
+	template <> struct Param<const ScriptSubsidyList &> { static inline const ScriptSubsidyList &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptSubsidyList *)instance; } };
 	template <> struct Return<ScriptSubsidyList *> { static inline int Set(HSQUIRRELVM vm, ScriptSubsidyList *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "SubsidyList", res, nullptr, DefSQDestructorCallback<ScriptSubsidyList>, true); return 1; } };
 } // namespace SQConvert

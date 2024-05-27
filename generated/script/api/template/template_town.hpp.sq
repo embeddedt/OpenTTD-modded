@@ -11,21 +11,21 @@
 
 namespace SQConvert {
 	/* Allow enums to be used as Squirrel parameters */
-	template <> struct Param<ScriptTown::TownAction> { static inline ScriptTown::TownAction Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownAction)tmp; } };
+	template <> struct Param<ScriptTown::TownAction> { static inline ScriptTown::TownAction Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownAction)tmp; } };
 	template <> struct Return<ScriptTown::TownAction> { static inline int Set(HSQUIRRELVM vm, ScriptTown::TownAction res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptTown::TownRating> { static inline ScriptTown::TownRating Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownRating)tmp; } };
+	template <> struct Param<ScriptTown::TownRating> { static inline ScriptTown::TownRating Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownRating)tmp; } };
 	template <> struct Return<ScriptTown::TownRating> { static inline int Set(HSQUIRRELVM vm, ScriptTown::TownRating res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptTown::RoadLayout> { static inline ScriptTown::RoadLayout Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::RoadLayout)tmp; } };
+	template <> struct Param<ScriptTown::RoadLayout> { static inline ScriptTown::RoadLayout Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::RoadLayout)tmp; } };
 	template <> struct Return<ScriptTown::RoadLayout> { static inline int Set(HSQUIRRELVM vm, ScriptTown::RoadLayout res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptTown::TownSize> { static inline ScriptTown::TownSize Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownSize)tmp; } };
+	template <> struct Param<ScriptTown::TownSize> { static inline ScriptTown::TownSize Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownSize)tmp; } };
 	template <> struct Return<ScriptTown::TownSize> { static inline int Set(HSQUIRRELVM vm, ScriptTown::TownSize res) { sq_pushinteger(vm, res); return 1; } };
-	template <> struct Param<ScriptTown::TownGrowth> { static inline ScriptTown::TownGrowth Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownGrowth)tmp; } };
+	template <> struct Param<ScriptTown::TownGrowth> { static inline ScriptTown::TownGrowth Get(HSQUIRRELVM vm, int index) { SQInteger tmp; sq_getinteger(vm, index, &tmp); return (ScriptTown::TownGrowth)tmp; } };
 	template <> struct Return<ScriptTown::TownGrowth> { static inline int Set(HSQUIRRELVM vm, ScriptTown::TownGrowth res) { sq_pushinteger(vm, res); return 1; } };
 
 	/* Allow ScriptTown to be used as Squirrel parameter */
-	template <> struct Param<ScriptTown *> { static inline ScriptTown *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTown *)instance; } };
-	template <> struct Param<ScriptTown &> { static inline ScriptTown &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTown *)instance; } };
-	template <> struct Param<const ScriptTown *> { static inline const ScriptTown *Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTown *)instance; } };
-	template <> struct Param<const ScriptTown &> { static inline const ScriptTown &Get(HSQUIRRELVM vm, int index, SQAutoFreePointers *ptr) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTown *)instance; } };
+	template <> struct Param<ScriptTown *> { static inline ScriptTown *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTown *)instance; } };
+	template <> struct Param<ScriptTown &> { static inline ScriptTown &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTown *)instance; } };
+	template <> struct Param<const ScriptTown *> { static inline const ScriptTown *Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return  (ScriptTown *)instance; } };
+	template <> struct Param<const ScriptTown &> { static inline const ScriptTown &Get(HSQUIRRELVM vm, int index) { SQUserPointer instance; sq_getinstanceup(vm, index, &instance, nullptr); return *(ScriptTown *)instance; } };
 	template <> struct Return<ScriptTown *> { static inline int Set(HSQUIRRELVM vm, ScriptTown *res) { if (res == nullptr) { sq_pushnull(vm); return 1; } res->AddRef(); Squirrel::CreateClassInstanceVM(vm, "Town", res, nullptr, DefSQDestructorCallback<ScriptTown>, true); return 1; } };
 } // namespace SQConvert

@@ -11,11 +11,11 @@
 #include "../template/template_list.hpp.sq"
 
 
-template <> const char *GetClassName<ScriptList, ST_AI>() { return "AIList"; }
+template <> const char *GetClassName<ScriptList, ScriptType::AI>() { return "AIList"; }
 
 void SQAIList_Register(Squirrel *engine)
 {
-	DefSQClass<ScriptList, ST_AI> SQAIList("AIList");
+	DefSQClass<ScriptList, ScriptType::AI> SQAIList("AIList");
 	SQAIList.PreRegister(engine);
 	SQAIList.AddConstructor<void (ScriptList::*)(), 1>(engine, "x");
 
