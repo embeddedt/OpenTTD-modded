@@ -99,66 +99,144 @@ jobs:
     container:
       # manylinux2014 is based on CentOS 7, but already has a lot of things
       # installed and preconfigured. It makes it easier to build OpenTTD.
-      image: quay.io/pypa/manylinux2014_x86_64
+      image: quay.io/pypa/manylinux_2_28_x86_64
 
     steps:
     - name: Download source
       uses: actions/checkout@v2
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Enable Rust cache
+      uses: Swatinem/rust-cache@v2
+
+    - name: Setup vcpkg caching
+      uses: actions/github-script@v7
+      with:
+        script: |
+          core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+          core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+          core.exportVariable('VCPKG_BINARY_SOURCES', 'clear;x-gha,readwrite')
+
     - name: Install dependencies
       run: |
-        echo "::group::Install dependencies"
+        echo "::group::Install system dependencies"
+        # perl-IPC-Cmd, wget, and zip are needed to run vcpkg.
+        # autoconf-archive is needed to build ICU.
         yum install -y \
-          fontconfig-devel \
-          freetype-devel \
-          libicu-devel \
-          libpng-devel \
-          libpng-devel \
-          lzo-devel \
-          SDL2-devel \
+          autoconf-archive \
+          perl-IPC-Cmd \
           wget \
-          xz-devel \
-          zlib-devel \
+          zip \
           # EOF
+
+        # aclocal looks first in /usr/local/share/aclocal, and if that doesn't
+        # exist only looks in /usr/share/aclocal. We have files in both that
+        # are important. So copy the latter to the first, and we are good to
+        # go.
+        cp /usr/share/aclocal/* /usr/local/share/aclocal/
         echo "::endgroup::"
-        # The yum variant of fluidsynth depends on all possible audio drivers.
-        # This is not really useful for us, as that would require a user to
-        # have them all before he can start OpenTTD. Instead, compile a
-        # version that can only use SDL2. As OpenTTD does sound via SDL2,
-        # this simply means we either have sound and music, or have none.
+
+        # The yum variant of fluidsynth depends on all possible audio drivers,
+        # like jack, ALSA, pulseaudio, etc. This is not really useful for us,
+        # as we route the output of fluidsynth back via our sound driver, and
+        # as such do not use these audio driver outputs at all.
+        # The vcpkg variant of fluidsynth depends on ALSA. Similar issue here.
+        # So instead, we compile fluidsynth ourselves, with as few
+        # dependencies as possible. We do it before anything else is installed,
+        # to make sure it doesn't pick up on any of the drivers.
         echo "::group::Install fluidsynth"
-        wget https://github.com/FluidSynth/fluidsynth/archive/v2.1.6.tar.gz
-        tar xf v2.1.6.tar.gz
+        wget https://github.com/FluidSynth/fluidsynth/archive/v2.3.3.tar.gz
+        tar xf v2.3.3.tar.gz
         (
-          cd fluidsynth-2.1.6
+          cd fluidsynth-2.3.3
           mkdir build
           cd build
           cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/usr
-          make -j$(nproc)
-          make install
+          cmake --build . -j $(nproc)
+          cmake --install .
         )
+
+        echo "::group::Install audio drivers"
+        # These audio libs are to make sure the SDL version of vcpkg adds
+        # sound-support; these libraries are not added to the resulting
+        # binary, but the headers are used to enable them in SDL.
+        yum install -y \
+          alsa-lib-devel \
+          pulseaudio-libs-devel \
+          # EOF
         echo "::endgroup::"
+
+        echo "::group::Install video drivers"
+        # These video libs are to make sure the SDL version of vcpkg adds
+        # video-support; these libraries are not added to the resulting
+        # binary, but the headers are used to enable them in SDL.
+        yum install -y \
+          libX11-devel \
+          libXcursor-devel \
+          libXext-devel \
+          libXfixes-devel \
+          libXi-devel \
+          libxkbcommon-devel \
+          libXrandr-devel \
+          libXScrnSaver-devel \
+          mesa-libEGL-devel \
+          mesa-libGL-devel \
+          mesa-libGLES-devel \
+          wayland-devel \
+          wayland-protocols-devel \
+          # EOF
+        echo "::endgroup::"
+
+        # We use vcpkg for our dependencies, to get more up-to-date version.
+        echo "::group::Install vcpkg and dependencies"
+
+        git clone https://github.com/microsoft/vcpkg /vcpkg
+
+        (
+          cd /vcpkg
+          ./bootstrap-vcpkg.sh -disableMetrics
+        )
+
     - name: Install GCC problem matcher
       uses: ammaraskar/gcc-problem-matcher@master
 
     - name: Build
       run: |
-        mkdir -p generic_build
-        cd generic_build
+        mkdir -p build
+        cd build
+
         echo "::group::CMake"
         cmake ${GITHUB_WORKSPACE} \
-          -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+          -DCMAKE_TOOLCHAIN_FILE=/vcpkg/scripts/buildsystems/vcpkg.cmake \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DOPTION_COMPRESS_DEBUG=ON \
+          -DOPTION_LTO=ON \
+          -DOPTION_TRIM_PATH_PREFIX=ON \
           -DOPTION_PACKAGE_DEPENDENCIES=ON \
           # EOF
         echo "::endgroup::"
+
         echo "::group::Build"
         echo "Running on $(nproc) cores"
-        make -j$(nproc) package
+        cmake --build . -j $(nproc) --target openttd
         echo "::endgroup::"
+
+    - name: Create bundles
+      run: |
+        cd ${GITHUB_WORKSPACE}/build
+        echo "::group::Run CPack"
+        cpack
+        echo "::endgroup::"
+
+        echo "::group::Cleanup"
         # Remove the sha256 files CPack generates; we will do this ourself at
         # the end of this workflow.
         rm -f bundles/*.sha256
+        echo "::endgroup::"
+
     - name: Store bundles
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: openttd-linux-generic
-        path: generic_build/bundles
+        path: build/bundles
