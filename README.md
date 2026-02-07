@@ -2,6 +2,8 @@
 
 This is my personal collection of patches applied to [JGR's Patch Pack](https://github.com/JGRennison/OpenTTD-patches).
 
+> **⚠️ 2026 note:** I am no longer maintaining this. Keeping up with upstream OpenTTD refactors is time-consuming and I don't have the capacity or interest to do it anymore for what is a relatively small set of changes. I recommend using the original JGRPP builds instead.
+
 Prebuilt bundles are linked here:
 
 * Play in your browser: https://embeddedt.github.io/OpenTTD-modded/
@@ -12,8 +14,6 @@ Prebuilt bundles are linked here:
 32-bit Linux binaries are not provided, however, compiling from source should work fine on 32-bit hardware.
 
 MacOS binaries are also not provided due to a lack of hardware to test with, but compiling from source with vanilla instructions should work.
-
-> **⚠️ Note:** OpenTTD-modded should load JGR-compatible and vanilla savegames without issue. I frequently merge JGR's branch into my own so you are not missing out on any JGR patches by using this "modpack". Make sure you backup your existing game before trying it here, though!
 
 ### Additional patches included
 
